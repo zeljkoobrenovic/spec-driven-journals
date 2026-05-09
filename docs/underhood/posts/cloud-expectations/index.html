@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Public Cloud: Great Expectations</title>
+    <link rel="stylesheet" href="../../site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.top {
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        nav.top a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.top a:hover {
+            color: var(--accent);
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post h1 {
+            font-size: 34px;
+            line-height: 1.2;
+            margin: 0 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="top"><a href="../../index.html">← Back to index</a></nav>
+    <header class="post">
+        <h1>Public Cloud: Great Expectations</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2020-01-21  ·  15 min</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <a href="../../index.html">← Back to index</a>
+    </footer>
+</main>
+
+<script id="data" type="application/json">{"meta": {"layout": "post", "title": "Public Cloud: Great Expectations", "date": "2020-01-21 21:12:01 +0100", "categories": "architecture", "icon": "cloud.png", "author": "by Željko Obrenović (obren.io)", "permalink": "cloud-expectations", "timetoread": "15 min", "excerpt": "This article enlists some of the key benefits we can expect from of cloud: development velocity, performance, scalability, functionality, uptime, costs, transparency, and security. The article also provides a reality check on these expectations. You need to earn the public cloud benefits; simply moving to the cloud rarely leads to immediate improvements."}, "blocks": [{"type": "markdown", "content": "![](../../assets/images/cloudstrategy/expectations.jpg)\n\n> **KEY POINTS:**\n> * This article enlists some of the key benefits you could expect from of cloud: velocity, performance, scalability, functionality, uptime, costs, transparency, and security. \n> * The article also provides a reality check on these expectations. Spoiler alert: you need to earn these benefits; simply moving to the cloud rarely leads to immediate improvements.\n\n&nbsp; \n> *\"We changed again, and yet again, and it was now too late and too far to go back, and I went on. And the mists had all solemnly risen now, and the world lay spread before me.\"*\n>&nbsp;\n>&nbsp;\n<br>― Charles Dickens, Great Expectations\n\n&nbsp; \n&nbsp;\n\nWhen talking about architecture at any organization, Public Cloud is an unavoidable topic. Most organizations are on a journey that, in the long run, will lead towards a significant portion of our systems, if not all of them, running in a public cloud. And we all seem to have great expectations. \n\nHype and buzzwords surround everything about the cloud. With this article, I wanted to, in plain English, discuss a critical aspect of the public cloud journey: the WHY question. In other words, why would we want to move there? What can and should you expect?\n\nI base my discussion on the [**Cloud Strategy**](https://architectelevator.com/book/cloudstrategy/) book, adapting the cloud's benefits listed there to my experiences. I group potential benefits of the cloud in eight categories:\n* Development velocity (time-to-market)\n* Performance (geo-proximity)\n* Scalability\n* Managed value-adding services (e.g., ML, AI analyses)\n* Uptime\n* Elastic pricing model\n* Transparency\n* Security\n\nIn the following sections, I discuss each of these drivers for public cloud migrations. Each section has two parts, one discussing benefits and the other providing a reality check. These benefits have to be earned and will not automatically follow the mere move to the public cloud.\n\n\n## Development Velocity (Time-to-Market)\n\nFor most organizations, increasing development velocity is probably the most significant long-term benefit of the public cloud. \n\nModern public cloud tools can assist in accelerating software delivery in multiple ways. Figure 1 illustrates my view on the drivers of increased velocity in the cloud.\n\n\n![](../../assets/images/cloudstrategy/velocity.png)\n***Figure 1:** The drivers of increased developer velocity in the public cloud.*\n\nFully managed build toolchains and automated deployment tools, for instance, allow teams to be more productive by focusing on feature development. At the same time, the cloud takes care of compiling, testing, and deploying software. Another source of accelerating software delivery comes from managed and self-service tools. These tools encapsulate low-level details and complexity and empower developers to do tasks that would otherwise require additional SiteOps or DevOps teams. \n\nThe hiring of developers can be easier for the public cloud. On the one hand, modern cloud tools are more attractive to talented developers. On the other hand, public cloud expertise is more standardized, and it is easier to find public cloud experts worldwide and outsource your development.\n\nReality check:\n* If you do not have high-velocity in your current setting, then it is unlikely that you will immediately get it from the cloud. Moreover, you may lose some velocity due to the need to learn new technologies, at least temporarily. Cloud gives you more options to increase development velocity, but to benefit from these options, you need to live DevOps culture and have a high level of automation at all levels.\n* The best way to prepare for high-velocity is to focus on improving [4 key metrics](https://www.thoughtworks.com/radar/techniques/four-key-metrics): lead time, deployment frequency, mean time to restore (MTTR), and change failure percentage. The researchers have determined that these four key metrics differentiate between low, medium, and high IT organization performers. If you are a high performer, then the cloud can make you even better. If you are not, then moving to the public cloud is only the first step.\n\n\n## Performance\n\nHosting applications with a cloud provider can provide shorter paths and a better user experience than applications hosted on-premises. Figure 2, for instance, illustrates the current investment in data centers and networks for the Google Cloud Provider. With our customers on different continents, we can benefit from the public cloud's geo-proximity to provide shorter paths to our customers. Even a minute increase in performance can have a significant impact on users' behavior.\n\n![](../../assets/images/cloudstrategy/gcpinfra.png)\n***Figure 2:** Google Cloud Provider infrastructure overview.*\n\n\nReality check:\n* Geo-proximity is just one aspect of overall system performance. Other elements include database query processing, waiting for a response from external services, chattiness between services. So you may be disappointed by the impact of cloud migration on the performance of your application.\n* Best way to prepare for performance optimizations in the public cloud is to know your performance profile well. Transparency is the key. In particular, having clear insights on all drivers behind latency.\n* By moving a part of your applications to the cloud, your performance can worsen if your application depends on service outside the public cloud, e.g., in the data center. \n\n\n## Scalability\n\nA vital premise of the public cloud is the instant availability of computing and storage resources, allowing applications to scale out to remain performant under increased load. Conveniently, the cloud model makes capacity management the cloud provider's responsibility, freeing our IT from maintaining unused hardware inventory. We can provision new servers when we need them and only when we need them.\n\n While we can scale our data centers by adding more hardware, planning is the main difference with the public cloud. In a public cloud, you can decide to scale up at any moment; capacity is practically unlimited. There is no long-term commitment. You can scale down your operations any time you want.\n\n\nReality check:\n* Main business value of scalability is having an option to instantly scale up (or down) operations with predictable costs and without long-term commitments. Examples include increased load due to new COVID-like crisis, adding new marketplaces within months. If your load is stable or predictably growing, then you do not directly benefit from cloud scalability.\n* While public cloud providers allow you to scale down at any moment, it is our responsibility to stop resource usage, not the cloud providers. That means that we need to architect applications so that they can be scaled up and down. And we also need to have a \"scaling down\" discipline. It has little cost benefits if you can kill servers an hour after you provision them if you keep forgetting to do so. From my previous experiences, I know examples of people running large clusters of servers the whole weekend while they needed them for only 30 minutes.\n\n\n\n## Managed Value-Adding Services\n\nThe cloud is not all about computing resources. Cloud providers offer services that are impractical or impossible to implement at the scale of corporate data centers (Figure 3). For example, large-scale machine learning systems or pre-trained models inherently live in the cloud. Examples include open-source machine learning frameworks such as TensorFlow, pre-trained models such as Amazon Rekognition or Google Vision AI, or data warehouse tools like Google BigQuery or AWS Redshift. Another example includes services that on-premise would require significant operational capacity, such as managing big Kubernetes clusters. \n\n<div style=\"text-align: center\">\n<img src=\"../../assets/images/cloudstrategy/gcp-services.png\" style=\"width: 480px\"><br>\n<\/div>\n***Figure 3:** Google Cloud Platform catalog contains 100+ products, covering a wide array of use cases.*\n\nReality check:\n* You do not get any value from services you do not use. Moving to the cloud to be around speculatively valuable services may be difficult to justify.\n* Added value functionality is the most valuable when a cloud offering closely matches your market needs (e.g., registration plate recognition). If that is not the case, you may end up with complicated hacks to manage \"managed\" services.\n* Using managed services creates some level of lock-in. While this is not necessarily bad, you need to be aware of the potential consequences.\n\n\n\n## Uptime\n\nA global footprint allows applications to run across a network of global data centers, each of which features multiple availability zones (AZs). Cloud providers also maintain massive network connections to the internet backbone, improving their resilience against distributed denial-of-service (DDoS) attacks. Public cloud run-time platforms have built-in resilience as part of their container orchestration or serverless platforms.\n\n\nReality check:\n* Cloud computing isn't a magic button that makes brittle applications suddenly available 24/7 with zero downtime. Even if the server keeps running, your application might be failing. You may need to adjust the application architecture and the deployment model to achieve high levels of availability.\n\n\n\n## Elastic Pricing Model \n\nSavings in the public cloud come from using managed services and the cloud's elastic \"pay as you grow\" pricing model that allows suspending compute resources that you are not utilizing (Figure 4). The significant savings potential lies in this elastic pricing model.\n\n<div style=\"text-align: center\">\n<img src=\"../../assets/images/cloudstrategy/elasticity.png\"><br>\n<\/div>\n***Figure 4:** Without elasticity, you need to provide and pay for enough resources to handle the highest demand. With elasticity, you provision only the resources necessary to address current demand.*\n\n\nReality check:\n* Cloud providers have favorable Economies of Scale but invest heavily in global network infrastructure, security, data-center facilities, and modern technologies such as machine learning. Cloud providers do not use cheap technology, and hence one should be cautious about expecting drastic cost reduction by merely lifting and shifting an existing workload to the cloud.\n* Realizing any savings requires transparency into resource utilization and high levels of deployment automation—cloud savings have to be earned.\n* Elasticity is bi-directional (Figure 5) and can lead to a drastic cost increase if an unexpected usage increase occurs, e.g., denial of wallet.\n\n<div style=\"text-align: center\">\n<img src=\"../../assets/images/cloudstrategy/elasticitycosts.png\" style=\"height: 360px\"><br>\n<\/div>\n<i><b>Figure 5:<\/b>Elasticity can both increase and reduce costs.<\/i>\n\n\n\n## Transparency\n\nMigrating to the cloud can dramatically increase transparency thanks to uniform automation and monitoring. Classic IT often has limited transparency in its operational environments. Simple questions like how many servers are provisioned, which applications run on them, or what is their patch status are often tricky and time-consuming to answer.\n\nFigure 6 shows the anonymous screenshot of the Cloud usage explorer, a tool I built to visualize automatically collected data about the Google Cloud Platform (GCP) usage. Google Cloud Providers gives detailed data about which platform uses which services, resource family, budget. You can also understand which people and teams have access to each service. It is possible to get real-time information about our cloud usages and understand the trends in a fully automated fashion.\n\n<div style=\"text-align: center\">\n<img src=\"../../assets/images/cloudstrategy/cloud-usage-explorer.png\" style=\"height: 360px\"><br>\n<\/div>\n<i><b>Figure 6:<\/b>An example of an cloud usage explorer.<\/i>\n\nReality check:\n* Transparency is good, but its value lies in using the obtained data to improve your systems. Hence, we need transparency and the process to turn transparency into action.\n* To get full transparency of your system requires additional measures and logging. Cloud can tell you how much storage or network you use, but it will not tell you anything about your system's internals.\n* You can solve the problem of the limited transparency of classical IT with better tools and processes. Our private cloud provides quite a significant amount of detailed information.\n\n\n## Security\n\nPublic cloud providers invest heavily in security at multiple levels, including hardware, operating models, and products.\n\nPublic cloud hardware investments are essential as attack vectors have shifted to exploit hardware-level vulnerabilities based on microprocessor design (Spectre and Meltdown) or compromised supply chains. Such attacks render traditional data-center \"perimeter\" defenses ineffective and position large-scale cloud providers as the few civilian organizations with the necessary resources to provide adequate protection. Several cloud providers further increase security with custom-developed hardware, such as AWS' Nitro System or Google's Titan Chip. Such custom-developed hardware employs the notion of an \"in-house hardware root of trust\" that detects hardware or firmware manipulation. \n\nCloud providers use a sophisticated operating model with frequent and automated updates, additionally strengthening their security posture. Public cloud providers invest in ensuring compliance with many security and related privacy regulations, such as [ISO/IEC 27001](https://en.wikipedia.org/wiki/ISO/IEC_27001), [ISO/IEC 27017](https://en.wikipedia.org/wiki/ISO/IEC_27017), [ISO/IEC 27018](https://en.wikipedia.org/wiki/ISO/IEC_27018), [ISO/IEC 27701](https://en.wikipedia.org/wiki/ISO/IEC_27701), [SOC 2/3](https://en.wikipedia.org/wiki/System_and_Organization_Controls), and [GDPR](https://en.wikipedia.org/wiki/General_Data_Protection_Regulation).\n\nLastly, cloud providers provide numerous security products such as Software-Defined Networks (SDNs), identity-aware gateways, firewalls, Web Application Firewalls (WAFs), and many more, which you can use to protect applications deployed to the cloud.\n\nReality check:\n* There is no set of products that automatically increase security when migrating to the cloud. Cloud gives you options to increase your security, but it is up to you to apply them properly. Security follows the weakest link principle. Perfect cloud security will not help you if, for instance, you make your access keys publicly available. According to a [2017 Gartner report](https://www.gartner.com/smarterwithgartner/is-the-cloud-secure/), at least 95% of cloud security failures are the customer's fault.\n* Cloud providers generally follow the shared responsibility model, where they are responsible for the security **of** the cloud, we are accountable for security **in** the cloud. The cloud vendor manages and controls the host Operating System (OS), the virtualization layer, and their facilities' physical security. We are responsible for configuration and managing the security controls. We are also responsible for encrypting data in transit and at rest. \n\n\n## Setting Clear Expectations and Measuring Progress\n\nWhile there are many reasons for moving to the public cloud, and different teams will get different values, one thing is the same. You need to set your expectations explicitly and communicate them with key stakeholders.  If you move to the cloud to increase development velocity, but other stakeholders expect cost reduction, we have set the stage for an unproductive conflict. \n\nAnother important thing is to measure your progress. Setting expectations to be measured is not easy but is crucial to justify investments. \n\nLastly, moving to the cloud is not only a technical issue. Improving development velocity, for instance, does not have value in itself. The value of development velocity lies in shorter [time-to-market (TTM)](https://en.wikipedia.org/wiki/Time_to_market). But estimating the value of shorter TTM requires input from product and business stakeholders. Consequently, we need to work closely with business stakeholders to create realistic and pragmatic cases of public cloud usage.\n\n\n\n\n## Acknowledgments\n\nI would like to thank Peter Maas, Jilles Oldenbeuving and David Campbell for their feedback and numerous discussions on the public cloud. Photo by Juan Mendez from Pexels.\n\n\n## To Probe Further\n\n1. [**Cloud Strategy**](https://architectelevator.com/book/cloudstrategy/), Gregor Hohpe, LeanPub 2020.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    const isOrdered = ordered.test(line);
+                    const re = isOrdered ? ordered : bullet;
+                    const items = [];
+                    while (i < lines.length && re.test(lines[i])) {
+                        const m = lines[i].match(re);
+                        let item = m[3];
+                        i++;
+                        while (i < lines.length && lines[i].trim() && !bullet.test(lines[i]) && !ordered.test(lines[i])) {
+                            item += '\n' + lines[i].trim();
+                            i++;
+                        }
+                        items.push('<li>' + inline(item) + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types (mermaid, embedded svg, etc.) plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            }
+            // future: mermaid: function (block) { ... }
+        };
+
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) root.appendChild(node);
+        });
+    })();
+</script>
+</body>
+</html>

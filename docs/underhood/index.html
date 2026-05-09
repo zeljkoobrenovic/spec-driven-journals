@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Under the Hood</title>
+<link rel="stylesheet" href="site.css">
+<style>
+  header.site { border-bottom: 1px solid var(--rule); padding-bottom: 24px; margin-bottom: 32px; }
+  header.site .logo {
+    display: block;
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 24px;
+  }
+  header.site h1 { margin: 0 0 8px; font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
+  header.site p { margin: 0; color: var(--muted); }
+
+  .search { margin: 24px 0 40px; }
+  .search input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: #fff;
+    font-family: inherit;
+  }
+  .search input:focus { outline: none; border-color: var(--accent); }
+
+  section.group { margin-bottom: 48px; }
+  section.group > h2 {
+    font-size: 22px;
+    margin: 0 0 4px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  section.group > .group-desc { color: var(--muted); margin: 0 0 16px; font-size: 15px; }
+  section.group.empty { display: none; }
+
+  ul.posts { list-style: none; padding: 0; margin: 0; }
+  ul.posts li {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+  }
+  ul.posts li:last-child { border-bottom: 1px solid var(--rule); }
+  ul.posts li.hidden { display: none; }
+  ul.posts .icon {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ul.posts .icon img { max-width: 100%; max-height: 100%; }
+  ul.posts .icon.placeholder { background: var(--rule); border-radius: 4px; }
+  ul.posts .meta { flex: 1; min-width: 0; }
+  ul.posts .meta a {
+    color: var(--fg);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 17px;
+  }
+  ul.posts .meta a:hover { color: var(--accent); }
+  ul.posts .meta .excerpt { color: var(--muted); margin: 4px 0 0; font-size: 15px; }
+
+  .empty-msg { color: var(--muted); font-style: italic; display: none; }
+  .empty-msg.show { display: block; }
+</style>
+</head>
+<body>
+<main>
+  <header class="site">
+    <img class="logo" src="assets/images/under_the_hood_3.jpg" alt="">
+    <h1>Under the Hood</h1>
+    <p>Notes on architecture, economics, and technology — by Željko Obrenović.</p>
+  </header>
+
+  <div class="search">
+    <input id="q" type="search" placeholder="Search posts by title or excerpt…" autocomplete="off">
+  </div>
+
+  <div id="sections"></div>
+  <p class="empty-msg" id="empty">No posts match your search.</p>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Architecture", "description": "Approaches and metaphors for the practice of architecture.", "posts": [{"title": "Architects as Superglue: One Approach To Being An Architect in IT Organizations", "excerpt": "This article is a written statement of my experiences on what it means to be an architect in IT organizations, how architects need to develop, and how architects should work together.", "url": "posts/superglue/index.html", "icon": "assets/icons/superglue.png"}, {"title": "Data + Automation + Curation = Useful Architectural Documentation", "excerpt": "This article summarizes my experiences in replacing classical architectural documentation with data-driven documents.", "url": "posts/documentation/index.html", "icon": "assets/icons/oil.png"}]}, {"title": "Economics & Cost", "description": "Thinking about the economic side of IT systems.", "posts": [{"title": "The IT Cost Box", "excerpt": "In this post, I introduce a simple model for thinking about IT costs in three dimensions. This model presents IT costs as the volume of the box, where each side of the box shows three drivers of the cost: unit costs, size, and time.", "url": "posts/costbox/index.html", "icon": "assets/icons/costs.png"}, {"title": "The Economic Value of Architecture: Two Metaphors", "excerpt": "In this post, I sketch two answers to the question of the economic value of architecture: the return on investment metaphor, and the financial options metaphor.", "url": "posts/economics/index.html", "icon": "assets/icons/economics.png"}, {"title": "What Digital Marketplaces Sell? A Short Memo", "excerpt": "Digital marketplaces facilitate transactions between buyers and sellers. The marketplace is not the seller (nor a buyer), but it sells a reduction in transaction costs. .", "url": "posts/digital-marketplaces/index.html", "icon": "assets/icons/market.png"}]}, {"title": "Cloud & Platforms", "description": "Cloud capabilities and the platforms built on top of them.", "posts": [{"title": "Uber's Payments Platform", "excerpt": "Recently, Uber has announced deeper push into financial services with Uber Money, a new division, including products such as a digital wallet and upgraded debit and credit cards. It is expected that Uber could soon offer a bank account to consumers on its platform. While many of the news articles focus on the business side of Uber move, limited resources are available to understand better the payment technology that Uber is building. I believe that we can learn from looking under the hood of Uber payment technologies, as the Uber approach may be the way how we will make the banks of the future.", "url": "posts/uber-payments-platform/index.html", "icon": "assets/icons/uber.png"}, {"title": "Public Cloud: Great Expectations", "excerpt": "This article enlists some of the key benefits we can expect from of cloud: development velocity, performance, scalability, functionality, uptime, costs, transparency, and security. The article also provides a reality check on these expectations. You need to earn the public cloud benefits; simply moving to the cloud rarely leads to immediate improvements.", "url": "posts/cloud-expectations/index.html", "icon": "assets/icons/cloud.png"}]}, {"title": "Media & Streaming", "description": "Distributing video and other media at scale.", "posts": [{"title": "Adaptive HTTP Streaming Technologies: The Problem Statement", "excerpt": "Adaptive HTTP Streaming technologies enable distributing video efficiently via the standard HTTP infrastructure and CDNs. These technologies offer three key elements that the technologies introduce to solve critical challenges: segmentation of video content in smaller blocks to minimize overhead, improve user experience, and improve caching performance, adaptivity by having multiple channels of variable quality to enable automatic switching among channels based on the device characteristics and network performance, and securing the video content while keeping the benefits of efficient HTTP content distribution.", "url": "posts/adaptive-http-streaming/index.html", "icon": "assets/icons/streaming.png"}]}, {"title": "AI & Tooling", "description": "Working with AI assistants in software development.", "posts": [{"title": "LLMs, ChatGPT and Evolution of Software Engineering: Patterns, Anti-Patterns, and Quality Imperative", "excerpt": "LLMs like ChatGPT can significantly impact software engineering by synergically combining Natural Language Processing (NLP), LLM-driven Soft Programming, and Traditional Hard Programming. Three synergy patterns: Generative Pattern, Learning and Explanation Pattern, and Hardening Pattern, can help developers harness the potential of these technologies.", "url": "posts/chatgpt-se-evolution/index.html", "icon": "assets/icons/chatgpt.png"}]}]}</script>
+<script>
+(function () {
+  const data = JSON.parse(document.getElementById('data').textContent);
+  const root = document.getElementById('sections');
+  const empty = document.getElementById('empty');
+
+  function el(tag, attrs, children) {
+    const e = document.createElement(tag);
+    if (attrs) for (const k in attrs) {
+      if (k === 'class') e.className = attrs[k];
+      else if (k === 'text') e.textContent = attrs[k];
+      else e.setAttribute(k, attrs[k]);
+    }
+    if (children) children.forEach(c => c && e.appendChild(c));
+    return e;
+  }
+
+  data.sections.forEach(section => {
+    const sec = el('section', { class: 'group' });
+    sec.appendChild(el('h2', { text: section.title }));
+    if (section.description) sec.appendChild(el('p', { class: 'group-desc', text: section.description }));
+    const ul = el('ul', { class: 'posts' });
+    section.posts.forEach(p => {
+      const li = el('li');
+      li.dataset.haystack = (p.title + ' ' + (p.excerpt || '')).toLowerCase();
+      const iconWrap = el('div', { class: p.icon ? 'icon' : 'icon placeholder' });
+      if (p.icon) iconWrap.appendChild(el('img', { src: p.icon, alt: '' }));
+      li.appendChild(iconWrap);
+      const meta = el('div', { class: 'meta' });
+      meta.appendChild(el('a', { href: p.url, text: p.title }));
+      if (p.excerpt) meta.appendChild(el('p', { class: 'excerpt', text: p.excerpt }));
+      li.appendChild(meta);
+      ul.appendChild(li);
+    });
+    sec.appendChild(ul);
+    root.appendChild(sec);
+  });
+
+  document.getElementById('q').addEventListener('input', function (e) {
+    const q = e.target.value.trim().toLowerCase();
+    let anyVisible = false;
+    root.querySelectorAll('section.group').forEach(sec => {
+      let secVisible = false;
+      sec.querySelectorAll('li').forEach(li => {
+        const match = !q || li.dataset.haystack.indexOf(q) !== -1;
+        li.classList.toggle('hidden', !match);
+        if (match) secVisible = true;
+      });
+      sec.classList.toggle('empty', !secVisible);
+      if (secVisible) anyVisible = true;
+    });
+    empty.classList.toggle('show', !anyVisible);
+  });
+})();
+</script>
+</body>
+</html>
