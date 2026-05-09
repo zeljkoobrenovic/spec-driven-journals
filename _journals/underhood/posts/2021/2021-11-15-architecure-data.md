@@ -14,10 +14,10 @@ excerpt: This article summarizes my experiences in replacing classical architect
 ![](assets/images/archdata/oil.jpg)
 
 > **KEY POINTS:**
-* This article summarizes my experiences in replacing classical architectural documentation with data-driven architecture documents. 
-* I present some of my lessons learned in solving the problem of getting a complete, up-to-date picture of critical elements of technology landscapes of big IT organizations.
-* Curated data-driven documents generate multiple views on relevant architectural topics based on data sources such as source code, commit history, public cloud billing reports, and finance reports.
-* Curation, the act of selecting, organizing, and looking after the data, is the crucial ingredient of the process to prevent creating useless, too detailed views.
+> * This article summarizes my experiences in replacing classical architectural documentation with data-driven architecture documents. 
+> * I present some of my lessons learned in solving the problem of getting a complete, up-to-date picture of critical elements of technology landscapes of big IT organizations.
+> * Curated data-driven documents generate multiple views on relevant architectural topics based on data sources such as source code, commit history, public cloud billing reports, and finance reports.
+> * Curation, the act of selecting, organizing, and looking after the data, is the crucial ingredient of the process to prevent creating useless, too detailed views.
 
 
 ## The Problem

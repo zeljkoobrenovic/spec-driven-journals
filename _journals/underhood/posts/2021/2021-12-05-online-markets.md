@@ -8,8 +8,6 @@ permalink: digital-marketplaces
 icon: market.png
 timetoread: 15 min
 excerpt: Digital marketplaces facilitate transactions between buyers and sellers. The marketplace is not the seller (nor a buyer), but it sells a reduction in transaction costs. .
-
-
 ---
 ![](assets/images/markets/floating-market.jpg)
 
@@ -56,6 +54,75 @@ With the value of marketplaces defined as â€œ*reduction in transaction costs*,â€
 In essence, they aim at creating a ***win-win proposition***, e.g., paid subscriptions, where people are ready to pay to get an additional reduction in their transactions costs. For example, a seller may want to pay extra so that buyers can find them more quickly, reducing their Search and Information Costs compared to other means. Sellers and buyers can opt for paid subscriptions to get better customer support, reducing their costs and risks of Policing and Enforcement. 
 
 Marketplaces can also offer extra paid services, such as price recommenders or sanity checkers, reducing Bargaining and Negotiation costs.
+
+---begin mermaid---
+gantt
+    title A Gantt Diagram
+    dateFormat YYYY-MM-DD
+    section Section
+        A task          :a1, 2014-01-01, 30d
+        Another task    :after a1, 20d
+    section Another
+        Task in Another :2014-01-12, 12d
+        another task    :24d
+---end mermaid---
+**Figure 1:** *Example mermaid graph.*
+
+---begin mermaid---
+mindmap
+  root((mindmap))
+    Origins
+      Long history
+      ::icon(fa fa-book)
+      Popularisation
+        British popular psychology author Tony Buzan
+    Research
+      On effectiveness<br/>and features
+      On Automatic creation
+        Uses
+            Creative techniques
+            Strategic planning
+            Argument mapping
+    Tools
+      Pen and paper
+      Mermaid
+
+---end mermaid---
+**Figure 1:** *Example mermaid graph.*
+
+---begin force-graph---
+
+nodes:
+  A: 10
+  B: 4
+
+links:
+    A --> B
+    A --> C
+    B --> D
+    C Test --> [D]
+    B --> E
+    B --> F
+    E --> F
+    D --> A
+
+---end force-graph---
+**Figure 1:** *Example mermaid graph.*
+
+
+---begin buble-chart---
+
+nodes:
+  A: 10
+  B: 4
+  C: 4
+  D: 4
+  E: 23
+
+---end bubble-chart---
+**Figure 1:** *Example mermaid graph.*
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQgtCZ3eAHcLUedxpOAtu5mXV1cbpUrhzSHQqwn8hf4_OJQiRXFs44vNMO1At3leGdEBsy1epqtANxd/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="800" height="486" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 ## To Probe Further
 

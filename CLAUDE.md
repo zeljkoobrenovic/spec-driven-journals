@@ -24,9 +24,9 @@ There is no test suite, lint config, or CI yet.
 3. For each post listed under a section, parses front matter (`---`-fenced YAML-ish key/value block) and treats the body as markdown.
 4. Splits the body into typed **blocks** (currently always one `markdown` block) — see "Extending blocks" below.
 5. Embeds the structured data as JSON inside `_templates/index.html` and `_templates/post.html` via `__DATA_JSON__` placeholder substitution; client-side JS does the rendering.
-6. Writes output to `docs/<j>/index.html` and `docs/<j>/posts/<slug>/index.html`. Assets are copied wholesale from `_journals/<j>/assets/` to `docs/<j>/assets/`.
+6. Writes output to `docs/<j>/index.html` and `docs/<j>/posts/<slug>.html`. Assets are copied wholesale from `_journals/<j>/assets/` to `docs/<j>/assets/`.
 
-The templates use plain `__PLACEHOLDER__` string substitution (not Jinja). Placeholders: `__TITLE__`, `__DESCRIPTION__`, `__JOURNAL__`, `__BYLINE__`, `__DATA_JSON__`.
+The templates use plain `__PLACEHOLDER__` string substitution (not Jinja). Placeholders: `__TITLE__`, `__DESCRIPTION__`, `__JOURNAL__`, `__LOGO_HTML__`, `__BYLINE__`, `__DATA_JSON__`.
 
 ## config.yaml shape
 
@@ -47,7 +47,7 @@ Posts within a section are sorted by **basename** at build time, regardless of y
 
 ## Asset paths in posts
 
-Posts reference images as `assets/images/...` (Jekyll-style, relative to the journal root). The build rewrites these to `../../assets/...` so they resolve from the post's deeper output location (`docs/<j>/posts/<slug>/index.html`). The rewrite (`_ASSET_REF` in `build.py`) covers markdown image/link syntax and raw HTML `src=`/`href=` attributes.
+Posts reference images as `assets/images/...` (Jekyll-style, relative to the journal root). The build rewrites these to `../assets/...` so they resolve from the post's output location (`docs/<j>/posts/<slug>.html` — one level below the journal root). The rewrite (`_ASSET_REF` in `build.py`) covers markdown image/link syntax and raw HTML `src=`/`href=` attributes.
 
 ## Client-side rendering
 
@@ -55,12 +55,41 @@ Posts reference images as `assets/images/...` (Jekyll-style, relative to the jou
 - `post.html` contains a small markdown renderer (subset: ATX headings, paragraphs, blockquotes, fenced code, inline code, bold/italic, links, images, lists, hr) and a `renderers` dispatch table keyed by block type.
 - The renderer treats post content as **trusted** and lets raw HTML pass through unescaped — several posts embed inline `<blockquote style="…">` / `<div>` markup. Don't reintroduce a blanket HTML-escape in the inline pass.
 
-## Extending blocks (forward-looking)
+## Block types
 
-The post payload shape is `{ meta, blocks: [{ type, content, ...}] }`. Today every post produces a single `{ type: "markdown", content: "<full body>" }`. To add new block kinds (e.g. mermaid):
+The post payload shape is `{ meta, blocks: [{ type, content }] }`. `split_into_blocks()` in `build.py` walks the post body and lifts recognized custom fences into their own blocks; everything else stays in `markdown` blocks.
 
-1. In `build.py`, expand `split_into_blocks()` to recognize a fence (e.g. ` ```mermaid ` … ` ``` `) and emit a separate `{ type: "mermaid", content: "<diagram src>" }` block alongside the surrounding markdown blocks.
-2. In `_templates/post.html`, add an entry to the `renderers` object: `mermaid: function(block) { … return DOMNode; }`.
+Currently recognized fences (declared in `_BLOCK_FENCES`):
+
+| Type | Open | Close | Build-side transform |
+| --- | --- | --- | --- |
+| `mermaid` | `---begin mermaid---` | `---end mermaid---` | none (raw diagram source) |
+| `force-graph` | `---begin force-graph---` | `---end force-graph---` | `_parse_force_graph` → JSON `{nodes, links}` |
+| `bubble-chart` | `---begin bubble-chart---` (also `buble-chart`) | `---end bubble-chart---` (also `buble-chart`) | `_parse_bubble_chart` → JSON `{nodes:[{name,size}]}` |
+
+Open and close strings are each lists in `_BLOCK_FENCES` so a fence can accept multiple spellings (the bubble-chart entry tolerates both `bubble-chart` and the typo `buble-chart` on either side).
+
+`mermaid` blocks render via `mermaid.js`; the renderer creates a `<div class="mermaid">` per block and calls `mermaid.run({nodes})` once after all blocks are in the DOM.
+
+`bubble-chart` blocks render via D3's `d3.pack()` (circle packing) — same approach as the obren.io reference. The DSL parses just the `nodes:` mapping (any other section is ignored).
+
+`force-graph` blocks render via Vasco Asturiano's `force-graph` library (`https://cdn.jsdelivr.net/npm/force-graph`). The DSL is parsed at build time:
+
+```
+nodes:
+  A: 10
+  B: 4
+links:
+  A --> B
+  A --> C
+```
+
+`A: 10` declares node A with size 10. Node names referenced in `links` but not declared get size 1. The block's `content` becomes a JSON string `{nodes:[{id,size}], links:[{source,target}]}` that the client renders directly — keeps client-side logic minimal.
+
+To add a new block type:
+
+1. Add a `(type, opens, closes, transform_or_None)` tuple to `_BLOCK_FENCES` in `build.py` (`opens`/`closes` are tuples of acceptable strings).
+2. Add a `<type>: function(block) { … return DOMNode; }` entry to the `renderers` object in `_templates/post.html`.
 
 Do not change the `{ type, content }` envelope — the dispatcher in `post.html` is the seam.
 

@@ -183,11 +183,151 @@ def _rewrite_asset_paths(body: str, prefix: str) -> str:
     return _ASSET_REF.sub(lambda m: m.group(1) + prefix, body)
 
 
+def _parse_force_graph(src: str) -> str:
+    """Parse a force-graph DSL block into a JSON string with shape
+    {nodes:[{id, size}], links:[{source, target}]}.
+
+    DSL:
+        nodes:
+          A: 10
+          B: 4
+        links:
+            A --> B
+            A --> C
+
+    Nodes referenced in `links` but not declared in `nodes` are added with
+    size=1.
+    """
+    nodes: dict = {}
+    links: list = []
+    section = None
+    for raw in src.splitlines():
+        stripped = raw.strip()
+        if not stripped:
+            continue
+        if stripped.lower() == "nodes:":
+            section = "nodes"
+            continue
+        if stripped.lower() == "links:":
+            section = "links"
+            continue
+        if section == "nodes":
+            if ":" not in stripped:
+                continue
+            name, _, weight = stripped.partition(":")
+            name = name.strip()
+            try:
+                size = float(weight.strip()) if weight.strip() else 1
+            except ValueError:
+                size = 1
+            nodes[name] = size
+        elif section == "links":
+            if "-->" not in stripped:
+                continue
+            src_n, _, tgt_n = stripped.partition("-->")
+            src_n = src_n.strip()
+            tgt_n = tgt_n.strip()
+            if not src_n or not tgt_n:
+                continue
+            links.append({"source": src_n, "target": tgt_n})
+            nodes.setdefault(src_n, 1)
+            nodes.setdefault(tgt_n, 1)
+
+    return json.dumps({
+        "nodes": [{"id": k, "size": v} for k, v in nodes.items()],
+        "links": links,
+    })
+
+
+def _parse_bubble_chart(src: str) -> str:
+    """Parse a bubble-chart DSL block into a JSON string with shape
+    {nodes:[{name, size}]}.
+
+    DSL (only the `nodes:` section is meaningful):
+        nodes:
+          A: 10
+          B: 4
+    """
+    nodes = []
+    section = None
+    for raw in src.splitlines():
+        stripped = raw.strip()
+        if not stripped:
+            continue
+        if stripped.lower() == "nodes:":
+            section = "nodes"
+            continue
+        if stripped.endswith(":") and ":" not in stripped[:-1]:
+            section = stripped[:-1].lower()
+            continue
+        if section != "nodes":
+            continue
+        if ":" not in stripped:
+            continue
+        name, _, weight = stripped.partition(":")
+        name = name.strip()
+        try:
+            size = float(weight.strip()) if weight.strip() else 1
+        except ValueError:
+            size = 1
+        nodes.append({"name": name, "size": size})
+    return json.dumps({"nodes": nodes})
+
+
+_BLOCK_FENCES = [
+    # (type, accepted opening lines, accepted closing lines, optional transform)
+    ("mermaid", ("---begin mermaid---",), ("---end mermaid---",), None),
+    ("force-graph", ("---begin force-graph---",), ("---end force-graph---",), _parse_force_graph),
+    # both spellings tolerated on each side; the example post mixes them.
+    (
+        "bubble-chart",
+        ("---begin bubble-chart---", "---begin buble-chart---"),
+        ("---end bubble-chart---", "---end buble-chart---"),
+        _parse_bubble_chart,
+    ),
+]
+
+
 def split_into_blocks(body: str):
-    """Split body into typed blocks. For now produces a single markdown block;
-    future custom fences (e.g. ```mermaid) can be lifted out here without
-    changing the JSON shape consumed by post.html."""
-    return [{"type": "markdown", "content": body}]
+    """Split body into typed blocks.
+
+    Recognized custom fences (see _BLOCK_FENCES) are lifted out as their own
+    blocks; the surrounding text continues as markdown blocks. The JSON shape
+    consumed by post.html is `{ type, content }`.
+    """
+    lines = body.splitlines(keepends=True)
+    blocks = []
+    md_buf = []
+    i = 0
+
+    def flush_md():
+        if md_buf:
+            blocks.append({"type": "markdown", "content": "".join(md_buf)})
+            md_buf.clear()
+
+    while i < len(lines):
+        line = lines[i]
+        stripped = line.strip()
+        match = next((f for f in _BLOCK_FENCES if stripped in f[1]), None)
+        if match:
+            block_type, _opens, closes, transform = match
+            i += 1
+            buf = []
+            while i < len(lines) and lines[i].strip() not in closes:
+                buf.append(lines[i])
+                i += 1
+            i += 1  # skip closing fence (or off-end if unterminated)
+            flush_md()
+            content = "".join(buf).strip("\n")
+            if transform:
+                content = transform(content)
+            blocks.append({"type": block_type, "content": content})
+            continue
+        md_buf.append(line)
+        i += 1
+
+    flush_md()
+    return blocks or [{"type": "markdown", "content": ""}]
 
 
 # --- build ---------------------------------------------------------------
@@ -239,8 +379,8 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
                 continue
             meta, body = parse_front_matter(src.read_text(encoding="utf-8"))
             slug = meta.get("permalink") or src.stem
-            # posts live at <journal>/posts/<slug>/index.html; assets at <journal>/assets/
-            body = _rewrite_asset_paths(body, "../../assets/")
+            # posts live at <journal>/posts/<slug>.html; assets at <journal>/assets/
+            body = _rewrite_asset_paths(body, "../assets/")
             blocks = split_into_blocks(body)
 
             post_payload = {
@@ -253,15 +393,13 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
                 .replace("__BYLINE__", _html_escape(_byline(meta)))
                 .replace("__DATA_JSON__", _embed_json(post_payload))
             )
-            post_dir = posts_out / slug
-            post_dir.mkdir(exist_ok=True)
-            (post_dir / "index.html").write_text(html, encoding="utf-8")
+            (posts_out / f"{slug}.html").write_text(html, encoding="utf-8")
 
             icon_name = meta.get("icon")
             section_posts.append({
                 "title": meta.get("title", slug),
                 "excerpt": meta.get("excerpt", ""),
-                "url": f"posts/{slug}/index.html",
+                "url": f"posts/{slug}.html",
                 "icon": f"assets/icons/{icon_name}" if icon_name else None,
             })
 

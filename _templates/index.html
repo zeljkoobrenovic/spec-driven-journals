@@ -1,149 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>__TITLE__</title>
-<link rel="stylesheet" href="site.css">
-<style>
-  header.site { border-bottom: 1px solid var(--rule); padding-bottom: 24px; margin-bottom: 32px; }
-  header.site .logo {
-    display: block;
-    width: 100%;
-    max-height: 280px;
-    object-fit: cover;
-    border-radius: 6px;
-    margin-bottom: 24px;
-  }
-  header.site h1 { margin: 0 0 8px; font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
-  header.site p { margin: 0; color: var(--muted); }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>__TITLE__</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        header.site {
+            padding-bottom: 14px;
+            margin-bottom: 2px;
+        }
 
-  .search { margin: 24px 0 40px; }
-  .search input {
-    width: 100%;
-    padding: 12px 14px;
-    font-size: 16px;
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    background: #fff;
-    font-family: inherit;
-  }
-  .search input:focus { outline: none; border-color: var(--accent); }
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 24px;
+        }
 
-  section.group { margin-bottom: 48px; }
-  section.group > h2 {
-    font-size: 22px;
-    margin: 0 0 4px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  section.group > .group-desc { color: var(--muted); margin: 0 0 16px; font-size: 15px; }
-  section.group.empty { display: none; }
+        header.site h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
 
-  ul.posts { list-style: none; padding: 0; margin: 0; }
-  ul.posts li {
-    display: flex;
-    gap: 14px;
-    padding: 14px 0;
-    border-top: 1px solid var(--rule);
-  }
-  ul.posts li:last-child { border-bottom: 1px solid var(--rule); }
-  ul.posts li.hidden { display: none; }
-  ul.posts .icon {
-    flex: 0 0 40px;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  ul.posts .icon img { max-width: 100%; max-height: 100%; }
-  ul.posts .icon.placeholder { background: var(--rule); border-radius: 4px; }
-  ul.posts .meta { flex: 1; min-width: 0; }
-  ul.posts .meta a {
-    color: var(--fg);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 17px;
-  }
-  ul.posts .meta a:hover { color: var(--accent); }
-  ul.posts .meta .excerpt { color: var(--muted); margin: 4px 0 0; font-size: 15px; }
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
 
-  .empty-msg { color: var(--muted); font-style: italic; display: none; }
-  .empty-msg.show { display: block; }
-</style>
+        .search {
+            margin: 24px 0 40px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 22px;
+            margin: 0 0 4px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: 0 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px solid var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 82px;
+            width: 82px;
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta a {
+            color: var(--fg);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 4px 0 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <main>
-  <header class="site">
-    __LOGO_HTML__
-    <h1>__TITLE__</h1>
-    <p>__DESCRIPTION__</p>
-  </header>
+    <header class="site">
+        __LOGO_HTML__
+        <h1>__TITLE__</h1>
+        <p>__DESCRIPTION__</p>
+    </header>
 
-  <div class="search">
-    <input id="q" type="search" placeholder="Search posts by title or excerpt…" autocomplete="off">
-  </div>
+    <div class="search">
+        <input id="q" type="search" placeholder="Search posts..." autocomplete="off">
+    </div>
 
-  <div id="sections"></div>
-  <p class="empty-msg" id="empty">No posts match your search.</p>
+    <div id="sections"></div>
+    <p class="empty-msg" id="empty">No posts match your search.</p>
 </main>
 
 <script id="data" type="application/json">__DATA_JSON__</script>
 <script>
-(function () {
-  const data = JSON.parse(document.getElementById('data').textContent);
-  const root = document.getElementById('sections');
-  const empty = document.getElementById('empty');
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
 
-  function el(tag, attrs, children) {
-    const e = document.createElement(tag);
-    if (attrs) for (const k in attrs) {
-      if (k === 'class') e.className = attrs[k];
-      else if (k === 'text') e.textContent = attrs[k];
-      else e.setAttribute(k, attrs[k]);
-    }
-    if (children) children.forEach(c => c && e.appendChild(c));
-    return e;
-  }
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
 
-  data.sections.forEach(section => {
-    const sec = el('section', { class: 'group' });
-    sec.appendChild(el('h2', { text: section.title }));
-    if (section.description) sec.appendChild(el('p', { class: 'group-desc', text: section.description }));
-    const ul = el('ul', { class: 'posts' });
-    section.posts.forEach(p => {
-      const li = el('li');
-      li.dataset.haystack = (p.title + ' ' + (p.excerpt || '')).toLowerCase();
-      const iconWrap = el('div', { class: p.icon ? 'icon' : 'icon placeholder' });
-      if (p.icon) iconWrap.appendChild(el('img', { src: p.icon, alt: '' }));
-      li.appendChild(iconWrap);
-      const meta = el('div', { class: 'meta' });
-      meta.appendChild(el('a', { href: p.url, text: p.title }));
-      if (p.excerpt) meta.appendChild(el('p', { class: 'excerpt', text: p.excerpt }));
-      li.appendChild(meta);
-      ul.appendChild(li);
-    });
-    sec.appendChild(ul);
-    root.appendChild(sec);
-  });
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '')).toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
 
-  document.getElementById('q').addEventListener('input', function (e) {
-    const q = e.target.value.trim().toLowerCase();
-    let anyVisible = false;
-    root.querySelectorAll('section.group').forEach(sec => {
-      let secVisible = false;
-      sec.querySelectorAll('li').forEach(li => {
-        const match = !q || li.dataset.haystack.indexOf(q) !== -1;
-        li.classList.toggle('hidden', !match);
-        if (match) secVisible = true;
-      });
-      sec.classList.toggle('empty', !secVisible);
-      if (secVisible) anyVisible = true;
-    });
-    empty.classList.toggle('show', !anyVisible);
-  });
-})();
+        document.getElementById('q').addEventListener('input', function (e) {
+            const q = e.target.value.trim().toLowerCase();
+            let anyVisible = false;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const match = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    li.classList.toggle('hidden', !match);
+                    if (match) secVisible = true;
+                });
+                sec.classList.toggle('empty', !secVisible);
+                if (secVisible) anyVisible = true;
+            });
+            empty.classList.toggle('show', !anyVisible);
+        });
+    })();
 </script>
 </body>
 </html>

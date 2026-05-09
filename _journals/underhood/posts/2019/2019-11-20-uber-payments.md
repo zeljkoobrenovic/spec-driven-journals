@@ -21,13 +21,6 @@ excerpt: Recently, Uber has announced deeper push into financial services with U
 >
 > * Mentioned technologies: Apache Kafka, Go, Java, NodeJS, Python, Cerberus, Grafana, Elasticsearch, Kabana 
 
-&nbsp;
-
-* TOC
-{:toc}
-
-&nbsp;
-
 ## Intro
 
 Recently, Uber has announced [deeper push into financial services](https://www.cnbc.com/2019/10/28/uber-announces-deeper-push-into-financial-services-with-uber-money.html) with Uber Money, a new division, including products such as a digital wallet and upgraded debit and credit cards. It is expected that Uber could soon offer a bank account to consumers on its platform.
@@ -65,7 +58,7 @@ system means:
   
 The presented model is a powerful idea that, if appropriately implemented, can enable Uber to develop its payment technology and introduce new lines of business with unprecedented speed. 
 
-![](/assets/images/uber_payments/overview.png)
+![](../assets/images/uber_payments/overview.png)
 **Figure 1**: *Uber Payment Platform hourglass model: bridge Uber lines of business, payment service providers (PSPs) and banks*
   
 ## Key Functionality of the Payments Platform
@@ -122,12 +115,12 @@ The implementation of payments in Uber platform centers around three key concept
 
 These concepts are generic, not tight to any specific country or business, enabling the core of the Payment Platform to stay relatively stable as new businesses or payment mechanisms are introduced.
 
-![](/assets/images/uber_payments/order_account_entry.png)
+![](../assets/images/uber_payments/order_account_entry.png)
 **Figure 2**: *Conceptual model - orders, accounts, and entries. An account represents a financial state of an entity (customer, partner, Uber business). An entry describes the amount to be added or reduced from an account. An order is a collection of entries covering all account changes in one business transaction.  The sum of the amounts in entries of an order should be zero. A sum of entries in an account represents the account balance. (based on [Evolution of Payments at Uber](https://www.youtube.com/watch?v=Dz6dAZs8Scg&feature=emb_title) by Nimish Sheth & Steven Karis).*
 
 Conceptually, the Uber payment platform can be described as a generalized **payments order processing system**, based on the **zero-sum principle** (Figure 3). The processing of a payment order results in money movements to and from accounts. The zero-sum principle also originates from the [double-entry bookkeeping](https://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) and [zero-proof bookkeeping](https://www.investopedia.com/terms/z/zero-proof-bookkeeping.asp), and in this context it means that sum of amounts (+ vs -) in each order has to be zero. For instance, a typical Uber payment order will involve the collection of the money from a customer for a service (e.g., ride-sharing), paying (disbursement) of a partner (e.g., a driver), as well as obtaining a service charge for a Uber business. These three entries will constitute an order, and the amount of money collected from the customer has to equal the amount of money obtained by partners and Uber businesses.
 
-![Test](/assets/images/uber_payments/order_processor.png)
+![Test](../assets/images/uber_payments/order_processor.png)
 **Figure 3:** *A order processor. The processor changes the state of account based on the entries in the order according
 to the zero-sum principle.*
 
@@ -137,7 +130,7 @@ The zero-sum principle is a simple error detection mechanism, especially useful 
 
 The Uber Payments Platform is a part of a broader ecosystem of Uber's internal and external systems (Figure 4). Each of Uber businesses (Rides, Eats, Freight ...) has its specific systems and apps. These systems obtain access to the functionality of the Payments Platform through the self-serviced, payment platform configuration layer. The Uber Payment platform also interacts with Uber internals systems for service such as reporting, invoicing, or tipping.
 
-![Uber Payments Platform in Context](/assets/images/uber_payments/context.png)
+![Uber Payments Platform in Context](../assets/images/uber_payments/context.png)
 **Figure 4:** *The Uber Payments Platform in context. The Platform is a part of an ecosystem of internal and external systems.*
 
 Zooming in the Uber payment architecture, we can distinguish several key components (Figure 5):
@@ -151,15 +144,15 @@ Zooming in the Uber payment architecture, we can distinguish several key compone
 * **Order store**, storing data about orders, and 
 * **Account store**, storing data about the accounts of payment parties.
 
-![Uber Payments Platform in Context](/assets/images/uber_payments/modules.png)
+![Uber Payments Platform in Context](../assets/images/uber_payments/modules.png)
 **Figure 5:** *Key modules of the Payments Platform.*
 
 To get some more concrete idea how these components interact, I drafted the following two sequence diagrams (Figure 6 and Figure 7) illustrating  possible interactions among the modules for the frequently used authorization and charging functionalities (this diagrams are my speculation about how these flows work, at very abstract and idealized level, see [Payments Integration at Uber: A Case Study](https://www.youtube.com/watch?v=yooCE5B0SRA&feature=emb_title) by Gergely Orosz for a more specific case):
 
-![Uber Payments Platform in Context](/assets/images/uber_payments/flow_preparation.png)
+![Uber Payments Platform in Context](../assets/images/uber_payments/flow_preparation.png)
 **Figure 6:** *The interaction among payment components for authorization of the payment amount (to be charged later).*
 
-![Uber Payments Platform in Context](/assets/images/uber_payments/flow_payment.png)
+![Uber Payments Platform in Context](../assets/images/uber_payments/flow_payment.png)
 **Figure 7:** *The interaction among payment components for charging a previously authorized amount.*
 
 ## Implementation: Distributed Stream-Processing
@@ -171,7 +164,7 @@ At a deeper level, the Uber Payments platform is implemented as a collection of 
 The key technology used by Uber Payments Platform is [Apache Kafka](https://kafka.apache.org/) - an open-source stream-processing software platform (the [talks](https://www.youtube.com/watch?time_continue=1011&v=5TD8m7w1xE0&feature=emb_logo) by Uber engineers Emilee Urbanek and Manas Kelshikar, give useful insights on Uber Payments Kafka implementation).
 
 
-![Uber Payments Platform in Context](/assets/images/uber_payments/streaming_architecture.png)
+![Uber Payments Platform in Context](../assets/images/uber_payments/streaming_architecture.png)
 
 Kafka has several key capabilities, inherited by the Uber Payments platform:
 
@@ -233,10 +226,10 @@ Key mechanisms to deal with reliability requirements, mentioned in Uber tech tal
 * **Validation** of processing results based on **side-effects recording** (Figure 9).
 
 
-![Uber Payments Platform in Context](/assets/images/uber_payments/streaming_architecture_error_handling.png)
+![Uber Payments Platform in Context](../assets/images/uber_payments/streaming_architecture_error_handling.png)
 **Figure 8**: *Error handling requires an error strategy. An error can lead to retry of an operation, of its achiving the dead message queue (DMQ).*
 
-![Uber Payments Platform in Context](/assets/images/uber_payments/streaming_architecture_validation.png)
+![Uber Payments Platform in Context](../assets/images/uber_payments/streaming_architecture_validation.png)
 **Figure 9**: *Each complex operation will lead to some side effects. A validator can them at some moment check if actual side effects match the expected once.*
 
 
@@ -249,7 +242,7 @@ The [presentation](https://www.youtube.com/watch?v=MJABqwzBkHs&feature=emb_title
 * API-based integrations with modern PSP integrations, with REST-based APIs, exchanging data in JSON, one transaction at a time, near-real time,
 * legacy batch integration with banks, where integrations are done by exchanging files via SFTP,  with relatively low frequency (day or hours). 
 
-![](/assets/images/uber_payments/external_integrations.png)
+![](../assets/images/uber_payments/external_integrations.png)
 **Figure 10:** *Two integrations styles for integration with external systems: API-based, and file-based.*
 
 Paul Sorenson also provides some concrete tips on how to properly implement idempotent message processing when working with external systems. Idempotency is an essential theme in integration with external payment systems. A good thing about PSP and banking systems is that they are normally implementing their services as idempotent message processors. Idempotency is essential for payment systems for two reasons:
@@ -259,7 +252,7 @@ Paul Sorenson also provides some concrete tips on how to properly implement idem
 
 When a failure occurs (e.g., a network error), it may be challenging to determine if some operation succeeded or failed and in which state the system is. Without idempotency, for instance, retying operations may be risky, as you may execute the same operation twice (e.g. charging a customer twice for the same service). With idempotency, you can repeat the failed operation without such worries. Figure 10 illustrates how idempotency (in the context of integration with external systems) works in an ideal scenario.
 
-![](/assets/images/uber_payments/external_communication_retry_simple.png)
+![](../assets/images/uber_payments/external_communication_retry_simple.png)
 
 **Figure 10:** *Idempotent message processing systems will not process the same message twice (figure is adapted from the [presentation](https://www.youtube.com/watch?v=MJABqwzBkHs&feature=emb_title) by Paul Sorenson).*
 
@@ -269,12 +262,12 @@ One challenge of implementing idempotency when interacting with external systems
 
 Paul Sorenson also talks about another challenge of implementing a proper idempotent behavior when integrating with the external systems, the one related to multiplexing PSPs. Payments operations use several PSPs in a complex arrangement, and another PSP may be used if a payment fails with the originally selected one. Such practice may improve collection rate, but naively retrying a failed operation on another PSP may lead to double charging, as illustrated in Figure 11.
 
-![](/assets/images/uber_payments/external_communication_complex_wrong.png)
+![](../assets/images/uber_payments/external_communication_complex_wrong.png)
 **Figure 11:** *The incorrect way to retry operations in the case of network failures when working with multiple PSPs (figure is adapted from the [presentation](https://www.youtube.com/watch?v=MJABqwzBkHs&feature=emb_title) by Paul Sorenson). Network error does not necessarily mean that the operation has failed, and retrying the operation on a different PSP may thus lead to double charging.*
 
 The approach Uber uses to avoid this problem is by using dedicated request storage consulted when a retry needs to be performed, to ensure that retry goes back to an original service (Figure 12).
 
-![](/assets/images/uber_payments/external_communication_complex_good.png)
+![](../assets/images/uber_payments/external_communication_complex_good.png)
 **Figure 12:** *The correct way to retry operations in the case of network failures when working with multiple PSPs (figure is adapted from the [presentation](https://www.youtube.com/watch?v=MJABqwzBkHs&feature=emb_title) by Paul Sorenson). using dedicated request storage to ensure that retry goes back to an original service.*
 
 

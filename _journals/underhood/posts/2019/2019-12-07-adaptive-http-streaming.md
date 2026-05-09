@@ -15,13 +15,6 @@ excerpt: "Adaptive HTTP Streaming technologies enable distributing video efficie
 > * Adaptive HTTP Streaming technologies enable distributing video efficiently via the standard HTTP infrastructure and CDNs.
 > * These technologies offer three key benefits: segmentation of video files, adaptive switching among resolutions, and efficient implementation of necessary security measures.
 
-&nbsp;
-
-* TOC
-{:toc}
-
-&nbsp;
-
 ## Intro
 
 As a CTO of my previous company ([incision.care](https://incision.care)), we were building a custom online video-on-demand platform. Consequently, I needed to dig deeper into one technology: Adaptive HTTP Streaming. Examples of this technology are **MPEG-DASH**, **Apple HLS**, **Microsoft Smooth Streaming**, and **Adobe HDS**. While they are subtle differences among these technologies, they share the same general idea: distributing video efficiently via the standard HTTP infrastructure.
