@@ -422,9 +422,14 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
             prev_post = flat[idx - 1] if idx > 0 else None
             next_post = flat[idx + 1] if idx < len(flat) - 1 else None
             nav_html = _post_nav_html(title, prev_post, next_post)
+            section_html = (
+                f'<p class="section">{_html_escape(s_title)}</p>'
+                if s_title else ""
+            )
             html = (
                 post_tpl
                 .replace("__TITLE__", _html_escape(meta.get("title", slug)))
+                .replace("__SECTION_HTML__", section_html)
                 .replace("__BYLINE__", _html_escape(_byline(meta)))
                 .replace("__LOGO_HTML__", post_logo_html)
                 .replace("__POST_NAV__", nav_html)
@@ -475,7 +480,7 @@ def _post_nav_html(journal_title: str, prev_post, next_post) -> str:
     optional prev/next links grouped on the right. ``prev_post``/``next_post``
     are (slug, title) tuples or None."""
     parts = [
-        f'<a class="nav-back" href="index.html">[{_html_escape(journal_title)}]</a>',
+        f'<a class="nav-back" href="index.html">{_html_escape(journal_title)}</a>',
         '<span class="nav-right">',
     ]
     if prev_post:

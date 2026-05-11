@@ -1,7 +1,7 @@
 ---
 title: "Web application framework, batteries included, full stack, for a startup product"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: web-application-framework-batteries-included-full-stack-for-a-startup-product
 excerpt: "We will build the startup product on Django. It is the only full-stack framework in contention that puts us inside Python's data and ML ecosystem, which is the deciding factor."
 logo: "assets/images/web-application-framework-batteries-included-full-stack-for-a-startup-product/logo.jpeg"

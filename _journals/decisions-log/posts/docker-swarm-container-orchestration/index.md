@@ -1,7 +1,7 @@
 ---
 title: "Docker Swarm Container Orchestration"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: docker-swarm-container-orchestration
 excerpt: "We will use Docker Swarm as our container orchestration tool, on the basis of its simplicity, tight integration with the Docker tooling our teams already use, and built-in load balancing."
 logo: "assets/images/docker-swarm-container-orchestration/logo.jpeg"

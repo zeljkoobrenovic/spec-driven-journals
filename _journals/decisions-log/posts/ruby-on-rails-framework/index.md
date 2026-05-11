@@ -1,7 +1,7 @@
 ---
 title: "Ruby on Rails Framework"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: ruby-on-rails-framework
 excerpt: "We will build the application on Ruby on Rails, trading some runtime performance for a mature full-stack framework, strong conventions, and an existing team that knows Rails well."
 logo: "assets/images/ruby-on-rails-framework/logo.jpeg"

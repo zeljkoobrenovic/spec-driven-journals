@@ -1,7 +1,7 @@
 ---
 title: "Vue front-end JavaScript library"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: vue-front-end-javascript-library
 excerpt: "We will adopt Vue as the primary front-end JavaScript library. Vue offers a gentle learning curve, a flexible integration model, and strong performance without the weight of larger frameworks."
 logo: "assets/images/vue-front-end-javascript-library/logo.jpeg"

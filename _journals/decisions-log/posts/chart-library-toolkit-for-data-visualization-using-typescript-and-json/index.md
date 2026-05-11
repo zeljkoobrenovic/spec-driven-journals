@@ -1,7 +1,7 @@
 ---
 title: "Chart library toolkit for data visualization using TypeScript and JSON"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: chart-library-toolkit-for-data-visualization-using-typescript-and-json
 excerpt: "We will adopt Apache ECharts as our chart toolkit. It is the only fully open-source option that covers the full set of charts we need — including candlestick, geo SVG maps, and clustering — without a commercial-licence trap or a D3-scale build effort."
 logo: "assets/images/chart-library-toolkit-for-data-visualization-using-typescript-and-json/logo.jpeg"

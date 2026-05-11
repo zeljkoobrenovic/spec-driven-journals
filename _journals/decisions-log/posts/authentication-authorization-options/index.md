@@ -1,7 +1,7 @@
 ---
 title: "Authentication and authorization options"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: authentication-authorization-options
 excerpt: "We will standardize on OpenID Connect (built on OAuth 2.0) for user authentication and API authorization across our web applications, with SAML reserved for enterprise SSO integrations that require it."
 logo: "assets/images/authentication-authorization-options/logo.jpeg"

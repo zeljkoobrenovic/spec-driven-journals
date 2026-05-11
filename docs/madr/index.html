@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MADR</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        header.site {
+            padding-bottom: 14px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 340px;
+            object-fit: cover;
+            margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 4px 0 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: -10px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        
+        <div style="padding: 4px;">
+            <h1>MADR</h1>
+            <p>Decisions about the MADR (Markdown Architectural Decision Records) format itself — recorded as MADRs.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Foundations", "description": "Format choice and licensing for the MADR project.", "posts": [{"title": "Use Markdown Architectural Decision Records", "excerpt": "We adopt MADR — Markdown Architectural Decision Records — as the format for recording decisions in this project. MADR is lean, structured, and well maintained.", "url": "0000-use-markdown-architectural-decision-records.html", "icon": "assets/icons/0000-use-markdown-architectural-decision-records.png", "tags": []}, {"title": "Dual-license MADR under MIT or CC0", "excerpt": "We dual-license MADR under MIT OR CC0-1.0 so users can pick whichever license fits their work. Default copyright laws would otherwise block reuse.", "url": "0001-use-CC0-or-MIT-as-license.html", "icon": "assets/icons/0001-use-CC0-or-MIT-as-license.png", "tags": []}]}, {"title": "Tooling", "description": "Decisions about MADR's supporting tools.", "posts": [{"title": "Provide MADR's own tooling", "excerpt": "We maintain MADR's own tooling rather than rely on existing ADR tools. The maintenance cost is the price of staying in sync with the format.", "url": "0003-provide-own-madr-tools.html", "icon": "assets/icons/0003-provide-own-madr-tools.png", "tags": ["on hold"]}, {"title": "Write our own table-of-contents tool", "excerpt": "We write our own ADR table-of-contents tool, adr-log, because adr-tools only emits titles and we want ADR-NNNN identifiers in the TOC.", "url": "0004-write-own-toc-tool.html", "icon": "assets/icons/0004-write-own-toc-tool.png", "tags": []}]}, {"title": "Filenames & identifiers", "description": "How ADRs are named, numbered, and referenced.", "posts": [{"title": "Do not use numbers in ADR headings", "excerpt": "ADR headings contain the title only — no leading ADR number. Numbers belong in filenames; headings stay portable.", "url": "0002-do-not-use-numbers-in-headings.html", "icon": "assets/icons/0002-do-not-use-numbers-in-headings.png", "tags": []}, {"title": "Use dashes in ADR filenames", "excerpt": "ADR filenames follow the pattern NNNN-title-with-dashes.md — a stable, command-line-friendly identifier that aligns with adr-tools.", "url": "0005-use-dashes-in-filenames.html", "icon": "assets/icons/0005-use-dashes-in-filenames.png", "tags": []}, {"title": "Use option names as identifiers", "excerpt": "Repeat the option name wherever an option is referenced. Short identifiers like [A] save space but break readability.", "url": "0006-use-names-as-identifier.html", "icon": "assets/icons/0006-use-names-as-identifier.png", "tags": []}]}, {"title": "Metadata", "description": "Fields that describe the ADR, separate from its content.", "posts": [{"title": "Add a status field via YAML front matter", "excerpt": "An ADR's status lives in YAML front matter, not in the body. The body stays focused on context and decision; tools can read the status without parsing prose.", "url": "0008-add-status-field.html", "icon": "assets/icons/0008-add-status-field.png", "tags": []}, {"title": "Use YAML front matter for metadata", "excerpt": "ADR metadata — status, decision makers, date — lives in YAML front matter rather than in the body. The body stays focused on context and decision.", "url": "0013-use-yaml-front-matter-for-meta-data.html", "icon": "assets/icons/0013-use-yaml-front-matter-for-meta-data.png", "tags": []}, {"title": "Include Consulted and Informed from RACI", "excerpt": "MADR adopts Consulted and Informed from RACI as optional fields alongside Decision Makers. Responsible and Accountable are skipped because they often confuse and don't fit consensus-driven decisions.", "url": "0015-include-consulting-informed-of-raci.html", "icon": "assets/icons/0015-include-consulting-informed-of-raci.png", "tags": []}]}, {"title": "Structure", "description": "Order and shape of the ADR body.", "posts": [{"title": "Support links between ADRs in a More Information section", "excerpt": "Cross-ADR links live in a More Information section at the bottom of the document, not in tables or sidebars near the status.", "url": "0009-support-links-between-adrs-inside-an-adrs.html", "icon": "assets/icons/0009-support-links-between-adrs-inside-an-adrs.png", "tags": []}, {"title": "Support categories via subfolders", "excerpt": "Group ADRs by category using one level of subfolders with local IDs. Filesystem grouping is natural and works without external tooling.", "url": "0010-support-categories.html", "icon": "assets/icons/0010-support-categories.png", "tags": []}, {"title": "Place Decision Outcome before detailed Pros and Cons", "excerpt": "Decision Outcome comes before the detailed Pros and Cons section. The decision is what most readers came for; the detailed arguments are appendix material.", "url": "0016-outcome-before-detailed-pros-cons.html", "icon": "assets/icons/0016-outcome-before-detailed-pros-cons.png", "tags": []}, {"title": "Use the same Good/Bad format for Consequences as for Options", "excerpt": "The Consequences section uses Good, because… / Bad, because… — the same format as the Options section. Consistency makes copy-and-paste safe.", "url": "0017-use-same-format-for-outcomes-and-options.html", "icon": "assets/icons/0017-use-same-format-for-outcomes-and-options.png", "tags": []}, {"title": "Use Confirmation as the implementation-check heading", "excerpt": "MADR uses Confirmation as the heading for the section that records how a decision is checked to have been implemented — not Validation or Verification.", "url": "0018-use-confirmation-as-heading.html", "icon": "assets/icons/0018-use-confirmation-as-heading.png", "tags": []}]}, {"title": "Authoring conventions", "description": "Small formatting choices that shape day-to-day writing.", "posts": [{"title": "Do not emphasize line headings", "excerpt": "Line headings like Chosen option: are not emphasized with bold or italics. Position plus colon are enough; stars would confuse Markdown novices.", "url": "0007-do-not-emphasize-line-headings.html", "icon": "assets/icons/0007-do-not-emphasize-line-headings.png", "tags": []}, {"title": "Use asterisk as the Markdown list marker", "excerpt": "Markdown lists use the asterisk marker rather than a hyphen. Asterisks are tone-neutral; hyphens carry a faint negative connotation.", "url": "0011-use-asterisk-as-list-marker.html", "icon": "assets/icons/0011-use-asterisk-as-list-marker.png", "tags": []}, {"title": "Use curly braces to denote placeholders", "excerpt": "Template placeholders are written in curly braces, not square brackets. Square brackets clashed with Markdown link syntax and confused users.", "url": "0012-use-curly-braces-to-denote-placeholder.html", "icon": "assets/icons/0012-use-curly-braces-to-denote-placeholder.png", "tags": []}, {"title": "Allow neutral arguments alongside Good and Bad", "excerpt": "Pros-and-cons lists may include Neutral, because… alongside Good, because… and Bad, because… — matching the +/0/- pattern.", "url": "0014-allow-neutral-arguments.html", "icon": "assets/icons/0014-allow-neutral-arguments.png", "tags": []}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag counts across all posts
+        const tagCounts = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+            });
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha)
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        sortedTags.forEach(([tag, count]) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            tagFilter.appendChild(btn);
+        });
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ')).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

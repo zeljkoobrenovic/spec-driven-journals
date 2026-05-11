@@ -1,7 +1,7 @@
 ---
 title: "SvelteKit framework"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: sveltekit-framework
 excerpt: "We will build the application on SvelteKit, using its routing, SSR, and tooling as the front-end framework around Svelte components."
 logo: "assets/images/sveltekit-framework/logo.jpeg"

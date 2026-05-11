@@ -1,7 +1,7 @@
 ---
 title: "Svelte Components"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: svelte-components
 excerpt: "We will adopt SvelteUI as our default Svelte component library. It covers tables, grids, charts, and forms with reasonable performance and customizability, and we will integrate a dedicated charting or Gantt library when we hit its edges."
 logo: "assets/images/svelte-components/logo.jpeg"

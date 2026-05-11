@@ -1,7 +1,7 @@
 ---
 title: "Agile software development"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: agile-software-development
 excerpt: "We will adopt Agile as our software development methodology to support iterative delivery, faster feedback, and better adaptation to changing requirements."
 logo: "assets/images/agile-software-development/logo.jpeg"

@@ -2,7 +2,7 @@
 title: "Python programming language"
 date:   2020-01-21 21:12:01 +0100
 icon: assets/icons/python.png
-author: 
+author: by Team
 permalink: python-programming-language
 excerpt: "We will use Python as the primary language for the project, chosen for its data and ML ecosystem, readability, and fit with our mixed data-and-web workload."
 logo: "assets/images/python-programming-language/logo.jpeg"

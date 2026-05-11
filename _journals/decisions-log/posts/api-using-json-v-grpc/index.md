@@ -2,7 +2,7 @@
 title: "API using JSON v. gRPC"
 date:   2020-01-21 21:12:01 +0100
 icon: assets/icons/grpc.png
-author: 
+author: by Team
 permalink: api-using-json-v-grpc
 excerpt: "We will use gRPC for the new service's API. Binary serialization, schema-first contracts, and built-in streaming outweigh the lower discoverability and library reach of JSON over HTTP for our workload."
 logo: assets/images/api-vs-grpc.jpeg

@@ -1,7 +1,7 @@
 ---
 title: "React Front-End JavaScript Library"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: react-front-end-javascript-library
 excerpt: "We will use React as our front-end JavaScript library for building a responsive, component-based user interface."
 logo: "assets/images/react-front-end-javascript-library/logo.jpeg"

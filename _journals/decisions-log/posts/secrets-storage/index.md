@@ -1,7 +1,7 @@
 ---
 title: "Secrets storage"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: secrets-storage
 excerpt: "We will use Bitwarden for user-oriented secrets and HashiCorp Vault for system-oriented secrets, splitting the problem along its natural boundary rather than forcing one tool to do both jobs."
 logo: "assets/images/secrets-storage/logo.jpeg"

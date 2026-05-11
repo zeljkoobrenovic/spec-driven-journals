@@ -1,7 +1,7 @@
 ---
 title: "Metrics, monitors, alerts"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: metrics-monitors-alerts
 excerpt: "Work in progress. We are evaluating tooling for metrics, monitoring, and alerting across the spectrum from simple open-source (Nagios) to feature-rich SaaS (New Relic). Prometheus + Grafana + Alertmanager and Zabbix are the current frontrunners."
 logo: "assets/images/metrics-monitors-alerts/logo.jpeg"

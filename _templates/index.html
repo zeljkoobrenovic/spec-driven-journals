@@ -14,26 +14,26 @@
         header.site .logo {
             display: block;
             width: 100%;
-            max-height: 400px;
+            max-height: 340px;
             object-fit: cover;
-            border-radius: 6px;
             margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
         }
 
         header.site .logo-credit {
             color: var(--muted);
             font-size: 12px;
-            margin: 0;
+            margin: 4px 0 0;
             padding-left: 2px;
-            text-align: left;
+            text-align: right;
         }
 
         header.site h1 {
-            margin-top: 30px;
+            margin-top: 20px;
             margin-bottom: -10px;
             padding: 0;
-            font-size: 42px;
-            font-weight: 700;
+            font-size: 51px;
+            font-weight: 500;
             letter-spacing: -0.01em;
         }
 
@@ -78,7 +78,7 @@
             font: inherit;
             font-size: 13px;
             padding: 4px 10px;
-            border: 1px solid var(--rule);
+            border: 1px solid deepskyblue;
             border-radius: 999px;
             background: #fff;
             color: var(--fg);
@@ -115,9 +115,10 @@
         ul.posts .tags .tag {
             font-size: 12px;
             padding: 1px 8px;
-            border: 1px solid var(--rule);
             border-radius: 999px;
-            color: var(--muted);
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
         }
 
         section.group {
@@ -125,15 +126,15 @@
         }
 
         section.group > h2 {
-            font-size: 28px;
+            font-size: 32px;
             margin: 0 0 4px;
-            font-weight: 700;
+            font-weight: 500;
             letter-spacing: -0.01em;
         }
 
         section.group > .group-desc {
             color: var(--muted);
-            margin: 0 0 16px;
+            margin: -8px 0 16px;
             font-size: 15px;
         }
 
@@ -151,7 +152,7 @@
             display: flex;
             gap: 14px;
             padding: 14px 0;
-            border-top: 1px solid var(--rule);
+            border-top: 1px dashed var(--rule);
         }
 
         ul.posts li:last-child {
@@ -163,9 +164,9 @@
         }
 
         ul.posts .icon {
-            flex: 0 0 82px;
-            width: 82px;
-            height: 82px;
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,6 +176,7 @@
         ul.posts .icon img {
             max-width: 100%;
             max-height: 100%;
+            border-radius: 10px;
         }
 
         ul.posts .icon.placeholder {
@@ -188,10 +190,10 @@
         }
 
         ul.posts .meta a {
-            color: var(--fg);
+            color: rgb(23, 86, 169);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 17px;
+            font-weight: normal;
+            font-size: 23px;
         }
 
         ul.posts .meta a:hover {
@@ -200,7 +202,7 @@
 
         ul.posts .meta .excerpt {
             color: var(--muted);
-            margin: 4px 0 0;
+            margin: 0;
             font-size: 15px;
         }
 
@@ -219,18 +221,22 @@
 <main>
     <header class="site">
         __LOGO_HTML__
-        <h1>__TITLE__</h1>
-        <p>__DESCRIPTION__</p>
+        <div style="padding: 4px;">
+            <h1>__TITLE__</h1>
+            <p>__DESCRIPTION__</p>
+        </div>
     </header>
 
-    <div class="tag-filter" id="tag-filter"></div>
-    <div class="search">
-        <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
-        <span class="hits" id="hits"></span>
-    </div>
+    <div style="padding: 4px;">
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
 
-    <div id="sections"></div>
-    <p class="empty-msg" id="empty">No posts match your search.</p>
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
 </main>
 
 <script id="data" type="application/json">__DATA_JSON__</script>

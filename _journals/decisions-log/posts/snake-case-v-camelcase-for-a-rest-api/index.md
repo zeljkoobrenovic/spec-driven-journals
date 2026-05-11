@@ -1,7 +1,7 @@
 ---
 title: "Snake_case v. camelCase for a REST API?"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: snake-case-v-camelcase-for-a-rest-api
 excerpt: "We will use snake_case for REST API endpoint names and JSON field names. The decision is driven by consistency with our existing endpoints, readability, and matching what the rest of our codebase already does."
 logo: "assets/images/snake-case-v-camelcase-for-a-rest-api/logo.jpeg"

@@ -1,7 +1,7 @@
 ---
 title: "Continuous integration"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: continuous-integration
 excerpt: "We will adopt continuous integration as our default development workflow: every change builds, tests, and deploys to a delivery environment automatically. We accept the up-front investment in pipelines and discipline in exchange for faster, more reliable releases."
 logo: "assets/images/continuous-integration/logo.jpeg"

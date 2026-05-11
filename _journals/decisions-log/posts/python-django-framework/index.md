@@ -1,7 +1,7 @@
 ---
 title: "Python Django Framework"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: python-django-framework
 excerpt: "We will use Django as the web framework for the customer-data application. Its ORM, security defaults, and admin tooling cover most of what we need out of the box."
 logo: "assets/images/python-django-framework/logo.jpeg"

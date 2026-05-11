@@ -1,7 +1,7 @@
 ---
 title: "Browser automation framework for E2E testing (Playwright vs Selenium)"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: browser-automation-framework-for-e2e-testing-playwright-vs-selenium
 excerpt: "We will adopt Playwright as the browser automation framework for our end-to-end test pipeline, in preference to Selenium, on the basis of its concise API, first-class TypeScript and Python support, and stronger handling of dynamic UIs."
 logo: "assets/images/browser-automation-framework-for-e2e-testing-playwright-vs-selenium/logo.jpeg"

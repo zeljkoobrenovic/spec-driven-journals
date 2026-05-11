@@ -1,7 +1,7 @@
 ---
 title: "Microsoft Azure cloud infrastructure"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: microsoft-azure-cloud-infrastructure
 excerpt: "We will adopt Microsoft Azure as the cloud infrastructure for the organization, on the basis of service breadth, hybrid-cloud support, security and compliance posture, and pay-as-you-go pricing."
 logo: "assets/images/microsoft-azure-cloud-infrastructure/logo.jpeg"

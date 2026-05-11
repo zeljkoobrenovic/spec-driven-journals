@@ -1,7 +1,7 @@
 ---
 title: "4-day work-week"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: 4-day-work-week
 excerpt: "We will move to a 4-day workweek next quarter for all employees, in response to employee feedback, research evidence, and our retention goals."
 logo: "assets/images/4-day-work-week/logo.jpeg"

@@ -1,7 +1,7 @@
 ---
 title: "MySQL database"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: mysql-database
 excerpt: "We will use MySQL as the database management system for Project X — a mature, open-source RDBMS that fits our technology stack and meets our needs for performance, scalability, and reliability."
 logo: "assets/images/mysql-database/logo.jpeg"

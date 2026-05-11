@@ -2,7 +2,7 @@
 title: "Programming Languages: TypeScript + Rust"
 date:   2020-01-21 21:12:01 +0100
 icon: assets/icons/ts+rust.png
-author: 
+author: by Team
 permalink: programming-languages
 excerpt: "We will use TypeScript on the front-end and Rust on the back-end. Both give us compile-time safety; Rust additionally avoids the runtime pauses and complexity of a VM-based stack."
 tags: draft

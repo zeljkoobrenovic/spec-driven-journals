@@ -2,7 +2,7 @@
 title: "Java Programming Language for the Project"
 date:   2020-01-21 21:12:01 +0100
 icon: assets/icons/java.jpg
-author: 
+author: by Team
 permalink: java-programming-language
 excerpt: "We will use Java as the primary language for the project, chosen for its security model, concurrency support, and the breadth of its ecosystem."
 tags: accepted

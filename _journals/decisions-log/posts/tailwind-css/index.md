@@ -1,7 +1,7 @@
 ---
 title: "Tailwind CSS"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: tailwind-css
 excerpt: "We will use Tailwind CSS to style this web application. Its utility-first model accelerates development, customization, and consistent theming, and the trade-offs are well understood."
 logo: "assets/images/tailwind-css/logo.jpeg"

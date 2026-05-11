@@ -1,7 +1,7 @@
 ---
 title: "Google Cloud Platform"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: google-cloud-platform
 excerpt: "We will use Google Cloud Platform as the cloud infrastructure for our application, on the basis of cost-effectiveness, scalability, reliability, and the flexibility of its managed services."
 logo: "assets/images/google-cloud-platform/logo.jpeg"

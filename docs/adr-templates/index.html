@@ -14,26 +14,26 @@
         header.site .logo {
             display: block;
             width: 100%;
-            max-height: 400px;
+            max-height: 340px;
             object-fit: cover;
-            border-radius: 6px;
             margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
         }
 
         header.site .logo-credit {
             color: var(--muted);
             font-size: 12px;
-            margin: 0;
+            margin: 4px 0 0;
             padding-left: 2px;
-            text-align: left;
+            text-align: right;
         }
 
         header.site h1 {
-            margin-top: 30px;
+            margin-top: 20px;
             margin-bottom: -10px;
             padding: 0;
-            font-size: 42px;
-            font-weight: 700;
+            font-size: 51px;
+            font-weight: 500;
             letter-spacing: -0.01em;
         }
 
@@ -78,7 +78,7 @@
             font: inherit;
             font-size: 13px;
             padding: 4px 10px;
-            border: 1px solid var(--rule);
+            border: 1px solid deepskyblue;
             border-radius: 999px;
             background: #fff;
             color: var(--fg);
@@ -115,9 +115,10 @@
         ul.posts .tags .tag {
             font-size: 12px;
             padding: 1px 8px;
-            border: 1px solid var(--rule);
             border-radius: 999px;
-            color: var(--muted);
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
         }
 
         section.group {
@@ -125,15 +126,15 @@
         }
 
         section.group > h2 {
-            font-size: 28px;
+            font-size: 32px;
             margin: 0 0 4px;
-            font-weight: 700;
+            font-weight: 500;
             letter-spacing: -0.01em;
         }
 
         section.group > .group-desc {
             color: var(--muted);
-            margin: 0 0 16px;
+            margin: -8px 0 16px;
             font-size: 15px;
         }
 
@@ -151,7 +152,7 @@
             display: flex;
             gap: 14px;
             padding: 14px 0;
-            border-top: 1px solid var(--rule);
+            border-top: 1px dashed var(--rule);
         }
 
         ul.posts li:last-child {
@@ -163,9 +164,9 @@
         }
 
         ul.posts .icon {
-            flex: 0 0 82px;
-            width: 82px;
-            height: 82px;
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,6 +176,7 @@
         ul.posts .icon img {
             max-width: 100%;
             max-height: 100%;
+            border-radius: 10px;
         }
 
         ul.posts .icon.placeholder {
@@ -188,10 +190,10 @@
         }
 
         ul.posts .meta a {
-            color: var(--fg);
+            color: rgb(23, 86, 169);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 17px;
+            font-weight: normal;
+            font-size: 23px;
         }
 
         ul.posts .meta a:hover {
@@ -200,7 +202,7 @@
 
         ul.posts .meta .excerpt {
             color: var(--muted);
-            margin: 4px 0 0;
+            margin: 0;
             font-size: 15px;
         }
 
@@ -218,19 +220,24 @@
 <body>
 <main>
     <header class="site">
-        <a href="assets/images/under_the_hood_3.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/under_the_hood_3.jpg" alt=""></a>
-        <h1>ADR Templates</h1>
-        <p>Templates for architecture decision records (ADRs) and related documentation.</p>
+        <a href="assets/images/iStock-1444086274.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/iStock-1444086274.jpg" alt=""></a>
+        <p class="logo-credit">Image by Markus Winkler from Pixabay</p>
+        <div style="padding: 4px;">
+            <h1>ADR Templates</h1>
+            <p>Templates for architecture decision records (ADRs) and related documentation.</p>
+        </div>
     </header>
 
-    <div class="tag-filter" id="tag-filter"></div>
-    <div class="search">
-        <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
-        <span class="hits" id="hits"></span>
-    </div>
+    <div style="padding: 4px;">
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
 
-    <div id="sections"></div>
-    <p class="empty-msg" id="empty">No posts match your search.</p>
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
 </main>
 
 <script id="data" type="application/json">{"sections": [{"title": "By People", "description": "Templates for architecture decision records (ADRs) and related documentation.", "posts": [{"title": "Decision record template by Michael Nygard", "excerpt": "Michael Nygard's lightweight ADR template — Title, Status, Context, Decision, Consequences. The original short-form template that popularized ADRs and underpins tools such as adr-tools.", "url": "michael-nygard.html", "icon": "assets/icons/michael-nygard.jpeg", "tags": []}, {"title": "Decision record template by Gareth Morgan", "excerpt": "Gareth Morgan's compact ADR template: numbered title, Status (with supersedes/deprecated links), Context, Decided Approach, and Consequences. Designed for easy referencing and cataloging across an organization's decision log.", "url": "gareth-morgan.html", "icon": "assets/icons/gareth-morgan.jpeg", "tags": []}, {"title": "Decision record template by Jeff Tyree and Art Akerman", "excerpt": "The detailed ADR template from Jeff Tyree and Art Akerman's IEEE Software article 'Architecture Decisions: Demystifying Architecture' — captures Issue, Decision, Status, Group, Assumptions, Constraints, Positions, Argument, Implications, and related decisions for thorough decision rationale.", "url": "jeff-tyree-and-art-akerman.html", "icon": "assets/icons/ieee-cs.png", "tags": []}, {"title": "Decision record template by Alexandrian-pattern", "excerpt": "An ADR template inspired by Christopher Alexander's pattern language: Prologue (Summary), Discussion (Context), Solution (Decision), and Consequences (Results), framed as 'in the context of … facing … we decided … to achieve … accepting …'.", "url": "alexandrian-pattern.html", "icon": "assets/icons/chistopher-alexander.avif", "tags": []}]}, {"title": "By Companies", "description": "Templates for architecture decision records (ADRs) and related documentation.", "posts": [{"title": "Decision Record Template by arc42", "excerpt": "The arc42 architecture documentation skeleton — twelve canonical sections from Introduction & Goals through Constraints, Context, Solution Strategy, Building Blocks, Runtime/Deployment Views, Concepts, Decisions, Quality Requirements, Risks, and Glossary.", "url": "arc42.html", "icon": "assets/icons/arc42-logo.png", "tags": []}, {"title": "Decision record template by EdgeX Foundry", "excerpt": "EdgeX Foundry's ADR template, designed for an open-source IoT project: explicit Submitters, Change Log, Referenced Use Cases, Context, Proposed Design, Considerations, Decision, and Other Related ADRs — heavier than Nygard's, fitting community-driven decision making.", "url": "edgex-foundry.html", "icon": "assets/icons/logo_edgex.png", "tags": []}, {"title": "Decision record template by GIG Cymru NHS Wales", "excerpt": "GIG Cymru NHS Wales's ADR template, written for public-sector IT teams: Status, executive Summary, Drivers, Options with structured analysis, Decision, and Consequences — guidance text in each section helps non-architects produce consistent records.", "url": "gig-cymru-nhs-wales.html", "icon": "assets/icons/gig-cymry-nhs-wales.png", "tags": []}, {"title": "Decision record template by Planguage", "excerpt": "Decision records using Tom Gilb's Planguage — a keyword-driven planning language (Tag, Gist, Requirement, Rationale, Priority, Stakeholders, Status, Owner, Author) that makes non-functional requirements precise and measurable.", "url": "planguage.html", "icon": "assets/icons/intel.svg", "tags": []}, {"title": "Decision record template by the MADR project", "excerpt": "MADR (Markdown Any Decision Records) — a community-maintained markdown template with Status, Deciders, Date, Context and Problem Statement, Decision Drivers, Considered Options, Decision Outcome with positive/negative consequences, and Pros and Cons of the Options.", "url": "madr-project.html", "icon": "assets/icons/madr.png", "tags": []}]}, {"title": "Other", "description": "", "posts": [{"title": "Decision record template by Business Case", "excerpt": "An ADR template focused on building a business case for a decision: structured around evaluation criteria, candidate options, and per-candidate research including criteria fit, cost analysis, SWOT analysis, and stakeholder opinions and feedback.", "url": "business-case.html", "icon": "assets/icons/business-case.png", "tags": []}]}]}</script>

@@ -1,7 +1,7 @@
 ---
 title: "Choosing a Database Technology"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: choosing-a-database-technology
 excerpt: "We will use a document database for the new application — a flexible schema, horizontal scaling, and fast key/document retrieval fit our requirements better than a relational or event-based store."
 logo: "assets/images/choosing-a-database-technology/logo.jpeg"

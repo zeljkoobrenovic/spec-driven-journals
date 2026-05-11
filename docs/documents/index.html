@@ -14,26 +14,26 @@
         header.site .logo {
             display: block;
             width: 100%;
-            max-height: 400px;
+            max-height: 340px;
             object-fit: cover;
-            border-radius: 6px;
             margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
         }
 
         header.site .logo-credit {
             color: var(--muted);
             font-size: 12px;
-            margin: 0;
+            margin: 4px 0 0;
             padding-left: 2px;
-            text-align: left;
+            text-align: right;
         }
 
         header.site h1 {
-            margin-top: 30px;
+            margin-top: 20px;
             margin-bottom: -10px;
             padding: 0;
-            font-size: 42px;
-            font-weight: 700;
+            font-size: 51px;
+            font-weight: 500;
             letter-spacing: -0.01em;
         }
 
@@ -78,7 +78,7 @@
             font: inherit;
             font-size: 13px;
             padding: 4px 10px;
-            border: 1px solid var(--rule);
+            border: 1px solid deepskyblue;
             border-radius: 999px;
             background: #fff;
             color: var(--fg);
@@ -115,9 +115,10 @@
         ul.posts .tags .tag {
             font-size: 12px;
             padding: 1px 8px;
-            border: 1px solid var(--rule);
             border-radius: 999px;
-            color: var(--muted);
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
         }
 
         section.group {
@@ -125,15 +126,15 @@
         }
 
         section.group > h2 {
-            font-size: 28px;
+            font-size: 32px;
             margin: 0 0 4px;
-            font-weight: 700;
+            font-weight: 500;
             letter-spacing: -0.01em;
         }
 
         section.group > .group-desc {
             color: var(--muted);
-            margin: 0 0 16px;
+            margin: -8px 0 16px;
             font-size: 15px;
         }
 
@@ -151,7 +152,7 @@
             display: flex;
             gap: 14px;
             padding: 14px 0;
-            border-top: 1px solid var(--rule);
+            border-top: 1px dashed var(--rule);
         }
 
         ul.posts li:last-child {
@@ -163,9 +164,9 @@
         }
 
         ul.posts .icon {
-            flex: 0 0 82px;
-            width: 82px;
-            height: 82px;
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,6 +176,7 @@
         ul.posts .icon img {
             max-width: 100%;
             max-height: 100%;
+            border-radius: 10px;
         }
 
         ul.posts .icon.placeholder {
@@ -188,10 +190,10 @@
         }
 
         ul.posts .meta a {
-            color: var(--fg);
+            color: rgb(23, 86, 169);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 17px;
+            font-weight: normal;
+            font-size: 23px;
         }
 
         ul.posts .meta a:hover {
@@ -200,7 +202,7 @@
 
         ul.posts .meta .excerpt {
             color: var(--muted);
-            margin: 4px 0 0;
+            margin: 0;
             font-size: 15px;
         }
 
@@ -218,19 +220,24 @@
 <body>
 <main>
     <header class="site">
-        
-        <h1>Documents</h1>
-        <p>Reference notes and excerpts on architecture decision records (ADRs).</p>
+        <a href="assets/images/library-5641389_1920.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/library-5641389_1920.jpg" alt=""></a>
+        <p class="logo-credit">Image by Oli Gotting from Pixabay</p>
+        <div style="padding: 4px;">
+            <h1>Documents</h1>
+            <p>Reference notes and excerpts on architecture decision records (ADRs).</p>
+        </div>
     </header>
 
-    <div class="tag-filter" id="tag-filter"></div>
-    <div class="search">
-        <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
-        <span class="hits" id="hits"></span>
-    </div>
+    <div style="padding: 4px;">
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
 
-    <div id="sections"></div>
-    <p class="empty-msg" id="empty">No posts match your search.</p>
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
 </main>
 
 <script id="data" type="application/json">{"sections": [{"title": "Fundamentals", "description": "What ADRs are and why teams use them.", "posts": [{"title": "What is an architecture decision record?", "excerpt": "An overview of ADRs and the surrounding terminology — architecture decision (AD), architecture decision log (ADL), architecturally-significant requirement (ASR), and architecture knowledge management (AKM).", "url": "what-is-an-architecture-decision-record.html", "icon": "assets/icons/what-is-an-architecture-decision-record.png", "tags": []}, {"title": "Suggestions for writing good ADRs", "excerpt": "What makes an ADR good: a clear rationale, a tight focus on one decision, dated entries, and immutable history — plus what belongs in the Context and Consequences sections.", "url": "suggestions-for-writing-good-adrs.html", "icon": "assets/icons/suggestions-for-writing-good-adrs.png", "tags": []}, {"title": "AWS Architectural Decision Records Process", "excerpt": "How AWS describes the ADR process: an ADR captures the context and consequences of a significant architectural decision, and the collection of ADRs forms the project's decision log.", "url": "aws-adr-process.html", "icon": "assets/icons/aws-adr-process.png", "tags": []}]}, {"title": "Getting Started", "description": "Practical ways to begin using ADRs.", "posts": [{"title": "How to start using ADRs", "excerpt": "Five areas a team should discuss when adopting ADRs: identifying decisions, making them, enacting and enforcing them, sharing them across projects, and documenting them.", "url": "how-to-start-using-adrs.html", "icon": "assets/icons/how-to-start-using-adrs.png", "tags": []}, {"title": "How to start using ADRs with git", "excerpt": "A minimal recipe for starting ADRs in a git-based project: create an adr/ directory, write one text file per decision, and commit it next to the source code.", "url": "how-to-start-using-adrs-with-git.html", "icon": "assets/icons/how-to-start-using-adrs-with-git.png", "tags": []}, {"title": "How to start using ADRs with tools", "excerpt": "ADRs work in whatever tool a team already uses — Google Docs, git, Jira, or a wiki. Pick the tool that matches the existing workflow rather than introducing a new one.", "url": "how-to-start-using-adrs-with-tools.html", "icon": "assets/icons/how-to-start-using-adrs-with-tools.png", "tags": []}, {"title": "File name conventions for ADRs", "excerpt": "A file-naming convention for ADRs stored as text files: lowercase, dashes, present-tense imperative verb phrases, and a markdown extension.", "url": "file-name-conventions-for-adrs.html", "icon": "assets/icons/file-name-conventions-for-adrs.png", "tags": []}]}, {"title": "Teamwork", "description": "How teams adopt and live with ADRs.", "posts": [{"title": "Teamwork advice for ADRs", "excerpt": "Three lessons from rolling out decision records with many teams: lead with the why, prefer the word \\\"decisions\\\" to \\\"ADRs\\\", and treat ADRs as living documents in practice.", "url": "teamwork-advice-for-adrs.html", "icon": "assets/icons/teamwork-advice-for-adrs.png", "tags": []}, {"title": "Teamwork questions for ADRs", "excerpt": "Questions a team should answer to agree on how ADRs work in their context: who can create one, what justifies raising or skipping one, the lifecycle, roles, governance, and guiding principles.", "url": "teamwork-questions-for-adrs.html", "icon": "assets/icons/teamwork-questions-for-adrs.png", "tags": []}]}, {"title": "Sustainability & Governance", "description": "Keeping decisions durable and enforceable over time.", "posts": [{"title": "Decision Sustainability Criteria", "excerpt": "Five criteria that make architectural decisions sustainable: strategic, measurable and manageable, achievable and realistic, rooted in requirements, and timeless.", "url": "decision-sustainability-criteria.html", "icon": "assets/icons/decision-sustainability-criteria.png", "tags": []}, {"title": "Guidelines to Achieve Sustainable Decisions", "excerpt": "Eight practical guidelines for producing sustainable architectural decisions: start lean, prioritize what matters, expand only what's important, reuse existing knowledge, and keep traceability in sync.", "url": "guidelines-to-achieve-sustainable-decisions.html", "icon": "assets/icons/guidelines-to-achieve-sustainable-decisions.png", "tags": []}, {"title": "Fitness functions for decisions as code", "excerpt": "Fitness functions are objective automated checks, written in code, that verify decisions are being maintained — making decisions testable, assurable, and continuously enforced.", "url": "fitness-functions-for-decisions-as-code.html", "icon": "assets/icons/fitness-functions-for-decisions-as-code.png", "tags": []}]}]}</script>

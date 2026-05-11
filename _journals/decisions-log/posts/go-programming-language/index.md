@@ -2,7 +2,7 @@
 title: "Go programming language"
 date:   2020-01-21 21:12:01 +0100
 icon: assets/icons/golang.png
-author: 
+author: by Team
 permalink: go-programming-language
 excerpt: "We will adopt Go programming language for building web applications going forward. Go is known for its simplicity and concise syntax. Our organization has been primarily using Java programming language for building web applications."
 tags: accepted

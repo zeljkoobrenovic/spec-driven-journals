@@ -1,7 +1,7 @@
 ---
 title: "PostgreSQL database"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: postgresql-database
 excerpt: "We will use PostgreSQL as the database for our upcoming project, in preference to MySQL, for its richer feature set and stronger handling of complex data."
 logo: "assets/images/postgresql-database/logo.jpeg"

@@ -1,7 +1,7 @@
 ---
 title: "Work from home"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: work-from-home
 excerpt: "We will adopt a permanent hybrid work-from-home policy for eligible employees, allowing up to three remote days per week with two in-office days, supported by equipment, regular check-ins, and periodic review."
 logo: "assets/images/work-from-home/logo.jpeg"

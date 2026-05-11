@@ -1,7 +1,7 @@
 ---
 title: "Programming code editors"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: programming-code-editors
 excerpt: "We will treat the programming code editor as a modular platform built around a Core, UI, Plugins, and Integrations split, so the editor can be extended and customized without changing its foundation."
 logo: "assets/images/programming-code-editors/logo.jpeg"

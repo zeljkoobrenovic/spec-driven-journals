@@ -14,26 +14,26 @@
         header.site .logo {
             display: block;
             width: 100%;
-            max-height: 400px;
+            max-height: 340px;
             object-fit: cover;
-            border-radius: 6px;
             margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
         }
 
         header.site .logo-credit {
             color: var(--muted);
             font-size: 12px;
-            margin: 0;
+            margin: 4px 0 0;
             padding-left: 2px;
-            text-align: left;
+            text-align: right;
         }
 
         header.site h1 {
-            margin-top: 30px;
+            margin-top: 20px;
             margin-bottom: -10px;
             padding: 0;
-            font-size: 42px;
-            font-weight: 700;
+            font-size: 51px;
+            font-weight: 500;
             letter-spacing: -0.01em;
         }
 
@@ -78,7 +78,7 @@
             font: inherit;
             font-size: 13px;
             padding: 4px 10px;
-            border: 1px solid var(--rule);
+            border: 1px solid deepskyblue;
             border-radius: 999px;
             background: #fff;
             color: var(--fg);
@@ -115,9 +115,10 @@
         ul.posts .tags .tag {
             font-size: 12px;
             padding: 1px 8px;
-            border: 1px solid var(--rule);
             border-radius: 999px;
-            color: var(--muted);
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
         }
 
         section.group {
@@ -125,15 +126,15 @@
         }
 
         section.group > h2 {
-            font-size: 28px;
+            font-size: 32px;
             margin: 0 0 4px;
-            font-weight: 700;
+            font-weight: 500;
             letter-spacing: -0.01em;
         }
 
         section.group > .group-desc {
             color: var(--muted);
-            margin: 0 0 16px;
+            margin: -8px 0 16px;
             font-size: 15px;
         }
 
@@ -151,7 +152,7 @@
             display: flex;
             gap: 14px;
             padding: 14px 0;
-            border-top: 1px solid var(--rule);
+            border-top: 1px dashed var(--rule);
         }
 
         ul.posts li:last-child {
@@ -163,9 +164,9 @@
         }
 
         ul.posts .icon {
-            flex: 0 0 82px;
-            width: 82px;
-            height: 82px;
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,6 +176,7 @@
         ul.posts .icon img {
             max-width: 100%;
             max-height: 100%;
+            border-radius: 10px;
         }
 
         ul.posts .icon.placeholder {
@@ -188,10 +190,10 @@
         }
 
         ul.posts .meta a {
-            color: var(--fg);
+            color: rgb(23, 86, 169);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 17px;
+            font-weight: normal;
+            font-size: 23px;
         }
 
         ul.posts .meta a:hover {
@@ -200,7 +202,7 @@
 
         ul.posts .meta .excerpt {
             color: var(--muted);
-            margin: 4px 0 0;
+            margin: 0;
             font-size: 15px;
         }
 
@@ -218,20 +220,24 @@
 <body>
 <main>
     <header class="site">
-        <a href="https://grounded-architecture.io/assets/images/istock/iStock-1365878406.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="https://grounded-architecture.io/assets/images/istock/iStock-1365878406.jpg" alt=""></a>
+        <a href="assets/images/iStock-1365878406.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/iStock-1365878406.jpg" alt=""></a>
         <p class="logo-credit">Image by sasun bughdaryan from iStock</p>
-        <h1>Decisions Log</h1>
-        <p>A collection of example architecture and organizational decision records.</p>
+        <div style="padding: 4px;">
+            <h1>Decisions Log</h1>
+            <p>A collection of example architecture and organizational decision records.</p>
+        </div>
     </header>
 
-    <div class="tag-filter" id="tag-filter"></div>
-    <div class="search">
-        <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
-        <span class="hits" id="hits"></span>
-    </div>
+    <div style="padding: 4px;">
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
 
-    <div id="sections"></div>
-    <p class="empty-msg" id="empty">No posts match your search.</p>
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
 </main>
 
 <script id="data" type="application/json">{"sections": [{"title": "Programming Languages", "description": "Decisions about which programming languages to adopt.", "posts": [{"title": "Go programming language", "excerpt": "We will adopt Go programming language for building web applications going forward. Go is known for its simplicity and concise syntax. Our organization has been primarily using Java programming language for building web applications.", "url": "go-programming-language.html", "icon": "assets/icons/golang.png", "tags": ["accepted"]}, {"title": "Java Programming Language for the Project", "excerpt": "We will use Java as the primary language for the project, chosen for its security model, concurrency support, and the breadth of its ecosystem.", "url": "java-programming-language.html", "icon": "assets/icons/java.jpg", "tags": ["accepted"]}, {"title": "Programming Languages: TypeScript + Rust", "excerpt": "We will use TypeScript on the front-end and Rust on the back-end. Both give us compile-time safety; Rust additionally avoids the runtime pauses and complexity of a VM-based stack.", "url": "programming-languages.html", "icon": "assets/icons/ts+rust.png", "tags": ["draft"]}, {"title": "Python programming language", "excerpt": "We will use Python as the primary language for the project, chosen for its data and ML ecosystem, readability, and fit with our mixed data-and-web workload.", "url": "python-programming-language.html", "icon": "assets/icons/python.png", "tags": []}, {"title": "Rust programming language", "excerpt": "We will adopt Rust for new systems-level work and gradually migrate existing C and C++ code, trading a steeper learning curve for memory safety without sacrificing performance.", "url": "rust-programming-language.html", "icon": "assets/icons/rust.png", "tags": ["accepted"]}]}, {"title": "Front-end & UI", "description": "Decisions about front-end frameworks, libraries, and styling.", "posts": [{"title": "Chart library toolkit for data visualization using TypeScript and JSON", "excerpt": "We will adopt Apache ECharts as our chart toolkit. It is the only fully open-source option that covers the full set of charts we need — including candlestick, geo SVG maps, and clustering — without a commercial-licence trap or a D3-scale build effort.", "url": "chart-library-toolkit-for-data-visualization-using-typescript-and-json.html", "icon": "assets/icons/chart-library-toolkit-for-data-visualization-using-typescript-and-json.png", "tags": []}, {"title": "CSS framework", "excerpt": "We will use Bulma as our CSS framework. It gives us the components we need without dragging in jQuery, and stays out of the way of the modern JavaScript frameworks we build on top.", "url": "css-framework.html", "icon": "assets/icons/css-framework.png", "tags": []}, {"title": "React Front-End JavaScript Library", "excerpt": "We will use React as our front-end JavaScript library for building a responsive, component-based user interface.", "url": "react-front-end-javascript-library.html", "icon": "assets/icons/react-front-end-javascript-library.png", "tags": []}, {"title": "Svelte Components", "excerpt": "We will adopt SvelteUI as our default Svelte component library. It covers tables, grids, charts, and forms with reasonable performance and customizability, and we will integrate a dedicated charting or Gantt library when we hit its edges.", "url": "svelte-components.html", "icon": "assets/icons/svelte-components.png", "tags": []}, {"title": "Svelte Front-end JavaScript Library", "excerpt": "We will use Svelte as our front-end JavaScript library, preferring its compile-time approach and lightweight runtime over React, Vue, and Angular.", "url": "svelte-front-end-javascript-library.html", "icon": "assets/icons/svelte-front-end-javascript-library.png", "tags": []}, {"title": "SvelteKit framework", "excerpt": "We will build the application on SvelteKit, using its routing, SSR, and tooling as the front-end framework around Svelte components.", "url": "sveltekit-framework.html", "icon": "assets/icons/sveltekit-framework.png", "tags": []}, {"title": "Tailwind CSS", "excerpt": "We will use Tailwind CSS to style this web application. Its utility-first model accelerates development, customization, and consistent theming, and the trade-offs are well understood.", "url": "tailwind-css.html", "icon": "assets/icons/tailwind-css.png", "tags": []}, {"title": "Vue front-end JavaScript library", "excerpt": "We will adopt Vue as the primary front-end JavaScript library. Vue offers a gentle learning curve, a flexible integration model, and strong performance without the weight of larger frameworks.", "url": "vue-front-end-javascript-library.html", "icon": "assets/icons/vue-front-end-javascript-library.png", "tags": []}]}, {"title": "Back-end Frameworks", "description": "Decisions about back-end and full-stack web frameworks.", "posts": [{"title": "Python Django Framework", "excerpt": "We will use Django as the web framework for the customer-data application. Its ORM, security defaults, and admin tooling cover most of what we need out of the box.", "url": "python-django-framework.html", "icon": "assets/icons/python-django-framework.png", "tags": []}, {"title": "Ruby on Rails Framework", "excerpt": "We will build the application on Ruby on Rails, trading some runtime performance for a mature full-stack framework, strong conventions, and an existing team that knows Rails well.", "url": "ruby-on-rails-framework.html", "icon": "assets/icons/ruby-on-rails-framework.png", "tags": []}, {"title": "Web application framework, batteries included, full stack, for a startup product", "excerpt": "We will build the startup product on Django. It is the only full-stack framework in contention that puts us inside Python's data and ML ecosystem, which is the deciding factor.", "url": "web-application-framework-batteries-included-full-stack-for-a-startup-product.html", "icon": "assets/icons/web-application-framework-batteries-included-full-stack-for-a-startup-product.png", "tags": []}]}, {"title": "Databases & Storage", "description": "Decisions about database technologies and data storage.", "posts": [{"title": "Choosing a Database Technology", "excerpt": "We will use a document database for the new application — a flexible schema, horizontal scaling, and fast key/document retrieval fit our requirements better than a relational or event-based store.", "url": "choosing-a-database-technology.html", "icon": "assets/icons/choosing-a-database-technology.png", "tags": []}, {"title": "MySQL database", "excerpt": "We will use MySQL as the database management system for Project X — a mature, open-source RDBMS that fits our technology stack and meets our needs for performance, scalability, and reliability.", "url": "mysql-database.html", "icon": "assets/icons/mysql-database.png", "tags": []}, {"title": "PostgreSQL database", "excerpt": "We will use PostgreSQL as the database for our upcoming project, in preference to MySQL, for its richer feature set and stronger handling of complex data.", "url": "postgresql-database.html", "icon": "assets/icons/postgresql-database.png", "tags": []}, {"title": "Secrets storage", "excerpt": "We will use Bitwarden for user-oriented secrets and HashiCorp Vault for system-oriented secrets, splitting the problem along its natural boundary rather than forcing one tool to do both jobs.", "url": "secrets-storage.html", "icon": "assets/icons/secrets-storage.png", "tags": []}]}, {"title": "APIs & Conventions", "description": "Decisions about API design and naming conventions.", "posts": [{"title": "API using JSON v. gRPC", "excerpt": "We will use gRPC for the new service's API. Binary serialization, schema-first contracts, and built-in streaming outweigh the lower discoverability and library reach of JSON over HTTP for our workload.", "url": "api-using-json-v-grpc.html", "icon": "assets/icons/grpc.png", "tags": ["accepted"]}, {"title": "Snake_case v. camelCase for a REST API?", "excerpt": "We will use snake_case for REST API endpoint names and JSON field names. The decision is driven by consistency with our existing endpoints, readability, and matching what the rest of our codebase already does.", "url": "snake-case-v-camelcase-for-a-rest-api.html", "icon": "assets/icons/snake-case-v-camelcase-for-a-rest-api.png", "tags": []}, {"title": "Timestamp format", "excerpt": "We will use ISO 8601 in UTC with nanosecond precision — `YYYY-MM-DDTHH:MM:SS.NNNNNNNNNZ` — as the canonical timestamp format across all systems. It is human-readable, machine-parseable, and broadly supported.", "url": "timestamp-format.html", "icon": "assets/icons/timestamp-format.png", "tags": []}]}, {"title": "Cloud & Infrastructure", "description": "Decisions about cloud providers and container orchestration.", "posts": [{"title": "Amazon Web Services", "excerpt": "We will adopt Amazon Web Services as our cloud infrastructure provider, on the basis of AWS's service breadth, global footprint, security posture, and pay-as-you-go pricing.", "url": "amazon-web-services.html", "icon": "assets/icons/amazon-web-services.png", "tags": []}, {"title": "Docker Swarm Container Orchestration", "excerpt": "We will use Docker Swarm as our container orchestration tool, on the basis of its simplicity, tight integration with the Docker tooling our teams already use, and built-in load balancing.", "url": "docker-swarm-container-orchestration.html", "icon": "assets/icons/docker-swarm-container-orchestration.png", "tags": []}, {"title": "Google Cloud Platform", "excerpt": "We will use Google Cloud Platform as the cloud infrastructure for our application, on the basis of cost-effectiveness, scalability, reliability, and the flexibility of its managed services.", "url": "google-cloud-platform.html", "icon": "assets/icons/google-cloud-platform.png", "tags": []}, {"title": "Kubernetes container orchestration", "excerpt": "We will adopt Kubernetes as our container orchestration platform, on the basis of its scalability, decentralized architecture, community size, and ecosystem of supporting tools.", "url": "kubernetes-container-orchestration.html", "icon": "assets/icons/kubernetes-container-orchestration.png", "tags": []}, {"title": "Microsoft Azure cloud infrastructure", "excerpt": "We will adopt Microsoft Azure as the cloud infrastructure for the organization, on the basis of service breadth, hybrid-cloud support, security and compliance posture, and pay-as-you-go pricing.", "url": "microsoft-azure-cloud-infrastructure.html", "icon": "assets/icons/microsoft-azure-cloud-infrastructure.png", "tags": []}]}, {"title": "DevOps & Operations", "description": "Decisions about CI/CD, configuration, and observability.", "posts": [{"title": "Continuous integration", "excerpt": "We will adopt continuous integration as our default development workflow: every change builds, tests, and deploys to a delivery environment automatically. We accept the up-front investment in pipelines and discipline in exchange for faster, more reliable releases.", "url": "continuous-integration.html", "icon": "assets/icons/continuous-integration.png", "tags": []}, {"title": "Environment variable configuration", "excerpt": "We will configure applications via .env files, paired with a checked-in defaults file and a schema file. This follows the 12-factor pattern, keeps secrets out of source control, and matches the conventions our teams already know.", "url": "environment-variable-configuration.html", "icon": "assets/icons/environment-variable-configuration.png", "tags": []}, {"title": "Metrics, monitors, alerts", "excerpt": "Work in progress. We are evaluating tooling for metrics, monitoring, and alerting across the spectrum from simple open-source (Nagios) to feature-rich SaaS (New Relic). Prometheus + Grafana + Alertmanager and Zabbix are the current frontrunners.", "url": "metrics-monitors-alerts.html", "icon": "assets/icons/metrics-monitors-alerts.png", "tags": []}, {"title": "Microsoft Azure DevOps", "excerpt": "We will not adopt Microsoft Azure DevOps. The platform's advertised capabilities did not hold up under our evaluation, the components do not integrate well, and support response was poor. We will stay with the AWS-based incumbent.", "url": "microsoft-azure-devops.html", "icon": "assets/icons/microsoft-azure-devops.png", "tags": []}, {"title": "Monorepo vs multirepo", "excerpt": "We will use a monorepo while the project is small and rapid iteration matters more than stability. When the organization grows enough that stability outweighs iteration speed, we will plan a migration to a polyrepo layout.", "url": "monorepo-vs-multirepo.html", "icon": "assets/icons/monorepo-vs-multirepo.png", "tags": []}]}, {"title": "Security & Testing", "description": "Decisions about authentication, authorization, and testing tools.", "posts": [{"title": "Authentication and authorization options", "excerpt": "We will standardize on OpenID Connect (built on OAuth 2.0) for user authentication and API authorization across our web applications, with SAML reserved for enterprise SSO integrations that require it.", "url": "authentication-authorization-options.html", "icon": "assets/icons/authentication-authorization-options.png", "tags": []}, {"title": "Browser automation framework for E2E testing (Playwright vs Selenium)", "excerpt": "We will adopt Playwright as the browser automation framework for our end-to-end test pipeline, in preference to Selenium, on the basis of its concise API, first-class TypeScript and Python support, and stronger handling of dynamic UIs.", "url": "browser-automation-framework-for-e2e-testing-playwright-vs-selenium.html", "icon": "assets/icons/browser-automation-framework-for-e2e-testing-playwright-vs-selenium.png", "tags": []}]}, {"title": "Tooling", "description": "Decisions about developer tooling.", "posts": [{"title": "Programming code editors", "excerpt": "We will treat the programming code editor as a modular platform built around a Core, UI, Plugins, and Integrations split, so the editor can be extended and customized without changing its foundation.", "url": "programming-code-editors.html", "icon": "assets/icons/programming-code-editors.png", "tags": []}]}, {"title": "Ways of Working", "description": "Decisions about team practices and work arrangements.", "posts": [{"title": "4-day work-week", "excerpt": "We will move to a 4-day workweek next quarter for all employees, in response to employee feedback, research evidence, and our retention goals.", "url": "4-day-work-week.html", "icon": "assets/icons/4-day-work-week.png", "tags": []}, {"title": "Agile software development", "excerpt": "We will adopt Agile as our software development methodology to support iterative delivery, faster feedback, and better adaptation to changing requirements.", "url": "agile-software-development.html", "icon": "assets/icons/agile-software-development.png", "tags": []}, {"title": "High-trust teamwork", "excerpt": "We will adopt high-trust teamwork as a core value and operating principle, anchored in transparency, honesty, integrity, and respect, with explicit practices to build trust and to handle breaches when they occur.", "url": "high-trust-teamwork.html", "icon": "assets/icons/high-trust-teamwork.png", "tags": []}, {"title": "Work from home", "excerpt": "We will adopt a permanent hybrid work-from-home policy for eligible employees, allowing up to three remote days per week with two in-office days, supported by equipment, regular check-ins, and periodic review.", "url": "work-from-home.html", "icon": "assets/icons/work-from-home.png", "tags": []}]}]}</script>

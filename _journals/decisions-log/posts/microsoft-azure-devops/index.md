@@ -1,7 +1,7 @@
 ---
 title: "Microsoft Azure DevOps"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: microsoft-azure-devops
 excerpt: "We will not adopt Microsoft Azure DevOps. The platform's advertised capabilities did not hold up under our evaluation, the components do not integrate well, and support response was poor. We will stay with the AWS-based incumbent."
 logo: "assets/images/microsoft-azure-devops/logo.jpeg"

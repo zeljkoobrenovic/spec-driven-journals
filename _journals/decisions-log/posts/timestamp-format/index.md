@@ -1,7 +1,7 @@
 ---
 title: "Timestamp format"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: timestamp-format
 excerpt: "We will use ISO 8601 in UTC with nanosecond precision — `YYYY-MM-DDTHH:MM:SS.NNNNNNNNNZ` — as the canonical timestamp format across all systems. It is human-readable, machine-parseable, and broadly supported."
 logo: "assets/images/timestamp-format/logo.jpeg"

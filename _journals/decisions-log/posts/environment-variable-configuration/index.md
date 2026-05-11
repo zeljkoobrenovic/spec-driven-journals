@@ -1,7 +1,7 @@
 ---
 title: "Environment variable configuration"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: environment-variable-configuration
 excerpt: "We will configure applications via .env files, paired with a checked-in defaults file and a schema file. This follows the 12-factor pattern, keeps secrets out of source control, and matches the conventions our teams already know."
 logo: "assets/images/environment-variable-configuration/logo.jpeg"

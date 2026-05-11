@@ -1,7 +1,7 @@
 ---
 title: "Amazon Web Services"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: amazon-web-services
 excerpt: "We will adopt Amazon Web Services as our cloud infrastructure provider, on the basis of AWS's service breadth, global footprint, security posture, and pay-as-you-go pricing."
 logo: "assets/images/amazon-web-services/logo.jpeg"

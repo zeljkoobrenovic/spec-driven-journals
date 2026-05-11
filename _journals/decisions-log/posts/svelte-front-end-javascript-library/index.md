@@ -1,7 +1,7 @@
 ---
 title: "Svelte Front-end JavaScript Library"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: svelte-front-end-javascript-library
 excerpt: "We will use Svelte as our front-end JavaScript library, preferring its compile-time approach and lightweight runtime over React, Vue, and Angular."
 logo: "assets/images/svelte-front-end-javascript-library/logo.jpeg"

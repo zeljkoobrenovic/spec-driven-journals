@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Use Confirmation as the implementation-check heading</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">MADR</a><span class="nav-right"><a class="nav-prev" href="0017-use-same-format-for-outcomes-and-options.html" title="Use the same Good/Bad format for Consequences as for Options">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="0007-do-not-emphasize-line-headings.html" title="Do not emphasize line headings">Next →</a></span></nav>
+    <header class="post">
+        <p class="section">Structure</p>
+        <h1>Use Confirmation as the implementation-check heading</h1>
+        <p class="byline"></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/0018-use-confirmation-as-heading/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/0018-use-confirmation-as-heading/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3.1-flash-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">MADR</a><span class="nav-right"><a class="nav-prev" href="0017-use-same-format-for-outcomes-and-options.html" title="Use the same Good/Bad format for Consequences as for Options">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="0007-do-not-emphasize-line-headings.html" title="Do not emphasize line headings">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Use Confirmation as the implementation-check heading", "permalink": "0018-use-confirmation-as-heading", "excerpt": "MADR uses Confirmation as the heading for the section that records how a decision is checked to have been implemented — not Validation or Verification.", "logo": "assets/images/0018-use-confirmation-as-heading/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3.1-flash-image-preview)", "icon": "assets/icons/0018-use-confirmation-as-heading.png"}, "tags": [], "blocks": [{"type": "markdown", "content": "> **Status**: Accepted\n>\n> **Decision**: The heading for the section recording how a decision was implemented is **`Confirmation`**.\n\n## Context\n\nMADR includes a section where the author describes how the decision will be checked to have been put into practice. The question is what to call that section. The candidates are all near-synonyms in everyday English but carry different technical baggage in software contexts.\n\n## Decision Drivers\n\n- **Consistent with terms used in IT.**\n- **Common word.**\n\n## Considered Options\n\n- `Confirmation`\n- `Validation`\n- `Verification`\n\n## Decision\n\nUse **`Confirmation`**.\n\n## Rationale\n\n1. **`Validation` is out of scope.** In software practice, \"validation\" refers to the process leading to a *valid* ADR — review, approval, and acceptance — not to confirming the decision was carried out.\n2. **`Verification` implies formal procedure.** In IT, \"verification\" often means a formal tool or procedure (model checking, formal proof). MADR's check is typically less formal than that.\n3. **`Confirmation` covers both formal and informal checks.** It does not imply a method, just that *something* was looked at to confirm the decision was implemented.\n\n## Implications\n\n1. **Templates and examples use `Confirmation`** as the section heading.\n2. **The section is optional** — not every ADR has something to confirm.\n\n## Confirmation (for this ADR)\n\n- **Before the next release:** check that at least one example includes a `Confirmation` section.\n- **Before each release:** check that templates and examples are consistent with this decision (or update the ADR if they intentionally diverge).\n- **Continuously:** monitor [GitHub issues](https://github.com/adr/madr/issues) for feedback on examples and tool/template change requests.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    const isOrdered = ordered.test(line);
+                    const re = isOrdered ? ordered : bullet;
+                    const items = [];
+                    while (i < lines.length && re.test(lines[i])) {
+                        const m = lines[i].match(re);
+                        let item = m[3];
+                        i++;
+                        while (i < lines.length && lines[i].trim() && !bullet.test(lines[i]) && !ordered.test(lines[i])) {
+                            item += '\n' + lines[i].trim();
+                            i++;
+                        }
+                        items.push('<li>' + inline(item) + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

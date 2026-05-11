@@ -1,7 +1,7 @@
 ---
 title: "CSS framework"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: css-framework
 excerpt: "We will use Bulma as our CSS framework. It gives us the components we need without dragging in jQuery, and stays out of the way of the modern JavaScript frameworks we build on top."
 logo: "assets/images/css-framework/logo.jpeg"

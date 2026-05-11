@@ -14,26 +14,26 @@
         header.site .logo {
             display: block;
             width: 100%;
-            max-height: 400px;
+            max-height: 340px;
             object-fit: cover;
-            border-radius: 6px;
             margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
         }
 
         header.site .logo-credit {
             color: var(--muted);
             font-size: 12px;
-            margin: 0;
+            margin: 4px 0 0;
             padding-left: 2px;
-            text-align: left;
+            text-align: right;
         }
 
         header.site h1 {
-            margin-top: 30px;
+            margin-top: 20px;
             margin-bottom: -10px;
             padding: 0;
-            font-size: 42px;
-            font-weight: 700;
+            font-size: 51px;
+            font-weight: 500;
             letter-spacing: -0.01em;
         }
 
@@ -78,7 +78,7 @@
             font: inherit;
             font-size: 13px;
             padding: 4px 10px;
-            border: 1px solid var(--rule);
+            border: 1px solid deepskyblue;
             border-radius: 999px;
             background: #fff;
             color: var(--fg);
@@ -115,9 +115,10 @@
         ul.posts .tags .tag {
             font-size: 12px;
             padding: 1px 8px;
-            border: 1px solid var(--rule);
             border-radius: 999px;
-            color: var(--muted);
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
         }
 
         section.group {
@@ -125,15 +126,15 @@
         }
 
         section.group > h2 {
-            font-size: 28px;
+            font-size: 32px;
             margin: 0 0 4px;
-            font-weight: 700;
+            font-weight: 500;
             letter-spacing: -0.01em;
         }
 
         section.group > .group-desc {
             color: var(--muted);
-            margin: 0 0 16px;
+            margin: -8px 0 16px;
             font-size: 15px;
         }
 
@@ -151,7 +152,7 @@
             display: flex;
             gap: 14px;
             padding: 14px 0;
-            border-top: 1px solid var(--rule);
+            border-top: 1px dashed var(--rule);
         }
 
         ul.posts li:last-child {
@@ -163,9 +164,9 @@
         }
 
         ul.posts .icon {
-            flex: 0 0 82px;
-            width: 82px;
-            height: 82px;
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,6 +176,7 @@
         ul.posts .icon img {
             max-width: 100%;
             max-height: 100%;
+            border-radius: 10px;
         }
 
         ul.posts .icon.placeholder {
@@ -188,10 +190,10 @@
         }
 
         ul.posts .meta a {
-            color: var(--fg);
+            color: rgb(23, 86, 169);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 17px;
+            font-weight: normal;
+            font-size: 23px;
         }
 
         ul.posts .meta a:hover {
@@ -200,7 +202,7 @@
 
         ul.posts .meta .excerpt {
             color: var(--muted);
-            margin: 4px 0 0;
+            margin: 0;
             font-size: 15px;
         }
 
@@ -219,18 +221,22 @@
 <main>
     <header class="site">
         <a href="assets/images/under_the_hood_3.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/under_the_hood_3.jpg" alt=""></a>
-        <h1>Under the Hood</h1>
-        <p>Notes on architecture, economics, and technology — by Željko Obrenović.</p>
+        <div style="padding: 4px;">
+            <h1>Under the Hood</h1>
+            <p>Notes on architecture, economics, and technology — by Željko Obrenović.</p>
+        </div>
     </header>
 
-    <div class="tag-filter" id="tag-filter"></div>
-    <div class="search">
-        <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
-        <span class="hits" id="hits"></span>
-    </div>
+    <div style="padding: 4px;">
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
 
-    <div id="sections"></div>
-    <p class="empty-msg" id="empty">No posts match your search.</p>
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
 </main>
 
 <script id="data" type="application/json">{"sections": [{"title": "Architecture", "description": "Approaches and metaphors for the practice of architecture.", "posts": [{"title": "Architects as Superglue: One Approach To Being An Architect in IT Organizations", "excerpt": "This article is a written statement of my experiences on what it means to be an architect in IT organizations, how architects need to develop, and how architects should work together.", "url": "superglue.html", "icon": "assets/icons/superglue.png", "tags": []}, {"title": "Data + Automation + Curation = Useful Architectural Documentation", "excerpt": "This article summarizes my experiences in replacing classical architectural documentation with data-driven documents.", "url": "documentation.html", "icon": "assets/icons/oil.png", "tags": []}]}, {"title": "Economics & Cost", "description": "Thinking about the economic side of IT systems.", "posts": [{"title": "The IT Cost Box", "excerpt": "In this post, I introduce a simple model for thinking about IT costs in three dimensions. This model presents IT costs as the volume of the box, where each side of the box shows three drivers of the cost: unit costs, size, and time.", "url": "costbox.html", "icon": "assets/icons/costs.png", "tags": []}, {"title": "The Economic Value of Architecture: Two Metaphors", "excerpt": "In this post, I sketch two answers to the question of the economic value of architecture: the return on investment metaphor, and the financial options metaphor.", "url": "economics.html", "icon": "assets/icons/economics.png", "tags": []}, {"title": "What Digital Marketplaces Sell? A Short Memo", "excerpt": "Digital marketplaces facilitate transactions between buyers and sellers. The marketplace is not the seller (nor a buyer), but it sells a reduction in transaction costs. .", "url": "digital-marketplaces.html", "icon": "assets/icons/market.png", "tags": []}]}, {"title": "Cloud & Platforms", "description": "Cloud capabilities and the platforms built on top of them.", "posts": [{"title": "Uber's Payments Platform", "excerpt": "Recently, Uber has announced deeper push into financial services with Uber Money, a new division, including products such as a digital wallet and upgraded debit and credit cards. It is expected that Uber could soon offer a bank account to consumers on its platform. While many of the news articles focus on the business side of Uber move, limited resources are available to understand better the payment technology that Uber is building. I believe that we can learn from looking under the hood of Uber payment technologies, as the Uber approach may be the way how we will make the banks of the future.", "url": "uber-payments-platform.html", "icon": "assets/icons/uber.png", "tags": []}, {"title": "Public Cloud: Great Expectations", "excerpt": "This article enlists some of the key benefits we can expect from of cloud: development velocity, performance, scalability, functionality, uptime, costs, transparency, and security. The article also provides a reality check on these expectations. You need to earn the public cloud benefits; simply moving to the cloud rarely leads to immediate improvements.", "url": "cloud-expectations.html", "icon": "assets/icons/cloud.png", "tags": []}]}, {"title": "Media & Streaming", "description": "Distributing video and other media at scale.", "posts": [{"title": "Adaptive HTTP Streaming Technologies: The Problem Statement", "excerpt": "Adaptive HTTP Streaming technologies enable distributing video efficiently via the standard HTTP infrastructure and CDNs. These technologies offer three key elements that the technologies introduce to solve critical challenges: segmentation of video content in smaller blocks to minimize overhead, improve user experience, and improve caching performance, adaptivity by having multiple channels of variable quality to enable automatic switching among channels based on the device characteristics and network performance, and securing the video content while keeping the benefits of efficient HTTP content distribution.", "url": "adaptive-http-streaming.html", "icon": "assets/icons/streaming.png", "tags": []}]}, {"title": "AI & Tooling", "description": "Working with AI assistants in software development.", "posts": [{"title": "LLMs, ChatGPT and Evolution of Software Engineering: Patterns, Anti-Patterns, and Quality Imperative", "excerpt": "LLMs like ChatGPT can significantly impact software engineering by synergically combining Natural Language Processing (NLP), LLM-driven Soft Programming, and Traditional Hard Programming. Three synergy patterns: Generative Pattern, Learning and Explanation Pattern, and Hardening Pattern, can help developers harness the potential of these technologies.", "url": "chatgpt-se-evolution.html", "icon": "assets/icons/chatgpt.png", "tags": []}]}]}</script>

@@ -1,7 +1,7 @@
 ---
 title: "Monorepo vs multirepo"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: monorepo-vs-multirepo
 excerpt: "We will use a monorepo while the project is small and rapid iteration matters more than stability. When the organization grows enough that stability outweighs iteration speed, we will plan a migration to a polyrepo layout."
 logo: "assets/images/monorepo-vs-multirepo/logo.jpeg"

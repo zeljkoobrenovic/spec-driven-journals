@@ -1,7 +1,7 @@
 ---
 title: "High-trust teamwork"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: high-trust-teamwork
 excerpt: "We will adopt high-trust teamwork as a core value and operating principle, anchored in transparency, honesty, integrity, and respect, with explicit practices to build trust and to handle breaches when they occur."
 logo: "assets/images/high-trust-teamwork/logo.jpeg"

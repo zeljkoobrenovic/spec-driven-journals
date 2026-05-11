@@ -2,7 +2,7 @@
 title: "Rust programming language"
 date:   2020-01-21 21:12:01 +0100
 icon: assets/icons/rust.png
-author: 
+author: by Team
 permalink: rust-programming-language
 excerpt: "We will adopt Rust for new systems-level work and gradually migrate existing C and C++ code, trading a steeper learning curve for memory safety without sacrificing performance."
 logo: assets/images/rust.jpeg

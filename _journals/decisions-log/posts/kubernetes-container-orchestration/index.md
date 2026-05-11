@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes container orchestration"
 date:   2020-01-21 21:12:01 +0100
-author: 
+author: by Team
 permalink: kubernetes-container-orchestration
 excerpt: "We will adopt Kubernetes as our container orchestration platform, on the basis of its scalability, decentralized architecture, community size, and ecosystem of supporting tools."
 logo: "assets/images/kubernetes-container-orchestration/logo.jpeg"
