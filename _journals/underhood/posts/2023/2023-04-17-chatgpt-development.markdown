@@ -5,7 +5,7 @@ date:   2023-04-16 21:12:01 +0100
 categories: architecture
 author: by Željko Obrenović (obren.io)
 permalink: chatgpt-se-evolution
-icon: chatgpt.png
+icon: assets/icons/chatgpt.png
 timetoread: 15 min
 excerpt: "LLMs like ChatGPT can significantly impact software engineering by synergically combining Natural Language Processing (NLP), LLM-driven Soft Programming, and Traditional Hard Programming. Three synergy patterns: Generative Pattern, Learning and Explanation Pattern, and Hardening Pattern, can help developers harness the potential of these technologies."
 

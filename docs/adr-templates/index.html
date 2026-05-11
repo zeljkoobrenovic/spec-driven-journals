@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADR Templates</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        header.site {
+            padding-bottom: 14px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 0;
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: left;
+        }
+
+        header.site h1 {
+            margin-top: 30px;
+            margin-bottom: -10px;
+            padding: 0;
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            color: var(--muted);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 28px;
+            margin: 0 0 4px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: 0 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px solid var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 82px;
+            width: 82px;
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta a {
+            color: var(--fg);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 4px 0 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/under_the_hood_3.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/under_the_hood_3.jpg" alt=""></a>
+        <h1>ADR Templates</h1>
+        <p>Templates for architecture decision records (ADRs) and related documentation.</p>
+    </header>
+
+    <div class="tag-filter" id="tag-filter"></div>
+    <div class="search">
+        <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+        <span class="hits" id="hits"></span>
+    </div>
+
+    <div id="sections"></div>
+    <p class="empty-msg" id="empty">No posts match your search.</p>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "By People", "description": "Templates for architecture decision records (ADRs) and related documentation.", "posts": [{"title": "Decision record template by Michael Nygard", "excerpt": "Michael Nygard's lightweight ADR template — Title, Status, Context, Decision, Consequences. The original short-form template that popularized ADRs and underpins tools such as adr-tools.", "url": "michael-nygard.html", "icon": "assets/icons/michael-nygard.jpeg", "tags": []}, {"title": "Decision record template by Gareth Morgan", "excerpt": "Gareth Morgan's compact ADR template: numbered title, Status (with supersedes/deprecated links), Context, Decided Approach, and Consequences. Designed for easy referencing and cataloging across an organization's decision log.", "url": "gareth-morgan.html", "icon": "assets/icons/gareth-morgan.jpeg", "tags": []}, {"title": "Decision record template by Jeff Tyree and Art Akerman", "excerpt": "The detailed ADR template from Jeff Tyree and Art Akerman's IEEE Software article 'Architecture Decisions: Demystifying Architecture' — captures Issue, Decision, Status, Group, Assumptions, Constraints, Positions, Argument, Implications, and related decisions for thorough decision rationale.", "url": "jeff-tyree-and-art-akerman.html", "icon": "assets/icons/ieee-cs.png", "tags": []}, {"title": "Decision record template by Alexandrian-pattern", "excerpt": "An ADR template inspired by Christopher Alexander's pattern language: Prologue (Summary), Discussion (Context), Solution (Decision), and Consequences (Results), framed as 'in the context of … facing … we decided … to achieve … accepting …'.", "url": "alexandrian-pattern.html", "icon": "assets/icons/chistopher-alexander.avif", "tags": []}]}, {"title": "By Companies", "description": "Templates for architecture decision records (ADRs) and related documentation.", "posts": [{"title": "Decision Record Template by arc42", "excerpt": "The arc42 architecture documentation skeleton — twelve canonical sections from Introduction & Goals through Constraints, Context, Solution Strategy, Building Blocks, Runtime/Deployment Views, Concepts, Decisions, Quality Requirements, Risks, and Glossary.", "url": "arc42.html", "icon": "assets/icons/arc42-logo.png", "tags": []}, {"title": "Decision record template by EdgeX Foundry", "excerpt": "EdgeX Foundry's ADR template, designed for an open-source IoT project: explicit Submitters, Change Log, Referenced Use Cases, Context, Proposed Design, Considerations, Decision, and Other Related ADRs — heavier than Nygard's, fitting community-driven decision making.", "url": "edgex-foundry.html", "icon": "assets/icons/logo_edgex.png", "tags": []}, {"title": "Decision record template by GIG Cymru NHS Wales", "excerpt": "GIG Cymru NHS Wales's ADR template, written for public-sector IT teams: Status, executive Summary, Drivers, Options with structured analysis, Decision, and Consequences — guidance text in each section helps non-architects produce consistent records.", "url": "gig-cymru-nhs-wales.html", "icon": "assets/icons/gig-cymry-nhs-wales.png", "tags": []}, {"title": "Decision record template by Planguage", "excerpt": "Decision records using Tom Gilb's Planguage — a keyword-driven planning language (Tag, Gist, Requirement, Rationale, Priority, Stakeholders, Status, Owner, Author) that makes non-functional requirements precise and measurable.", "url": "planguage.html", "icon": "assets/icons/intel.svg", "tags": []}, {"title": "Decision record template by the MADR project", "excerpt": "MADR (Markdown Any Decision Records) — a community-maintained markdown template with Status, Deciders, Date, Context and Problem Statement, Decision Drivers, Considered Options, Decision Outcome with positive/negative consequences, and Pros and Cons of the Options.", "url": "madr-project.html", "icon": "assets/icons/madr.png", "tags": []}]}, {"title": "Other", "description": "", "posts": [{"title": "Decision record template by Business Case", "excerpt": "An ADR template focused on building a business case for a decision: structured around evaluation criteria, candidate options, and per-candidate research including criteria fit, cost analysis, SWOT analysis, and stakeholder opinions and feedback.", "url": "business-case.html", "icon": "assets/icons/business-case.png", "tags": []}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag counts across all posts
+        const tagCounts = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+            });
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha)
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        sortedTags.forEach(([tag, count]) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            tagFilter.appendChild(btn);
+        });
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ')).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

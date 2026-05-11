@@ -1,0 +1,36 @@
+---
+title: "Decision record template by Alexandrian-pattern"
+date:   2020-01-21 21:12:01 +0100
+icon: assets/icons/chistopher-alexander.avif
+author: by Željko Obrenović (obren.io)
+permalink: alexandrian-pattern
+timetoread: 15 min
+excerpt: "An ADR template inspired by Christopher Alexander's pattern language: Prologue (Summary), Discussion (Context), Solution (Decision), and Consequences (Results), framed as 'in the context of … facing … we decided … to achieve … accepting …'."
+---
+![](../assets/images/pattern-language.jpg)
+# Decision record template for Alexandrian pattern
+
+## Introduction
+
+* Prologue (Summary)
+* Discussion (Context)
+* Solution (Decision)
+* Consequences (Results)
+
+## Specifics ##
+
+* Prologue (Summary)
+  * Statement to summarize:
+    * In the context of (use case)<br>
+      facing (concern)<br>
+      we decided for (option)<br>
+      to achieve (quality)<br>
+      accepting (downside).
+* Discussion (Context)
+  * Explains the forces at play (technical, political, social, project).
+  * This is the story explaining the problem we are looking to resolve.
+* Solution
+  * Explains how the decision will solve the problem.
+* Consequences
+  * Explains the results of the decision over the long term.
+  * Did it work, not work, was changed, upgraded, etc.

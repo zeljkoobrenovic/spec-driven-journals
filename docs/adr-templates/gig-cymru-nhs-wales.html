@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Decision record template by GIG Cymru NHS Wales</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">[ADR Templates]</a><span class="nav-right"><a class="nav-prev" href="edgex-foundry.html" title="Decision record template by EdgeX Foundry">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="planguage.html" title="Decision record template by Planguage">Next →</a></span></nav>
+    <header class="post">
+        <h1>Decision record template by GIG Cymru NHS Wales</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2020-01-21  ·  15 min</p>
+        <div class="tags" id="tags"></div>
+        
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">[ADR Templates]</a><span class="nav-right"><a class="nav-prev" href="edgex-foundry.html" title="Decision record template by EdgeX Foundry">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="planguage.html" title="Decision record template by Planguage">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Decision record template by GIG Cymru NHS Wales", "date": "2020-01-21 21:12:01 +0100", "icon": "assets/icons/gig-cymry-nhs-wales.png", "author": "by Željko Obrenović (obren.io)", "permalink": "gig-cymru-nhs-wales", "timetoread": "15 min", "excerpt": "GIG Cymru NHS Wales's ADR template, written for public-sector IT teams: Status, executive Summary, Drivers, Options with structured analysis, Decision, and Consequences — guidance text in each section helps non-architects produce consistent records."}, "tags": [], "blocks": [{"type": "markdown", "content": "![](../assets/images/gig-cymru-nhs-wales.jpg)\n# {Your Title Here}\n\n!!! info\n\n    **Status**: { Proposed | Under Review | Accepted |  Rejected | Superseded | Deprecated }\n    \n    **Updated**: {YYYY-MM-DD}\n\n## Summary\n\n{This is the 'executive summary' or 'elevator pitch' for your ADR. In a few\nconcise sentences (typically 2-4), clearly state the core problem, question, or\nopportunity this ADR addresses. Include a brief hint at the decision made or the\narea of focus. The goal is to help readers quickly understand what this ADR is\nabout and decide if it's relevant to them, without needing to read the entire\ndocument. Think of it as the abstract of a technical paper or a very brief\nintroduction to the main topic.}\n\n## Drivers\n\n{This section explains **why** this decision is being made **now**. Clearly\narticulate the primary motivations, needs, or problems that necessitate this\narchitectural decision. Think about the underlying reasons and pressures.}\n\n* {e.g. We are developing a new feature/capability that needs...}\n\n* {e.g. We need to improve performance, accessibility, remove debt...}\n\n* {e.g. Feedback from users suggests...}\n\n* {e.g. The current approach imposes these limitations...}\n\n## Options\n\n{This is where you list the different options you are considering. Stick to the\nfacts and avoid opinions, the next section covers the analysis. Include a\nconcise description, links to relevant documentation or examples.\n\nInclude all significant alternatives you explored, even if they were ultimately\nnot chosen. The goal is to give readers a clear, unbiased understanding of each\nalternative before you dive into the evaluation.}\n\n### {Option 1 Title}\n\n{Describe the option, provide a summary, list the facts, provide links etc.}\n\n### {Option n Title}\n\n...\n\n## Options Analysis\n\n{This is where you critically evaluate each option presented in the *Options*\nsection. For each option, provide a balanced view of its advantages,\ndisadvantages, and any other relevant considerations or trade-offs. Be specific\nand, where possible, relate your points back to the *Drivers*.\n\nConsider aspects like:\n\n* Cost (development, operational, licensing)\n\n* Complexity (implementation, maintenance, learning curve)\n\n* Risks (technical, operational, security)\n\n* Alignment with architectural principles or existing standards\n\n* Impact on performance, scalability, usability, maintainability,\n    security, etc.\n\nInclude as may Pro/Con/Other statements as required.\n}\n\n### {Option 1 Assessment}\n\n* Pro: {A specific advantage or benefit of this option.}\n\n* Con: {A specific disadvantage, risk, or cost associated with this option.}\n\n* Other: {A relevant point that isn't strictly a pro or con.}\n\n### {Option n Assessment}\n\n...\n\n## Recommendation\n\n{This is where you clearly state the final decision, and explicitly name the\noption that has been selected. Explain in detail **why** this option was chosen.\nYou should clearly articulate how the chosen option best addresses the *Drivers*\nand meets the key requirements or solves the stated problem.}\n\n### Consequences\n\n{This section is **optional**.}\n\n{Now that a decision has been made what are the expected outcomes and impacts,\nboth positive and negative? What known limitations, costs, or risks are being\naccepted by making this decision? How will this decision affect different\nstakeholders, other systems, development practices, operational procedures, or\nuser experience?}\n\n* Pro: {A specific positive outcome or benefit expected from this decision.}\n\n* Con: {A specific accepted downside, cost, or risk resulting from this\n    decision. }\n\n* Other: {A consequence that isn't strictly a pro or con.}\n\n### Confirmation\n\n{This section is **optional**.}\n\n{Outline how the implementation of this decision will be verified and how\nongoing compliance will be ensured. This helps demonstrate that the decision\nisn't just theoretical but will be actively put into practice and monitored.\n\nHow will you check that the decision has been correctly implemented? (e.g., code\nreviews, specific tests, demonstrations, peer review).\n\nHow will adherence to this decision be maintained over time? (e.g., automated\nchecks, periodic audits, updates to team guidelines, training).\n\nAre there specific metrics or indicators that will show the decision is\nachieving its intended positive outcomes? (e.g., performance benchmarks,\nadoption rates, reduction in specific errors, user feedback scores).\n\nWho is responsible for overseeing this, and what happens if the decision is not\nfollowed?}\n\n## More Information\n\n{This section is **optional**.}\n\n{Use this section to provide any supplementary information that supports the\ndecision, adds context, or guides future actions. Links to other decisions and\nresources might appear here as well.\n\nYou could briefly note who was involved in the decision-making process and\nif/how consensus was reached. You may also want to suggest a timeframe or\nspecific events that might prompt a re-evaluation of this decision in the\nfuture.}\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    const isOrdered = ordered.test(line);
+                    const re = isOrdered ? ordered : bullet;
+                    const items = [];
+                    while (i < lines.length && re.test(lines[i])) {
+                        const m = lines[i].match(re);
+                        let item = m[3];
+                        i++;
+                        while (i < lines.length && lines[i].trim() && !bullet.test(lines[i]) && !ordered.test(lines[i])) {
+                            item += '\n' + lines[i].trim();
+                            i++;
+                        }
+                        items.push('<li>' + inline(item) + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

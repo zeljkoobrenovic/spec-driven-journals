@@ -1,10 +1,9 @@
 ---
-layout: post
 title:  "The Economic Value of Architecture: Two Metaphors"
 date:   2021-01-10 21:12:01 +0100
 categories: general
 author: by Željko Obrenović (obren.io)
-icon: economics.png
+icon: assets/icons/economics.png
 permalink: economics
 timetoread: 11 min
 excerpt: "In this post, I sketch two answers to the question of the economic value of architecture: the return on investment metaphor, and the financial options metaphor."

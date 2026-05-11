@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Documents</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        header.site {
+            padding-bottom: 14px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 0;
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: left;
+        }
+
+        header.site h1 {
+            margin-top: 30px;
+            margin-bottom: -10px;
+            padding: 0;
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            color: var(--muted);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 28px;
+            margin: 0 0 4px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: 0 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px solid var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 82px;
+            width: 82px;
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta a {
+            color: var(--fg);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 4px 0 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        
+        <h1>Documents</h1>
+        <p>Reference notes and excerpts on architecture decision records (ADRs).</p>
+    </header>
+
+    <div class="tag-filter" id="tag-filter"></div>
+    <div class="search">
+        <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+        <span class="hits" id="hits"></span>
+    </div>
+
+    <div id="sections"></div>
+    <p class="empty-msg" id="empty">No posts match your search.</p>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Fundamentals", "description": "What ADRs are and why teams use them.", "posts": [{"title": "What is an architecture decision record?", "excerpt": "An overview of ADRs and the surrounding terminology — architecture decision (AD), architecture decision log (ADL), architecturally-significant requirement (ASR), and architecture knowledge management (AKM).", "url": "what-is-an-architecture-decision-record.html", "icon": "assets/icons/what-is-an-architecture-decision-record.png", "tags": []}, {"title": "Suggestions for writing good ADRs", "excerpt": "What makes an ADR good: a clear rationale, a tight focus on one decision, dated entries, and immutable history — plus what belongs in the Context and Consequences sections.", "url": "suggestions-for-writing-good-adrs.html", "icon": "assets/icons/suggestions-for-writing-good-adrs.png", "tags": []}, {"title": "AWS Architectural Decision Records Process", "excerpt": "How AWS describes the ADR process: an ADR captures the context and consequences of a significant architectural decision, and the collection of ADRs forms the project's decision log.", "url": "aws-adr-process.html", "icon": "assets/icons/aws-adr-process.png", "tags": []}]}, {"title": "Getting Started", "description": "Practical ways to begin using ADRs.", "posts": [{"title": "How to start using ADRs", "excerpt": "Five areas a team should discuss when adopting ADRs: identifying decisions, making them, enacting and enforcing them, sharing them across projects, and documenting them.", "url": "how-to-start-using-adrs.html", "icon": "assets/icons/how-to-start-using-adrs.png", "tags": []}, {"title": "How to start using ADRs with git", "excerpt": "A minimal recipe for starting ADRs in a git-based project: create an adr/ directory, write one text file per decision, and commit it next to the source code.", "url": "how-to-start-using-adrs-with-git.html", "icon": "assets/icons/how-to-start-using-adrs-with-git.png", "tags": []}, {"title": "How to start using ADRs with tools", "excerpt": "ADRs work in whatever tool a team already uses — Google Docs, git, Jira, or a wiki. Pick the tool that matches the existing workflow rather than introducing a new one.", "url": "how-to-start-using-adrs-with-tools.html", "icon": "assets/icons/how-to-start-using-adrs-with-tools.png", "tags": []}, {"title": "File name conventions for ADRs", "excerpt": "A file-naming convention for ADRs stored as text files: lowercase, dashes, present-tense imperative verb phrases, and a markdown extension.", "url": "file-name-conventions-for-adrs.html", "icon": "assets/icons/file-name-conventions-for-adrs.png", "tags": []}]}, {"title": "Teamwork", "description": "How teams adopt and live with ADRs.", "posts": [{"title": "Teamwork advice for ADRs", "excerpt": "Three lessons from rolling out decision records with many teams: lead with the why, prefer the word \\\"decisions\\\" to \\\"ADRs\\\", and treat ADRs as living documents in practice.", "url": "teamwork-advice-for-adrs.html", "icon": "assets/icons/teamwork-advice-for-adrs.png", "tags": []}, {"title": "Teamwork questions for ADRs", "excerpt": "Questions a team should answer to agree on how ADRs work in their context: who can create one, what justifies raising or skipping one, the lifecycle, roles, governance, and guiding principles.", "url": "teamwork-questions-for-adrs.html", "icon": "assets/icons/teamwork-questions-for-adrs.png", "tags": []}]}, {"title": "Sustainability & Governance", "description": "Keeping decisions durable and enforceable over time.", "posts": [{"title": "Decision Sustainability Criteria", "excerpt": "Five criteria that make architectural decisions sustainable: strategic, measurable and manageable, achievable and realistic, rooted in requirements, and timeless.", "url": "decision-sustainability-criteria.html", "icon": "assets/icons/decision-sustainability-criteria.png", "tags": []}, {"title": "Guidelines to Achieve Sustainable Decisions", "excerpt": "Eight practical guidelines for producing sustainable architectural decisions: start lean, prioritize what matters, expand only what's important, reuse existing knowledge, and keep traceability in sync.", "url": "guidelines-to-achieve-sustainable-decisions.html", "icon": "assets/icons/guidelines-to-achieve-sustainable-decisions.png", "tags": []}, {"title": "Fitness functions for decisions as code", "excerpt": "Fitness functions are objective automated checks, written in code, that verify decisions are being maintained — making decisions testable, assurable, and continuously enforced.", "url": "fitness-functions-for-decisions-as-code.html", "icon": "assets/icons/fitness-functions-for-decisions-as-code.png", "tags": []}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag counts across all posts
+        const tagCounts = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+            });
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha)
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        sortedTags.forEach(([tag, count]) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            tagFilter.appendChild(btn);
+        });
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ')).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

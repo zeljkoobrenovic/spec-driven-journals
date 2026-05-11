@@ -14,15 +14,25 @@
         header.site .logo {
             display: block;
             width: 100%;
-            max-height: 280px;
+            max-height: 400px;
             object-fit: cover;
             border-radius: 6px;
-            margin-bottom: 24px;
+            margin-bottom: 0;
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: left;
         }
 
         header.site h1 {
-            margin: 0 0 8px;
-            font-size: 32px;
+            margin-top: 30px;
+            margin-bottom: -10px;
+            padding: 0;
+            font-size: 42px;
             font-weight: 700;
             letter-spacing: -0.01em;
         }
@@ -33,7 +43,7 @@
         }
 
         .search {
-            margin: 24px 0 40px;
+            margin: 0 0 38px;
         }
 
         .search input {
@@ -51,12 +61,71 @@
             border-color: var(--accent);
         }
 
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            color: var(--muted);
+        }
+
         section.group {
             margin-bottom: 48px;
         }
 
         section.group > h2 {
-            font-size: 22px;
+            font-size: 28px;
             margin: 0 0 4px;
             font-weight: 700;
             letter-spacing: -0.01em;
@@ -100,6 +169,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-top: 7px;
         }
 
         ul.posts .icon img {
@@ -148,25 +218,30 @@
 <body>
 <main>
     <header class="site">
-        <img class="logo" src="assets/images/under_the_hood_3.jpg" alt="">
+        <a href="assets/images/under_the_hood_3.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/under_the_hood_3.jpg" alt=""></a>
         <h1>Under the Hood</h1>
         <p>Notes on architecture, economics, and technology — by Željko Obrenović.</p>
     </header>
 
+    <div class="tag-filter" id="tag-filter"></div>
     <div class="search">
-        <input id="q" type="search" placeholder="Search posts..." autocomplete="off">
+        <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+        <span class="hits" id="hits"></span>
     </div>
 
     <div id="sections"></div>
     <p class="empty-msg" id="empty">No posts match your search.</p>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Architecture", "description": "Approaches and metaphors for the practice of architecture.", "posts": [{"title": "Architects as Superglue: One Approach To Being An Architect in IT Organizations", "excerpt": "This article is a written statement of my experiences on what it means to be an architect in IT organizations, how architects need to develop, and how architects should work together.", "url": "posts/superglue.html", "icon": "assets/icons/superglue.png"}, {"title": "Data + Automation + Curation = Useful Architectural Documentation", "excerpt": "This article summarizes my experiences in replacing classical architectural documentation with data-driven documents.", "url": "posts/documentation.html", "icon": "assets/icons/oil.png"}]}, {"title": "Economics & Cost", "description": "Thinking about the economic side of IT systems.", "posts": [{"title": "The IT Cost Box", "excerpt": "In this post, I introduce a simple model for thinking about IT costs in three dimensions. This model presents IT costs as the volume of the box, where each side of the box shows three drivers of the cost: unit costs, size, and time.", "url": "posts/costbox.html", "icon": "assets/icons/costs.png"}, {"title": "The Economic Value of Architecture: Two Metaphors", "excerpt": "In this post, I sketch two answers to the question of the economic value of architecture: the return on investment metaphor, and the financial options metaphor.", "url": "posts/economics.html", "icon": "assets/icons/economics.png"}, {"title": "What Digital Marketplaces Sell? A Short Memo", "excerpt": "Digital marketplaces facilitate transactions between buyers and sellers. The marketplace is not the seller (nor a buyer), but it sells a reduction in transaction costs. .", "url": "posts/digital-marketplaces.html", "icon": "assets/icons/market.png"}]}, {"title": "Cloud & Platforms", "description": "Cloud capabilities and the platforms built on top of them.", "posts": [{"title": "Uber's Payments Platform", "excerpt": "Recently, Uber has announced deeper push into financial services with Uber Money, a new division, including products such as a digital wallet and upgraded debit and credit cards. It is expected that Uber could soon offer a bank account to consumers on its platform. While many of the news articles focus on the business side of Uber move, limited resources are available to understand better the payment technology that Uber is building. I believe that we can learn from looking under the hood of Uber payment technologies, as the Uber approach may be the way how we will make the banks of the future.", "url": "posts/uber-payments-platform.html", "icon": "assets/icons/uber.png"}, {"title": "Public Cloud: Great Expectations", "excerpt": "This article enlists some of the key benefits we can expect from of cloud: development velocity, performance, scalability, functionality, uptime, costs, transparency, and security. The article also provides a reality check on these expectations. You need to earn the public cloud benefits; simply moving to the cloud rarely leads to immediate improvements.", "url": "posts/cloud-expectations.html", "icon": "assets/icons/cloud.png"}]}, {"title": "Media & Streaming", "description": "Distributing video and other media at scale.", "posts": [{"title": "Adaptive HTTP Streaming Technologies: The Problem Statement", "excerpt": "Adaptive HTTP Streaming technologies enable distributing video efficiently via the standard HTTP infrastructure and CDNs. These technologies offer three key elements that the technologies introduce to solve critical challenges: segmentation of video content in smaller blocks to minimize overhead, improve user experience, and improve caching performance, adaptivity by having multiple channels of variable quality to enable automatic switching among channels based on the device characteristics and network performance, and securing the video content while keeping the benefits of efficient HTTP content distribution.", "url": "posts/adaptive-http-streaming.html", "icon": "assets/icons/streaming.png"}]}, {"title": "AI & Tooling", "description": "Working with AI assistants in software development.", "posts": [{"title": "LLMs, ChatGPT and Evolution of Software Engineering: Patterns, Anti-Patterns, and Quality Imperative", "excerpt": "LLMs like ChatGPT can significantly impact software engineering by synergically combining Natural Language Processing (NLP), LLM-driven Soft Programming, and Traditional Hard Programming. Three synergy patterns: Generative Pattern, Learning and Explanation Pattern, and Hardening Pattern, can help developers harness the potential of these technologies.", "url": "posts/chatgpt-se-evolution.html", "icon": "assets/icons/chatgpt.png"}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Architecture", "description": "Approaches and metaphors for the practice of architecture.", "posts": [{"title": "Architects as Superglue: One Approach To Being An Architect in IT Organizations", "excerpt": "This article is a written statement of my experiences on what it means to be an architect in IT organizations, how architects need to develop, and how architects should work together.", "url": "superglue.html", "icon": "assets/icons/superglue.png", "tags": []}, {"title": "Data + Automation + Curation = Useful Architectural Documentation", "excerpt": "This article summarizes my experiences in replacing classical architectural documentation with data-driven documents.", "url": "documentation.html", "icon": "assets/icons/oil.png", "tags": []}]}, {"title": "Economics & Cost", "description": "Thinking about the economic side of IT systems.", "posts": [{"title": "The IT Cost Box", "excerpt": "In this post, I introduce a simple model for thinking about IT costs in three dimensions. This model presents IT costs as the volume of the box, where each side of the box shows three drivers of the cost: unit costs, size, and time.", "url": "costbox.html", "icon": "assets/icons/costs.png", "tags": []}, {"title": "The Economic Value of Architecture: Two Metaphors", "excerpt": "In this post, I sketch two answers to the question of the economic value of architecture: the return on investment metaphor, and the financial options metaphor.", "url": "economics.html", "icon": "assets/icons/economics.png", "tags": []}, {"title": "What Digital Marketplaces Sell? A Short Memo", "excerpt": "Digital marketplaces facilitate transactions between buyers and sellers. The marketplace is not the seller (nor a buyer), but it sells a reduction in transaction costs. .", "url": "digital-marketplaces.html", "icon": "assets/icons/market.png", "tags": []}]}, {"title": "Cloud & Platforms", "description": "Cloud capabilities and the platforms built on top of them.", "posts": [{"title": "Uber's Payments Platform", "excerpt": "Recently, Uber has announced deeper push into financial services with Uber Money, a new division, including products such as a digital wallet and upgraded debit and credit cards. It is expected that Uber could soon offer a bank account to consumers on its platform. While many of the news articles focus on the business side of Uber move, limited resources are available to understand better the payment technology that Uber is building. I believe that we can learn from looking under the hood of Uber payment technologies, as the Uber approach may be the way how we will make the banks of the future.", "url": "uber-payments-platform.html", "icon": "assets/icons/uber.png", "tags": []}, {"title": "Public Cloud: Great Expectations", "excerpt": "This article enlists some of the key benefits we can expect from of cloud: development velocity, performance, scalability, functionality, uptime, costs, transparency, and security. The article also provides a reality check on these expectations. You need to earn the public cloud benefits; simply moving to the cloud rarely leads to immediate improvements.", "url": "cloud-expectations.html", "icon": "assets/icons/cloud.png", "tags": []}]}, {"title": "Media & Streaming", "description": "Distributing video and other media at scale.", "posts": [{"title": "Adaptive HTTP Streaming Technologies: The Problem Statement", "excerpt": "Adaptive HTTP Streaming technologies enable distributing video efficiently via the standard HTTP infrastructure and CDNs. These technologies offer three key elements that the technologies introduce to solve critical challenges: segmentation of video content in smaller blocks to minimize overhead, improve user experience, and improve caching performance, adaptivity by having multiple channels of variable quality to enable automatic switching among channels based on the device characteristics and network performance, and securing the video content while keeping the benefits of efficient HTTP content distribution.", "url": "adaptive-http-streaming.html", "icon": "assets/icons/streaming.png", "tags": []}]}, {"title": "AI & Tooling", "description": "Working with AI assistants in software development.", "posts": [{"title": "LLMs, ChatGPT and Evolution of Software Engineering: Patterns, Anti-Patterns, and Quality Imperative", "excerpt": "LLMs like ChatGPT can significantly impact software engineering by synergically combining Natural Language Processing (NLP), LLM-driven Soft Programming, and Traditional Hard Programming. Three synergy patterns: Generative Pattern, Learning and Explanation Pattern, and Hardening Pattern, can help developers harness the potential of these technologies.", "url": "chatgpt-se-evolution.html", "icon": "assets/icons/chatgpt.png", "tags": []}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
         const root = document.getElementById('sections');
         const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const qInput = document.getElementById('q');
 
         function el(tag, attrs, children) {
             const e = document.createElement(tag);
@@ -179,6 +254,34 @@
             return e;
         }
 
+        // Tag counts across all posts
+        const tagCounts = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+            });
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha)
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        sortedTags.forEach(([tag, count]) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            tagFilter.appendChild(btn);
+        });
+
+        // Render sections
         data.sections.forEach(section => {
             const sec = el('section', {class: 'group'});
             sec.appendChild(el('h2', {text: section.title}));
@@ -186,13 +289,20 @@
             const ul = el('ul', {class: 'posts'});
             section.posts.forEach(p => {
                 const li = el('li');
-                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '')).toLowerCase();
+                const tags = p.tags || [];
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ')).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
                 const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
                 if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
                 li.appendChild(iconWrap);
                 const meta = el('div', {class: 'meta'});
                 meta.appendChild(el('a', {href: p.url, text: p.title}));
                 if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
                 li.appendChild(meta);
                 ul.appendChild(li);
             });
@@ -200,21 +310,42 @@
             root.appendChild(sec);
         });
 
-        document.getElementById('q').addEventListener('input', function (e) {
-            const q = e.target.value.trim().toLowerCase();
-            let anyVisible = false;
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
             root.querySelectorAll('section.group').forEach(sec => {
                 let secVisible = false;
                 sec.querySelectorAll('li').forEach(li => {
-                    const match = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag;
                     li.classList.toggle('hidden', !match);
-                    if (match) secVisible = true;
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
                 });
                 sec.classList.toggle('empty', !secVisible);
-                if (secVisible) anyVisible = true;
             });
-            empty.classList.toggle('show', !anyVisible);
-        });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
     })();
 </script>
 </body>

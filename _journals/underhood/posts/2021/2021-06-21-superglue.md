@@ -5,7 +5,7 @@ date:   2021-10-21 21:12:01 +0100
 categories: superglue
 author: by Željko Obrenović (obren.io)
 permalink: superglue
-icon: superglue.png
+icon: assets/icons/superglue.png
 timetoread: 15 min
 excerpt: This article is a written statement of my experiences on what it means to be an architect in IT organizations, how architects need to develop, and how architects should work together.
 

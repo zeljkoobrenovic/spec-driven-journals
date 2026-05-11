@@ -1,16 +1,15 @@
 ---
-layout: post
 title: "Public Cloud: Great Expectations"
 date:   2020-01-21 21:12:01 +0100
 categories: architecture
-icon: cloud.png
+icon: assets/icons/cloud.png
 author: by Željko Obrenović (obren.io)
 permalink: cloud-expectations
 timetoread: 15 min
 excerpt: "This article enlists some of the key benefits we can expect from of cloud: development velocity, performance, scalability, functionality, uptime, costs, transparency, and security. The article also provides a reality check on these expectations. You need to earn the public cloud benefits; simply moving to the cloud rarely leads to immediate improvements."
 
 ---
-![](../assets/images/cloudstrategy/expectations.jpg)
+![](assets/images/cloudstrategy/expectations.jpg)
 
 > **KEY POINTS:**
 > * This article enlists some of the key benefits you could expect from of cloud: velocity, performance, scalability, functionality, uptime, costs, transparency, and security. 

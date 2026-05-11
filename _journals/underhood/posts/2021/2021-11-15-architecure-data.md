@@ -5,7 +5,7 @@ date:   2021-10-21 21:12:01 +0100
 categories: architecture
 author: by Željko Obrenović (obren.io)
 permalink: documentation
-icon: oil.png
+icon: assets/icons/oil.png
 timetoread: 15 min
 excerpt: This article summarizes my experiences in replacing classical architectural documentation with data-driven documents.
 

@@ -5,7 +5,7 @@ date:   2021-10-21 21:12:01 +0100
 categories: architecture
 author: by Željko Obrenović (obren.io)
 permalink: digital-marketplaces
-icon: market.png
+icon: assets/icons/market.png
 timetoread: 15 min
 excerpt: Digital marketplaces facilitate transactions between buyers and sellers. The marketplace is not the seller (nor a buyer), but it sells a reduction in transaction costs. .
 ---

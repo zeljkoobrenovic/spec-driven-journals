@@ -1,0 +1,33 @@
+---
+title: "Decision record template by Michael Nygard"
+date:   2020-01-21 21:12:01 +0100
+icon: assets/icons/michael-nygard.jpeg
+author: by Željko Obrenović (obren.io)
+permalink: michael-nygard
+timetoread: 15 min
+excerpt: "Michael Nygard's lightweight ADR template — Title, Status, Context, Decision, Consequences. The original short-form template that popularized ADRs and underpins tools such as adr-tools."
+---
+![](https://i.ytimg.com/vi/VZePNGQojfA/maxresdefault.jpg)
+
+This is the template in [Documenting architecture decisions - Michael Nygard](http://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions).
+You can use [adr-tools](https://github.com/npryce/adr-tools) for managing the ADR files.
+
+In each ADR file, write these sections:
+
+# Title
+
+## Status
+
+What is the status, such as proposed, accepted, rejected, deprecated, superseded, etc.?
+
+## Context
+
+What is the issue that we're seeing that is motivating this decision or change?
+
+## Decision
+
+What is the change that we're proposing and/or doing?
+
+## Consequences
+
+What becomes easier or more difficult to do because of this change?

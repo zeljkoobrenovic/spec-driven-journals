@@ -24,7 +24,7 @@ There is no test suite, lint config, or CI yet.
 3. For each post listed under a section, parses front matter (`---`-fenced YAML-ish key/value block) and treats the body as markdown.
 4. Splits the body into typed **blocks** (currently always one `markdown` block) — see "Extending blocks" below.
 5. Embeds the structured data as JSON inside `_templates/index.html` and `_templates/post.html` via `__DATA_JSON__` placeholder substitution; client-side JS does the rendering.
-6. Writes output to `docs/<j>/index.html` and `docs/<j>/posts/<slug>.html`. Assets are copied wholesale from `_journals/<j>/assets/` to `docs/<j>/assets/`.
+6. Writes output to `docs/<j>/index.html` and `docs/<j>/<slug>.html` (posts sit alongside the index, not under a `posts/` subdir). Assets are copied wholesale from `_journals/<j>/assets/` to `docs/<j>/assets/`.
 
 The templates use plain `__PLACEHOLDER__` string substitution (not Jinja). Placeholders: `__TITLE__`, `__DESCRIPTION__`, `__JOURNAL__`, `__LOGO_HTML__`, `__BYLINE__`, `__DATA_JSON__`.
 
@@ -47,7 +47,7 @@ Posts within a section are sorted by **basename** at build time, regardless of y
 
 ## Asset paths in posts
 
-Posts reference images as `assets/images/...` (Jekyll-style, relative to the journal root). The build rewrites these to `../assets/...` so they resolve from the post's output location (`docs/<j>/posts/<slug>.html` — one level below the journal root). The rewrite (`_ASSET_REF` in `build.py`) covers markdown image/link syntax and raw HTML `src=`/`href=` attributes.
+Posts reference images as `assets/images/...` (Jekyll-style, relative to the journal root). Since posts now live at the journal root (`docs/<j>/<slug>.html`) the build rewrites these to `assets/...` (no path prefix needed). The rewrite (`_ASSET_REF` in `build.py`) covers markdown image/link syntax and raw HTML `src=`/`href=` attributes.
 
 ## Client-side rendering
 
@@ -95,7 +95,7 @@ Do not change the `{ type, content }` envelope — the dispatcher in `post.html`
 
 ## Front matter
 
-Posts use Jekyll-style front matter. Recognized keys used by the build: `title`, `date`, `author`, `excerpt`, `icon`, `permalink`, `timetoread`. `permalink` becomes the URL slug (`docs/<j>/posts/<permalink>/index.html`); falls back to the file stem if absent. `icon` is looked up under `assets/icons/<name>` of the journal.
+Posts use Jekyll-style front matter. Recognized keys used by the build: `title`, `date`, `author`, `excerpt`, `icon`, `permalink`, `timetoread`. `permalink` becomes the URL slug (`docs/<j>/<permalink>.html`); falls back to the file stem if absent. `icon` is looked up under `assets/icons/<name>` of the journal.
 
 ## Conventions
 

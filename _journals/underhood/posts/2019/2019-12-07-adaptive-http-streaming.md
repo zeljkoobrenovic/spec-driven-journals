@@ -3,7 +3,7 @@ layout: post
 title:  "Adaptive HTTP Streaming Technologies: The Problem Statement"
 date:   2019-12-06 21:12:01 +0100
 categories: media
-icon: streaming.png
+icon: assets/icons/streaming.png
 author: by Željko Obrenović
 permalink: adaptive-http-streaming
 excerpt: "Adaptive HTTP Streaming technologies enable distributing video efficiently via the standard HTTP infrastructure and CDNs. These technologies offer three key elements that the technologies introduce to solve critical challenges: segmentation of video content in smaller blocks to minimize overhead, improve user experience, and improve caching performance, adaptivity by having multiple channels of variable quality to enable automatic switching among channels based on the device characteristics and network performance, and securing the video content while keeping the benefits of efficient HTTP content distribution."

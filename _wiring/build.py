@@ -183,6 +183,19 @@ def _rewrite_asset_paths(body: str, prefix: str) -> str:
     return _ASSET_REF.sub(lambda m: m.group(1) + prefix, body)
 
 
+def _merge_copytree(src: Path, dst: Path) -> None:
+    """Recursively copy ``src`` into ``dst``, merging into existing
+    subdirectories (unlike shutil.copytree pre-3.8). Files in ``src``
+    overwrite same-named files in ``dst``."""
+    dst.mkdir(parents=True, exist_ok=True)
+    for entry in src.iterdir():
+        target = dst / entry.name
+        if entry.is_dir():
+            _merge_copytree(entry, target)
+        else:
+            shutil.copyfile(entry, target)
+
+
 def _parse_force_graph(src: str) -> str:
     """Parse a force-graph DSL block into a JSON string with shape
     {nodes:[{id, size}], links:[{source, target}]}.
@@ -342,6 +355,7 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
     title = config.get("title") or journal_dir.name
     description = config.get("description") or ""
     logo = config.get("logo") or ""
+    logo_credit = config.get("logo_credit") or ""
     sections = config.get("sections") or []
 
     out_dir = DOCS_DIR / journal_dir.name
@@ -359,11 +373,11 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
     if site_css.exists():
         shutil.copyfile(site_css, out_dir / "site.css")
 
-    posts_out = out_dir / "posts"
-    posts_out.mkdir()
-
-    # render each post; collect index data
-    index_sections = []
+    # Two-pass render: first walk all sections to collect existing posts in
+    # config order (needed for prev/next nav), then render each one with the
+    # right neighbors.
+    section_plan = []  # list of (s_title, s_desc, [(rel, src, meta, slug)])
+    flat = []          # list of (slug, title) in config order across sections
     for section in sections:
         s_title = section.get("title") or ""
         s_desc = section.get("description") or ""
@@ -371,7 +385,7 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
         # sort by file name
         post_paths = sorted(post_paths, key=lambda p: os.path.basename(p))
 
-        section_posts = []
+        entries = []
         for rel in post_paths:
             src = journal_dir / "posts" / rel
             if not src.exists():
@@ -379,28 +393,52 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
                 continue
             meta, body = parse_front_matter(src.read_text(encoding="utf-8"))
             slug = meta.get("permalink") or src.stem
-            # posts live at <journal>/posts/<slug>.html; assets at <journal>/assets/
-            body = _rewrite_asset_paths(body, "../assets/")
+            entries.append((rel, src, meta, body, slug))
+            flat.append((slug, meta.get("title", slug)))
+        section_plan.append((s_title, s_desc, entries))
+
+    index_sections = []
+    for s_title, s_desc, entries in section_plan:
+        section_posts = []
+        for rel, src, meta, body, slug in entries:
+            # posts live at <journal>/<slug>.html; assets at <journal>/assets/
+            body = _rewrite_asset_paths(body, "assets/")
+            # If the post has its own assets/ folder colocated with index.md,
+            # merge it into the journal-level docs/<j>/assets/ so the rewritten
+            # references resolve.
+            post_assets_src = src.parent / "assets"
+            if post_assets_src.is_dir():
+                _merge_copytree(post_assets_src, out_dir / "assets")
             blocks = split_into_blocks(body)
+            tags = _parse_tags(meta.get("tags", ""))
 
             post_payload = {
                 "meta": meta,
+                "tags": tags,
                 "blocks": blocks,
             }
+            post_logo_html = _logo_html(meta.get("logo", ""), meta.get("logo_credit", ""))
+            idx = next(i for i, (s, _t) in enumerate(flat) if s == slug)
+            prev_post = flat[idx - 1] if idx > 0 else None
+            next_post = flat[idx + 1] if idx < len(flat) - 1 else None
+            nav_html = _post_nav_html(title, prev_post, next_post)
             html = (
                 post_tpl
                 .replace("__TITLE__", _html_escape(meta.get("title", slug)))
                 .replace("__BYLINE__", _html_escape(_byline(meta)))
+                .replace("__LOGO_HTML__", post_logo_html)
+                .replace("__POST_NAV__", nav_html)
                 .replace("__DATA_JSON__", _embed_json(post_payload))
             )
-            (posts_out / f"{slug}.html").write_text(html, encoding="utf-8")
+            (out_dir / f"{slug}.html").write_text(html, encoding="utf-8")
 
             icon_name = meta.get("icon")
             section_posts.append({
                 "title": meta.get("title", slug),
                 "excerpt": meta.get("excerpt", ""),
-                "url": f"posts/{slug}.html",
-                "icon": f"assets/icons/{icon_name}" if icon_name else None,
+                "url": f"{slug}.html",
+                "icon": f"{icon_name}" if icon_name else None,
+                "tags": tags,
             })
 
         index_sections.append({
@@ -409,9 +447,7 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
             "posts": section_posts,
         })
 
-    logo_html = (
-        f'<img class="logo" src="{_html_escape(logo)}" alt="">' if logo else ""
-    )
+    logo_html = _logo_html(logo, logo_credit)
 
     index_payload = {"sections": index_sections}
     index_html = (
@@ -425,6 +461,52 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
     (out_dir / "index.html").write_text(index_html, encoding="utf-8")
 
     print(f"[built] {journal_dir.name} -> {out_dir.relative_to(ROOT)}")
+
+
+def _parse_tags(raw: str) -> list:
+    """Split a comma-separated `tags:` value into a list of trimmed tags."""
+    if not raw:
+        return []
+    return [t.strip() for t in raw.split(",") if t.strip()]
+
+
+def _post_nav_html(journal_title: str, prev_post, next_post) -> str:
+    """Render the post-level navigation row: journal-title link on the left,
+    optional prev/next links grouped on the right. ``prev_post``/``next_post``
+    are (slug, title) tuples or None."""
+    parts = [
+        f'<a class="nav-back" href="index.html">[{_html_escape(journal_title)}]</a>',
+        '<span class="nav-right">',
+    ]
+    if prev_post:
+        slug, title = prev_post
+        parts.append(
+            f'<a class="nav-prev" href="{_html_escape(slug)}.html" '
+            f'title="{_html_escape(title)}">← Previous</a>'
+        )
+    if prev_post and next_post:
+        parts.append('<span class="nav-sep">&nbsp;|&nbsp;</span>')
+    if next_post:
+        slug, title = next_post
+        parts.append(
+            f'<a class="nav-next" href="{_html_escape(slug)}.html" '
+            f'title="{_html_escape(title)}">Next →</a>'
+        )
+    parts.append('</span>')
+    return '<nav class="post-nav">' + "".join(parts) + "</nav>"
+
+
+def _logo_html(logo: str, credit: str) -> str:
+    if not logo:
+        return ""
+    src = _html_escape(logo)
+    out = (
+        f'<a href="{src}" target="_blank" rel="noopener noreferrer">'
+        f'<img class="logo" src="{src}" alt=""></a>'
+    )
+    if credit:
+        out += f'\n        <p class="logo-credit">{_html_escape(credit)}</p>'
+    return out
 
 
 def _byline(meta: dict) -> str:
