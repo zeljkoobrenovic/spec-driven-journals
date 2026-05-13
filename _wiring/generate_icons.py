@@ -6,13 +6,19 @@ Usage:
 
 The set of posts to process is taken from the journal's ``config.yaml``
 (the same source of truth ``build.py`` uses): every path listed under
-``sections[].posts`` is checked. For each post that does not already have an
-``icon:`` front-matter field, the script:
+``sections[].posts`` is checked. The skip decision is based on the icon
+file's presence on disk -- not on the front-matter field -- so a post whose
+``icon:`` is set but whose underlying file was deleted will get regenerated.
 
-  1. Builds a short visual prompt from the post title + excerpt.
-  2. Calls the Gemini image model and saves the result to
-     ``_journals/<journal>/assets/icons/<slug>.png``.
-  3. Rewrites the post's front matter to add::
+For each post:
+
+  1. If the icon file exists on disk, skip generation. If the post is missing
+     the ``icon:`` front-matter field, wire it up.
+  2. Otherwise, build a short visual prompt from the post title + excerpt,
+     call the Gemini image model, and save the result to
+     ``_journals/<journal>/assets/icons/<slug>.png`` (or to the per-post
+     folder for the ``<slug>/index.md`` layout).
+  3. Add the front-matter field if it isn't already there::
 
          icon: assets/icons/<slug>.png
 
@@ -206,12 +212,13 @@ def process_post(journal_dir: Path, post_src: Path, api_key: str, dry_run: bool)
         return f"skip (no front matter): {label}"
 
     meta = parse_fm_dict(fm_lines)
-    if meta.get("icon"):
-        return f"skip (icon already set): {label}"
-
     icon_path, icon_value = _icon_paths(journal_dir, post_src)
+
     if icon_path.exists():
-        # Image present but not referenced -- wire it up without re-generating.
+        # File on disk is the source of truth. If the front-matter field is
+        # already set, leave the post alone; otherwise wire it up.
+        if meta.get("icon"):
+            return f"skip (icon file present): {label}"
         if not dry_run:
             write_post_with_added_fm(
                 post_src,
@@ -233,12 +240,13 @@ def process_post(journal_dir: Path, post_src: Path, api_key: str, dry_run: bool)
     icon_path.parent.mkdir(parents=True, exist_ok=True)
     icon_path.write_bytes(image_bytes)
 
-    write_post_with_added_fm(
-        post_src,
-        fm_lines,
-        body,
-        [("icon", icon_value)],
-    )
+    if not meta.get("icon"):
+        write_post_with_added_fm(
+            post_src,
+            fm_lines,
+            body,
+            [("icon", icon_value)],
+        )
     return f"generated: {label}"
 
 

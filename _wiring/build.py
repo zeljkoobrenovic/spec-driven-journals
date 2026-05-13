@@ -298,6 +298,9 @@ _BLOCK_FENCES = [
         ("---end bubble-chart---", "---end buble-chart---"),
         _parse_bubble_chart,
     ),
+    # Wardley map: raw <wardley-map> HTML, rendered by the upstream web
+    # component (https://github.com/jamesaduncan/Wardley-map).
+    ("wardley-map", ("---begin wardley-map---",), ("---end wardley-map---",), None),
 ]
 
 

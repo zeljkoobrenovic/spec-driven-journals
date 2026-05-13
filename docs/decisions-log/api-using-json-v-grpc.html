@@ -193,6 +193,25 @@
             padding: 0;
         }
 
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
         article .mermaid {
             text-align: center;
             margin: 24px 0;
@@ -234,7 +253,7 @@
     </footer>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script id="data" type="application/json">{"meta": {"title": "API using JSON v. gRPC", "date": "2020-01-21 21:12:01 +0100", "icon": "assets/icons/grpc.png", "author": "by Team", "permalink": "api-using-json-v-grpc", "excerpt": "We will use gRPC for the new service's API. Binary serialization, schema-first contracts, and built-in streaming outweigh the lower discoverability and library reach of JSON over HTTP for our workload.", "logo": "assets/images/api-vs-grpc.jpeg", "tags": "accepted"}, "tags": ["accepted"], "blocks": [{"type": "markdown", "content": "> **Status**: Accepted (2020-01-21)\n>\n> **Decision**: We will use gRPC, not JSON over HTTP, for the new service's API. We accept the higher learning curve and narrower client support in exchange for binary efficiency, schema-first contracts, and first-class streaming.\n\n## Context\n\nWe are designing the API for a new service that will be consumed by multiple internal clients and is expected to handle large payloads and, in the near future, real-time streaming. Two options are on the table:\n\n- **JSON over HTTP.** Ubiquitous, easy to consume from any language, trivially debuggable. The cost is verbose payloads, no schema enforcement out of the box, and request/response-only semantics.\n- **gRPC.** Protobuf-based binary serialization over HTTP/2, with schema-first interface definitions and built-in support for unary, server-streaming, client-streaming, and bidirectional calls. The cost is a heavier toolchain and clients that must speak gRPC.\n\n## Decision\n\nThe new service will expose its API over gRPC. All internal clients will consume it via generated gRPC stubs. If we later need a browser- or third-party-facing surface, we will put a thin JSON/HTTP gateway in front of the same gRPC service rather than maintain two parallel implementations.\n\n## Rationale\n\n1. **Payload efficiency.** Protobuf encoding is significantly smaller and faster to parse than JSON for the data volumes we expect. This matters both for latency-sensitive paths and for inter-service bandwidth costs.\n2. **Schema-first contracts.** `.proto` files give us a single source of truth for the API. Breaking changes are caught at compile time in every client language we generate stubs for, rather than at runtime against a hand-written client.\n3. **Streaming as a first-class feature.** Bidirectional streaming is built into the protocol, so we will not need to bolt on WebSockets or Server-Sent Events when real-time use cases land.\n4. **Cross-language stubs.** gRPC generates idiomatic clients for every language we currently use, removing a class of hand-written serialization bugs.\n\n## Implications\n\n1. **Tooling investment.** Teams will need to learn protobuf, gRPC's status codes, and the generation toolchain. We will document the workflow and provide build-system integration.\n2. **Client reach.** Browsers and external partners cannot consume gRPC directly. We accept this and will introduce gRPC-Web or a JSON gateway only when we have a concrete client that needs one.\n3. **Debugging surface.** Wire traffic is binary, so `curl`-style debugging is replaced by `grpcurl` and equivalent tooling. We will standardize on a small set of these tools.\n4. **Observability.** Tracing and metrics interceptors must be added explicitly — they will be part of the shared service template rather than left to each team.\n\n## Conclusion\n\ngRPC matches the shape of the workload — internal clients, large payloads, streaming on the horizon — better than JSON over HTTP. The toolchain cost is real but bounded, and the schema-first contract removes a category of integration bugs we have repeatedly hit in earlier projects.\n"}]}</script>
@@ -261,6 +280,15 @@
 
             const bullet = /^(\s*)([-*])\s+(.*)$/;
             const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
 
             function inline(s) {
                 // Posts are trusted content, so raw HTML passes through unescaped
@@ -322,6 +350,27 @@
                     continue;
                 }
 
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => { html += '<th>' + inline(h) + '</th>'; });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => { html += '<td>' + inline(c) + '</td>'; });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
                 if (bullet.test(line) || ordered.test(line)) {
                     const isOrdered = ordered.test(line);
                     const re = isOrdered ? ordered : bullet;
@@ -342,7 +391,7 @@
 
                 const buf = [line];
                 i++;
-                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i])) {
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
                     buf.push(lines[i]);
                     i++;
                 }

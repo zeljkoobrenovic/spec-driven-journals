@@ -7,7 +7,6 @@ author: by Željko Obrenović (obren.io)
 permalink: cloud-expectations
 timetoread: 15 min
 excerpt: "This article enlists some of the key benefits we can expect from of cloud: development velocity, performance, scalability, functionality, uptime, costs, transparency, and security. The article also provides a reality check on these expectations. You need to earn the public cloud benefits; simply moving to the cloud rarely leads to immediate improvements."
-
 ---
 ![](assets/images/cloudstrategy/expectations.jpg)
 
@@ -19,7 +18,7 @@ excerpt: "This article enlists some of the key benefits we can expect from of cl
 > *"We changed again, and yet again, and it was now too late and too far to go back, and I went on. And the mists had all solemnly risen now, and the world lay spread before me."*
 >&nbsp;
 >&nbsp;
-<br>― Charles Dickens, Great Expectations
+>-Charles Dickens, Great Expectations
 
 &nbsp; 
 &nbsp;
@@ -175,7 +174,28 @@ Another important thing is to measure your progress. Setting expectations to be 
 
 Lastly, moving to the cloud is not only a technical issue. Improving development velocity, for instance, does not have value in itself. The value of development velocity lies in shorter [time-to-market (TTM)](https://en.wikipedia.org/wiki/Time_to_market). But estimating the value of shorter TTM requires input from product and business stakeholders. Consequently, we need to work closely with business stakeholders to create realistic and pragmatic cases of public cloud usage.
 
+---begin mermaid---
 
+wardley-beta
+title Tea Shop Value Chain
+
+anchor Product Engineer [0.95, 0.30]
+component Run evaluations [0.70, 0.41]
+component Support for agents [0.60, 0.31]
+
+Product Engineer -> Run evaluations
+Product Engineer -> Support for agents
+Cup of Tea -> Hot Water
+Hot Water -> Kettle
+Kettle -> Power
+
+evolve Kettle 0.62
+evolve Power 0.89
+
+note "Standardising power allows Kettles to evolve faster" [0.30, 0.49]
+
+
+---end mermaid---
 
 
 ## Acknowledgments

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Setting Up Claude Code: CLAUDE.md, Memory, and Standards</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">AI Dev Strategy 2026</a><span class="nav-right"><a class="nav-prev" href="claude-code-as-standard.html" title="Why Claude Code: The Three Capabilities That Matter">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="mcp-skills-subagents.html" title="MCP, Skills, and Subagents: The Modernization Toolkit">Next →</a></span></nav>
+    <header class="post">
+        <p class="section">Setting Up Claude Code</p>
+        <h1>Setting Up Claude Code: CLAUDE.md, Memory, and Standards</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2026-05-13  ·  8 min</p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/claude-md-and-memory/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/claude-md-and-memory/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3.1-flash-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">AI Dev Strategy 2026</a><span class="nav-right"><a class="nav-prev" href="claude-code-as-standard.html" title="Why Claude Code: The Three Capabilities That Matter">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="mcp-skills-subagents.html" title="MCP, Skills, and Subagents: The Modernization Toolkit">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Setting Up Claude Code: CLAUDE.md, Memory, and Standards", "date": "2026-05-13 09:35:00 +0100", "author": "by Željko Obrenović (obren.io)", "permalink": "claude-md-and-memory", "timetoread": "8 min", "excerpt": "How to make engineering standards stick: project, user, and organization-level CLAUDE.md files plus the memory system. Standards become defaults, not aspirations.", "icon": "assets/icons/claude-md-and-memory.png", "logo": "assets/images/claude-md-and-memory/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3.1-flash-image-preview)"}, "tags": [], "blocks": [{"type": "markdown", "content": "> KEY POINTS:\n> * How to make engineering standards stick: project, user, and organization-level CLAUDE.md files plus the memory system. \n> * Standards become defaults, not aspirations.\n\n<hr>\n\nAfter choosing Claude Code as the default, the first practical question is context. `CLAUDE.md` is where the organization turns repeated review comments, repository traps, and build rules into instructions the tool reads every time.\n\n## Three layers of context\n\nClaude Code has three distinct places to put instructions, and using each correctly is the difference between standards that work and standards engineers route around.\n\n| Layer | File | What belongs here |\n| --- | --- | --- |\n| **Organization** | A shared `CLAUDE.md` distributed via template repo or symlink | Cross-cutting rules: security policy, tool allowlist, definition of done |\n| **Project** | `<repo-root>/CLAUDE.md` | Conventions specific to this codebase: framework choices, build commands, test invocations, where to put what |\n| **User** | `~/.claude/CLAUDE.md` and the memory system | Personal preferences: response style, languages the engineer is fluent in, how they like reviews framed |\n\nAll three load automatically. None of them require the engineer to remember to attach context.\n\n## Project `CLAUDE.md`: the highest-leverage file\n\nThis is the file that pays for itself fastest. It lives at the repository root and answers the questions Claude Code would otherwise have to discover by trial and error.\n\nA workable starter template:\n\n```markdown\n# Project: order-service\n\n## What this is\nJava 21 service that owns the `orders` business capability. Publishes\n`orders.events.v1` to MSK; reads from PostgreSQL `orders` schema; deployed to\nECS via CDK in `infra/`.\n\n## Build and verify\n- `make build` — compile + unit tests\n- `make verify` — adds integration tests against testcontainers\n- Always run `make verify` before declaring work done.\n\n## Conventions\n- Logging: structured JSON via `lib/logging` — never use `System.out`.\n- Errors: domain errors extend `OrderDomainError`; transport errors stay in\n  the controller layer.\n- Kafka: use `OrderEventProducer`, which adds correlation IDs and schema\n  validation. Do not call the raw KafkaProducer.\n- Database: migrations live in `db/migrations/` and run automatically. Never\n  hand-edit production SQL.\n\n## Things that look wrong but aren't\n- The `legacy/` package is intentionally unrefactored; it is being strangled\n  out and tracked in ADR-0042. Don't tidy it.\n- `OrderRepository.findByLegacyId` returns `null` on miss, not Optional —\n  matches the legacy ID format from the .NET system. Do not \"fix\" this.\n\n## When in doubt\nCheck `docs/adr/` for architecture decisions. Ask before changing event\nschemas, IAM policies, or anything in `infra/prod/`.\n```\n\nTwo things make this work:\n\n1. **It encodes invariants, not preferences.** \"Always use `OrderEventProducer`\" is an invariant — breaking it produces wrong data. \"Prefer functional style\" is a preference that bloats the file and gets ignored.\n2. **It calls out traps.** The \"things that look wrong but aren't\" section saves more time than the rest of the file combined, because it stops Claude Code (and new engineers) from \"fixing\" things that are deliberate.\n\n## Organization `CLAUDE.md`: cross-cutting rules\n\nThis carries rules that apply to every repository. The mechanism varies by org — common options:\n\n* **Template repo**: every new repo is created from `org/repo-template`, which includes a baseline `CLAUDE.md` that projects extend.\n* **Distribution via CI**: a workflow drops the latest org-level `CLAUDE.md` into each repo on push.\n* **Symlink to a shared dir**: less common but works for monorepo-like setups.\n\nContent that belongs at the org level:\n\n* approved AI tool list and how to request exceptions\n* secrets and customer-data prompting rules\n* PR review and merge requirements\n* security scanning, license scanning expectations\n* the standard release tagging convention\n* the standard `make` targets every repo should provide\n\nContent that does **not** belong at the org level: framework-specific advice, language-specific style. Those go in project files where they belong.\n\n## User-level memory: preferences and history\n\nThe user-level memory system at `~/.claude/.../memory/` carries information about the individual engineer:\n\n* role and current focus area (so Claude Code frames explanations appropriately)\n* tools they prefer\n* feedback they've given in past sessions (\"don't summarize at the end of every response\")\n* references to internal systems they use\n\nThis is the layer that makes Claude Code feel like a colleague who knows the engineer, rather than a fresh hire every session. The org should not write user-level memory — it accrues organically as engineers work.\n\n## What to keep out of CLAUDE.md\n\nThree categories that bloat the file without helping:\n\n* **Things derivable from the code itself.** Don't restate what `package.json` already says.\n* **Aspirations.** \"We want to migrate to ECS eventually\" is not actionable. Either it's true today (then say what to do today) or it goes in an ADR.\n* **Long prose.** Claude Code reads `CLAUDE.md` every session. Every paragraph costs context. Bullet lists outperform essays.\n\n## Distribution and lifecycle\n\nTreat `CLAUDE.md` like any other piece of code:\n\n* it lives in version control\n* changes go through PR review\n* the project owner is also the `CLAUDE.md` owner\n* when an invariant changes, the file changes in the same PR\n\nA `CLAUDE.md` that drifts from the codebase becomes worse than no file at all — it confidently sends Claude Code in the wrong direction. The \"trust but verify\" rule applies: a stale instruction in `CLAUDE.md` will get followed before a fresh observation of the code.\n\n## Measuring whether it works\n\nTwo cheap signals tell us if our `CLAUDE.md` strategy is paying off:\n\n1. **PR comment patterns**: are reviewers writing \"please use the standard logger\" repeatedly? That convention belongs in `CLAUDE.md`.\n2. **New-engineer onboarding time**: how long before a new hire's first Claude Code-assisted PR is review-clean? A good `CLAUDE.md` cuts this from weeks to days.\n\nThe goal is not a comprehensive document. The goal is that engineers stop having to re-explain the same things — to each other and to Claude Code.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => { html += '<th>' + inline(h) + '</th>'; });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => { html += '<td>' + inline(c) + '</td>'; });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    const isOrdered = ordered.test(line);
+                    const re = isOrdered ? ordered : bullet;
+                    const items = [];
+                    while (i < lines.length && re.test(lines[i])) {
+                        const m = lines[i].match(re);
+                        let item = m[3];
+                        i++;
+                        while (i < lines.length && lines[i].trim() && !bullet.test(lines[i]) && !ordered.test(lines[i])) {
+                            item += '\n' + lines[i].trim();
+                            i++;
+                        }
+                        items.push('<li>' + inline(item) + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

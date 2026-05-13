@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tooling Decision: Claude Code as the Default</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">AI Dev Strategy 2026</a><span class="nav-right"><a class="nav-prev" href="strategic-principles.html" title="Strategic Principles for AI in Software Modernization">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="claude-code-as-standard.html" title="Why Claude Code: The Three Capabilities That Matter">Next →</a></span></nav>
+    <header class="post">
+        <p class="section">Tooling Decision</p>
+        <h1>Tooling Decision: Claude Code as the Default</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2026-05-13  ·  7 min</p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/tooling-decision/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/tooling-decision/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3.1-flash-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">AI Dev Strategy 2026</a><span class="nav-right"><a class="nav-prev" href="strategic-principles.html" title="Strategic Principles for AI in Software Modernization">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="claude-code-as-standard.html" title="Why Claude Code: The Three Capabilities That Matter">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Tooling Decision: Claude Code as the Default", "date": "2026-05-13 09:15:00 +0100", "author": "by Željko Obrenović (obren.io)", "permalink": "tooling-decision", "timetoread": "7 min", "excerpt": "Pick a default AI developer tool. The recommendation is Claude Code. Other assistants are allowed only with a documented case. Repository, architecture, and MCP-vs-Skills decisions all flow from this one choice.", "icon": "assets/icons/decision-points.png", "logo": "assets/images/tooling-decision/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3.1-flash-image-preview)"}, "tags": [], "blocks": [{"type": "markdown", "content": "> KEY POINTS:\n> * Pick a default AI developer tool. The recommendation is Claude Code. \n> * Other assistants are allowed only with a documented case. \n> * Repository, architecture, and MCP-vs-Skills decisions all flow from this one choice.\n\n<hr>\n\nThis is the first implementation decision after the principles. Without a default tool, the rest of the strategy stays abstract: every team chooses a different assistant, governance fragments, and shared workflows never compound.\n\n## The decision\n\n**Adopt Claude Code as the default AI developer tool across the organization.** Other assistants may be used case-by-case, but only with a one-page justification reviewed by the AI Engineering Enablement function.\n\nThis is the single most consequential decision in the AI strategy. Without a default:\n\n* every team picks differently\n* no shared `CLAUDE.md`, Skill, subagent, or MCP investment compounds\n* governance has to chase a moving target\n* training, secure-prompting guidelines, and enterprise contracts fragment\n\nWith a default, all of those become single, investable lines of work.\n\n## Why Claude Code, in one paragraph\n\nClaude Code wins the *default* slot on **platform maturity**, not on benchmark scores. Subagents, hooks, Skills, and `CLAUDE.md` give the org things it can build, version, govern, and reuse across teams. Codex CLI and Gemini CLI run a similar agentic loop and will close gaps over time — and the strategy is [reviewed every six months](strategic-principles.html) to catch the moment they do — but today the surface for org-level investment is largest on Claude Code.\n\n## How Claude Code compares to the realistic alternatives\n\nThe serious agentic-CLI field has narrowed to three: **Claude Code**, **OpenAI's Codex CLI**, and **Google's Gemini CLI**. All three run a tool-using loop in the terminal, can read our codebase, and speak MCP. The differences that matter for a default are not benchmark scores — they are the seams we will build on.\n\n| Property | Claude Code | Codex CLI (OpenAI) | Gemini CLI (Google) |\n| --- | --- | --- | --- |\n| **Agentic loop maturity** | Mature; stable subagent model, parallel sub-tasks, plan/edit/default permission modes | Working; subagent equivalent less developed | Working; harness still maturing |\n| **Project instructions file** | `CLAUDE.md`, loaded automatically at org/project/user levels | `AGENTS.md`, growing convention; smaller ecosystem | `GEMINI.md`, newer; smaller ecosystem |\n| **Subagents as a primitive** | First-class; versionable markdown in `.claude/agents/` | Limited; planned | Limited |\n| **Skills as a primitive** | First-class; on-demand loading via `.claude/skills/` | Not yet | Not yet |\n| **MCP support** | Mature; large third-party catalog | Yes | Yes; newer surface |\n| **Hooks / runtime governance** | Pre/post tool hooks, executable allowlists, permission modes | Sandboxing; less granular | Less developed |\n| **Strongest model class** | Claude (Opus/Sonnet/Haiku) — long-horizon agentic work | GPT-class — strong general reasoning, isolated coding | Gemini — very large contexts, multimodal |\n| **Enterprise contract surface** | Anthropic direct, AWS Bedrock, GCP Vertex | OpenAI direct, Azure | Google Cloud direct |\n\nA coding assistant that only completes the next token cannot run a strangler-fig extraction or a migration sweep. All three of these can — for individual tasks. The difference is what *compounds* across teams, and that gap currently favors Claude Code.\n\n## Where Claude Code is weak — be honest about this\n\nPicking a default is not pretending it has no downsides. The cons that matter, with the mitigation budgeted in:\n\n| Weakness | Why it matters | Mitigation |\n| --- | --- | --- |\n| **Cost at scale** | Heavy agentic Opus use is expensive; costs can scale faster than developer count | Tiered model routing — Sonnet/Haiku for the bulk of work, Opus reserved for genuinely hard tasks |\n| **Vendor concentration on Anthropic** | One tool, one model vendor | Deploy via AWS Bedrock or GCP Vertex so the contract sits with a hyperscaler the org already pays; keep MCP servers, Skills, and `CLAUDE.md` portable |\n| **Context-window economics** | Long sessions hit cache misses; large `CLAUDE.md` costs tokens every turn | Discipline on context size; use Skills (on-demand) instead of bloating `CLAUDE.md` (always-loaded) |\n| **Closed-source agent harness** | Self-hosting the agent loop is not an option | Accept it, or — for hard requirements — use Aider / OpenCode and accept reduced capability. Codex CLI / Gemini CLI do not solve this either |\n| **IDE-integration corners** | Some JetBrains / niche-editor flows less polished than GitHub Copilot | Pure-autocomplete users may keep Copilot alongside; do not block |\n| **Tool-specific investment** | Subagents, Skills, MCP wiring don't port one-for-one to Codex/Gemini CLI | The cost of picking *any* default; the six-month review is when this is re-evaluated |\n\nNone of these are reasons to stay vendor-neutral. Vendor-neutrality has its own, larger costs: no compounding investment, no shared governance, no executable standards. They are reasons to **pick the default with eyes open** and to budget the mitigations.\n\n## Policy on alternative tools\n\nOther tools are not banned. They require a documented case. The default position for each:\n\n| Tool | Default stance | Allowed when |\n| --- | --- | --- |\n| **OpenAI Codex CLI** | Not standard; re-evaluate at six-month review | A team has a workload where its model genuinely outperforms and the loss of shared `CLAUDE.md` / Skills / subagents is acceptable for that team |\n| **Google Gemini CLI** | Not standard; re-evaluate at six-month review | Workloads dominated by very-large-context analysis or multimodal inputs (screenshot + spec + code) where Gemini's strengths are decisive |\n| **GitHub Copilot** | Not standard for agentic work | Pure-autocomplete use; team locked into GitHub Enterprise features that require it. May coexist with Claude Code |\n| **Amazon Q Developer** | Not standard for IDE work | Useful for AWS-console / operational queries; AWS support contexts |\n| **GitLab Duo** | Not standard | GitLab CI workflows where Duo provides specific integration value during transition |\n| **Cursor / Windsurf / other agentic IDEs** | Not standard | Pilot only, with security review. IDE polish does not outweigh losing shared subagent / hook investment |\n| **TFS-integrated AI** | Avoid | TFS is a source to exit, not a platform to enrich |\n| **Self-hosted open-source agents (Aider, OpenCode, etc.)** | Not standard | Hard data-residency or air-gap requirements that no hosted vendor can satisfy. Accept reduced capability |\n\nThe bar for an exception: a one-page case stating (1) what gap exists, (2) why Claude Code cannot close it, (3) what the migration-back path looks like. This is not a hostile bar — it just stops drift.\n\n## Consequences of the choice\n\nThree things follow directly from picking Claude Code as the default. Each is short because the substance lives in its own post.\n\n### 1. MCP for their systems, Skills for ours\n\n> **MCP for stable third-party systems we don't own** (GitHub, Jira, Snyk, AWS, Schema Registry). **Skills for capabilities backed by our own code, conventions, or evolving processes.**\n\nThird-party APIs change on someone else's schedule and live behind a vendor's interface — MCP is the right seam. Our own conventions change daily, in our PRs — Skills ship with the code they document. The wrong choice leaves us with a custom MCP server that goes stale every sprint, or a Skill that wraps a vendor API and breaks every release.\n\nSee [MCP, Skills, and Subagents][mcps] for the full decision criteria and starter libraries.\n\n### 2. Repository strategy is unblocked, not forced\n\nClaude Code works across GitHub, GitLab, and other Git hosts, so the tool decision does not pick the repository host. But it *enables* that decision: once the AI tool is constant, consolidating to one host is no longer tangled with retraining engineers on a host-specific assistant.\n\nMove toward one strategic repository ecosystem over time — GitHub or GitLab. In the interim, the same standards (repository metadata, pipeline standards, code review rules, security scanning, service templates, documentation requirements) work across both because Claude Code reads them either way.\n\n### 3. Standardized architecture becomes cheaper to maintain\n\nUse Claude Code to accelerate migration to:\n\n* simpler microservices\n* ECS-hosted containers\n* Kafka/MSK messaging\n* standardized CI/CD\n* standardized observability\n* clear ownership\n\nDo **not** use Claude Code (or any AI) to create more architectural variation. The point of standardizing on one tool is to make standardized architecture cheaper to maintain — not to give every team a more powerful way to invent their own platform.\n\n[mcps]: mcp-skills-subagents.html\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => { html += '<th>' + inline(h) + '</th>'; });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => { html += '<td>' + inline(c) + '</td>'; });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    const isOrdered = ordered.test(line);
+                    const re = isOrdered ? ordered : bullet;
+                    const items = [];
+                    while (i < lines.length && re.test(lines[i])) {
+                        const m = lines[i].match(re);
+                        let item = m[3];
+                        i++;
+                        while (i < lines.length && lines[i].trim() && !bullet.test(lines[i]) && !ordered.test(lines[i])) {
+                            item += '\n' + lines[i].trim();
+                            i++;
+                        }
+                        items.push('<li>' + inline(item) + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

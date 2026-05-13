@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Strategy by Current Landscape: .NET, Java, and Node.js Estates</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">AI Dev Strategy 2026</a><span class="nav-right"><a class="nav-prev" href="ai-use-case-portfolio.html" title="Claude Code Use-Case Portfolio">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="roadmap.html" title="Roadmap for AI-Assisted Modernization">Next →</a></span></nav>
+    <header class="post">
+        <p class="section">Workflows &amp; Landscape</p>
+        <h1>Strategy by Current Landscape: .NET, Java, and Node.js Estates</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2026-05-13  ·  13 min</p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/strategy-by-landscape/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/strategy-by-landscape/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3.1-flash-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">AI Dev Strategy 2026</a><span class="nav-right"><a class="nav-prev" href="ai-use-case-portfolio.html" title="Claude Code Use-Case Portfolio">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="roadmap.html" title="Roadmap for AI-Assisted Modernization">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Strategy by Current Landscape: .NET, Java, and Node.js Estates", "date": "2026-05-13 10:05:00 +0100", "author": "by Željko Obrenović (obren.io)", "permalink": "strategy-by-landscape", "timetoread": "13 min", "excerpt": "Three concrete strategies for the three most common legacy landscapes, each implemented as a Claude Code workflow: subagents for monolithic .NET on TFS, Java microservices on GitLab, and over-complex Node.js serverless on GitHub.", "icon": "assets/icons/strategy-by-landscape.png", "logo": "assets/images/strategy-by-landscape/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3.1-flash-image-preview)"}, "tags": [], "blocks": [{"type": "markdown", "content": "> KEY POINTS:\n> * Three concrete strategies for the three most common legacy landscapes, each implemented as a Claude Code workflow. \n> * Subagents for monolithic .NET on TFS, Java microservices on GitLab, and over-complex Node.js serverless on GitHub.\n\n<hr>\n\nThe same Claude Code strategy does not mean the same playbook everywhere. Each landscape has a different modernization risk, so each needs a different workflow and a different guardrail.\n\n## A. Monolithic .NET/C# + SQL Server + stored procedures + TFS\n\n### Strategic stance\n\nTreat this as the highest-value Claude Code modernization target — but not as a place to build new capability.\n\nThe main risks are hidden business rules, database coupling, stored procedure logic, weak automated tests, and old repository/workflow constraints. Claude Code earns its keep here by reading code and stored procs at a scale that no engineer would attempt by hand.\n\n### Claude Code workflow\n\nUse these subagents (see [MCP, Skills, and Subagents][mcps]):\n\n* `legacy-explorer` — walks C# modules and produces a capability map\n* `stored-proc-summarizer` — plain-language summary of stored procedures + tables touched\n* `characterization-test-writer` — generates regression tests around critical flows\n* `extraction-planner` — proposes service-extraction seams + ADR draft\n* `wrapper-generator` — drafts API wrappers around stable legacy capabilities\n\nMCP servers needed:\n\n* DB schema MCP server (read-only against SQL Server) — lets subagents enumerate tables, dependencies, and stored proc metadata\n* TFS MCP server (read-only) — enough to support the migration to Git, no more\n\nA typical session: an engineer asks Claude Code \"summarize the order-fulfillment module and identify a candidate for first extraction.\" The main agent spawns `legacy-explorer` to map the module, `stored-proc-summarizer` (in parallel) on each stored proc, then `extraction-planner` once both return. The result is a draft ADR plus a list of stored procs that need characterization tests before any change.\n\n### Recommended approach\n\n1. **Inventory and understand** — Use `legacy-explorer` and `stored-proc-summarizer` to produce a legacy capability map. Save it as living documentation in the repo.\n2. **Add tests before changing** — `characterization-test-writer` generates regression and characterization tests around critical business flows. Prioritize stored procedures and high-change areas.\n3. **Wrap first, extract second** — `wrapper-generator` proposes stable APIs or event adapters over selected legacy capabilities. Avoid direct database coupling from new services.\n4. **Extract by business capability** — `extraction-planner` proposes seams; architects and domain experts decide final boundaries.\n5. **Retire TFS gradually** — Migrate active code to Git-based repositories. Do not invest in further TFS MCP work beyond migration support.\n\n### First pilot candidates\n\nPick one flow where business value is high but the first step can be read-only or test-only.\n\n| Candidate | Why it is useful | Expected artifact |\n| --- | --- | --- |\n| Stored-procedure-heavy business flow | Tests Claude Code's ability to explain database-embedded logic | Stored procedure summary pack + dependency map |\n| Critical user journey with weak tests | Builds confidence before any extraction | Characterization test pack |\n| Stable capability suitable for wrapping | Proves wrap-first modernization | Wrapper API draft + extraction ADR |\n\n### Claude Code guardrail\n\nRun these subagents in `plan` permission mode by default. Do not allow Claude Code to rewrite stored procedures or business-critical logic without strong regression tests already in place and a domain-expert review on the PR. The `pr-review-helper` subagent enforces this — it flags any PR that modifies a stored proc without a paired test file.\n\n---\n\n## B. Java microservices + self-managed Kafka + GitLab\n\n### Strategic stance\n\nThis estate is conceptually closer to the target but operationally misaligned if Kafka is self-managed and service standards vary.\n\nThe objective is not \"rewrite everything,\" but **standardize, simplify, and migrate operational responsibility to AWS patterns** — and Claude Code makes the standardization step feasible at the per-service level instead of being a multi-quarter platform program.\n\n### Claude Code workflow\n\nUse these subagents:\n\n* `service-scorecard-builder` — scores each service against the standard template\n* `kafka-contract-reviewer` — reviews Kafka changes against org standards\n* `kafka-topic-documenter` — generates AsyncAPI specs from existing producers/consumers\n* `consumer-error-handling-fixer` — proposes idempotency and DLQ patterns where missing\n* `template-aligner` — refactors a service toward the standard Java template\n* `msk-migration-planner` — drafts the migration plan from self-managed Kafka to MSK\n\nMCP servers needed:\n\n* GitLab MCP server (official)\n* Kafka / Schema Registry MCP server — lets subagents check actual registered schemas, not the ones in the diff\n* Service catalog MCP server — service ownership and dependency lookup\n* AWS MCP server — for MSK target state\n\nA typical session: the platform team runs `service-scorecard-builder` across all services overnight (Claude Code in headless mode, results pushed to the service catalog). The next morning, every service has a scorecard for build health, test coverage, dependency age, observability maturity, Kafka usage, and operational risk. Teams below threshold get a Jira ticket auto-created with a `template-aligner` plan attached.\n\n### Recommended approach\n\n1. **Create a Kafka governance baseline** — encoded in the `kafka-contract-reviewer` subagent's system prompt. Topic naming, ownership, schema strategy, retention rules, compatibility rules, dead-letter handling, consumer group conventions, replay strategy.\n2. **Generate service scorecards** — `service-scorecard-builder` runs continuously. The platform team's dashboard is built from its output.\n3. **Standardize service templates** — `template-aligner` refactors one service at a time toward the Java base image, logging, tracing, metrics, health endpoints, Kafka client configuration, retry and idempotency patterns.\n4. **Move Kafka operations toward Amazon MSK** — `msk-migration-planner` drafts service-by-service migration plans. Amazon MSK is a fully managed service for running applications that use Apache Kafka and provides control-plane operations for creating, updating, and deleting clusters while preserving Apache Kafka data-plane APIs. ([AWS Documentation][5])\n\n### First pilot candidates\n\nPick services that represent common patterns rather than edge cases.\n\n| Candidate | Why it is useful | Expected artifact |\n| --- | --- | --- |\n| High-volume Kafka consumer | Exposes error handling, retry, idempotency, and DLQ quality | Consumer review + remediation plan |\n| Service with inconsistent template usage | Tests service-scorecard and template-alignment workflow | Service scorecard + template alignment PR |\n| Important topic family | Tests event ownership and schema governance | AsyncAPI draft + ownership map |\n\n### Claude Code guardrail\n\nDo not let Claude Code invent event contracts. Event semantics are architecture decisions, not code-generation details. The `kafka-contract-reviewer` subagent's system prompt is explicit: it reviews proposed contracts against existing standards but does not author new ones without human-authored input.\n\n---\n\n## C. Node.js serverless stack + GitHub\n\n### Strategic stance\n\nThis is modern but over-complex. The goal is **simplification**, not more automation.\n\nClaude Code helps identify where serverless workflows, glue code, deployment pipelines, permissions, and operational handoffs have become too complex — and proposes consolidation toward ECS where appropriate.\n\n### Claude Code workflow\n\nUse these subagents:\n\n* `serverless-complexity-reporter` — summarizes a serverless workflow's surface area and dependencies\n* `event-flow-mapper` — produces a diagram of an event flow across Lambda functions, SQS, EventBridge, etc.\n* `consolidation-recommender` — classifies functions into \"keep serverless\" / \"consolidate to ECS\" / \"retire\"\n* `ci-simplifier` — proposes simplifications to GitHub Actions workflows\n* `ecs-migration-planner` — for functions classified as \"consolidate,\" produces a migration plan\n\nMCP servers needed:\n\n* GitHub MCP server (official)\n* AWS MCP server — to inspect actual Lambda configs, IAM, EventBridge rules\n* Service catalog MCP server\n\nA typical session: an engineer asks \"this Lambda is being paged on every deploy — should it stay serverless?\" Claude Code spawns `serverless-complexity-reporter` and `event-flow-mapper` in parallel against the Lambda's repo + AWS state, then runs `consolidation-recommender` over both reports. The output is a recommendation with evidence, not a guess.\n\n### Recommended approach\n\n1. **Classify serverless components** — `consolidation-recommender` does the first pass. Keep as serverless where event-driven and simple. Migrate to ECS where workflows are long-running, operationally complex, or better modeled as services. Retire redundant glue code.\n2. **Reduce workflow complexity** — `ci-simplifier` simplifies GitHub Actions, standardizes deployment environments, removes special-case pipelines. Align observability with target platform.\n3. **Use Claude Code for decomposition and consolidation** — `event-flow-mapper` explains workflows; `ecs-migration-planner` proposes simplification options. Architecture review is required before migration decisions.\n\n### First pilot candidates\n\nPick workflows that are painful enough to matter but bounded enough to map.\n\n| Candidate | Why it is useful | Expected artifact |\n| --- | --- | --- |\n| Lambda chain with recurring operational incidents | Tests whether Claude Code can connect code, AWS state, and incident evidence | Event-flow map + complexity report |\n| Overgrown GitHub Actions workflow | Proves CI simplification without changing product behavior | Simplified workflow PR |\n| Long-running or stateful serverless process | Tests ECS consolidation decision quality | Keep / consolidate / retire decision record |\n\n### Claude Code guardrail\n\nDo not use Claude Code to generate **more** serverless orchestration unless the target state explicitly keeps that capability serverless. The `consolidation-recommender` subagent's system prompt biases toward consolidation precisely because the goal is simplification.\n\n[mcps]: mcp-skills-subagents.html\n[5]: https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html \"Welcome to the Amazon MSK Developer Guide\"\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => { html += '<th>' + inline(h) + '</th>'; });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => { html += '<td>' + inline(c) + '</td>'; });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    const isOrdered = ordered.test(line);
+                    const re = isOrdered ? ordered : bullet;
+                    const items = [];
+                    while (i < lines.length && re.test(lines[i])) {
+                        const m = lines[i].match(re);
+                        let item = m[3];
+                        i++;
+                        while (i < lines.length && lines[i].trim() && !bullet.test(lines[i]) && !ordered.test(lines[i])) {
+                            item += '\n' + lines[i].trim();
+                            i++;
+                        }
+                        items.push('<li>' + inline(item) + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>
