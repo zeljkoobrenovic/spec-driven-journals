@@ -69,6 +69,20 @@
             color: var(--accent);
         }
 
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
         header.post .logo {
             display: block;
             width: 100%;
@@ -240,7 +254,7 @@
 <body>
 <main>
     <nav class="post-nav"><a class="nav-back" href="index.html">MADR</a><span class="nav-right"><a class="nav-prev" href="0010-support-categories.html" title="Support categories via subfolders">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="0017-use-same-format-for-outcomes-and-options.html" title="Use the same Good/Bad format for Consequences as for Options">Next →</a></span></nav>
-    <header class="post">
+    <header class="post" id="post-header">
         <p class="section">Structure</p>
         <h1>Place Decision Outcome before detailed Pros and Cons</h1>
         <p class="byline"></p>
@@ -262,6 +276,42 @@
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
         const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
 
         const tagsHost = document.getElementById('tags');
         (data.tags || []).forEach(function (t) {

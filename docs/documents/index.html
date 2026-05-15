@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="site.css">
     <style>
         header.site {
-            padding-bottom: 14px;
+            padding-bottom: 4px;
             margin-bottom: 2px;
         }
 
@@ -30,6 +30,7 @@
 
         header.site h1 {
             margin-top: 20px;
+            margin-bottom: 8px;
             padding: 0;
             font-size: 51px;
             font-weight: 500;
@@ -71,7 +72,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin: 10px 0 24px;
+            margin: 0 0 24px;
         }
 
         .tag-filter button {
@@ -102,6 +103,69 @@
         }
 
         .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
             color: rgba(255, 255, 255, 0.8);
         }
 
@@ -189,6 +253,35 @@
             min-width: 0;
         }
 
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
         ul.posts .meta a {
             color: rgb(23, 86, 169);
             text-decoration: none;
@@ -229,6 +322,7 @@
     </header>
 
     <div style="padding: 4px;">
+        <div class="status-filter" id="status-filter"></div>
         <div class="tag-filter" id="tag-filter"></div>
         <div class="search">
             <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
@@ -248,6 +342,7 @@
         const empty = document.getElementById('empty');
         const hits = document.getElementById('hits');
         const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
         const qInput = document.getElementById('q');
 
         function el(tag, attrs, children) {
@@ -261,21 +356,63 @@
             return e;
         }
 
-        // Tag counts across all posts
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
         const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
         let totalPosts = 0;
         data.sections.forEach(section => {
             section.posts.forEach(p => {
                 totalPosts++;
                 (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
             });
         });
 
-        // Build tag filter buttons (sorted by count desc, then alpha)
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
         const sortedTags = Array.from(tagCounts.entries())
             .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
         const activeTags = new Set();
-        sortedTags.forEach(([tag, count]) => {
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
             const btn = el('button', {type: 'button', 'data-tag': tag});
             btn.appendChild(document.createTextNode(tag));
             btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
@@ -285,8 +422,33 @@
                 btn.classList.toggle('active', activeTags.has(tag));
                 applyFilters();
             });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
             tagFilter.appendChild(btn);
         });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
 
         // Render sections
         data.sections.forEach(section => {
@@ -297,12 +459,34 @@
             section.posts.forEach(p => {
                 const li = el('li');
                 const tags = p.tags || [];
-                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ')).toLowerCase();
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
                 li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
                 const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
                 if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
                 li.appendChild(iconWrap);
                 const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
                 meta.appendChild(el('a', {href: p.url, text: p.title}));
                 if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
                 if (tags.length) {
@@ -336,7 +520,19 @@
                             }
                         }
                     }
-                    const match = matchQ && matchTag;
+                    let matchStatus = true;
+                    if (activeStatuses.size) {
+                        const liStatus = li.dataset.status || '';
+                        // any-match: post status must equal one of the selected statuses
+                        matchStatus = false;
+                        for (const s of activeStatuses) {
+                            if (liStatus === s.toLowerCase()) {
+                                matchStatus = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag && matchStatus;
                     li.classList.toggle('hidden', !match);
                     if (match) {
                         secVisible = true;
@@ -346,7 +542,7 @@
                 sec.classList.toggle('empty', !secVisible);
             });
             empty.classList.toggle('show', visibleCount === 0);
-            hits.textContent = ' = ' + ((q || activeTags.size)
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
                 ? visibleCount + ' of ' + totalPosts + ''
                 : totalPosts + '');
         }
