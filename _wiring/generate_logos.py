@@ -48,13 +48,8 @@ from build import parse_yaml  # noqa: E402
 REPO_ROOT = Path(__file__).resolve().parent.parent
 JOURNALS_DIR = REPO_ROOT / "_journals"
 
-# MODEL = "gemini-3.1-flash-image-preview"
-# DEFAULT_IMAGE_SIZE = "512"
-# Gemini imageSize values: "512" (lowest), "1K", "2K", "4K". "512" is only
-# supported by gemini-3.1-flash-image-preview.
-
-MODEL = "gemini-3-pro-image-preview"
-DEFAULT_IMAGE_SIZE = "2K"
+MODEL = "gemini-3.1-flash-image-preview"
+# MODEL = "gemini-3-pro-image-preview"
 
 ENDPOINT = (
     "https://generativelanguage.googleapis.com/v1beta/models/"

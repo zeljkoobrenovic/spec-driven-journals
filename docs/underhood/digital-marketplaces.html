@@ -271,7 +271,7 @@
         });
 
         // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
-        // unordered/ordered lists, fenced code, inline code, bold/italic, links, images, hr.
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
         // Sufficient for the posts in this repo; replace with a fuller parser if needed.
         function renderMarkdown(src) {
             const lines = src.replace(/\r\n/g, '\n').split('\n');
@@ -301,6 +301,7 @@
                     return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
                 });
                 s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
                 s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
                 return s;
             }
