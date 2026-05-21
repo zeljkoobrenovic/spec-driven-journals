@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Practice Principle: Markdown Records as Canonical</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="capabilities-follow-ownership.html" title="Organisation Principle: Capabilities Follow Ownership">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="advice-in-public.html" title="Practice Principle: Advice in Public">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Practices</p>
+        <h1>Practice Principle: Markdown Records as Canonical</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-16  ·  12 min · <a class="spec-link" href="markdown-records-as-canonical.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/markdown-records-as-canonical/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/markdown-records-as-canonical/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Inspired by Organization's Markdown Records foundational decision</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="capabilities-follow-ownership.html" title="Organisation Principle: Capabilities Follow Ownership">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="advice-in-public.html" title="Practice Principle: Advice in Public">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-MARKDOWN-RECORDS-AS-CANONICAL", "status": "draft:gray", "title": "Practice Principle: Markdown Records as Canonical", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "markdown-records-as-canonical", "timetoread": "12 min", "excerpt": "The canonical record of an Organization technical decision, strategy, or durable discussion is a markdown file in git. Slack threads, Google Docs, meeting notes, and wiki pages may support discussion, but the markdown record is the artifact other people will cite, search, link, and learn from in two years. Canonicality is what makes records trustworthy across time. Without it, the same decision is remembered in three different versions and acted on differently.", "tags": "practices, documentation, adr, markdown, git, knowledge-management", "logo": "assets/images/markdown-records-as-canonical/logo.jpeg", "logo_credit": "Inspired by Organization's Markdown Records foundational decision", "icon": "assets/icons/markdown-records-as-canonical.png"}, "tags": ["practices", "documentation", "adr", "markdown", "git", "knowledge-management"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: The canonical record of any durable technical artifact at Organization - decision, strategy, discussion document, principle, foundational practice - is a **markdown file in git**, published as a static site. Conversations may happen in Slack, Google Docs, pull requests, or meetings. The markdown record is what other people will read, cite, link, and learn from later. Where the markdown record and any other artifact disagree, the markdown record wins.\n\n## Statement\n\nOrganization commits to:\n\n* **Markdown** as the format for durable technical writing.\n* **Git** as the storage and history mechanism.\n* **A small static site generator** for publication.\n* **A MADR-inspired structure** for decision records.\n* **The markdown record as the source of truth.** Other artifacts support it but do not replace it.\n\nThis applies to architecture decisions, technical strategies, discussion documents, engineering principles, operating-model decisions, and similar foundational engineering records.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Markdown records are canonical. | All Organization writing is markdown. |\n| Conversation happens elsewhere; record lives in git. | Slack and Docs are forbidden. |\n| The markdown file is the source of truth. | The markdown file is immutable. |\n| Records have a stable structure. | Every record follows the same template. |\n| Static-site publication. | A complex documentation product. |\n\nThe principle is about *durability* and *trust over time*, not about banning conversational tools.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why durable technical reasoning needs a canonical artifact.\n* Decide when a Slack thread, deck, PR discussion, or Google Doc must be folded back into markdown.\n* Recognise metadata, status, and permalink stability as part of trust.\n* Use markdown records as context for humans and AI tools.\n\n## Rationale\n\nA technical decision's long-term value lives in the artifact, not in the conversation that produced it. The conversation evaporates: Slack threads scroll out of view, Google Docs lose owners, wikis drift, meeting notes are forgotten. The artifact, if it is kept somewhere durable, remains readable, searchable, citable, and reviewable years later.\n\nMarkdown in git has practical properties that make this work:\n\n* Plain text. Diff-friendly. Reviewable in pull requests.\n* Versioned. History tells you what changed and when.\n* Portable. No proprietary editor required.\n* AI-friendly. Claude Code and similar tools can read and write it directly.\n* Cheap to publish. A static site generator turns it into a readable, durable web artifact.\n\nOrganization's foundational decision on markdown records makes this concrete. The repository hosting this content is itself an instance of the principle.\n\n## Implications\n\n* **Decision records are markdown files in git.** Not Confluence pages, Google Docs, slide decks, or Notion entries.\n* **Front matter is small and stable.** A consistent metadata header keeps records comparable.\n* **The structure is MADR-inspired.** Decision, context, drivers, options, consequences, revisiting.\n* **Publication is via a small static site.** Generated HTML, served through GitHub Pages or an Okta-protected CDN proxy.\n* **Conversation tools are explicitly secondary.** Slack threads, Google Docs, and pull-request reviews are support; the markdown file is canonical.\n* **When conflict appears, the markdown record wins.** A decision is what the markdown says, not what someone remembers.\n* **Records are reviewed and updated, not orphaned.** Records with no owner are flagged the same way unowned capabilities are.\n\n## Canonicality Test\n\nA technical record is canonical only if readers can rely on it without asking around.\n\nUse this test:\n\n* Is there one stable markdown file that states the current decision or principle?\n* Does the file have stable metadata, including ID, status, owner, date, and permalink?\n* Are supporting conversations linked from the record rather than replacing it?\n* If Slack, Jira, a deck, and the markdown disagree, would everyone know the markdown wins?\n* Is the status current: proposed, accepted, deprecated, superseded, or archived?\n* Is there a clear owner who can update the record when reality changes?\n\nIf people need folklore to interpret the record, the record is not yet canonical. Improve the markdown until it can stand on its own.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Capture significant technical decisions as markdown ADRs in the appropriate journal.\n* Use pull requests to review and refine; merge the canonical version when the decision is made.\n* Link to the markdown record from Slack, Jira, and other tools, not the other way around.\n\nFor architects and senior engineers:\n\n* Write your reasoning down. The slide deck is for presentation; the markdown is for memory.\n* When advising a team, point them at existing records first.\n\nFor tech leads:\n\n* Make ADR writing a normal part of delivery, not a separate step.\n* Resist the urge to make \"the deck\" the artifact; the deck rots, the markdown does not.\n\nFor AI tooling:\n\n* Treat markdown records as primary context. CLAUDE.md, Skills, and subagents should read from and link to them.\n\n## Anti-Patterns\n\n* **Slack-as-record.** A \"decision\" lives in a Slack thread and is referenced by date.\n* **Doc-as-record.** A Google Doc with twenty comments is treated as authoritative even after the discussion ended.\n* **Deck-as-record.** The slides someone presented become the de facto reference; the slides go stale within months.\n* **Wiki sprawl.** A confusing Confluence tree where the same decision appears in three places, none authoritative.\n* **Markdown drift.** A markdown record exists but the canonical state is \"what we actually do, which is not in the record\".\n* **Pull-request graveyard.** The reasoning is in PR comments that nobody reads after merge.\n* **Permalink churn.** A record's URL changes every time the title is edited.\n\n## Examples\n\nAligned with the principle:\n\n* This principles journal. Each principle is a markdown file in git, published as a static site, with stable permalinks and an ownership story.\n* The Architecture Advisory Forum decision lives in `_journals/foundations/posts/architecture-advisory-forum/index.md`; the AAF meeting itself is a conversation supporting that record.\n* The AI tooling decision is a markdown ADR; the original strategy slides are an input to it, not the canonical version.\n\nOut of alignment with the principle:\n\n* A Confluence page captioned \"Final architecture decision\" updated quietly by anyone who has edit access.\n* A Slack pin labelled \"this is how we do it\" that nobody can locate two months later.\n* A \"v3\" Google Doc with no link to \"v2\" and no shared definition of which one is current.\n\n## Discussion Prompts\n\nUse these prompts in documentation reviews:\n\n* Which decision do people still explain from memory because the markdown record is missing or weak?\n* Where do supporting artifacts disagree with the canonical record?\n* What record should be updated before the next team or AI assistant relies on it?\n\n## Related Principles\n\n* [Practice Principle: Advice in Public](advice-in-public.html) - conversations make decisions better; markdown makes them durable.\n* [Organisation Principle: Decisions Stay with Teams](decisions-stay-with-teams.html) - team-owned decisions need a team-owned record.\n* [Practice Principle: Governance as Code](governance-as-code.html) - some governance is enforced in records (front-matter standards, permalink stability).\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - records, like capabilities, have owners and lifecycles.\n\n## Scope and Revisiting\n\nThis principle applies to Organization's high-quality, long-lived technical writing: ADRs, technical strategies, discussion documents, engineering principles, foundational engineering records, and operating-model decisions.\n\nIt does not apply to:\n\n* Short-lived team chat.\n* Ephemeral planning notes.\n* Product documentation aimed at users.\n* Service-local READMEs that belong with service code.\n* Operational runbooks that have a separate ownership and publication path.\n* Anything genuinely throwaway.\n\nThe principle should be revisited if:\n\n* The static-site generator stops scaling for real needs (cross-linking, search, navigation, contributor experience).\n* Access-control requirements outgrow what the protected static-hosting path can support.\n* A future toolchain becomes meaningfully cheaper while preserving markdown, git history, reviewability, and portability.\n\n## Authoritative References\n\n* MADR, [Markdown Architectural Decision Records](https://adr.github.io/madr/).\n* CommonMark, [Specification](https://commonmark.org/).\n* Organization Foundations, Markdown Records as the Default Format ([Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](../foundations/markdown-records.html)).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

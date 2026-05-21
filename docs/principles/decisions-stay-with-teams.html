@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Organisation Principle: Decisions Stay with Teams</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="observable-by-default.html" title="Operational Principle: Observable by Default">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="inherit-then-simplify.html" title="Organisation Principle: Inherit, Then Simplify">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Organisation</p>
+        <h1>Organisation Principle: Decisions Stay with Teams</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-16  ·  12 min · <a class="spec-link" href="decisions-stay-with-teams.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/decisions-stay-with-teams/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/decisions-stay-with-teams/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Inspired by Andrew Harmel-Law and the Advice Process</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="observable-by-default.html" title="Operational Principle: Observable by Default">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="inherit-then-simplify.html" title="Organisation Principle: Inherit, Then Simplify">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-DECISIONS-STAY-WITH-TEAMS", "status": "draft:gray", "title": "Organisation Principle: Decisions Stay with Teams", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "decisions-stay-with-teams", "timetoread": "12 min", "excerpt": "Technical decisions at Organization are owned by the team that will operate the result. Centralised approval boards are not the model. Teams seek advice from the people most affected and most expert through an Advice Process, document the decision in an ADR, and remain accountable for the consequences. The Architecture Advisory Forum exists to make those conversations easier, not to approve work. Ownership of the decision is what makes the team accountable for the outcome.", "tags": "organisation, advice-process, ownership, governance, accountability, adr", "logo": "assets/images/decisions-stay-with-teams/logo.jpeg", "logo_credit": "Inspired by Andrew Harmel-Law and the Advice Process", "icon": "assets/icons/decisions-stay-with-teams.png"}, "tags": ["organisation", "advice-process", "ownership", "governance", "accountability", "adr"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Technical decisions are owned by the team that will operate the result. Teams seek advice through a written Advice Process, document outcomes in ADRs, and remain accountable for the consequences. Other roles - architects, platform teams, security, senior leadership - offer advice. Nobody approves on behalf of the team. Boards and forums (including the AAF) exist to support conversations, not to replace ownership.\n\n## Statement\n\nOrganization's decision model is:\n\n* **Each technical decision has an owning team.**\n* **The owning team seeks advice** from those affected and those with relevant expertise.\n* **The owning team decides.** Advice is taken seriously; advice is not authority.\n* **The decision is documented in an ADR**, including the advice received.\n* **The owning team is accountable for the consequences**, including revisiting the decision if reality teaches something new.\n\nThis applies to architecture, technology choices, integration patterns, operational decisions, and significant trade-offs in delivery.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| The owning team decides. | One person on the team decides alone. |\n| Advice must be sought. | Advice must be followed. |\n| Decisions are written down. | Documentation comes after the deploy. |\n| Forums exist to advise. | Forums approve. |\n| Accountability sits with the team. | The team is on its own. |\n\nThe principle pushes decision-making to the people who run the outcome. It does not reduce the responsibility of architects, platform owners, or senior engineers; it changes their role from \"approver\" to \"advisor\".\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain the difference between advice, authority, ownership, and accountability.\n* Identify the team that should own a technical decision.\n* Use the Advice Process without turning it into an approval queue.\n* Document disagreement without treating disagreement as a veto.\n\n## Rationale\n\nCentralising decisions creates predictable failure modes:\n\n* **Bottlenecks**: decisions queue at the board faster than the board can review.\n* **Detachment**: the people approving are not the people who operate the result.\n* **Theatre**: review meetings become rubber-stamp processes once the queue grows.\n* **Reduced ownership**: teams stop deciding; they prepare submissions.\n* **Lost feedback**: the board never sees the consequences of its decisions at the timescale that matters.\n\nThe Advice Process keeps the decision with the team that owns the outcome. It also forces explicit advice-seeking, which is the actual value of a review board done well - cross-team perspective, expertise from other domains, awareness of constraints. The advice still happens; it just no longer pretends to be authority.\n\nThis principle directly enables the Architecture Advisory Forum decision: the AAF works because decisions stay with teams. If the AAF began approving or blocking, the principle would be broken and the forum would collapse into a traditional review board.\n\n## Implications\n\n* **A decision has a named owning team.** Not a \"DRI\" alone; a team that will operate the consequences.\n* **The Advice Process is the default decision-making pattern.** Mandatory advice list, written ADR, conscious decision.\n* **ADRs include the advice received.** Not as transcripts, but as a clear record of what was considered.\n* **Disagreement is documented.** A dissenting voice deserves a paragraph in the record, not silence.\n* **Forums advise, never approve.** AAFs, working groups, and review meetings exist for shared learning and broader advice.\n* **Decisions can be revisited.** Reality is a legitimate reason to change a decision; the original owner usually leads the revisit.\n* **Some decisions need explicit guardrails** (legal, regulatory, security). Those guardrails are *constraints* on the decision, not approvals of it.\n\n## Decision Ownership Test\n\nBefore a significant decision is accepted, the owning team should be easy to name. If it is not, the decision is not ready.\n\nUse this test:\n\n* Which team will operate the result in production?\n* Which team will receive the pager, support request, or cost report if it fails?\n* Which team can change the decision later without waiting for a central board?\n* Which affected people and expert people have been asked for advice?\n* Where is dissent recorded?\n* What evidence would cause the owning team to revisit the decision?\n\nIf different answers appear for \"who decides\", \"who operates\", and \"who pays the consequences\", the ownership boundary is wrong. Resolve that before arguing about the technical option.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Identify the owning team for each significant decision.\n* Use the Advice Process: name affected people and experts, seek their input, write the ADR.\n* Make decisions without waiting for permission once advice has been sought.\n* Revisit decisions when evidence changes.\n\nFor platform and architecture roles:\n\n* Offer advice. Bring expertise, prior art, and broader context.\n* Do not approve. Do not block.\n* If a decision concerns you, write your concern down where the team will read it.\n\nFor senior leadership:\n\n* Resist the urge to formalise approval boards.\n* When a team makes a decision you would not have made, ask what advice they sought before overriding.\n* Protect the Advice Process; do not bypass it through informal channels.\n\nFor security, data, compliance, and similar functions:\n\n* Express constraints clearly so teams can incorporate them.\n* Distinguish \"this is a hard constraint\" from \"this is my preference\" in advice.\n\n## Anti-Patterns\n\n* **Approval boards in disguise.** Forums renamed to \"advisory\" while still issuing decisions.\n* **Advice-as-veto.** Senior voices treating advice as authority and overriding teams quietly.\n* **No-advice decisions.** Teams making decisions in isolation and discovering affected parties later.\n* **Documentation theatre.** ADRs written after the deploy to justify what already happened.\n* **Owner-less decisions.** Significant choices that no team will admit to owning.\n* **Bypass via Slack.** Approvals flowing through informal channels with no record.\n* **Architect-as-decider.** A senior architect's preference treated as Organization policy without an ADR.\n\n## Examples\n\nAligned with the principle:\n\n* A service team proposes adopting a new caching pattern, brings it to the AAF, takes the advice, writes the ADR, deploys.\n* A platform team's recommendation is recorded in an ADR as advice; the service team chooses a different approach, with reasons.\n* A security concern is recorded as a constraint in the ADR; the team designs around it.\n\nOut of alignment with the principle:\n\n* A central architect's slide deck becomes the de facto pattern with no ADR or team ownership.\n* The AAF starts producing \"approved\" labels in meeting notes.\n* A team builds a service without seeking advice from the platform team that will operate parts of it.\n\n## Discussion Prompts\n\nUse these prompts in onboarding or AAF preparation:\n\n* Who owns the next significant decision, and who will operate the consequences?\n* Which advice has been sought, and which affected people are still missing?\n* Where might we be confusing senior advice with decision authority?\n\n## Related Principles\n\n* [Practice Principle: Advice in Public](advice-in-public.html) - the AAF makes advice-seeking visible.\n* [Practice Principle: Markdown Records as Canonical](markdown-records-as-canonical.html) - decisions live in ADRs.\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - decisions and capabilities both follow team ownership.\n* [Organisation Principle: Tooling Decisions Are Explicit and Reversible](tooling-explicit-and-reversible.html) - tooling decisions are also team-owned within the standard frame.\n\n## Scope and Revisiting\n\nThis principle applies to all technical decisions at Organization that have meaningful operational, architectural, or cross-team impact.\n\nIt does not apply to internal team choices that affect only one team's day-to-day work (for example, coding style choices inside a single repository), nor to decisions that legal, regulatory, or security obligations have already constrained from the outside.\n\nThe principle should be revisited if:\n\n* The Advice Process becomes a bottleneck on its own (advice-seeking takes longer than the decision warrants).\n* Repeated incidents tied to team-owned decisions reveal a category that needs central control.\n* The organisation grows or splits in a way that requires a new shape for cross-team decisions.\n\n## Authoritative References\n\n* Andrew Harmel-Law, [Scaling the Practice of Architecture, Conversationally](https://martinfowler.com/articles/scaling-architecture-conversationally.html).\n* Andrew Harmel-Law, [Architecture Advice Process](https://martinfowler.com/articles/scaling-architecture-conversationally.html#TheArchitectureAdviceProcess).\n* MADR, [Markdown Architectural Decision Records](https://adr.github.io/madr/).\n* Organization Foundations, Architecture Advisory Forum ([Architecture Advisory Forum as a Standing Advice Ritual](../foundations/architecture-advisory-forum.html)).\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

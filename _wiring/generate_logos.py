@@ -44,12 +44,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build import parse_yaml  # noqa: E402
 
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
 JOURNALS_DIR = REPO_ROOT / "_journals"
 
-MODEL = "gemini-3.1-flash-image-preview"
-# MODEL = "gemini-3-pro-image-preview"
+# MODEL = "gemini-3.1-flash-image-preview"
+MODEL = "gemini-3-pro-image-preview"
 
 ENDPOINT = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
@@ -123,8 +122,14 @@ def build_prompt(title: str, excerpt: str, body: str) -> str:
 
     parts = [
         "Create a visual that best illustrates the content of the post. "
-        "",
-        f"Article title: {title}",
+        "Text is fine, but not too much -- the image should be primarily visual. "
+        "Do not show the article title. "
+        "Do not show status or dates. "
+        "Style should match a polished business explainer board with flat vector cartoon illustration, crisp outlines, and minimal shading. "
+        "include lightweight UI fragments, messages, dashboards, operational artifacts, or support touchpoints where they help explain the stage. "
+        "Use disciplined blue, teal, green, and orange accents unless the domain clearly demands something else. "
+        "Preserve generous margins so no card, arrow, or label touches the edges. "
+        "No photorealism, no 3D render, no fantasy elements, no clip-art collage, no dense text poster. "
     ]
     if excerpt:
         parts.append(f"Excerpt: {excerpt}")
@@ -324,14 +329,14 @@ def main(argv=None):
     for i, post_src in enumerate(targets):
         label = post_src.relative_to(posts_dir).as_posix()
         if not post_src.exists():
-            print(f"[{i+1}/{len(targets)}] missing post: {label}")
+            print(f"[{i + 1}/{len(targets)}] missing post: {label}")
             missing += 1
             continue
         try:
             status = process_post(journal_dir, post_src, api_key, args.dry_run)
         except Exception as e:  # noqa: BLE001 — keep going on per-post errors
             status = f"ERROR ({label}): {e}"
-        print(f"[{i+1}/{len(targets)}] {status}")
+        print(f"[{i + 1}/{len(targets)}] {status}")
         if status.startswith("generated"):
             generated += 1
             if args.sleep and i + 1 < len(targets):

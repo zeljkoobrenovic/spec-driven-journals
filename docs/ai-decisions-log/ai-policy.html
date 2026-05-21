@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Coding Policy: Human Accountability with Executable Controls</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG AI Decisions Log</a><span class="nav-right"><a class="nav-prev" href="ai-tooling.html" title="AI Developer Tooling: Claude Code as the Default Agent Platform for 2026">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="ai-operating-model.html" title="AI Operating Model: Dedicated AI Engineering Enablement Function">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">AI-Assisted Development</p>
+        <h1>AI Coding Policy: Human Accountability with Executable Controls</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-15  ·  12 min · <a class="spec-link" href="ai-policy.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/ai-policy/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/ai-policy/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG AI Decisions Log</a><span class="nav-right"><a class="nav-prev" href="ai-tooling.html" title="AI Developer Tooling: Claude Code as the Default Agent Platform for 2026">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="ai-operating-model.html" title="AI Operating Model: Dedicated AI Engineering Enablement Function">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-SD-AI-POLICY", "status": "draft:gray", "title": "AI Coding Policy: Human Accountability with Executable Controls", "date": "2026-05-15", "author": "Organization Tech Strategy", "permalink": "ai-policy", "timetoread": "12 min", "excerpt": "Organization's AI coding policy starts with human accountability and makes it enforceable through executable controls: data classification rules, approved tool registries, Claude Code permission modes, hooks, settings, command allowlists, MCP and subagent controls, audit trails, CI gates, and incident handling. The policy treats AI agents as powerful development tools that can read context, run commands, and change files, so every capability needs an owner, a scope, and evidence.", "tags": "ai, security, claude-code", "icon": "assets/icons/ai-policy.png", "logo": "assets/images/ai-policy/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["ai", "security", "claude-code"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Organization will adopt a unified AI coding policy that starts with human accountability and makes it enforceable through executable controls. The policy covers data classification, approved tool registries, Claude Code permission modes, hooks, settings, command allowlists, MCP and subagent controls, audit trails, CI gates, and incident handling. Developers remain accountable for AI-assisted changes they accept.\n\n## Decision\n\nAdopt a unified **AI coding policy** for AI-assisted software development at Organization.\n\nThe policy has seven required elements:\n\n* **Human accountability**: a human developer accepts and owns AI-assisted work.\n* **Data classification**: public, internal, confidential, and regulated data have explicit AI-use rules.\n* **Approved registry**: tools, MCP servers, Skills, subagents, and exceptions are listed in a central registry.\n* **Executable controls**: permission modes, hooks, settings, command allowlists, and CI gates enforce policy where possible.\n* **Least-capability access**: agents receive only the tools, context, data, credentials, and network access needed for the task.\n* **Audit trails**: material AI-assisted work leaves evidence of tool, scope, context class, commands, changes, and human verification.\n* **Incident handling**: prompt injection, data leakage, unsafe action, tool compromise, or excessive-agency incidents have a containment and disablement path.\n\nThis policy is implemented primarily through the Claude Code default in [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](ai-tooling.html) and operated by AI Engineering Enablement in [AI Operating Model: Dedicated AI Engineering Enablement Function](ai-operating-model.html).\n\n## How to Use This Decision\n\nUse this ADR before starting non-trivial AI-assisted work:\n\n| Question | Default answer |\n| --- | --- |\n| Who owns the AI-generated change? | The human who accepts it. |\n| Can private repository code be used? | Yes, as internal data in approved tools under enterprise controls. |\n| Can secrets, credentials, or production data be pasted into the agent? | No, unless a specific approved workflow exists. |\n| Can an agent run broad commands or use broad MCP tools? | Only when scoped, approved, logged, and necessary. |\n| Is the task high-risk? | Apply stronger review, tests, owners, and evidence. |\n| Is a tool or workflow outside policy? | Request a documented, time-bounded exception. |\n\nThe policy should move teams from trust-by-enthusiasm to trust-by-controls-and-evidence.\n\n## Data and Risk Rules\n\n| Area | Default rule |\n| --- | --- |\n| Public data | Allowed with normal review. |\n| Internal code and documentation | Allowed in approved tools under enterprise controls. |\n| Confidential data | Restricted by default; use redaction or specific approval. |\n| Regulated data | Prohibited by default unless a specific approved workflow exists. |\n| Secrets and credentials | Never prompt, paste, expose through MCP, or write into guidance files. |\n| Production logs | Treat as confidential or regulated until scrubbed and approved. |\n| Dependencies | AI-added dependencies require license, maintenance, and vulnerability review. |\n| Infrastructure, IAM, networking, CI/CD | High-risk; require owner review and stronger controls. |\n| Authentication, authorization, payments, privacy, crypto | High-risk; require stronger review and test evidence. |\n\nThe task's risk tier is determined by impact, not by file count. A one-line IAM change can be higher risk than a large documentation edit.\n\n## Control Boundary\n\n| Control layer | Examples | Default owner |\n| --- | --- | --- |\n| Identity | Enterprise account, SSO, user attribution. | IT / Security / AI Engineering Enablement. |\n| Tool approval | Approved tool registry and exceptions. | AI Engineering Enablement. |\n| Context scope | Repository boundaries, CLAUDE.md scope, MCP scopes. | Repository owners and AI Engineering Enablement. |\n| Data handling | Classification rules, redaction, no-secrets checks. | Security and repository owners. |\n| Action permissions | Permission modes, command allowlists, write boundaries, network rules. | AI Engineering Enablement. |\n| Automation | Hooks, preflight checks, post-edit checks, CI gates. | AI Engineering Enablement and repository owners. |\n| Review | Pull request review, tests, threat review for risky changes. | Product teams. |\n| Audit | Tool logs, registry references, exception records, incident records. | AI Engineering Enablement and Security. |\n\nNo single control is sufficient. The expected posture is defense in depth without making ordinary low-risk work slow.\n\n## Incident Handling\n\nAI-related incidents follow normal engineering seriousness. The response path is:\n\n1. **Contain**: stop the session, disable relevant tools or scopes, revoke exposed credentials if needed.\n2. **Preserve evidence**: tool logs, prompts where available, changed files, command history, pull requests, and registry entries.\n3. **Classify**: determine whether data exposure, unsafe action, production impact, vulnerability, or policy bypass occurred.\n4. **Notify**: involve Security, AI Engineering Enablement, repository owners, and Legal/Privacy when required by data class.\n5. **Remediate**: revert unsafe changes, rotate secrets, patch controls, update registry entries, or retire risky assets.\n6. **Learn**: add or adjust a control, template, Skill, hook, or review rule.\n\nThe ability to disable a tool, MCP server, Skill, subagent, hook, or permission scope quickly is part of the policy.\n\n## Consequences\n\n### Positive\n\n* Human accountability remains clear.\n* Data classification limits accidental exposure and regulated-data risk.\n* Approved registries give developers, security, and audit one source of truth.\n* Settings, hooks, allowlists, and CI gates make policy enforceable.\n* Incident response is faster because risky tools or scopes can be disabled centrally.\n* Developers can move quickly inside a known policy envelope.\n\n### Negative\n\n* Building and maintaining executable controls is real work.\n* Strong controls can block legitimate work if the exception path is slow.\n* Exception-approved tools need their own control envelope.\n* Audit trails create operational and storage overhead.\n* Some risks remain judgment-based and cannot be fully automated.\n\n## What This Means for Teams\n\n* Review AI-assisted changes as owned code, not as tool output.\n* Know the data class before giving context to an agent.\n* Keep secrets, credentials, production data, and regulated data out of ordinary AI workflows.\n* Use approved tools, Skills, MCP servers, subagents, and settings.\n* Include material AI-assistance evidence in pull requests.\n* Escalate suspected prompt injection, data leakage, unsafe action, or tool compromise immediately.\n* Use exceptions for real workflow needs, not silent local bypasses.\n\n## Considered Options\n\n| Option | Assessment |\n| --- | --- |\n| **Unified policy plus executable controls** | Chosen. Keeps human accountability while making policy operational. |\n| **Policy-as-prose only** | Easy to write, but weak in practice and hard to audit. |\n| **Team-by-team AI rules** | Locally flexible, but fragments security, audit, and incident handling. |\n| **Disallow AI-assisted coding** | Removes official risk surface, but gives up modernization value and may create shadow use. |\n\n## Scope and Revisiting\n\nIn scope:\n\n* AI-assisted software development;\n* tool, context, data, action, audit, and incident controls;\n* Claude Code default workflows and exception-approved alternatives;\n* MCP servers, Skills, subagents, settings, hooks, and CI gates used for engineering work.\n\nOut of scope:\n\n* end-user product AI features;\n* internal non-engineering AI use;\n* model-level decisions for production inference;\n* detailed legal interpretation of AI regulation.\n\nReview this policy every six months, aligned with [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](ai-tooling.html). The next planned review is **2026-11-15**. Revisit earlier after a material AI incident, regulatory change, default-tool change, or evidence that controls are routinely bypassed.\n\n## Authoritative References\n\n* [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework).\n* [NIST AI 600-1: Generative AI Profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf).\n* [OWASP Top 10 for Large Language Model Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications).\n* [OWASP LLM Top 10 2025](https://genai.owasp.org/llm-top-10/).\n* [OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/).\n* [EU Artificial Intelligence Act: Regulation (EU) 2024/1689](https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=en).\n* [Claude Code security](https://docs.anthropic.com/en/docs/claude-code/security).\n* [Claude Code settings](https://docs.anthropic.com/en/docs/claude-code/settings).\n* [Claude Code hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).\n* [Model Context Protocol introduction](https://modelcontextprotocol.io/routing).\n* [Model Context Protocol architecture](https://modelcontextprotocol.io/docs/learn/architecture).\n\n## Appendix: Vocabulary\n\n\n\n| Term | Meaning in this ADR |\n| --- | --- |\n| **Accountability** | A human accepts and owns AI-assisted work. |\n| **Policy** | The rules that govern safe AI-assisted development. |\n| **Executable control** | A setting, hook, allowlist, registry, CI gate, or review mechanism that enforces or proves a rule. |\n| **Least-capability access** | Giving an agent only the context and tools needed for the task. |\n| **Prompt injection** | Untrusted content instructing the agent to ignore policy, misuse tools, or exfiltrate data. |\n| **Excessive agency** | The agent acts too broadly for the task or risk envelope. |\n| **MCP server** | External tool or data interface exposed to the agent through Model Context Protocol. |\n| **Registry** | Central record of approved tools, Skills, MCP servers, subagents, and exceptions. |\n| **Audit trail** | Evidence showing tool, scope, context class, actions, reviewer, and verification. |\n| **Exception** | A documented, time-bounded deviation from the default policy. |\n| **Incident** | A failure or suspected failure of AI tooling, controls, data handling, or policy. |\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

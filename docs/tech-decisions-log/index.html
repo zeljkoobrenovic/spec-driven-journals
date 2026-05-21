@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORG Tech Decisions Log</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 340px;
+            object-fit: cover;
+            margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 4px 0 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/logo.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/logo.jpg" alt=""></a>
+        <p class="logo-credit">Image by Markus Winkler from Pixabay</p>
+        <div style="padding: 4px;">
+            <h1>ORG Tech Decisions Log</h1>
+            <p>Strategic Organization tech decision records.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Frontend", "description": "Strategic frontend tech decisions.", "posts": [{"id": "ORG-SD-MOB-START", "status": "draft:gray", "title": "Mobile Tech Stack: Start from AVIV Group's Native Baseline, Own the Apps", "excerpt": "Organization will use AVIV Group's current native mobile baseline as the starting point for its mobile apps: Swift and SwiftUI on iOS, Kotlin and Jetpack Compose on Android. Organization will take its own source copies of the inherited iOS and Android apps and operate them as Organization-owned product codebases. This gives Organization a fast start for inherited mobile assets while preserving the right to diverge from AVIV's future roadmap.", "url": "mobile-tech-stack.html", "icon": "assets/icons/mobile-tech-stack.png", "tags": ["frontend", "mobile", "ios", "android"]}, {"id": "ORG-SD-WEB-START", "status": "draft:gray", "title": "Web Tech Stack: Start from AVIV Group's Golden Path, Own the Fork", "excerpt": "Organization will use AVIV Group's current Web Golden Path as the starting point for its web stack: React, TypeScript, the Gemini Design System, and Unified Frontend. Organization will take its own source copies of Gemini and Unified Frontend and operate them as Organization-owned platforms. This gives Organization a fast, compatible start for inherited web assets while preserving the right to diverge from AVIV's future roadmap.", "url": "web-tech-stack.html", "icon": "assets/icons/web-tech-stack.png", "tags": ["frontend", "web"]}]}, {"title": "Backend", "description": "Strategic backend application tech decisions.", "posts": [{"id": "ORG-SD-BACK-FRAMEWORK", "status": "draft:gray", "title": "Backend Services Platform: Standardize on .NET with C#", "excerpt": "Organization will use .NET with C# as the default platform for core backend services: domain services, stable HTTP APIs, Kafka producers and consumers, and long-running workers running in containers on AWS ECS Fargate. Node.js with TypeScript remains available for narrow frontend-edge use cases such as small BFFs and simple API aggregation, but it is not the default for durable backend business logic.", "url": "backend-tech-stack-framework.html", "icon": "assets/icons/backend-tech-stack-framework.png", "tags": ["backend"]}]}, {"title": "Infrastructure", "description": "Strategic infrastructure tech decisions.", "posts": [{"id": "ORG-SD-BACK-AWS", "status": "draft:gray", "title": "Public Cloud: Consolidate on AWS via AVIV Group Contract", "excerpt": "Organization commits to AWS as its strategic public cloud provider and will consolidate its backend workloads there. Organization will inherit AVIV Group's AWS commercial contract and account configuration, leverage AVIV's scale and procurement for better unit costs, and use AVIV Group's central AWS functions for cross-cutting topics such as procurement, basic FinOps, and AWS relationship management.", "url": "infra-tech-aws.html", "icon": "assets/icons/infra-tech-stack-aws.png", "tags": ["backend", "infra", "aws"]}, {"id": "ORG-SD-INFRA-AWS-FOUNDATION", "status": "draft:gray", "title": "AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months", "excerpt": "As a starting point, Organization will use AVIV Group's existing central AWS foundation tooling for account creation, account lifecycle management, landing-zone guardrails, and access management: AWS Organizations, AWS Control Tower, AFT (Account Factory for Terraform), and the supporting custom-built access scripts. Organization will not significantly deviate from this setup for the next 6-12 months. The decision is time-bounded: after the initial period, Organization expects a simpler, more conventional, and more country-delegated foundation model with less reliance on custom tooling.", "url": "infra-tech-stack-aws-foundation.html", "icon": "assets/icons/infra-tech-stack-aws-foundation.png", "tags": ["backend", "infrastructure", "aws"]}, {"id": "ORG-SD-INFRA-NETWORKING", "status": "draft:gray", "title": "AWS Networking: Inherit Central AVIV Group Tooling, Simplify Deliberately", "excerpt": "Organization will inherit AVIV Group's central, partly custom-built AWS networking setup for VPCs, subnets, routing, DNS, perimeter controls, transit, and inter-account connectivity. Organization will not significantly deviate from this setup for the next 6-12 months. During that period, Organization will simplify the network by consolidating its roughly 200 AWS accounts into a smaller set of key accounts, distinguishing internet-exposed traffic from internal-only service traffic, and evaluating Amazon VPC Lattice with ECS and ECS Service Connect as simpler service-to-service connectivity patterns.", "url": "infra-tech-stack-networking.html", "icon": "assets/icons/infra-tech-stack-networking.png", "tags": ["backend", "infrastructure", "aws", "networking"]}, {"id": "ORG-SD-BACK-COMPUTE", "status": "draft:gray", "title": "Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images", "excerpt": "Organization will consolidate backend compute on Docker containers running on AWS ECS with the Fargate launch type. Container images use Ubuntu as the foundational base layer. The motivation is to commit to a simple, mainstream architecture for the future, minimizing diversity and fragmentation that alternatives such as serverless or self-managed Kubernetes would introduce. ECS is preferred over AWS-managed Kubernetes because it is easier to own and sufficient for Organization's needs.", "url": "infra-tech-stack-compute.html", "icon": "assets/icons/infra-tech-stack-compute.png", "tags": ["backend", "compute", "aws"]}, {"id": "ORG-SD-BACK-MESSAGING", "status": "draft:gray", "title": "Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone", "excerpt": "Organization will use Amazon MSK (Managed Streaming for Apache Kafka) as the strategic messaging backbone for its backend stack. Kafka is chosen for its durable log model, broad applicability across event streaming, asynchronous integration, replay, and analytics use cases. MSK is preferred over self-managed Kafka and Confluent Cloud because it stays inside the AVIV Group AWS contract and operating model. Organization explicitly accepts that Kafka is a new technology stack with very little in-house expertise today, and treats building that expertise as part of the cost of this decision.", "url": "infra-tech-stack-messaging.html", "icon": "assets/icons/infra-tech-stack-messaging.png", "tags": ["backend", "messaging", "kafka"]}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    let matchStatus = true;
+                    if (activeStatuses.size) {
+                        const liStatus = li.dataset.status || '';
+                        // any-match: post status must equal one of the selected statuses
+                        matchStatus = false;
+                        for (const s of activeStatuses) {
+                            if (liStatus === s.toLowerCase()) {
+                                matchStatus = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag && matchStatus;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

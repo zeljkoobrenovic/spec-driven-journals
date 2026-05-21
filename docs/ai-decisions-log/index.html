@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORG AI Decisions Log</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 340px;
+            object-fit: cover;
+            margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 4px 0 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/iStock-2157103268.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/iStock-2157103268.jpg" alt=""></a>
+        <p class="logo-credit">Image by Mininyx Doodle from iStock</p>
+        <div style="padding: 4px;">
+            <h1>ORG AI Decisions Log</h1>
+            <p>Strategic Organization AI decision records.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "AI-Assisted Development", "description": "Strategic decisions for AI-assisted software development.", "posts": [{"id": "ORG-SD-AI-TOOLING", "status": "draft:gray", "title": "AI Developer Tooling: Claude Code as the Default Agent Platform for 2026", "excerpt": "Organization adopts Claude Code as the default AI developer tool for 2026. This is a platform decision, not a claim about which model is permanently best. The decision chooses the shared surface where CLAUDE.md files, Skills, MCP servers, subagents, hooks, settings, templates, permission modes, registries, and audit controls can compound across teams. Codex, Gemini, and other agentic coding tools remain available by exception when they fit a concrete workflow better.", "url": "ai-tooling.html", "icon": "assets/icons/ai-tooling.png", "tags": ["ai", "claude-code", "devex", "agentic-coding"]}, {"id": "ORG-SD-AI-POLICY", "status": "draft:gray", "title": "AI Coding Policy: Human Accountability with Executable Controls", "excerpt": "Organization's AI coding policy starts with human accountability and makes it enforceable through executable controls: data classification rules, approved tool registries, Claude Code permission modes, hooks, settings, command allowlists, MCP and subagent controls, audit trails, CI gates, and incident handling. The policy treats AI agents as powerful development tools that can read context, run commands, and change files, so every capability needs an owner, a scope, and evidence.", "url": "ai-policy.html", "icon": "assets/icons/ai-policy.png", "tags": ["ai", "security", "claude-code"]}, {"id": "ORG-SD-AI-OPERATING-MODEL", "status": "draft:gray", "title": "AI Operating Model: Dedicated AI Engineering Enablement Function", "excerpt": "Organization establishes a dedicated AI Engineering Enablement function that owns the shared AI developer platform: Claude Code defaults, CLAUDE.md templates, Skills, MCP and subagent registries, policy controls, exception process, adoption support, incident coordination, and the six-month review cycle. Product teams retain delivery accountability; enablement owns shared primitives, not product features.", "url": "ai-operating-model.html", "icon": "assets/icons/ai-operating-model.png", "tags": ["ai", "claude-code", "platform"]}, {"id": "ORG-SD-AI-ENGINEERING-STANDARDS", "status": "draft:gray", "title": "AI Engineering Standards: Governance-as-Code for Modernization", "excerpt": "Organization makes engineering standards executable through the AI developer platform. CLAUDE.md files, shared fragments, settings, hooks, Skills, MCP servers, subagents, pull request templates, and CI gates encode how modernization work is done here. Standards are versioned with the code, applied across repositories, and reviewed every six months alongside the AI tooling and policy decisions.", "url": "ai-engineering-standards.html", "icon": "assets/icons/ai-engineering-standards.png", "tags": ["ai", "claude-code", "devex"]}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    let matchStatus = true;
+                    if (activeStatuses.size) {
+                        const liStatus = li.dataset.status || '';
+                        // any-match: post status must equal one of the selected statuses
+                        matchStatus = false;
+                        for (const s of activeStatuses) {
+                            if (liStatus === s.toLowerCase()) {
+                                matchStatus = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag && matchStatus;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Organisation Principle: Inherit, Then Simplify</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="decisions-stay-with-teams.html" title="Organisation Principle: Decisions Stay with Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="tooling-explicit-and-reversible.html" title="Organisation Principle: Tooling Decisions Are Explicit and Reversible">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Organisation</p>
+        <h1>Organisation Principle: Inherit, Then Simplify</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-16  ·  12 min · <a class="spec-link" href="inherit-then-simplify.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/inherit-then-simplify/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/inherit-then-simplify/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Inspired by Organization's tech and AI decisions logs</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="decisions-stay-with-teams.html" title="Organisation Principle: Decisions Stay with Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="tooling-explicit-and-reversible.html" title="Organisation Principle: Tooling Decisions Are Explicit and Reversible">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-INHERIT-THEN-SIMPLIFY", "status": "draft:gray", "title": "Organisation Principle: Inherit, Then Simplify", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "inherit-then-simplify", "timetoread": "12 min", "excerpt": "Organization starts from AVIV Group's existing technology and tooling: AWS contract, account foundation, networking, web and mobile golden paths, and operating practices. These give a fast start, real scale, and a coherent baseline. The principle is to inherit deliberately, then simplify deliberately. Inheritance does not mean acceptance forever. Simplification does not mean a rewrite. Both happen in time-bounded steps, with each step justified by reduced complexity, lower cost, or clearer ownership.", "tags": "organisation, inheritance, simplification, aviv-group, platform, modernization", "logo": "assets/images/inherit-then-simplify/logo.jpeg", "logo_credit": "Inspired by Organization's tech and AI decisions logs", "icon": "assets/icons/inherit-then-simplify.png"}, "tags": ["organisation", "inheritance", "simplification", "aviv-group", "platform", "modernization"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization inherits AVIV Group's existing technology and tooling as the starting point for cloud, networking, web, mobile, and operating practices. The inherited baseline is honoured for a defined time window. During and after that window, Organization simplifies the baseline in evolutionary steps, each one justified by reduced complexity, lower cost, or clearer ownership. Inheritance buys time and consistency; simplification turns that into long-term ownership.\n\n## Statement\n\nOrganization's posture toward shared technology is two-phase:\n\n1. **Inherit.** Start from AVIV Group's existing setup where one exists: AWS organisation, account foundation, networking, web stack, mobile stack, operating model, contracts, and procurement.\n2. **Simplify.** During an agreed time window (typically 6-12 months) and afterwards, reduce custom complexity, consolidate accounts, simplify networking, and align operations toward simpler, more conventional patterns.\n\nBoth phases are explicit. Inheritance is not \"default forever\". Simplification is not \"rewrite from scratch\".\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Start from the inherited baseline. | Accept the inherited baseline as final. |\n| Simplify over time. | Replace everything quickly. |\n| Inheritance has a time window. | The window expires with no plan. |\n| Simplification is incremental. | Simplification is a programme. |\n| Diverge with intent. | Diverge as soon as a team feels like it. |\n\nThe principle balances speed and ownership. Inheritance buys speed; simplification buys long-term control.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why inheritance can be a deliberate strategy rather than passive acceptance.\n* Distinguish alignment during the inheritance window from permanent dependency.\n* Propose simplification steps that reduce complexity without triggering a rewrite.\n* Identify when a fork or divergence creates real ownership obligations.\n\n## Rationale\n\nOrganization could in theory build everything from scratch. The cost would be real: re-platforming AWS, redesigning networking, rebuilding mobile and web platforms, re-negotiating cloud contracts. None of those reduce Organization's actual product complexity in the short term.\n\nInheriting from AVIV Group gives:\n\n* A working AWS estate and contract leverage.\n* A landing-zone-style account model with established guardrails.\n* A web Golden Path (React, TypeScript, Gemini Design System, Unified Frontend) and a mobile native baseline (Swift/SwiftUI, Kotlin/Jetpack Compose).\n* Operating practices that have been refined over multiple AVIV Group brands.\n\nInheriting also imports complexity:\n\n* Custom tooling (for example, AFT-based account factories, custom networking, custom access scripts).\n* Coupling to AVIV Group's roadmap.\n* Operating model assumptions Organization may not share long-term.\n\nTherefore: inherit *and then simplify*. The simplification path makes inheritance sustainable. Without it, Organization is permanently a downstream consumer of decisions made elsewhere.\n\nThis principle is the meta-pattern behind Organization's AWS Foundation, AWS Networking, Web Tech Stack, and Mobile Tech Stack decisions.\n\n## Implications\n\n* **Each inheritance has a time window.** \"Inherit for 6-12 months\" is a concrete commitment with a review date, not an indefinite arrangement.\n* **Forks are owned.** When Organization takes its own copy (for example, Gemini Design System, Unified Frontend, mobile apps), the fork has a named owner and a clear divergence policy.\n* **Simplification has criteria.** Each simplification step articulates the complexity it removes and the consequences.\n* **The default during inheritance is alignment.** Teams do not diverge from inherited patterns silently.\n* **The default after the window is review.** What stays as-is, what simplifies, what diverges - all decisions, all written down.\n* **Divergence costs are paid by Organization.** If Organization diverges, Organization owns the tooling, golden paths, and AI context for the divergent path.\n\n## Inheritance Review Questions\n\nEvery inherited capability should be reviewed with the same frame:\n\n* What value did inheritance give us immediately?\n* Which parts are still useful and should remain aligned with AVIV Group?\n* Which parts create local complexity, cost, or unclear ownership?\n* Which teams depend on the inherited shape today?\n* What simplification step would remove the most complexity with the least migration risk?\n* What would Organization need to own if it diverged?\n* What is the next review date, and what evidence should be available by then?\n\nThe useful answer is rarely \"keep everything\" or \"replace everything\". The useful answer is usually a narrow simplification step with a named owner and a measurable reduction in complexity.\n\n## What This Means for Teams\n\nFor service teams:\n\n* During the inheritance window, use the AVIV Group baseline by default for inherited domains (cloud, networking, web, mobile).\n* When pain arises, capture it precisely - this becomes simplification input.\n* Avoid hand-rolled local divergence; raise it as a proposal.\n\nFor platform and architecture roles:\n\n* Maintain explicit inheritance status: what is inherited, until when, with what review.\n* Map the simplification roadmap: account consolidation, networking simplification, fork ownership, operating-model adjustments.\n* Negotiate with AVIV Group functions where relevant.\n\nFor tech leads:\n\n* Treat inheritance as a fact, not a punishment. The cost of fighting it during the window is higher than the cost of accepting it.\n* Treat the simplification window as an opportunity. Bring proposals with evidence.\n\n## Anti-Patterns\n\n* **Inheritance forever.** No review date, no plan to simplify, no ownership.\n* **Reject-on-arrival.** Organization teams refusing the inherited baseline before learning what it does and why.\n* **Silent divergence.** Local \"we'll just do our own\" patterns without an ADR.\n* **Big-bang re-platforming.** \"We'll cut ties with AVIV Group entirely in one programme\" - replaces the inheritance complexity with rewrite complexity.\n* **Fork orphaning.** Organization takes its own copy of a platform but does not staff it; the fork goes stale.\n* **Simplification theatre.** Renaming inherited tooling without reducing its complexity.\n* **One-foot-each.** Teams half-inheriting and half-diverging on the same component, with no clear ownership of either side.\n\n## Examples\n\nAligned with the principle:\n\n* Organization uses AVIV Group's AWS foundation tooling for 6-12 months while planning a simpler, country-delegated model.\n* Organization takes its own source copies of Gemini and Unified Frontend, accepting ownership and reserving the right to diverge.\n* The AWS account estate consolidates from ~200 accounts to a smaller, key set; each consolidation is a named, time-bounded effort.\n* Mobile apps run on the inherited native baseline; Organization operates them as Organization-owned codebases.\n\nOut of alignment with the principle:\n\n* \"We won't touch AVIV Group tooling, ever\" or \"We will replace everything in Q1\".\n* A team forks a shared platform with no plan to maintain the fork.\n* Custom networking simplification is celebrated while the simplification never lands.\n* Inherited operating practices are followed even when Organization's situation has clearly diverged.\n\n## Discussion Prompts\n\nUse these prompts during inheritance reviews:\n\n* What inherited thing is still buying us speed, and what has become drag?\n* Which simplification step is small enough to complete without a rewrite programme?\n* If we diverge, what new ownership work are we accepting?\n\n## Related Principles\n\n* [Design Principle: Evolutionary Systems](evolutionary-systems.html) - simplification is an evolutionary path, not a rewrite.\n* [Design Principle: Standardize Before Diverging](standardize-before-diverging.html) - inheritance is the default; divergence is by ADR.\n* [Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)](small-and-simple.html) - the long-term goal of simplification is a smaller, simpler estate.\n* [Organisation Principle: Tooling Decisions Are Explicit and Reversible](tooling-explicit-and-reversible.html) - inherited tooling is a default that can be replaced by ADR.\n\n## Scope and Revisiting\n\nThis principle applies to all domains where AVIV Group provides an existing baseline: AWS contract and foundation, networking, web platform, mobile platform, operating model, procurement, security baseline, and similar.\n\nIt does not apply to greenfield areas where Organization is choosing its own primary technology (for example, the .NET backend platform decision, the MSK messaging decision, the AI tooling decision); those are made on their own merits.\n\nThe principle should be revisited if:\n\n* AVIV Group's roadmap diverges significantly from Organization's needs.\n* The cost of inheritance exceeds the cost of simplification more sharply than expected.\n* Regulatory or organisational changes alter the relationship between Organization and AVIV Group.\n* A simplification window ends without a planned next phase.\n\n## Authoritative References\n\n* Martin Fowler, [Strangler Fig Application](https://martinfowler.com/bliki/StranglerFigApplication.html).\n* AWS, [Account Strategy and Multi-Account Best Practices](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/welcome.html).\n* Organization Tech Decisions Log, [AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months](../tech-decisions-log/infra-tech-stack-aws-foundation.html).\n* Organization Tech Decisions Log, [Web Tech Stack: Start from AVIV Group's Golden Path, Own the Fork](../tech-decisions-log/web-tech-stack.html).\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

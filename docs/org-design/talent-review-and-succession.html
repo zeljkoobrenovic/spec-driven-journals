@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Talent Review and Succession</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Org Design Decisions</a><span class="nav-right"><a class="nav-prev" href="performance-feedback-and-review.html" title="Performance Feedback and Review">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="architecture-as-advice-and-guardrails.html" title="Architecture as Advice and Guardrails">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">People System</p>
+        <h1>Talent Review and Succession</h1>
+        <p class="byline">Organization Org Design  ·  2026-05-17  ·  13 min · <a class="spec-link" href="talent-review-and-succession.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/talent-review-and-succession/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/talent-review-and-succession/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Org Design Decisions</a><span class="nav-right"><a class="nav-prev" href="performance-feedback-and-review.html" title="Performance Feedback and Review">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="architecture-as-advice-and-guardrails.html" title="Architecture as Advice and Guardrails">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-ORG-TALENT-REVIEW-AND-SUCCESSION", "status": "draft:gray", "title": "Talent Review and Succession", "date": "2026-05-17", "author": "Organization Org Design", "permalink": "talent-review-and-succession", "timetoread": "13 min", "excerpt": "Organization engineering will use lightweight talent review and succession planning for critical roles and capabilities. The goal is continuity, growth, risk visibility, and opportunity creation, not secret ranking or replacement planning.", "tags": "org-design, talent, succession, workforce-planning, leadership, career-paths", "icon": "assets/icons/talent-review-and-succession.png", "logo": "assets/images/talent-review-and-succession/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["org-design", "talent", "succession", "workforce-planning", "leadership", "career-paths"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Organization engineering will use lightweight talent review and succession planning for critical roles, capabilities, and leadership paths. The process identifies continuity risks, growth opportunities, capability gaps, and potential successors. It must be transparent enough to be fair, evidence-based enough to avoid politics, and developmental rather than a secret ranking exercise.\n\n## Decision\n\nAdopt **talent review and succession planning** as part of the engineering people system.\n\nThe process covers:\n\n* critical roles and capabilities;\n* succession and contingency risks;\n* development opportunities for individuals;\n* gaps in team or domain capability;\n* internal mobility and stretch assignments;\n* hiring needs that cannot be solved internally;\n* fairness, diversity, and calibration of opportunity.\n\nThe process is lightweight. It should create action, not talent bureaucracy.\n\n## How to Read This Decision\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Critical roles need continuity planning. | People are replaceable parts. |\n| Potential and readiness should be discussed. | Secret labels define a person's future. |\n| Talent review should create development action. | A spreadsheet is the outcome. |\n| Succession includes IC and specialist roles. | Succession is only for managers. |\n| Fairness requires challenge and evidence. | Every opportunity can be perfectly equal. |\n\nTalent planning should increase opportunity and resilience at the same time.\n\n## How to Use This Decision\n\nUse this decision to:\n\n* distinguish performance review, promotion review, talent review, and succession planning;\n* identify critical roles and capabilities beyond management positions;\n* recognise succession risk without creating fear or secrecy;\n* turn talent conversations into development actions;\n* challenge bias and narrow definitions of potential.\n\nThe practical lesson is that succession planning is not asking \"who replaces whom?\" It is asking \"which capabilities must the organisation not lose, and how do we grow more people who can carry them?\"\n\n## One-Minute Mental Model\n\nTalent review is **capability risk management plus opportunity design**.\n\nThe organisation needs to know where it is fragile: one person owns a critical system, one manager holds too much context, one staff engineer carries all architecture judgement, or one team has no ready technical lead. It also needs to know where people are ready for more scope but lack opportunity.\n\nGood talent planning connects those two needs. It creates stretch assignments, mentoring, succession paths, hiring plans, and knowledge transfer.\n\n## Rationale\n\nModern engineering organisations depend on specialised knowledge and leadership capacity. Some risks are obvious only after a person leaves:\n\n* nobody else understands a legacy integration;\n* a team has no technical lead ready to step up;\n* a platform capability depends on one senior engineer;\n* management succession is improvised during a crisis;\n* high-potential engineers leave because growth opportunities were invisible;\n* succession conversations happen informally among a small group and reproduce bias.\n\nTalent review makes these risks explicit while creating development opportunities. It should support [Organisation Principle: Capabilities Follow Ownership](../principles/capabilities-follow-ownership.html) and [Dual Career Paths and Transparent Progression](career-paths-and-progression.html), not undermine them.\n\n## What to Review\n\n| Area | Question |\n| --- | --- |\n| Critical roles | Which roles would create serious delivery, operational, or leadership risk if vacant? |\n| Critical capabilities | Which skills or domain knowledge are concentrated in too few people? |\n| Readiness | Who could step into broader scope now, soon, or with development? |\n| Development | What experience would help people become ready? |\n| Mobility | Which internal moves would grow both the person and the organisation? |\n| Hiring | Which gaps cannot be solved through development in time? |\n| Fairness | Who is not being seen because opportunity or sponsorship is uneven? |\n\nReview roles and capabilities, not only named successors.\n\n## Criticality and Risk Map\n\nUse a simple map before discussing people:\n\n| Role or capability | Why critical | Current concentration | Risk | Action |\n| --- | --- | --- | --- | --- |\n| Example: checkout incident leadership | Customer trust and revenue impact. | One senior engineer leads most incidents. | High. | Shadowing, playbook, two deputies. |\n| Example: legacy billing integration | Required for reconciliation. | Knowledge concentrated in one team. | Medium. | Documentation, pairing, retirement plan. |\n\nStarting with roles and capabilities reduces the chance that the conversation becomes a personality ranking exercise.\n\n## Readiness Language\n\nUse simple readiness language to avoid false precision:\n\n| Readiness | Meaning |\n| --- | --- |\n| Ready now | Could credibly step into the role or scope with normal transition support. |\n| Ready soon | Could be ready in 6-12 months with targeted development or exposure. |\n| Future potential | Shows signs of capability but needs broader experience and time. |\n| Critical expert | Holds important knowledge or skill; may or may not want broader leadership. |\n| At risk | Retention, overload, single-point-of-failure, or role-fit concern requires action. |\n\nReadiness is not a permanent label. It is a current judgement based on evidence and context.\n\n## Evidence for Readiness\n\nReadiness should be supported by examples:\n\n| Readiness claim | Evidence to look for |\n| --- | --- |\n| Ready to tech-lead a team | Has led design tradeoffs, mentored others, handled production ownership, and improved team decisions. |\n| Ready for staff scope | Has influenced across teams, created durable artifacts, handled ambiguity, and grown other leaders. |\n| Ready for engineering management | Has shown coaching ability, accountability, judgement with people issues, and interest in management work. |\n| Critical expert | Holds knowledge or judgement that materially affects delivery, operations, or strategy. |\n| Retention risk | Shows overload, blocked growth, market pressure, low engagement, or role mismatch. |\n\nPotential without evidence should become a development hypothesis, not a label.\n\n## Talent Review Outputs\n\nA useful review produces actions:\n\n| Output | Example |\n| --- | --- |\n| Development plan | Pair a senior engineer with a staff engineer on a cross-team migration. |\n| Stretch assignment | Let an engineer lead a bounded platform adoption effort. |\n| Knowledge transfer | Document and pair around a legacy integration before an expert moves teams. |\n| Succession path | Identify who could cover a team lead role during leave or transition. |\n| Hiring need | Open a role because the capability gap cannot be developed fast enough. |\n| Retention action | Address overload or lack of growth for a critical contributor. |\n\nIf a talent review produces no actions, it is only a meeting.\n\n## Review Meeting Structure\n\nA lightweight talent review can follow this agenda:\n\n| Step | Question |\n| --- | --- |\n| Strategy context | Which goals or changes will alter capability needs? |\n| Critical roles | Which roles or capabilities would hurt most if lost? |\n| Continuity risks | Where is knowledge, leadership, or decision authority concentrated? |\n| Growth opportunities | Who is ready for broader scope, and what opportunity is missing? |\n| Hiring gaps | Which needs cannot be solved internally fast enough? |\n| Actions | Who owns each development, transfer, hiring, or knowledge-transfer action? |\n| Revisit | When will we check whether risk reduced? |\n\nKeep the meeting anchored in decisions and actions.\n\n## Worked Example\n\nA domain depends on one principal engineer for architecture decisions.\n\nWeak response:\n\n* Mark the principal as \"critical\".\n* Hope they stay.\n* Ask them to review even more decisions.\n\nBetter response:\n\n| Action | Purpose |\n| --- | --- |\n| Map the decisions only they can currently make. | Identify the real dependency. |\n| Assign two staff engineers to shadow and co-lead selected decisions. | Build succession and reduce bottleneck. |\n| Turn repeated advice into ADRs and guardrails. | Preserve knowledge outside one person. |\n| Create a platform or community follow-up where relevant. | Convert private expertise into shared capability. |\n| Review progress next quarter. | Check whether the risk actually reduced. |\n\nThe goal is not to replace the principal. It is to make the organisation healthier around their expertise.\n\n## Anti-Patterns\n\n* **Secret ranking.** People are labelled in private without transparency or development action.\n* **Manager-only succession.** Critical IC, platform, domain, and architecture roles are ignored.\n* **Potential by similarity.** Leaders identify future leaders who look like past leaders.\n* **Spreadsheet as outcome.** Risks are recorded but no development or hiring action follows.\n* **Hero preservation.** Critical experts are protected from growth opportunities because the current system depends on them.\n* **Succession panic.** Planning starts only after someone resigns.\n\n## Common Confusions\n\n| Confusion | Clarification |\n| --- | --- |\n| Succession vs replacement | Succession builds continuity and options; replacement reacts to a vacancy. |\n| Potential vs favouritism | Potential must be grounded in evidence and challenged for bias. |\n| Critical expert vs future leader | A person may be deeply critical without wanting or needing broader leadership scope. |\n| Readiness vs entitlement | Being discussed as ready soon does not promise a role; it identifies development direction. |\n| Talent review vs performance review | Performance reviews assess current evidence; talent reviews plan future capability and continuity. |\n\nBeing explicit about these distinctions reduces fear and politics.\n\n## Practice Exercise\n\nFor one domain, run a 30-minute continuity review:\n\n1. List the five roles or capabilities the domain cannot safely lose.\n2. Mark where knowledge or authority is concentrated in one person.\n3. Name one development action that would reduce each concentration risk.\n4. Name one person who needs broader scope and one opportunity that could provide it.\n5. Identify which gap requires hiring rather than internal development.\n6. Set a revisit date and owner for each action.\n\n## Discussion Prompts\n\nUse these prompts in talent reviews:\n\n* Which roles or capabilities are business-critical this year?\n* Where do we depend on one person too much?\n* Who is ready for broader scope but lacks an opportunity?\n* Which development moves would reduce organisational risk and grow people?\n* Where might bias affect who is seen as high potential?\n* Which gaps require hiring rather than internal development?\n\n## Related Records\n\n* [Dual Career Paths and Transparent Progression](career-paths-and-progression.html) - talent review should use transparent progression expectations.\n* [Performance Feedback and Review](performance-feedback-and-review.html) - performance evidence informs but does not equal succession readiness.\n* [Structured Hiring and Selection](structured-hiring-and-selection.html) - hiring closes gaps that internal development cannot close in time.\n* [Staff-Plus Technical Leadership](staff-plus-technical-leadership.html) - succession must include senior IC leadership paths.\n* [Organisation Principle: Capabilities Follow Ownership](../principles/capabilities-follow-ownership.html) - critical capabilities need owners and continuity.\n\n## Scope and Revisiting\n\nThis ADR applies to engineering talent planning, succession, critical capability review, and leadership continuity. HR, legal, privacy, and employee-representation requirements remain authoritative and must shape the detailed process.\n\nRevisit if the process becomes secretive, biased, actionless, manager-only, or disconnected from strategy and workforce planning.\n\n## Authoritative References\n\n* CIPD, [Succession planning factsheet](https://www.cipd.org/en/knowledge/factsheets/succession-planning-factsheet/).\n* CIPD, [Talent management resources](https://www.cipd.org/en/topics/talent-management/).\n* SHRM, [Talent Management](https://www.shrm.org/topics-tools/topics/talent-management).\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

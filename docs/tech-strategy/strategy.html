@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Organization Tech Strategy: Reducing Fragmentation and Complexity While Building Foundation for the Future</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Organization Tech Strategy</a><span class="nav-right"><a class="nav-next" href="diagnosis.html" title="Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Strategy</p>
+        <h1>Organization Tech Strategy: Reducing Fragmentation and Complexity While Building Foundation for the Future</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-17  ·  10 min · <a class="spec-link" href="strategy.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/strategy/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/strategy/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Organization Tech Strategy</a><span class="nav-right"><a class="nav-next" href="diagnosis.html" title="Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-STRAT-OVERVIEW", "status": "draft:gray", "title": "Organization Tech Strategy: Reducing Fragmentation and Complexity While Building Foundation for the Future", "date": "2026-05-17", "author": "Organization Tech Strategy", "permalink": "strategy", "timetoread": "10 min", "excerpt": "Organization should simplify and converge its engineering landscape to deliver faster and operate more reliably. The core decision is to optimise for Germany-scale needs, not for the broader White-Label-era optionality the estate was originally shaped around. That means fewer active patterns, fewer tooling paths, clearer ownership, explicit legacy retirement, and a simpler path from code to production. Detailed defaults and concrete exceptions are handled through supporting policy, operating model, blueprints, and the roadmap.", "tags": "strategy, simplification, convergence, fragmentation, germany", "icon": "assets/icons/strategy.png", "logo": "assets/images/strategy/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["strategy", "simplification", "convergence", "fragmentation", "germany"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Organization engineering will simplify and converge its current landscape to improve delivery speed and operational stability. Optimise for Germany-scale needs, not for inherited White-Label-scale optionality. That means fewer active patterns, fewer tooling paths, clearer ownership, explicit legacy retirement, and a simpler path from code to production. The near-term focus is delivery-path simplification, ownership clarity, backend convergence, and containment of infrastructure fragmentation.\n\n## Decision\n\nOrganization engineering should optimise for the business it actually has - a stable single-brand operation for the next 2-3 years - and stop optimising by default for the multi-brand, multi-country platform scale that shaped much of the current estate.\n\nThat single re-framing leads to the rest of the strategy:\n\n* The main strategic problem is **fragmentation**, not lack of technical sophistication.\n* The main strategic move is **simplification and convergence**, not adding more architectural variety.\n* The main strategic burden is **inherited complexity**, made up of White-Label-era platform ambitions layered on top of older legacy that was never retired.\n* The main strategic outcome is **faster delivery and more stable operations**, measured by delivery speed, stability, quality, onboarding, and ownership clarity.\n\nEverything else in this journal - diagnosis, policy, operating model, blueprints, roadmap - is downstream of this re-framing.\n\n## How to Use This Strategy\n\nUse this record as the **decision frame** for strategic technical choices. It should help teams answer:\n\n* Does this proposal reduce active fragmentation, or add another path?\n* Does it fit Germany's actual 2-3 year business shape?\n* Does it clarify ownership and delivery, or preserve ambiguity?\n* Does it create a path to retire legacy, or only add a newer layer beside it?\n* Which supporting record should make the concrete call: [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html), [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html), [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html), or one of the blueprints?\n\nDo not use this record as a detailed architecture design. It sets the direction and the tests for good decisions; the per-area defaults and execution sequence live in the supporting records.\n\n## What This Should Help You Do\n\nThis strategy should help a reader:\n\n* Explain the central diagnosis in one sentence: Germany carries more engineering complexity than its current business needs justify.\n* Describe why simplification and convergence are strategic choices, not cleanup work.\n* Use the five decision rules to challenge a proposal that adds durable complexity.\n* Identify which supporting record to use when the strategy needs to become action.\n\nCommon misreadings to avoid:\n\n| Misreading | Correction |\n| --- | --- |\n| \"Simplification means stop modernising.\" | Modernisation is still required, but it must remove active complexity rather than add another layer. |\n| \"Germany-scale means small ambition.\" | It means fit-for-purpose architecture for the actual business horizon. |\n| \"Convergence means one technology for everything.\" | Convergence means fewer active patterns and clearer defaults, not false uniformity. |\n\n## How to Read This Strategy\n\nRead it in this order:\n\n| You want to understand... | Start with |\n| --- | --- |\n| What problem this strategy is solving | [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html) |\n| Why this problem requires *strategic* response, not background cleanup | [Strategic Implications: What the Diagnosis Forces the Strategy to Account For](implications.html) |\n| The actual rules that constrain decisions | [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) |\n| How those rules are kept alive day to day | [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) |\n| What changes when, in what order | [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) |\n| What to start on first | [First Targets: Where to Concentrate the First Wave of Simplification](first-targets.html) |\n| How to rank simplification candidates | [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html) |\n| The per-area defaults that turn policy into engineering choices | [Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html), [Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production](delivery-path.html), [AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html), [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html) |\n\nThe structure mirrors a Rumelt-style \"kernel of strategy\": diagnosis → guiding policy → coherent action. Skip the diagnosis and the policy will read like preferences. Skip the policy and the actions will read like a backlog.\n\n## The Single Most Load-Bearing Sentence\n\n> Organization is carrying more engineering complexity than its current business needs justify.\n\nEvery other claim in this strategy is downstream of that one. If that sentence is wrong, the strategy is wrong. If that sentence is right, the implications follow almost mechanically.\n\nThe sentence rests on four observations:\n\n1. Germany is expected to be a **stable single-brand business** for the next 2-3 years.\n2. The current estate carries **White-Label-scale optionality** designed for many brands and countries.\n3. **Older legacy was never fully removed** when newer eras were introduced.\n4. The result is **three architectural eras coexisting** with no clear target state, fragmented delivery tooling, and roughly 200 AWS accounts.\n\nThe full evidence base is in [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html).\n\n## Policy in One Page\n\nA complete restatement of the policy lives in [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html). The one-page version is:\n\n### Objective\n\nIncrease delivery speed and stability by reducing fragmentation.\n\n### Direction\n\n* Optimise for Germany-scale needs, not inherited White-Label optionality.\n* Simplify and converge rather than add more architectural sophistication.\n* Reduce tool, platform, and infrastructure variance.\n* Clarify ownership boundaries.\n* Retire or contain legacy explicitly.\n* Standardise the path from code to production.\n\n### Core Policies\n\n1. Simplification and convergence are primary objectives.\n2. Backend convergence is the main technical direction.\n3. Delivery-path simplification is part of the core strategy.\n4. Legacy retirement is mandatory.\n5. Ownership boundaries must become clear.\n6. The number of supported technologies and toolchains must decrease over time.\n7. Strong defaults are preferred over broad optionality.\n8. New fragmentation requires explicit justification.\n9. Success is measured by delivery speed, stability, quality, onboarding, and ownership clarity.\n\n### Decision Rules\n\nWhen choosing between options, prefer the option that:\n\n1. Reduces fragmentation.\n2. Fits Germany's actual scope.\n3. Simplifies delivery.\n4. Clarifies ownership.\n5. Creates a path to retire legacy.\n\nReject options that add durable complexity without clear Germany-specific value.\n\n## What the Strategy Does Not Try to Do\n\nThe strategy is deliberately narrow. To stay actionable, it does **not** try to:\n\n| Not in scope | Reason |\n| --- | --- |\n| Specify the exact target architecture in detail | That is the job of the blueprints, evolved over time. |\n| Pick a single backend technology for every domain | Convergence reduces *variance*; it does not name one runtime as the universal answer. |\n| Schedule team-by-team migrations | Sequencing belongs to the roadmap and wave plan, not to the policy. |\n| Replace the AVIV Group AWS Foundation or White-Label golden paths | Those are starting points; divergence requires explicit justification, not blanket invention. |\n| Become an architecture committee | A lightweight review forum applies the strategy; it does not re-litigate every decision. |\n| Resolve every open question now | The strategy is published with explicit open questions and a review cadence. |\n\nThe strategy is a frame, not a finished design.\n\n## Current Shape of the Estate\n\nThe starting position, in numbers and patterns:\n\n* Roughly **200 AWS accounts**, split between a legacy account estate and a White-Label-era account estate.\n* More than **2,000 repositories** across GitHub, GitLab, and TFS-era systems.\n* Roughly **30 million lines of code**.\n* Delivery fragmented across **GitHub, CircleCI, GitLab, TFS, Jenkins, and manual paths**.\n* **Three backend styles in parallel:**\n  * Monolith on SQL Server and C#.\n  * Event-driven Java microservices on self-hosted Kafka.\n  * Serverless-based newer services.\n* Active legacy technologies still in the estate: self-hosted Kafka, RabbitMQ, SQL Server, Windows servers, Java, ASPX, GitLab, Jenkins, Team Foundation Server, Silverlight, Akamai.\n\nThese numbers are not failures. They are the consequence of a multi-year White-Label platform ambition layered on top of older legacy. The strategy treats them as a starting point, not an indictment.\n\n## Load-Bearing Reasoning\n\nThe strategy rests on four pieces of reasoning. Each is challengeable; if any one of them changes, the strategy should be revisited.\n\n1. **Germany is a stable single-brand business for the next 2-3 years.** If multi-brand or multi-country requirements return on a shorter horizon, the optionality this strategy proposes to remove may need to be preserved.\n2. **The current estate carries White-Label-scale and legacy-era complexity.** If the diagnosis is wrong about *where* the complexity comes from, the prescription will treat the wrong root cause.\n3. **The main business need is faster delivery and stability, not maximum architectural flexibility.** If the business shifts to optimise for, e.g., new product exploration over delivery speed, the policy should weight differently.\n4. **The main problem is fragmentation, not lack of technical sophistication.** If the diagnosis is wrong about this, the strategy will simplify in places that did not need simplifying and leave the real bottleneck untouched.\n\nThese are stated explicitly so they can be argued with.\n\n## Alternatives Not Chosen\n\nThe strategy explicitly rejects several plausible alternative directions:\n\n| Alternative | Why not |\n| --- | --- |\n| Continue optimising by default for multi-brand, multi-country platform scale | Mismatches the current business shape; preserves the White-Label-era complexity that is now a delivery tax. |\n| Treat serverless-first architecture as the default backend direction | Adds another backend style on top of the three already in play; increases variance instead of reducing it. |\n| Accept mixed-generation delivery tooling as a normal steady state | Directly contradicts the business expectation of faster delivery and stability. |\n| Modernise by adding new layers while leaving old ones active without containment or retirement | This is exactly the pattern that produced the current estate; doing more of it makes the problem worse. |\n| Do a full top-down redesign | Higher risk than the current diagnosis warrants; incremental convergence is more likely to actually reduce active complexity. |\n\n## What \"Success\" Looks Like\n\nThe strategy is not about architectural elegance. It is about whether the engineering system works better for Germany. The signals to watch:\n\n* The number of active backend patterns is **decreasing**, not increasing.\n* The number of active delivery paths is **decreasing**, not increasing.\n* The supported technology and tooling set is **shrinking** over time.\n* The AWS account estate has **explicit owner and status** for every account; unclear-purpose accounts are reducing.\n* **Onboarding** time and effort for new engineers is decreasing.\n* **Ownership** of major systems is clear, named, and accountable.\n* **Delivery speed and operational stability** trend the right way.\n\nIf, after a year, the active footprint has grown rather than shrunk, the strategy has not worked - regardless of how many new initiatives have started.\n\n## Open Questions\n\nThe strategy is published with these open questions, to be resolved through the operating mechanisms rather than by keeping the strategy in perpetual draft:\n\n* Which systems should be the first concrete simplification and retirement targets? *(See [First Targets: Where to Concentrate the First Wave of Simplification](first-targets.html).)*\n* Which backend patterns should become the explicit Germany default? *(See [Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html).)*\n* Which parts of the AWS account estate can be consolidated first? *(See [AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html).)*\n* Which current exceptions should be accepted, contained, or removed?\n* Where should ownership boundaries be redrawn or clarified? *(See [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html).)*\n\nThese are intentionally not answered in this document. The strategy provides the frame; the operating model and blueprints provide the answers over time.\n\n## Rollout\n\n* Publish this strategy with a defined comment period.\n* Use the strategy review forum as the main place for questions and challenge.\n* Hold focused Q&A or office-hours sessions during rollout.\n* After approval, move comments and open debate into the operating mechanisms ([Operating Model: How the Strategy Stays Alive Day to Day](operate.html)) rather than keeping the strategy in perpetual draft.\n\n## Anti-Patterns\n\nThe strategy fails in predictable ways. Watch for:\n\n* **Treating simplification as background cleanup.** If \"simplify when you have time\" is the operating mode, the policy is not being applied.\n* **Adding new platforms on top of old ones without containment or retirement.** The fastest way to recreate the current diagnosis.\n* **Letting the review forum become an architecture committee.** It exists to review decisions with strategic impact, not to gate every change.\n* **Counting plans as progress.** Retirement plans without retirements do not reduce active complexity.\n* **Justifying local preference with strategic language.** \"Strategic\" is not a synonym for \"what this team wanted to do anyway\".\n\n## Related Records\n\n* [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html) — the evidence and core diagnosis this strategy responds to.\n* [Strategic Implications: What the Diagnosis Forces the Strategy to Account For](implications.html) — what the diagnosis means for the space of acceptable strategies.\n* [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) — the nine core policies and the decision rules.\n* [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) — the operating model that keeps the strategy alive.\n* [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) — the phased transition plan.\n* [First Targets: Where to Concentrate the First Wave of Simplification](first-targets.html) — the first concrete areas to act on.\n* [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html) — the method for ranking candidates and the first wave plan.\n\n## Scope and Revisiting\n\nThis strategy is written for a 2-3 year horizon. Revisit it materially when one of the following changes:\n\n* The business scope of Organization Germany changes (multi-brand, multi-country, divestiture, major acquisition).\n* The organisation structure changes in a way that affects platform ownership.\n* A major delivery tooling decision is made centrally elsewhere in AVIV Group.\n* The diagnosis - that fragmentation, not sophistication, is the bottleneck - turns out to be wrong.\n\nIn the absence of those triggers, revisit policy and roadmap quarterly through the operating mechanisms, not by rewriting this document.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Backend Guild as a Cross-Team Community of Practice</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="jira-workflow-standards.html" title="Jira as the Issue Tracker and a Unified Workflow Standard Across Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="frontend-guild.html" title="Frontend Guild as a Cross-Team Web Consortium">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Communities of Practice</p>
+        <h1>Backend Guild as a Cross-Team Community of Practice</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-17  ·  14 min · <a class="spec-link" href="backend-guild.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/backend-guild/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/backend-guild/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="jira-workflow-standards.html" title="Jira as the Issue Tracker and a Unified Workflow Standard Across Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="frontend-guild.html" title="Frontend Guild as a Cross-Team Web Consortium">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-FOUND-BACKEND-GUILD", "status": "draft:gray", "title": "Backend Guild as a Cross-Team Community of Practice", "date": "2026-05-17", "author": "Organization Tech Strategy", "permalink": "backend-guild", "timetoread": "14 min", "excerpt": "Organization will form a Backend Guild as a standing community of practice for backend and distributed systems engineers across teams, brands, and domains. The guild owns and refines golden paths for backend systems, shares lessons learned on a bi-weekly cadence, runs guild-specific sessions at Architecture Summits, and grows world-class experts through coordinated thought leadership. The guild is advisory and contributory, not a governance body: it gives feedback to the architecture group and Chief Architect, proposes new recommendations and decisions, and is open to every Aviver who wants to contribute. The guild operates with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).", "tags": "foundations, guild, backend, distributed-systems, golden-paths, community-of-practice", "icon": "assets/icons/backend-guild.png", "logo": "assets/images/backend-guild/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["foundations", "guild", "backend", "distributed-systems", "golden-paths", "community-of-practice"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Organization will form a **Backend Guild** as a standing community of practice for backend and distributed systems engineers across teams, brands, and domains. The guild owns and refines golden paths for backend systems, runs bi-weekly internal sharing, contributes guild-specific sessions to Architecture Summits, and grows coordinated thought leadership. The guild is **advisory and contributory**, not a governance body: it gives feedback to the architecture group and the Chief Architect, proposes new recommendations and decisions, and remains open to every Aviver who wants to participate. The guild is provisioned with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).\n\n## Decision\n\nEstablish a **Backend Guild** at Organization as a cross-team community of practice around how the organisation architects and builds backends and distributed systems. Concretely:\n\n* **Purpose**: own and refine golden paths for backend systems; act as the centre of gravity for backend best practices, event-driven architecture, cloud design patterns, and distributed systems.\n* **Composition**: led by the architecture group; staffed with a representative panel of engineers from different domains, brands, and skill sets; open to any interested Aviver as a contributor or participant.\n* **Mandate**: internal knowledge sharing on a bi-weekly cadence; guild-specific sessions during Architecture Summits; feedback to the architecture group and Chief Architect; the right to propose new recommendations and decisions; coordinated external thought leadership.\n* **Resources**: a dedicated Slack channel, source code repositories under a guild-owned area, and an AWS account (or a dedicated space inside an existing account) for shared experiments, reference implementations, and golden-path code.\n\nThis foundation **does not** create a decision-making board, **does not** transfer ownership of team systems to the guild, and **does not** make guild membership a prerequisite for contributing to backend work at Organization.\n\n## How to Read This Decision\n\nSeveral ideas in this record are easy to confuse with traditional centralised teams. The distinctions matter:\n\n| Idea | What it means here | What it does **not** mean |\n| --- | --- | --- |\n| **Guild** | A standing community of practice that shares knowledge and shapes golden paths. | A team that owns delivery. |\n| **Golden path** | An opinionated, well-supported way to build a backend system at Organization. | A mandatory blueprint that bans all alternatives. |\n| **Mandate** | A clear set of activities the guild is empowered to run. | Authority to approve or block other teams' decisions. |\n| **Composition** | A representative panel plus open contribution. | A fixed roster with closed membership. |\n| **Output** | Recommendations, golden paths, shared learning, coordinated visibility. | Architecture decisions that bind teams without going through the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html). |\n| **Feedback to architecture group** | A standing channel from practitioners to the Chief Architect. | A veto over architecture decisions. |\n\nIf you have worked in organisations where a \"guild\" gradually became a parallel reporting line or a shadow architecture board, the Backend Guild is deliberately different. It is a learning and coordination structure, not a governance structure.\n\n## One-Minute Mental Model\n\nThink of the Backend Guild as the **standing community where backend engineers meet, share, and shape practice across teams**:\n\n1. Teams keep ownership of their backend systems.\n2. The guild maintains the golden paths the teams can adopt.\n3. The guild's bi-weekly sessions surface lessons learned across the organisation.\n4. The guild proposes recommendations and decisions; the architecture group and the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) handle the actual decision flow.\n5. The guild grows experts and gives them a coordinated platform to represent Organization externally.\n\nThe guild is succeeding when backend engineers across brands feel they belong to one community and when golden paths are visibly maintained and trusted. It is failing when it becomes a closed club or a parallel decision body.\n\n## Purpose (Why)\n\nThe guild exists to support working on and providing support for **golden paths for backend systems**. It is the place where Organization's backend community discusses how the organisation architects and builds backends and distributed systems.\n\nMain topics:\n\n* **Golden paths for backend systems** - defining, refining, and supporting the opinionated default ways to build backend services at Organization.\n* **Backend development best practices** - language, framework, testing, build, and delivery practices that travel across teams.\n* **Event-driven architecture** - patterns, contracts, schemas, and operational practices for asynchronous integration.\n* **Cloud design patterns** - reusable cloud-native patterns and their tradeoffs in Organization's environment.\n* **Distributed systems** - consistency, partitioning, failure modes, observability, and operational learning across the estate.\n\nThese topics are not exhaustive. The guild may add adjacent topics as practice demands - the criterion is whether the topic is genuinely a *backend* concern that benefits from being worked on across teams rather than within a single team.\n\n## Mandate (How)\n\nThe guild operates through two complementary streams of work.\n\n### Internal knowledge sharing\n\n* **Bi-weekly sharing of lessons learned** - a recurring, predictable session where teams bring incidents, patterns, postmortems, and successes for the guild to discuss.\n* **Architecture Summit contributions** - the guild organises and runs guild-specific sessions during Organization's Architecture Summits.\n* **Connections and trust** - the guild deliberately builds connections and trust across the organisation around its main competency, so that practitioners know who to ask and feel safe doing so.\n* **Coaching and mutual help** - members coach each other, review each other's designs, and pair on hard problems.\n* **Ad-hoc working groups** - the guild may spin up short, focused working groups on shared topics (e.g., a multi-team migration, a new event-streaming pattern, a shared SDK).\n* **Feedback to architecture and Chief Architect** - the guild provides a standing channel for practitioner feedback on architecture recommendations and decisions.\n* **Influence on strategic decisions** - the guild has a recognised seat in shaping key strategic tech decisions that affect backend systems.\n* **Proactive proposals** - the guild does not only react; it proactively proposes new recommendations and decisions where it sees a need.\n\n### Coordinated thought leadership\n\n* **Growing experts** - the guild grows world-class experts in specialised domains by giving them a community, peers, and time to deepen.\n* **Coordinated external visibility** - conference talks, blog posts, and open-source contributions are coordinated through the guild so Organization presents a coherent voice externally.\n* **Local events** - the guild coordinates organising local events (meetups, workshops, internal conferences) on backend topics.\n\nDetailed internal ways of working - meeting cadence templates, working-group lifecycle, summit session contracts, external-talk approval flow - live in the guild's own working document (linked from the resources section below) and are owned by the guild itself.\n\n## Composition (Who)\n\n* **Lead**: the architecture group leads the guild. One named lead and a small core organising group keep the cadence honest and the agenda alive.\n* **Representative panel**: members are drawn from different domains, brands, and skill sets. The panel exists so that the guild's recommendations reflect the breadth of Organization's backend work, not the view of a single team or brand.\n* **Open contribution**: every Aviver is welcome to contribute and participate in guild sessions and studies. Anyone interested can contribute to the guild on a particular topic. The Slack channel is the front door.\n\nThe breadth of contributors is itself a leading indicator. A guild dominated by one brand or one stack is not yet succeeding.\n\n## Topics (What)\n\nThe guild aims to be **impact-driven**: it prioritises its topics based on the needs of the actor teams it serves. Standing artefacts the guild maintains:\n\n| Artefact | Purpose |\n| --- | --- |\n| **[BG] Meeting minutes** | Lightweight record of bi-weekly sessions, decisions taken, follow-ups owned. |\n| **[BG] Studies** | Time-boxed investigations of a topic the guild has chosen to look into. Output is a shareable write-up. |\n| **[BG] ADRs** | The guild's own ADRs, recording decisions taken by the guild about its scope, golden paths, or recommendations. |\n| **[BG] Resources** | Curated links, references, and reusable materials that the guild stands behind. |\n\nThe `[BG]` prefix is a deliberate signal: it marks artefacts as guild outputs, distinct from team-owned records. Guild ADRs that recommend an organisation-wide direction still flow through the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) and the relevant decision logs; the guild does not bypass the standard decision path.\n\n## Resources\n\nThe guild is provisioned with a small set of shared resources:\n\n* **Slack channel** - a dedicated channel as the always-on front door for the guild. Membership is open. The channel is where questions, RFCs, study drafts, and event announcements live.\n* **GitHub repositories** - guild-owned source code repositories for golden-path templates, reference implementations, shared SDKs, and working-group experiments. Each repository has a named maintainer from the guild's core organising group.\n* **AWS account (or dedicated space)** - the guild has a dedicated AWS account, or a clearly carved-out space within an existing account, for shared experiments, golden-path validation, and reference deployments. Cost ownership and access boundaries are explicit; the account is not a back door to production environments.\n\nThese resources exist to **support shared work**, not to host production systems owned by individual teams. If something built by the guild graduates into a production system, ownership transfers to a team and the guild artefact becomes a reference.\n\n## What This Means for Teams\n\nFor backend engineers:\n\n* The guild is the place to bring backend questions that are bigger than one team. Use the Slack channel as the front door.\n* Lessons learned, incidents, and successful patterns are welcome at the bi-weekly session - the more concrete, the more useful for everyone else.\n* Adopting a golden path is a default, not a mandate. If a team needs to deviate, the guild is the right place to surface why; deviations often reveal a gap in the golden path itself.\n\nFor team leads:\n\n* Encourage at least one delegate per backend-heavy team to attend bi-weekly sessions.\n* Bring upcoming non-trivial backend decisions to the guild early enough for advice to change the outcome - much like the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) for cross-cutting decisions.\n* Surface incidents and postmortems with backend-system lessons so the rest of the community learns from them.\n\nFor the architecture group and Chief Architect:\n\n* Treat the guild as the standing practitioner voice on backend topics.\n* Route relevant backend recommendations and decisions through the guild for feedback before finalising.\n* Resist the temptation to convert the guild into a steering committee; its value is in practice, not in approvals.\n\nFor new joiners:\n\n* The guild is one of the fastest places to absorb how Organization does backend work. Joining the Slack channel and attending one bi-weekly session is a low-cost, high-signal onboarding step.\n\n## Anti-Patterns\n\nThe guild can quietly drift into something less useful. Watch for these patterns:\n\n* **The guild becomes an approval board.** Teams stop deciding on backend topics until the guild \"agrees\". Decision ownership has leaked from the teams to the guild.\n* **Closed membership.** The representative panel stops welcoming contributors. The community narrows. The breadth that justifies the guild disappears.\n* **One-stack monoculture.** The guild only discusses one language, one cloud service, or one brand's stack. Recommendations stop being credible for the rest of the organisation.\n* **Golden paths without owners.** A golden path exists in a repository, but no one in the guild is named to maintain it. It rots and teams stop trusting it.\n* **External visibility without internal substance.** Conference talks proliferate; internal sharing and golden-path work do not. The guild becomes a personal-brand vehicle.\n* **Meeting theatre.** Bi-weekly sessions run on time and produce no learning, decisions, or follow-ups. Attendance drops; cadence collapses.\n* **Shadow architecture body.** The guild begins to make decisions that should flow through the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) or the relevant decision log, bypassing the standard advice and record flow.\n* **Production by accident.** Something built in the guild's AWS account becomes load-bearing for a real product without an explicit ownership transfer.\n* **No record.** Good conversations happen and evaporate. The Studies and ADRs folders stay empty.\n\nMost failure modes share one shape: the guild slowly becomes either a closed club or a parallel governance body. Resisting both drifts is the lead's most important job.\n\n## Success Indicators\n\nThe Backend Guild is succeeding when:\n\n* Backend engineers across brands say they feel part of one community.\n* Golden paths are maintained, named, and trusted; deviations are visible and discussed.\n* Bi-weekly sessions are attended by a wide range of teams, with contributions from people who are not the same five voices each time.\n* The guild's feedback is visibly reflected in architecture recommendations and decisions.\n* New joiners onboard faster on backend topics because the guild is a known front door.\n* External talks and posts are coordinated, on-message, and connected to internal work.\n* Ad-hoc working groups form, deliver, and dissolve cleanly when their topic is exhausted.\n\nThe guild is **not** succeeding when:\n\n* The same small group dominates every session.\n* Golden paths are stale, unowned, or quietly ignored by most teams.\n* Teams route backend decisions through the guild as if it were an approval gate.\n* The guild becomes a venue for status reporting rather than practice.\n* External visibility outpaces internal learning.\n\n## Scope and Revisiting\n\nThis decision applies to **Organization's backend and distributed systems practice across teams and brands**. It establishes a single Backend Guild at the engineering-wide level. It does not preclude:\n\n* Team-level backend rituals.\n* Domain-specific working groups inside the guild's umbrella.\n* Other guilds for other competencies (frontend, mobile, data, platform), which should follow the same shape but live in their own foundations.\n\nOut of scope:\n\n* Ownership of team-owned backend systems.\n* Approval of team-level architecture decisions.\n* Replacement of the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) for cross-team architecture advice.\n* Personnel decisions and performance management of guild members.\n\nThis decision should be revisited if:\n\n* Attendance breadth or contribution rate degrades over a sustained period.\n* The guild starts acting as an approval gate, or teams start routing decisions to it as if it were one.\n* Golden paths fall out of date with no clear path to refresh them.\n* The organisation grows or splits in ways that make a single backend guild the wrong shape (for example, a brand-specific guild becomes a better fit).\n* Other guilds form and the inter-guild coordination model needs to be made explicit.\n\nA regular review of the guild itself - perhaps once a quarter alongside the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) retrospective - is healthy. The guild should be willing to advise on changes to its own format.\n\n## Related Records\n\n* [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) - the cross-team architecture advice ritual the guild plugs into for decisions with organisation-wide impact.\n* [Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](markdown-records.html) - the format the guild's ADRs, studies, and meeting minutes follow.\n* [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html) - the authoring workflow used for guild records and write-ups.\n* [The Curator Role for Records, Principles, and Strategies](curator-role.html) - editorial stewardship of the corpus the guild contributes to.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

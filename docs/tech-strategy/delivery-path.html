@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Organization Tech Strategy</a><span class="nav-right"><a class="nav-prev" href="backend-convergence.html" title="Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="aws-accounts.html" title="AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Blueprints and Convergence Plans</p>
+        <h1>Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-17  ·  9 min · <a class="spec-link" href="delivery-path.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/delivery-path/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/delivery-path/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Organization Tech Strategy</a><span class="nav-right"><a class="nav-prev" href="backend-convergence.html" title="Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="aws-accounts.html" title="AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-STRAT-DELIVERY-PATH", "status": "draft:gray", "title": "Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production", "date": "2026-05-17", "author": "Organization Tech Strategy", "permalink": "delivery-path", "timetoread": "9 min", "excerpt": "Default code-to-production path for Organization Germany. One preferred source-control path per codebase. One preferred CI path. One preferred deployment path per runtime class. Automated build, automated deploy, standard rollback. No new manual builds, no new manual deployments, no new CI/CD tool without approval. The current estate spans GitHub + CircleCI, GitLab + GitLab pipelines, TFS + manual, and Bitbucket + Jenkins. GitHub + CircleCI is the current best candidate for the preferred modern path. TFS + manual and Bitbucket + Jenkins are retirement targets where they duplicate modern capability. GitLab paths remain transitional pending classification.", "tags": "delivery, ci-cd, blueprint, convergence, github, circleci", "icon": "assets/icons/delivery-path.png", "logo": "assets/images/delivery-path/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["delivery", "ci-cd", "blueprint", "convergence", "github", "circleci"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: One preferred source-control path per codebase, one preferred CI path, one preferred deployment path per runtime class, with automated build, automated deploy, and a standard rollback path. No new manual build paths, no new manual deployment paths, no new CI/CD tool without approval. GitHub + CircleCI is the current best candidate for the preferred modern path. GitLab + GitLab pipelines may remain transitional while services are classified, with explicit owner, purpose, and review intent for each use. TFS + manual builds and Bitbucket + Jenkins legacy combinations are retirement targets where they duplicate modern capability.\n\n## Decision\n\nThis document is the **delivery path blueprint** (the default code-to-production shape for new and evolving work) and the **delivery convergence plan** (how the current mixed-generation delivery estate moves toward the default).\n\n[Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) P3 makes delivery-path simplification part of the **core strategy**, not a tooling-hygiene concern. This blueprint is the operational form of that policy.\n\n## Why This Matters\n\nThe current delivery estate spans:\n\n* **GitHub + CircleCI** for newer services.\n* **GitLab + GitLab pipelines** for mixed legacy and transitional services.\n* **TFS + manual build paths** for older legacy services.\n* **Bitbucket + Jenkins** for legacy and mixed-generation runtimes.\n\nThat is **too much variation for a single organisation** of Organization Germany's current scope and business expectations. Every delivery path:\n\n* Has its own conventions.\n* Has its own failure modes.\n* Has its own knowledge requirements for engineers.\n* Has its own operational support cost.\n\nThe diagnosis in [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html) is unambiguous: fragmented delivery is one of the strongest contributors to slow delivery and weak stability.\n\n## How to Use This Blueprint\n\nUse this blueprint when creating, migrating, or reviewing a code-to-production path. It should answer:\n\n* Which source-control, CI, and deployment path is the preferred one for this codebase and runtime class?\n* Is any manual build or deployment step still part of normal work?\n* Who owns the pipeline and its rollback or recovery path?\n* Is this delivery path transitional, strategic, or legacy?\n* What old delivery path becomes retireable when this migration is complete?\n\nThe goal is not one identical pipeline for every artifact. The goal is one understood, owned, automatable path per runtime class, with legacy paths shrinking rather than multiplying.\n\n## What This Should Help You Do\n\nThis blueprint should help a reader:\n\n* Explain why delivery path fragmentation is a strategic delivery problem.\n* Classify a delivery path as strategic, transitional, or legacy.\n* Identify the minimum standard for source control, build, deploy, visibility, rollback, and ownership.\n* Challenge manual build or deployment paths that have become normal practice.\n\nCommon misreadings to avoid:\n\n| Misreading | Correction |\n| --- | --- |\n| \"One preferred path means one pipeline for everything.\" | Runtime classes may differ; unexplained variation within a class should shrink. |\n| \"Transitional paths can stay indefinitely.\" | Transitional paths need owner, purpose, and review intent. |\n| \"CI/CD is tooling hygiene.\" | Delivery path simplification is part of the core strategy. |\n\n## Default Delivery Shape\n\n### One Preferred Path Per Codebase, Per Runtime\n\n* **One preferred source-control path** per codebase.\n* **One preferred CI path.**\n* **One preferred deployment path per runtime class.**\n* **Automated build.**\n* **Automated deployment.**\n* **Standard rollback path.**\n\n\"Runtime class\" matters: a long-running service and a static frontend bundle may justifiably have different deployment paths, but two long-running services should not.\n\n### Required Characteristics\n\nEvery production delivery path should have:\n\n* **Source control as the system of record.**\n* **Automated build** - no manual build as normal practice.\n* **Automated deploy** or one controlled approval gate.\n* **Standard logging and deployment visibility.**\n* **Clear production approval rule** where required.\n* **Rollback or recovery path** defined.\n* **Named owner.**\n\nThe owner is part of the delivery path, not separate from it. A pipeline without an owner cannot meet the strategy-compliance bar.\n\n### Minimum Delivery Standard\n\nA path is **strategy-compliant** when:\n\n* Source control is the system of record.\n* The build is automated.\n* The deploy is automated (or has one explicit approval gate).\n* Production state is visible without tribal knowledge.\n* A rollback or recovery path exists.\n* The pipeline has a named owner.\n\nAnything that fails one or more of these is **legacy delivery** for the purposes of [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) P4 and needs a declared status: retire, consolidate, contain, or tolerate temporarily.\n\n## Allowed and Not Allowed\n\n### Allowed\n\n* **Temporary legacy pipelines** with explicit owner.\n* **Transitional dual-running** while migrating to the default.\n* **Runtime-specific deployment variations** where justified.\n* **Temporary coexistence** of old and new pipelines during migration.\n\n### Not Allowed by Default\n\n* **Introducing new CI/CD tools** without approval through [Operating Model: How the Strategy Stays Alive Day to Day](operate.html).\n* **Team-specific permanent delivery paths.**\n* **Production deployment that depends on tribal knowledge.**\n* **Silent exceptions** to the preferred delivery path.\n\n\"Silent exceptions\" matters: this is the failure mode the operating model ([Operating Model: How the Strategy Stays Alive Day to Day](operate.html)) is built to prevent.\n\n## Transitional Direction\n\nWhile the estate is moving toward the default:\n\n* **No new manual build paths.**\n* **No new manual deployment paths.**\n* **No new CI/CD tool** should be introduced without approval.\n* **Legacy pipelines may remain temporarily**, but only with named owner and migration intent.\n\nThese four rules are how the current estate stops getting worse while convergence work happens.\n\n## First Migration Priority\n\nWithin the current estate, prioritise removal of:\n\n* **Manual builds.**\n* **Manual deployments.**\n* **Opaque pipelines** with no clear owner.\n* **Duplicate paths** that serve the same runtime class.\n\nThese are the categories most directly responsible for delivery friction, and the ones whose retirement is most realistic in the strategy horizon.\n\n## Minimum Questions to Ask of Any Delivery Path\n\nWhen designing or reviewing a delivery path:\n\n* Can **a new engineer understand** how this reaches production?\n* Is the pipeline **automated end to end**?\n* Is there a **standard rollback path**?\n* Is this **converging with the preferred delivery model**, or diverging from it?\n\nThe fourth question is the one most often skipped. The strategy is explicit that \"neutral\" is not an option: every change either converges or diverges.\n\n## Convergence Plan\n\nThe blueprint above is the **target shape**. The convergence plan below is how the current estate moves toward it.\n\n### Convergence Goal\n\nMove toward:\n\n* **One preferred modern path** for newer services.\n* **Explicit transitional status** for tolerated legacy paths.\n* **Retirement** of manual and opaque legacy delivery flows.\n\n### Proposed Direction\n\n#### Preferred Modern Path\n\n* **GitHub + CircleCI** is the current best candidate for the preferred modern path.\n\nReason:\n\n* It is **already active** in the estate.\n* It is **easier to standardise around a modern automated flow** than around mixed legacy tooling.\n* The newer-service portion of the estate is already substantially on this path.\n\nThis is a **proposal**, not a finished decision. It should be validated through the [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) review forum and through the first wave of standardisation work.\n\n#### Transitional Paths\n\n* **GitLab + GitLab pipelines** can remain transitional while services are classified.\n\nCondition for transitional status:\n\n* Each use must have **owner, purpose, and review intent**.\n* GitLab paths without those are not \"transitional\" - they are unclassified, which is a failure of [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) P5 (ownership) and P8 (no hidden divergence).\n\n#### Retirement Targets\n\n* **TFS + manual build paths.**\n* **Bitbucket + Jenkins** legacy combinations where they duplicate modern capability.\n\nThese are scored as Wave 1 retirement candidates in [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html).\n\n### Current Delivery Estate at a Glance\n\nThe known delivery paths in the current estate, with their candidate action:\n\n| Path | Source Control | Build / Deploy | Runtime Class | Candidate Action |\n| --- | --- | --- | --- | --- |\n| GitHub + CircleCI | GitHub | CircleCI / runtime-specific | Newer services | **Standardise** |\n| GitLab + GitLab pipelines | GitLab | GitLab pipelines | Mixed legacy and transitional services | **Investigate** |\n| TFS + manual build | TFS | Manual build / legacy tooling | Older legacy services | **Retire** |\n| Bitbucket + Jenkins | Bitbucket / mixed | Jenkins / mixed | Legacy and mixed-generation runtimes | **Consolidate** |\n\nThe full inventory and scoring are in [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html).\n\n### Wave 1 Actions\n\nThe first concrete steps to start the convergence:\n\n1. **Inventory all known delivery paths** by owner, service, and runtime.\n2. **Identify every manual build and manual deployment path.**\n3. **Identify every TFS and Bitbucket / Jenkins path still active.**\n4. **Confirm whether GitHub + CircleCI** can serve as the preferred path for the main modern runtime classes.\n5. **Mark each path** as preferred / transitional / retire / investigate.\n\nThe output of these five steps is the first version of the **delivery convergence wave plan** that [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) reviews on the monthly cadence.\n\n### Minimum Decision Rules\n\n| Rule | Why |\n| --- | --- |\n| No new manual build path. | Manual is exactly the anti-pattern the diagnosis names. |\n| No new manual deployment path. | Same reason. |\n| No new CI/CD tool without explicit approval. | Prevents recreating the fragmentation. |\n| No legacy delivery path without owner and review intent. | Defeats P5 and P8 of [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) otherwise. |\n\nThese four rules are the bare minimum the operating model should enforce through the strategy review forum.\n\n### Success Criteria\n\nThe convergence is working when:\n\n* **Fewer active delivery patterns** exist than at the start.\n* **No unowned pipeline path** remains.\n* The **manual delivery footprint** is shrinking.\n* The **default path for new services** is clearer than it is today.\n\nThese are restatements of [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) P9 in delivery-specific form.\n\n## How This Blueprint Interacts with Other Strategy Records\n\n* **Backend services** ([Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html)) need the delivery model to be working before convergence work can be done safely. This is the Phase 1 → Phase 3 dependency in [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html).\n* **AWS account work** ([AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html)) is partly delivery-shaped: accounts are often delivery targets, and account changes need delivery pipelines to support them.\n* **Ownership clarification** ([Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html)) is a direct prerequisite: a delivery path without a decision owner cannot be standardised.\n* **Prioritisation** ([Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html)) decides which delivery candidates enter which wave.\n\n## What This Blueprint Deliberately Does Not Specify\n\n| Not specified | Why |\n| --- | --- |\n| One single deploy target across all runtimes | Runtime-specific variation is allowed; team-specific is not. |\n| Specific monitoring / alerting product | The requirement is *standard* observability, not a specific tool. |\n| One single review/approval gate model | Production approval rules can vary by runtime class. |\n| Whether GitHub Actions or CircleCI | The current proposal is CircleCI because it is already in use; if GitHub Actions becomes the better fit, that is a future blueprint update, not a per-team decision. |\n\nThese are blueprint-extension questions that [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) resolves over time.\n\n## Anti-Patterns\n\n* **\"Each team picks its own delivery path.\"** The blueprint exists specifically to remove that as a default.\n* **\"This pipeline is transitional.\"** Without owner, purpose, and review intent, \"transitional\" is a euphemism for \"unmanaged\".\n* **\"Manual deploy is fine for this one service.\"** Manual delivery as a normal operating model is explicitly not allowed.\n* **\"We need a new CI tool because the current one is annoying.\"** Convenience is not a strategic reason. The exception process exists for genuine misfit, not for tooling preference.\n* **\"GitHub Actions, CircleCI, GitLab pipelines, and Jenkins - we'll support them all.\"** This is the diagnosis in [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html) restated as a strategy. It is not the strategy.\n\n## Related Records\n\n* [Organization Tech Strategy: Reducing Fragmentation and Complexity While Building Foundation for the Future](strategy.html) — the overall strategic frame.\n* [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html) — the delivery fragmentation evidence.\n* [Strategic Implications: What the Diagnosis Forces the Strategy to Account For](implications.html) — implication 5: developer experience is part of strategy.\n* [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) — P3, P6, P7, P8 directly apply.\n* [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) — the review forum that approves exceptions to this blueprint.\n* [Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html) — the backend work that depends on this delivery model.\n* [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html) — the ownership work this blueprint depends on.\n* [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html) — the wave plan that decides which delivery candidates are first.\n* [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) — Phase 1 is essentially this blueprint becoming reality.\n\n## Scope and Revisiting\n\nRevisit the blueprint when:\n\n* The first wave of standardisation work shows that GitHub + CircleCI is not in fact the right preferred path.\n* A new central AVIV Group direction makes a different CI/CD platform the default.\n* A specific runtime class genuinely cannot be served by the preferred path.\n\nIn the absence of those triggers, the blueprint should be **stable**.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

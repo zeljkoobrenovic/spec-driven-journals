@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORG Tech Foundations</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 340px;
+            object-fit: cover;
+            margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 4px 0 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/iStock-1767471664.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/iStock-1767471664.jpg" alt=""></a>
+        <p class="logo-credit">Image by Dario Truco from iStock</p>
+        <div style="padding: 4px;">
+            <h1>ORG Tech Foundations</h1>
+            <p>Foundational technical decisions and principles for Organization.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Architecture", "description": "Architectural principles and decisions that guide the design of our systems, and the forum that maintains them.", "posts": [{"id": "ORG-FOUND-ARCHITECTURE-ADVISORY-FORUM", "status": "draft:gray", "title": "Architecture Advisory Forum as a Standing Advice Ritual", "excerpt": "Organization will run a weekly Architecture Advisory Forum as the standing place for cross-team architecture advice. The forum does not approve or own decisions. It helps teams expose options early, improve ADRs, revisit decisions with evidence, and learn from shared engineering signals.", "url": "architecture-advisory-forum.html", "icon": "assets/icons/architecture-advisory-forum.png", "tags": ["architecture", "advice-process", "governance", "decision-making", "learning-organisation", "adr"]}]}, {"title": "Recoding Decisions", "description": "Architectural principles and decisions that guide the design of our systems, and the forum that maintains them.", "posts": [{"id": "ORG-FOUND-MARKDOWN-RECORDS", "status": "draft:gray", "title": "Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions", "excerpt": "Organization uses markdown records in git, published as a small static site, as the default home for durable technical writing: ADRs, strategies, principles, foundations, and discussion records. The markdown file is canonical; comments, meetings, Slack threads, and temporary docs are supporting context.", "url": "markdown-records.html", "icon": "assets/icons/markdown-records.png", "tags": ["documentation", "adr", "markdown", "git", "static-site", "technical-writing"]}, {"id": "ORG-FOUND-AI-MEDIATED-AUTHORING", "status": "draft:gray", "title": "AI-Mediated Authoring as the Default Way to Edit This Repository", "excerpt": "All substantive updates to this repository - new posts, edits, restructures, illustrations, and metadata changes - go through an AI coding agent such as Claude Code or Codex CLI rather than direct hand-editing of files. The agent is the mediator: authors describe intent, the agent performs the edit, the author reviews the diff. The workflow teaches authors to work through intent, context, review, and traceability rather than treating AI as autocomplete. Trivial fixes such as typos, broken links, or front-matter status flips may be hand-edited as long as they are noted in the pull request.", "url": "ai-mediated-authoring.html", "icon": "assets/icons/ai-mediated-authoring.png", "tags": ["ai", "authoring", "workflow", "claude-code", "codex", "governance", "documentation"]}, {"id": "ORG-FOUND-SPEC-DRIVEN-AUTHORING", "status": "draft:gray", "title": "Spec-Driven Authoring as a Lightweight Default for Posts", "excerpt": "Substantive posts in this repository are drafted against a short sibling spec.md before editing starts. The spec states intent, audience, success criteria, non-goals, open questions, decision log, sources, and changelog. It is a working contract for AI-mediated authoring and review, not a polished deliverable.", "url": "spec-driven-authoring.html", "icon": "assets/icons/spec-driven-authoring.png", "tags": ["spec-driven", "authoring", "workflow", "claude-code", "governance", "documentation"]}, {"id": "ORG-FOUND-CURATOR-ROLE", "status": "draft:gray", "title": "The Curator Role for Records, Principles, and Strategies", "excerpt": "Organization names a Curator role for the engineering record corpus. Curators have editorial authority over structure, metadata, links, lifecycle, and clarity, but they do not own the underlying decisions. Meaning changes still go back to decision owners and the Architecture Advisory Forum.", "url": "curator-role.html", "icon": "assets/icons/curator-role.png", "tags": ["foundations", "governance", "curator", "editorial", "adr", "architecture"]}]}, {"title": "Naming & Tagging", "description": "Shared naming and tagging conventions that keep the GitHub org, the AWS estate, and the package catalogue queryable and consistent. The same domain/system/component vocabulary travels across all three.", "posts": [{"id": "ORG-FOUND-GITHUB-NAMING-TAGGING", "status": "draft:gray", "title": "GitHub Naming and Tagging Conventions for Source Code", "excerpt": "Organization standardizes GitHub repository names, topics, branch names, commit messages, and release tags so the source-code estate is queryable by humans, automation, AI agents, and audit tooling.", "url": "github-naming-tagging.html", "icon": "assets/icons/github-naming-tagging.png", "tags": ["github", "naming", "tagging", "source-control", "conventions", "governance"]}, {"id": "ORG-FOUND-AWS-NAMING-TAGGING", "status": "draft:gray", "title": "AWS Account and Resource Naming and Tagging Conventions", "excerpt": "Organization standardizes AWS account names, resource names, and resource tags. Names help humans recognize resources; tags are authoritative for cost, ownership, compliance, automation, and inventory. Production enforcement is automated through AWS Organizations, tag policies, SCPs, and AWS Config rules.", "url": "aws-naming-tagging.html", "icon": "assets/icons/aws-naming-tagging.png", "tags": ["aws", "naming", "tagging", "cost-allocation", "governance", "cloud"]}, {"id": "ORG-FOUND-PACKAGE-NAMING-CONVENTIONS", "status": "draft:gray", "title": "Package Naming Conventions Across JVM, npm, Python, .NET, and OCI", "excerpt": "Organization uses one logical package name, <domain>-<system>-<component>, and maps it deterministically into JVM, npm, Python, .NET, and OCI package ecosystems. Internal artifacts publish to internal registries unless an explicit decision allows public publication.", "url": "package-naming-conventions.html", "icon": "assets/icons/package-naming-conventions.png", "tags": ["packages", "naming", "conventions", "jvm", "npm", "python", "dotnet", "oci", "registries"]}]}, {"title": "Issue Tracking", "description": "The issue tracking and documentation standards that keep our work visible, navigable, and well-documented, and the forum that maintains them.", "posts": [{"id": "ORG-FOUND-JIRA-WORKFLOW-STANDARDS", "status": "draft:gray", "title": "Jira as the Issue Tracker and a Unified Workflow Standard Across Teams", "excerpt": "Organization uses Jira as the standard engineering issue tracker and adopts four shared workflows: Epic, Spike, Story & Bug, and Task. The standard fixes the meaning of states and transitions across teams while leaving boards, priorities, estimation, and ceremonies team-owned.", "url": "jira-workflow-standards.html", "icon": "assets/icons/jira-workflow-standards.png", "tags": ["jira", "issue-tracking", "workflow", "process", "qa", "delivery"]}]}, {"title": "Communities of Practice", "description": "Communities of practice that build and maintain shared understanding of how to do technical work at Organization, and provide a forum for continuous improvement of that shared understanding.", "posts": [{"id": "ORG-FOUND-BACKEND-GUILD", "status": "draft:gray", "title": "Backend Guild as a Cross-Team Community of Practice", "excerpt": "Organization will form a Backend Guild as a standing community of practice for backend and distributed systems engineers across teams, brands, and domains. The guild owns and refines golden paths for backend systems, shares lessons learned on a bi-weekly cadence, runs guild-specific sessions at Architecture Summits, and grows world-class experts through coordinated thought leadership. The guild is advisory and contributory, not a governance body: it gives feedback to the architecture group and Chief Architect, proposes new recommendations and decisions, and is open to every Aviver who wants to contribute. The guild operates with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).", "url": "backend-guild.html", "icon": "assets/icons/backend-guild.png", "tags": ["foundations", "guild", "backend", "distributed-systems", "golden-paths", "community-of-practice"]}, {"id": "ORG-FOUND-FRONTEND-GUILD", "status": "draft:gray", "title": "Frontend Guild as a Cross-Team Web Consortium", "excerpt": "Organization will form a Frontend Guild as a standing community of practice for web frontend engineers across teams, brands, and domains. The guild is the organisation-wide web consortium that enables and empowers teams around standards to ensure the long-term growth of the web ecosystem. It focuses on web frontend challenges first and uses them as an entry point to end-to-end concerns (backend, infrastructure, ...) where it makes sense. The guild is advisory and contributory: bi-weekly knowledge sharing, experimentation-first documentation, transparent recorded sessions, working groups, and coordinated external visibility. Mobile frontend is explicitly out of scope; a separate Mobile Guild handles it. The guild is provisioned with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).", "url": "frontend-guild.html", "icon": "assets/icons/frontend-guild.png", "tags": ["foundations", "guild", "frontend", "web", "community-of-practice", "design-system", "micro-frontends"]}, {"id": "ORG-FOUND-MOBILE-GUILD", "status": "draft:gray", "title": "Mobile Guild as a Cross-Team Mobile Consortium", "excerpt": "Organization will form a Mobile Guild as a standing community of practice for mobile engineers across teams, brands, and domains. The guild is the organisation-wide mobile consortium that enables and empowers teams around standards to ensure the long-term growth of the mobile ecosystem - native iOS and Android, cross-platform stacks where used, and mobile-specific shells. It focuses on mobile challenges first and uses them as an entry point to end-to-end concerns (backend, infrastructure, ...) where it makes sense. The guild is advisory and contributory: bi-weekly knowledge sharing, experimentation-first documentation, transparent recorded sessions, working groups, and coordinated external visibility. Web frontend is explicitly out of scope; a separate Frontend Guild handles it. The guild is provisioned with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).", "url": "mobile-guild.html", "icon": "assets/icons/mobile-guild.png", "tags": ["foundations", "guild", "mobile", "ios", "android", "community-of-practice", "design-system"]}, {"id": "ORG-FOUND-GENAI-GUILD", "status": "draft:gray", "title": "GenAI Guild as a Cross-Team Generative AI Consortium", "excerpt": "Organization will form a GenAI Guild as a standing community of practice to transform how the organisation leverages Generative AI - moving from ad-hoc experimentation to measurable productivity gains across the Product & Technology organisation. The guild operates through four pillars: Evangelization & Knowledge Sharing, Architecture & Standards, Research & Innovation, and Tooling & Licensing. It enables teams to harness GenAI effectively while maintaining security and compliance, mitigates Shadow AI risks through transparency and guidance, establishes frameworks that enable innovation rather than block it, and builds sustainable AI adoption at scale with measurable business impact. The guild is advisory and contributory, facilitated by the Architecture team and open to every Aviver. It is provisioned with dedicated Slack channels (open + volunteer), source code repositories, and an AWS account (or dedicated space) for experiments, agents, MCP servers, and reference implementations.", "url": "genai-guild.html", "icon": "assets/icons/genai-guild.png", "tags": ["foundations", "guild", "genai", "ai", "mcp", "agents", "community-of-practice", "shadow-ai"]}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    let matchStatus = true;
+                    if (activeStatuses.size) {
+                        const liStatus = li.dataset.status || '';
+                        // any-match: post status must equal one of the selected statuses
+                        matchStatus = false;
+                        for (const s of activeStatuses) {
+                            if (liStatus === s.toLowerCase()) {
+                                matchStatus = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag && matchStatus;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

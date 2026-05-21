@@ -183,6 +183,67 @@ def _rewrite_asset_paths(body: str, prefix: str) -> str:
     return _ASSET_REF.sub(lambda m: m.group(1) + prefix, body)
 
 
+_CROSSLINK_REF = re.compile(r'\[\[([a-z0-9][a-z0-9-]*)\]\]')
+
+
+def build_crosslink_index():
+    """Scan every journal's config.yaml and posts, returning a dict
+    `permalink -> [(journal_name, title), ...]`. Used to resolve
+    `[[slug]]` cross-links to real anchors at build time. Records without
+    a `permalink:` field fall back to the file stem, matching the
+    behaviour of `build_journal`.
+
+    Slugs are expected to be unique within a journal, but can repeat across
+    journals. The rewrite step prefers a target in the current journal when
+    one exists.
+    """
+    index = {}
+    for journal in sorted(p for p in JOURNALS_DIR.iterdir() if p.is_dir()):
+        config_file = journal / "config.yaml"
+        if not config_file.exists():
+            continue
+        config = parse_yaml(config_file.read_text(encoding="utf-8"))
+        for section in (config.get("sections") or []):
+            for rel in (section.get("posts") or []):
+                src = journal / "posts" / rel
+                if not src.exists():
+                    continue
+                meta, _ = parse_front_matter(src.read_text(encoding="utf-8"))
+                slug = meta.get("permalink") or src.stem
+                title = meta.get("title", slug)
+                index.setdefault(slug, []).append((journal.name, title))
+    return index
+
+
+def _rewrite_crosslinks(body: str, current_journal: str, index: dict) -> str:
+    """Replace `[[slug]]` with a real markdown link. In-journal targets
+    become `[Title](slug.html)`; cross-journal targets become
+    `[Title](../<other-journal>/slug.html)`. Unresolved slugs are left
+    as literal `[[slug]]` so they remain visible as authoring TODOs."""
+    def repl(match):
+        slug = match.group(1)
+        if slug not in index:
+            return match.group(0)
+        candidates = index[slug]
+        target_journal, title = next(
+            (
+                (journal_name, target_title)
+                for journal_name, target_title in candidates
+                if journal_name == current_journal
+            ),
+            candidates[0],
+        )
+        if target_journal == current_journal:
+            href = f"{slug}.html"
+        else:
+            href = f"../{target_journal}/{slug}.html"
+        # Escape `]` in titles defensively so the markdown link parser
+        # in post.html sees a well-formed `[text](href)`.
+        safe_title = title.replace("]", r"\]")
+        return f"[{safe_title}]({href})"
+    return _CROSSLINK_REF.sub(repl, body)
+
+
 def _merge_copytree(src: Path, dst: Path) -> None:
     """Recursively copy ``src`` into ``dst``, merging into existing
     subdirectories (unlike shutil.copytree pre-3.8). Files in ``src``
@@ -348,7 +409,7 @@ def split_into_blocks(body: str):
 
 # --- build ---------------------------------------------------------------
 
-def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
+def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_index: dict = None):
     config_file = journal_dir / "config.yaml"
     if not config_file.exists():
         print(f"[skip] {journal_dir.name}: no config.yaml", file=sys.stderr)
@@ -406,6 +467,8 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
         for rel, src, meta, body, slug in entries:
             # posts live at <journal>/<slug>.html; assets at <journal>/assets/
             body = _rewrite_asset_paths(body, "assets/")
+            if crosslink_index:
+                body = _rewrite_crosslinks(body, journal_dir.name, crosslink_index)
             # If the post has its own assets/ folder colocated with index.md,
             # merge it into the journal-level docs/<j>/assets/ so the rewritten
             # references resolve.
@@ -429,12 +492,53 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
                 f'<p class="section">{_html_escape(s_title)}</p>'
                 if s_title else ""
             )
+
+            # If a sibling spec.md exists, render it to <slug>.spec.html and
+            # expose a "View spec" link on the main post.
+            spec_src = src.parent / "spec.md"
+            spec_link_html = ""
+            if spec_src.is_file():
+                spec_body = spec_src.read_text(encoding="utf-8")
+                # specs use plain markdown; no front matter expected, but tolerate it
+                spec_meta, spec_body = parse_front_matter(spec_body)
+                spec_body = _rewrite_asset_paths(spec_body, "assets/")
+                if crosslink_index:
+                    spec_body = _rewrite_crosslinks(spec_body, journal_dir.name, crosslink_index)
+                spec_payload = {
+                    "meta": {},
+                    "tags": [],
+                    "blocks": split_into_blocks(spec_body),
+                }
+                spec_status = (spec_meta.get("status") or "").strip().lower()
+                spec_revised = (spec_meta.get("revised") or "").strip()
+                spec_title = spec_meta.get("title") or f"Spec: {meta.get('title', slug)}"
+                spec_back = _post_nav_html(
+                    "← " + meta.get("title", slug) + "",
+                    None,
+                    None,
+                ).replace(
+                    'href="index.html"', f'href="{slug}.html"'
+                )
+                spec_html = (
+                    post_tpl
+                    .replace("__TITLE__", _html_escape(spec_title))
+                    .replace("__SECTION_HTML__", _spec_header_html(spec_status, spec_revised))
+                    .replace("__BYLINE__", "")
+                    .replace("__LOGO_HTML__", "")
+                    .replace("__SPEC_LINK__", "")
+                    .replace("__POST_NAV__", spec_back)
+                    .replace("__DATA_JSON__", _embed_json(spec_payload))
+                )
+                (out_dir / f"{slug}.spec.html").write_text(spec_html, encoding="utf-8")
+                spec_link_html = _spec_link_html(slug, spec_status)
+
             html = (
                 post_tpl
                 .replace("__TITLE__", _html_escape(meta.get("title", slug)))
                 .replace("__SECTION_HTML__", section_html)
                 .replace("__BYLINE__", _html_escape(_byline(meta)))
                 .replace("__LOGO_HTML__", post_logo_html)
+                .replace("__SPEC_LINK__", spec_link_html)
                 .replace("__POST_NAV__", nav_html)
                 .replace("__DATA_JSON__", _embed_json(post_payload))
             )
@@ -442,6 +546,8 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str):
 
             icon_name = meta.get("icon")
             section_posts.append({
+                "id": meta.get("id", ""),
+                "status": meta.get("status", ""),
                 "title": meta.get("title", slug),
                 "excerpt": meta.get("excerpt", ""),
                 "url": f"{slug}.html",
@@ -504,6 +610,48 @@ def _post_nav_html(journal_title: str, prev_post, next_post) -> str:
     return '<nav class="post-nav">' + "".join(parts) + "</nav>"
 
 
+_SPEC_STATUS_COLORS = {
+    "draft": "gray",
+    "accepted": "green",
+    "drifted": "orange",
+    "superseded": "gray",
+}
+
+
+def _spec_header_html(status: str, revised: str) -> str:
+    """Render the spec page's section header: 'SPEC' label, optional status
+    pill (with colour dot), and optional revised date. Each is muted-styled
+    via the existing .section CSS."""
+    parts = ['<span>SPEC</span>']
+    if status:
+        color = _SPEC_STATUS_COLORS.get(status, "")
+        dot = (
+            f'<span class="status-dot" style="background:{color}"></span>'
+            if color else '<span class="status-dot"></span>'
+        )
+        parts.append(
+            f'<span class="post-status">{dot}{_html_escape(status)}</span>'
+        )
+    if revised:
+        parts.append(f'<span>revised {_html_escape(revised)}</span>')
+    return '<p class="section">' + ' • '.join(parts) + '</p>'
+
+
+def _spec_link_html(slug: str, status: str) -> str:
+    """Render the 'View spec' link for the post page. When the spec is marked
+    drifted or superseded, append a small parenthetical so the post reader
+    sees that the contract may no longer match."""
+    label = "View spec"
+    if status in ("drifted", "superseded"):
+        label = f"View spec ({status})"
+    cls = "spec-link"
+    if status == "drifted":
+        cls += " spec-link-drifted"
+    elif status == "superseded":
+        cls += " spec-link-superseded"
+    return f' · <a class="{cls}" href="{slug}.spec.html">{label}</a>'
+
+
 def _logo_html(logo: str, credit: str) -> str:
     if not logo:
         return ""
@@ -556,8 +704,10 @@ def main():
         print("No journals found in _journals/", file=sys.stderr)
         sys.exit(1)
 
+    crosslink_index = build_crosslink_index()
+
     for j in sorted(journals):
-        build_journal(j, index_tpl, post_tpl)
+        build_journal(j, index_tpl, post_tpl, crosslink_index)
 
 
 if __name__ == "__main__":

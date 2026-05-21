@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Structured Hiring and Selection</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Org Design Decisions</a><span class="nav-right"><a class="nav-prev" href="platform-and-devops-operating-model.html" title="Platform and DevOps Operating Model">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="onboarding-and-ramp-up.html" title="Onboarding and Ramp-Up">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">People System</p>
+        <h1>Structured Hiring and Selection</h1>
+        <p class="byline">Organization Org Design  ·  2026-05-17  ·  13 min · <a class="spec-link" href="structured-hiring-and-selection.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/structured-hiring-and-selection/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/structured-hiring-and-selection/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Org Design Decisions</a><span class="nav-right"><a class="nav-prev" href="platform-and-devops-operating-model.html" title="Platform and DevOps Operating Model">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="onboarding-and-ramp-up.html" title="Onboarding and Ramp-Up">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-ORG-STRUCTURED-HIRING-AND-SELECTION", "status": "draft:gray", "title": "Structured Hiring and Selection", "date": "2026-05-17", "author": "Organization Org Design", "permalink": "structured-hiring-and-selection", "timetoread": "13 min", "excerpt": "Organization engineering will use structured, role-related hiring. Every role starts from a hiring brief, competency map, interview plan, trained interviewers, calibrated scoring, and a decision review. Hiring is not a manager's private judgement call or a sequence of unstructured conversations.", "tags": "org-design, hiring, interviewing, selection, talent, fairness", "icon": "assets/icons/structured-hiring-and-selection.png", "logo": "assets/images/structured-hiring-and-selection/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["org-design", "hiring", "interviewing", "selection", "talent", "fairness"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Organization engineering will use structured, role-related hiring for engineering roles. Every hiring process starts from a clear role need and competency map, uses planned interviews with consistent criteria, records evidence against a rubric, and makes hiring decisions through calibrated review. Hiring is a product and organisation design decision, not only a recruiting transaction.\n\n## Decision\n\nAdopt a **structured hiring and selection system** for engineering.\n\nThe minimum system includes:\n\n* a hiring brief that explains why the role exists and which team or capability it supports;\n* a competency map tied to the career framework and team needs;\n* a structured interview plan, with each interview assessing specific competencies;\n* trained interviewers who know what they are assessing and how to record evidence;\n* consistent scoring rubrics and written feedback;\n* a decision review that compares evidence, not interviewer confidence or hierarchy;\n* candidate experience standards, including timeliness, clarity, and respectful communication.\n\nThis ADR does not prescribe a single interview format for every role. It requires every format to be job-related, evidence-based, fair, and explainable.\n\n## How to Read This Decision\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Hiring should be structured and evidence-based. | Hiring should be mechanical or impersonal. |\n| Interviews should map to role competencies. | Every candidate gets identical conversation in every detail. |\n| Interviewers need training and calibration. | Only HR or recruiters can assess candidates. |\n| Hiring decisions should be reviewed. | Committees replace manager accountability. |\n| Candidate experience is part of engineering reputation. | Candidate comfort overrides role requirements. |\n\nStructured hiring protects both the organisation and the candidate. It makes the process more reliable, fairer, and easier to improve.\n\n## How to Use This Decision\n\nUse this decision to:\n\n* explain why unstructured interviews produce weak and inconsistent hiring decisions;\n* write a hiring brief that connects a role to team mission and organisational need;\n* distinguish competencies, interview questions, scoring rubrics, and decision criteria;\n* recognise interviewer bias and role ambiguity as design problems;\n* run a hiring debrief around evidence rather than personality impressions.\n\nThe practical lesson is that hiring quality is designed before the first interview happens.\n\n## One-Minute Mental Model\n\nHiring is **role design plus evidence collection**.\n\nThe role design part asks: what work needs to exist, at which scope, in which team, and with which capability gap? The evidence collection part asks: what job-related signals show that a candidate can succeed in that role?\n\nIf the role is vague, interviews become preference contests. If interviews are unstructured, the organisation confuses confidence, similarity, and storytelling with evidence. Structured hiring does not remove judgement; it gives judgement a better surface to work on.\n\n## Rationale\n\nHiring shapes the organisation more permanently than most planning decisions. A rushed hire can create years of performance, team health, or capability problems. A good hire can raise the quality of a team and make the organisation more resilient.\n\nEngineering hiring fails in predictable ways:\n\n* the role is opened because the team feels overloaded, not because the need is understood;\n* interviewers assess whatever they personally value;\n* senior candidates are evaluated through charisma and past titles rather than scope evidence;\n* junior candidates are rejected for not already having the skill the organisation should teach;\n* interview feedback contains opinions without examples;\n* hiring decisions happen through the loudest voice in the debrief;\n* candidate experience is treated as recruiter responsibility only.\n\nStructured hiring reduces these failure modes. It also creates reusable learning: which competencies predict success, where the process filters out the wrong people, and which teams repeatedly open roles for problems that should be solved by team design, platform investment, or prioritisation.\n\n## Hiring Brief\n\nEvery role should start with a hiring brief:\n\n| Field | Question |\n| --- | --- |\n| Role mission | Why does this role need to exist now? |\n| Team context | Which team, stream, capability, or platform does it support? |\n| Level | What scope and impact are expected from the career framework? |\n| Competencies | Which technical, product, collaboration, and ownership skills are required? |\n| Tradeoffs | Which skills are essential on day one, and which can be developed? |\n| Interview plan | Which interview assesses which competency? |\n| Success after 6 months | What should be visibly different if the hire succeeds? |\n\nA hiring brief should be reviewed by the hiring manager, recruiter, and at least one relevant senior technical partner before sourcing begins.\n\n## Hiring Brief Template\n\nUse this template before opening a role:\n\n| Field | Example prompt |\n| --- | --- |\n| Role title and level | Which level is this role calibrated to, and why? |\n| Business or team problem | What will remain painful if we do not hire? |\n| Team mission link | Which value stream, platform, or capability does this role support? |\n| First 6 months | What should the person make better in the first 6 months? |\n| Must-have competencies | Which skills are required to succeed from the start? |\n| Developable competencies | Which skills can be learned after joining? |\n| Interview evidence | Which interview will produce evidence for each must-have competency? |\n| Onboarding risk | What context will be hardest for the new hire to acquire? |\n\nThe template prevents vague openings such as \"we need another senior engineer\". It forces the manager to explain the gap, scope, and evidence plan.\n\n## Interview System\n\nThe interview system should be intentionally designed:\n\n| Interview type | Purpose | Risk if weak |\n| --- | --- | --- |\n| Technical depth | Assess role-relevant engineering judgement and implementation skill. | Trivia, puzzle solving, or overfitting to one stack. |\n| System or product thinking | Assess tradeoffs, constraints, product context, and operability. | Abstract architecture theatre. |\n| Collaboration | Assess communication, feedback, conflict, and cross-functional work. | \"Culture fit\" bias. |\n| Leadership or scope | Assess ownership, influence, mentoring, and ambiguity handling. | Confusing seniority with confidence. |\n| Manager or values conversation | Assess expectations, motivation, and role alignment. | Selling the role without assessing mutual fit. |\n\nEach interview should produce evidence: examples, decisions, tradeoffs, behaviours, and risks. \"Strong hire\" without evidence is not useful feedback.\n\n## Signal and Evidence\n\nInterview feedback should separate signal from interpretation.\n\n| Weak feedback | Better feedback |\n| --- | --- |\n| \"Good culture fit.\" | \"Explained a disagreement with product, named the tradeoff, and described how the team reached a decision without escalation.\" |\n| \"Not senior enough.\" | \"Handled implementation detail well, but did not identify operational failure modes or cross-team dependencies expected at this level.\" |\n| \"Great architect.\" | \"Compared three service-boundary options and tied the recommendation to latency, ownership, deployment risk, and future migration cost.\" |\n| \"Weak communicator.\" | \"Jumped into solution detail before clarifying the problem; needed repeated prompts to explain assumptions.\" |\n| \"Would raise the bar.\" | \"Showed concrete examples of mentoring reviewers, reducing incident recurrence, and improving API design standards across teams.\" |\n\nEvidence does not remove judgement. It makes judgement inspectable.\n\n## Decision Review\n\nHiring debriefs should:\n\n* compare candidate evidence against the role brief and rubric;\n* separate factual evidence from interpretation;\n* discuss concerns explicitly, including whether they are trainable;\n* avoid changing the role mid-process to fit a preferred candidate;\n* record the decision and follow-up expectations for onboarding;\n* review process quality if signal was missing or contradictory.\n\nThe hiring manager owns the final recommendation within the agreed decision model. The organisation owns fairness, process quality, and calibration.\n\n## Common Confusions\n\n| Confusion | Clarification |\n| --- | --- |\n| Competency vs question | A competency is what the role needs; a question is one way to collect evidence. |\n| Culture fit vs values evidence | Culture fit is often bias; values evidence names concrete behaviours. |\n| Potential vs current readiness | Potential may justify development; it does not erase a current role gap. |\n| Likeability vs collaboration | A candidate can be pleasant without being effective in disagreement or feedback. |\n| Seniority vs years | Years can create experience; they do not prove scope, judgement, or impact. |\n\n## Worked Example\n\nA team asks to hire \"a senior backend engineer\".\n\nWeak process:\n\n* The job description copies generic senior-engineer language.\n* Interviewers ask their favourite technical questions.\n* The debrief focuses on whether the candidate \"felt senior\".\n* The selected candidate later struggles because the team actually needed cross-team migration leadership.\n\nStructured process:\n\n| Step | Better behaviour |\n| --- | --- |\n| Hiring brief | Clarify that the role exists to lead backend convergence across two services. |\n| Competency map | Prioritise migration planning, service ownership, API design, mentoring, and production judgement. |\n| Interview plan | Assign interviews to those competencies and define evidence examples. |\n| Debrief | Compare evidence against the actual role need, not generic seniority. |\n| Onboarding handoff | Give the new hire the migration context, stakeholders, and first 90-day outcomes. |\n\nThe hire is now evaluated for the job that exists, not for an abstract title.\n\n## Anti-Patterns\n\n* **Vibe-based hiring.** Interviewers decide based on comfort, confidence, or similarity.\n* **Puzzle theatre.** Interviews test artificial problems unrelated to the role.\n* **Role drift.** The role changes during the process because a candidate seems attractive.\n* **Seniority by charisma.** Confident communication is mistaken for judgement and scope.\n* **Rubber-stamp debrief.** Feedback is collected but the decision was already made privately.\n* **Candidate neglect.** Slow communication and unclear expectations damage trust and reputation.\n\n## Practice Exercise\n\nTake an open or recent role and run this exercise:\n\n1. Write the role mission in one sentence.\n2. List the five competencies most important for success.\n3. Mark each competency as must-have or developable.\n4. Assign each must-have competency to one interview.\n5. Write one example of evidence that would support a hire decision and one that would raise concern.\n6. Check whether the interview loop currently produces that evidence.\n\nIf the exercise is hard, the role or interview plan is not ready.\n\n## Discussion Prompts\n\nUse these prompts before opening a role:\n\n* What organisational problem are we trying to solve with this hire?\n* Is hiring the right answer, or do we need prioritisation, platform support, or team redesign?\n* Which competencies are essential on day one?\n* Which interview will produce evidence for each competency?\n* How will we identify and challenge bias in the process?\n* What should onboarding focus on if the candidate accepts?\n\n## Related Records\n\n* [Team Size and Composition Guardrails](team-size-and-composition.html) - hiring should respond to real team capability gaps.\n* [Dual Career Paths and Transparent Progression](career-paths-and-progression.html) - levels and competencies should align with the career framework.\n* [Onboarding and Ramp-Up](onboarding-and-ramp-up.html) - hiring decisions must hand off useful context to onboarding.\n* [Engineering Management Operating Model](engineering-management-operating-model.html) - hiring and team capability are EM responsibilities.\n* [Talent Review and Succession](talent-review-and-succession.html) - hiring is one input to wider talent planning.\n\n## Scope and Revisiting\n\nThis ADR applies to engineering hiring and related technical/product-engineering leadership roles. HR-owned legal, works-council, and compliance requirements remain authoritative and must be followed.\n\nRevisit if hiring quality is inconsistent, candidate experience degrades, diversity indicators worsen, interview load becomes unsustainable, or new evidence shows the process is not predicting success.\n\n## Authoritative References\n\n* U.S. Office of Personnel Management, [Structured Interviews](https://www.opm.gov/policy-data-oversight/assessment-and-selection/structured-interviews).\n* Greenhouse, [Structured hiring introduction](https://support.greenhouse.io/hc/en-us/articles/360007245452-Structured-hiring-Introduction).\n* Google Careers, [Interviewing at Google](https://www.google.com/about/careers/applications/interview-tips/).\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

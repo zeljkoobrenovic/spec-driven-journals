@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI-Mediated Authoring as the Default Way to Edit This Repository</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="markdown-records.html" title="Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="spec-driven-authoring.html" title="Spec-Driven Authoring as a Lightweight Default for Posts">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Recoding Decisions</p>
+        <h1>AI-Mediated Authoring as the Default Way to Edit This Repository</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-17  ·  24 min · <a class="spec-link" href="ai-mediated-authoring.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/ai-mediated-authoring/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/ai-mediated-authoring/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="markdown-records.html" title="Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="spec-driven-authoring.html" title="Spec-Driven Authoring as a Lightweight Default for Posts">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-FOUND-AI-MEDIATED-AUTHORING", "status": "draft:gray", "title": "AI-Mediated Authoring as the Default Way to Edit This Repository", "date": "2026-05-17", "author": "Organization Tech Strategy", "permalink": "ai-mediated-authoring", "timetoread": "24 min", "excerpt": "All substantive updates to this repository - new posts, edits, restructures, illustrations, and metadata changes - go through an AI coding agent such as Claude Code or Codex CLI rather than direct hand-editing of files. The agent is the mediator: authors describe intent, the agent performs the edit, the author reviews the diff. The workflow teaches authors to work through intent, context, review, and traceability rather than treating AI as autocomplete. Trivial fixes such as typos, broken links, or front-matter status flips may be hand-edited as long as they are noted in the pull request.", "tags": "ai, authoring, workflow, claude-code, codex, governance, documentation", "icon": "assets/icons/ai-mediated-authoring.png", "logo": "assets/images/ai-mediated-authoring/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["ai", "authoring", "workflow", "claude-code", "codex", "governance", "documentation"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Substantive changes to this repository are made through an AI coding agent (Claude Code, Codex CLI, or an equivalent successor) rather than by hand. Authors describe intent in a session with the agent; the agent edits files and runs the build; the author reviews the resulting diff and merges it. The workflow exists to preserve reasoning, not to outsource judgement. Trivial fixes (typos, broken links, status flips, dependency bumps) may be hand-edited and noted in the PR.\n\n## Decision\n\nAdopt **AI-mediated authoring** as the default workflow for changing the contents of this repository. Concretely:\n\n* **Mediator**: an AI coding agent (Claude Code, Codex CLI, or a comparable CLI tool that can read and edit the working tree) performs all substantive file edits.\n* **Author role**: the human author provides intent, context, judgement, review, and final approval. The author does not normally type into post files directly.\n* **Scope**: applies to all journals under `_journals/` - posts, configs, templates, build scripts, conventions in `CLAUDE.md`, and editorial assets.\n* **Exception path**: trivial mechanical fixes (typos, broken links, `status:` value flips, version bumps, file renames driven by tooling) may be hand-edited. The pull request description must say so explicitly so reviewers know to apply a lighter check.\n* **Learning goal**: authors learn to express intent, constraints, and review criteria clearly; reviewers learn to evaluate both the content change and the reasoning trail.\n\nThis decision **does not** dictate which AI tool authors use, **does not** prevent direct editing of code or content outside `_journals/`, and **does not** remove human accountability for the result - see [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html).\n\n## How to Read This Decision\n\nFive ideas, easy to confuse:\n\n| Idea | Meaning | Practical implication |\n| --- | --- | --- |\n| **AI-mediated** | The agent makes the edit; the human directs and reviews. | Authors describe intent; they do not paste finished prose into files. |\n| **Tool-agnostic** | Claude Code today, Codex CLI tomorrow, something else next year. | The policy targets the *workflow*, not a specific vendor. |\n| **Sessioned** | Each change ships with a session log naming author, intent, journals affected. | The reasoning behind a change survives, not just the diff. |\n| **Reviewable** | The agent's diff is reviewed in a PR like any other change. | The human is still accountable for what lands. |\n| **Pragmatic** | Trivial fixes can skip the session, with a note in the PR. | The rule guides substantive work; it does not block one-character fixes. |\n\nThe point is not to remove humans from authoring. It is to make the *thinking* that produced each change as durable as the change itself.\n\n## What This Should Help You Do\n\nThis foundation should help an author or reviewer:\n\n* Explain the difference between AI-mediated authoring and \"AI wrote it for me\".\n* Decide whether a change is substantive enough to require an AI session and session log.\n* Run a session that starts from intent, constraints, existing records, and review criteria.\n* Write a session log that preserves useful reasoning without becoming a transcript.\n* Review a PR by checking the content diff, the session log, the build result, and human accountability.\n\nThe skill this workflow teaches is not prompt-writing in isolation. It teaches **traceable authoring**: state intent clearly, let the agent operate on the repository, review the artifact, and preserve the reasoning for the next reader and the next AI session.\n\n## One-Minute Mental Model\n\nThink of the repository as a place where two artifacts are produced together:\n\n1. **The record** - the markdown file under `_journals/<journal>/posts/`.\n2. **The conversation** - a session log under `_journals/ai-conversations/`.\n\nThe record says *what we decided*. The conversation says *how we got there, what we asked, what we rejected, and what the agent did*. Both are markdown in git. Both are reviewable. Both are AI-readable on the next session.\n\nA change without a conversation is a change whose reasoning was lost the moment the author closed their terminal.\n\n## Why This Foundation\n\nOrganization has already committed to:\n\n* Markdown records as the canonical format for durable technical writing - see [Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](markdown-records.html) and [Practice Principle: Markdown Records as Canonical](../principles/markdown-records-as-canonical.html).\n* Claude Code as the standard AI coding agent - see [Why Claude Code: The Capabilities That Matter](../ai-dev-strategy/claude-code-as-standard.html).\n* `CLAUDE.md` and memory as the repository's machine-readable context surface - see [Reference: CLAUDE.md and Memory Details](../ai-dev-strategy/claude-md-and-memory.html).\n* An AI coding policy that keeps humans accountable while making AI use the default - see [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html).\n\nThis foundation is the missing piece: it states that the *authoring action itself* runs through the agent, not just the engineering work the agent supports. It binds the agent to the artifact at the moment of creation, not after the fact.\n\n## Substantive vs Trivial\n\nThe practical boundary is whether the change could affect what a future reader believes, cites, or does.\n\n| Change | AI-mediated session? | Reason |\n| --- | --- | --- |\n| Add a new foundation, principle, strategy, or ADR. | Yes | New meaning enters the corpus. |\n| Rewrite a section for clarity while preserving meaning. | Yes | Reviewers need to see intent and editorial judgement. |\n| Add examples, checklists, or learning outcomes. | Yes | The record becomes more directive and educative. |\n| Change tags, excerpt, title, or section placement. | Usually yes | Discovery and interpretation change, even if the decision does not. |\n| Fix a typo in one sentence. | No, if noted as trivial. | Meaning does not change. |\n| Fix a broken `[[link]]`. | No, if noted as trivial. | Mechanical repair. |\n| Flip `status:` after the body already reflects the accepted state. | No, if noted as trivial. | Metadata catches up with an already-recorded outcome. |\n| Change a decision from proposed to accepted and update rationale. | Yes | Meaning and organisational commitment change. |\n\nWhen unsure, treat the change as substantive. The cost of a short session log is lower than the cost of losing the reasoning behind a meaningful edit.\n\n## What Belongs in a Session\n\nA session is a single working interaction between an author and an AI agent that ends in one or more commits (or no commits, if the conversation produced advice only).\n\n| Belongs in a session log | Does not belong |\n| --- | --- |\n| The author's intent in their own words. | A verbatim transcript of every prompt and reply. |\n| Decisions made during the session (including ones the author overrode). | Token-level disagreements that were resolved cleanly. |\n| Files that changed and a one-line reason for each group of changes. | A copy of the diff (git already has it). |\n| Follow-ups, open questions, or records worth writing next. | Speculative ideas the author already discarded. |\n| Cross-links to affected journals and records. | Re-stating the content of the records that changed. |\n\nThe session log is a *short structured summary*, not a transcript. Think of it as the changelog entry for the reasoning behind a commit.\n\n\n## Session Log Quality Bar\n\nA good session log lets a future reader understand why the change exists without replaying the whole conversation.\n\n| Quality | Strong session log | Weak session log |\n| --- | --- | --- |\n| **Intent** | States the author's goal and constraints in plain language. | \"Updated docs.\" |\n| **Outcome** | Summarises what actually changed. | Copies the git diff or lists every paragraph touched. |\n| **Decisions** | Names choices made during the session and who made them. | Says \"the AI decided\" or hides the human judgement. |\n| **Files changed** | Groups files by journal or purpose. | Dumps a long path list without explanation. |\n| **Follow-ups** | Captures real next steps or explicitly says none. | Adds generic \"review later\" filler. |\n| **Cross-links** | Links the records affected or implied. | Leaves future readers to search manually. |\n\nThe log should be honest about uncertainty. If the author rejected an agent suggestion, say so when it matters. If a decision was inferred from existing records rather than newly made, say that too.\n\n## Naming\n\n* **Author ID**: short kebab-case identifier of the human author (typically firstname-lastname or a stable handle). Same ID across sessions, so all of an author's logs sit under one folder.\n* **Session ID**: `YYYY-MM-DD-short-slug`, where the slug captures the session's intent in two or three words. If an author runs more than one session in a day, append `-2`, `-3`, etc.\n* **Permalink**: `<author-id>-<session-id>`. This is what `[[…]]` cross-links resolve to and what appears in the URL.\n\nAuthor ID and session ID together must produce a globally unique permalink within the journal.\n\n## Workflow\n\nA standard session looks like this:\n\n1. **Pull main**, branch if helpful, and open the AI agent (`claude` or `codex`) in the repo root.\n2. **State intent** to the agent in plain language. Reference existing records with `[[name]]` so the agent picks up context.\n3. **Let the agent edit**. Review proposed edits as they happen; redirect when something is off.\n4. **Run the build** (`python3 _wiring/build.py`) via the agent and inspect the output.\n5. **Edit the session log** with the agent until it accurately reflects what happened. Keep it short.\n6. **Commit and open a PR**. The PR description should link the session log and the records that changed.\n7. **Reviewer reads both** the record change and the session log. The session log is part of the review surface, not an afterthought.\n\nIf a session produced advice only and no file changes landed, the session log is still written - it captures why the advice did not turn into an edit, which is itself a decision.\n\n## Worked Examples\n\n### Example 1: Substantive Edit\n\nAn author asks:\n\n> Improve `[Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html)` and make it more educative.\n\nThis is substantive. The agent reads the record and nearby foundations, edits the source markdown, adds learning outcomes and practical prompts, validates front matter, and reports what changed. The session log should say:\n\n* Intent: make the AAF record more useful for onboarding and facilitation.\n* Outcome: added learning sections, prompts, examples, and validation notes.\n* Decisions: kept the AAF advisory-only; did not change decision ownership.\n* Files changed: the AAF foundation source, generated docs only if intentionally rebuilt.\n* Follow-ups: none, or a specific next record if one emerged.\n\n### Example 2: Trivial Fix\n\nAn author fixes a broken link from `[[markdown-record]]` to `[Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](markdown-records.html)`.\n\nThis can be hand-edited if the PR says: `hand-edited, trivial: broken cross-link repair`. No session log is required because the meaning is unchanged and the reasoning is obvious.\n\n### Example 3: Advice-Only Session\n\nAn author asks the agent whether the repository should add build-time enforcement that every PR touching `_journals/` links a session log. The agent analyses options, but the author decides not to edit anything yet.\n\nThis still deserves a session log if the advice shaped a real decision. The outcome is \"no file changes landed\"; the decision is \"defer enforcement until compliance gaps appear\"; the follow-up may be \"revisit after ten sessions\".\n\n## What This Means for Teams\n\n* **Authors** should expect to spend more time describing intent and reviewing diffs, and less time typing into markdown files. Treat the agent as a junior editor with full repo context, not a search box.\n* **Reviewers** should treat the session log as part of the change. A PR without a session log (and without an explicit \"trivial fix\" note) is incomplete.\n* **Journal owners** should keep their `CLAUDE.md` and `README` up to date so the agent has the context it needs. Bad context produces bad edits.\n* **Tooling owners** should keep the AI agent contract stable: the same `_wiring/build.py`, the same metadata shape, the same `[[…]]` resolver. The policy assumes the agent can read and modify the repository safely.\n\n## Reviewer Checklist\n\nReviewers should inspect both the changed record and the session log. Useful questions:\n\n* Does the diff match the stated intent?\n* Does the session log explain the reasoning without becoming a transcript?\n* Are human decisions clearly attributed to the author rather than the agent?\n* Did the agent run the relevant validation or explain why it did not?\n* Are generated files included or omitted deliberately?\n* Are links, metadata, status, and read time still coherent?\n* Is a \"trivial fix\" claim credible, or did the change alter meaning?\n\nThe reviewer is not reviewing the AI as a person. The reviewer is reviewing a human-authored change made through an AI tool.\n\n## Author Prompts That Work Well\n\nGood sessions start with intent and review criteria. Useful prompt shapes:\n\n* \"Improve `[[record]]` for new readers. Preserve the decision, add education and practical examples, and keep edits source-only.\"\n* \"Review this journal for inconsistent terminology. Propose a scoped edit before changing files.\"\n* \"Make this post more actionable for teams. Add checklists and examples, but do not change policy meaning.\"\n* \"Refactor these sections for clarity. Keep `id`, `permalink`, status, and cross-links stable.\"\n* \"After editing, parse front matter, check heading structure, and tell me whether generated docs were touched.\"\n\nWeak sessions start with output-only instructions like \"rewrite this better\" or \"make it sound strategic\". The agent needs intent, constraints, and success criteria.\n\n## Anti-Patterns\n\nAvoid:\n\n* **Hand-edits with a fake session log written after the fact.** The log is supposed to capture a real interaction, not justify a manual change.\n* **Transcript dumps.** A 4 000-word paste of the chat is not a session log; it is a transcript. Summarise.\n* **One mega-session per week.** If a session touches ten unrelated records, split it.\n* **Author ID drift.** Pick one identifier per human and stick with it across sessions so logs accumulate under one folder.\n* **Skipping the build.** A session that didn't run `python3 _wiring/build.py` did not verify its own output.\n* **Treating \"trivial fix\" as a default.** The exception is for genuinely mechanical edits, not for \"I was in a hurry\".\n* **Letting the agent invent decisions.** The agent edits; the human decides. A session log should attribute decisions to the human, not the tool.\n* **Diff-only review.** Looking only at changed files and ignoring the session log loses the reasoning trail.\n* **Session log as marketing.** Generic praise about AI productivity is not evidence. The log should say what happened.\n\n## Common Misunderstandings\n\n| Misunderstanding | Correction |\n| --- | --- |\n| \"AI-mediated means AI owns the content.\" | No. The human author owns intent, judgement, review, and approval. |\n| \"The session log is an audit transcript.\" | No. It is a concise reasoning summary, not a verbatim recording. |\n| \"Using an agent means the PR can be reviewed faster.\" | Sometimes, but the reviewer still checks meaning, diff, validation, and log. |\n| \"Trivial fixes never need review.\" | They still need review; they just do not need a full session log. |\n| \"The chosen tool matters most.\" | The durable workflow matters more than whether the agent is Claude Code, Codex CLI, or a successor. |\n| \"Generated docs must always be committed.\" | Generated docs are committed when the repository workflow requires it; source-only edits may intentionally leave them untouched. |\n\n## Exceptions\n\nHand-editing is acceptable, without a session log, for:\n\n* Typo and grammar fixes inside an existing paragraph.\n* Broken links and `[[name]]` slugs.\n* Front-matter `status:` value flips (e.g. `proposed:orange` → `accepted:green`) where the body already reflects the new status.\n* Build-script dependency or version bumps that do not change behaviour.\n* File renames driven by tooling (e.g. `_wiring/build.py` enforcing a new naming rule).\n\nIn each case the pull request description must say \"hand-edited, trivial\" and name the category, so the reviewer can apply a lighter check rather than wondering where the session log is.\n\nAnything that *changes the meaning* of a record - even slightly - is not trivial and goes through the agent.\n\n## Considered Options\n\n* **AI-mediated by default with explicit trivial-fix exceptions** (chosen).\n* **AI use is optional; authors choose tool per change.** Cleaner for individual freedom, but loses the reasoning trail and makes AI-readiness of records uneven.\n* **Hard rule, no exceptions.** Cleaner principle, but creates friction for one-character fixes and tempts authors to dress up trivial work as a session.\n* **AI as reviewer only, humans edit.** Inverts the model; humans still type and the agent comments. Misses the point: the agent should be the one operating the keyboard so its context is fresh on the next session.\n\n## Consequences\n\n### Positive\n\n* Reasoning behind each change is captured at the time of the change, not reconstructed later.\n* The agent's session log becomes durable context for the *next* session - this repository teaches itself.\n* Human accountability is preserved through diff review and PR approval, unchanged from current practice.\n* Tool-agnostic phrasing means the policy survives the next CLI tool generation.\n* `CLAUDE.md` files become operationally important, not decorative - the agent reads them every session.\n* Trivial-fix exceptions keep the rule honest and avoid theatre.\n\n### Negative\n\n* Authors who prefer to type into markdown directly will feel slowed down at first.\n* The `ai-conversations` journal will grow quickly; index search and folder hygiene will matter.\n* Session logs that are written badly (transcripts, generic filler) will erode the value of the journal.\n* The policy assumes a stable AI tool contract. If Claude Code, Codex CLI, or successors change behaviour materially, conventions may need to follow.\n* Auditing compliance (\"did this change really come from a session?\") relies on author honesty until tooling enforces it.\n\n## Scope and Revisiting\n\nIn scope: any change to files under `_journals/`, `_templates/`, `_wiring/`, `CLAUDE.md`, and `docs/` insofar as it is regenerated by the build.\n\nOut of scope:\n\n* Code in repositories outside this one.\n* Personal scratch notes that never enter a journal.\n* Operational fixes to CI, deployment, or hosting infrastructure that happen to live nearby.\n\nRevisit this decision when:\n\n* A successor CLI tool changes the AI-agent contract in a way that materially affects authoring.\n* A practical alternative emerges for capturing the reasoning behind a change without a session log.\n* Compliance gaps appear that justify build-time enforcement (e.g. requiring every PR touching `_journals/` to link a session log).\n\n## Related Records\n\n* [Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](markdown-records.html) - the canonical format that this policy assumes.\n* [Practice Principle: Markdown Records as Canonical](../principles/markdown-records-as-canonical.html) - the principle that records, not threads, are the source of truth.\n* [Why Claude Code: The Capabilities That Matter](../ai-dev-strategy/claude-code-as-standard.html) - the choice of Claude Code as the default agent.\n* [Reference: CLAUDE.md and Memory Details](../ai-dev-strategy/claude-md-and-memory.html) - how the agent picks up repository context.\n* [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html) - the broader AI coding policy that keeps humans accountable.\n* [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) - the ritual where contentious sessions and records get discussed.\n\n## Authoritative References\n\n* [Claude Code documentation](https://docs.claude.com/en/docs/claude-code/overview)\n* [OpenAI Codex CLI](https://github.com/openai/codex)\n* [MADR: Markdown Architectural Decision Records](https://adr.github.io/madr/)\n\n## Appendix: Vocabulary\n\n\n\nThe workflow works better when the words are precise.\n\n| Term | Meaning in this repository | Example |\n| --- | --- | --- |\n| **Author** | The human accountable for the change. | \"Zeljko asked for the foundation to be improved and reviewed the diff.\" |\n| **Agent** | The CLI tool operating on the working tree. | Claude Code, Codex CLI, or a successor tool. |\n| **Session** | One bounded interaction with the agent around one coherent intent. | \"Improve the AAF foundation and make it more educative.\" |\n| **Substantive change** | A change that alters meaning, structure, guidance, workflow, assets, or generated output. | Adding sections, rewriting a post, changing a workflow, restructuring a journal. |\n| **Trivial fix** | A mechanical edit with no meaningful change to content or policy. | Typo, broken link, status flip already supported by the body. |\n| **Review surface** | Everything the reviewer should inspect. | Diff, session log, build result, generated docs if relevant. |\n\nThe most important distinction is between **the agent operating the keyboard** and **the human owning the judgement**. The first is delegated. The second is not.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

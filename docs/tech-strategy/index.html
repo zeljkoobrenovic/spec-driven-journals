@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Organization Tech Strategy</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 340px;
+            object-fit: cover;
+            margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 4px 0 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/iStock-2128484831.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/iStock-2128484831.jpg" alt=""></a>
+        <p class="logo-credit">Image by CHUNYIP WONG from iStock</p>
+        <div style="padding: 4px;">
+            <h1>Organization Tech Strategy</h1>
+            <p>Reducing Fragmentation and Complexity While Building Foundation for the Future. The strategy narrative, diagnosis, policy, operating model, roadmap, and supporting blueprints for Organization engineering.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Strategy", "description": "The overall strategy: where Organization engineering is today, where it needs to go, and why.", "posts": [{"id": "ORG-STRAT-OVERVIEW", "status": "draft:gray", "title": "Organization Tech Strategy: Reducing Fragmentation and Complexity While Building Foundation for the Future", "excerpt": "Organization should simplify and converge its engineering landscape to deliver faster and operate more reliably. The core decision is to optimise for Germany-scale needs, not for the broader White-Label-era optionality the estate was originally shaped around. That means fewer active patterns, fewer tooling paths, clearer ownership, explicit legacy retirement, and a simpler path from code to production. Detailed defaults and concrete exceptions are handled through supporting policy, operating model, blueprints, and the roadmap.", "url": "strategy.html", "icon": "assets/icons/strategy.png", "tags": ["strategy", "simplification", "convergence", "fragmentation", "germany"]}, {"id": "ORG-STRAT-DIAGNOSIS", "status": "draft:gray", "title": "Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation", "excerpt": "Organization Germany has a mismatch between inherited complexity and actual business need. The current estate was shaped by White-Label platform ambitions on top of older legacy that was never fully removed. Germany now operates in a much narrower reality but still carries a landscape built for broader reuse, abstraction, and distribution. The main problem is fragmentation - across code, accounts, tooling, and ownership - not lack of technical sophistication. This post lays out the evidence and the core diagnosis the rest of the strategy responds to.", "url": "diagnosis.html", "icon": "assets/icons/diagnosis.png", "tags": ["diagnosis", "fragmentation", "complexity", "legacy", "white-label"]}, {"id": "ORG-STRAT-IMPLICATIONS", "status": "draft:gray", "title": "Strategic Implications: What the Diagnosis Forces the Strategy to Account For", "excerpt": "This post turns the diagnosis into the strategic implications that the policy must respect. These implications are not yet policy. They narrow the space of acceptable strategy choices for Organization Germany and define what later policy and operating decisions must account for. The implications fall into eight load-bearing statements: simplification is strategic, Germany-scale comes first, fragmentation reduction beats new sophistication, backend convergence is the main technical focus, developer experience is strategic, ownership clarity is part of the technical work, legacy retirement is core to the logic, and strong defaults beat broad optionality.", "url": "implications.html", "icon": "assets/icons/implications.png", "tags": ["implications", "strategy", "simplification", "convergence", "governance"]}]}, {"title": "Policy and Operation", "description": "The policy that turns strategy into decision rules, and the operating model that keeps the strategy alive.", "posts": [{"id": "ORG-STRAT-POLICY", "status": "draft:gray", "title": "Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse", "excerpt": "The policy turns the diagnosis and strategic implications into explicit decision rules. Optimise for Germany-scale needs by simplifying, converging, reducing variance, clarifying ownership, and retiring or containing legacy. Nine core policies cover direction (P1-P6), guidance (P7), approval (P8), and measurement (P9). Five decision rules apply at the point of choice: prefer the option that reduces fragmentation, fits Germany's scope, simplifies delivery, clarifies ownership, and creates a path to retire legacy. Reject options that add durable complexity without clear Germany-specific value.", "url": "policy.html", "icon": "assets/icons/policy.png", "tags": ["policy", "decision-rules", "governance", "defaults"]}, {"id": "ORG-STRAT-OPERATE", "status": "draft:gray", "title": "Operating Model: How the Strategy Stays Alive Day to Day", "excerpt": "Keep the strategy lightweight, explicit, and tied to real decisions. A named strategy owner keeps the direction coherent. Domain and platform owners apply the strategy in their area. Teams work within defaults unless an exception is approved. A lightweight strategy review forum handles decisions with strategic impact. Exceptions and legacy remain visible through explicit registers. Blueprints and standards turn policy into practical defaults. Reviews run monthly for live work and quarterly for policy fit. The goal is not zero exceptions; the goal is preventing hidden divergence from becoming permanent fragmentation.", "url": "operate.html", "icon": "assets/icons/operate.png", "tags": ["operating-model", "governance", "exceptions", "ownership", "review-forum"]}]}, {"title": "Roadmap and Targets", "description": "Phased transition from today's fragmented estate to a converged Germany-scale engineering landscape, and the first concrete things to act on.", "posts": [{"id": "ORG-STRAT-ROADMAP", "status": "draft:gray", "title": "Roadmap: Six Phases from Visibility to Material Legacy Retirement", "excerpt": "The roadmap translates the diagnosis, policy, and operating model into a practical sequence of change. Six phases run from establishing control and visibility, through stabilising the delivery path and clarifying ownership, to backend convergence, infrastructure simplification, and finally executing priority legacy retirement waves. The sequence reduces the highest-friction fragmentation first, improves delivery path and ownership clarity early, and avoids creating more complexity while trying to simplify. The roadmap does not yet commit to exact dates, named projects, or team-by-team sequencing - those come from the wave plan once first targets are validated.", "url": "roadmap.html", "icon": "assets/icons/roadmap.png", "tags": ["roadmap", "phases", "sequencing", "simplification", "convergence"]}, {"id": "ORG-STRAT-FIRST-TARGETS", "status": "draft:gray", "title": "First Targets: Where to Concentrate the First Wave of Simplification", "excerpt": "Five target groups are the right place to focus first: delivery path fragmentation, legacy backend and integration surfaces, the AWS account estate, the legacy technology footprint, and ownership hotspots. Each is chosen for a combination of high delivery friction, high ownership confusion, high operational burden, high fragmentation, and a realistic path to containment, consolidation, or retirement. This post names the target areas and the first questions to answer for each; it does not yet commit to project plans, named systems, or dates - those come from the wave plan in the prioritization post.", "url": "first-targets.html", "icon": "assets/icons/first-targets.png", "tags": ["first-targets", "simplification", "delivery", "backend", "aws", "legacy", "ownership"]}, {"id": "ORG-STRAT-PRIORITIZATION", "status": "draft:gray", "title": "Prioritization and Waves: Scoring Method and the First Wave Plan", "excerpt": "A simple five-dimension scoring method ranks simplification, convergence, containment, and retirement candidates: delivery friction, stability risk, ownership confusion, fragmentation impact, and ease of action. Each candidate is scored 1-5 on each dimension; the sum is the priority score. A guardrail prevents prioritising by ease alone. The post then applies the method to the candidates from the first-targets post and produces an initial Wave 1, Wave 2, and Investigation Queue. Wave 1 concentrates on delivery path and ownership clarity. Backend convergence work appears in Wave 2 because it depends on Wave 1 prerequisites.", "url": "prioritization.html", "icon": "assets/icons/prioritization.png", "tags": ["prioritization", "scoring", "waves", "sequencing", "governance"]}]}, {"title": "Blueprints and Convergence Plans", "description": "Per-area defaults that turn policy into practical engineering choices, paired with the convergence plan that moves the current estate toward them.", "posts": [{"id": "ORG-STRAT-BACKEND-CONVERGENCE", "status": "draft:gray", "title": "Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default", "excerpt": "Default backend blueprint and convergence plan for Organization Germany. The default direction for new and evolving product backend work is a conventional microservice model, based on standard AWS patterns, with clear bounded contexts, explicit owner, service-owned data, synchronous API interaction by default, and selective async messaging only where clearly justified. Convergence focuses on three first targets: backend overlap zones where monolith / microservices / serverless coexist, shared messaging surfaces (self-hosted Kafka and RabbitMQ), and shared-database coupling across logical service boundaries. The plan defines minimum rules, the definition of done for a strategy-compliant service, and the first wave actions.", "url": "backend-convergence.html", "icon": "assets/icons/backend-convergence.png", "tags": ["backend", "convergence", "microservices", "messaging", "blueprint"]}, {"id": "ORG-STRAT-DELIVERY-PATH", "status": "draft:gray", "title": "Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production", "excerpt": "Default code-to-production path for Organization Germany. One preferred source-control path per codebase. One preferred CI path. One preferred deployment path per runtime class. Automated build, automated deploy, standard rollback. No new manual builds, no new manual deployments, no new CI/CD tool without approval. The current estate spans GitHub + CircleCI, GitLab + GitLab pipelines, TFS + manual, and Bitbucket + Jenkins. GitHub + CircleCI is the current best candidate for the preferred modern path. TFS + manual and Bitbucket + Jenkins are retirement targets where they duplicate modern capability. GitLab paths remain transitional pending classification.", "url": "delivery-path.html", "icon": "assets/icons/delivery-path.png", "tags": ["delivery", "ci-cd", "blueprint", "convergence", "github", "circleci"]}, {"id": "ORG-STRAT-AWS-ACCOUNTS", "status": "draft:gray", "title": "AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate", "excerpt": "Default principles for AWS account usage in Organization Germany, plus the consolidation plan that moves the current estate of roughly 200 accounts toward a governable structure. Start from central AVIV AWS Foundation and Security guidance. Keep networking centrally managed in the initial phase. Create accounts only where ownership, isolation, or compliance clearly requires them. Every account needs explicit owner, purpose, and lifecycle status. Consolidation focuses first on accounts with unclear ownership or purpose, transitional accounts that have become permanent, and duplicated environment structures with limited strategic value. No new Germany-specific foundation divergence in the initial phase.", "url": "aws-accounts.html", "icon": "assets/icons/aws-accounts.png", "tags": ["aws", "accounts", "infrastructure", "consolidation", "blueprint"]}, {"id": "ORG-STRAT-OWNERSHIP-CLARIFICATION", "status": "draft:gray", "title": "Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces", "excerpt": "Reduce confusion and delivery drag by making system, platform, and legacy ownership explicit. Each major system, platform surface, and legacy estate needs one accountable owner. Where ownership is genuinely shared, separate operational owner from decision owner explicitly. The first wave focuses on three named hotspots: the legacy AWS estate, the delivery tooling estate, and shared legacy messaging and integration surfaces (Kafka, RabbitMQ). Every major system or estate must have a named owner; every shared platform surface must have a named decision owner; legacy without an owner is not acceptable.", "url": "ownership-clarification.html", "icon": "assets/icons/ownership-clarification.png", "tags": ["ownership", "governance", "accountability", "legacy", "platform"]}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    let matchStatus = true;
+                    if (activeStatuses.size) {
+                        const liStatus = li.dataset.status || '';
+                        // any-match: post status must equal one of the selected statuses
+                        matchStatus = false;
+                        for (const s of activeStatuses) {
+                            if (liStatus === s.toLowerCase()) {
+                                matchStatus = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag && matchStatus;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

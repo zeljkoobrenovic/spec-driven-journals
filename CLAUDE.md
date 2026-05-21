@@ -4,7 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A multi-journal static-site generator. Each subdirectory under `_journals/` is one journal site (e.g. `_journals/underhood/`). The build emits one site per journal under `docs/<journal-name>/`. There is no framework — just a small Python script, two HTML templates, and inline JS.
+A multi-journal static-site generator that publishes Organization's durable technical writing. Each subdirectory under `_journals/` is one journal site (e.g. `_journals/principles/`). The build emits one site per journal under `docs/<journal-name>/`. There is no framework — just a small Python script, two HTML templates, and inline JS.
+
+### Current journals
+
+| Journal | Purpose | Layout |
+| --- | --- | --- |
+| `tech-decisions-log` | Strategic tech ADRs (cloud, backend, mobile, web, messaging, networking, compute). | Per-post folder |
+| `ai-decisions-log` | Strategic AI/Claude Code ADRs (tooling, policy, operating model, engineering standards). | Per-post folder |
+| `ai-dev-strategy` | The 2026 AI development strategy, framing, workflows, governance, reviews. | Per-post folder |
+| `foundations` | Foundational engineering decisions and rituals (e.g. markdown records, Architecture Advisory Forum, AI-mediated authoring). | Per-post folder |
+| `principles` | Durable engineering principles, grouped into Design / Operational / Organisation / Practices. | Per-post folder |
+
+A successful build prints one `[built] <journal> -> docs/<journal>` line per journal — six today. Directories under `_journals/` without a `config.yaml` are skipped with a `[skip] <name>: no config.yaml` line rather than failing the build, so empty placeholder directories (e.g. an in-progress `tech-strategy/`) are safe to leave in place.
 
 ## Build
 
@@ -50,8 +62,8 @@ Posts within a section are sorted by **basename** at build time, regardless of y
 
 The build accepts either layout for a post; pick one per journal and keep it consistent.
 
-1. **Flat file** — `posts/<year>/YYYY-MM-DD-slug.md`. Used by `underhood`. Assets live only at the journal level.
-2. **Per-post folder** — `posts/<...>/<slug>/index.md`. Used by `documents`, `decisions-log`, `madr`, `adr-templates`, `ai-dev-strategy`. The folder may contain its own `assets/` directory; on build, it is merged into `docs/<j>/assets/` so post-body `assets/...` references still resolve.
+1. **Flat file** — `posts/<year>/YYYY-MM-DD-slug.md`. Assets live only at the journal level. (Historical layout; none of the current journals use it.)
+2. **Per-post folder** — `posts/<...>/<slug>/index.md`. Used by every current journal (`tech-decisions-log`, `ai-decisions-log`, `ai-dev-strategy`, `foundations`, `principles`). The folder may contain its own `assets/` directory; on build, it is merged into `docs/<j>/assets/` so post-body `assets/...` references still resolve.
 
 The output URL is driven by the post's `permalink:` front matter, not by the file path — both layouts produce `docs/<j>/<permalink>.html`.
 
@@ -78,7 +90,40 @@ Posts use Jekyll-style front matter. Recognized keys used by the build:
 | `logo_credit` | Optional caption shown under the post hero image |
 | `tags` | Comma-separated; rendered as chips below the post title |
 
-`permalink` should not change once a post is published (URL stability).
+Editorial fields that are not consumed by the build but are conventional for ADR-shaped posts (`tech-decisions-log`, `ai-decisions-log`, `foundations`, `principles`):
+
+| Key | Purpose |
+| --- | --- |
+| `id` | Stable record identifier, e.g. `ORG-PRIN-SMALL-AND-SIMPLE`. Doesn't change when the title is reworded. |
+| `status` | `proposed:orange`, `accepted:green`, `deprecated:gray`, `superseded:gray`, etc. Convention is `<state>:<colour>`. |
+
+These survive in the front matter and the JSON payload, and may be used by future renderers; they are not currently rendered by the templates.
+
+`permalink` should not change once a post is published (URL stability). Same for `id` — rewrite the title freely, but keep the identifier stable.
+
+### ADR-shaped opening highlight
+
+Foundation-, decision-, and principle-shaped posts open with a fixed two-line highlight blockquote before the first `## Heading`:
+
+```markdown
+> **Status**: PROPOSED
+>
+> **Decision**: One paragraph stating the decision clearly enough that a reader gets the direction before reading the body.
+```
+
+For principle posts, replace `**Decision**` with `**Principle**`. Keep it short, keep the labels exact, and align the visible status with the front-matter `status:` value. The main body should start with `## Statement` (principles) or `## Decision` (decisions); the highlight is the scannable summary, not a duplicate of that section.
+
+### Cross-record links: `[[name]]`
+
+Posts link to other records with `[[record-name]]`, where `record-name` is the target post's `permalink:`. The build resolves these at compile time (`build_crosslink_index` + `_rewrite_crosslinks` in `build.py`):
+
+- **In-journal target** (`[[evolutionary-systems]]` from another post in `principles/`) → `[Design Principle: Evolutionary Systems](evolutionary-systems.html)`.
+- **Cross-journal target** (`[[ai-policy]]` from a `principles/` post, where `ai-policy` lives in `ai-decisions-log/`) → `[AI Coding Policy: ...](../ai-decisions-log/ai-policy.html)`.
+- **Unresolved slug** → passed through as literal `[[slug]]` so it stays visible as an authoring TODO.
+
+Link text uses the target's `title:` from front matter, so reworking a title automatically updates every page that links to it. The `permalink:` is what `[[…]]` keys off, which is one of the reasons `permalink` should never change once published.
+
+Link liberally — a `[[name]]` whose target doesn't exist yet survives the build (as literal text) and marks a record worth writing later.
 
 ## Client-side rendering
 
@@ -144,7 +189,43 @@ Both scripts are idempotent: if the front-matter field is already set, the post 
 
 ## Conventions
 
-- Filenames: `YYYY-MM-DD-slug.md` for the flat layout; `<slug>/index.md` for the folder layout. Pick one per journal.
-- Once a post is published, `permalink` should not change (URL stability).
+- Filenames: `YYYY-MM-DD-slug.md` for the flat layout; `<slug>/index.md` for the folder layout. Pick one per journal — current journals all use the folder layout.
+- Once a post is published, `permalink` should not change (URL stability). Same goes for `id` if the post has one.
 - Image paths in post bodies stay relative to the journal root (`assets/images/...`); the build handles the rewrite, including the per-post-folder merge.
 - Engineering standards travel with the journal: each journal can have its own `CLAUDE.md`-style conventions in its own README, but the build behaviour above is constant across all of them.
+
+### AI-mediated authoring (default workflow)
+
+Substantive changes to this repository — new posts, edits, restructures, illustrations, config and template changes — go through an AI coding agent (Claude Code, Codex CLI, or an equivalent CLI tool) rather than being hand-edited. The author describes intent; the agent edits; the author reviews the diff. See the foundation ADR at `_journals/foundations/posts/ai-mediated-authoring/index.md` for the full rationale and exception list.
+
+### Spec-driven authoring (per-post specs)
+
+Non-trivial posts are driven by a lightweight spec — a `spec.md` file sitting next to `index.md` in the same post folder. The spec is the contract the agent works against; `index.md` is the published artifact.
+
+- **Template**: `_wiring/spec-template.md`. Seven sections: Intent, Audience, Success criteria, Non-goals, Open questions, Decision log, Sources — plus a trailing Changelog. Keep each section short; trim ruthlessly if the spec grows longer than the post.
+- **Layout**: `_journals/<journal>/posts/<slug>/spec.md`. Only the per-post folder layout supports specs (every current journal uses that layout).
+- **Build behaviour**: when `spec.md` exists, the build renders it as `docs/<journal>/<slug>.spec.html` and adds a "View spec" link to the post's byline. Specs use the same markdown renderer as posts and support the same `[[…]]` cross-links.
+- **When to write one**: any post where the intent is not self-evident from the title — new foundations, principles, decisions, and strategy posts. Skip for trivial fixes, status flips, and minor edits. If you can't articulate Intent + Success criteria in a paragraph each, the post probably is not ready to write yet.
+- **Lifecycle**: the spec is the working doc for the *first* version of a post. Update it when the post's intent shifts; leave Open questions until they are answered or moved to a follow-up record. Specs are versioned in git like everything else.
+- **Tracking evolution**: specs have a small front-matter block (`status:` + `revised:`) and a trailing `## Changelog` section. Status values are `draft` (still being written), `accepted` (spec and post agree), `drifted` (post has moved beyond the spec — needs reconciliation), `superseded` (a replacement spec exists). The build renders the status as a chip on the spec page and decorates the "View spec" link on the post page when the spec is `drifted` (amber) or `superseded` (muted). When you change a spec or notice drift, update `revised:` and add a Changelog line.
+- **Edit the spec first**: when intent for a post shifts, update the spec *before* the post. If you find yourself updating the post first, that's a signal the spec is being treated as documentation, not as a contract.
+- **Foundation ADR**: see `_journals/foundations/posts/spec-driven-authoring/index.md` for the durable rationale.
+
+### House style for new posts
+
+When adding to `tech-decisions-log`, `ai-decisions-log`, `foundations`, or `principles`, follow the established record shape so the journal stays internally consistent:
+
+- Open with the **Status / Decision (or Principle)** highlight blockquote.
+- Use a MADR-inspired body: `Statement` or `Decision` → `How to Read This` → `Rationale` → `Implications` → `What This Means for Teams` → `Anti-Patterns` → `Examples` → `Related Principles` / cross-links → `Scope and Revisiting` → `Authoritative References`. Sections may be omitted, but the order is conventional.
+- Lean on tables of contrasts ("What it says / What it does **not** say") and grouped bullets — they read well in the rendered HTML.
+- Cross-link related records with `[[name]]` rather than ad-hoc text references.
+- Keep tone declarative; the records are written to be read by humans and by AI tools as context.
+
+### Wiring a new post
+
+To add a new post to an existing journal:
+
+1. Create `_journals/<journal>/posts/<slug>/index.md` with the front matter and body.
+2. Add `      - <slug>/index.md` to the appropriate section under `posts:` in `_journals/<journal>/config.yaml`. Order in the file is preserved (basename sort is a no-op for the folder layout).
+3. Run `python3 _wiring/build.py` and confirm `[built] <journal> -> docs/<journal>` and `docs/<journal>/<permalink>.html` appear.
+4. Optionally run `generate_icons.py` / `generate_logos.py` (with `GEMINI_API_KEY`) to fill in the visual front-matter fields.

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Operating Model: How the Strategy Stays Alive Day to Day</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Organization Tech Strategy</a><span class="nav-right"><a class="nav-prev" href="policy.html" title="Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="roadmap.html" title="Roadmap: Six Phases from Visibility to Material Legacy Retirement">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Policy and Operation</p>
+        <h1>Operating Model: How the Strategy Stays Alive Day to Day</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-17  ·  9 min · <a class="spec-link" href="operate.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/operate/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/operate/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Organization Tech Strategy</a><span class="nav-right"><a class="nav-prev" href="policy.html" title="Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="roadmap.html" title="Roadmap: Six Phases from Visibility to Material Legacy Retirement">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-STRAT-OPERATE", "status": "draft:gray", "title": "Operating Model: How the Strategy Stays Alive Day to Day", "date": "2026-05-17", "author": "Organization Tech Strategy", "permalink": "operate", "timetoread": "9 min", "excerpt": "Keep the strategy lightweight, explicit, and tied to real decisions. A named strategy owner keeps the direction coherent. Domain and platform owners apply the strategy in their area. Teams work within defaults unless an exception is approved. A lightweight strategy review forum handles decisions with strategic impact. Exceptions and legacy remain visible through explicit registers. Blueprints and standards turn policy into practical defaults. Reviews run monthly for live work and quarterly for policy fit. The goal is not zero exceptions; the goal is preventing hidden divergence from becoming permanent fragmentation.", "tags": "operating-model, governance, exceptions, ownership, review-forum", "icon": "assets/icons/operate.png", "logo": "assets/images/operate/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["operating-model", "governance", "exceptions", "ownership", "review-forum"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Operate the strategy lightly, explicitly, and close to real decisions. A named strategy owner maintains coherence. Domain and platform owners apply the strategy in their area. Teams work within defaults unless an exception is approved. A lightweight strategy review forum handles decisions with strategic impact. Exceptions and legacy stay visible through explicit registers. Blueprints and standards turn policy into practical defaults. Monthly reviews handle live decisions; quarterly reviews check whether the strategy still fits.\n\n## Decision\n\nThe [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) only matters if it is **applied**. This document defines the lightest operating model that makes that possible.\n\nThe operating principle is:\n\n> Keep the strategy lightweight, explicit, and tied to real decisions.\n\nEverything below is designed to satisfy that sentence. If an element of the operating model becomes heavyweight, ceremonial, or disconnected from real decisions, it is failing.\n\n## How to Use This Operating Model\n\nUse this record whenever strategy work risks becoming either too abstract or too bureaucratic. It should answer:\n\n* Who owns the strategy narrative and review cadence?\n* Where does a team bring a strategic exception?\n* Which artifacts must exist before a decision can be considered governed?\n* How are legacy and exceptions kept visible after the meeting ends?\n* How does a team know whether a decision is local, blueprint-level, or strategy-level?\n\nThe operating model is intentionally small. If it starts producing meetings that do not change decisions, reduce it. If strategic decisions happen outside it and leave no record, strengthen it.\n\n## What This Should Help You Do\n\nThis operating model should help a reader:\n\n* Explain who owns strategy coherence, domain application, and team execution.\n* Decide when a choice needs the strategy review forum, an exception, or only a local team decision.\n* Understand why registers, blueprints, and review cadence are part of strategy execution.\n* Recognise when governance is becoming either too weak to matter or too heavy to use.\n\nCommon misreadings to avoid:\n\n| Misreading | Correction |\n| --- | --- |\n| \"The forum owns the decisions.\" | Teams and owners still own decisions; the forum keeps strategic impact visible. |\n| \"Registers are administration.\" | Registers are how exceptions and legacy stop disappearing from view. |\n| \"Quarterly review means quarterly action.\" | Action happens continuously; quarterly review checks policy fit. |\n\n## Ownership\n\nThe operating model has three roles. Each is named, not implicit.\n\n### Strategy Owner\n\nA single named strategy owner:\n\n* Maintains the overall strategy narrative ([Organization Tech Strategy: Reducing Fragmentation and Complexity While Building Foundation for the Future](strategy.html)).\n* Keeps [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) aligned with the current business context.\n* Coordinates updates across [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html), [Strategic Implications: What the Diagnosis Forces the Strategy to Account For](implications.html), [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html), [Operating Model: How the Strategy Stays Alive Day to Day](operate.html), and [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html).\n* Escalates unresolved conflicts when decisions cut across teams or domains.\n\nThe strategy owner is not an architecture committee. The strategy owner is **the person who makes sure the strategy stays coherent and visible**.\n\n### Domain and Platform Owners\n\nEach major domain (e.g. listing, search, CRM) and each major platform surface (e.g. delivery tooling, AWS account estate, messaging) has a named owner. Those owners:\n\n* Apply the strategy within their scope.\n* Identify where local reality conflicts with policy.\n* Propose standards, blueprints, and legacy retirement plans.\n* Maintain visibility on exceptions and active fragmentation within their area.\n\nDomain and platform owners are the **operational surface** of the strategy. Most decisions happen at this level, not at the strategy-owner level.\n\n### Delivery Teams\n\nDelivery teams:\n\n* Use the preferred defaults from the blueprints ([Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html), [Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production](delivery-path.html), [AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html), [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html)).\n* Avoid introducing new fragmentation without justification.\n* Document where local needs cannot currently fit the defaults.\n* Surface legacy and ownership risks early rather than normalising them.\n\nTeams are not asked to memorise the policy. They are asked to **start from the defaults** and to flag where the defaults do not fit.\n\n## Core Mechanisms\n\nThe operating model uses five mechanisms. None of them is optional; all of them are deliberately lightweight.\n\n### 1. Strategy Review Forum\n\nA small, regular forum where decisions with strategic impact are reviewed.\n\nUse it to:\n\n* Review decisions that may **increase fragmentation**.\n* Evaluate **exceptions** to architectural or delivery defaults.\n* Review **cross-team simplification opportunities**.\n* Resolve decisions that affect **ownership boundaries or shared platforms**.\n\nWhat it is not:\n\n* Not a general architecture committee.\n* Not a gate for every change.\n* Not a substitute for domain or platform ownership.\n\nThe test for whether something belongs in the review forum is the [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html): does the proposal increase fragmentation, bypass a default, or change ownership of a shared platform? If yes, bring it. If no, do not.\n\n### 2. Exception Process\n\nExceptions are **allowed**. They must be **explicit and temporary by default**.\n\nRecord for each exception:\n\n| Field | What it captures |\n| --- | --- |\n| Policy / default being bypassed | Which decision rule or blueprint does not fit. |\n| Reason the default does not fit | The concrete business or technical mismatch. |\n| Justifying business or technical need | What forces the divergence. |\n| Owner | Who is accountable for the exception. |\n| Expected duration | When the exception is reviewed or expires. |\n| Follow-up work | Containment, retirement, or migration triggered by the exception. |\n\n**Goal:** stop hidden divergence from becoming permanent fragmentation.\n\n**Non-goal:** eliminate all exceptions. A working exception process is healthier than a policy that nobody can deviate from.\n\n### 3. Required Artifacts\n\nThe operating model is supported by a small, maintained set of artifacts:\n\n| Artifact | Purpose |\n| --- | --- |\n| Diagnosis document | The current diagnosis. ([Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html)) |\n| Strategic implications | The implications the policy must respect. ([Strategic Implications: What the Diagnosis Forces the Strategy to Account For](implications.html)) |\n| Policy document | The nine core policies. ([Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html)) |\n| Operating model | This document. |\n| Roadmap | Phased transition. ([Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html)) |\n| Architecture and platform blueprints | Per-area defaults. ([Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html), [Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production](delivery-path.html), [AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html), [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html)) |\n| Technology standards or technology radar | The approved set of technologies. |\n| Exception register | All approved exceptions, with owner and expiry. |\n| Legacy register | All legacy items, with status: retire / consolidate / contain / tolerate. |\n\nKeep these **concise** and **maintained**. A maintained two-page artifact beats a thorough thirty-page artifact that has fallen out of date.\n\n### 4. Blueprints and Standards\n\nBlueprints turn policy into practical defaults:\n\n* Preferred backend patterns. ([Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html))\n* Preferred delivery path from code to production. ([Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production](delivery-path.html))\n* Account and infrastructure usage rules. ([AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html))\n* Guidance for shared services and ownership boundaries. ([Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html))\n* Legacy containment and retirement patterns.\n\nBlueprints are the form the policy takes when teams meet it in their normal work. **Most engineers should never need to read [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) directly** - they should be working from the blueprints.\n\n### 5. Legacy and Exception Registers\n\nThese two registers are the operating model's memory.\n\n**Legacy register** — for each legacy item, track:\n\n* What it is.\n* Where it is used.\n* Who owns it.\n* Why it still exists.\n* Current strategy: **retire**, **consolidate**, **contain**, or **tolerate temporarily**.\n\n**Exception register** — for each approved exception, track:\n\n* Scope.\n* Owner.\n* Justification.\n* Expiry or review date.\n* Associated risks.\n\nBoth registers are **reviewed regularly** so temporary deviations do not silently become permanent fragmentation. The legacy register is the single most concrete artifact for tracking whether [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) P4 (legacy retirement) is actually happening.\n\n## Decision Flow\n\nWhen a real decision arrives, work through it in this order:\n\n1. **Start from the strategy [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) and existing defaults.**\n2. **Check whether an existing blueprint or standard** ([Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html), [Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production](delivery-path.html), [AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html), [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html)) **already answers the question.**\n3. **If yes, follow the default.**\n4. **If no**, assess the option using the five decision rules in [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html).\n5. **If the proposal adds fragmentation or bypasses defaults**, raise it through the strategy review forum.\n6. **Record approved exceptions explicitly** in the exception register.\n7. **Convert repeated decisions** into updated standards or blueprints. (Repetition is the signal that a default should change.)\n\nThis is the loop the operating model is shaped around. Most decisions stop at step 3.\n\n## Review Cadence\n\n### Monthly\n\n* Review major **exceptions**.\n* Review **proposed decisions with strategic impact**.\n* Review **newly identified fragmentation or ownership issues**.\n\n### Quarterly\n\n* Review whether **policy still matches Germany's business reality**.\n* Review **progress on simplification, delivery-path convergence, and legacy retirement**.\n* Update **standards, blueprints, and roadmap priorities**.\n\n### On Major Change\n\nRevisit the strategy when one of the following changes materially:\n\n* Business scope.\n* Organisation structure.\n* Platform ownership model.\n* Architecture direction.\n* Major delivery tooling decisions taken centrally elsewhere in AVIV Group.\n\n## How Teams Should Use the Strategy\n\nUse the strategy when:\n\n* Planning major initiatives.\n* Proposing new services, accounts, or platforms.\n* Selecting delivery tooling.\n* Deciding whether to modernise, contain, or retire legacy.\n* Resolving unclear ownership or boundary questions.\n\nUse it **before divergence is created**, not after.\n\nA working pattern is: when a team is about to make a decision that may bypass a default, the conversation starts with \"let's check the blueprint\" rather than with \"let's propose an exception\". The exception process is the last step, not the first.\n\n## How the Strategy Should Be Evaluated\n\nCheck, on the quarterly cycle:\n\n* Is the **number of active patterns** decreasing or still growing?\n* Are teams **converging on clearer defaults**?\n* Is the **delivery path** becoming simpler and more consistent?\n* Is **ownership** becoming easier to understand?\n* Is **legacy being retired** or merely surrounded by newer layers?\n* Are **delivery speed and operational stability** improving?\n\nThese are the same five success currencies that [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) P9 commits to. If they are not moving, the strategy is not working - regardless of how many new initiatives have started.\n\n## What This Operating Model Deliberately Avoids\n\n| Avoided | Why |\n| --- | --- |\n| Architecture committees | They tend to gate everything and decide nothing. The review forum reviews; it does not approve every change. |\n| Centralised decision-making for low-impact choices | Defeats the purpose of strong defaults and domain ownership. |\n| Heavyweight RFC processes for every change | The default path should be \"follow the blueprint\", not \"write a doc\". |\n| Permanent exceptions without review | The whole point of the exception register is to make them temporary by design. |\n| Updating policy faster than operating artifacts | Policy that is not reflected in blueprints, registers, and reviews is policy that exists only on paper. |\n\n## Anti-Patterns\n\n* **Treating the strategy as optional reading** rather than a decision framework. If teams cannot tell which policy applies to a current decision, the operating model is not visible enough.\n* **Allowing hidden exceptions** outside the review process. Hidden exceptions defeat P8.\n* **Creating too many forums or approvals** for low-impact decisions. The operating model is supposed to be lighter than what it replaces.\n* **Producing standards that no team can realistically apply.** A blueprint that no team uses is fiction.\n* **Updating the policy frequently** without updating the operational artifacts. The artifacts are how the policy reaches engineers.\n* **Using the strategy to justify local preference** rather than organisation-wide simplification. The decision rules in [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) are not a customisable menu.\n\n## Minimum Viable Operating State\n\nThe minimum to consider the operating model \"in place\":\n\n* A named strategy owner exists.\n* Each major domain and platform surface has a named owner.\n* The strategy review forum meets on a regular cadence.\n* The exception register exists and is being maintained.\n* The legacy register exists and is being maintained.\n* At least one blueprint per major area ([Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html), [Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production](delivery-path.html), [AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html), [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html)) is published.\n* The quarterly review has happened at least once.\n\nIf any of those is missing, that is the next operating-model gap to close.\n\n## Related Records\n\n* [Organization Tech Strategy: Reducing Fragmentation and Complexity While Building Foundation for the Future](strategy.html) — the overall strategic frame.\n* [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) — the policy this operating model applies.\n* [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) — Phase 0 of the roadmap is essentially \"stand up this operating model\".\n* [First Targets: Where to Concentrate the First Wave of Simplification](first-targets.html) — first concrete decisions the operating model is meant to handle.\n* [Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html), [Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production](delivery-path.html), [AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html), [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html) — the blueprints that this operating model maintains.\n\n## Scope and Revisiting\n\nRevisit the operating model when:\n\n* The strategy review forum is consistently used for the wrong kind of decisions.\n* The exception register is empty for long stretches (suggesting hidden divergence) **or** is overflowing (suggesting the defaults are wrong).\n* Teams are bypassing the operating model rather than working with it.\n* Quarterly reviews stop producing changes to blueprints, registers, or roadmap.\n\nIn each case, the fix is usually to make the operating model **lighter** or **more visible**, not to add more process.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

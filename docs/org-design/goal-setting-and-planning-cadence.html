@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Goal Setting and Planning Cadence</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Org Design Decisions</a><span class="nav-right"><a class="nav-prev" href="onboarding-and-ramp-up.html" title="Onboarding and Ramp-Up">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="performance-feedback-and-review.html" title="Performance Feedback and Review">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">People System</p>
+        <h1>Goal Setting and Planning Cadence</h1>
+        <p class="byline">Organization Org Design  ·  2026-05-17  ·  13 min · <a class="spec-link" href="goal-setting-and-planning-cadence.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/goal-setting-and-planning-cadence/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/goal-setting-and-planning-cadence/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Org Design Decisions</a><span class="nav-right"><a class="nav-prev" href="onboarding-and-ramp-up.html" title="Onboarding and Ramp-Up">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="performance-feedback-and-review.html" title="Performance Feedback and Review">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-ORG-GOAL-SETTING-AND-PLANNING-CADENCE", "status": "draft:gray", "title": "Goal Setting and Planning Cadence", "date": "2026-05-17", "author": "Organization Org Design", "permalink": "goal-setting-and-planning-cadence", "timetoread": "13 min", "excerpt": "Organization engineering will use a lightweight goal-setting cadence that connects strategy, product outcomes, engineering health, and team work. Goals are set at company/domain/team levels, reviewed regularly, and kept separate from individual performance scoring.", "tags": "org-design, goals, okrs, planning, strategy, outcomes", "icon": "assets/icons/goal-setting-and-planning-cadence.png", "logo": "assets/images/goal-setting-and-planning-cadence/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["org-design", "goals", "okrs", "planning", "strategy", "outcomes"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Organization engineering will use a lightweight goal-setting and planning cadence that connects strategy to team work. Goals express outcomes and constraints, not task lists. Teams use a small number of objectives and measurable results, review progress regularly, and separate goal learning from individual performance scoring.\n\n## Decision\n\nAdopt a **goal-setting and planning cadence** for engineering.\n\nThe cadence uses:\n\n* annual or multi-quarter strategic direction;\n* quarterly team or domain goals;\n* monthly progress reviews;\n* weekly or biweekly planning inside teams;\n* retrospectives or goal reviews at the end of each cycle;\n* explicit connection to product outcomes, engineering health, platform investment, and capability development.\n\nThe default vocabulary may use OKRs where useful: objectives describe the meaningful outcome; key results describe measurable evidence that the outcome changed. Teams may use another goal format if it preserves the same discipline.\n\n## How to Read This Decision\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Goals should create focus and alignment. | Every activity must become an OKR. |\n| Goals should express outcomes. | Teams never track delivery milestones. |\n| Progress should be reviewed regularly. | Goals should create reporting theatre. |\n| Team goals should guide priority decisions. | Individual goals become performance scores by default. |\n| Goals should adapt when evidence changes. | Goals can be rewritten casually to avoid accountability. |\n\nThe goal system is useful only when it helps teams say yes and no.\n\n## How to Use This Decision\n\nUse this decision to:\n\n* distinguish outcomes, outputs, milestones, metrics, and activities;\n* write a small set of goals that creates focus rather than a wishlist;\n* connect engineering health work to product and strategy goals;\n* run goal reviews as learning conversations;\n* avoid turning OKRs into individual performance targets or task lists.\n\nThe practical lesson is that goal setting is a decision system. It decides what matters enough to protect from everything else.\n\n## One-Minute Mental Model\n\nGoals are **focus contracts**.\n\nA good goal says: this outcome matters enough that we will align work, tradeoffs, and attention around it for a defined period. A weak goal says: here are many things we hope to do.\n\nKey results are evidence, not activity. \"Migrate 20 services\" may be a milestone. \"Reduce deployment lead time for the domain from five days to one day\" is a result. Both may matter, but confusing them makes the organisation look busy without proving progress.\n\n## Rationale\n\nEngineering organisations fail goal setting in two opposite ways:\n\n* goals are so vague that teams cannot use them to make tradeoffs;\n* goals are so detailed that they become a project plan and lose strategic value.\n\nThe right middle ground gives teams direction, measures, and constraints while leaving room for discovery and engineering judgement.\n\nGoal setting also connects strategy to capacity. If every team has ten goals, the organisation has not chosen. If product goals ignore reliability, platform, technical debt, and capability development, the organisation will create short-term delivery at the cost of long-term flow. If engineering goals are detached from product and business outcomes, technical work becomes hard to explain and defend.\n\n## Goal Hierarchy\n\n| Level | Purpose | Example |\n| --- | --- | --- |\n| Company / business | Strategic direction and market focus. | Improve trust and conversion in the core marketplace. |\n| Domain / product area | Outcomes and constraints for a value stream. | Reduce listing-search abandonment while preserving relevance and latency. |\n| Team | Local outcomes the team can influence. | Improve saved-search activation and reduce alert false positives. |\n| Engineering health | Flow, reliability, quality, platform, and capability outcomes. | Cut change lead time for checkout services by 50 percent. |\n| Individual development | Growth and capability, not performance scoring by OKR. | Build incident leadership skill by leading two post-incident reviews. |\n\nIndividual development goals may exist, but they should not turn company OKRs into personal scorecards.\n\n## Outcome, Output, Activity, and Metric\n\nTeams often use these words loosely. Keep the distinctions explicit:\n\n| Term | Meaning | Example |\n| --- | --- | --- |\n| Outcome | A meaningful change in user, business, team, or system state. | Serious seekers return to relevant listings faster. |\n| Output | A thing delivered. | Saved-search notification feature shipped. |\n| Activity | Work performed. | Run five discovery interviews, migrate templates, hold workshops. |\n| Metric | A signal used to observe change. | Activation rate, false-positive reports, latency, unsubscribe rate. |\n| Milestone | A planned point in delivery. | Beta released to 10 percent of users by week six. |\n\nOutputs and activities can be necessary. They become weak goals when they are mistaken for outcomes.\n\n## Goal Quality Checklist\n\n| Question | Good sign |\n| --- | --- |\n| Is the objective meaningful? | A human can explain why it matters. |\n| Is the result measurable? | The team can observe progress without inventing fake precision. |\n| Is it limited? | The team has one to three real priorities, not a catalogue. |\n| Is it influenceable? | The team can materially affect the result. |\n| Does it include constraints? | Reliability, quality, compliance, and cost are not afterthoughts. |\n| Does it create tradeoffs? | The goal helps say no to lower-priority work. |\n| Is there a review cadence? | Progress is discussed before the quarter ends. |\n\nIf a goal does not change decisions, it is probably decoration.\n\n## Goal Writing Template\n\nUse this template for team goals:\n\n| Element | Prompt |\n| --- | --- |\n| Objective | What meaningful outcome are we trying to create? |\n| Why now | Why does this matter this cycle? |\n| Key results | Which two to four signals would show progress? |\n| Constraints | Which reliability, quality, compliance, cost, or people constraints matter? |\n| Dependencies | Which teams, platforms, or decisions could block progress? |\n| Tradeoffs | What will we stop, defer, or protect? |\n| Review rhythm | When will we inspect evidence and adapt? |\n\nThe template is intentionally small. If a goal needs a long narrative to be understood, it probably needs sharper framing.\n\n## Operating Rhythm\n\n| Cadence | Activity |\n| --- | --- |\n| Annual / multi-quarter | Confirm strategic themes, investment areas, and major constraints. |\n| Quarterly | Set team/domain goals, review capacity, identify dependencies, record tradeoffs. |\n| Monthly | Review progress, blockers, metrics, and whether assumptions changed. |\n| Weekly / biweekly | Plan work, adjust WIP, and connect current work to goals. |\n| End of cycle | Score or summarise results, capture learning, and decide what changes next. |\n\nGoal reviews should produce decisions: continue, stop, adapt, invest, or revisit assumptions.\n\n## Goal Review Questions\n\nDuring a monthly review, ask:\n\n* What changed in the metric, and what do we believe caused it?\n* Which assumption became weaker or stronger?\n* Which dependency or constraint is now the main blocker?\n* What work should stop because it no longer serves the goal?\n* What should leadership know because the goal is at risk?\n* What did we learn that should affect next quarter's planning?\n\nThe review is not a status ceremony. It is a decision point.\n\n## Worked Example\n\nWeak goal:\n\n* \"Deliver saved-search notifications.\"\n\nThis is an output. It may be useful, but it does not say why the work matters or how success will be recognised.\n\nStronger goal:\n\n| Element | Example |\n| --- | --- |\n| Objective | Help serious seekers return to relevant listings faster. |\n| Key result 1 | Increase saved-search activation among signed-in seekers from 18 percent to 28 percent. |\n| Key result 2 | Reduce notification false-positive reports by 30 percent. |\n| Key result 3 | Keep alert-delivery latency under the agreed SLO. |\n| Constraints | No increase in unsubscribe rate; follow privacy and communication rules. |\n\nThe stronger goal supports product, engineering, quality, and operational tradeoffs.\n\n## Anti-Patterns\n\n* **Goal soup.** Every priority becomes an objective, so nothing is actually prioritised.\n* **Task-list OKRs.** Key results are milestones or activities with no outcome evidence.\n* **Individual OKR scoring.** Team goals become a personal performance game.\n* **Quarterly theatre.** Goals are written, presented, and ignored until the next cycle.\n* **Metric tunnel vision.** Teams optimise one number while damaging reliability, quality, or customer trust.\n* **Strategy fog.** Teams are asked to set goals without clear company or domain direction.\n\n## Practice Exercise\n\nTake one current team goal and rewrite it:\n\n1. Mark each phrase as outcome, output, activity, metric, or milestone.\n2. If the goal is mostly output or activity, write the outcome it is meant to create.\n3. Add one quality or reliability constraint.\n4. Remove any key result the team cannot influence.\n5. Name one tradeoff the goal forces.\n6. Decide what evidence will be reviewed monthly.\n\n## Discussion Prompts\n\nUse these prompts in planning:\n\n* Which outcome matters enough to protect this quarter?\n* What are we explicitly not doing because this goal matters?\n* Which result would prove progress, and which metric is only a proxy?\n* Which reliability, quality, cost, or compliance constraints must be visible?\n* Which dependencies could block this goal?\n* What will we learn at the end even if the goal is not fully achieved?\n\n## Related Records\n\n* [Product and Engineering Partnership Around Outcomes](product-engineering-partnership.html) - product and engineering share outcome framing.\n* [Organisation Health and Flow Metrics](org-health-and-flow-metrics.html) - goals need balanced measures.\n* [Performance Feedback and Review](performance-feedback-and-review.html) - goal progress informs feedback but is not a personal score by itself.\n* [Engineering Management Operating Model](engineering-management-operating-model.html) - EMs protect focus and connect goals to team capacity.\n* [Team Size and Composition Guardrails](team-size-and-composition.html) - goals must be realistic for team capability.\n\n## Scope and Revisiting\n\nThis ADR applies to engineering goals, domain goals involving engineering teams, and team planning. Company-wide strategy and finance planning remain broader leadership processes that this cadence should connect to.\n\nRevisit if goals become too many, too output-driven, detached from strategy, misused for individual scoring, or ignored during execution.\n\n## Authoritative References\n\n* Atlassian Team Playbook, [Objectives and Key Results](https://www.atlassian.com/team-playbook/plays/okrs).\n* Microsoft Learn, [Write effective OKRs](https://learn.microsoft.com/en-us/viva/goals/viva-goals-healthy-okr-program/write-okrs-overview).\n* John Doerr, *Measure What Matters*.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

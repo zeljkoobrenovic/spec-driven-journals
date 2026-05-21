@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORG Org Design Decisions</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 340px;
+            object-fit: cover;
+            margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 4px 0 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/construction-4939383_1920.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/construction-4939383_1920.jpg" alt=""></a>
+        <p class="logo-credit">Image by mostafa meraji from Pixabay</p>
+        <div style="padding: 4px;">
+            <h1>ORG Org Design Decisions</h1>
+            <p>Strategic organisation-design decisions for creating and running a modern software engineering organisation at Organization.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Team Model", "description": "How product engineering teams are shaped, sized, and related to the flow of value.", "posts": [{"id": "ORG-ORG-TEAM-TOPOLOGIES-OPERATING-MODEL", "status": "draft:gray", "title": "Team Topologies as the Operating Vocabulary", "excerpt": "Organization will use Team Topologies as the common vocabulary for team types and interaction modes. Stream-aligned teams are the default; platform, enabling, and complicated-subsystem teams exist to reduce cognitive load and improve flow, not to recreate functional silos.", "url": "team-topologies-operating-model.html", "icon": "assets/icons/team-topologies-operating-model.png", "tags": ["org-design", "team-topologies", "platform", "enabling-teams", "cognitive-load"]}, {"id": "ORG-ORG-STREAM-ALIGNED-PRODUCT-TEAMS", "status": "draft:gray", "title": "Stream-Aligned Product Teams as the Default Unit", "excerpt": "Organization will treat durable stream-aligned product teams as the default unit of software delivery. A team owns a coherent stream of customer, business, or platform value from discovery through operation. Project groups, temporary delivery squads, and specialist handoff queues are exceptions, not the organisational default.", "url": "stream-aligned-product-teams.html", "icon": "assets/icons/stream-aligned-product-teams.png", "tags": ["org-design", "teams", "product", "ownership", "team-topologies"]}, {"id": "ORG-ORG-TEAM-SIZE-AND-COMPOSITION", "status": "draft:gray", "title": "Team Size and Composition Guardrails", "excerpt": "Organization product engineering teams should normally have five to eight engineers and a total cross-functional working group small enough to sustain trust, focus, and shared ownership. Teams below four engineers are fragile; teams above ten core contributors should usually split or narrow their mission.", "url": "team-size-and-composition.html", "icon": "assets/icons/team-size-and-composition.png", "tags": ["org-design", "teams", "staffing", "cognitive-load", "roles"]}]}, {"title": "Product and Delivery", "description": "How engineering works with product, quality, and platform capabilities to discover, build, release, and run software.", "posts": [{"id": "ORG-ORG-PRODUCT-ENGINEERING-PARTNERSHIP", "status": "draft:gray", "title": "Product and Engineering Partnership Around Outcomes", "excerpt": "Organization product and engineering teams will share accountability for outcomes, not split into product demand and engineering supply. Teams receive problems, context, constraints, and success measures; they discover and deliver solutions together.", "url": "product-engineering-partnership.html", "icon": "assets/icons/product-engineering-partnership.png", "tags": ["org-design", "product", "engineering", "outcomes", "discovery", "delivery"]}, {"id": "ORG-ORG-QUALITY-ENGINEERING-ENABLEMENT", "status": "draft:gray", "title": "Quality Engineering as Enablement, Not a Release Gate", "excerpt": "Quality is owned by the team building and running the product. QA shifts from late manual gatekeeping to quality engineering: test strategy, automation, risk modelling, exploratory testing, observability, and coaching that make teams better at releasing confidently.", "url": "quality-engineering-enablement.html", "icon": "assets/icons/quality-engineering-enablement.png", "tags": ["org-design", "quality", "qa", "testing", "enablement", "product-engineering"]}, {"id": "ORG-ORG-PLATFORM-AND-DEVOPS-OPERATING-MODEL", "status": "draft:gray", "title": "Platform and DevOps Operating Model", "excerpt": "Organization will not use DevOps as a separate handoff team. Product teams own build-and-run responsibility for their services, while platform teams provide paved roads, self-service capabilities, reliability patterns, and expert enablement that reduce cognitive load.", "url": "platform-and-devops-operating-model.html", "icon": "assets/icons/platform-and-devops-operating-model.png", "tags": ["org-design", "devops", "platform-engineering", "sre", "operations", "ownership"]}]}, {"title": "People System", "description": "How hiring, onboarding, goal setting, performance feedback, and talent planning sustain the engineering organisation.", "posts": [{"id": "ORG-ORG-STRUCTURED-HIRING-AND-SELECTION", "status": "draft:gray", "title": "Structured Hiring and Selection", "excerpt": "Organization engineering will use structured, role-related hiring. Every role starts from a hiring brief, competency map, interview plan, trained interviewers, calibrated scoring, and a decision review. Hiring is not a manager's private judgement call or a sequence of unstructured conversations.", "url": "structured-hiring-and-selection.html", "icon": "assets/icons/structured-hiring-and-selection.png", "tags": ["org-design", "hiring", "interviewing", "selection", "talent", "fairness"]}, {"id": "ORG-ORG-ONBOARDING-AND-RAMP-UP", "status": "draft:gray", "title": "Onboarding and Ramp-Up", "excerpt": "Organization engineering will treat onboarding as a structured ramp-up system, not a first-day orientation event. Every new hire should receive role context, team context, technical setup, a buddy, manager check-ins, learning path, and 30-60-90 day outcomes.", "url": "onboarding-and-ramp-up.html", "icon": "assets/icons/onboarding-and-ramp-up.png", "tags": ["org-design", "onboarding", "ramp-up", "hiring", "team-health", "learning"]}, {"id": "ORG-ORG-GOAL-SETTING-AND-PLANNING-CADENCE", "status": "draft:gray", "title": "Goal Setting and Planning Cadence", "excerpt": "Organization engineering will use a lightweight goal-setting cadence that connects strategy, product outcomes, engineering health, and team work. Goals are set at company/domain/team levels, reviewed regularly, and kept separate from individual performance scoring.", "url": "goal-setting-and-planning-cadence.html", "icon": "assets/icons/goal-setting-and-planning-cadence.png", "tags": ["org-design", "goals", "okrs", "planning", "strategy", "outcomes"]}, {"id": "ORG-ORG-PERFORMANCE-FEEDBACK-AND-REVIEW", "status": "draft:gray", "title": "Performance Feedback and Review", "excerpt": "Organization engineering will use continuous performance feedback with periodic calibrated reviews. Performance management is a cycle of expectations, evidence, feedback, growth, accountability, and fair decisions, not an annual form or surprise rating.", "url": "performance-feedback-and-review.html", "icon": "assets/icons/performance-feedback-and-review.png", "tags": ["org-design", "performance", "feedback", "reviews", "management", "career-paths"]}, {"id": "ORG-ORG-TALENT-REVIEW-AND-SUCCESSION", "status": "draft:gray", "title": "Talent Review and Succession", "excerpt": "Organization engineering will use lightweight talent review and succession planning for critical roles and capabilities. The goal is continuity, growth, risk visibility, and opportunity creation, not secret ranking or replacement planning.", "url": "talent-review-and-succession.html", "icon": "assets/icons/talent-review-and-succession.png", "tags": ["org-design", "talent", "succession", "workforce-planning", "leadership", "career-paths"]}]}, {"title": "Governance and Talent", "description": "How architecture, communities, careers, management, technical leadership, and metrics keep the organisation healthy.", "posts": [{"id": "ORG-ORG-ARCHITECTURE-AS-ADVICE-AND-GUARDRAILS", "status": "draft:gray", "title": "Architecture as Advice and Guardrails", "excerpt": "Architecture at Organization is a distributed capability: teams own decisions, architects and senior engineers provide advice, and reusable guardrails make good choices easier. The operating model rejects architecture as a late approval board.", "url": "architecture-as-advice-and-guardrails.html", "icon": "assets/icons/architecture-as-advice-and-guardrails.png", "tags": ["org-design", "architecture", "governance", "advice-process", "guardrails", "adr"]}, {"id": "ORG-ORG-COMMUNITIES-OF-PRACTICE-AND-CHAPTERS", "status": "draft:gray", "title": "Communities of Practice and Chapters for Shared Craft", "excerpt": "Organization will use communities of practice and chapters to preserve shared craft across durable product teams. Communities advise, teach, curate standards, and maintain reusable knowledge; they do not become hidden reporting lines or delivery queues.", "url": "communities-of-practice-and-chapters.html", "icon": "assets/icons/communities-of-practice-and-chapters.png", "tags": ["org-design", "communities-of-practice", "chapters", "guilds", "standards", "learning"]}, {"id": "ORG-ORG-CAREER-PATHS-AND-PROGRESSION", "status": "draft:gray", "title": "Dual Career Paths and Transparent Progression", "excerpt": "Organization engineering will use transparent career paths with equal dignity for individual contributor and management progression. Advancement is based on demonstrated scope, impact, judgement, collaboration, and capability growth, not on becoming a manager by default.", "url": "career-paths-and-progression.html", "icon": "assets/icons/career-paths-and-progression.png", "tags": ["org-design", "career-paths", "progression", "staff-engineer", "engineering-management"]}, {"id": "ORG-ORG-ENGINEERING-MANAGEMENT-OPERATING-MODEL", "status": "draft:gray", "title": "Engineering Management Operating Model", "excerpt": "Engineering management at Organization is accountable for people, team health, delivery systems, capability, and organisational clarity. Engineering managers are not project administrators or the default technical decision makers; they create the conditions for teams to own outcomes sustainably.", "url": "engineering-management-operating-model.html", "icon": "assets/icons/engineering-management-operating-model.png", "tags": ["org-design", "engineering-management", "leadership", "team-health", "delivery"]}, {"id": "ORG-ORG-STAFF-PLUS-TECHNICAL-LEADERSHIP", "status": "draft:gray", "title": "Staff-Plus Technical Leadership", "excerpt": "Staff-plus engineers provide technical leadership beyond one team through direction setting, architecture advice, mentoring, cross-team problem solving, and durable standards. They influence without becoming hidden managers or approval gates.", "url": "staff-plus-technical-leadership.html", "icon": "assets/icons/staff-plus-technical-leadership.png", "tags": ["org-design", "staff-engineer", "technical-leadership", "architecture", "career-paths"]}, {"id": "ORG-ORG-HEALTH-AND-FLOW-METRICS", "status": "draft:gray", "title": "Organisation Health and Flow Metrics", "excerpt": "Organization will manage engineering with a balanced set of product, delivery, reliability, quality, developer-experience, and team-health metrics. Metrics are used for learning and system improvement, not individual surveillance or simplistic productivity scoring.", "url": "org-health-and-flow-metrics.html", "icon": "assets/icons/org-health-and-flow-metrics.png", "tags": ["org-design", "metrics", "dora", "space", "devex", "team-health", "flow"]}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    let matchStatus = true;
+                    if (activeStatuses.size) {
+                        const liStatus = li.dataset.status || '';
+                        // any-match: post status must equal one of the selected statuses
+                        matchStatus = false;
+                        for (const s of activeStatuses) {
+                            if (liStatus === s.toLowerCase()) {
+                                matchStatus = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag && matchStatus;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Design Principle: Smarts in the Nodes, not the Network</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="evolutionary-systems.html" title="Design Principle: Evolutionary Systems">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="standardize-before-diverging.html" title="Design Principle: Standardize Before Diverging">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Design</p>
+        <h1>Design Principle: Smarts in the Nodes, not the Network</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-16  ·  12 min · <a class="spec-link" href="smarts-in-the-nodes.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/smarts-in-the-nodes/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/smarts-in-the-nodes/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Inspired by the JLP Engineering Principles 'Smarts in the Nodes' principle</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="evolutionary-systems.html" title="Design Principle: Evolutionary Systems">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="standardize-before-diverging.html" title="Design Principle: Standardize Before Diverging">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-SMARTS-IN-THE-NODES", "status": "draft:gray", "title": "Design Principle: Smarts in the Nodes, not the Network", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "smarts-in-the-nodes", "timetoread": "12 min", "excerpt": "Put business logic, routing decisions, and orchestration inside the services that own the work, not in the messaging fabric, API gateway, service mesh, or BPM tool that connects them. Organization's integration backbone - Kafka via Amazon MSK, ECS networking, AWS-native components - should remain dumb pipes that move data reliably. Smart middleware feels powerful at first and becomes the most expensive, least owned part of the platform within two years.", "tags": "design, decoupling, messaging, kafka, integration, choreography", "logo": "assets/images/smarts-in-the-nodes/logo.jpeg", "logo_credit": "Inspired by the JLP Engineering Principles 'Smarts in the Nodes' principle", "icon": "assets/icons/smarts-in-the-nodes.png"}, "tags": ["design", "decoupling", "messaging", "kafka", "integration", "choreography"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Business behaviour lives in services that own a domain. The fabric that connects services - message brokers, gateways, meshes, integration tools - moves data and enforces transport-level concerns. It does not make business decisions. When orchestration is needed, it lives in a service that has a name, an owner, and an SLA, not in configuration on a middleware product.\n\n## Statement\n\nOrganization designs follow the **end-to-end principle**: behaviour belongs at the endpoints, not in the network or middleware between them. Concretely:\n\n* Services own their domain logic, including validation, routing, and orchestration.\n* Kafka and MSK are durable, ordered pipes. They do not transform, enrich, or branch business data based on rules buried in configuration.\n* API gateways and service meshes handle transport: TLS, authentication, retries, rate limits, traffic shaping. They do not contain feature logic.\n* Choreography between autonomous services is preferred over centralised orchestration in a tool.\n* Where orchestration is genuinely needed, it lives in a *service*, not in a vendor.\n\n## How to Read This Principle\n\nThis principle is often confused with \"no middleware\" or \"no orchestration\". It is neither.\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Business logic belongs in services. | Middleware should not exist. |\n| Orchestration goes in a service if needed. | Orchestration is forbidden. |\n| Gateways and meshes do transport concerns. | Gateways and meshes are useless. |\n| Choreography is the default. | Choreography solves all problems. |\n| Kafka is a dumb, durable pipe. | Stream processing is forbidden. |\n\nThe principle is about *where decisions live*. A retry policy in a service mesh is fine. A branching workflow in the same mesh is not.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Distinguish transport concerns from business behaviour.\n* Decide whether logic belongs in a service, broker, gateway, mesh, or workflow engine.\n* Recognise when smart middleware is eroding ownership and observability.\n* Explain why named services are safer homes for orchestration than anonymous configuration.\n\n## Rationale\n\nSmart middleware fails predictably for three reasons.\n\nFirst, **ownership erodes**. Middleware tends to belong to a platform team, a vendor, or \"everyone\". Business rules placed in it are owned by no team that delivers product outcomes. When the rules need to change, the platform team becomes a bottleneck.\n\nSecond, **operational opacity grows**. Logic expressed in middleware configuration is harder to test, debug, and trace than logic expressed in service code. Failures present as routing anomalies instead of business errors.\n\nThird, **lock-in deepens**. Smart middleware is hardest to leave: contracts grow inside it, runtime behaviour depends on it, and the cost of moving rises faster than the cost of staying. The next generation of platforms then has to either keep the smart middleware or accept a difficult migration.\n\nOrganization's tech stack pushes the opposite direction. Amazon MSK was chosen as a Kafka backbone for its durable log model, not its integration features. ECS Fargate keeps deployment and runtime concerns simple and node-shaped. Backend services on .NET are expected to do their own work, not to delegate it to an integration platform.\n\n## Implications\n\n* **Kafka topics carry domain events, not commands wrapped in middleware logic.** Producers describe what happened; consumers decide what to do.\n* **No business rules in the broker.** Topic configuration covers retention, partitioning, and ordering. It does not encode routing decisions.\n* **No business logic in the gateway or mesh.** Authentication, rate limiting, retries, and traffic policy yes; \"if customer is German, route to service X\" no.\n* **Choreographed flows by default.** Each service reacts to events relevant to its domain.\n* **When orchestration is needed, build a service for it.** Give it a name, an owner, and operational metrics, the same as any other service.\n* **Workflow tools are services, not platforms.** If a workflow engine is used, it is owned by the team whose domain it serves; it does not become a shared dumping ground.\n* **Stream processing is allowed for transport-shaped work** (filtering, joining, fan-out). It is not the place to put domain decisions.\n\n## Placement Test\n\nBefore putting logic into a broker, gateway, mesh, workflow engine, or integration tool, ask:\n\n* Which team owns the business rule?\n* Can that team test, deploy, observe, and roll back the rule where it lives?\n* Would a domain expert know to look in this place for the behaviour?\n* Is the logic transport-shaped, or is it deciding product behaviour?\n* Does moving the logic into middleware reduce coupling, or hide it?\n* What happens when the rule needs to change urgently during an incident?\n* Can the behaviour be represented as a named service instead?\n\nIf the rule needs domain language to explain it, it probably belongs in a domain service. If it can be explained as transport policy, middleware may be the right place.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Treat your service as the only place your domain logic lives.\n* Subscribe to the events you need and decide what to do with them inside your own code.\n* Resist patterns that hide business behaviour in broker, gateway, or mesh configuration.\n* When you need orchestration across multiple services, propose it as a service of its own, with an ADR.\n\nFor platform and integration teams:\n\n* Keep Kafka and MSK as a managed, well-operated, *dumb* backbone.\n* Keep API gateways and service meshes focused on transport-level concerns.\n* Refuse change requests that would push business logic into the platform; redirect them to the service that should own the rule.\n\nFor tech leads:\n\n* Watch for \"let's just add it in the broker / gateway / mesh\" shortcuts in design discussions.\n* Push back on shared workflow tools that quietly grow into business-rules databases.\n* Track which team would own a proposed rule before it gets added to any middleware.\n\n## Anti-Patterns\n\n* **Enterprise Service Bus revival.** A central component that knows the entire estate's routing, transformation, and orchestration rules.\n* **Smart broker.** Business rules placed in Kafka Streams topologies, broker plugins, or proprietary middleware features.\n* **Gateway-as-application.** API gateway configuration grows to include feature toggles, rewrites, and conditional flows that should live in services.\n* **Mesh-as-router.** A service mesh that makes routing decisions based on business attributes rather than transport concerns.\n* **Orchestration tool sprawl.** A workflow product adopted \"just for one flow\" that ends up containing the company's process model.\n* **Hidden coupling via shared schemas.** Every service depends on one big shared schema in the broker, making the broker the de facto monolith.\n\n## Examples\n\nAligned with the principle:\n\n* A pricing service consumes listing-events from Kafka and computes prices internally. The broker does not know about pricing.\n* The API gateway authenticates calls, applies rate limits, and forwards traffic. It does not run feature flags.\n* A small orchestrator service exists to coordinate a checkout flow, owned by the checkout team, deployed and on-called like any other service.\n* The service mesh handles mTLS and retries; routing-by-tenant lives in the service that knows what a tenant is.\n\nOut of alignment with the principle:\n\n* A Kafka Streams application that *only* the platform team can change, encoding domain rules the platform team does not understand.\n* An integration product that grows to host most of the company's business logic, becoming the most fragile system in the estate.\n* \"Customer-aware\" routing in the gateway that requires gateway operators to understand customer segments.\n* A workflow tool that becomes the system of record for half the domain because it was easier than building services.\n\n## Discussion Prompts\n\nUse these prompts in integration reviews:\n\n* Which part of this design is transport policy, and which part is business behaviour?\n* Who can safely change the rule when product behaviour changes?\n* Would naming a service make ownership and observability clearer than middleware configuration?\n\n## Related Principles\n\n* [Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)](small-and-simple.html) - smart middleware grows complex faster than smart services.\n* [Design Principle: Evolutionary Systems](evolutionary-systems.html) - logic in services is easier to evolve than logic in vendor configuration.\n* [Organisation Principle: Decisions Stay with Teams](decisions-stay-with-teams.html) - middleware-hosted logic erodes ownership.\n* [Operational Principle: Cloud Native on AWS](cloud-native-on-aws.html) - prefer dumb, managed pipes from AWS over smart proprietary middleware.\n\n## Scope and Revisiting\n\nThis principle applies to all integration between Organization services, including events, APIs, and batch flows. It applies to integration with AVIV Group and third parties insofar as Organization controls the integration layer.\n\nIt does not apply to product-level workflow exposed to users; that is the service's job to design.\n\nThe principle should be revisited if:\n\n* A managed orchestration capability becomes simpler to own than the equivalent custom service.\n* The cost of running many small services becomes higher than the cost of a centralised, smart middleware.\n* The Kafka backbone evolves to support genuinely first-class, well-owned stream processing.\n\n## Authoritative References\n\n* J. H. Saltzer, D. P. Reed, D. D. Clark, *End-to-End Arguments in System Design*, ACM Transactions on Computer Systems, 1984.\n* Sam Newman, *Building Microservices*, O'Reilly.\n* John Lewis Partnership, [Smarts in the Nodes not the Network Principle](https://engineering-principles.jlp.engineering/).\n* Martin Fowler, [Microservices and the First Law of Distributed Objects](https://martinfowler.com/articles/microservices.html).\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

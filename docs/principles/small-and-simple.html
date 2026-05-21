@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-next" href="evolutionary-systems.html" title="Design Principle: Evolutionary Systems">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Design</p>
+        <h1>Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-16  ·  12 min · <a class="spec-link" href="small-and-simple.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/small-and-simple/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/small-and-simple/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Inspired by the JLP Engineering Principles 'Small and Simple' principle</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-next" href="evolutionary-systems.html" title="Design Principle: Evolutionary Systems">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-SMALL-AND-SIMPLE", "status": "draft:gray", "title": "Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "small-and-simple", "timetoread": "12 min", "excerpt": "Prefer small, simple components over large, clever ones - but not too small and not too simple. Organization systems should be decomposed into pieces that one team can understand end-to-end, that one engineer can hold in their head, and that can be replaced without rewriting the platform around them. The opposite extreme - nanoservices, where every endpoint or function becomes its own service - replaces internal complexity with distributed complexity that often costs more than the monolith it was supposed to replace. The principle is not 'microservices for everything', and not 'split until it can't be split'; it is 'no piece bigger or smaller than it needs to be for what it actually does'.", "tags": "design, simplicity, modularity, microservices, nanoservices, complexity", "logo": "assets/images/small-and-simple/logo.jpeg", "logo_credit": "Inspired by the JLP Engineering Principles 'Small and Simple' principle", "icon": "assets/icons/small-and-simple.png"}, "tags": ["design", "simplicity", "modularity", "microservices", "nanoservices", "complexity"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Break Organization software into small, simple pieces - but not too small and not too simple. A component should be small enough for one team to own end-to-end and simple enough for one engineer to hold in their head, **and large enough that the cost of being a separate piece is paid back by the cohesion it provides.** Where a system gets large, decompose it. Where a system gets fragmented, consolidate it. Size and cleverness are paid for every time the code is read, changed, deployed, or recovered; *smallness* is paid for every time pieces have to be coordinated across the network.\n\n## Statement\n\nBuild software out of **small and simple pieces** - but not smaller or simpler than the problem actually rewards. Prefer:\n\n* Small services over large monoliths, **and cohesive services over nanoservices**.\n* Simple control flow over clever abstractions, **and meaningful behaviour over trivial wrappers**.\n* One purpose per component over multi-purpose modules, **where \"one purpose\" is a real business or technical responsibility, not a single function**.\n* Boring, mainstream technology over novel platforms.\n* Composition of small parts over generalisation of one large part, **as long as the composition itself is comprehensible**.\n\nA piece of software is \"small and simple enough\" when:\n\n1. A single engineer joining the team can read it end-to-end, run it locally, and reason about a change without consulting a senior maintainer; **and**\n2. The cost of operating it as a separate piece - its deployment pipeline, its observability, its on-call, its inter-service contracts - is paid back by the cohesion, autonomy, or scalability it provides.\n\nIf either test fails, the piece is the wrong size. Too big fails test 1. Too small fails test 2.\n\n## How to Read This Principle\n\nThis principle is easy to misquote. Treat the following pairs carefully:\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Decompose where complexity hurts. | Microservices everywhere by default. |\n| Decompose where complexity hurts. | Nanoservices everywhere by default. |\n| Prefer simple control flow. | Avoid all abstractions. |\n| Boring technology by default. | Never adopt new technology. |\n| Components a team can own end-to-end. | Components owned by one person. |\n| Simplicity is a property of the system. | Simplicity is a feeling. |\n| Smallness has a lower bound. | Below that bound, \"smaller\" is \"more complex\". |\n\nThe principle is a bias, not a rule. A small monolith with strong internal boundaries is simpler than a constellation of micro-things wired together by accident. The right size is the one whose total complexity - code, deployment, integration, on-call, *and the cost of distribution itself* - is smallest for the problem at hand.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why both oversized components and nanoservices increase complexity.\n* Evaluate component boundaries using ownership, lifecycle, operational cost, and cognitive load.\n* Decide when to split, merge, or leave a component alone.\n* Challenge \"smaller is always better\" and \"one service per thing\" as slogans rather than reasoning.\n\n## But Not Too Small, and Not Too Simple\n\nThe opposite of a tangled monolith is not a swarm of nanoservices. Nanoservices push fragmentation past the point where it pays off, and replace one kind of complexity with another that is usually worse, not better.\n\nA piece of software is **too small** when:\n\n* It exists only to wrap one or two operations.\n* It has no autonomous behaviour or independent lifecycle.\n* It cannot be reasoned about without simultaneously reasoning about three or four of its siblings.\n* It has more deployment, observability, and on-call apparatus than business logic.\n* It exists because of a rule (\"one service per resource\", \"one service per endpoint\") rather than a reason.\n\nWhen pieces drop below the minimum useful size, the cost moves from inside the process to between processes - and that cost is harsher:\n\n* **Network as control flow.** Logic that would have been a function call becomes a remote call, with latency, partial failure, retries, timeouts, and version skew.\n* **Coordinated deployment.** Many tiny services must be deployed together to make any meaningful change work; the team has built a distributed monolith.\n* **Debugging by distributed tracing.** What would have been a stack trace becomes a multi-hour archaeology project across logs from many systems.\n* **Operational sprawl.** Each tiny service needs its own pipeline, dashboards, alerts, runbooks, on-call rotation, and lifecycle attention - all paid before the first line of business value.\n* **Schema gravity.** Tiny services share data through ever-growing shared schemas or events, recreating the implicit coupling they were meant to eliminate.\n* **Cognitive load on the team.** The number of moving parts grows faster than the team's ability to keep them in mind.\n\nThe \"right small\" is the size at which a component is **autonomously meaningful**: it owns a real responsibility, it has a useful lifecycle of its own, and the cost of being a separate piece is paid back by the cohesion and autonomy it provides. Below that point, \"smaller\" stops being \"simpler\".\n\nSimilarly, a component is **too simple** when:\n\n* Its abstraction hides what callers must know to use it safely.\n* Its simplicity is a trick of presentation; the complexity has moved to the call sites or the configuration.\n* It is so generic that every consumer reinvents the same wrapper around it.\n* Simplification has erased a real distinction in the domain.\n\nSimplicity is a property of the *whole system*, not of one component in isolation. A simpler component that makes the surrounding system more complicated is a net loss.\n\n## Rationale\n\nComplexity is the recurring cost in software. It is paid:\n\n* Every time someone reads the code.\n* Every time someone changes the code.\n* Every time someone joins the team and has to learn the code.\n* Every time an incident requires the code to be understood quickly.\n* Every time a dependency is upgraded, a deployment is rolled, or a region is failed over.\n\nThe interest rate on accidental complexity is high. Small, simple components reduce that rate by making each piece individually cheap. They also reduce blast radius: a small piece fails small, a small piece is rewritten cheaply, a small piece can change technology without a programme.\n\nBut the same logic cuts the other way at the small end. Every additional process boundary, every additional repository, every additional pipeline, every additional alert and on-call rota is a fixed cost that does not scale down. When that cost exceeds what the piece does for users, the system as a whole gets more complex, not less - even though each individual piece looks \"simpler\". Nanoservices are the canonical example: a hundred trivial services collectively impose more cognitive, operational, and integration cost than a well-organised modular monolith would.\n\nOrganization's wider technology decisions push from both directions. ECS Fargate is chosen over self-managed Kubernetes because it is simpler to own; .NET is chosen because it removes accidental backend variance; AVIV Group's existing tooling is inherited for 6-12 months because re-platforming on day one would add complexity instead of reducing it. At the same time, the backend platform is consolidating onto a small set of cohesive services rather than fragmenting into per-endpoint micro-things. Each of those decisions is a Small-and-Simple decision wearing different clothes - chosen with both extremes in mind.\n\n## Implications\n\n* **Decompose where it hurts, not because it is fashionable.** Service splits should track ownership and change boundaries, not architectural taste.\n* **Consolidate where fragmentation hurts.** When several \"services\" are always deployed together, debugged together, and reasoned about together, they are one service in disguise; merge them.\n* **A service needs autonomous behaviour to deserve its boundary.** \"One operation\" is a method. \"One real responsibility\" might be a service.\n* **Limit the technology palette.** A small set of mainstream technologies is simpler than a wider, more \"best-tool-for-the-job\" set.\n* **Prefer composition over generalisation.** Three small services with focused jobs are usually simpler than one large service with three configurable modes - *and* simpler than thirty nano-services with the same job split arbitrarily.\n* **Make local reasoning possible.** A change should be reviewable inside one repository, one service, and one team's context where realistic. If a routine change spans many services, the boundaries are wrong.\n* **Reject cleverness without a reason.** Abstractions that are not paying their cost should be removed or never introduced.\n* **Count the operational cost.** If splitting a service adds two new pieces of infrastructure, the split is not small.\n* **Count the distribution cost.** Every additional process boundary is a fixed tax. Pay it only when the responsibility is large enough to amortise it.\n* **Treat new technology as a complexity event.** Adopting it should require evidence that it removes more complexity than it adds.\n* **Prefer modular monoliths to nanoservices** when the system fits in one team's head and the responsibilities do not require independent scaling, lifecycles, or runtimes.\n\n## Sizing Diagnostics\n\nUse these questions before splitting or merging components:\n\n* Does the component own a real responsibility, or only a technical slice?\n* Can one team operate it end-to-end without coordinating routine changes with several other teams?\n* Does it have an independent deploy, scale, failure, or data lifecycle?\n* Are its contracts more stable than its implementation?\n* Would splitting it reduce cognitive load, or simply move complexity into the network?\n* Would merging it reduce coordination cost without creating a new large ball of mud?\n* Can a new joiner understand the component and its boundaries in a week?\n\nThe right answer may be to split, merge, or leave the boundary alone. The principle asks teams to size components against real complexity, not against architectural fashion.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Aim for services a single squad can own end-to-end, including deployment and on-call.\n* Resist clever frameworks, code generators, and dynamic indirection unless they pay clear, measurable rent.\n* When a service grows, look for a seam to split along, not a configuration flag to add.\n* Document the *boundary* of the service - inputs, outputs, contracts - and keep the boundary smaller than the implementation.\n\nFor platform and architecture roles:\n\n* Curate a small, well-supported technology palette.\n* Make the easy path the simple path: golden templates, default container bases, default runtime, default observability.\n* Push back on architectural elaboration that does not match the size of the actual problem.\n\nFor tech leads:\n\n* Use \"could a new joiner reason about this end-to-end in a week?\" as a standing diagnostic.\n* Treat unexplained abstraction, multi-level dynamic dispatch, and configuration-as-control-flow as smells to investigate.\n\n## Anti-Patterns\n\nAt the \"too big\" end:\n\n* **Framework Stockholm syndrome.** A team treats a homegrown framework as load-bearing when the framework is the source of most complexity.\n* **Configuration-as-code-disguise.** A \"simple\" service whose real logic lives in a 2,000-line YAML file.\n* **Premature generality.** A component built for cases that have not appeared, and may not.\n* **Cleverness as identity.** A team that takes pride in how subtle the code is should be asked what that subtlety buys.\n\nAt the \"too small\" end:\n\n* **Nanoservice sprawl.** One service per endpoint, per resource, or per database table, with no autonomous business behaviour in any of them.\n* **Distributed monolith.** Many small services that must all deploy together to make any change work, with network calls standing in for function calls.\n* **Wrapper services.** A \"service\" that exists only to forward a call to another service, adding latency, failure modes, and on-call burden but no behaviour.\n* **One-team, twenty-services.** A single team that spends more time on cross-service coordination than on the product it owns.\n* **Schema-shaped boundaries.** Services split along table boundaries, so any meaningful change touches several services and a shared schema.\n\nSpanning both extremes:\n\n* **Microservices for organisational symmetry.** Splitting a service to match the org chart, not to reduce complexity - usually produces either too-big services or too-small ones, never the right ones.\n* **Best-tool-for-the-job sprawl.** Each service chooses its own runtime, database, and queue technology, multiplying the operations surface.\n* **Architecture by slogan.** \"Microservices everywhere\", \"monolith forever\", or \"smaller is always better\" - each is a refusal to size pieces against the actual problem.\n\nAligned with the principle:\n\n* Standardising backend services on .NET, ECS Fargate, and Ubuntu containers rather than letting each team pick.\n* Choosing ECS over self-managed Kubernetes for the next phase of platform work.\n* Keeping the markdown-record build script to the Python standard library rather than introducing a framework.\n* Splitting a backend integration into a small Kafka producer and a small consumer, both owned by the same team, rather than building one larger orchestrator.\n* Keeping a cohesive domain - for example, \"listings\" - as a single well-modularised service rather than fragmenting it into \"create-listing\", \"update-listing\", \"publish-listing\", \"expire-listing\" micro-services.\n* Merging three tiny services that always change and deploy together back into one, after evidence shows the split is paying no dividends.\n\nOut of alignment with the principle:\n\nAt the \"too big\" end:\n\n* A \"platform\" service that handles authentication, feature flags, configuration, and notifications because all four are \"infrastructure-ish\".\n* Adding a service mesh, a sidecar, and a custom CRD to deploy a single new API.\n* A new runtime adopted because one team wanted to try it, with no path to replace the existing default.\n\nAt the \"too small\" end:\n\n* A separate microservice for each CRUD endpoint of a single resource, all owned by the same team, sharing the same database, and always deployed together.\n* A \"service\" whose only behaviour is to call another service and rename one field in the response.\n* Forty production services for what is, in practice, one product domain handled by one squad.\n\n## Discussion Prompts\n\nUse these prompts in architecture reviews:\n\n* Which boundary is making local reasoning easier, and which boundary is only moving complexity into coordination?\n* What evidence tells us this component is too large, too small, or roughly right?\n* If we split or merge this component, what operational cost changes?\n\n## Related Principles\n\n* [Design Principle: Evolutionary Systems](evolutionary-systems.html) - small pieces are easier to evolve.\n* [Design Principle: Smarts in the Nodes, not the Network](smarts-in-the-nodes.html) - simple, autonomous nodes beat clever middleware.\n* [Design Principle: Standardize Before Diverging](standardize-before-diverging.html) - smallness without standardisation becomes sprawl.\n* [Organisation Principle: Inherit, Then Simplify](inherit-then-simplify.html) - inherited platforms must be actively simplified over time.\n\n## Scope and Revisiting\n\nThis principle applies to Organization's software, services, libraries, and platforms. It does not apply to product surface area, user journeys, or organisational design directly, though those benefit from similar thinking.\n\nThe principle should be revisited if:\n\n* A measurably simpler architectural pattern becomes the industry default.\n* The current technology palette stops being mainstream or well-supported.\n* The cost of inter-service operation becomes higher than the cost of running fewer, larger services - or the cost of running fewer, larger services becomes higher than the cost of splitting them.\n* Patterns of fragmentation or consolidation in the estate consistently outrun the team's ability to keep them in mind.\n\n## Authoritative References\n\n* John Lewis Partnership, [Small and Simple Principle](https://engineering-principles.jlp.engineering/), engineering-principles.jlp.engineering.\n* Sam Newman, *Building Microservices*, O'Reilly.\n* Martin Fowler, [MicroservicePremium](https://martinfowler.com/bliki/MicroservicePremium.html).\n* Arnon Rotem-Gal-Oz, [Nanoservices Antipattern](https://www.infoq.com/news/2014/05/microservices/).\n* Dan McKinley, [Choose Boring Technology](https://boringtechnology.club/).\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

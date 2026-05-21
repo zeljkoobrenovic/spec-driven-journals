@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Prioritization and Waves: Scoring Method and the First Wave Plan</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Organization Tech Strategy</a><span class="nav-right"><a class="nav-prev" href="first-targets.html" title="First Targets: Where to Concentrate the First Wave of Simplification">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="backend-convergence.html" title="Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Roadmap and Targets</p>
+        <h1>Prioritization and Waves: Scoring Method and the First Wave Plan</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-17  ·  10 min · <a class="spec-link" href="prioritization.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/prioritization/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/prioritization/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Organization Tech Strategy</a><span class="nav-right"><a class="nav-prev" href="first-targets.html" title="First Targets: Where to Concentrate the First Wave of Simplification">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="backend-convergence.html" title="Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-STRAT-PRIORITIZATION", "status": "draft:gray", "title": "Prioritization and Waves: Scoring Method and the First Wave Plan", "date": "2026-05-17", "author": "Organization Tech Strategy", "permalink": "prioritization", "timetoread": "10 min", "excerpt": "A simple five-dimension scoring method ranks simplification, convergence, containment, and retirement candidates: delivery friction, stability risk, ownership confusion, fragmentation impact, and ease of action. Each candidate is scored 1-5 on each dimension; the sum is the priority score. A guardrail prevents prioritising by ease alone. The post then applies the method to the candidates from the first-targets post and produces an initial Wave 1, Wave 2, and Investigation Queue. Wave 1 concentrates on delivery path and ownership clarity. Backend convergence work appears in Wave 2 because it depends on Wave 1 prerequisites.", "tags": "prioritization, scoring, waves, sequencing, governance", "icon": "assets/icons/prioritization.png", "logo": "assets/images/prioritization/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["prioritization", "scoring", "waves", "sequencing", "governance"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Rank simplification candidates with a five-dimension score: delivery friction, stability risk, ownership confusion, fragmentation impact, and ease of action. Sum the five dimensions for the priority score. Guardrail: do not prioritise by ease alone. Apply the method to the candidates from [First Targets: Where to Concentrate the First Wave of Simplification](first-targets.html). The resulting Wave 1 concentrates on delivery path and ownership clarity. Wave 2 contains the highest-value backend convergence work because it depends on Wave 1 outputs. An Investigation Queue holds high-impact items that need more mapping before they can be acted on.\n\n## Decision\n\nThis post is the **method + first instance** of how candidates become waves of execution. It takes the target groups from [First Targets: Where to Concentrate the First Wave of Simplification](first-targets.html), scores specific candidates, and produces an initial wave plan that can be adopted by the [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) review forum.\n\nThe method is deliberately simple. Optimising the scoring is a way to avoid making the call; the scoring is a decision aid, not a decision.\n\n## How to Use This Scoring\n\nUse the score to make tradeoffs explicit, not to automate strategy. The review forum should use the score to ask:\n\n* Which dimension is driving the score?\n* Which score is evidence-backed, and which is an estimate?\n* Is the candidate actionable now, or does it need ownership and inventory work first?\n* Are we choosing a real simplification candidate, or an easy local cleanup task?\n* What would have to change for this item to move waves?\n\nThe output of scoring is a wave proposal with reasoning. It is not a permanent ranking and it is not a substitute for ownership.\n\n## What This Should Help You Do\n\nThis record should help a reader:\n\n* Score simplification candidates using the five dimensions.\n* Explain why ease of action is useful but dangerous when used alone.\n* Distinguish Wave 1, Wave 2, Investigation Queue, Contain, and Defer.\n* Challenge a score by asking for evidence rather than arguing from preference.\n\nCommon misreadings to avoid:\n\n| Misreading | Correction |\n| --- | --- |\n| \"Highest score always goes first.\" | Dependencies and ambiguity still matter. |\n| \"The model is objective.\" | The model structures judgement; it does not replace judgement. |\n| \"Investigation means low priority.\" | Investigation often means high impact but not yet actionable. |\n\n## Scoring Dimensions\n\nScore each candidate from `1` to `5` on five dimensions.\n\n### 1. Delivery Friction\n\n* `1` — low impact on delivery.\n* `5` — major blocker to delivery speed.\n\n### 2. Stability Risk\n\n* `1` — low stability concern.\n* `5` — major reliability or operational risk.\n\n### 3. Ownership Confusion\n\n* `1` — ownership already clear.\n* `5` — ownership repeatedly unclear or disputed.\n\n### 4. Fragmentation Impact\n\n* `1` — isolated issue.\n* `5` — high-fragmentation hotspot affecting multiple teams or systems.\n\n### 5. Ease Of Action\n\n* `1` — very hard to act on now.\n* `5` — realistic to contain, simplify, or retire soon.\n\n## Priority Score\n\n> `Priority Score = Delivery Friction + Stability Risk + Ownership Confusion + Fragmentation Impact + Ease Of Action`\n\nHigher score = stronger candidate for early action. Range: 5-25.\n\n## Decision Heuristic\n\n| Profile | Action |\n| --- | --- |\n| High score + low ambiguity | Early wave candidate. |\n| High score + high ambiguity | Investigate first. |\n| Low score + high effort | Defer. |\n| High score from \"ease\" alone, low everywhere else | Reconsider - probably a small win wearing a strategic costume. |\n\n## Guardrail\n\n**Do not prioritise only by ease of action.**\n\nThe goal of the strategy is not quick wins. The goal is to remove **meaningful sources of friction**. Candidates that score `5` on ease but `1`/`2` on the other four are not what this method is meant to surface.\n\nThe opposite failure mode also exists: candidates that score `5` on everything except ease often end up doing nothing. Those belong in the **Investigation Queue**, not in an action wave.\n\n## First Application: Scoring the Candidates from First Targets\n\nThe table below applies the method to candidates drawn from the five target groups in [First Targets: Where to Concentrate the First Wave of Simplification](first-targets.html). The scores are the current best estimate; they are intended to be challenged at the [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) review forum.\n\n| Candidate | Type | Delivery Friction | Stability Risk | Ownership Confusion | Fragmentation Impact | Ease Of Action | Total | Recommended Action |\n| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |\n| TFS + manual build path | Delivery | 5 | 4 | 4 | 4 | 4 | 21 | Wave 1 |\n| Jenkins-based legacy delivery path | Delivery | 4 | 3 | 4 | 4 | 4 | 19 | Wave 1 |\n| Delivery tooling estate ownership clarity | Ownership | 4 | 3 | 5 | 4 | 4 | 20 | Wave 1 |\n| Legacy AWS estate ownership and status mapping | AWS / Ownership | 3 | 4 | 5 | 5 | 3 | 20 | Wave 1 |\n| Transitional / unclear-purpose AWS accounts | AWS | 3 | 3 | 4 | 5 | 4 | 19 | Wave 1 |\n| Self-hosted Kafka estate | Legacy platform | 4 | 5 | 4 | 4 | 2 | 19 | Investigate |\n| RabbitMQ estate | Legacy platform | 3 | 3 | 3 | 3 | 3 | 15 | Investigate |\n| Core classifieds / listing flow overlap zone | Backend architecture | 5 | 4 | 4 | 5 | 2 | 20 | Investigate |\n| Messaging and shared integration estate | Backend architecture / integration | 4 | 4 | 4 | 5 | 2 | 19 | Investigate |\n| Search and discovery overlap zone | Backend architecture | 4 | 4 | 3 | 4 | 2 | 17 | Investigate |\n| User / account / CRM overlap zone | Backend architecture | 4 | 3 | 4 | 4 | 2 | 17 | Investigate |\n| Windows-based runtime surfaces | Legacy runtime | 3 | 4 | 3 | 3 | 3 | 16 | Wave 2 |\n| ASPX surfaces | Legacy runtime / UI | 3 | 2 | 3 | 3 | 4 | 15 | Wave 2 |\n| Silverlight surfaces | Legacy runtime / UI | 2 | 3 | 3 | 3 | 4 | 15 | Wave 2 |\n| Data / analytics / DWH overlap zone | Backend architecture / data | 3 | 4 | 3 | 4 | 2 | 16 | Investigate |\n\n### Notes on backend candidates\n\n* **Core classifieds / listing flow** is the strongest backend convergence candidate because it is business-central and appears to span monolith, service, and newer distributed shapes at the same time. It is **Investigate** in this round because it currently has low ease of action - it needs overlap mapping, ownership clarity, and a target backend direction first.\n* **Messaging and shared integration estate** scores high because it likely drives complexity across multiple domains, but it needs dependency mapping before action.\n* **Search and discovery** and **User / account / CRM** are important overlap areas, but they stay second-tier until ownership and system boundaries are clearer.\n* **Data / analytics / DWH** matters, but it is more likely to be a slower and more dependency-heavy convergence area than an early delivery-focused win.\n\nThe recommendation values used in the table:\n\n* **Wave 1** — high-friction, high-clarity candidates with realistic ease of action.\n* **Wave 2** — high-impact candidates that depend on Wave 1 outputs.\n* **Investigate** — high-impact candidates with low ease of action; need mapping first.\n* **Contain** — items that are not going to be retired in the strategy horizon but must stop expanding.\n* **Defer** — items below the threshold for either current wave.\n\n## Wave 1: High-Friction, High-Clarity Candidates\n\n**Focus:** actions that improve delivery path, ownership clarity, or visible fragmentation quickly.\n\n| Candidate | Why Now | Expected Outcome | Owner | Status |\n| --- | --- | --- | --- | --- |\n| TFS + manual build path | High delivery friction and clear anti-pattern | Remove the highest-friction manual path | TBD | Proposed |\n| Jenkins-based legacy delivery path | Overlaps with newer delivery tooling and increases support burden | Reduce duplicate delivery patterns | TBD | Proposed |\n| Delivery tooling estate ownership clarity | No single clear default owner across the path today | Clearer ownership for delivery convergence | TBD | Proposed |\n| Legacy AWS estate owner and status mapping | High-fragmentation estate with unclear ownership | Explicit owner and lifecycle status for the estate | TBD | Proposed |\n| Transitional / unclear-purpose AWS accounts | Likely consolidation candidates with limited strategic value | First list of accounts to consolidate or retire | TBD | Proposed |\n\nWave 1 deliberately concentrates on **delivery path** and **ownership**. Those are the prerequisites for backend convergence in Wave 2 (see [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) for the dependency rationale).\n\n## Wave 2: High Impact, Depends on Wave 1\n\n**Focus:** candidates with strong impact but more dependencies; work that depends on Wave 1 inventories or clarified ownership.\n\n| Candidate | Why Later | Dependency | Expected Outcome | Owner | Status |\n| --- | --- | --- | --- | --- | --- |\n| Core classifieds / listing flow overlap zone | Highest-value backend convergence candidate, but needs overlap mapping first | Backend overlap inventory, ownership clarity, messaging mapping | First concrete backend convergence target | TBD | Proposed |\n| Messaging and shared integration estate | High-friction shared substrate, but depends on dependency and ownership mapping first | Messaging inventory, ownership clarity, platform dependency map | Clear contain / converge decision for shared integration layer | TBD | Proposed |\n| Windows-based runtime surfaces | Important but likely dependent on legacy/system mapping | Legacy inventory and ownership clarity | Reduced runtime diversity | TBD | Proposed |\n| ASPX surfaces | Good retirement candidate but depends on product/system mapping | System inventory and business criticality check | Reduced legacy web footprint | TBD | Proposed |\n| Silverlight surfaces | Strong retirement candidate, but may need transition planning | Product dependency mapping | Removal of low-fit legacy frontend runtime | TBD | Proposed |\n\n## Investigation Queue\n\n**Use for** items that matter but are still too ambiguous to enter a wave.\n\n| Candidate | Why Investigate | Key Unknown | Owner | Status |\n| --- | --- | --- | --- | --- |\n| Self-hosted Kafka estate | High impact, but retirement or containment path unclear | Dependency map and migration cost | TBD | Proposed |\n| RabbitMQ estate | Need to understand overlap with Kafka and real usage | Current use cases and ownership | TBD | Proposed |\n| Search and discovery overlap zone | High-value area, but backend shape and ownership need clearer mapping | Exact overlap between legacy and service-based components | TBD | Proposed |\n| User / account / CRM overlap zone | Likely ownership and integration hotspot | Exact relationship between CRM, account, and newer service surfaces | TBD | Proposed |\n| Data / analytics / DWH overlap zone | Important, but probably slower and more complex than first-wave backend work | Actual dependency map and business coupling | TBD | Proposed |\n\nItems in the Investigation Queue are not on hold. They have **active mapping work** assigned to them, and they move into Wave 2 or 3 as soon as the key unknown is resolved.\n\n## Backend Convergence Readout\n\n* **Wave 2** is the current earliest credible point for direct backend convergence work.\n* **Wave 1** creates the prerequisites:\n  * Delivery-path clarity ([Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production](delivery-path.html)).\n  * Clearer ownership ([Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html)).\n  * AWS/account visibility ([AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html)).\n  * Initial messaging and integration mapping.\n* The first **backend convergence target** is likely to be **Core classifieds / listing flow**.\n* The main **shared-platform containment target** is likely to be **Messaging and shared integration estate**.\n\nThis sequencing is the direct application of [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) phase dependencies (Phase 2 → Phase 3) to the scoring above.\n\n## How Waves Become Work\n\nOnce a Wave 1 candidate is approved by the [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) review forum:\n\n1. The candidate gets a **named owner**.\n2. The candidate gets a **decision date** (not necessarily a delivery date) - when the next checkpoint is.\n3. Status transitions from **Proposed** → **In Progress** → **Done** or **Replaced** in the wave plan.\n4. Repeated scoring of similar candidates produces updates to the **blueprints** and the **legacy register** (in [Operating Model: How the Strategy Stays Alive Day to Day](operate.html)).\n\nA candidate that lingers in **Proposed** for two quarters without becoming **In Progress** is a signal that either the diagnosis is wrong about that candidate, or the operating model is failing to assign owners.\n\n## Anti-Patterns\n\n* **Optimising the scoring instead of acting on it.** The method is intentionally simple. Long debates about whether a score should be `3` or `4` are usually displacement activity.\n* **Re-scoring everything quarterly to look productive.** Most items do not change category. Re-score on signal, not on cadence.\n* **Prioritising by ease alone.** The guardrail is explicit; ignoring it produces a backlog of trivial wins that does not move the diagnosis.\n* **Promoting Investigation Queue items to Wave 2 to make the plan look bigger.** Items in the queue are there because they have a known unknown. Promoting them before that unknown is resolved is how Wave 2 stalls.\n* **Treating Wave 1 as the whole strategy.** Wave 1 is the **first** wave, not the **only** wave. The harder backend and infrastructure work in Wave 2 is the bulk of the strategy's value.\n\n## Related Records\n\n* [Organization Tech Strategy: Reducing Fragmentation and Complexity While Building Foundation for the Future](strategy.html) — the overall strategic frame.\n* [First Targets: Where to Concentrate the First Wave of Simplification](first-targets.html) — the target groups these candidates are drawn from.\n* [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) — the phase context that justifies the Wave 1 / Wave 2 split.\n* [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) — where waves are reviewed and approved.\n* [Backend Blueprint and Convergence Plan: Toward a Conventional Microservice Default](backend-convergence.html), [Delivery Path Blueprint and Convergence Plan: One Preferred Path from Code to Production](delivery-path.html), [AWS Account Blueprint and Consolidation Plan: From ~200 Accounts to a Governable Estate](aws-accounts.html), [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](ownership-clarification.html) — the per-area blueprints.\n\n## Scope and Revisiting\n\nRevisit the prioritisation at the quarterly review in [Operating Model: How the Strategy Stays Alive Day to Day](operate.html):\n\n* **Update scores** for candidates whose key unknowns have been resolved.\n* **Move items** between Investigation Queue and Wave 2 as conditions change.\n* **Refresh Wave 1** once enough of its candidates are in progress or done.\n* **Challenge candidates** that have been in Proposed for more than two quarters.\n\nThe scoring method itself is stable. The candidates and their scores are the part that moves.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

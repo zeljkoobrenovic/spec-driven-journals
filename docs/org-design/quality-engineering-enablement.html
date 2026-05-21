@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quality Engineering as Enablement, Not a Release Gate</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Org Design Decisions</a><span class="nav-right"><a class="nav-prev" href="product-engineering-partnership.html" title="Product and Engineering Partnership Around Outcomes">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="platform-and-devops-operating-model.html" title="Platform and DevOps Operating Model">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Product and Delivery</p>
+        <h1>Quality Engineering as Enablement, Not a Release Gate</h1>
+        <p class="byline">Organization Org Design  ·  2026-05-17  ·  11 min · <a class="spec-link" href="quality-engineering-enablement.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/quality-engineering-enablement/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/quality-engineering-enablement/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Org Design Decisions</a><span class="nav-right"><a class="nav-prev" href="product-engineering-partnership.html" title="Product and Engineering Partnership Around Outcomes">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="platform-and-devops-operating-model.html" title="Platform and DevOps Operating Model">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-ORG-QUALITY-ENGINEERING-ENABLEMENT", "status": "draft:gray", "title": "Quality Engineering as Enablement, Not a Release Gate", "date": "2026-05-17", "author": "Organization Org Design", "permalink": "quality-engineering-enablement", "timetoread": "11 min", "excerpt": "Quality is owned by the team building and running the product. QA shifts from late manual gatekeeping to quality engineering: test strategy, automation, risk modelling, exploratory testing, observability, and coaching that make teams better at releasing confidently.", "tags": "org-design, quality, qa, testing, enablement, product-engineering", "icon": "assets/icons/quality-engineering-enablement.png", "logo": "assets/images/quality-engineering-enablement/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["org-design", "quality", "qa", "testing", "enablement", "product-engineering"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Organization will treat quality as a team-owned engineering responsibility, supported by quality engineering enablement. QA is not a late release gate that receives finished work. Quality engineers help teams design risk-based test strategies, automate confidence, improve observability, run exploratory testing, and strengthen release discipline.\n\n## Decision\n\nAdopt **quality engineering as enablement**.\n\nThe default model:\n\n* product teams own the quality of what they ship and run;\n* quality engineers work with teams before and during implementation, not only after;\n* test automation is part of engineering work, not a separate afterthought;\n* exploratory testing, risk analysis, accessibility, performance, resilience, and production learning all contribute to release confidence;\n* a central or chapter-like quality function may set standards, coach teams, and improve shared tooling, but it does not become a permanent release queue.\n\nThis decision changes the meaning of QA from \"the people who approve releases\" to \"the capability that helps teams understand and manage product risk\".\n\n## How to Read This Decision\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Teams own quality. | Specialist quality skills are unnecessary. |\n| QE helps design confidence early. | Manual exploratory testing has no value. |\n| Automation should be close to the team. | Every test must be written by developers only. |\n| Release gates should be lightweight and evidence-based. | Teams may release without discipline. |\n| Central QE should enable, coach, and improve systems. | Central QE becomes a dumping ground for unfinished work. |\n\nQuality is not a phase. It is a property of how the team works.\n\n## How to Use This Decision\n\nUse this decision to:\n\n* explain why quality cannot be delegated to a late QA phase;\n* distinguish quality assurance as gatekeeping from quality engineering as capability building;\n* design a release confidence model using several signals, not one test stage;\n* identify where specialist quality skill should be embedded, shared, or enabling;\n* use defects and incidents as learning inputs for the whole team.\n\nThe main learning is that \"who tests this?\" is too narrow. The better question is \"how does the team build justified confidence that this change is valuable, safe, usable, and operable?\"\n\n## One-Minute Mental Model\n\nQuality engineering is **risk thinking plus feedback design**.\n\nSome risks are best handled by unit tests. Some need contract tests, exploratory testing, observability, accessibility checks, performance testing, rollout controls, or better product discovery. A quality engineer helps the team choose the right feedback loops for the risks in front of it.\n\nThe role is strongest when it changes how the team works. If quality remains a person at the end of the line, the organisation has changed the title but not the system.\n\n## Rationale\n\nLate QA gates create poor incentives. Engineering optimises for handing work over; QA becomes the place where defects are found after context has cooled; product pressure turns testing into a negotiation; release confidence depends on heroics.\n\nModern product engineering needs faster feedback:\n\n* requirements and edge cases are challenged during discovery;\n* testability influences design;\n* automated checks run near the change;\n* observability shows whether production behaves as expected;\n* exploratory testing is focused on meaningful risk rather than regression ritual;\n* defects teach the team how to improve the system, not only how to patch a release.\n\nThe quality function remains important. It becomes more senior, more systemic, and more influential when it shifts from gatekeeping to capability building.\n\n## Quality Engineering Responsibilities\n\nQuality engineering contributes at several levels:\n\n| Level | QE contribution |\n| --- | --- |\n| Product discovery | Risk framing, edge cases, acceptance criteria, accessibility and usability concerns. |\n| Architecture and design | Testability, observability, isolation, data setup, resilience and rollback considerations. |\n| Implementation | Automation strategy, pairing, contract tests, test data, flake reduction, CI signal quality. |\n| Release | Evidence-based release confidence, exploratory sessions, risk sign-off when needed. |\n| Production | Defect analysis, monitoring feedback, incident learning, quality trends. |\n| Organisation | Standards, coaching, shared tooling, community practice, hiring and career expectations. |\n\nThe same person does not need to perform every responsibility. The organisation must ensure the responsibilities are covered.\n\n## Team Operating Model\n\nFor most stream-aligned teams, use one of three patterns:\n\n| Pattern | Use when | Risk |\n| --- | --- | --- |\n| Embedded QE | Product risk is high, domain is complex, or the team is still building quality capability. | QE becomes the only person allowed to care about quality. |\n| Shared QE enablement | Several mature teams need coaching, strategy reviews, and targeted help. | Support becomes too thin or reactive. |\n| QE chapter/community | The organisation needs standards, practices, and career growth for quality specialists. | Community advice is ignored because it has no path into team work. |\n\nThe chosen pattern should be explicit and reviewed. A team with no quality strategy should not claim it has \"embedded quality\" just because developers write some tests.\n\n## Release Confidence Model\n\nEach team should maintain a release confidence model:\n\n| Signal | Example |\n| --- | --- |\n| Unit and component checks | Fast tests close to the changed code. |\n| Contract and integration checks | Confidence at service boundaries without depending on brittle end-to-end suites. |\n| End-to-end checks | Few, high-value journeys that prove critical paths. |\n| Exploratory testing | Human investigation of new risk, not rote regression. |\n| Observability | Dashboards, alerts, logs, traces, and product telemetry for post-release learning. |\n| Rollback or mitigation | A credible path when release assumptions fail. |\n\nThe model should follow [Operational Principle: Production Ready](../principles/production-ready.html) and [Operational Principle: Observable by Default](../principles/observable-by-default.html). It should be reviewed after escaped defects and incidents.\n\n## Worked Example\n\nA team is changing checkout address validation.\n\nLate-gate QA pattern:\n\n* Developers implement the change.\n* QA receives a ticket near the end.\n* Manual regression checks focus on known happy paths.\n* A production defect appears for an edge-case address.\n\nQuality-engineering pattern:\n\n| Moment | QE contribution |\n| --- | --- |\n| Discovery | Ask which address formats, countries, partners, and customer journeys are affected. |\n| Design | Identify validation rules, test data needs, observability, rollback, and support impact. |\n| Implementation | Pair on boundary tests, contract tests, and risky combinations. |\n| Release | Run exploratory sessions around edge cases and define rollout monitoring. |\n| After release | Review support contacts, validation failures, and alert data for missed assumptions. |\n\nThe second pattern does not mean more ceremony. It means the team thinks about risk while it can still design better feedback.\n\n## Anti-Patterns\n\n* **Throw it to QA.** Finished work is handed to QA after design and implementation decisions are already fixed.\n* **Manual regression blanket.** Large manual scripts are used as a substitute for automated confidence and risk thinking.\n* **Automation theatre.** Many tests exist, but they are slow, flaky, and not trusted.\n* **Developer-only dogma.** Specialist testing, exploratory skill, and risk analysis are dismissed as old-fashioned.\n* **Quality as permission.** QA is made responsible for release approval without authority over product pressure or engineering design.\n* **No production feedback.** The team treats defects as testing failures but never improves observability, rollback, or system design.\n\n## Discussion Prompts\n\nUse these prompts when reviewing a team's quality model:\n\n* What are the highest product, technical, and operational risks in this work?\n* Which feedback loop catches each risk earliest and cheapest?\n* Which tests are trusted, and which are ignored because they are slow or flaky?\n* What do escaped defects teach us about discovery, design, implementation, tests, or observability?\n* Does a quality specialist improve the team's capability, or become the owner of quality by default?\n* What production signal tells us that quality is holding after release?\n\n## Related Records\n\n* [Product and Engineering Partnership Around Outcomes](product-engineering-partnership.html) - quality participates in discovery and delivery.\n* [Stream-Aligned Product Teams as the Default Unit](stream-aligned-product-teams.html) - teams own what they build and run.\n* [Operational Principle: Production Ready](../principles/production-ready.html) - release readiness includes operability and supportability.\n* [Operational Principle: Observable by Default](../principles/observable-by-default.html) - quality extends into production learning.\n* [Practice Principle: Governance as Code](../principles/governance-as-code.html) - automated checks should carry routine governance where possible.\n\n## Scope and Revisiting\n\nThis ADR applies to software product, platform, and integration teams. It does not eliminate compliance, security, or regulatory gates where they are required; it requires those gates to be explicit, risk-based, and integrated into the team workflow as early as possible.\n\nRevisit if escaped defects rise, release confidence degrades, teams lack testing skill, or a central QA queue reappears as the default path to production.\n\n## Authoritative References\n\n* Martin Fowler, [Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html).\n* DORA, [software delivery performance metrics](https://dora.dev/guides/dora-metrics/).\n* Nicole Forsgren, Jez Humble, and Gene Kim, *Accelerate*.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

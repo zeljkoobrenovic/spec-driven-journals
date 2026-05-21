@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stream-Aligned Product Teams as the Default Unit</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Org Design Decisions</a><span class="nav-right"><a class="nav-prev" href="team-topologies-operating-model.html" title="Team Topologies as the Operating Vocabulary">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="team-size-and-composition.html" title="Team Size and Composition Guardrails">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Team Model</p>
+        <h1>Stream-Aligned Product Teams as the Default Unit</h1>
+        <p class="byline">Organization Org Design  ·  2026-05-17  ·  10 min · <a class="spec-link" href="stream-aligned-product-teams.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/stream-aligned-product-teams/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/stream-aligned-product-teams/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Org Design Decisions</a><span class="nav-right"><a class="nav-prev" href="team-topologies-operating-model.html" title="Team Topologies as the Operating Vocabulary">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="team-size-and-composition.html" title="Team Size and Composition Guardrails">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-ORG-STREAM-ALIGNED-PRODUCT-TEAMS", "status": "draft:gray", "title": "Stream-Aligned Product Teams as the Default Unit", "date": "2026-05-17", "author": "Organization Org Design", "permalink": "stream-aligned-product-teams", "timetoread": "10 min", "excerpt": "Organization will treat durable stream-aligned product teams as the default unit of software delivery. A team owns a coherent stream of customer, business, or platform value from discovery through operation. Project groups, temporary delivery squads, and specialist handoff queues are exceptions, not the organisational default.", "tags": "org-design, teams, product, ownership, team-topologies", "icon": "assets/icons/stream-aligned-product-teams.png", "logo": "assets/images/stream-aligned-product-teams/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["org-design", "teams", "product", "ownership", "team-topologies"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Organization will use durable stream-aligned product teams as the default unit of software engineering. A team owns a coherent stream of value from discovery through build, release, operation, learning, and retirement. Temporary project teams and specialist handoff queues may exist for specific transitions, but they are not the default shape of the engineering organisation.\n\n## Decision\n\nAdopt **durable stream-aligned product teams** as the primary organisational unit for modern software engineering at Organization.\n\nA stream-aligned product team:\n\n* owns a customer, business, internal-product, or platform value stream;\n* contains enough skills to change and run its software without routine handoffs;\n* has a stable mission, not only a temporary project assignment;\n* participates in product discovery and product delivery;\n* owns production outcomes for its services and capabilities;\n* makes local technical decisions through the Advice Process and records durable decisions as markdown ADRs.\n\nThis decision sets the default. It does not mean every group is a stream-aligned team. Platform, enabling, and complicated-subsystem teams remain valid where the work genuinely calls for them. Those exceptions are covered in [Team Topologies as the Operating Vocabulary](team-topologies-operating-model.html).\n\n## How to Read This Decision\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Teams should be durable around value streams. | Teams never change shape. |\n| Teams own discovery, delivery, and operation inside their boundary. | Every team must contain every specialist full time. |\n| Teams receive problems and outcomes, not only feature tickets. | Product strategy disappears from leadership. |\n| Teams own their local decisions. | Teams ignore shared principles or platform standards. |\n| Temporary project groups are exceptions. | Migration, incident, and transition work cannot be organised temporarily. |\n\nThe core shift is from staffing projects to funding and improving long-lived teams.\n\n## How to Use This Decision\n\nUse this decision to:\n\n* explain why durable teams are different from project staffing;\n* identify whether a team owns a real stream of value or only a technical fragment;\n* name the minimum responsibilities that come with product-team ownership;\n* spot when a temporary team is useful and when it has become organisational debt;\n* connect team ownership to decision ownership, production ownership, and capability lifecycle.\n\nThe test is practical: a new engineer should be able to read the team's mission and know what the team owns, who it serves, which systems it runs, and what kinds of decisions it can make.\n\n## One-Minute Mental Model\n\nA stream-aligned product team is a **small, durable business-and-technology unit wrapped around a flow of value**.\n\nIt is not a pool of engineers waiting for tickets. It is not a temporary project group. It is not a component team that only owns one technical layer. It is the place where product context, technical context, operational history, and customer learning accumulate over time.\n\nIf the team cannot explain its users, outcomes, owned systems, support responsibilities, and decision rights, it is not yet a real stream-aligned team. It may be a workgroup, component team, or project team using product-team language.\n\n## Rationale\n\nSoftware delivery improves when the group that understands the problem also owns the system, the customer impact, and the production consequences. Fragmenting those responsibilities creates predictable failure modes:\n\n* product throws requirements over a wall to engineering;\n* engineering throws releases over a wall to operations;\n* QA is asked to find quality after the design is complete;\n* architecture appears as a late approval step;\n* knowledge evaporates when a project ends;\n* teams optimise for local task completion instead of product and operational outcomes.\n\nDurable stream-aligned teams reduce those handoffs. They create a stable place for learning to accumulate: product context, domain language, architecture tradeoffs, operational history, customer feedback, and team working agreements.\n\nThis ADR also aligns org design with [Organisation Principle: Capabilities Follow Ownership](../principles/capabilities-follow-ownership.html) and [Organisation Principle: Decisions Stay with Teams](../principles/decisions-stay-with-teams.html). If a team is accountable for outcomes, it must also be close enough to the relevant decisions and capabilities to act.\n\n## Team Mission\n\nEvery stream-aligned team should have a short team mission that answers:\n\n| Question | Why it matters |\n| --- | --- |\n| What value stream do we own? | Prevents teams from becoming generic capacity pools. |\n| Who are our users or customers? | Keeps the team connected to outcomes. |\n| Which systems or capabilities do we own? | Makes operational ownership explicit. |\n| What decisions can we make locally? | Reduces escalation and hidden approvals. |\n| Which teams depend on us, and who do we depend on? | Makes collaboration and team APIs visible. |\n\nThe mission should be stable enough to survive quarterly planning, but not so permanent that it blocks learning or reorganisation when the business changes.\n\n## What This Means for Teams\n\nFor product engineering teams:\n\n* Keep product discovery and delivery in the same team.\n* Own production readiness, observability, supportability, and retirement work for the systems in the team boundary.\n* Maintain ADRs for meaningful team decisions.\n* Use shared platforms and standards by default, and propose exceptions through visible advice.\n\nFor product and engineering leaders:\n\n* Fund stable teams, not only projects.\n* Give teams objectives, constraints, and context, not only implementation backlogs.\n* Review whether team boundaries still match value streams.\n* Avoid reorganising as a substitute for hard prioritisation.\n\nFor platform and enabling teams:\n\n* Treat stream-aligned teams as primary customers.\n* Make the easy path self-service where possible.\n* Reduce cognitive load rather than centralising all expertise.\n\n## Worked Example\n\nImagine a team called \"Search Experience\".\n\nWeak version:\n\n* The team receives tickets from product and frontend requests from other teams.\n* Backend search infrastructure is owned elsewhere.\n* Analytics are reviewed by product outside the team.\n* Production incidents go to an operations queue.\n* The team has no authority to change ranking, indexing, or release strategy.\n\nThis is not a stream-aligned team. It is a delivery slice inside a larger flow.\n\nStronger version:\n\n* The team owns the customer search journey and the main search-experience metrics.\n* Product, design, engineering, and quality work from the same problem statements.\n* The team owns the services, UI surfaces, dashboards, alerts, and runbooks inside the boundary.\n* Platform teams provide search infrastructure capabilities through clear interfaces.\n* Architecture advice is sought for cross-team ranking, data, and performance decisions.\n\nThe stronger version has more responsibility, but also less handoff. It can learn faster because the people changing the product see the product and operational consequences.\n\n## Anti-Patterns\n\n* **Project staffing carousel.** People are assembled for a project, disbanded when it ships, and the operational consequences land somewhere else.\n* **Feature factory team.** The team receives a stream of predefined features but has little access to customer, business, or technical strategy.\n* **Component bunker.** A team owns a technical component so narrowly that delivering customer value requires many handoffs.\n* **Pseudo-ownership.** A team is named as owner but lacks authority, product context, operational access, or time to improve the system.\n* **Permanent temporary team.** A migration group exists for years without becoming a real value-stream or platform team.\n\n## Discussion Prompts\n\nUse these prompts in leadership reviews or team retrospectives:\n\n* What stream of value does this team own in one sentence?\n* Which customer, user, partner, or internal consumer would notice if the team stopped existing?\n* Which systems or capabilities does the team operate in production?\n* What decisions can the team make without escalation?\n* Which handoffs repeatedly slow the team down?\n* Is the team funded as a durable unit, or is it really a project group?\n\n## Related Records\n\n* [Team Size and Composition Guardrails](team-size-and-composition.html) - defines healthy team size and minimum viable composition.\n* [Team Topologies as the Operating Vocabulary](team-topologies-operating-model.html) - defines the non-default team types and interaction modes.\n* [Product and Engineering Partnership Around Outcomes](product-engineering-partnership.html) - defines how product, design, and engineering share outcomes.\n* [Platform and DevOps Operating Model](platform-and-devops-operating-model.html) - defines how platform teams support stream-aligned teams.\n* [Organisation Principle: Capabilities Follow Ownership](../principles/capabilities-follow-ownership.html) - shared capabilities need named owners and lifecycles.\n* [Organisation Principle: Decisions Stay with Teams](../principles/decisions-stay-with-teams.html) - local decisions stay with accountable teams.\n\n## Scope and Revisiting\n\nThis decision applies to engineering groups building, integrating, operating, or enabling software products and platforms.\n\nRevisit it if teams repeatedly cannot own discovery, delivery, and operations inside their boundaries; if value streams change materially; or if a future operating model makes another team shape a better default.\n\n## Authoritative References\n\n* Matthew Skelton and Manuel Pais, *Team Topologies*.\n* Team Topologies, [key concepts and practices](https://teamtopologies.com/learn).\n* Silicon Valley Product Group, [Product Model Concepts](https://www.svpg.com/product-model-concepts/).\n* Organization Engineering Principle, [Organisation Principle: Capabilities Follow Ownership](../principles/capabilities-follow-ownership.html).\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

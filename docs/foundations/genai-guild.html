@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GenAI Guild as a Cross-Team Generative AI Consortium</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="mobile-guild.html" title="Mobile Guild as a Cross-Team Mobile Consortium">← Previous</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Communities of Practice</p>
+        <h1>GenAI Guild as a Cross-Team Generative AI Consortium</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-17  ·  16 min · <a class="spec-link" href="genai-guild.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/genai-guild/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/genai-guild/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="mobile-guild.html" title="Mobile Guild as a Cross-Team Mobile Consortium">← Previous</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-FOUND-GENAI-GUILD", "status": "draft:gray", "title": "GenAI Guild as a Cross-Team Generative AI Consortium", "date": "2026-05-17", "author": "Organization Tech Strategy", "permalink": "genai-guild", "timetoread": "16 min", "excerpt": "Organization will form a GenAI Guild as a standing community of practice to transform how the organisation leverages Generative AI - moving from ad-hoc experimentation to measurable productivity gains across the Product & Technology organisation. The guild operates through four pillars: Evangelization & Knowledge Sharing, Architecture & Standards, Research & Innovation, and Tooling & Licensing. It enables teams to harness GenAI effectively while maintaining security and compliance, mitigates Shadow AI risks through transparency and guidance, establishes frameworks that enable innovation rather than block it, and builds sustainable AI adoption at scale with measurable business impact. The guild is advisory and contributory, facilitated by the Architecture team and open to every Aviver. It is provisioned with dedicated Slack channels (open + volunteer), source code repositories, and an AWS account (or dedicated space) for experiments, agents, MCP servers, and reference implementations.", "tags": "foundations, guild, genai, ai, mcp, agents, community-of-practice, shadow-ai", "icon": "assets/icons/genai-guild.png", "logo": "assets/images/genai-guild/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["foundations", "guild", "genai", "ai", "mcp", "agents", "community-of-practice", "shadow-ai"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Organization will form a **GenAI Guild** as a standing community of practice to transform how the organisation leverages Generative AI - moving from ad-hoc experimentation to measurable productivity gains across Product & Technology. The guild operates through four pillars: **Evangelization & Knowledge Sharing**, **Architecture & Standards**, **Research & Innovation**, and **Tooling & Licensing**. It enables teams to harness GenAI effectively while maintaining security and compliance, mitigates Shadow AI risks through transparency and guidance, establishes frameworks that enable innovation rather than block it, and builds sustainable AI adoption at scale with measurable business impact. The guild is **advisory and contributory**, not a governance body: it gives feedback to the architecture group and Chief Architect, proposes new recommendations and decisions, and remains open to every Aviver. The guild is facilitated by the Architecture team and provisioned with dedicated Slack channels (open + volunteer), source code repositories, and an AWS account (or dedicated space in an existing account).\n\n## Decision\n\nEstablish a **GenAI Guild** at Organization as a cross-team community of practice around how the organisation adopts, builds with, and governs Generative AI. Concretely:\n\n* **Purpose**: move Organization from ad-hoc GenAI experimentation to measurable productivity gains across the Product & Technology organisation; provide the structure needed to maximise value while minimising risk.\n* **Scope**: enterprise GenAI adoption - tooling, standards, reference architectures, agents, MCP servers, RAG, training, evangelism, and Shadow AI mitigation. Domain-specific ML/AI work that is not GenAI (classical ML, recommender systems, search ranking) is out of scope unless it intersects with GenAI capabilities.\n* **Composition**: facilitated by the Architecture team; open to every Aviver as a contributor or participant; a volunteer core of active contributors coordinates initiatives.\n* **Mandate**: four pillars - Evangelization & Knowledge Sharing, Architecture & Standards, Research & Innovation, and Tooling & Licensing - each addressing one aspect of enterprise GenAI adoption.\n* **Resources**: a public Slack channel (`#aviv_genai_guild`), a volunteer Slack channel (`#aviv_genai_guild_volunteers`), source code repositories under a guild-owned area, and an AWS account (or a dedicated space inside an existing account) for shared experiments, agents, MCP servers, and reference implementations.\n\nThis foundation **does not** create a decision-making board, **does not** transfer ownership of team systems to the guild, **does not** centralise procurement of AI tooling, and **does not** make guild participation a prerequisite for contributing to GenAI work at Organization.\n\n## How to Read This Decision\n\nSeveral ideas in this record are easy to confuse with traditional centralised teams or with a procurement / governance function. The distinctions matter:\n\n| Idea | What it means here | What it does **not** mean |\n| --- | --- | --- |\n| **Guild** | A standing community of practice for GenAI work. | A team that owns delivery. |\n| **GenAI consortium** | A cross-team forum for shared standards, patterns, and learning. | A standards body that mandates compliance. |\n| **Pillars** | Four organising buckets that structure the guild's standing work. | Four sub-teams with separate budgets. |\n| **Golden paths** | Opinionated, well-supported defaults teams adopt by choice. | A binding policy that bans alternatives. |\n| **Shadow AI mitigation** | Transparency, guidance, and approved alternatives. | A surveillance or enforcement mechanism. |\n| **Feedback to architecture** | A standing practitioner channel to the architecture group and Chief Architect. | A veto over architecture decisions. |\n\nIf you have worked in organisations where a GenAI initiative became either a procurement gate or a permission-to-experiment office, the GenAI Guild is deliberately different. It exists to *enable* GenAI use - safely, at scale, with measurable impact - not to slow it down. The [Backend Guild as a Cross-Team Community of Practice](backend-guild.html), [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html), and [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html) are shaped on the same principles.\n\n## One-Minute Mental Model\n\nThink of the GenAI Guild as the **standing community that turns ad-hoc GenAI experimentation into a coordinated organisational capability**:\n\n1. Teams keep ownership of their GenAI use cases and systems.\n2. The guild maintains shared standards, golden paths, approved-tool guidance, and reusable building blocks (agents, MCP servers, RAG).\n3. The guild's sessions, workshops, and annual Summit surface lessons learned across the organisation.\n4. The guild proposes recommendations and decisions; the architecture group, the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html), and the [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html) / [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html) decision logs handle the actual decision flow.\n5. The guild reduces Shadow AI risk by making the *legitimate path* shorter than the shadow path.\n\nThe guild is succeeding when GenAI adoption is broad, measurable, and visibly safer than the ad-hoc baseline. It is failing when it becomes a permission gate, a procurement bottleneck, or a place where shadow AI is policed rather than displaced.\n\n## Purpose (Why)\n\nThe GenAI Guild exists to transform how Organization leverages Generative AI technologies - moving from ad-hoc experimentation to measurable productivity gains across Product & Technology.\n\nThe guild's mission has four mutually reinforcing parts:\n\n* **Enable teams** to harness GenAI effectively while maintaining security and compliance.\n* **Mitigate Shadow AI risks** through transparency and guidance.\n* **Establish frameworks that enable innovation** rather than block it.\n* **Build sustainable AI adoption at scale** with measurable business impact.\n\n### Why now\n\nAI tools are proliferating across teams without coordination, creating:\n\n* **Security gaps** - data flowing into tools that have not been reviewed.\n* **Duplication of effort** - similar agents, prompts, and integrations built independently by multiple teams.\n* **Missed opportunities for standardisation** - reusable building blocks (MCP servers, RAG indexes, agent patterns) staying local to one team.\n* **Uneven productivity gains** - teams that have figured out effective AI workflows pulling ahead while others lose ground.\n\nThe guild provides the structure needed to maximise value while minimising risk. It is the standing forum where the practitioners doing the work meet the standards, tooling, and security guidance that make the work safer and faster.\n\n## Mandate (How)\n\nThe guild operates through **four strategic pillars**, each addressing an important aspect of enterprise GenAI adoption.\n\n### 🔵 Evangelization & Knowledge Sharing\n\n* **Sharing sessions and workshops** - recurring, predictable forums where teams demo what they have built and learned.\n* **Annual GenAI Summit** - the flagship organisation-wide event for GenAI work at Organization.\n* **Training programs for engineers** - structured paths from \"first prompt\" to \"ships an agent into production\".\n* **Documentation and best-practices guides** - written, maintained, and signposted so they are actually used.\n* **Shadow AI awareness campaigns** - making the risks of unmanaged AI use visible alongside the legitimate alternatives.\n* **AI projects inventory and knowledge sharing** - a living view of who is doing what, so teams can find each other before duplicating work.\n\n### 🟢 Architecture & Standards\n\n* **GenAI architecture guidelines and patterns** - reference patterns for agents, RAG, tool use, evaluation, and human-in-the-loop.\n* **Security standards for AI tool usage** - co-owned with the security team; concrete enough to apply, not a wall of policy.\n* **Golden paths** for:\n  * **Product development with GenAI** - integrating GenAI into product features.\n  * **Engineering productivity workflows** - using GenAI inside the development loop.\n  * **Project blueprints and automation tooling** - templated starting points so new GenAI projects begin on the well-supported path.\n\n### 🟣 Research & Innovation\n\n* **POCs for AI agents, MCP servers, and other GenAI tools** - time-boxed prototypes that test promising patterns before teams commit.\n* **Reusable agent architectures** - including patterns such as Figma to Code, Foundation Slack Bot, ADR Agent, Jira to Code; the guild captures, refines, and shares these so teams do not rebuild them.\n* **Internal MCP servers for secure data access** - Confluence, Jira, GitHub, Unified Frontend, and similar; the guild builds and maintains a shared catalogue of vetted MCP servers.\n* **RAG knowledge base connected to internal documentation** - a guild-stewarded knowledge index that internal agents and tooling can rely on.\n\n### 🟠 Tooling & Licensing\n\n* **Usage guidelines for approved tools** - GitHub Copilot, Gemini, Claude, and others as they are adopted; what they are for, what they are not for, what data is safe with them.\n* **Tool selection framework** - a comparative matrix and a decision tree so teams can choose tools on consistent criteria instead of preference.\n* **License management and self-service attribution process** - teams can get licensed quickly without bespoke approval flows for every request.\n* **Shadow AI mitigation with the security team** - co-owned discovery, conversation, and replacement of shadow AI use with approved equivalents.\n* **Security policies per tool** - clear, current, and discoverable; the guild keeps the per-tool guidance fresh.\n\n### Cross-pillar mandate\n\nAcross all four pillars the guild also:\n\n* Builds **connections and trust** across the organisation around its main competency.\n* **Coaches and helps** members; spins up **ad-hoc working groups** on shared topics.\n* **Coordinates with adjacent guilds** ([Backend Guild as a Cross-Team Community of Practice](backend-guild.html), [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html), [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html)) and with CoEs where GenAI work intersects their scope.\n* Provides **feedback to the architecture team and Chief Architect** on recommendations and decisions; proactively proposes new recommendations and decisions.\n* Has a recognised seat in shaping **key strategic tech decisions** that involve GenAI.\n\nDetailed internal ways of working - meeting cadence, working-group lifecycle, summit format, external-talk approval flow - live in the guild's own working document (linked from the resources section below) and are owned by the guild itself.\n\n## Composition (Who)\n\nThe guild is a **collaborative effort bringing together contributors from different domains, brands, and skills** across Organization. It is facilitated by the **Architecture team** and operates through shared ownership and collective expertise.\n\n* **Open to all**: every Aviver is welcome to contribute and participate in guild sessions and studies. Anyone interested can contribute on a particular topic. The public Slack channel is the front door.\n* **Volunteer core**: for active contributors, the volunteer channel is where initiatives are coordinated and the guild's direction is shaped together. The volunteer group is named, rotates, and is replaceable; it is not a closed steering committee.\n* **Facilitation**: a small facilitation group from the Architecture team keeps the cadence honest, the agenda alive, and the four pillars actually running.\n\nThe breadth of contributors is itself a leading indicator. A guild dominated by one brand, one team, or one tool vendor's user base is not yet succeeding.\n\n## Topics (What)\n\nThe guild aims to be **impact-driven** and prioritises its topics based on the needs of actor teams. Standing topics and artefacts the guild maintains:\n\n| Topic / artefact | Purpose |\n| --- | --- |\n| **Google Gemini Gems** | Curated, shareable Gems for common workflows. |\n| **GenAI Guild Studies** | Time-boxed investigations of a topic the guild has chosen to look into; output is a shareable write-up and, where useful, a working prototype. |\n| **GenAI Tools and Licences at AVIV** | The living catalogue of approved tools, with usage guidance and licensing status. |\n| **GenAI MCP Usage at AVIV** | The catalogue of internal MCP servers, their data scopes, and how to use them safely. |\n| **🧠 Bedrock Capabilities - Foundation Accounts Overview** | Shared understanding of foundation-account capabilities and how teams can leverage them. |\n| **AI Glossary and Resources** | A common vocabulary so cross-team conversations do not start from scratch each time. |\n| **GenAI FAQ** (WIP) | Practical answers to the questions teams keep asking. |\n| **GenAI Initiatives Identification** | A visible inventory of in-flight GenAI initiatives across the organisation. |\n| **Design-to-code AI Use Cases** | A focused track on one of the highest-leverage GenAI patterns at Organization. |\n| **GenAI Summit (March 2026)** | The annual flagship event, planned and run through the guild. |\n| **AI Integration Strategy and Roadmap for Product Flow** | The guild's contribution to how GenAI integrates with product delivery flow. |\n| **[GG] Decisions** | The guild's own ADRs, recording decisions about its scope, recommended standards, and reference implementations. |\n| **Archives** | Older studies, retired tooling, and superseded patterns kept for context. |\n| **Ways of Working** | The guild's internal operating manual; updated as practice evolves. |\n\nThe `[GG]` prefix on guild ADRs is a deliberate signal: it marks artefacts as guild outputs, distinct from team-owned records. Guild ADRs that recommend an organisation-wide direction still flow through the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) and the relevant decision logs (notably [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html) and [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html)); the guild does not bypass the standard decision path.\n\n## Resources\n\nThe guild is provisioned with a small set of shared resources:\n\n* **`#aviv_genai_guild`** - the public Slack channel and always-on front door. Membership is open. The channel is where questions, RFCs, study drafts, and event announcements live.\n* **`#aviv_genai_guild_volunteers`** - the volunteer channel for active contributors to coordinate initiatives and shape the guild's direction together.\n* **GitHub repositories** - guild-owned source code repositories for reference agents, MCP servers, RAG components, prompt libraries, working-group experiments, and the experimentation-first artefacts the guild produces. Each repository has a named maintainer from the volunteer core.\n* **AWS account (or dedicated space)** - the guild has a dedicated AWS account, or a clearly carved-out space within an existing account, for shared experiments, agent deployments, MCP server hosting trials, and Bedrock-related work. Cost ownership and access boundaries are explicit; the account is not a back door to production environments.\n\nThese resources exist to **support shared work**, not to host production systems owned by individual teams. If something built by the guild graduates into a production system, ownership transfers to a team and the guild artefact becomes a reference.\n\nThe guild does **not** own enterprise contracts, vendor relationships, or per-seat license budgets. It maintains the *guidance* about approved tools and the *self-service attribution process*; the contracts themselves remain with procurement and the responsible business owners.\n\n## What This Means for Teams\n\nFor engineers and product teams:\n\n* The guild is the place to bring GenAI questions that are bigger than one team. Use `#aviv_genai_guild` as the front door.\n* Before starting a new GenAI initiative, check the guild's inventory and catalogues - someone may have built a relevant agent, MCP server, or reference pattern already.\n* Adopting a recommended tool, golden path, or MCP server is a default, not a mandate. If a team needs to deviate, the guild is the right place to surface why; deviations often reveal a gap in the standard itself.\n* If you are using a tool that is not on the approved list, raise it in the guild rather than hiding it. The guild's job is to find you an approved path, not to police you.\n\nFor team leads:\n\n* Encourage at least one delegate from teams using or planning to use GenAI to participate in guild sessions.\n* Bring upcoming non-trivial GenAI decisions to the guild early enough for advice to change the outcome.\n* Surface incidents, near-misses, and unexpectedly effective patterns with GenAI lessons so the rest of the community learns from them.\n\nFor security and compliance partners:\n\n* The guild is your standing channel into the practitioner community. Use it to socialise policies, identify shadow AI, and co-design approved alternatives.\n* Co-own per-tool security policies with the guild; keep them current and discoverable.\n\nFor the architecture group and Chief Architect:\n\n* Treat the guild as the standing practitioner voice on GenAI topics.\n* Route relevant GenAI recommendations and decisions through the guild for feedback before finalising; many of these land in [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html) or [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html).\n* Resist the temptation to convert the guild into a steering committee or a procurement gate; its value is in practice, standards, and shared artefacts.\n\nFor new joiners:\n\n* The guild is one of the fastest places to absorb how Organization does GenAI work. Joining `#aviv_genai_guild` and attending one session is a low-cost, high-signal onboarding step.\n\n## Anti-Patterns\n\nThe guild can quietly drift into something less useful. Watch for these patterns:\n\n* **The guild becomes an approval board.** Teams stop adopting GenAI tools until the guild \"agrees\". The guild has replaced enablement with permission.\n* **Procurement gate by stealth.** Every license request routes through the guild and becomes a bottleneck. Self-service attribution has been quietly replaced by guild approval.\n* **Closed membership.** Sessions become a small invite-only circle. The community narrows. The breadth that justifies the guild disappears.\n* **Vendor monoculture.** The guild only discusses one tool or vendor. Recommendations stop being credible for the rest of the organisation.\n* **Shadow AI policing instead of displacement.** The guild's primary mode becomes \"find and ban\" rather than \"build a better legitimate path\". Users stop reporting tools they are trying.\n* **Standards without owners.** A guideline or reference pattern exists in a repository, but no one is named to maintain it. It rots and teams stop trusting it.\n* **POCs without graduation.** The guild produces endless prototypes that never reach production or get retired with notes. The Research pillar becomes a graveyard.\n* **External visibility without internal substance.** Conference talks proliferate; internal sharing and reference work do not. The guild becomes a personal-brand vehicle.\n* **Meeting theatre.** Sessions run on time and produce no learning, decisions, or follow-ups. Attendance drops; cadence collapses.\n* **Shadow architecture body.** The guild begins to make decisions that should flow through the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html), [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html), or [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html), bypassing the standard advice and record flow.\n* **Production by accident.** Something built in the guild's AWS account becomes load-bearing for a real product without an explicit ownership transfer.\n* **Pillar imbalance.** One pillar (often Tooling & Licensing) absorbs all the energy; Architecture, Research, or Evangelization quietly atrophies.\n\nMost failure modes share one shape: the guild slowly becomes either a closed permission office or a vendor showcase. Resisting both drifts is the facilitation group's most important job.\n\n## Success Indicators\n\nThe GenAI Guild is succeeding when:\n\n* GenAI adoption is **broad and measurable** across teams, with productivity gains that can be evidenced.\n* The legitimate path is **shorter and easier** than the shadow path, and reported shadow AI use is declining without being driven underground.\n* The catalogues (tools, MCP servers, agents, Gems) are maintained, named, and trusted; teams check them before starting new work.\n* Sessions are attended by a wide range of teams, recordings and notes are actually consumed, and contributions come from beyond the same five voices.\n* The guild's feedback is visibly reflected in [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html), [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html), and other GenAI-relevant decisions.\n* New joiners onboard faster on GenAI topics because the guild is a known front door.\n* External talks and posts are coordinated, on-message, and connected to internal work.\n* Ad-hoc working groups form, deliver, and dissolve cleanly when their topic is exhausted.\n* All four pillars show visible activity over a quarter; none has gone quiet.\n* Security and compliance partners report that the guild has reduced their workload, not added to it.\n\nThe guild is **not** succeeding when:\n\n* The same small group dominates every session.\n* Reported shadow AI drops because reporting stopped, not because shadow use stopped.\n* Catalogues are stale, unowned, or quietly ignored by most teams.\n* Teams route GenAI decisions through the guild as if it were an approval gate.\n* The guild becomes a venue for status reporting rather than practice.\n* Tooling & Licensing eclipses the other three pillars.\n* External visibility outpaces internal learning.\n\n## Scope and Revisiting\n\nThis decision applies to **Organization's GenAI practice across the Product & Technology organisation**. It establishes a single GenAI Guild at the engineering-wide level. It does not preclude:\n\n* Team-level GenAI rituals.\n* Pillar-specific or topic-specific working groups inside the guild's umbrella.\n* Brand-specific GenAI initiatives, coordinated through the guild.\n* Other guilds for other competencies (backend, frontend, mobile, data, platform), which should follow the same shape but live in their own foundations.\n\nOut of scope:\n\n* Domain-specific ML/AI work that is not GenAI (classical ML, recommender systems, search ranking), unless it intersects with GenAI capabilities.\n* Ownership of team-owned GenAI systems.\n* Ownership of enterprise contracts, vendor relationships, or per-seat license budgets.\n* Approval of team-level architecture decisions.\n* Replacement of the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) for cross-team architecture advice, or of [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html) / [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html) as the authoritative decision logs.\n* Personnel decisions and performance management of guild members.\n\nThis decision should be revisited if:\n\n* Attendance breadth or contribution rate degrades over a sustained period.\n* The guild starts acting as an approval or procurement gate, or teams start routing decisions to it as if it were one.\n* One pillar persistently eclipses the others.\n* Shadow AI risk metrics worsen despite guild activity.\n* Catalogues fall out of date with no clear path to refresh them.\n* The organisation grows or splits in ways that make a single GenAI guild the wrong shape (for example, a brand-specific or product-area guild becomes a better fit).\n* Other guilds form and the inter-guild coordination model needs to be made explicit.\n\nA regular review of the guild itself - perhaps once a quarter alongside the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) retrospective - is healthy. The guild should be willing to advise on changes to its own format.\n\n## Related Records\n\n* [Backend Guild as a Cross-Team Community of Practice](backend-guild.html) - sibling community of practice for backend and distributed systems.\n* [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html) - sibling community of practice for web frontend.\n* [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html) - sibling community of practice for mobile.\n* [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) - the cross-team architecture advice ritual the guild plugs into for decisions with organisation-wide impact.\n* [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html) - the authoritative decision log for AI coding policy.\n* [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html) - the authoritative decision log for AI tooling choices.\n* [Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](markdown-records.html) - the format the guild's ADRs, studies, and meeting minutes follow.\n* [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html) - the authoring workflow used for guild records and write-ups.\n* [The Curator Role for Records, Principles, and Strategies](curator-role.html) - editorial stewardship of the corpus the guild contributes to.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

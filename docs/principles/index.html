@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORG Engineering Principles</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 340px;
+            object-fit: cover;
+            margin-bottom: 0;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 4px 0 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/iStock-2149699571.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/iStock-2149699571.jpg" alt=""></a>
+        <p class="logo-credit">Image by Maria_Castellanos from iStock</p>
+        <div style="padding: 4px;">
+            <h1>ORG Engineering Principles</h1>
+            <p>Durable engineering principles that guide Organization's technical decisions, system design, operations, organisation, and day-to-day practice.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Design", "description": "How Organization systems should be shaped: small, evolutionary, decoupled, and standardized before they are diverged from.", "posts": [{"id": "ORG-PRIN-SMALL-AND-SIMPLE", "status": "draft:gray", "title": "Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)", "excerpt": "Prefer small, simple components over large, clever ones - but not too small and not too simple. Organization systems should be decomposed into pieces that one team can understand end-to-end, that one engineer can hold in their head, and that can be replaced without rewriting the platform around them. The opposite extreme - nanoservices, where every endpoint or function becomes its own service - replaces internal complexity with distributed complexity that often costs more than the monolith it was supposed to replace. The principle is not 'microservices for everything', and not 'split until it can't be split'; it is 'no piece bigger or smaller than it needs to be for what it actually does'.", "url": "small-and-simple.html", "icon": "assets/icons/small-and-simple.png", "tags": ["design", "simplicity", "modularity", "microservices", "nanoservices", "complexity"]}, {"id": "ORG-PRIN-EVOLUTIONARY-SYSTEMS", "status": "draft:gray", "title": "Design Principle: Evolutionary Systems", "excerpt": "Design Organization systems for change. The next change is closer and more probable than the next clean rewrite. Architectures should enable small, safe, incremental changes throughout their lifecycle, not optimise for a fixed end-state that will never quite arrive. This shows up as backwards-compatible contracts, additive schema changes, feature flags, well-defined seams, reversible deploys, and a strong bias against grand re-architectures. Evolutionary systems are how Organization makes long-term progress without big-bang risk.", "url": "evolutionary-systems.html", "icon": "assets/icons/evolutionary-systems.png", "tags": ["design", "evolution", "change", "refactoring", "fitness-functions"]}, {"id": "ORG-PRIN-SMARTS-IN-THE-NODES", "status": "draft:gray", "title": "Design Principle: Smarts in the Nodes, not the Network", "excerpt": "Put business logic, routing decisions, and orchestration inside the services that own the work, not in the messaging fabric, API gateway, service mesh, or BPM tool that connects them. Organization's integration backbone - Kafka via Amazon MSK, ECS networking, AWS-native components - should remain dumb pipes that move data reliably. Smart middleware feels powerful at first and becomes the most expensive, least owned part of the platform within two years.", "url": "smarts-in-the-nodes.html", "icon": "assets/icons/smarts-in-the-nodes.png", "tags": ["design", "decoupling", "messaging", "kafka", "integration", "choreography"]}, {"id": "ORG-PRIN-STANDARDIZE-BEFORE-DIVERGING", "status": "draft:gray", "title": "Design Principle: Standardize Before Diverging", "excerpt": "Adopt a default before allowing variation. Organization's backend on .NET, compute on ECS Fargate, messaging on MSK, cloud on AWS, and AI tooling on Claude Code are all defaults. Teams may diverge from a default by ADR, but they may not diverge by accident. The principle protects the cost compounding of a shared platform: a golden path is only valuable if most teams are on it. Variation has to earn its keep, not be granted by silence.", "url": "standardize-before-diverging.html", "icon": "assets/icons/standardize-before-diverging.png", "tags": ["design", "standardization", "golden-path", "exceptions", "governance"]}]}, {"title": "Operational", "description": "How Organization systems should run in production: ready before launch, cloud-native on AWS, and observable by default.", "posts": [{"id": "ORG-PRIN-PRODUCTION-READY", "status": "draft:gray", "title": "Operational Principle: Production Ready", "excerpt": "A service is not done when it works in staging. It is done when it is fit to run in production. That means observability, health checks, secrets handling, deploy and rollback, capacity, on-call ownership, runbooks, security defaults, and data-protection considerations are all in place before traffic flows. Production-readiness is a property of the *service*, validated against an explicit checklist, owned by the team that runs it. It is not a stage in a release plan.", "url": "production-ready.html", "icon": "assets/icons/production-ready.png", "tags": ["operations", "production", "sre", "on-call", "observability", "reliability"]}, {"id": "ORG-PRIN-CLOUD-NATIVE-ON-AWS", "status": "draft:gray", "title": "Operational Principle: Cloud Native on AWS", "excerpt": "Organization is an AWS company. Build cloud-native by default: managed services where they remove operational toil, AWS-native primitives where they fit, and self-managed alternatives only when there is a written reason. Cloud-native means stateless, horizontally scalable, deployable through automation, and observable through standard AWS interfaces. It does not mean serverless-everywhere, multi-cloud-just-in-case, or rebuilding what AWS already does well.", "url": "cloud-native-on-aws.html", "icon": "assets/icons/cloud-native-on-aws.png", "tags": ["cloud", "aws", "managed-services", "msk", "ecs", "fargate", "operations"]}, {"id": "ORG-PRIN-OBSERVABLE-BY-DEFAULT", "status": "draft:gray", "title": "Operational Principle: Observable by Default", "excerpt": "Every Organization service emits structured logs, useful metrics, and distributed traces from day one. Observability is not a feature added after an incident; it is a default property delivered by templates, libraries, and the platform. The goal is not dashboards; the goal is to answer 'what just happened, where, and why?' in minutes for any production system. Without observability, every other operational principle collapses into guesswork.", "url": "observable-by-default.html", "icon": "assets/icons/observable-by-default.png", "tags": ["operations", "observability", "logging", "metrics", "tracing", "slos"]}]}, {"title": "Organisation", "description": "How Organization organises decisions, inheritance, tooling choices, and capability ownership.", "posts": [{"id": "ORG-PRIN-DECISIONS-STAY-WITH-TEAMS", "status": "draft:gray", "title": "Organisation Principle: Decisions Stay with Teams", "excerpt": "Technical decisions at Organization are owned by the team that will operate the result. Centralised approval boards are not the model. Teams seek advice from the people most affected and most expert through an Advice Process, document the decision in an ADR, and remain accountable for the consequences. The Architecture Advisory Forum exists to make those conversations easier, not to approve work. Ownership of the decision is what makes the team accountable for the outcome.", "url": "decisions-stay-with-teams.html", "icon": "assets/icons/decisions-stay-with-teams.png", "tags": ["organisation", "advice-process", "ownership", "governance", "accountability", "adr"]}, {"id": "ORG-PRIN-INHERIT-THEN-SIMPLIFY", "status": "draft:gray", "title": "Organisation Principle: Inherit, Then Simplify", "excerpt": "Organization starts from AVIV Group's existing technology and tooling: AWS contract, account foundation, networking, web and mobile golden paths, and operating practices. These give a fast start, real scale, and a coherent baseline. The principle is to inherit deliberately, then simplify deliberately. Inheritance does not mean acceptance forever. Simplification does not mean a rewrite. Both happen in time-bounded steps, with each step justified by reduced complexity, lower cost, or clearer ownership.", "url": "inherit-then-simplify.html", "icon": "assets/icons/inherit-then-simplify.png", "tags": ["organisation", "inheritance", "simplification", "aviv-group", "platform", "modernization"]}, {"id": "ORG-PRIN-TOOLING-EXPLICIT-AND-REVERSIBLE", "status": "draft:gray", "title": "Organisation Principle: Tooling Decisions Are Explicit and Reversible", "excerpt": "Pick tools deliberately, write down why, plan how to leave. Organization's tooling decisions - Claude Code as the AI default, .NET as the backend default, ECS as compute, MSK as messaging - are dated and reviewable, not eternal. A reversible tooling decision is one whose context, scope, and exit path are explicit enough that the next review can compare evidence to a stated frame, not to taste.", "url": "tooling-explicit-and-reversible.html", "icon": "assets/icons/tooling-explicit-and-reversible.png", "tags": ["organisation", "tooling", "ai", "reversibility", "governance", "review-cadence"]}, {"id": "ORG-PRIN-CAPABILITIES-FOLLOW-OWNERSHIP", "status": "draft:gray", "title": "Organisation Principle: Capabilities Follow Ownership", "excerpt": "Every shared capability at Organization - service, library, platform, golden path, Skill, MCP server, subagent, CLAUDE.md fragment, runbook - belongs to a named owner with a real lifecycle. Capabilities without owners decay, drift, and quietly poison the platform. The principle is simple: if it can be used by another team, it has an owner, a lifecycle, and a decommissioning plan. Otherwise it should not exist as a shared thing.", "url": "capabilities-follow-ownership.html", "icon": "assets/icons/capabilities-follow-ownership.png", "tags": ["organisation", "ownership", "platform", "lifecycle", "capabilities", "skills", "mcp"]}]}, {"title": "Practices", "description": "How Organization writes things down, talks about them, encodes governance, and applies AI to engineering work.", "posts": [{"id": "ORG-PRIN-MARKDOWN-RECORDS-AS-CANONICAL", "status": "draft:gray", "title": "Practice Principle: Markdown Records as Canonical", "excerpt": "The canonical record of an Organization technical decision, strategy, or durable discussion is a markdown file in git. Slack threads, Google Docs, meeting notes, and wiki pages may support discussion, but the markdown record is the artifact other people will cite, search, link, and learn from in two years. Canonicality is what makes records trustworthy across time. Without it, the same decision is remembered in three different versions and acted on differently.", "url": "markdown-records-as-canonical.html", "icon": "assets/icons/markdown-records-as-canonical.png", "tags": ["practices", "documentation", "adr", "markdown", "git", "knowledge-management"]}, {"id": "ORG-PRIN-ADVICE-IN-PUBLIC", "status": "draft:gray", "title": "Practice Principle: Advice in Public", "excerpt": "Architecture advice happens in the open at Organization. Decisions are made by teams; the conversations supporting those decisions take place where many people can listen, contribute, and learn. The Architecture Advisory Forum is the standing venue, but the principle is broader: prefer ADRs over private memos, public PR reviews over private feedback, and shared forums over 1-1 escalations. Conversation is a learning multiplier; private advice serves one team, public advice serves the organisation.", "url": "advice-in-public.html", "icon": "assets/icons/advice-in-public.png", "tags": ["practices", "advice-process", "communication", "aaf", "learning-organisation", "transparency"]}, {"id": "ORG-PRIN-GOVERNANCE-AS-CODE", "status": "draft:gray", "title": "Practice Principle: Governance as Code", "excerpt": "Encode engineering standards, policies, and review rules as executable artifacts: CI checks, pre-commit hooks, IaC guardrails, Claude Code settings, CLAUDE.md fragments, Skills, MCP allowlists, and pull-request templates. Governance documented only in policy decks fails silently and gets discovered during incidents. Governance encoded in the platform fails loudly and gets fixed in pull requests. The principle is not 'no human review'; it is 'standards that can be enforced should be'.", "url": "governance-as-code.html", "icon": "assets/icons/governance-as-code.png", "tags": ["practices", "governance", "ci", "hooks", "claude-code", "policy", "automation"]}, {"id": "ORG-PRIN-AI-OUTPUT-MUST-BE-GOVERNED", "status": "draft:gray", "title": "Practice Principle: AI Output Must Be Governed", "excerpt": "AI-generated code, configuration, and documentation at Organization is treated as draft input. Human accountability does not move. Every AI change flows through the same engineering standards, reviews, tests, observability, and security gates as human work, plus AI-specific controls: scoped permission modes, hooks, secrets handling, approved tool registries, and audit trails. The principle is simple: AI accelerates engineering work; it does not relax engineering governance.", "url": "ai-output-must-be-governed.html", "icon": "assets/icons/ai-output-must-be-governed.png", "tags": ["practices", "ai", "claude-code", "governance", "policy", "accountability", "security"]}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    let matchStatus = true;
+                    if (activeStatuses.size) {
+                        const liStatus = li.dataset.status || '';
+                        // any-match: post status must equal one of the selected statuses
+                        matchStatus = false;
+                        for (const s of activeStatuses) {
+                            if (liStatus === s.toLowerCase()) {
+                                matchStatus = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag && matchStatus;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>
