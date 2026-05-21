@@ -1,4 +1,4 @@
-# Spec-Driven Tech Docs
+# Spec-Driven Journals
 
 This repository publishes Organization's durable technical writing as a set of
 small static journal sites. Source content lives under `_journals/`, the build
