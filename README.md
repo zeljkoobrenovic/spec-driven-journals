@@ -9,6 +9,8 @@ There is no application framework and no dependency install step for the core
 build. The site generator is a small Python standard-library script, HTML
 templates, CSS, and client-side JavaScript.
 
+See generated examples journals here: [zeljkoobrenovic.github.io/spec-driven-journals](https://zeljkoobrenovic.github.io/spec-driven-journals/)
+
 ## Quick Start
 
 Build the journals and the start page:
