@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grounding, Validation, and Publishing</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Spec-Driven Product Architecture</a><span class="nav-right"><a class="nav-prev" href="modeling-diverse-domains.html" title="Modeling Diverse Domains">← Previous</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">AI-Mediated Modeling</p>
+        <h1>Grounding, Validation, and Publishing</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2026-05-22  ·  9 min · <a class="spec-link" href="evidence-validation-and-publishing.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/evidence-validation-and-publishing/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/evidence-validation-and-publishing/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Spec-Driven Product Architecture</a><span class="nav-right"><a class="nav-prev" href="modeling-diverse-domains.html" title="Modeling Diverse Domains">← Previous</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Grounding, Validation, and Publishing", "date": "2026-05-22", "author": "by Željko Obrenović (obren.io)", "permalink": "evidence-validation-and-publishing", "timetoread": "9 min", "excerpt": "AI-authored product architecture becomes reviewable when grounding connects intended product concepts to explored reality, evidence is explicit, source files validate, and generated documentation is treated as output.", "tags": "grounding, evidence, validation, static documentation, governance", "icon": "assets/icons/evidence-validation-and-publishing.png", "logo": "assets/images/evidence-validation-and-publishing/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["grounding", "evidence", "validation", "static documentation", "governance"], "blocks": [{"type": "markdown", "content": "> AI-authored product architecture becomes reviewable when grounding connects intended product concepts to explored reality, evidence is explicit, source files validate, and generated documentation is treated as output.\n\nThe first job of a product architecture model is not to be impressive. It is to be reviewable.\n\nAI agents can produce a polished product-domain model quickly. But polish is not trust.\n\nThis closing article returns to the frame introduced in [What Is Spec-Driven Product Architecture?](what-is-spec-driven-product-architecture.html): dreaming, exploring, and grounding. Dreaming defines the intended product architecture. Exploring reads reality through source code, cloud activity, delivery logs, finance, incidents, ownership, analytics, and other signals. Grounding connects the two so the model can be challenged.\n\nTrust then comes from evidence discipline, deterministic checks, visible assumptions, and generated documentation that lets humans inspect the model without losing the source-of-truth structure.\n\n## Evidence Separates Facts From Assumptions\n\nEvidence is especially important when modeling real companies, products, or markets.\n\nThe model should separate:\n\n- sourced facts\n- explicit assumptions\n- informed inferences\n- open questions\n\nThat separation matters because product architecture often mixes public facts, internal knowledge, and architectural judgment. An AI agent may infer a plausible product brick or capability from observed product behavior, but it should not present that inference as a sourced fact.\n\nThe same rule applies to metrics. If a company reports a platform-wide revenue number, the model should not rewrite it as a domain-specific revenue number. If a market report uses a particular scope or year, the model should preserve that scope. If no public metric exists, the model can use an assumption only when the assumption is visible.\n\nEvidence discipline is not about slowing the work down. It is about making later review possible.\n\n## Grounding Connects Dreaming And Exploring\n\nThe opening article introduced three activities. This closing article focuses on what makes the third activity operational.\n\n**Dreaming** defines the intended product architecture: product vision, customer value, capabilities, product bricks, delivery model, team design, target states, and roadmap.\n\n**Exploring** investigates reality. This is where the approach connects to [Grounded Architecture](https://grounded-architecture.io/): build lightweight tools and maps over real data so architecture work can see what is actually happening. Useful signals can come from source code, repositories, public-cloud activity, delivery logs, incidents, ownership metadata, product analytics, and finance.\n\n**Grounding** is the evidence join between those two modes. Each important concept in the product-domain model should either connect to evidence or be marked as an assumption. A capability can connect to customer evidence or product analytics. A product brick can connect to repositories, services, cloud assets, APIs, data assets, or operational workflows. A team ownership claim can connect to activity, incident, financial, or accountability signals.\n\nThis makes the model realistic in three ways:\n\n- It reveals concepts that are aspirational but not yet supported by reality.\n- It keeps the model up to date as systems, teams, costs, and activity patterns change.\n- It exposes trends: where investment is growing, where architecture is drifting, where ownership is unclear, and where the product architecture is becoming more or less coherent.\n\nGrounding does not remove judgment. It gives judgment a better substrate.\n\n![Evidence map connecting dreamed product concepts to explored reality signals such as repositories, cloud assets, logs, finance, incidents, analytics, and ownership data.](assets/images/grounding-evidence-map.png)\n*Grounding asks every important concept to connect to evidence, or to be marked as an assumption: capabilities, product bricks, teams, and roadmap targets should all be traceable to real signals where possible.*\n\n![Trend and drift dashboard showing where product architecture is becoming more coherent, where ownership is unclear, and where reality is moving away from the intended model.](assets/images/product-architecture-trend-and-drift-dashboard.png)\n*The same evidence base can show trends and drift: where investment is growing, where ownership is unclear, where confidence is low, and where reality is moving away from the intended product architecture.*\n\n## Validation Catches Mechanical Drift\n\nValidation cannot tell whether the product strategy is good. It can tell whether the source model is broken.\n\nThe source project includes validation scripts for product-domain models. A scoped validator can check JSON parsing, duplicate IDs, brick ownership, team dependencies, and team staffing consistency. Strict ID checks can be added when appropriate.\n\nThat changes the authoring standard.\n\nAn AI agent should not only produce text that sounds plausible. It should leave behind source that can be parsed and checked. This is why the repository emphasizes structured JSON authoring, stable lowercase IDs, schema recognition, and reference consistency.\n\nMechanical validation is not strategic validation. It is the floor.\n\n## Publishing Makes Review Shared\n\nThe project generates a static documentation site from source JSON and HTML templates.\n\nThat generated site is useful because it turns the model into pages that product leaders, architects, engineers, and stakeholders can scan. It shows whether the source tells a coherent story, and whether the grounding claims are visible enough to review.\n\nBut the generated site is output, not source.\n\nThe review loop should look like this:\n\n1. Author or edit source files.\n2. Validate source files.\n3. Generate documentation.\n4. Review rendered pages.\n5. Return to source when the rendered story exposes gaps.\n\nDirectly editing generated docs breaks that loop. It may make one page look better, but it does not improve the model that future agents and generators depend on.\n\n## What Validation Cannot Replace\n\nEven with good evidence and validators, product architecture still needs human judgment.\n\nA validator will not know whether:\n\n- the selected product domain is the right boundary\n- customer groups are strategically meaningful\n- jobs to be done reflect real customer progress\n- KPIs are the right measures\n- product capabilities are too broad or too narrow\n- a product brick is a good ownership boundary\n- a team topology is politically or operationally realistic\n- the roadmap sequence fits business constraints\n\nThose questions require review by people who understand the product, business, and organization.\n\nThe purpose of the structured model is to make that review easier, not unnecessary.\n\n## A Good First Modeling Session\n\nA first session for a new product domain should be deliberately structured:\n\n1. Choose a clear domain and lowercase slug.\n2. Gather source links and internal context.\n3. Ask the agent to inspect repository guidance, mature comparable domains, generators, templates, and relevant skills.\n4. Have the agent propose the domain scope before creating files.\n5. Create source files under `_config/product-domains/<domain-id>/`.\n6. Populate customers, jobs, KPIs, strategy horizons, delivery, capabilities, bricks, teams, objectives, roadmap, evidence, and business context to a useful first depth.\n7. Validate JSON and run scoped domain checks.\n8. Generate documentation only when the source is coherent enough to review.\n9. Review generated pages and return fixes to source.\n10. Record assumptions and gaps for the next session.\n\nThe first version does not need to be perfect. It should be structurally coherent enough that the next session can improve it.\n\n## How To Judge A Draft Domain\n\nA draft domain is useful when it supports informed disagreement.\n\nReviewers should be able to say:\n\n- \"This customer group is missing.\"\n- \"This KPI is not measurable.\"\n- \"This capability is an implementation component, not an outcome.\"\n- \"This brick is too broad for one team to own.\"\n- \"This release depends on a team that is not modeled.\"\n- \"This competitor metric is not comparable.\"\n- \"This assumption should be sourced or marked as an inference.\"\n\nThose are good review comments. They mean the model is concrete enough to challenge.\n\n## The Durable Payoff\n\nThe payoff of spec-driven product architecture is not a prettier documentation site. It is a living product-domain model that humans and AI agents can keep improving.\n\nWhen the model is source-first, grounded, evidence-aware, validated, and published, every session can build on the previous one. The repository becomes more than a collection of generated pages. It becomes a structured memory for product architecture work.\n\nThat is the real promise of [What Is Spec-Driven Product Architecture?](what-is-spec-driven-product-architecture.html): not automatic strategy, but a better substrate for product, architecture, delivery, and AI-mediated authoring to work together.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

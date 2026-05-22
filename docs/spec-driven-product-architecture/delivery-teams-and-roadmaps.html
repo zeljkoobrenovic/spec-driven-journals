@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delivery, Teams, and Roadmaps</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Spec-Driven Product Architecture</a><span class="nav-right"><a class="nav-prev" href="product-bricks-and-capabilities.html" title="Product Bricks and Capabilities">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="ai-agents-as-product-architecture-authors.html" title="AI Agents as Product Architecture Authors">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">From Product Value To Architecture</p>
+        <h1>Delivery, Teams, and Roadmaps</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2026-05-22  ·  8 min · <a class="spec-link" href="delivery-teams-and-roadmaps.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/delivery-teams-and-roadmaps/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/delivery-teams-and-roadmaps/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Spec-Driven Product Architecture</a><span class="nav-right"><a class="nav-prev" href="product-bricks-and-capabilities.html" title="Product Bricks and Capabilities">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="ai-agents-as-product-architecture-authors.html" title="AI Agents as Product Architecture Authors">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Delivery, Teams, and Roadmaps", "date": "2026-05-22", "author": "by Željko Obrenović (obren.io)", "permalink": "delivery-teams-and-roadmaps", "timetoread": "8 min", "excerpt": "A product architecture model becomes operable when delivery, team ownership, objectives, releases, targets, and roadmap overlays are connected to the same customer and brick model.", "tags": "delivery, teams, roadmap, product architecture", "icon": "assets/icons/delivery-teams-and-roadmaps.png", "logo": "assets/images/delivery-teams-and-roadmaps/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["delivery", "teams", "roadmap", "product architecture"], "blocks": [{"type": "markdown", "content": "> A product architecture model becomes operable when delivery, team ownership, objectives, releases, targets, and roadmap overlays are connected to the same customer and brick model.\n\nProduct architecture is often described as structure. Delivery is often described as process. Team design is often described as organization.\n\nIn practice, they are inseparable.\n\nA product architecture that ignores delivery cannot explain how change happens. A delivery plan that ignores architecture cannot explain what is being changed. A team model that ignores product bricks cannot explain who owns the durable parts of the product.\n\nSpec-Driven Product Architecture keeps these concerns in the same domain model.\n\n## Delivery Is Part Of The Architecture\n\nDelivery artifacts describe how the product reaches customers and how change reaches production.\n\nIn the source project, delivery can include:\n\n- channels and touchpoints\n- APIs and events\n- operational workflows\n- MVP scope\n- releases\n- capability mappings\n- delivery risks and constraints\n\nThat information is architectural because it shapes interfaces, dependencies, reliability needs, and ownership boundaries.\n\nFor example, a product that is delivered through mobile apps, partner APIs, and backoffice operations has a different architecture than a product delivered only through a web workflow. A product with regulated approvals has different delivery constraints than a consumer experiment platform. A marketplace with live supply-demand balancing has different release risk than a static content site.\n\nThe delivery model records those differences explicitly.\n\n## Teams Own Bricks, Not Just Tasks\n\nTeam design becomes clearer when product bricks exist.\n\nTeams can be stream-aligned, platform, enabling, data, reliability, compliance, finance, trust, or operational-control teams. The exact shape depends on the domain. The important rule is that teams should have a plausible relationship to the bricks and capabilities they affect.\n\nA team model should answer:\n\n- Which product bricks does this team own?\n- Which capabilities does this team enable or coordinate?\n- Which dependencies create collaboration needs?\n- Which operating responsibilities are ongoing?\n- Which teams need platform support, data support, reliability support, or compliance support?\n\nThis does not mean every brick has a single isolated team. Some capabilities require multiple teams. Some platform bricks serve many teams. Some operating workflows require handoffs. But the model should make those realities visible.\n\nHidden ownership is one of the fastest ways for product architecture to decay.\n\n## Roadmaps Need Model References\n\nRoadmaps are often written as lists of initiatives. That is useful for planning but weak for architecture unless the initiatives point back to the model.\n\nA strong roadmap item can reference:\n\n- customer groups or jobs it improves\n- KPIs it should move\n- capabilities it creates or changes\n- product bricks it builds, evolves, or retires\n- teams involved\n- delivery releases or targets\n- evidence and assumptions\n\nThis makes roadmap discussion more concrete. Instead of asking only \"what are we doing next quarter?\" the model supports questions such as:\n\n- Which customer outcome does this item change?\n- Which bricks are affected?\n- Which team owns the long-term capability after delivery?\n- Which dependencies make this item risky?\n- Which target state does it move us toward?\n- Which assumptions must be validated first?\n\nThe roadmap becomes an overlay on the architecture, not a disconnected plan.\n\n## Objectives And Discoveries Belong In The Same Story\n\nThe source project also models objectives, initiatives, discoveries, targets, documents, and roadmap data.\n\nThis matters because product architecture is never fully known upfront. A domain model should support uncertainty. Discoveries capture hypotheses, research questions, or unresolved constraints. Objectives express outcomes and priorities. Initiatives create delivery movement. Targets describe desired future states.\n\nWhen these artifacts live near the customer, capability, brick, and team model, AI agents can reason across them. A future session can ask:\n\n- Does this initiative still match the objective?\n- Does this discovery change the capability map?\n- Does this team own the brick that the release depends on?\n- Does this target state require new data assets or integrations?\n\nThat is much harder when objectives live in one tool, architecture in another, and delivery notes in a third.\n\n## A Practical Trace\n\nA healthy domain model can support a concrete trace. Continuing the ride-sharing example:\n\n| Model step | Ride-sharing example |\n| --- | --- |\n| Customer group | Riders who need dependable trips under time pressure. |\n| Job to be done | Get matched with a trustworthy trip that arrives when expected. |\n| KPI | Request-to-match time, pickup success rate, ETA accuracy, cancellation rate. |\n| Capability | Book and complete a reliable trip. |\n| Product brick | Matching and dispatch, coordinated with trip request, pricing, payments, and support/recovery. |\n| Team | Marketplace matching team owns dispatch reliability and coordinates with pricing, payments, trust, and support. |\n| Release | Improve dispatch resilience and cancellation recovery. |\n| Roadmap target | Reduce marketplace failure modes before expanding advanced optimization. |\n| Evidence | Product analytics, support tickets, incident history, repository ownership, cloud activity, and financial impact. |\n\nThis trace is the main reason to keep delivery, teams, and roadmaps inside the product architecture model.\n\n## Generated Docs Expose Operating Gaps\n\nAt this stage, the generated static site is not just a publishing convenience. It is a review surface for the operating model.\n\nRaw JSON is useful for agents and validation. Rendered documentation is useful for humans. It lets product leaders, architects, engineers, and stakeholders inspect whether the model tells a coherent story.\n\nIf the generated page for a domain feels disconnected, that is feedback on the source model. Maybe customer groups are too vague. Maybe bricks do not map to capabilities. Maybe teams are named but not connected to ownership. Maybe roadmap items are written as generic plans.\n\nThe review should go back to source.\n\n## The Operating Test\n\nA product architecture model is operable when it can help a team make better decisions:\n\n- Should this initiative be prioritized?\n- Which brick will carry the long-term responsibility?\n- Which team should own the change?\n- Which capability is missing?\n- Which customer outcome is unsupported?\n- Which dependency or data asset creates risk?\n\nIf the model cannot answer questions like these, it may still be a useful description. It is not yet an operating product architecture.\n\nThe next article, [AI Agents as Product Architecture Authors](ai-agents-as-product-architecture-authors.html), explains how AI agents can help author this model without turning it into disconnected generated prose.\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

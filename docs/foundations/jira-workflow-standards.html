@@ -173,9 +173,18 @@
             color: var(--accent);
         }
 
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
         article img {
             max-width: 100%;
             height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
         }
 
         article ul, article ol {
@@ -272,9 +281,9 @@
 </head>
 <body>
 <main>
-    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="package-naming-conventions.html" title="Package Naming Conventions Across JVM, npm, Python, .NET, and OCI">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="backend-guild.html" title="Backend Guild as a Cross-Team Community of Practice">Next →</a></span></nav>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="package-naming-conventions.html" title="Package Naming Conventions Across JVM, npm, Python, .NET, and OCI">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="one-percent-improvements.html" title="One Percent Improvements as a Weekly Engineering Habit">Next →</a></span></nav>
     <header class="post" id="post-header">
-        <p class="section">Issue Tracking</p>
+        <p class="section">Ways of Working</p>
         <h1>Jira as the Issue Tracker and a Unified Workflow Standard Across Teams</h1>
         <p class="byline">QA Platform Team  ·  2026-05-19  ·  14 min · <a class="spec-link" href="jira-workflow-standards.spec.html">View spec</a></p>
         <div class="tags" id="tags"></div>
@@ -283,7 +292,7 @@
     </header>
     <article id="content"></article>
     <footer>
-        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="package-naming-conventions.html" title="Package Naming Conventions Across JVM, npm, Python, .NET, and OCI">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="backend-guild.html" title="Backend Guild as a Cross-Team Community of Practice">Next →</a></span></nav>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="package-naming-conventions.html" title="Package Naming Conventions Across JVM, npm, Python, .NET, and OCI">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="one-percent-improvements.html" title="One Percent Improvements as a Weekly Engineering Habit">Next →</a></span></nav>
     </footer>
 </main>
 
@@ -365,7 +374,7 @@
                 // (some posts embed inline <blockquote>, <div>, etc.).
                 // Stray ampersands still get fixed up.
                 s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
-                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
                 s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
                 s = s.replace(/`([^`]+)`/g, function (_, c) {
                     return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';

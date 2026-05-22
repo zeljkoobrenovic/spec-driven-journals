@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>One Percent Improvements as a Weekly Engineering Habit</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="jira-workflow-standards.html" title="Jira as the Issue Tracker and a Unified Workflow Standard Across Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="backend-guild.html" title="Backend Guild as a Cross-Team Community of Practice">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Ways of Working</p>
+        <h1>One Percent Improvements as a Weekly Engineering Habit</h1>
+        <p class="byline">Organization Tech Strategy  ·  2026-05-22  ·  11 min · <a class="spec-link" href="one-percent-improvements.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/one-percent-improvements/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/one-percent-improvements/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="jira-workflow-standards.html" title="Jira as the Issue Tracker and a Unified Workflow Standard Across Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="backend-guild.html" title="Backend Guild as a Cross-Team Community of Practice">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-FOUND-ONE-PERCENT-IMPROVEMENTS", "status": "draft:gray", "title": "One Percent Improvements as a Weekly Engineering Habit", "date": "2026-05-22", "author": "Organization Tech Strategy", "permalink": "one-percent-improvements", "timetoread": "11 min", "excerpt": "Organization will adopt a lightweight weekly habit of making, recording, and sharing small engineering improvements. The goal is visible continuous progress that improves morale, plus meaningful long-term impact through the cumulative effect of many minor improvements.", "tags": "continuous-improvement, kaizen, engineering-culture, morale, learning-organisation, weekly-ritual", "icon": "assets/icons/one-percent-improvements.png", "logo": "assets/images/one-percent-improvements/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["continuous-improvement", "kaizen", "engineering-culture", "morale", "learning-organisation", "weekly-ritual"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Decision**: Organization will adopt a weekly habit of making, recording, and sharing small engineering improvements. Each team should look for one useful \"1%\" improvement: small enough to complete quickly, concrete enough to notice, and shareable enough for others to copy or adapt. The habit exists to create visible continuous progress and cumulative long-term impact.\n\n## Decision\n\nAdopt **One Percent Improvements** as a lightweight weekly engineering habit.\n\nThe practice is simple:\n\n1. Each team identifies one small improvement during the week.\n2. The team makes the improvement or proves why it needs a follow-up.\n3. The team shares a short note where other teams can see it.\n4. Repeated patterns are connected into standards, principles, records, or larger improvement work.\n\n\"One percent\" is not a measurement target. It is a reminder to look for improvements small enough to keep moving.\n\n## How to Read This Decision\n\nThis decision asks teams to build a habit, not a reporting programme.\n\n| It is | It is not |\n| --- | --- |\n| A weekly prompt to make one small thing better. | A quota for productivity theatre. |\n| A way to make progress visible. | A replacement for roadmap work. |\n| A source of morale through agency and motion. | A substitute for fixing systemic blockers. |\n| A way to let useful local practices spread. | A central approval process. |\n| A feed of signals for guilds, curators, and the AAF. | A demand that every improvement become a formal record. |\n\nThe habit works when teams feel more agency at the end of the week than they had at the start.\n\n## Rationale\n\nLarge improvements matter, but they are expensive to start and easy to postpone. Minor improvements are different. They fit between normal work, create a short feedback loop, and help teams experience progress even when larger outcomes take months.\n\nThe theory of minor improvements has two claims:\n\n| Claim | Why it matters |\n| --- | --- |\n| **Visible progress improves morale.** | People are more willing to improve a system when they can see recent evidence that improvement is possible. |\n| **Small changes compound.** | A single cleanup may be modest. Hundreds of shared cleanups across teams change the engineering environment. |\n\nThe cumulative effect is not only mathematical. It is cultural. Teams that repeatedly improve their tools, records, tests, dashboards, onboarding paths, and operational habits start to see improvement as part of the work rather than as a special initiative.\n\nIf a capability could literally improve by one percent every week, the annual compounding effect would be large. Most engineering improvements do not measure that cleanly. The practical point is simpler: small friction reductions accumulate, and the morale created by visible progress makes the next improvement easier to start.\n\n## Weekly Process\n\nThe process should fit into existing team routines.\n\n| Step | Question | Output |\n| --- | --- | --- |\n| Notice | What slowed us down, confused us, or created avoidable friction this week? | Candidate improvement. |\n| Choose | What can we improve in less than a few hours? | One focused action. |\n| Do | Can we ship the improvement now, or at least reduce uncertainty? | Change, note, or follow-up. |\n| Share | What changed and why might others care? | Short weekly note. |\n| Connect | Is this a repeated pattern or cross-team issue? | Link, record, guild topic, or AAF topic. |\n\nThe weekly note should be short:\n\n| Field | Example |\n| --- | --- |\n| **Improvement** | Added a missing runbook link to the service dashboard. |\n| **Why it helped** | On-call engineers no longer need to search three places during alerts. |\n| **Can others copy it?** | Yes: dashboard panels should link directly to the runbook and owner channel. |\n| **Follow-up** | Backend Guild to check whether other tier-one services have the same gap. |\n\nIf a team cannot find anything small, that is a useful signal. It may mean the team is overloaded, the work is too fragmented, or the improvement opportunities are too large for a weekly habit and need explicit planning.\n\n## What Counts as a Minor Improvement\n\nA good one percent improvement is small, real, and repeatable.\n\n| Area | Good examples |\n| --- | --- |\n| Code | Delete dead code, remove a dead feature flag, simplify a confusing helper, add a missing test around a brittle path. |\n| Operations | Delete unused infrastructure resources, add an actionable alert link, clarify a dashboard title, fix a runbook step discovered during support. |\n| Delivery | Remove a manual release step, improve a flaky local command, document a recurring review checklist. |\n| Knowledge | Archive an inactive source code repository, add a missing cross-link, write a short decision note, clarify ownership in a README. |\n| Onboarding | Improve the first-run path, name the common setup failure, add one screenshot where people get stuck. |\n| Collaboration | Close an inactive Slack channel, replace a vague hand-off with a clear owner, expectation, and next action. |\n\nThe improvement should leave the environment better than it was. A meeting about improvement does not count unless it produces a change, decision, or sharper follow-up.\n\n## Relationship to Technical Debt\n\nSome one percent improvements are technical-debt removal: deleting dead code, archiving inactive repositories, removing unused infrastructure, simplifying brittle paths, or closing obsolete collaboration spaces.\n\nBut the habit is broader than formal technical-debt management. Teams should make these improvements even when nobody has labelled the friction as debt yet. A confusing script, stale dashboard, unclear owner, unused resource, or abandoned channel may be too small to enter a debt register, but it still taxes attention every week.\n\nThe best use of the habit is preventive. Remove small sources of friction before they become visible technical debt, incident contributors, onboarding traps, or recurring morale drains.\n\n## Sharing the Improvement\n\nSharing is part of the work because local improvements often solve shared problems.\n\nA useful share note:\n\n* names the specific friction;\n* describes the small change;\n* links the artifact if there is one;\n* says whether another team can copy it;\n* names a follow-up only when one is needed.\n\nTeams should avoid polished success stories. The best notes are short, concrete, and honest. \"We found this annoying and removed it\" is more useful than a ceremonial update.\n\n## From Local Notes to Durable Records\n\nMost weekly improvements stay local. Some become signals.\n\n| Signal | Next step |\n| --- | --- |\n| Several teams fix the same documentation gap. | Curators improve the relevant record structure. |\n| Several teams patch around the same platform limitation. | Bring the pattern to the relevant guild. |\n| A small improvement reveals a standards gap. | Draft or update a foundation, principle, or decision record. |\n| A recurring issue has architecture-wide consequences. | Bring it to [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html). |\n| A local fix becomes generally reusable. | Share the template, script, checklist, or example. |\n\nThe goal is not to formalise everything. The goal is to notice when local progress is telling the organisation something.\n\n## What This Means for Teams\n\n* Treat improvement as part of normal engineering work.\n* Keep the improvement small enough to finish.\n* Prefer concrete changes over broad intentions.\n* Share useful notes even when the change feels modest.\n* Copy and adapt improvements from other teams.\n* Escalate patterns, not every individual note.\n* Protect the habit from becoming a metric or ceremony.\n\nManagers and tech leads should make room for the practice by asking, \"What did we make easier this week?\" and by valuing unglamorous work that reduces future friction.\n\n## Anti-Patterns\n\n* **Improvement quota.** Teams invent low-value activity because someone expects a weekly number.\n* **Heroic cleanup.** The \"minor\" improvement quietly becomes a large unplanned project.\n* **Private progress.** Teams improve locally but do not share, so others repeat the same discovery.\n* **Cosmetic motion.** Notes celebrate activity that did not change the system, workflow, or understanding.\n* **Debt register dependency.** Teams wait for a formal technical-debt label before removing obvious small friction.\n* **Blame through visibility.** Shared notes are used to compare teams rather than spread learning.\n* **Avoiding systemic work.** Minor improvements are used to dodge the larger investment a recurring problem needs.\n\n## Success Indicators\n\nThe habit is working when:\n\n* teams can name recent improvements without searching;\n* small irritations disappear before they become accepted background noise;\n* improvement notes are copied across teams;\n* repeated notes reveal standards, tooling, or architecture patterns;\n* people see that they have permission to improve the environment around them;\n* the organisation has fewer \"everyone knows this is bad\" problems that never get touched.\n\n## Scope and Revisiting\n\nThis decision applies to engineering teams and communities of practice. It covers small improvements to code, delivery, operations, documentation, collaboration, and local engineering systems.\n\nIt does not replace planned platform work, incident remediation, roadmap commitments, architectural decision-making, or investment in systemic problems. When the same minor improvement keeps recurring, treat it as evidence that the system needs a larger change.\n\nRevisit this record after one quarter of use. Look for whether the habit is still lightweight, whether people find the shared notes useful, and whether repeated patterns are being connected to durable records or action.\n\n## Related Records\n\n* [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) — where cross-team architecture implications can be discussed.\n* [The Curator Role for Records, Principles, and Strategies](curator-role.html) — who can connect repeated improvement notes into corpus improvements.\n* [Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](markdown-records.html) — the durable format when an improvement becomes a record.\n* [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html) — the workflow for substantive follow-up records.\n\n## Authoritative References\n\n* Masaaki Imai, *Kaizen*\n* W. Edwards Deming, *Out of the Crisis*\n* James Clear, *Atomic Habits*\n* Public writing on marginal gains and continuous improvement\n\n## Appendix: Vocabulary\n\n| Term | Meaning |\n| --- | --- |\n| **One percent improvement** | A small improvement that makes the engineering environment measurably or noticeably better. |\n| **Minor improvement** | A change small enough to complete quickly but real enough to reduce future friction. |\n| **Weekly note** | The short shared description of what changed, why it helped, and whether others can copy it. |\n| **Pattern** | Repeated minor improvements that point to a wider opportunity, gap, or systemic problem. |\n| **Compounding** | The cumulative effect of many small improvements reinforcing each other over time. |\n| **Technical debt** | A design, code, infrastructure, process, or knowledge gap that creates future cost unless it is repaid or removed. |\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

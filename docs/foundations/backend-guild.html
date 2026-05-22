@@ -173,9 +173,18 @@
             color: var(--accent);
         }
 
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
         article img {
             max-width: 100%;
             height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
         }
 
         article ul, article ol {
@@ -272,7 +281,7 @@
 </head>
 <body>
 <main>
-    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="jira-workflow-standards.html" title="Jira as the Issue Tracker and a Unified Workflow Standard Across Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="frontend-guild.html" title="Frontend Guild as a Cross-Team Web Consortium">Next →</a></span></nav>
+    <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="one-percent-improvements.html" title="One Percent Improvements as a Weekly Engineering Habit">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="frontend-guild.html" title="Frontend Guild as a Cross-Team Web Consortium">Next →</a></span></nav>
     <header class="post" id="post-header">
         <p class="section">Communities of Practice</p>
         <h1>Backend Guild as a Cross-Team Community of Practice</h1>
@@ -283,7 +292,7 @@
     </header>
     <article id="content"></article>
     <footer>
-        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="jira-workflow-standards.html" title="Jira as the Issue Tracker and a Unified Workflow Standard Across Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="frontend-guild.html" title="Frontend Guild as a Cross-Team Web Consortium">Next →</a></span></nav>
+        <nav class="post-nav"><a class="nav-back" href="index.html">ORG Tech Foundations</a><span class="nav-right"><a class="nav-prev" href="one-percent-improvements.html" title="One Percent Improvements as a Weekly Engineering Habit">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="frontend-guild.html" title="Frontend Guild as a Cross-Team Web Consortium">Next →</a></span></nav>
     </footer>
 </main>
 
@@ -365,7 +374,7 @@
                 // (some posts embed inline <blockquote>, <div>, etc.).
                 // Stray ampersands still get fixed up.
                 s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
-                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
                 s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
                 s = s.replace(/`([^`]+)`/g, function (_, c) {
                     return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
