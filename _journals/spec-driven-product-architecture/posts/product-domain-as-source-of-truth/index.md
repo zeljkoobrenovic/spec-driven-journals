@@ -17,15 +17,14 @@ The central authoring unit in Spec-Driven Product Architecture is the product do
 
 A product domain is not just a market category and not just a software bounded context. It is the durable modeling boundary for a coherent product area: the customers it serves, the jobs it supports, the product strategy it pursues, the capabilities it needs, the product bricks that make those capabilities real, and the teams and roadmap that move it forward.
 
-In the source project, domains live under:
+In the source project, domains live under [`_config/product-domains/<domain-id>/`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config/product-domains).
 
-```text
-_config/product-domains/<domain-id>/
-```
-
-That folder is the source of truth. The generated HTML under `docs/product-domains/<domain-id>/` is the review and publishing surface.
+That folder is the source of truth. The generated HTML under [`docs/product-domains/<domain-id>/`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/docs/product-domains) is the review and publishing surface.
 
 The next articles use Ride Sharing Marketplace as a running example. Its [source specification folder](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config/product-domains/ride-sharing-marketplace) shows the authored model, and its [generated documentation](https://zeljkoobrenovic.github.io/spec-driven-product-architecture/product-domains/ride-sharing-marketplace/start/index.html) shows the review surface produced from that model.
+
+![Real Estate Marketplace generated start page with cards for customers, insights, competition, product bricks, deployments, teams, objectives, KTLO, and releases.](assets/extras/screenshot_start_page_of_one_product_architecture.png)
+*A generated domain entry page turns the source folder into a navigable review surface. The cards are not separate documents; they are rendered views over the same product-domain model.*
 
 ## Why The Domain Folder Matters
 
@@ -39,7 +38,7 @@ The domain folder gives the agent a working memory that is:
 - **validatable** - JSON can be parsed and references can be checked.
 - **publishable** - generated documentation lets humans review the model without reading raw JSON.
 
-This is why the repository guidance says to start in `_config/**`, not in generated pages.
+This is why the repository guidance says to start in [`_config/**`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config), not in generated pages.
 
 ## The Main Source Files
 
@@ -47,19 +46,19 @@ The current project contains many domains, including ride sharing, online retail
 
 | Source area | Role in the model |
 | --- | --- |
-| `_domain/DOMAIN.md` | Short framing note: why this domain exists and what it covers. |
-| `start/config.json` | Domain identity used by generated entry pages. |
-| `customers/customers.json` | Customer groups, personas, jobs to be done, KPI pyramids, strategy horizons, and outcomes. |
-| `customers/insights.json` | Research notes and customer insights where the domain uses them. |
-| `product-deployments/products.json` | Market-facing product surfaces and product lines. |
-| `product-deployments/deployment.json` | Deployment and delivery shape for those products. |
-| `delivery/releases.json` | Concrete release and delivery planning artifacts. |
-| `product-bricks/product-bricks.json` | Implementation-facing brick catalog: systems, modules, dependencies, and data. |
-| `product-bricks/product-capability.json` | Outcome-based capabilities composed from product bricks and external systems. |
-| `objectives/...` | Current, next, KTLO, archived objectives, initiatives, and discoveries. |
-| `teams/teams.json` | Ownership, team topology, responsibilities, coordination, and staffing assumptions. |
-| `business/scorecard.json` and `business/competition.json` | Business context, scorecard, market landscape, and sourced competitor facts. |
-| `data/data-assets.json` | Data assets used or owned by the domain. |
+| [`_domain/DOMAIN.md`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/_domain/DOMAIN.md) | Short framing note: why this domain exists and what it covers. |
+| [`start/config.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/start/config.json) | Domain identity used by generated entry pages. |
+| [`customers/customers.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/customers/customers.json) | Customer groups, personas, jobs to be done, KPI pyramids, strategy horizons, and outcomes. |
+| [`customers/insights.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/customers/insights.json) | Research notes and customer insights where the domain uses them. |
+| [`product-deployments/products.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/product-deployments/products.json) | Market-facing product surfaces and product lines. |
+| [`product-deployments/deployment.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/product-deployments/deployment.json) | Deployment and delivery shape for those products. |
+| [`delivery/releases.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/delivery/releases.json) | Concrete release and delivery planning artifacts. |
+| [`product-bricks/product-bricks.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/product-bricks/product-bricks.json) | Implementation-facing brick catalog: systems, modules, dependencies, and data. |
+| [`product-bricks/product-capability.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/product-bricks/product-capability.json) | Outcome-based capabilities composed from product bricks and external systems. |
+| [`objectives/...`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config/product-domains/ride-sharing-marketplace/objectives) | Current, next, KTLO, archived objectives, initiatives, and discoveries. |
+| [`teams/teams.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/teams/teams.json) | Ownership, team topology, responsibilities, coordination, and staffing assumptions. |
+| [`business/scorecard.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/business/scorecard.json) and [`business/competition.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/business/competition.json) | Business context, scorecard, market landscape, and sourced competitor facts. |
+| [`data/data-assets.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/data/data-assets.json) | Data assets used or owned by the domain. |
 
 The exact set can evolve, but the discipline should not: product architecture lives in source files, not in one-off prose.
 

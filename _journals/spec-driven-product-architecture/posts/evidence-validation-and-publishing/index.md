@@ -48,6 +48,9 @@ The opening article introduced three activities. This closing article focuses on
 
 **Grounding** is the evidence join between those two modes. Each important concept in the product-domain model should either connect to evidence or be marked as an assumption. A capability can connect to customer evidence or product analytics. A product brick can connect to repositories, services, cloud assets, APIs, data assets, or operational workflows. A team ownership claim can connect to activity, incident, financial, or accountability signals.
 
+![Implementation evidence page for a search results brick, showing repository-analysis cards with source-code size, commits, cost signals, and report links.](assets/extras/screenshot_product_brick_connecting_to_implementation_evidence.png)
+*Grounding becomes tangible when a product brick can point to implementation evidence. Repository cards do not decide the architecture, but they give reviewers concrete signals to challenge or support the model.*
+
 This makes the model realistic in three ways:
 
 - It reveals concepts that are aspirational but not yet supported by reality.
@@ -119,7 +122,7 @@ A first session for a new product domain should be deliberately structured:
 2. Gather source links and internal context.
 3. Ask the agent to inspect repository guidance, mature comparable domains, generators, templates, and relevant skills.
 4. Have the agent propose the domain scope before creating files.
-5. Create source files under `_config/product-domains/<domain-id>/`.
+5. Create source files under [`_config/product-domains/<domain-id>/`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config/product-domains).
 6. Populate customers, jobs, KPIs, strategy horizons, delivery, capabilities, bricks, teams, objectives, roadmap, evidence, and business context to a useful first depth.
 7. Validate JSON and run scoped domain checks.
 8. Generate documentation only when the source is coherent enough to review.

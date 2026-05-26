@@ -16,7 +16,7 @@ Product architects, AI-agent operators, and engineering teams who need to unders
 ## Success criteria
 
 - [ ] Reader can describe the product domain as the main modeling boundary.
-- [ ] Reader understands why `_config/product-domains/<domain-id>/` matters more than generated `docs/`.
+- [ ] Reader understands why [`_config/product-domains/<domain-id>/`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config/product-domains) matters more than generated [`docs/`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/docs).
 - [ ] Reader can name the core source files and what each contributes.
 - [ ] Reader understands why stable IDs and schema reuse matter for AI-mediated work.
 - [ ] Reader knows where to inspect the Ride Sharing Marketplace source folder and generated documentation used as the running example.

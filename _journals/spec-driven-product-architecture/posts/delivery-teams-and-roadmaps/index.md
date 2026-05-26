@@ -41,6 +41,9 @@ For example, a product that is delivered through mobile apps, partner APIs, and 
 
 The delivery model records those differences explicitly.
 
+![Product deployment view showing market-facing platforms, their customers, interfaces, channels, and related bricks.](assets/extras/screenshot_product_deployments.png)
+*Deployment views connect the product promise to concrete channels and interfaces. They make it harder to discuss delivery without noticing which surfaces, bricks, and customers are affected.*
+
 ## Teams Own Bricks, Not Just Tasks
 
 Team design becomes clearer when product bricks exist.
@@ -55,9 +58,15 @@ A team model should answer:
 - Which operating responsibilities are ongoing?
 - Which teams need platform support, data support, reliability support, or compliance support?
 
+![Teams overview showing role blocks, headcount, group leadership, and stream-aligned teams in the Real Estate Marketplace model.](assets/extras/screenshot_product_teams.png)
+*A team view gives the architecture an ownership surface. It shows whether the model has enough staffing and topology detail to support the bricks and capabilities it names.*
+
 This does not mean every brick has a single isolated team. Some capabilities require multiple teams. Some platform bricks serve many teams. Some operating workflows require handoffs. But the model should make those realities visible.
 
 Hidden ownership is one of the fastest ways for product architecture to decay.
+
+![Team dependency view showing explicit team relationships and shared product-brick dependencies for a homepage team.](assets/extras/screenshot_product_one_team_dependecies.png)
+*The dependency view exposes coordination work. A team can appear well-scoped on paper and still depend on shared bricks, enabling teams, or supporting platforms that need to be planned explicitly.*
 
 ## Roadmaps Need Model References
 
@@ -84,11 +93,17 @@ This makes roadmap discussion more concrete. Instead of asking only "what are we
 
 The roadmap becomes an overlay on the architecture, not a disconnected plan.
 
+![Releases overview showing release timing, affected customers, product channels, and product bricks.](assets/extras/screenshot_releases.png)
+*A release view becomes more useful when scope is tied back to customers, channels, and bricks. It lets reviewers discuss sequencing as architecture, not only as calendar management.*
+
 ## Objectives And Discoveries Belong In The Same Story
 
 The source project also models objectives, initiatives, discoveries, targets, documents, and roadmap data.
 
 This matters because product architecture is never fully known upfront. A domain model should support uncertainty. Discoveries capture hypotheses, research questions, or unresolved constraints. Objectives express outcomes and priorities. Initiatives create delivery movement. Targets describe desired future states.
+
+![Objectives overview showing company objectives next to team objectives and key-result target cards.](assets/extras/screenshot_objectives.png)
+*Objectives make priorities visible at the same level as architecture. The useful question is not just what a team owns, but which measurable outcome that ownership is meant to improve.*
 
 When these artifacts live near the customer, capability, brick, and team model, AI agents can reason across them. A future session can ask:
 
@@ -98,6 +113,9 @@ When these artifacts live near the customer, capability, brick, and team model, 
 - Does this target state require new data assets or integrations?
 
 That is much harder when objectives live in one tool, architecture in another, and delivery notes in a third.
+
+![Team objective detail page with mapped company objectives, key results, status chips, and a dependency map from objective to initiative.](assets/extras/screenshot_team_objective.png)
+*A detailed objective page shows the traceability standard: a goal should connect to company priorities, key results, and initiatives clearly enough that reviewers can challenge the links.*
 
 ## A Practical Trace
 

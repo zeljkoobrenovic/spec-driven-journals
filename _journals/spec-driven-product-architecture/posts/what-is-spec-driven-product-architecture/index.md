@@ -38,7 +38,7 @@ A product architecture model should not stop at a vision statement. It should co
 | Roadmap | Targets, initiatives, discoveries, releases, and sequencing. |
 | Evidence and grounding | Source links, assumptions, documents, data signals, and architecture references that ground the model. |
 
-The model is written as structured JSON under `_config/`, rendered into static documentation, and maintained by AI agents and humans together.
+The model is written as structured JSON under [`_config/`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config), rendered into static documentation, and maintained by AI agents and humans together.
 
 Readers can also explore many generated product-domain examples in the published [Spec-Driven Product Architecture overview](https://zeljkoobrenovic.github.io/spec-driven-product-architecture/start-packages/overview/index.html).
 
@@ -101,16 +101,16 @@ Without structure, an agent tends to produce general product strategy prose. Wit
 
 In this project, the agent is not asked to "write a strategy." It is asked to create or refine source files such as:
 
-- `customers/customers.json`
-- `product-deployments/products.json`
-- `product-deployments/deployment.json`
-- `delivery/releases.json`
-- `product-bricks/product-bricks.json`
-- `product-bricks/product-capability.json`
-- `objectives/current/...`
-- `teams/teams.json`
-- `business/competition.json`
-- `start/config.json`
+- [`customers/customers.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/customers/customers.json)
+- [`product-deployments/products.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/product-deployments/products.json)
+- [`product-deployments/deployment.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/product-deployments/deployment.json)
+- [`delivery/releases.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/delivery/releases.json)
+- [`product-bricks/product-bricks.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/product-bricks/product-bricks.json)
+- [`product-bricks/product-capability.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/product-bricks/product-capability.json)
+- [`objectives/current/...`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config/product-domains/ride-sharing-marketplace/objectives/current)
+- [`teams/teams.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/teams/teams.json)
+- [`business/competition.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/business/competition.json)
+- [`start/config.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/start/config.json)
 
 That is a different operating model. The agent has to work inside a domain language, preserve stable IDs, reuse existing schema patterns, keep references consistent, and validate the model before generated documentation is trusted.
 

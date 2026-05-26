@@ -37,7 +37,7 @@ This division keeps accountability where it belongs. The agent helps produce the
 
 ## Why Local Skills Matter
 
-The source project includes a repo-local skill library under `_skills/product-domains/`.
+The source project includes a repo-local skill library under [`_skills/product-domains/`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_skills/product-domains).
 
 Those skills are not marketing copy. They are operational guidance for agent work. They define how to approach domain framing, market research, customer segmentation, jobs to be done, KPI architecture, product strategy, product-brick architecture, delivery model design, team topology, roadmap design, schema recognition, structured JSON authoring, and static documentation modeling.
 
@@ -89,7 +89,10 @@ Product strategy and implementation architecture are easier to review when the d
 ![Gallery of AI-generated product-architecture storytelling assets, including domain icons, JTBD comic panels, customer journey storyboards, capability infographics, and dependency visuals.](assets/images/ai-generated-product-architecture-storytelling-gallery.png)
 *Structured visuals make the product-domain model easier to scan: icons, journey panels, JTBD comics, capability infographics, dependency maps, and trend views can all be generated from the same source language.*
 
-The important rule is that these visuals should be generated from the source model, not invented beside it. In the source repository, the image-generation scripts under [`_config/scripts/image-generation`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config/scripts/image-generation) are a concrete example. They scan product-domain customer models, read `jobsToBeDone` and `customerJourneyStories`, build image prompts from the actual customer, JTBD, journey, outcome, capability, and KPI language, write images into `customers/media/`, and update `customers.json` media references when needed.
+The important rule is that these visuals should be generated from the source model, not invented beside it. In the source repository, the image-generation scripts under [`_config/scripts/image-generation`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config/scripts/image-generation) are a concrete example. They scan product-domain customer models, read `jobsToBeDone` and `customerJourneyStories`, build image prompts from the actual customer, JTBD, journey, outcome, capability, and KPI language, write images into [`customers/media/`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config/product-domains/ride-sharing-marketplace/customers/media), and update [`customers.json`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_config/product-domains/ride-sharing-marketplace/customers/customers.json) media references when needed.
+
+![Rendered customer job page showing AI-generated comic panels for defining search intent, evaluating market fit, and shortlisting properties.](assets/extras/screenshot_customer_jobs_to_be_done.png)
+*The rendered page is the important test. Generated panels are useful only when they stay tied to the customer model and make the job easier to inspect, discuss, and revise.*
 
 ![Source-first image generation workflow from customers.json through prompt generation and image APIs into customers/media and updated media references.](assets/images/source-first-image-generation-workflow.png)
 *Source-first image generation keeps media tied to the model: customer JSON feeds prompts, image APIs create the assets, and the source model records the resulting media references.*
@@ -106,7 +109,7 @@ A useful AI-mediated session follows a source-first sequence:
 2. Inspect existing domains and generator expectations.
 3. Load only the relevant local skills.
 4. Clarify the intended domain and sources.
-5. Draft or revise source files under `_config/product-domains/<domain-id>/`.
+5. Draft or revise source files under [`_config/product-domains/<domain-id>/`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/tree/main/_config/product-domains).
 6. Keep IDs lowercase and stable.
 7. Keep references synchronized across customers, capabilities, bricks, teams, objectives, and delivery.
 8. Validate JSON and run the scoped domain validator.
@@ -121,7 +124,7 @@ Validation is not a bureaucratic step. It changes what agents optimize for.
 
 If the only output is prose, the agent optimizes for fluency. If the output must be valid JSON, reference-consistent, schema-aligned, and renderable, the agent has to work with the actual model.
 
-The source project includes validation scripts such as:
+The source project includes validation scripts such as [`_skills/product-domains/scripts/validate-domain-model.py`](https://github.com/zeljkoobrenovic/spec-driven-product-architecture/blob/main/_skills/product-domains/scripts/validate-domain-model.py):
 
 ```text
 python3 _skills/product-domains/scripts/validate-domain-model.py <domain-id>

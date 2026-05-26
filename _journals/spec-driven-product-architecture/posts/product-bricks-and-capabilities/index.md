@@ -33,6 +33,9 @@ Capabilities are not modules. They are not teams. They are not epics. They descr
 
 This matters because capabilities preserve the language of value. They let product leaders, architects, and AI agents discuss what the product must be able to do before diving into how the system does it.
 
+![Capabilities view showing seeker and owner journey capabilities, each connected to the product bricks that support the outcome.](assets/extras/screenshot_product_capabilities.png)
+*A capability view should still read in the language of outcomes. The supporting bricks are visible, but they serve the capability rather than replacing it with an implementation catalog.*
+
 ## Product Bricks Are Implementation-Facing Units
 
 A product brick is a buildable, ownable part of the product architecture.
@@ -66,6 +69,9 @@ This avoids two bad extremes:
 
 The three-level structure gives the generated documentation a navigable architecture while keeping the source model clear enough for AI agents to maintain.
 
+![Product bricks map for Real Estate Marketplace grouped by seeker, owner, intermediary, lifecycle management, lead management, and tools areas.](assets/extras/screenshot_product_bricks.png)
+*Grouped bricks help reviewers scan the implementation-facing landscape without losing the product context. The structure is useful only when the groups reflect how the domain actually works.*
+
 ## Modules Make Bricks Concrete
 
 Bricks become concrete through modules. A module might be a web component, mobile component, BFF, API, backoffice interface, message consumer, stateless service, stateful service, service, or integration.
@@ -86,11 +92,17 @@ This is not meant to turn every domain model into a full solution design. It giv
 ![Product brick module layers showing UI, interfaces, bus, services, integrations, and data dependencies inside one implementation-facing brick.](assets/images/product-brick-module-layers.png)
 *A product brick becomes useful when it is concrete enough to show user interfaces, APIs, services, integrations, data dependencies, and the places where other bricks touch it.*
 
+![Module dependency diagram for a search results brick, with UI, API, worker, and service modules connected by dependency arrows.](assets/extras/screenshot_product_modules.png)
+*The rendered module view makes the brick inspectable at a lower level. Reviewers can see whether a brick has coherent internal parts and whether dependencies are explicit enough to discuss.*
+
 ## Dependencies Are Where The Model Gets Honest
 
 Product architecture becomes useful when it shows dependencies.
 
 A brick can depend on another brick. A module can call or consume another module. A brick can own or use data assets. A capability can depend on several bricks and external systems.
+
+![Data assets view showing customer profile, contact point, identity credential, and saved-search alert assets with producing and consuming bricks.](assets/extras/screenshot_product_bricks_data.png)
+*Data dependencies are part of product architecture, not a side inventory. Showing producers and consumers makes ownership, privacy, and integration questions visible before they become delivery surprises.*
 
 These connections reveal whether the strategy is plausible.
 

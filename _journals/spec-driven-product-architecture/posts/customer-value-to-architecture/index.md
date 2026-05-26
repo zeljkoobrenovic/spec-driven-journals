@@ -25,6 +25,9 @@ The first architectural question is not "which systems do we need?" It is "whose
 
 A strong product domain separates customer groups that have meaningfully different needs, constraints, risks, or success criteria. In a ride-sharing marketplace, riders, drivers, fleet operators, business travel administrators, and marketplace operators do not experience the product in the same way. In an internal developer platform, application developers, platform engineers, security reviewers, reliability engineers, and engineering leaders may all be customers of different parts of the domain.
 
+![Customers overview page showing several Real Estate Marketplace customer groups with cares, desired wins, and fears.](assets/extras/screenshot_customers_overview.png)
+*The customer view makes segmentation concrete: different actors carry different anxieties, success criteria, and operating needs, so they should not collapse into one generic persona.*
+
 That separation matters for architecture because different groups pull the system in different directions.
 
 | Customer distinction | Architecture consequence |
@@ -57,6 +60,9 @@ The project guidance is especially strict about two journey stages:
 
 Those stages should not be reused as labels for in-product search or task execution. Keeping the language clean prevents the model from mixing market acquisition, product usage, and operational workflows.
 
+![Customer journey page for a committed home buyer showing trigger, discovery, evaluation, trial, engagement, and retention stages.](assets/extras/screenshot_customer_journeys.png)
+*A journey view keeps the job language tied to customer progress over time. It lets reviewers see whether the modeled steps describe a real decision path or just a list of product screens.*
+
 ## Use KPIs To Make Value Operational
 
 Customer value becomes operational when it has measurable signals.
@@ -74,6 +80,9 @@ For example:
 
 KPI leaves should be concrete. A branch named "Experience" is not enough. The model should say what observable signal proves the experience is improving.
 
+![KPI tree for a committed home buyer with outcome metrics for search efficiency, decision confidence, shortlist quality, and response timing.](assets/extras/screenshot_customer_kpis.png)
+*The KPI tree turns customer value into reviewable signals. Each leaf should be specific enough that a later product or architecture discussion can ask whether the system is actually improving it.*
+
 ## Add Strategy Horizons
 
 A product architecture model should not only describe the current product. It should say where the product is going.
@@ -89,6 +98,9 @@ Each horizon should answer:
 - Which milestones show progress?
 
 The horizon is where product vision becomes a planning constraint. A capability that is irrelevant to the 1-year horizon may still matter as a 3-year investment. A product brick that is operationally critical today may need to be contained, replaced, or sunset by a later horizon.
+
+![Product vision page for a home buyer showing one-year, three-year, and five-year horizons with milestones, business KPIs, customer KPIs, and target vision.](assets/extras/screenshot_customer_product_vision.png)
+*Strategy horizons make time part of the model. Near-term foundations, medium-term platform moves, and longer-term operating ambitions can be reviewed together instead of living in disconnected roadmap prose.*
 
 ## Carry Customer Value Into Architecture
 
