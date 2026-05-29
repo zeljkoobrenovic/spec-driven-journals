@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spec: AI Will Do the Heavy Lifting. You Still Need to Lead</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="prepare-for-ai-future.html">← AI Will Do the Heavy Lifting. You Still Need to Lead</a><span class="nav-right"></span></nav>
+    <header class="post" id="post-header">
+        <p class="section"><span>SPEC</span> • <span class="post-status"><span class="status-dot" style="background:green"></span>accepted</span> • <span>revised 2026-05-28</span></p>
+        <h1>Spec: AI Will Do the Heavy Lifting. You Still Need to Lead</h1>
+        <p class="byline"></p>
+        <div class="tags" id="tags"></div>
+        
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="prepare-for-ai-future.html">← AI Will Do the Heavy Lifting. You Still Need to Lead</a><span class="nav-right"></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: AI Will Do the Heavy Lifting. You Still Need to Lead\n\n## Intent\n\nHelp technology leaders prepare for AI-shaped work by shifting attention from artifact production to agency, judgment, and persuasion. The post should create urgency without hype: AI can accelerate routine technical work, but leaders remain valuable when they initiate, evaluate, contextualize, and align people around decisions.\n\n## Audience\n\n- Principal engineers, staff engineers, and architects who increasingly guide technical direction through influence rather than formal authority.\n- Engineering managers and engineering directors who need to align AI-shaped technical work with delivery, teams, and business outcomes.\n- VPs of Engineering, CTOs, and other senior technology leaders deciding which skills to practice now rather than waiting for an AI operating model to become obvious.\n\nReaders should leave with a practical self-assessment frame and a short list of habits to start practicing immediately.\n\n## Success criteria\n\n- [x] Reader understands agency, judgment, and persuasion as the three core skills the post emphasizes.\n- [x] Reader can distinguish AI-generated outputs from human technical leadership accountability.\n- [x] Reader understands why agency, judgment, and persuasion can be supported by AI but cannot simply be delegated to AI.\n- [x] Reader sees what can go wrong when leaders lack agency, judgment, or persuasion, including hype-following, and what better leadership looks like in contrast.\n- [x] Reader recognizes the article as relevant beyond architecture titles, including senior IC, management, and executive engineering roles.\n- [x] Reader sees concrete role-specific stakes, a judgment comparison table, and a short practice loop they can try immediately.\n- [x] Reader gets practical actions without being told that every legacy skill is worthless.\n- [x] Reader understands that agency, judgment, and persuasion remain durable, but how leaders practice them will keep changing as AI capabilities evolve.\n- [x] Source references to Jakob Nielsen and Gregor Hohpe are clear enough to distinguish quotation, paraphrase, and adaptation.\n- [x] Illustrative scenarios are not presented as sourced case studies.\n- [x] The post works as a standalone AI Notes article, not only as a book chapter.\n\n## Non-goals\n\n- A catalog of AI architecture tools.\n- A prediction piece about exact AI capabilities in 2030.\n- A policy for AI governance, security, or model selection.\n- A claim that all legacy architecture skills should be abandoned immediately.\n- A proof that the illustrative scenarios happened in named organizations.\n\n## Open questions\n\n- Should this post later link to more concrete internal records about AI governance, AI engineering standards, or architecture operating models?\n- Should AI Notes adopt the same source-density expectations as decision journals, or stay lighter and essay-like?\n\n## Decision log\n\n- **2026-05-28** — Kept Nielsen's agency/judgment/persuasion frame as the post's backbone because it gives the article a memorable structure and a clear source.\n- **2026-05-28** — Reframed examples as illustrative scenarios instead of case studies because no organization-specific source was attached.\n- **2026-05-28** — Changed manuscript-specific wording to standalone note wording so the page makes sense inside the `ai-notes` journal.\n- **2026-05-28** — Softened capability claims by separating current AI assistance from speculative AI-native architecture practices.\n- **2026-05-28** — Added Hohpe as a sourced influence rather than leaving a standalone unsourced quotation.\n- **2026-05-28** — Broadened the target audience from IT architects to technology leaders, including principal engineers, staff engineers, engineering managers/directors, VPs of Engineering, CTOs, and architects.\n- **2026-05-28** — Polished the article by shortening the opening role list, replacing one architecture-design scenario with an AI adoption leadership scenario, and renaming a legacy subheading to avoid echoing removed book framing.\n- **2026-05-28** — Separated immediate practices from longer-term mindset shifts so the two post-closing sections have clearer jobs.\n- **2026-05-28** — Expanded the article with role-specific stakes, an `AI can suggest / Leaders must decide` judgment table, and a one-week practice loop.\n- **2026-05-28** — Added negative/positive contrast tables for agency, judgment, and persuasion so the cost of missing each skill is explicit.\n- **2026-05-28** — Added a section explaining why agency, judgment, and persuasion can be AI-supported but not fully AI-delegated.\n- **2026-05-28** — Performed a light final copy-edit to tighten wording without changing structure or argument.\n- **2026-05-28** — Added the point that agency, judgment, and persuasion are durable capabilities whose practical expression will keep changing as AI develops.\n\n## Sources\n\n- **External**\n  - [Jakob Nielsen, \"Use the AI Transition Period to Transition Your Career\"](https://www.uxtigers.com/post/ai-transition-career-transition) — agency, judgment, persuasion, transition-period framing, and the mammoth-hunter analogy.\n  - [Gregor Hohpe, \"Think Like An Architect, Part 2: Architects See More Dimensions\"](https://architectelevator.com/architecture/multiple-dimensions/) — the idea that architects make others smarter rather than being the smartest person in the room.\n\n## Changelog\n\n- **2026-05-28** — Elaborated the opening, judgment section, and immediate practices to make the article more actionable. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added evolving-practice framing for agency, judgment, and persuasion as AI capabilities develop. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added contrast examples for what happens when leaders lack agency, judgment, or persuasion. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added the AI-delegation boundary: AI can assist thinking, but leaders own direction, accountability, and consent. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Light copy-edit for flow and repetition. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Clarified the distinction between near-term practices and transition-era mindset shifts. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Polished the article after review; addressed remaining low-priority findings without changing the core thesis. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Broadened article and spec audience from architects to technology leaders while preserving the agency/judgment/persuasion frame. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added accepted spec after review-driven article revision; updated post for source fidelity, standalone framing, scenarios, capability precision, and alt text. *(Zeljko, AI-mediated session)*\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>

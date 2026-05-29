@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>From Prompting to Intent: The Leadership Ladder for Working with AI</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">AI Notes</a><span class="nav-right"><a class="nav-prev" href="fashion-driven-software-development.html" title="Software Has Seasons Now: Fashion-Driven Product Development in the AI Age">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="prepare-for-ai-future.html" title="AI Will Do the Heavy Lifting. You Still Need to Lead">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Leadership</p>
+        <h1>From Prompting to Intent: The Leadership Ladder for Working with AI</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2025-10-21  ·  18 min · <a class="spec-link" href="leadership-ladder.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/leadership-ladder/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/leadership-ladder/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <article id="content"></article>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">AI Notes</a><span class="nav-right"><a class="nav-prev" href="fashion-driven-software-development.html" title="Software Has Seasons Now: Fashion-Driven Product Development in the AI Age">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="prepare-for-ai-future.html" title="AI Will Do the Heavy Lifting. You Still Need to Lead">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "From Prompting to Intent: The Leadership Ladder for Working with AI", "date": "2025-10-21 21:12:01 +0100", "author": "by Željko Obrenović (obren.io)", "permalink": "leadership-ladder", "icon": "assets/icons/leadership-ladder.png", "timetoread": "18 min", "excerpt": "As AI systems become more capable, technology leaders need to move from command-style prompting to intent-based collaboration: clear purpose, constraints, guardrails, review, and accountability.", "logo": "assets/images/leadership-ladder/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "blocks": [{"type": "markdown", "content": "> **KEY POINTS:**\n>\n> * Better prompts are useful, but they are not enough for AI-assisted leadership work.\n> * David Marquet's Leader-Leader model offers a practical analogy: move from \"do what I say\" to clear intent, competence, control boundaries, and accountability.\n> * Spec-driven development is one practical way to do this: the spec turns intent into a reviewable contract before AI starts producing implementation or prose.\n> * AI can act on stated intent, but it cannot own consequences. Leaders still own purpose, trade-offs, consent, escalation, and trust.\n> * The more autonomy an AI system receives, the stronger the guardrails must become: scope, evidence, logging, review points, stop conditions, and human ownership.\n\nMany leaders are learning to prompt AI better. That is useful, but it is not the real transition.\n\nThe deeper shift is from **prompting** to **intent-based collaboration**. When AI is used only for small tasks, a good prompt may be enough: summarize this text, draft that email, compare these options. But as AI systems start helping with architecture reviews, delivery planning, incident analysis, policy drafting, research, code changes, and multi-step workflows, the leadership problem changes. The question is no longer only \"What should I ask AI to do?\" It becomes \"What kind of intent, context, boundaries, and review discipline does this work require?\"\n\nThis is where David Marquet's [Leader-Leader](https://davidmarquet.com/books/turn-the-ship-around-book/) and Intent-Based Leadership ideas become useful. Marquet's work is about human organizations, not AI systems. The point is not that AI becomes a person, a peer, or a moral agent. The point is that his model gives technology leaders a language for moving beyond command-and-control without losing accountability.\n\nIn AI work, that language matters. Command-style interaction says: **do this**. Intent-based interaction says: **here is what I am trying to achieve, here is the context, here are the constraints, here is where you may act, here is where you must stop, and here is how I will judge the result**.\n\nSpec-driven development is the same shift made concrete. A spec is not only a requirements document. In AI-assisted work, it is the written expression of intent: what outcome matters, what boundaries apply, what success looks like, what questions remain open, and how the work will be reviewed.\n\nThat is a different leadership posture.\n\n![Leadership ladder from leader-follower toward empowered scoped leadership](assets/images/leadership-ladder/ai-leadership-ladder.png)\n**Figure 1:** *The useful lesson from the Leader-Leader model is not that AI becomes a leader. It is that better work requires clearer intent, stronger context, and explicit control boundaries.*\n\n## The Leadership Problem Hidden Inside AI Adoption\n\nMost AI adoption starts with commands:\n\n* \"Summarize this document.\"\n* \"Write a strategy memo.\"\n* \"Create a rollout plan.\"\n* \"Review this architecture.\"\n* \"Tell me which option is best.\"\n\nFor simple work, commands are fine. If the task is narrow, low-risk, and easy to verify, there is no need to overcomplicate it. But technology leaders rarely work only on narrow tasks. They work on ambiguous decisions, conflicting constraints, incomplete information, political context, team capacity, customer impact, delivery risk, and long-term consequences.\n\nThat is where command-style prompting becomes brittle. A model can produce something polished without understanding what matters. It can optimize for the surface of the request while missing the operating reality behind it. It can give a confident recommendation without knowing which constraints are non-negotiable, which stakeholders will resist, which teams are already overloaded, or which risks the organization cannot absorb.\n\nThe risk is not only bad output. The bigger risk is **false delegation**: leaders start treating generated artifacts as if they contain judgment, ownership, and legitimacy.\n\nThey do not.\n\n![Diagram showing AI-generated artifacts separated from human judgment and accountability by a clear boundary.](assets/images/leadership-ladder/false-delegation-boundary.jpeg)\n**Figure 2:** *AI can produce artifacts, but leaders still own judgment, legitimacy, and consequences.*\n\nAI can expand the surface area of thinking. It can generate options, expose assumptions, critique plans, draft alternatives, and execute bounded work. But leaders still own the hard parts:\n\n| AI can help with... | Leaders still own... |\n| --- | --- |\n| Generating options | Deciding what matters in this context |\n| Drafting plans | Choosing an accountable path |\n| Comparing trade-offs | Naming which trade-offs are legitimate |\n| Finding risks | Deciding which risks are acceptable |\n| Rewriting messages | Earning trust with real people |\n| Executing bounded tasks | Setting boundaries, review points, and escalation paths |\n\nThat is why the leadership model matters. If leaders keep interacting with AI only as a command receiver, they will either underuse it or overtrust it. The better path is to become more explicit about intent.\n\n## What Marquet's Model Contributes\n\nIn *Turn the Ship Around!*, Marquet describes moving away from a traditional leader-follower model toward a leader-leader model: people closer to the work take more ownership, think more actively, and act with clearer intent. His later work in [Leadership Is Language](https://davidmarquet.com/books/leadership-is-language/) emphasizes that leadership is not only about decisions. It is also about the words and operating habits that shape whether people comply, contribute, or think.\n\nThe important ideas for AI-era technology leadership are:\n\n* **Intent beats instruction when the work is complex.** Instructions tell someone what action to take. Intent explains what outcome matters and why.\n* **Control requires competence and clarity.** Delegation without capability and shared understanding is not empowerment. It is negligence.\n* **Language shapes behavior.** \"Do this\" creates a different operating mode than \"I intend to achieve this outcome under these constraints; help me reason about the path.\"\n* **Ownership must stay visible.** In human organizations, ownership can be distributed. With AI systems, responsibility can be supported but not transferred.\n\nThese ideas adapt well to AI work if we keep the boundary clear. AI systems do not have human commitment, judgment, courage, social trust, or moral accountability. They do not own the consequences of a bad rollout, a broken customer promise, a compliance failure, or a team losing confidence in leadership.\n\nBut AI systems can work from richer intent. They can use context, constraints, examples, policies, tools, and feedback loops. They can help leaders think better if leaders express more than a command.\n\nThe leadership move is not to pretend the AI is a person. The leadership move is to make the work legible enough that an AI system can help without becoming the hidden decision-maker.\n\n## The Boundary of the Analogy\n\nThe phrase \"AI teammate\" can be useful in casual conversation, but it can also blur an important distinction. People can accept responsibility. AI systems cannot. People can understand trust, status, fear, ambition, fatigue, incentives, and consequences from the inside. AI systems can model some of those patterns, but they do not live with the outcomes.\n\nSo the analogy needs limits.\n\n| In human Leader-Leader systems | In human-AI collaboration |\n| --- | --- |\n| People are developed to think, decide, and own outcomes. | AI systems are configured, prompted, evaluated, and bounded. |\n| Control can move closer to people doing the work. | Permissions can move closer to the workflow only with guardrails. |\n| Competence includes skill, judgment, and professional responsibility. | Competence must be demonstrated through tests, examples, evaluations, and observed behavior. |\n| Clarity includes shared purpose and organizational context. | Clarity must be supplied through prompts, context windows, policies, memory, tools, and review. |\n| Accountability can be distributed across humans. | Accountability remains with humans and organizations. |\n\nThis distinction protects the article from two weak extremes.\n\nThe first extreme is command-and-control AI use: leaders reduce AI to a faster clerk and miss the opportunity to improve thinking. The second extreme is naive autonomy: leaders let AI produce or execute important work without enough context, review, or ownership. Both fail for the same reason. They treat the interaction model as a tooling detail, when it is actually a leadership system.\n\n## The Human-AI Leadership Ladder\n\nThe ladder below is not a moral ranking. Lower levels are not bad. Sometimes the right move is a direct command. The problem is using the wrong level for the risk and ambiguity of the work.\n\nUse lower levels for narrow, low-risk, easily verified tasks. Move higher only when intent is clear, competence is proven, control is bounded, and review is built in.\n\n| Level | Mode | Typical language | Good for | Failure mode |\n| --- | --- | --- | --- | --- |\n| 1 | Command | \"Do this exact task.\" | Formatting, extraction, conversion, simple transformations. | Brittle outputs; no shared context. |\n| 2 | Prompt/request | \"Draft a proposal for...\" | First drafts, summaries, quick alternatives. | Polished but generic artifacts. |\n| 3 | Critique/reflection | \"Here is my thinking; challenge it.\" | Finding gaps, assumptions, contradictions, blind spots. | AI stays trapped inside the frame you gave it. |\n| 4 | Recommendation | \"Compare options and recommend one.\" | Trade-off exploration and decision preparation. | Recommendations hide assumptions or overfit to incomplete context. |\n| 5 | Intent | \"I intend to achieve X under constraints Y; help design the path.\" | Ambiguous leadership work where context matters. | Requires human clarity, judgment, and review discipline. |\n| 6 | Bounded delegation | \"Execute these steps within these limits; escalate if...\" | Repeatable multi-step work with known boundaries. | Silent scope creep, missed exceptions, weak observability. |\n| 7 | Monitored autonomy | \"Operate within this policy and report exceptions.\" | Mature, well-instrumented workflows with strong controls. | Dangerous without auditability, rollback, and accountable ownership. |\n\nThe ladder becomes useful when leaders start asking: **What level is this work really at?**\n\nIf you ask AI to reformat meeting notes, Level 1 is enough. If you ask it to challenge your migration plan, Level 3 may be right. If you ask it to compare adoption options for AI-assisted development across an engineering organization, Level 4 or 5 is more appropriate. If you ask an agent to open issues, modify files, run checks, and propose a pull request, you are already near Level 6. If you let systems operate continuously across production workflows, you are approaching Level 7, and the governance burden increases sharply.\n\nMost leadership failures happen when people use high-autonomy tools with low-maturity language.\n\nSpec-driven development is one way to raise the maturity of the language before the AI starts acting. A vague task such as \"build this feature\" or \"rewrite this article\" leaves the agent to infer intent. A lightweight spec forces the human to make intent, success criteria, constraints, and review expectations visible first. That is what allows AI-assisted work to move up the ladder without turning into hidden delegation.\n\n## The Shift Is in the Language\n\nHere is the difference between a command and an intent statement.\n\n**Command-style prompt:**\n\n> Write a strategy for adopting AI-assisted development across engineering.\n\nThis may produce a plausible document. It may even be useful as a first draft. But it gives the AI almost none of the leadership context: why this matters, what constraints exist, what the organization is ready for, what must be protected, and how the output will be judged.\n\n**Intent-based prompt:**\n\n> I intend to help our engineering leadership team decide how to introduce AI-assisted development over the next two quarters without reducing code quality, weakening security review, or overwhelming managers. We have 180 engineers across eight product groups, uneven AI experience, strong security concerns, and pressure to improve delivery speed.  \n>\n> Help me compare three adoption paths: a central enablement team, embedded champions, and broad access with lightweight guardrails. For each path, identify prerequisites, risks, manager workload, security implications, early signals of success, and reasons to stop. Ask clarifying questions before recommending a path.\n\nThe second prompt is longer, but length is not the point. The difference is leadership structure:\n\n| Prompt element | Leadership function |\n| --- | --- |\n| \"I intend to...\" | States purpose and ownership. |\n| \"over the next two quarters\" | Defines time horizon. |\n| \"without reducing...\" | Names constraints and non-negotiables. |\n| \"180 engineers...\" | Supplies operating context. |\n| \"compare three paths\" | Defines the decision space. |\n| \"prerequisites, risks...\" | Makes evaluation criteria explicit. |\n| \"reasons to stop\" | Builds in escalation and safety. |\n| \"Ask clarifying questions\" | Prevents premature confidence. |\n\nThis is why intent-based interaction is not just prompt engineering. Prompt engineering often focuses on getting a better output from the model. Intent-based leadership focuses on making the work, boundaries, and accountability clear enough that the output can be trusted, challenged, and used.\n\n![Before-and-after diagram showing a command prompt transformed into an intent-based prompt with purpose, context, constraints, review criteria, and escalation.](assets/images/leadership-ladder/command-to-intent-language-shift.jpeg)\n**Figure 3:** *Intent-based language turns a request into a reviewable boundary for AI-assisted work.*\n\n## Spec-Driven Development Is Intent Written Down\n\nSpec-driven development is often described as a software delivery practice: write the spec, let an AI agent or developer implement it, then use tests and review to check whether the result matches the spec. That is useful, but the leadership lesson is broader.\n\nThe spec is the place where intent becomes inspectable.\n\nWithout a spec, AI-assisted work often depends on an implicit agreement between the human and the model. The leader knows the context, constraints, and quality bar, but the AI sees only the immediate prompt and whatever context happens to be available. The result can look coherent while missing the actual intent.\n\nWith a spec, the collaboration changes. The AI is no longer asked to guess what good means. The spec gives it a target, boundaries, evidence, and review criteria. More importantly, it gives humans something to inspect before and after the work.\n\n![Diagram showing a spec connecting human intent, AI execution, validation, and human review.](assets/images/leadership-ladder/spec-as-intent-contract.jpeg)\n**Figure 4:** *A spec makes intent inspectable before AI acts and reviewable after it produces work.*\n\nThis is why [Spec-Driven Authoring as a Lightweight Default for Posts](../foundations/spec-driven-authoring.html) matters in this journal. For substantive writing, the sibling `spec.md` states the intent, audience, success criteria, non-goals, open questions, decisions, sources, and changelog before the post is treated as done. The spec is the authoring contract; the article is the published artifact.\n\nThe same pattern applies to code, product architecture, policy, process design, and organizational change. [What Is Spec-Driven Product Architecture?](../spec-driven-product-architecture/what-is-spec-driven-product-architecture.html) moves the idea upward: the specification is not only a feature brief or technical design, but a structured source model that connects product value, delivery, implementation, teams, roadmap, and evidence.\n\nIn ladder terms, the spec is what helps a team move from Level 2 or 3 to Level 5 or 6:\n\n| Spec element | Leadership function | Ladder effect |\n| --- | --- | --- |\n| Intent | Names the outcome and accountable purpose. | Moves from task execution to outcome orientation. |\n| Audience or users | Identifies who the work must serve. | Prevents generic output. |\n| Success criteria | Defines how the result will be judged. | Turns review into a checkable activity. |\n| Non-goals | Sets boundaries and prevents scope creep. | Makes delegation safer. |\n| Open questions | Makes uncertainty visible. | Creates escalation triggers. |\n| Sources and context | Grounds the work in existing knowledge. | Reduces invention and context loss. |\n| Decision log | Records why the path was chosen. | Keeps accountability visible. |\n| Tests, validation, or review checklist | Checks whether the result matches intent. | Demonstrates competence before more autonomy is granted. |\n\nA good spec does not remove judgment. It concentrates judgment where it belongs: before work starts, at review points, and when trade-offs appear. It also prevents the common AI failure where a polished artifact hides that nobody agreed what problem was being solved.\n\nThe practical leadership rule is straightforward: **when the work is consequential enough that a bad result would matter, do not rely on a prompt alone. Write the intent down as a spec.**\n\n## Example 1: Architecture Trade-Off Review\n\nA principal engineer wants help deciding whether to move a set of services toward event-driven architecture.\n\n**Weak interaction:**\n\n> Should we use event-driven architecture for our order platform?\n\nThe AI returns familiar points: decoupling, scalability, eventual consistency, observability, operational complexity. The answer is not wrong, but it is also not a decision. It does not know the team's operational maturity, current incident patterns, ownership model, customer impact, or migration appetite.\n\n**Intent-based interaction:**\n\n> I intend to decide whether our order platform should move selected workflows toward event-driven architecture in the next six months. The goal is to reduce coupling between inventory, payments, and fulfillment without increasing incident response time or making debugging harder for on-call teams.  \n>\n> Context: we have six services, two teams, uneven eventing experience, a growing number of cross-service incidents, and limited observability. Payments must remain strongly auditable. Fulfillment can tolerate some delay, but customer communication cannot be inconsistent.  \n>\n> Help me evaluate where event-driven architecture is appropriate, where request/response should remain, what capabilities we must build first, and what migration sequence would reduce risk. State assumptions, ask clarifying questions, and separate \"do now\" from \"defer.\"\n\nThe second interaction does not delegate architecture judgment. It improves the conditions for judgment. The leader still decides. But the AI can now contribute more usefully because the intent, constraints, and evaluation criteria are visible.\n\n| Without intent | With intent |\n| --- | --- |\n| AI gives a generic pattern comparison. | AI evaluates the pattern against operational maturity, service boundaries, auditability, and migration risk. |\n| The leader receives plausible advice but must reconstruct the context afterward. | The leader uses AI to stress-test a context-rich decision. |\n| The output may sound confident while hiding assumptions. | The interaction requires assumptions and clarifying questions to be surfaced. |\n\n## Example 2: Delivery Risk Review\n\nAn engineering director wants AI to help assess whether a product group can commit to a major quarterly plan.\n\n**Weak interaction:**\n\n> Review this roadmap and tell me if it is realistic.\n\nThe answer may list risks, dependencies, and suggestions. But realism depends on things the roadmap does not contain: team fatigue, unfinished migrations, hiring gaps, incident load, stakeholder politics, and the credibility of past estimates.\n\n**Intent-based interaction:**\n\n> I intend to decide whether this product group can commit to the Q3 roadmap without creating hidden delivery risk. I do not want a generic risk list. I want help identifying where the plan is likely to break.  \n>\n> Context: the team has 22 engineers, two new managers, one unresolved reliability program, and three customer commitments already in flight. Last quarter, the team delivered 70% of planned scope and carried over two platform dependencies.  \n>\n> Review the roadmap against capacity, dependency risk, operational load, manager attention, and reversibility. Produce three outputs: risks that require leadership action, risks the team can manage locally, and questions I should ask before approving the plan.\n\nThis moves the interaction from \"give me an answer\" to \"help me exercise judgment.\" The AI becomes a reasoning aid, not the approver.\n\n| Without intent | With intent |\n| --- | --- |\n| The director receives a polished risk summary that may miss the organization's real failure modes. | The director asks AI to evaluate the plan against specific capacity, dependency, and operational constraints. |\n| The AI may optimize for completeness. | The AI is directed toward decision usefulness. |\n| Approval pressure remains hidden. | The prompt makes the leadership decision explicit: whether to commit, change scope, or pause. |\n\n## Guardrails Scale With Autonomy\n\nThe higher you move on the ladder, the less useful it is to think in terms of \"better prompts\" alone. At Levels 5 through 7, leaders need an operating model.\n\nBefore giving AI more autonomy, ask three questions:\n\n1. **Is the intent clear?** The outcome, non-goals, constraints, quality bar, and decision owner are explicit.\n2. **Is competence demonstrated?** The AI system has performed this kind of work reliably under similar conditions, and its output can be evaluated.\n3. **Is control bounded?** Permissions, data access, budget, workflow scope, time horizon, escalation paths, and stop conditions are defined.\n\nIf any answer is no, do not increase autonomy. Improve clarity, reduce scope, add review, or keep the work at a lower ladder level.\n\n| Guardrail | Why it matters | Practical test |\n| --- | --- | --- |\n| Scope | Prevents the AI from expanding the task silently. | Can you state what the system may and may not touch? |\n| Competence evidence | Prevents trust from being based on demos or confidence. | Have you seen reliable performance on representative work? |\n| Observability | Makes AI-assisted work inspectable. | Can a human reconstruct what happened and why? |\n| Review checkpoints | Keeps judgment in the loop. | Does the workflow stop before consequential decisions? |\n| Stop conditions | Defines when the system must pause. | Are uncertainty, errors, missing context, or policy conflicts explicit escalation triggers? |\n| Rollback | Reduces the cost of mistakes. | Can you undo or contain the action quickly? |\n| Ownership | Keeps accountability human. | Is one person or team accountable for the outcome? |\n\nThe principle is simple: **autonomy without observability is not delegation; it is drift**.\n\n![Diagram showing AI autonomy increasing alongside stronger guardrails such as scope, observability, review, rollback, and ownership.](assets/images/leadership-ladder/guardrails-scale-with-autonomy.jpeg)\n**Figure 5:** *As AI autonomy increases, guardrails must scale with it; otherwise delegation becomes drift.*\n\n## Common Failure Modes\n\nIntent-based AI collaboration is easy to praise and hard to practice. These are the traps I would watch for.\n\n**Mistaking longer prompts for clearer intent.**  \nSome prompts are long because they are precise. Others are long because the leader has not decided what matters. Intent-based prompting should sharpen the work, not bury it under context.\n\n**Treating AI fluency as leadership.**  \nA leader who can generate polished memos quickly is not necessarily leading. Leadership begins when the generated work becomes a decision, a trade-off, a commitment, or a change in how people work.\n\n**Delegating judgment through the back door.**  \nAsking AI to \"recommend the best option\" can be useful. Accepting that recommendation without testing assumptions is abdication.\n\n**Using agentic language too loosely.**  \n\"Agentic AI\" should mean a system can plan, act, observe, and continue within boundaries. If there are no boundaries, stop conditions, or audit trail, the word \"agentic\" is covering a governance gap.\n\n**Anthropomorphizing the system.**  \nAI may write in a confident, cooperative, or reflective tone. That does not mean it understands responsibility. Friendly language can make weak delegation feel safer than it is.\n\n**Hiding the human decision.**  \nIf a plan says \"AI recommended...\" but does not name who approved the path and why, accountability has become foggy. That is a leadership smell.\n\n## What This Means for Technology Leaders\n\nThis article complements [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html), where the core leadership capabilities are agency, judgment, and persuasion. The ladder here is more operational. It describes how those capabilities show up in daily AI-assisted work.\n\nFor principal and staff engineers, the ladder means using AI to deepen technical reasoning, not just produce more documents. A strong leader asks AI to expose assumptions, generate alternatives, simulate consequences, and critique trade-offs, then uses human judgment to decide.\n\nFor engineering managers, it means making AI-assisted work visible enough that teams can learn from it. Managers need to know when AI is being used, what review is expected, and how quality is protected. Otherwise AI adoption becomes private, uneven, and hard to improve.\n\nFor directors, VPs, and CTOs, it means matching autonomy to organizational readiness. A tool can be powerful before the organization is ready to absorb it. Leaders need policy, enablement, governance, and learning loops, not just access.\n\nFor architects, it means shifting from artifact production to decision stewardship. AI can draft diagrams and compare patterns. The architect's contribution is to connect those artifacts to operating constraints, team capabilities, long-term evolvability, and stakeholder understanding.\n\nAcross all roles, the pattern is the same: AI can do more of the heavy lifting, but leaders must become more explicit about the work.\n\n## A Practice for This Week\n\nPick one AI interaction that matters: a strategy memo, architecture review, planning risk assessment, policy draft, incident analysis, or stakeholder update. Rewrite the prompt as an intent statement.\n\nIf the work is consequential, do not stop at a better prompt. Write a small spec first. It can be one page. The point is not ceremony; the point is to create a reviewable boundary between human intent and AI execution.\n\nUse this structure:\n\n1. **Intent:** I intend to...\n2. **Context:** The situation is...\n3. **Constraints:** We must not...\n4. **Decision space:** The options or paths are...\n5. **Evaluation criteria:** Judge the answer by...\n6. **Boundaries:** You may do... You must not do...\n7. **Review point:** Stop and ask before...\n8. **Escalation:** If you find..., surface it explicitly.\n\nFor spec-driven development, add three more fields:\n\n1. **Inputs:** Source files, APIs, policies, examples, or documents the AI should use.\n2. **Validation:** Tests, build commands, review checklist, or acceptance criteria that prove the work matches the spec.\n3. **Changelog:** What changed in the spec or implementation and why.\n\nThen ask AI to respond in this order:\n\n1. Restate the intent in its own words.\n2. List assumptions.\n3. Ask clarifying questions.\n4. Propose an approach.\n5. Identify risks and stop conditions.\n6. Produce the artifact only after the frame is clear.\n\nThis simple practice changes the interaction. It slows the work down at the right moment: before confidence outruns clarity.\n\nThe same habit scales. For a small task, the spec may be a few bullets in the prompt. For a feature, it may be a tracked specification with acceptance tests. For product architecture, it may be a structured source model. For a durable article like this one, it is a sibling `spec.md` that makes the writing contract visible. In every case, the leadership move is the same: make intent explicit before asking AI to act.\n\n## Final Thought\n\nThe future of AI-assisted leadership will not be defined only by model capability. It will also be defined by the quality of the intent people put around the work.\n\nWeak leaders will use AI to produce more artifacts faster. Stronger leaders will use AI to think more clearly, test more options, expose more assumptions, and make better decisions with people who understand the reasoning.\n\nThat is the real leadership ladder: not from human to AI, but from command to intent.\n\n## To Probe Further\n\n* [Turn the Ship Around!](https://davidmarquet.com/books/turn-the-ship-around-book/), by David Marquet\n* [Leadership Is Language](https://davidmarquet.com/books/leadership-is-language/), by David Marquet\n* [Intent-Based Leadership](https://www.intentbasedleadership.com/about-us), Intent-Based Leadership International\n* [Spec-Driven Authoring as a Lightweight Default for Posts](../foundations/spec-driven-authoring.html)\n* [What Is Spec-Driven Product Architecture?](../spec-driven-product-architecture/what-is-spec-driven-product-architecture.html)\n* [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html)\n\n## Questions to Consider\n\nUse these questions to assess whether you are merely prompting AI or leading AI-assisted work with intent.\n\n* Which AI interactions in your current workflow are still command-style because the work is genuinely simple?\n* Where are you asking AI for recommendations without giving enough context, constraints, or evaluation criteria?\n* Which AI-assisted tasks in your team deserve a lightweight spec before work begins?\n* What work have you quietly delegated to AI without clear review points?\n* Which workflow could move one level up the ladder safely this month?\n* What stop conditions would make your AI-assisted work more trustworthy?\n"}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        const mermaidNodes = [];
+        data.blocks.forEach(function (block) {
+            const r = renderers[block.type];
+            if (!r) {
+                const pre = document.createElement('pre');
+                pre.textContent = '[unknown block type: ' + block.type + ']';
+                root.appendChild(pre);
+                return;
+            }
+            const node = r(block);
+            if (node instanceof Node) {
+                root.appendChild(node);
+                if (block.type === 'mermaid') mermaidNodes.push(node);
+            }
+        });
+
+        if (mermaidNodes.length && window.mermaid) {
+            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+            window.mermaid.run({nodes: mermaidNodes});
+        }
+    })();
+</script>
+</body>
+</html>
