@@ -1,5 +1,5 @@
 ---
-title: "Can RISC Make AI Less Risky?"
+title: "Can RISC-Inspired Platforms Make AI Less Risky?"
 date: 2026-05-28
 author: by Željko Obrenović (obren.io)
 permalink: risc-for-ai-software-development
@@ -486,7 +486,7 @@ In the AI era, the economics are changing. The cost of producing code is falling
 
 The next generation of AI-assisted software development may not be won by teams with the largest instruction set. It may be won by teams that deliberately reduce the platform surface until humans and AI can reason about the system together.
 
-RISC makes AI less risky because it makes the generated system smaller, more regular, more inspectable, and easier to evaluate.
+RISC-inspired platforms can make AI less risky when they make generated systems smaller, more regular, more inspectable, and easier to evaluate.
 
 Not primitive. Not anti-framework. Not nostalgic.
 

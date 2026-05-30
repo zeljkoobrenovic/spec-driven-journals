@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-05-28
+revised: 2026-05-30
 ---
 
-# Spec: Software Has Seasons Now: Fashion-Driven Product Development in the AI Age
+# Spec: Software Has Seasons Now: Fashion-Driven Development for Generative AI Products
 
 ## Intent
 
@@ -98,6 +98,9 @@ None for the current draft.
 
 ## Decision log
 
+- **2026-05-30** - Retitled the post to `Software Has Seasons Now: Fashion-Driven Development for Generative AI Products`
+  to scope the argument to generative-model products without repeating
+  "product" in the title.
 - **2026-05-28** - Chose `Fashion-Driven Software Development` as the title
   because it is memorable, opinionated, and directly carries the metaphor.
 - **2026-05-28** - Put the article in a new AI Notes section,
@@ -141,6 +144,8 @@ None for the current draft.
     listing Samuel Beek as founder of Schematik and ex-CPO VEED.IO.
   - [Muck Rack podcast snippet with Samuel Beek](https://muckrack.com/podcast/marketer-of-the-month/episodes/1492294-snippet-veed-cpo-samuel-beek-explains-how-/)
     - supporting source for VEED product-testing framing.
+  - [Lars Holmquist, *Intelligence on tap: AI as a new design material*](https://interactions.acm.org/archive/view/july-august-2017/intelligence-on-tap)
+    - background source for treating AI as a design material.
   - [Britannica, Fashion Industry](https://www.britannica.com/art/fashion-industry)
     - background source for fashion as an industry of design, production,
     distribution, marketing, and changing demand.
@@ -150,6 +155,23 @@ None for the current draft.
 
 ## Changelog
 
+- **2026-05-30** - Added matching bold emphasis to the opening key-points block
+  so the skim path starts before the main body. Status `accepted`. *(Zeljko,
+  AI-mediated session)*
+- **2026-05-30** - Added bold emphasis to key phrases so skimming readers can
+  follow the article's main argument through the body text. Status `accepted`.
+  *(Zeljko, AI-mediated session)*
+- **2026-05-30** - Made a light grammar and clarity pass on the published
+  article, tightening model-powered wording and simplifying a few phrases.
+  Status `accepted`. *(Zeljko, AI-mediated session)*
+- **2026-05-30** - Added a body paragraph connecting Holmquist's AI-as-design-
+  material framing to the article's generative-model seasonality argument.
+  Status `accepted`. *(Zeljko, AI-mediated session)*
+- **2026-05-30** - Added Lars Holmquist's `Intelligence on tap: AI as a new
+  design material` to the source list and further reading. Status `accepted`.
+  *(Zeljko, AI-mediated session)*
+- **2026-05-30** - Aligned the published title with the spec's generative-AI
+  product scope. Status `accepted`. *(Zeljko, AI-mediated session)*
 - **2026-05-28** - Made model instability more explicit: new models can regress
   golden scenarios, workflows, controls, safety boundaries, latency/cost
   assumptions, or product fit even when they are stronger overall. Status

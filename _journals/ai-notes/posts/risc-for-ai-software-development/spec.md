@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-05-28
+revised: 2026-05-30
 ---
 
-# Spec: Can RISC Make AI Less Risky?
+# Spec: Can RISC-Inspired Platforms Make AI Less Risky?
 
 ## Intent
 
@@ -63,8 +63,11 @@ None for the current draft.
 
 ## Decision log
 
-- **2026-05-28** - Chose `RISC Makes AI Less Risky` as the title because it is
-  short, memorable, and frames the analogy around trust rather than nostalgia.
+- **2026-05-30** - Retitled the post to `Can RISC-Inspired Platforms Make AI Less Risky?`
+  to make clear that the argument is about RISC-like platform design, not RISC
+  itself.
+- **2026-05-28** - Chose the original RISC-centered title because it was short,
+  memorable, and framed the analogy around trust rather than nostalgia.
 - **2026-05-28** - Added a new AI Notes section, `AI Software Development`,
   because the post is about how AI changes development platforms rather than
   product strategy or leadership alone.
@@ -98,6 +101,9 @@ None for the current draft.
 
 ## Changelog
 
+- **2026-05-30** - Aligned the published post title and closing claim with the
+  revised RISC-inspired platform framing. Status `accepted`. *(Zeljko,
+  AI-mediated session)*
 - **2026-05-28** - Added the requirement and article section on risks of
   RISC-style reduction: local-code sprawl, missed edge cases, false confidence,
   fragmentation, and displaced complexity. Status `accepted`. *(Zeljko,
