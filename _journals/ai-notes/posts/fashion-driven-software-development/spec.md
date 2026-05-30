@@ -155,6 +155,12 @@ None for the current draft.
 
 ## Changelog
 
+- **2026-05-30** - Added the intro note that Samuel Beek's VEED experience
+  helped frame the article's "software feels like fashion" metaphor. Status
+  `accepted`. *(Zeljko, AI-mediated session)*
+- **2026-05-30** - Shortened several broad bold highlights so the skim path uses
+  tighter phrases rather than full clauses. Status `accepted`. *(Zeljko,
+  AI-mediated session)*
 - **2026-05-30** - Added matching bold emphasis to the opening key-points block
   so the skim path starts before the main body. Status `accepted`. *(Zeljko,
   AI-mediated session)*

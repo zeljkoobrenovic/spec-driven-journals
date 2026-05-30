@@ -12,24 +12,23 @@ icon: "assets/icons/fashion.png"
 ---
 > **KEY POINTS:**
 >
-> * There are **two different shifts**: using AI to assist software development and building products whose value depends on **generative AI capabilities**.
-> * **Model-powered products** may need **frequent reinterpretation around new materials** because every major model release can change what is possible, what customers expect, what breaks, and what should be rebuilt.
+> * **Model-powered products** may need **frequent reinterpretation** around new materials because every major model release can change what is possible, what customers expect, what breaks, and what should be rebuilt.
 > * Fashion is a useful metaphor because it combines **short seasons**, **changing materials**, taste, collections, craft, brand identity, and commercial response.
-> * Fashion-driven software development is **not fad-driven development**. It means moving fast while protecting **customer value, quality, identity, and trust**.
+> * Fashion-driven software development is **not fad-driven development**. It means moving fast while protecting **customer value and trust**.
 > * Fashion-driven software development **extends modern product management** rather than replacing it: outcome thinking still matters, but roadmaps, product briefs, discovery, and evaluation must account for **unstable model materials**.
 
 <br>
-**Model-powered products may need frequent reinterpretation around new materials.** That is the central thesis of fashion-driven software development. When an AI model is only a tool used by developers, a better model may help the team build faster. But when **a generative model is part of the product's material**, a better model can change the product itself: its workflow, interface, quality bar, unit economics, customer promise, and competitive position. **The planning horizon becomes shorter.** Stability becomes more seasonal. Product fit becomes harder to predict from capability charts alone.
+**Model-powered products** may need **frequent reinterpretation** around new materials. That is the central thesis of fashion-driven software development. When an AI model is only a tool used by developers, a better model may help the team build faster. But when a generative model is part of **the product's material**, a better model can change the product itself: its workflow, interface, quality bar, unit economics, customer promise, and competitive position. The **planning horizon** becomes shorter. Stability becomes more seasonal. Product fit becomes harder to predict from capability charts alone.
 
-And **"better model" does not mean "better product"** automatically. A model can improve dramatically in general benchmarks while becoming worse for your specific workflow, tone, latency target, safety boundary, expert control, or unit economics.
+And "**better model**" does not mean "**better product**" automatically. A model can improve dramatically in general benchmarks while becoming worse for your specific workflow, tone, latency target, safety boundary, expert control, or unit economics.
 
-This note was inspired by a talk by [Samuel Beek](https://samuelbeek.com/), founder and CEO of [Schematik](https://lsvp.com/company/schematik/) and formerly CPO at VEED, at an Engineering Excellence meetup in Amsterdam. As I understood the story, VEED operated in a product category where the underlying generative AI models for video and image creation kept improving dramatically. Each new model could make previous workflows, interfaces, and assumptions feel old.
+This post was inspired by a talk by [Samuel Beek](https://samuelbeek.com/), founder and CEO of [Schematik](https://lsvp.com/company/schematik/) and formerly CPO at [VEED](https://veed.io), at an Engineering Excellence meetup in Amsterdam. While describing his work at VEED, the phrase that stuck with me was that software development started to **feel like fashion**. VEED operated in a product category where the underlying generative AI models for video and image creation kept improving dramatically, so each new model could make previous workflows, interfaces, and assumptions feel old.
 
 That observation is bigger than one company. It points to a distinction that is easy to miss in AI strategy conversations.
 
 There is **AI-assisted software development**: developers use AI to write code, review pull requests, generate tests, summarize incidents, or draft documentation. This changes the productivity of the development process.
 
-And there is **AI-powered product development**: the product's customer value depends directly on AI capabilities. In that world, a new model is not just a better tool for the team. It is **a new material for the product itself**.
+And there is **AI-powered product development**: the product's customer value depends directly on AI capabilities. In that world, a new model is not just a better tool for the team. It is **a new material** for the product itself.
 
 Those require **different operating models**.
 
@@ -47,9 +46,9 @@ Most organizations are having both conversations at once, often using the same w
 | Primary risk | Low-quality generated work entering the codebase. | A product experience becoming obsolete, generic, unsafe, regressed, or misaligned with customer value. |
 | Core discipline | Engineering review, tests, architecture, security, developer workflow. | Product judgment, model evaluation, customer evidence, quality control, business-value validation. |
 
-The distinction matters because AI-assisted development can create **a false sense of progress**. A team can ship more artifacts, faster, while the product itself is **falling behind what new models make possible**.
+The distinction matters because AI-assisted development can create **false progress**. A team can ship more artifacts, faster, while the product itself is **falling behind** what new models make possible.
 
-For a model-powered product, the key question is not only "Can we build this faster?" It is **"Should this product still exist in this shape after the model changes?"**
+For a model-powered product, the key question is not only "Can we build this faster?" It is "Should this product **still exist in this shape** after the model changes?"
 
 That is a different question. It is closer to fashion than to traditional software planning.
 
@@ -60,13 +59,13 @@ That is a different question. It is closer to fashion than to traditional softwa
 
 When software people say "fashion", they often mean "fad": something shallow, temporary, and irrational. That is not the meaning I want here.
 
-Fashion is **not only trend chasing**. The fashion industry is a system for turning changing materials, culture, taste, identity, seasonality, production constraints, and commercial demand into designed products. A fashion house has to know **what is changing and what must remain recognizable**. It has to experiment, edit, produce, market, learn, and archive.
+Fashion is **not only trend chasing**. The fashion industry is a system for turning changing materials, culture, taste, identity, seasonality, production constraints, and commercial demand into designed products. A fashion house has to know what is changing and **what must remain recognizable**. It has to experiment, edit, produce, market, learn, and archive.
 
-It also has to accept that **demand is not fully rationally predictable**. You can study materials, production cost, past sales, customer segments, and cultural signals. You still cannot derive next season's taste from first principles. Timing, social proof, identity, surprise, fatigue, and context matter.
+It also has to accept **limited predictability**. You can study materials, production cost, past sales, customer segments, and cultural signals. You still cannot derive next season's taste from first principles. Timing, social proof, identity, surprise, fatigue, and context matter.
 
 That maps surprisingly well to AI product development.
 
-Lars Holmquist's [Intelligence on tap: AI as a new design material](https://interactions.acm.org/archive/view/july-august-2017/intelligence-on-tap) helps explain why AI changes product design: **intelligence becomes something product teams can pour into ordinary digital experiences**. But **generative AI adds a harder problem**. The tap does not deliver the same material every season. The material changes in quality, cost, latency, modalities, controllability, and user expectations. That is why model-powered products need not only AI design literacy, but **seasonal product judgment**.
+Lars Holmquist's [Intelligence on tap: AI as a new design material](https://interactions.acm.org/archive/view/july-august-2017/intelligence-on-tap) helps explain why AI changes product design: **intelligence as material**. But **generative AI adds a harder problem**. The tap does not deliver the same material every season. The material changes in quality, cost, latency, modalities, controllability, and user expectations. That is why model-powered products need not only AI design literacy, but **seasonal product judgment**.
 
 | Fashion concept | AI product parallel |
 | --- | --- |
@@ -81,7 +80,7 @@ Lars Holmquist's [Intelligence on tap: AI as a new design material](https://inte
 | Retail performance | Adoption, retention, willingness to pay, expansion, production usage. |
 | Archive | What the team learns from past releases, failures, prompts, examples, and evaluations. |
 
-Fashion moves because the world moves. **AI products move because the capability substrate moves.**
+Fashion moves because the world moves. AI products move because **the capability substrate moves**.
 
 A fashion designer cannot pretend new fabric, new manufacturing techniques, new cultural signals, and new customer taste do not matter. An AI product team cannot pretend model quality, multimodality, reasoning, generation speed, cost, and user expectations are stable.
 
@@ -109,7 +108,7 @@ When a new model arrives, several things can happen at once:
 * A golden workflow that worked reliably on the previous model starts failing.
 * A model that is better overall becomes worse for your specific use case.
 
-This creates **a product-management problem, not only an engineering problem**. The team has to ask what to **preserve, rebuild, retire, and explore**.
+This creates **a product-management problem**, not only an engineering problem. The team has to ask what to **preserve**, rebuild, retire, and explore.
 
 In a video or image product, a new generation model might change the default output quality so much that the old editing flow feels over-engineered. Or it might unlock a new creative workflow where users describe intent instead of manipulating layers manually. Or it might make the product more powerful but less predictable, forcing new controls, previews, rollback, and evaluation.
 
@@ -125,9 +124,9 @@ Model-powered products weaken that assumption.
 
 The model landscape moves in **short seasons**. A frontier model release can change output quality, latency, cost, reasoning ability, multimodal range, tool use, safety behavior, failure modes, or customer expectations in weeks. A competitor can turn a new capability into a familiar interaction pattern before your annual plan finishes. Users can develop new taste quickly once a new output quality becomes normal.
 
-This does not mean every team should operate in panic mode. It means **long-term stability cannot be assumed at the same layer**. The **stable layer** may be the customer promise, data trust boundary, evaluation suite, brand identity, and architecture for swapping materials. The **unstable layer** may be the model, workflow, interface, prompting strategy, editing controls, pricing assumptions, and even the product's default interaction shape.
+This does not mean every team should operate in panic mode. It means **stability shifts layers**. The **stable layer** may be the customer promise, data trust boundary, evaluation suite, brand identity, and architecture for swapping materials. The **unstable layer** may be the model, workflow, interface, prompting strategy, editing controls, pricing assumptions, and even the product's default interaction shape.
 
-That is why the fashion metaphor is useful. Fashion has seasons because materials, culture, and demand do not move on a purely rational engineering schedule. AI products can behave the same way. **The new material does not arrive only when the roadmap is ready.** The customer's taste does not wait for architectural convenience. The market does not move because the better model is objectively better; it moves when better capability becomes **legible, desirable, trustworthy, and useful**.
+That is why the fashion metaphor is useful. Fashion has seasons because materials, culture, and demand do not move on a purely rational engineering schedule. AI products can behave the same way. **The new material does not wait** for the roadmap. The customer's taste does not wait for architectural convenience. The market does not move because the better model is objectively better; it moves when better capability becomes **legible and useful**.
 
 In this environment, prediction has limits:
 
@@ -140,7 +139,7 @@ In this environment, prediction has limits:
 | Long-term roadmap certainty is a sign of maturity. | For model-powered products, maturity may mean short-cycle sensing, fast evaluation, and stable principles rather than fixed feature plans. |
 | Rebuilds are exceptional events. | Reinterpretation may become seasonal: expected, budgeted, evaluated, and archived. |
 
-The operating question becomes: **What should be stable across seasons, and what should be easy to reinterpret when the material changes?**
+The operating question becomes: What should be **stable across seasons**, and what should be easy to reinterpret when the material changes?
 
 ## What This Adds to Modern Product Management
 
@@ -150,7 +149,7 @@ The build-trap critique is already correct: product teams should not measure suc
 
 Fashion-driven software development does not reverse that lesson. It depends on it.
 
-The AI-specific shift is different: even good outcome-focused product management often assumes the solution material is stable enough to reason about for a while. Customer problems may be uncertain, but the material used to solve them is usually not reinvented every few months. In model-powered products, **the problem space and the solution material can both move**.
+The AI-specific shift is different: even good outcome-focused product management often assumes the solution material is stable enough to reason about for a while. Customer problems may be uncertain, but the material used to solve them is usually not reinvented every few months. In model-powered products, **problem and solution can both move**.
 
 That changes the PM's work. The PM is no longer only connecting customer outcomes to product strategy. The PM is also **managing the fit** between changing model capability, changing customer expectations, unstable workflows, and a product promise that must remain coherent.
 
@@ -168,7 +167,7 @@ Several product-management practices need an AI-era extension:
 
 This shifts the PM role from outcome steward to **outcome-and-material editor**.
 
-The word "editor" matters. A fashion editor does not publish every possible look. A product manager in a model-powered product should not ship every possible model capability. The work is **selection, coherence, timing, and evidence**. Which capabilities express the product promise? Which ones confuse the customer? Which old workflows now feel unnecessary? Which expert controls must survive? Which demo is seductive but commercially weak? Which outcome is now achievable through a different shape than the team expected last quarter?
+The word "editor" matters. A fashion editor does not publish every possible look. A product manager in a model-powered product should not ship every possible model capability. The work is **selection and coherence**. Which capabilities express the product promise? Which ones confuse the customer? Which old workflows now feel unnecessary? Which expert controls must survive? Which demo is seductive but commercially weak? Which outcome is now achievable through a different shape than the team expected last quarter?
 
 The product brief changes too. In a fashion-driven AI product, the spec should describe:
 
@@ -195,7 +194,7 @@ It does **not** mean sacrificing reliability, architecture, or customer trust.
 
 It means accepting that model-powered products may need frequent reinterpretation around new materials. The team needs to maintain **a durable product identity** while repeatedly redesigning workflows, interfaces, evaluation suites, and value propositions as the underlying model capability changes.
 
-The cadence is seasonal, not because teams should imitate fashion calendars mechanically, but because **the material may not remain stable long enough** for traditional product-planning cycles. Teams need a way to **sense, interpret, evaluate, and respond** without pretending that the future is rationally predictable.
+The cadence is seasonal, not because teams should imitate fashion calendars mechanically, but because **the material may not stay stable** for traditional product-planning cycles. Teams need a way to **sense, interpret, evaluate**, and respond without pretending that the future is rationally predictable.
 
 The work has a rhythm:
 
@@ -208,7 +207,7 @@ The work has a rhythm:
 7. **Release selectively.** Ship what strengthens the product identity and retire what no longer fits.
 8. **Archive the learning.** Preserve prompts, examples, evals, failures, and decisions for the next cycle.
 
-This loop is slower than hype and faster than traditional annual planning. It treats AI capability as **an unstable material that must be continuously reinterpreted**.
+This loop is slower than hype and faster than traditional annual planning. It treats AI capability as **unstable material** that must be continuously reinterpreted.
 
 ![Loop diagram showing the operating rhythm of fashion-driven software development.](assets/images/fashion-driven-software-development/fashion-driven-operating-loop.jpeg)
 **Figure 3:** *Fashion-driven software development is a repeatable loop for reinterpreting product value around changing model materials.*
@@ -227,7 +226,7 @@ Fad-driven development sounds like this:
 
 This is not fashion-driven development. It is **hype chasing**.
 
-Good fashion has **taste, constraints, and commercial discipline**. A strong fashion house does not put every new fabric on the runway. It edits. It knows its customer. It knows the brand. It understands fit. It makes bets, but it also knows that **novelty without coherence becomes noise**.
+Good fashion has **taste and constraints**. A strong fashion house does not put every new fabric on the runway. It edits. It knows its customer. It knows the brand. It understands fit. It makes bets, but it also knows that **novelty without coherence** becomes noise.
 
 AI product teams need the same discipline.
 
@@ -260,9 +259,9 @@ In AI-powered products, evaluation has to answer more:
 * Does it still express the product's promise?
 * Does it create business value, or only demo value?
 
-This is why evaluation becomes more important as rebuild cycles accelerate. If implementation gets cheaper and model capability changes faster, the bottleneck moves. The hard part is no longer only building. The hard part is **knowing whether the new thing should exist**.
+This is why **evaluation becomes more important** as rebuild cycles accelerate. If implementation gets cheaper and model capability changes faster, the bottleneck moves. The hard part is no longer only building. The hard part is knowing **whether it should exist**.
 
-In fashion terms, evaluation is the fitting room, quality control, buyer feedback, sales floor, return data, and brand review combined. The garment may look impressive on the runway, but it still has to **fit bodies, survive use, match the brand, and sell**.
+In fashion terms, evaluation is the fitting room, quality control, buyer feedback, sales floor, return data, and brand review combined. The garment may look impressive on the runway, but it still has to **fit, last, and sell**.
 
 AI products need the same layers of evaluation.
 
@@ -284,9 +283,9 @@ The strongest teams do not only ask "Can we build with the new model?" They ask 
 
 ## The Evaluation Suite Becomes a Strategic Asset
 
-If AI products change like fashion, **evaluation suites become product infrastructure**.
+If AI products change like fashion, **evaluation suites** become product infrastructure.
 
-They should not live only in engineering. They should be **co-owned by product, design, engineering, data, support**, and sometimes legal or trust teams. They should include quantitative metrics, qualitative review, customer evidence, and business signals.
+They should not live only in engineering. They should be **co-owned** by product, design, engineering, data, support, and sometimes legal or trust teams. They should include quantitative metrics, qualitative review, customer evidence, and business signals.
 
 A serious evaluation suite for a model-powered product might include:
 
@@ -300,11 +299,9 @@ A serious evaluation suite for a model-powered product might include:
 * **Business dashboards:** activation, task completion, paid conversion, retention, expansion, support load, refund rate.
 * **Decision logs:** why the team chose to adopt, delay, wrap, fine-tune, or reject a model.
 
-This is where spec-driven work becomes important. A spec is **the pattern card for a rebuild**. It states the intent, expected customer value, non-goals, evaluation criteria, and stop conditions **before the team starts cutting fabric**.
+This is where spec-driven work becomes important. A spec is **the pattern card** for a rebuild. It states the intent, expected customer value, non-goals, evaluation criteria, and stop conditions before the team starts cutting fabric.
 
-That connects directly to [[leadership-ladder]]: moving AI work up the ladder requires clearer intent, constraints, guardrails, and review points. It also connects to [[spec-driven-authoring]]: specs make AI-mediated work reviewable before a polished artifact hides weak intent.
-
-**Without evaluation**, fashion-driven software development becomes mood-driven development. **With evaluation**, it becomes a disciplined way to keep product value aligned with a moving capability frontier.
+**Without evaluation**, fashion-driven software development becomes **mood-driven development**. **With evaluation**, it becomes **a disciplined way** to keep product value aligned with a moving capability frontier.
 
 ## Customer Value Beats Model Novelty
 
@@ -320,7 +317,7 @@ Better after cost, latency, safety, and control are included?
 
 Better in a way customers will notice and pay for?
 
-A model can be **objectively stronger on benchmarks and still make your product worse**. It may produce higher-quality outputs but reduce user control. It may be more creative but less consistent. It may be more capable but slower. It may make a workflow magical for new users while breaking expert users' muscle memory.
+A model can be **stronger on benchmarks** and still make **your product worse**. It may produce higher-quality outputs but reduce user control. It may be more creative but less consistent. It may be more capable but slower. It may make a workflow magical for new users while breaking expert users' muscle memory.
 
 In fashion terms, the fabric may be beautiful but wrong for the garment.
 
@@ -335,13 +332,13 @@ The evaluation question must move from model capability to product value:
 | Can we generate more? | Did we help the user decide, edit, publish, or sell better? |
 | Is the model cheaper? | Does the unit economics improvement create a better product or only better margin? |
 
-This is why **customer evidence becomes more important, not less**. When models move quickly, internal taste can **drift away from real user value**. Teams start admiring what the model can do instead of measuring what customers need.
+This is why **customer evidence** becomes more important, not less. When models move quickly, internal taste can **drift away from real user value**. Teams start admiring what the model can do instead of measuring what customers need.
 
-The antidote is **direct contact with users**, especially heavy users. Watch what they actually do. Ask what they kept, edited, rejected, exported, paid for, shared, or abandoned. Use analytics, but **do not let analytics replace observation**.
+The antidote is **direct contact with users**, especially heavy users. Watch what they actually do. Ask what they kept, edited, rejected, exported, paid for, shared, or abandoned. Use analytics, but do not let **analytics replace observation**.
 
 ## What Should Stay Stable
 
-Fashion changes, but not everything changes.
+Fashion changes, but **not everything changes**.
 
 The strongest brands have continuity. They may reinvent silhouettes, materials, campaigns, and seasonal collections, but they preserve a recognizable identity. Customers do not only buy novelty. They buy trust, aspiration, fit, taste, status, utility, and meaning.
 
@@ -359,7 +356,7 @@ The product team should be clear about what does not change with every model rel
 * The economics that make the product viable.
 * The learning archive that prevents repeated mistakes.
 
-This stable core is what allows **fast rebuilding without losing the product**. Otherwise, every model release turns into **an identity crisis**.
+This stable core is what allows **fast rebuilding** without losing the product. Otherwise, every model release turns into **an identity crisis**.
 
 [[prepare-for-ai-future]] argues that technology leaders need **agency, judgment, and persuasion** as AI changes the work. Fashion-driven software development is one place where all three show up. Leaders need agency to explore new model capabilities early, judgment to decide what should change, and persuasion to align teams around rebuilding only what creates value.
 
@@ -367,15 +364,15 @@ This stable core is what allows **fast rebuilding without losing the product**. 
 
 Fashion-driven software development changes team rhythms.
 
-Teams need **a capability radar, not only a roadmap**. Someone must continuously watch model releases, competitor patterns, cost shifts, tool ecosystems, user behavior, and emerging creative workflows. This is not research theater. It is **material scouting**.
+Teams need **a capability radar**, not only a roadmap. Someone must continuously watch model releases, competitor patterns, cost shifts, tool ecosystems, user behavior, and emerging creative workflows. This is not research theater. It is **material scouting**.
 
-Teams need **seasonal planning, not only long-term certainty**. The roadmap should distinguish **stable commitments from seasonal bets**: what the product will keep promising, what the team will explore, what model assumptions are expiring, and which workflows may need reinterpretation soon.
+Teams need **seasonal planning**, not only long-term certainty. The roadmap should distinguish **stable commitments** from seasonal bets: what the product will keep promising, what the team will explore, what model assumptions are expiring, and which workflows may need reinterpretation soon.
 
-Teams need **product specs that make bets explicit**. A model-powered rebuild should state the material change, value hypothesis, customer evidence, evaluation plan, and stop condition. This is not a return to feature-factory requirements. It is outcome-focused product work with **the model material named as an assumption**.
+Teams need **explicit product specs**. A model-powered rebuild should state the material change, value hypothesis, customer evidence, evaluation plan, and stop condition. This is not a return to feature-factory requirements. It is outcome-focused product work with **the model material named** as an assumption.
 
-Teams need **collection thinking, not only ticket thinking**. A model release may require a coherent set of changes across onboarding, creation flow, editing controls, pricing, evaluation, and marketing. Shipping isolated AI features can create **a fragmented product**.
+Teams need **collection thinking**, not only ticket thinking. A model release may require a coherent set of changes across onboarding, creation flow, editing controls, pricing, evaluation, and marketing. Shipping isolated AI features can create **a fragmented product**.
 
-Teams need **fast rebuild paths**. If the model changes the material, old abstractions may become wrong. The architecture should make it possible to **swap models, compare workflows, run experiments, and retire obsolete chains** without heroic rewrites.
+Teams need **fast rebuild paths**. If the model changes the material, old abstractions may become wrong. The architecture should make it possible to **swap models**, compare workflows, run experiments, and retire obsolete chains without heroic rewrites.
 
 Teams need **evaluation before enthusiasm**. Every model adoption should come with a small business case, test plan, customer-value hypothesis, and stop condition.
 
@@ -387,13 +384,13 @@ Teams need **taste**. This is uncomfortable for software organizations because t
 
 If you are building an AI-powered product, these principles are a starting point.
 
-**Separate model scouting from product commitment.**  
+**Separate scouting from commitment.**  
 Explore new models quickly, but do not confuse a promising prototype with a product decision.
 
-**Write the value hypothesis before the rebuild.**  
+**Write the value hypothesis first.**  
 What customer behavior should improve? What business metric should move? What old pain should disappear? What new risk might appear?
 
-**Turn product briefs into seasonal bet contracts.**  
+**Use seasonal bet contracts.**  
 Describe the model-material change, the customer outcome, the product promise to preserve, the evaluation suite, and the decision criteria for shipping, delaying, retiring, or reverting.
 
 **Plan in seasons, not certainties.**  
@@ -402,7 +399,7 @@ Name which model assumptions are stable enough to build on, which are seasonal b
 **Keep a stable product promise.**  
 If every model release changes what the product is for, the team is not innovating; it is drifting.
 
-**Make evaluations versioned artifacts.**  
+**Version evaluation artifacts.**  
 Treat prompts, golden scenarios, comparison sets, and review criteria as product assets. Update them deliberately.
 
 **Test old jobs with new models.**  
@@ -411,13 +408,13 @@ A new model can improve headline quality while breaking workflows that loyal use
 **Treat model upgrades as migrations.**  
 Do not assume a stronger model is a drop-in replacement. Test golden scenarios, expert workflows, safety cases, latency, cost, and customer-visible behavior before switching.
 
-**Measure business value, not AI intensity.**  
+**Measure business value.**  
 "More AI" is not a metric. Better activation, retention, margin, trust, and customer outcomes are metrics.
 
-**Preserve human taste and accountability.**  
+**Preserve taste and accountability.**  
 AI can generate options. It cannot decide what your product should stand for.
 
-**Retire aggressively but explain why.**  
+**Retire carefully.**  
 When old workflows become obsolete, remove them carefully. Tell customers what improved and what trade-offs changed.
 
 ## Anti-Patterns
@@ -455,28 +452,25 @@ The team celebrates how fast it rebuilt instead of asking whether the rebuild ma
 
 Generative AI can make software faster to write. That part is obvious.
 
-The less obvious shift is that some products are now **made from a material that keeps changing** on short, uneven timelines. If your product depends on generative models, you are not only managing a codebase. You are also extending modern product management itself: discovery, roadmaps, product briefs, prioritization, launch decisions, and success metrics all have to account for **unstable product material**.
+The less obvious shift is that some products are now made from **changing material** on short, uneven timelines. If your product depends on generative models, you are not only managing a codebase. You are also extending modern product management itself: discovery, roadmaps, product briefs, prioritization, launch decisions, and success metrics all have to account for **unstable product material**.
 
 That is why fashion is a useful metaphor. It reminds us that **speed is not enough**. Novelty is not enough. Stability is seasonal. Prediction is limited. Taste matters. Fit matters. Timing matters. Quality matters. The archive matters. Commercial response matters.
 
 Above all, **evaluation matters**.
 
-When you need to rebuild often, implementation becomes less scarce. The scarce capability is **knowing whether the fresh product still creates customer and business value**.
+When you need to rebuild often, implementation becomes less scarce. The scarce capability is knowing whether **the fresh product creates value**.
 
-Fashion-driven software development is not about being fashionable. It is about **building with changing materials without losing the customer**.
+Fashion-driven software development is not about being fashionable. It is about building with **changing materials** without losing the customer.
 
 ## To Probe Further
 
 * [Samuel Beek](https://samuelbeek.com/)
-* [Schematik, Lightspeed company profile](https://lsvp.com/company/schematik/)
-* [Whale event listing](https://www.whale-academy.com/)
-* [VEED CPO Samuel Beek on real user testing](https://muckrack.com/podcast/marketer-of-the-month/episodes/1492294-snippet-veed-cpo-samuel-beek-explains-how-/)
+* [How VEED turned AI into its biggest growth driver ($40M+)](https://www.youtube.com/watch?v=V-uYGwgeaQM), Samuel Beek
 * [Intelligence on tap: AI as a new design material](https://interactions.acm.org/archive/view/july-august-2017/intelligence-on-tap), Lars Holmquist
 * [Fashion Industry](https://www.britannica.com/art/fashion-industry), Britannica
 * [Escaping the Build Trap](https://www.oreilly.com/library/view/escaping-the-build/9781491973783/), Melissa Perri
 * [[leadership-ladder]]
 * [[prepare-for-ai-future]]
-* [[spec-driven-authoring]]
 
 ## Questions to Consider
 
