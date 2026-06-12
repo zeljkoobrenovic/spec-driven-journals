@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="strategy.html">← Organization Tech Strategy: Reducing Fragmentation and Complexity While Building Foundation for the Future</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Organization Tech Strategy — Reducing Fragmentation and Complexity\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nFrame the **top-level strategy** for Organization engineering: optimise for\nGermany-scale needs (stable single-brand operation, next 2-3 years),\nnot for the inherited White-Label-era platform optionality. The post\nexists to give every downstream document (diagnosis, policy,\nimplications, roadmap, blueprints) a single re-framing they can refer\nback to.\n\n## Audience\n\n- **Engineering leadership** setting direction for the next 2-3 years.\n- **Tech leads and architects** evaluating proposals against the\n  strategy.\n- **Product partners** who need to know what \"Germany-scale\" means\n  for engineering decisions.\n- **New joiners** asking \"why is the estate shaped the way it is\".\n\n## Success criteria\n\n- [ ] Reader can state the one re-framing in their own words\n      (Germany-scale, not White-Label-scale).\n- [ ] Reader can name the four strategic outcomes: delivery speed,\n      operational stability, ownership clarity, legacy retirement.\n- [ ] Reader knows the main strategic move is **simplification and\n      convergence**, not adding new architectural variety.\n- [ ] Reader can navigate from this overview to [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html),\n      [Strategic Implications: What the Diagnosis Forces the Strategy to Account For](implications.html), [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html), [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html), and the blueprints.\n\n## Non-goals\n\n- Detailed defaults, blueprints, or exceptions (those live in\n  downstream records).\n- Multi-brand or multi-country strategy.\n- A target-state architecture diagram.\n- Project-level dates, budgets, or staffing.\n\n## Open questions\n\n- How explicitly to call out the \"next 2-3 years\" boundary, given\n  that strategy windows usually drift longer than planned.\n- Whether to add a fifth strategic outcome around developer\n  experience (currently absorbed into delivery speed).\n\n## Decision log\n\n- **2026-05-20** — Chose **single re-framing** (Germany-scale, not\n  White-Label-scale) as the load-bearing decision. Considered listing\n  many independent strategy themes; rejected because a single frame\n  makes downstream choices testable in a way a list does not.\n- **2026-05-20** — Made **simplification and convergence** the\n  strategic move. Considered adding more architectural sophistication;\n  rejected because the diagnosis identifies fragmentation as the main\n  problem, not lack of sophistication.\n- **2026-05-20** — Defined outcomes as **delivery speed, stability,\n  quality, onboarding, ownership clarity**. Considered headcount or\n  cost-reduction outcomes; rejected because those are second-order\n  consequences, not the primary outcome.\n\n## Sources\n\n- **Internal**\n  - [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html) — the evidence base this strategy responds to.\n  - [Strategic Implications: What the Diagnosis Forces the Strategy to Account For](implications.html) — narrows the space of acceptable strategy\n    choices.\n  - [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) — operationalises the strategy at decision points.\n  - [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) — sequences the strategy across phases.\n  - [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) — keeps the strategy alive day to day.\n- **External**\n  - Richard Rumelt, *Good Strategy / Bad Strategy* — informs the\n    \"single re-framing\" framing.\n\n## Changelog\n\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Organization Tech Strategy — Reducing Fragmentation and Complexity\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nFrame the **top-level strategy** for Organization engineering: optimise for\nGermany-scale needs (stable single-brand operation, next 2-3 years),\nnot for the inherited White-Label-era platform optionality. The post\nexists to give every downstream document (diagnosis, policy,\nimplications, roadmap, blueprints) a single re-framing they can refer\nback to.\n\n## Audience\n\n- **Engineering leadership** setting direction for the next 2-3 years.\n- **Tech leads and architects** evaluating proposals against the\n  strategy.\n- **Product partners** who need to know what \"Germany-scale\" means\n  for engineering decisions.\n- **New joiners** asking \"why is the estate shaped the way it is\".\n\n## Success criteria\n\n- [ ] Reader can state the one re-framing in their own words\n      (Germany-scale, not White-Label-scale).\n- [ ] Reader can name the four strategic outcomes: delivery speed,\n      operational stability, ownership clarity, legacy retirement.\n- [ ] Reader knows the main strategic move is **simplification and\n      convergence**, not adding new architectural variety.\n- [ ] Reader can navigate from this overview to [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html),\n      [Strategic Implications: What the Diagnosis Forces the Strategy to Account For](implications.html), [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html), [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html), and the blueprints.\n\n## Non-goals\n\n- Detailed defaults, blueprints, or exceptions (those live in\n  downstream records).\n- Multi-brand or multi-country strategy.\n- A target-state architecture diagram.\n- Project-level dates, budgets, or staffing.\n\n## Open questions\n\n- How explicitly to call out the \"next 2-3 years\" boundary, given\n  that strategy windows usually drift longer than planned.\n- Whether to add a fifth strategic outcome around developer\n  experience (currently absorbed into delivery speed).\n\n## Decision log\n\n- **2026-05-20** — Chose **single re-framing** (Germany-scale, not\n  White-Label-scale) as the load-bearing decision. Considered listing\n  many independent strategy themes; rejected because a single frame\n  makes downstream choices testable in a way a list does not.\n- **2026-05-20** — Made **simplification and convergence** the\n  strategic move. Considered adding more architectural sophistication;\n  rejected because the diagnosis identifies fragmentation as the main\n  problem, not lack of sophistication.\n- **2026-05-20** — Defined outcomes as **delivery speed, stability,\n  quality, onboarding, ownership clarity**. Considered headcount or\n  cost-reduction outcomes; rejected because those are second-order\n  consequences, not the primary outcome.\n\n## Sources\n\n- **Internal**\n  - [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html) — the evidence base this strategy responds to.\n  - [Strategic Implications: What the Diagnosis Forces the Strategy to Account For](implications.html) — narrows the space of acceptable strategy\n    choices.\n  - [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) — operationalises the strategy at decision points.\n  - [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) — sequences the strategy across phases.\n  - [Operating Model: How the Strategy Stays Alive Day to Day](operate.html) — keeps the strategy alive day to day.\n- **External**\n  - Richard Rumelt, *Good Strategy / Bad Strategy* — informs the\n    \"single re-framing\" framing.\n\n## Changelog\n\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

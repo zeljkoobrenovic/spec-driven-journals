@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -283,13 +317,14 @@
 <main>
     <nav class="post-nav"><a class="nav-back" href="risc-for-ai-software-development.html">← Can RISC-Inspired Platforms Make AI Less Risky?</a><span class="nav-right"></span></nav>
     <header class="post" id="post-header">
-        <p class="section"><span>SPEC</span> • <span class="post-status"><span class="status-dot" style="background:green"></span>accepted</span> • <span>revised 2026-05-30</span></p>
+        <p class="section"><span>SPEC</span> • <span class="post-status"><span class="status-dot" style="background:green"></span>accepted</span> • <span>revised 2026-06-12</span></p>
         <h1>Spec: Can RISC-Inspired Platforms Make AI Less Risky?</h1>
         <p class="byline"></p>
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="risc-for-ai-software-development.html">← Can RISC-Inspired Platforms Make AI Less Risky?</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Can RISC-Inspired Platforms Make AI Less Risky?\n\n## Intent\n\nDraft a new AI Notes article using RISC, inspired by Patterson and Ditzel's\nclassic paper, as an analogy for AI-assisted software development. The post\nshould argue that trust is a bottleneck for AI adoption and that reduced,\nsimpler, more transparent platform surfaces can make AI-generated systems\neasier to inspect, test, debug, and maintain.\n\n## Audience\n\n- Experienced software engineers evaluating AI-generated code.\n- Principal and staff engineers deciding how much framework and dependency\n  complexity to expose to AI agents.\n- Engineering leaders and technology leaders setting standards for AI-assisted\n  development.\n- Readers of [From Prompting to Intent: The Leadership Ladder for Working with AI](leadership-ladder.html), [Spec-Driven Authoring as a Lightweight Default for Posts](../foundations/spec-driven-authoring.html), and\n  [Software Has Seasons Now: Fashion-Driven Development for Generative AI Products](fashion-driven-software-development.html) who need a software-platform\n  complement to the existing AI Notes thread.\n\n## Success criteria\n\n- [x] Reader understands trust as a bottleneck for AI-assisted development.\n- [x] Reader understands that RISC means Reduced Instruction Set Computer and\n      understands the analogy without needing detailed CPU history.\n- [x] Reader sees reduced platforms as a way to constrain AI-generated systems\n      into inspectable, testable, maintainable shapes.\n- [x] Reader understands that the platform instruction set must be understood\n      by both AI agents and human reviewers, and that it changes as frameworks,\n      dependencies, SaaS APIs, conventions, and generated code evolve.\n- [x] Reader understands why AI changes the economics of abstraction and why\n      \"reinventing the wheel\" may sometimes become reasonable.\n- [x] Reader sees Claude Code and Codex as concrete examples of RISC-like\n      AI-assisted development: text files, source code, diffs, tests, and\n      version control create a reduced, inspectable platform surface.\n- [x] Reader does not leave thinking the post is anti-framework or anti-library.\n- [x] Reader understands that evaluation, tests, observability, and human\n      judgment remain essential.\n- [x] Reader gets practical decision criteria for when to reuse, when to reduce,\n      and when to generate fit-for-purpose code.\n- [x] Reader sees the risks of applying the RISC analogy too aggressively:\n      local-code sprawl, missed edge cases, false confidence, fragmentation, and\n      hidden complexity moving elsewhere.\n\n## Non-goals\n\n- A detailed history of RISC or CPU architecture.\n- A claim that all modern frameworks, SaaS platforms, or dependencies are bad.\n- A technical recipe for one specific stack.\n- A security policy for AI-generated dependencies.\n- A claim that AI-generated code should be trusted because it is small.\n- A claim that custom code is always cheaper than dependency reuse.\n\n## Open questions\n\nNone for the current draft.\n\n## Decision log\n\n- **2026-05-30** - Retitled the post to `Can RISC-Inspired Platforms Make AI Less Risky?`\n  to make clear that the argument is about RISC-like platform design, not RISC\n  itself.\n- **2026-05-28** - Chose the original RISC-centered title because it was short,\n  memorable, and framed the analogy around trust rather than nostalgia.\n- **2026-05-28** - Added a new AI Notes section, `AI Software Development`,\n  because the post is about how AI changes development platforms rather than\n  product strategy or leadership alone.\n- **2026-05-28** - Used Patterson and Ditzel as broad inspiration: the article\n  adapts their cost-effectiveness and complexity argument to AI-assisted\n  software, not to CPU design.\n- **2026-05-28** - Centered the article on \"smallest reliable platform\" to avoid\n  a simplistic anti-framework argument.\n- **2026-05-28** - Connected the post to spec-driven work and evaluation because\n  reduced platforms only improve trust when paired with tests, review, and\n  explicit human judgment.\n- **2026-05-28** - Added Claude Code and Codex as concrete examples because\n  their file-system and text-first operating model makes the RISC analogy more\n  practical.\n- **2026-05-28** - Added a dedicated risks section before the closing thought so\n  the article does not read as a simplistic argument for minimalism or local\n  rewrites.\n\n## Sources\n\n- **Internal**\n  - [From Prompting to Intent: The Leadership Ladder for Working with AI](leadership-ladder.html) - intent, guardrails, and review boundaries for\n    AI-assisted work.\n  - [Spec-Driven Authoring as a Lightweight Default for Posts](../foundations/spec-driven-authoring.html) - specs as contracts for AI-mediated work.\n  - [Software Has Seasons Now: Fashion-Driven Development for Generative AI Products](fashion-driven-software-development.html) - companion article on changing\n    AI product materials and evaluation.\n- **External**\n  - [David A. Patterson and David R. Ditzel, *The Case for the Reduced Instruction Set Computer*](https://people.eecs.berkeley.edu/~culler/courses/cs252-s05/papers/p25-patterson.pdf)\n    - source for the historical RISC analogy: complexity, cost-effectiveness,\n    compiler usage, debugging, and simpler uniform instruction sets.\n\n## Changelog\n\n- **2026-05-30** - Aligned the published post title and closing claim with the\n  revised RISC-inspired platform framing. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-28** - Added the requirement and article section on risks of\n  RISC-style reduction: local-code sprawl, missed edge cases, false confidence,\n  fragmentation, and displaced complexity. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-28** - Reduced the opening key-points list from six to five by\n  combining related RISC and platform-surface points. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Expanded the instruction-set argument: the platform surface\n  must be understood by both AI agents and human reviewers, and it changes as\n  the codebase and surrounding tools evolve. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-28** - Added Claude Code and Codex as RISC-like examples: agents\n  working over filesystem, text files, source code, diffs, tests, and version\n  control. Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Spelled out RISC as Reduced Instruction Set Computer in the\n  excerpt, key points, and opening. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-28** - Initial spec and article draft. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Can RISC-Inspired Platforms Make AI Less Risky?\n\n## Intent\n\nDraft a new AI Notes article using RISC, inspired by Patterson and Ditzel's\nclassic paper, as an analogy for AI-assisted software development. The post\nshould argue that trust is a bottleneck for AI adoption and that reduced,\nsimpler, more transparent platform surfaces can make AI-generated systems\neasier to inspect, test, debug, and maintain.\n\n## Audience\n\n- Experienced software engineers evaluating AI-generated code.\n- Principal and staff engineers deciding how much framework and dependency\n  complexity to expose to AI agents.\n- Engineering leaders and technology leaders setting standards for AI-assisted\n  development.\n- Readers of [From Prompting to Intent: The Leadership Ladder for Working with AI](leadership-ladder.html), [Spec-Driven Authoring as a Lightweight Default for Posts](../foundations/spec-driven-authoring.html), and\n  [Software Has Seasons Now: Fashion-Driven Development for Generative AI Products](fashion-driven-software-development.html) who need a software-platform\n  complement to the existing AI Notes thread.\n\n## Success criteria\n\n- [x] Reader understands trust as a bottleneck for AI-assisted development.\n- [x] Reader understands that RISC means Reduced Instruction Set Computer and\n      understands the analogy without needing detailed CPU history.\n- [x] Reader sees reduced platforms as a way to constrain AI-generated systems\n      into inspectable, testable, maintainable shapes.\n- [x] Reader understands that the platform instruction set must be understood\n      by both AI agents and human reviewers, and that it changes as frameworks,\n      dependencies, SaaS APIs, conventions, and generated code evolve.\n- [x] Reader understands why AI changes the economics of abstraction and why\n      \"reinventing the wheel\" may sometimes become reasonable.\n- [x] Reader sees Claude Code and Codex as concrete examples of RISC-like\n      AI-assisted development: text files, source code, diffs, tests, and\n      version control create a reduced, inspectable platform surface.\n- [x] Reader does not leave thinking the post is anti-framework or anti-library.\n- [x] Reader understands that evaluation, tests, observability, and human\n      judgment remain essential.\n- [x] Reader gets practical decision criteria for when to reuse, when to reduce,\n      and when to generate fit-for-purpose code.\n- [x] Reader sees the risks of applying the RISC analogy too aggressively:\n      local-code sprawl, missed edge cases, false confidence, fragmentation, and\n      hidden complexity moving elsewhere.\n\n## Non-goals\n\n- A detailed history of RISC or CPU architecture.\n- A claim that all modern frameworks, SaaS platforms, or dependencies are bad.\n- A technical recipe for one specific stack.\n- A security policy for AI-generated dependencies.\n- A claim that AI-generated code should be trusted because it is small.\n- A claim that custom code is always cheaper than dependency reuse.\n\n## Modalities\n\nWhich docs this spec drives beyond the main article (`index.md`).\n\n- [x] `summary.md` — management summary\n- [x] `dialog.md` — two-host dialog\n- [x] `comics.md` — explainer comic\n\n## Open questions\n\nNone for the current draft.\n\n## Decision log\n\n- **2026-05-30** - Retitled the post to `Can RISC-Inspired Platforms Make AI Less Risky?`\n  to make clear that the argument is about RISC-like platform design, not RISC\n  itself.\n- **2026-05-28** - Chose the original RISC-centered title because it was short,\n  memorable, and framed the analogy around trust rather than nostalgia.\n- **2026-05-28** - Added a new AI Notes section, `AI Software Development`,\n  because the post is about how AI changes development platforms rather than\n  product strategy or leadership alone.\n- **2026-05-28** - Used Patterson and Ditzel as broad inspiration: the article\n  adapts their cost-effectiveness and complexity argument to AI-assisted\n  software, not to CPU design.\n- **2026-05-28** - Centered the article on \"smallest reliable platform\" to avoid\n  a simplistic anti-framework argument.\n- **2026-05-28** - Connected the post to spec-driven work and evaluation because\n  reduced platforms only improve trust when paired with tests, review, and\n  explicit human judgment.\n- **2026-05-28** - Added Claude Code and Codex as concrete examples because\n  their file-system and text-first operating model makes the RISC analogy more\n  practical.\n- **2026-05-28** - Added a dedicated risks section before the closing thought so\n  the article does not read as a simplistic argument for minimalism or local\n  rewrites.\n\n## Sources\n\n- **Internal**\n  - [From Prompting to Intent: The Leadership Ladder for Working with AI](leadership-ladder.html) - intent, guardrails, and review boundaries for\n    AI-assisted work.\n  - [Spec-Driven Authoring as a Lightweight Default for Posts](../foundations/spec-driven-authoring.html) - specs as contracts for AI-mediated work.\n  - [Software Has Seasons Now: Fashion-Driven Development for Generative AI Products](fashion-driven-software-development.html) - companion article on changing\n    AI product materials and evaluation.\n- **External**\n  - [David A. Patterson and David R. Ditzel, *The Case for the Reduced Instruction Set Computer*](https://people.eecs.berkeley.edu/~culler/courses/cs252-s05/papers/p25-patterson.pdf)\n    - source for the historical RISC analogy: complexity, cost-effectiveness,\n    compiler usage, debugging, and simpler uniform instruction sets.\n\n## Changelog\n\n- **2026-06-12** - Added Modalities section; the spec now drives `summary.md`,\n  `dialog.md`, and `comics.md` alongside the article. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Aligned the published post title and closing claim with the\n  revised RISC-inspired platform framing. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-28** - Added the requirement and article section on risks of\n  RISC-style reduction: local-code sprawl, missed edge cases, false confidence,\n  fragmentation, and displaced complexity. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-28** - Reduced the opening key-points list from six to five by\n  combining related RISC and platform-surface points. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Expanded the instruction-set argument: the platform surface\n  must be understood by both AI agents and human reviewers, and it changes as\n  the codebase and surrounding tools evolve. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-28** - Added Claude Code and Codex as RISC-like examples: agents\n  working over filesystem, text files, source code, diffs, tests, and version\n  control. Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Spelled out RISC as Reduced Instruction Set Computer in the\n  excerpt, key points, and opening. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-28** - Initial spec and article draft. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

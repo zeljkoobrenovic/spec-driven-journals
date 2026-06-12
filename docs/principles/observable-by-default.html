@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -290,7 +324,8 @@
         <a href="assets/images/observable-by-default/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/observable-by-default/logo.jpeg" alt=""></a>
         <p class="logo-credit">Inspired by Charity Majors and the JLP Engineering Principles</p>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="cloud-native-on-aws.html" title="Operational Principle: Cloud Native on AWS">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="decisions-stay-with-teams.html" title="Organisation Principle: Decisions Stay with Teams">Next →</a></span></nav>
     </footer>
@@ -299,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-OBSERVABLE-BY-DEFAULT", "status": "draft:gray", "title": "Operational Principle: Observable by Default", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "observable-by-default", "timetoread": "12 min", "excerpt": "Every Organization service emits structured logs, useful metrics, and distributed traces from day one. Observability is not a feature added after an incident; it is a default property delivered by templates, libraries, and the platform. The goal is not dashboards; the goal is to answer 'what just happened, where, and why?' in minutes for any production system. Without observability, every other operational principle collapses into guesswork.", "tags": "operations, observability, logging, metrics, tracing, slos", "logo": "assets/images/observable-by-default/logo.jpeg", "logo_credit": "Inspired by Charity Majors and the JLP Engineering Principles", "icon": "assets/icons/observable-by-default.png"}, "tags": ["operations", "observability", "logging", "metrics", "tracing", "slos"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization services are **Observable by Default**. Structured logs, metrics, and traces are produced by every service from the day it is created, using shared shapes, shared destinations, and shared correlation. Observability is delivered by golden templates, libraries, and platform defaults, not bolted on after the first incident.\n\n## Statement\n\nEvery Organization service emits:\n\n* **Structured logs** in a consistent JSON shape, with shared fields (trace ID, span ID, service name, environment, correlation IDs).\n* **Metrics** covering the four golden signals (latency, traffic, errors, saturation) plus business-relevant signals where relevant.\n* **Distributed traces** with consistent trace propagation across service boundaries and asynchronous flows.\n* **Health and readiness signals** aligned with the runtime.\n* **Service-level objectives** for user-visible behaviour, not just internal metrics.\n\nAll three pillars flow through AWS-native destinations (CloudWatch and equivalents) with the option of additional overlays where justified.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Observability is a default. | Observability solves itself. |\n| Use shared shapes and destinations. | Use exactly one observability tool. |\n| Emit logs, metrics, and traces. | Emit everything possible. |\n| SLOs frame what matters. | SLOs replace operational sense. |\n| Observability supports debugging. | Observability is for dashboards. |\n\nThe principle is about answering questions in production, not about volume of telemetry.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain the difference between observability and having dashboards.\n* Identify the questions logs, metrics, traces, and SLOs should answer during an incident.\n* Design telemetry with shared shapes, correlation, and ownership from service creation.\n* Recognise alert noise and unowned dashboards as reliability risks.\n\n## Rationale\n\nThe most expensive minutes in an incident are the ones spent trying to figure out *what is happening*. The cost is paid in lost availability, lost customer trust, and lost engineering time. Observability is the only mitigation that reliably reduces those minutes.\n\nObservability also pays compounding dividends outside incidents:\n\n* Capacity planning becomes evidence-based.\n* Performance regressions become detectable rather than felt.\n* Deploys gain feedback loops via canary metrics and trace deltas.\n* New joiners learn the system from real behaviour, not stories.\n\nIt only works if observability is *consistent*. Logs in five formats, metrics in three systems, and traces in none means each service is investigated differently. The principle is therefore as much about shared *shape* as about shared *coverage*.\n\nOrganization's wider stack supports this: AWS provides default destinations (CloudWatch, X-Ray) and integration with ECS, MSK, and AVIV Group's central tooling. Claude Code can be used to enforce observability patterns through Skills, templates, and CI checks.\n\n## Implications\n\n* **Templates emit telemetry from line one.** New service templates ship with structured logs, metrics, and traces enabled.\n* **Shared library or shared sidecar.** Telemetry shape is enforced centrally, not negotiated per service.\n* **Correlation IDs are propagated everywhere.** HTTP, Kafka, batch jobs, scheduled tasks.\n* **Logs are structured.** Unstructured log lines are an exception, not a default.\n* **High-cardinality events are first-class.** Wide events with many attributes are more useful than narrow events with rolled-up metrics alone.\n* **SLOs are defined for user-visible behaviour.** Internal latency is a leading indicator, not a final goal.\n* **Alerting is symptom-based.** Page on user impact, not on every internal anomaly.\n* **Dashboards have owners.** A dashboard with no owner is a dashboard nobody trusts.\n\n## Debugging Test\n\nA service is observably healthy when an engineer who did not write it can answer these questions quickly during an incident:\n\n* What changed recently?\n* Which users, tenants, regions, or flows are affected?\n* Where did the request or event go after it entered the system?\n* Which downstream dependency is slow, failing, or saturated?\n* Is the problem a deploy, data shape, dependency, load pattern, or configuration change?\n* Is user-facing reliability inside or outside the SLO?\n* What should be rolled back, disabled, scaled, or escalated?\n\nIf the answer requires guessing, asking the original author, or reading production code under pressure, the service is not observable enough.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Use the standard logging library, the standard metrics conventions, and the standard tracing setup.\n* Add structured event logs for the operations your service does for users, not only for the code paths.\n* Define SLOs that reflect what your users (internal or external) actually care about.\n* Treat alerts you mute as bugs in the alerting, not as background noise.\n\nFor platform and SRE roles:\n\n* Own the templates, libraries, and platform defaults that deliver observability.\n* Keep CloudWatch and any overlay tooling working together rather than competing.\n* Provide patterns for trace propagation through MSK and asynchronous flows.\n\nFor tech leads:\n\n* Block production launches that miss observability defaults.\n* Push for SLO definition during design, not during the first incident.\n\n## Anti-Patterns\n\n* **Unstructured log spew.** Free-text log lines with no shared fields, requiring grep gymnastics to debug.\n* **Metric explosion without meaning.** Hundreds of dashboards, none of which answer real questions.\n* **Tracing in one service.** Distributed tracing that stops at the first hop, so the trace is no use distributed.\n* **Alert fatigue.** Pagers tuned to ringing, so genuine incidents are lost in noise.\n* **Owner-less dashboards.** A graveyard of dashboards left behind by ex-projects.\n* **Bolt-on observability.** Logging and metrics added after an incident, then forgotten until the next.\n* **Observability vendor lock-in by accident.** Telemetry that only works on one vendor's stack because shape was tied to the vendor.\n\n## Examples\n\nAligned with the principle:\n\n* A new ECS Fargate service ships with structured JSON logs, OpenTelemetry traces, and CloudWatch metrics from its first commit.\n* Kafka producers and consumers propagate trace headers; a single trace links a user request to all downstream consumers.\n* An SLO of \"99.5% of search responses under 400ms\" is defined alongside the service, with error budget burn alerts.\n* Each service has an \"owned dashboards\" list in its README.\n\nOut of alignment with the principle:\n\n* A service ships with `print` statements as logs because \"we'll add proper logging in a sprint\".\n* Three teams use three different trace propagation schemes; traces cannot be joined.\n* Metrics exist but no SLOs are defined; on-call decides what is wrong by feel.\n* Alerts trigger on every internal anomaly, half of them muted by default.\n\n## Discussion Prompts\n\nUse these prompts in readiness or incident reviews:\n\n* What question could we not answer quickly in the last incident?\n* Which dashboard, alert, or SLO has no clear owner?\n* Where does trace or correlation context break across a service boundary?\n\n## Related Principles\n\n* [Operational Principle: Production Ready](production-ready.html) - observability is a readiness item.\n* [Operational Principle: Cloud Native on AWS](cloud-native-on-aws.html) - AWS-native observability is the default destination.\n* [Design Principle: Evolutionary Systems](evolutionary-systems.html) - observability is required for safe incremental change.\n* [Practice Principle: Governance as Code](governance-as-code.html) - observability defaults are enforced via templates and CI.\n* [Practice Principle: AI Output Must Be Governed](ai-output-must-be-governed.html) - AI-generated changes need observability to be safely validated.\n\n## Scope and Revisiting\n\nThis principle applies to every Organization service, pipeline, and integration that runs in production or pre-production. It also applies to internal platforms whose failure would affect production.\n\nIt does not apply to one-off scripts or experiments with no production exposure, though even there structured logs are a habit worth keeping.\n\nThe principle should be revisited if:\n\n* The AWS observability stack changes meaningfully (for example, a managed OpenTelemetry destination becomes standard).\n* Cost of telemetry becomes a significant operational driver and requires reshaping defaults.\n* A new compliance requirement forces specific retention or redaction patterns.\n\n## Authoritative References\n\n* Charity Majors, Liz Fong-Jones, George Miranda, *Observability Engineering*, O'Reilly.\n* Google SRE Workbook, [Implementing SLOs](https://sre.google/workbook/implementing-slos/).\n* OpenTelemetry, [Specification](https://opentelemetry.io/docs/specs/).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-OBSERVABLE-BY-DEFAULT", "status": "draft:gray", "title": "Operational Principle: Observable by Default", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "observable-by-default", "timetoread": "12 min", "excerpt": "Every Organization service emits structured logs, useful metrics, and distributed traces from day one. Observability is not a feature added after an incident; it is a default property delivered by templates, libraries, and the platform. The goal is not dashboards; the goal is to answer 'what just happened, where, and why?' in minutes for any production system. Without observability, every other operational principle collapses into guesswork.", "tags": "operations, observability, logging, metrics, tracing, slos", "logo": "assets/images/observable-by-default/logo.jpeg", "logo_credit": "Inspired by Charity Majors and the JLP Engineering Principles", "icon": "assets/icons/observable-by-default.png"}, "tags": ["operations", "observability", "logging", "metrics", "tracing", "slos"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization services are **Observable by Default**. Structured logs, metrics, and traces are produced by every service from the day it is created, using shared shapes, shared destinations, and shared correlation. Observability is delivered by golden templates, libraries, and platform defaults, not bolted on after the first incident.\n\n## Statement\n\nEvery Organization service emits:\n\n* **Structured logs** in a consistent JSON shape, with shared fields (trace ID, span ID, service name, environment, correlation IDs).\n* **Metrics** covering the four golden signals (latency, traffic, errors, saturation) plus business-relevant signals where relevant.\n* **Distributed traces** with consistent trace propagation across service boundaries and asynchronous flows.\n* **Health and readiness signals** aligned with the runtime.\n* **Service-level objectives** for user-visible behaviour, not just internal metrics.\n\nAll three pillars flow through AWS-native destinations (CloudWatch and equivalents) with the option of additional overlays where justified.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Observability is a default. | Observability solves itself. |\n| Use shared shapes and destinations. | Use exactly one observability tool. |\n| Emit logs, metrics, and traces. | Emit everything possible. |\n| SLOs frame what matters. | SLOs replace operational sense. |\n| Observability supports debugging. | Observability is for dashboards. |\n\nThe principle is about answering questions in production, not about volume of telemetry.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain the difference between observability and having dashboards.\n* Identify the questions logs, metrics, traces, and SLOs should answer during an incident.\n* Design telemetry with shared shapes, correlation, and ownership from service creation.\n* Recognise alert noise and unowned dashboards as reliability risks.\n\n## Rationale\n\nThe most expensive minutes in an incident are the ones spent trying to figure out *what is happening*. The cost is paid in lost availability, lost customer trust, and lost engineering time. Observability is the only mitigation that reliably reduces those minutes.\n\nObservability also pays compounding dividends outside incidents:\n\n* Capacity planning becomes evidence-based.\n* Performance regressions become detectable rather than felt.\n* Deploys gain feedback loops via canary metrics and trace deltas.\n* New joiners learn the system from real behaviour, not stories.\n\nIt only works if observability is *consistent*. Logs in five formats, metrics in three systems, and traces in none means each service is investigated differently. The principle is therefore as much about shared *shape* as about shared *coverage*.\n\nOrganization's wider stack supports this: AWS provides default destinations (CloudWatch, X-Ray) and integration with ECS, MSK, and AVIV Group's central tooling. Claude Code can be used to enforce observability patterns through Skills, templates, and CI checks.\n\n## Implications\n\n* **Templates emit telemetry from line one.** New service templates ship with structured logs, metrics, and traces enabled.\n* **Shared library or shared sidecar.** Telemetry shape is enforced centrally, not negotiated per service.\n* **Correlation IDs are propagated everywhere.** HTTP, Kafka, batch jobs, scheduled tasks.\n* **Logs are structured.** Unstructured log lines are an exception, not a default.\n* **High-cardinality events are first-class.** Wide events with many attributes are more useful than narrow events with rolled-up metrics alone.\n* **SLOs are defined for user-visible behaviour.** Internal latency is a leading indicator, not a final goal.\n* **Alerting is symptom-based.** Page on user impact, not on every internal anomaly.\n* **Dashboards have owners.** A dashboard with no owner is a dashboard nobody trusts.\n\n## Debugging Test\n\nA service is observably healthy when an engineer who did not write it can answer these questions quickly during an incident:\n\n* What changed recently?\n* Which users, tenants, regions, or flows are affected?\n* Where did the request or event go after it entered the system?\n* Which downstream dependency is slow, failing, or saturated?\n* Is the problem a deploy, data shape, dependency, load pattern, or configuration change?\n* Is user-facing reliability inside or outside the SLO?\n* What should be rolled back, disabled, scaled, or escalated?\n\nIf the answer requires guessing, asking the original author, or reading production code under pressure, the service is not observable enough.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Use the standard logging library, the standard metrics conventions, and the standard tracing setup.\n* Add structured event logs for the operations your service does for users, not only for the code paths.\n* Define SLOs that reflect what your users (internal or external) actually care about.\n* Treat alerts you mute as bugs in the alerting, not as background noise.\n\nFor platform and SRE roles:\n\n* Own the templates, libraries, and platform defaults that deliver observability.\n* Keep CloudWatch and any overlay tooling working together rather than competing.\n* Provide patterns for trace propagation through MSK and asynchronous flows.\n\nFor tech leads:\n\n* Block production launches that miss observability defaults.\n* Push for SLO definition during design, not during the first incident.\n\n## Anti-Patterns\n\n* **Unstructured log spew.** Free-text log lines with no shared fields, requiring grep gymnastics to debug.\n* **Metric explosion without meaning.** Hundreds of dashboards, none of which answer real questions.\n* **Tracing in one service.** Distributed tracing that stops at the first hop, so the trace is no use distributed.\n* **Alert fatigue.** Pagers tuned to ringing, so genuine incidents are lost in noise.\n* **Owner-less dashboards.** A graveyard of dashboards left behind by ex-projects.\n* **Bolt-on observability.** Logging and metrics added after an incident, then forgotten until the next.\n* **Observability vendor lock-in by accident.** Telemetry that only works on one vendor's stack because shape was tied to the vendor.\n\n## Examples\n\nAligned with the principle:\n\n* A new ECS Fargate service ships with structured JSON logs, OpenTelemetry traces, and CloudWatch metrics from its first commit.\n* Kafka producers and consumers propagate trace headers; a single trace links a user request to all downstream consumers.\n* An SLO of \"99.5% of search responses under 400ms\" is defined alongside the service, with error budget burn alerts.\n* Each service has an \"owned dashboards\" list in its README.\n\nOut of alignment with the principle:\n\n* A service ships with `print` statements as logs because \"we'll add proper logging in a sprint\".\n* Three teams use three different trace propagation schemes; traces cannot be joined.\n* Metrics exist but no SLOs are defined; on-call decides what is wrong by feel.\n* Alerts trigger on every internal anomaly, half of them muted by default.\n\n## Discussion Prompts\n\nUse these prompts in readiness or incident reviews:\n\n* What question could we not answer quickly in the last incident?\n* Which dashboard, alert, or SLO has no clear owner?\n* Where does trace or correlation context break across a service boundary?\n\n## Related Principles\n\n* [Operational Principle: Production Ready](production-ready.html) - observability is a readiness item.\n* [Operational Principle: Cloud Native on AWS](cloud-native-on-aws.html) - AWS-native observability is the default destination.\n* [Design Principle: Evolutionary Systems](evolutionary-systems.html) - observability is required for safe incremental change.\n* [Practice Principle: Governance as Code](governance-as-code.html) - observability defaults are enforced via templates and CI.\n* [Practice Principle: AI Output Must Be Governed](ai-output-must-be-governed.html) - AI-generated changes need observability to be safely validated.\n\n## Scope and Revisiting\n\nThis principle applies to every Organization service, pipeline, and integration that runs in production or pre-production. It also applies to internal platforms whose failure would affect production.\n\nIt does not apply to one-off scripts or experiments with no production exposure, though even there structured logs are a habit worth keeping.\n\nThe principle should be revisited if:\n\n* The AWS observability stack changes meaningfully (for example, a managed OpenTelemetry destination becomes standard).\n* Cost of telemetry becomes a significant operational driver and requires reshaping defaults.\n* A new compliance requirement forces specific retention or redaction patterns.\n\n## Authoritative References\n\n* Charity Majors, Liz Fong-Jones, George Miranda, *Observability Engineering*, O'Reilly.\n* Google SRE Workbook, [Implementing SLOs](https://sre.google/workbook/implementing-slos/).\n* OpenTelemetry, [Specification](https://opentelemetry.io/docs/specs/).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -613,26 +648,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

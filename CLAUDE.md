@@ -129,6 +129,7 @@ Link liberally — a `[[name]]` whose target doesn't exist yet survives the buil
 
 - `index.html` builds the section list from embedded JSON and provides a search input that filters by `title + excerpt` substring (case-insensitive).
 - `post.html` contains a small markdown renderer and a `renderers` dispatch table keyed by block type.
+- `post.html` renders one `<article class="pane">` per modality inside `#content`, plus a tab bar (`#modality-tabs`) when there is more than one modality. The default (`index`) pane renders on load; other panes render lazily on first activation — this matters because mermaid / force-graph / D3 measure container widths and break inside `display:none` elements. Tab selection is reflected in the URL hash (`#summary`, `#dialog`, `#comics`); a hash is only treated as a tab when it matches a modality key.
 - The renderer treats post content as **trusted** and lets raw HTML pass through unescaped — several posts embed inline `<blockquote style="…">` / `<div>` markup. Don't reintroduce a blanket HTML-escape in the inline pass.
 
 ### Markdown subset supported by `post.html`
@@ -139,7 +140,7 @@ If you need anything fancier, add it to the renderer in `_templates/post.html` r
 
 ## Block types
 
-The post payload shape is `{ meta, tags, blocks: [{ type, content }] }`. `split_into_blocks()` in `build.py` walks the post body and lifts recognized custom fences into their own blocks; everything else stays in `markdown` blocks.
+The post payload shape is `{ meta, tags, modalities: [{ key, label, meta, blocks: [{ type, content }] }] }` — one modality per doc the post ships (see "Post modalities" below; a plain post has exactly one, `index`). `split_into_blocks()` in `build.py` walks each doc's body and lifts recognized custom fences into their own blocks; everything else stays in `markdown` blocks.
 
 Currently recognized fences (declared in `_BLOCK_FENCES`):
 
@@ -202,7 +203,7 @@ Substantive changes to this repository — new posts, edits, restructures, illus
 
 Non-trivial posts are driven by a lightweight spec — a `spec.md` file sitting next to `index.md` in the same post folder. The spec is the contract the agent works against; `index.md` is the published artifact.
 
-- **Template**: `_wiring/spec-template.md`. Seven sections: Intent, Audience, Success criteria, Non-goals, Open questions, Decision log, Sources — plus a trailing Changelog. Keep each section short; trim ruthlessly if the spec grows longer than the post.
+- **Template**: `_wiring/spec-template.md`. Eight sections: Intent, Audience, Success criteria, Non-goals, Modalities, Open questions, Decision log, Sources — plus a trailing Changelog. Keep each section short; trim ruthlessly if the spec grows longer than the post.
 - **Layout**: `_journals/<journal>/posts/<slug>/spec.md`. Only the per-post folder layout supports specs (every current journal uses that layout).
 - **Build behaviour**: when `spec.md` exists, the build renders it as `docs/<journal>/<slug>.spec.html` and adds a "View spec" link to the post's byline. Specs use the same markdown renderer as posts and support the same `[[…]]` cross-links.
 - **When to write one**: any post where the intent is not self-evident from the title — new foundations, principles, decisions, and strategy posts. Skip for trivial fixes, status flips, and minor edits. If you can't articulate Intent + Success criteria in a paragraph each, the post probably is not ready to write yet.
@@ -210,6 +211,24 @@ Non-trivial posts are driven by a lightweight spec — a `spec.md` file sitting 
 - **Tracking evolution**: specs have a small front-matter block (`status:` + `revised:`) and a trailing `## Changelog` section. Status values are `draft` (still being written), `accepted` (spec and post agree), `drifted` (post has moved beyond the spec — needs reconciliation), `superseded` (a replacement spec exists). The build renders the status as a chip on the spec page and decorates the "View spec" link on the post page when the spec is `drifted` (amber) or `superseded` (muted). When you change a spec or notice drift, update `revised:` and add a Changelog line.
 - **Edit the spec first**: when intent for a post shifts, update the spec *before* the post. If you find yourself updating the post first, that's a signal the spec is being treated as documentation, not as a contract.
 - **Foundation ADR**: see `_journals/foundations/posts/spec-driven-authoring/index.md` for the durable rationale.
+
+### Post modalities (one spec, many docs)
+
+One spec can drive several docs of different modalities, all living in the same post folder and rendered as **tabs on the same post page** (`docs/<j>/<slug>.html` — the permalink never changes):
+
+| Modality | File | Tab label | What it is |
+| --- | --- | --- | --- |
+| `index` | `index.md` | Article | The detailed main article — **required**, default and first tab |
+| `summary` | `summary.md` | Summary | Management summary (300–500 words) |
+| `dialog` | `dialog.md` | Conversation | Two-host podcast-style conversation |
+| `comics` | `comics.md` | Comic | Explainer comic (generated panel images) |
+
+- **Discovery is file presence**, same as `spec.md`: a tab appears iff the file exists next to `index.md`. No `config.yaml` changes; only the folder layout supports modalities. The registry (`_MODALITIES` in `build.py`) is an explicit allow-list, so other sibling `.md` files (`spec.md`, `REVIEW.md`, …) stay ignored.
+- Modality files go through the same pipeline as posts (asset rewrite, `[[…]]` cross-links, block fences). Front matter is tolerated and stored as the modality's `meta` (e.g. `timetoread:`) but not rendered yet; title/byline/tags/hero always come from `index.md`.
+- With one modality the tab bar is hidden and the page looks exactly like a plain post. Spec pages are built as single-modality payloads and never show tabs.
+- Deep-link a tab with the URL hash: `<slug>.html#summary`, `#dialog`, `#comics`.
+- Per-modality images live in the post's `assets/` folder like everything else — the per-post merge covers them.
+- **Authoring skills** in `.claude/skills/`, one per modality: `detailed-article` (writes `index.md`; canonical home of the house style), `management-summary`, `podcast-dialog`, and `explainer-comics` (includes `scripts/generate_comic_panels.py` for Gemini panel generation). All four treat `spec.md` as the read-only contract and end by running the build and verifying the output.
 
 ### House style for new posts
 

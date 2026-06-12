@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="markdown-records.html">← Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Markdown Records as the Default Format\n\n> Backfilled after the post. This is the foundation that everything else in\n> this repository assumes; the spec captures why the choice is durable\n> rather than just expedient.\n\n## Intent\n\nEstablish markdown records in git, published as a static site, as\nOrganization's default format for high-quality, long-lived technical writing —\ndecisions, strategies, discussion documents, principles, foundational\nengineering records. The record should justify the choice well enough that\nfuture challenges (\"why not Confluence?\", \"why not Notion?\", \"why not\nADRs-in-Jira?\") can be answered without rediscovering the reasoning.\n\n## Audience\n\n- **Authors** of decisions, strategies, and principles deciding where to\n  put a new record.\n- **Reviewers and architects** evaluating proposals to migrate away from\n  markdown.\n- **Tool buyers / leadership** comparing markdown-in-git against SaaS\n  alternatives.\n- **AI agents** that will consume the corpus as long-form context.\n\n## Success criteria\n\n- [ ] Main record stays focused on the core decision; reference, tutorial, or playbook material is compact or moved out of the main flow.\n- [ ] Reader can state what kind of writing belongs in markdown records\n      and what doesn't (runbooks, product docs, Slack threads, etc.).\n- [ ] Reader can describe the canonical format (MADR-inspired markdown,\n      small metadata header) without looking it up.\n- [ ] Reader understands that discussion may happen elsewhere (PRs, Slack,\n      Google Docs) but the markdown record is the durable source of truth.\n- [ ] Reader sees how this foundation enables [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html),\n      [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html), the curator role, and the static-site\n      pipeline.\n- [ ] Reader can argue the choice against Confluence/Notion/Jira-ADRs with\n      reference to specific properties (diff-friendly, git-native,\n      AI-readable, no vendor lock-in).\n\n## Non-goals\n\n- Replacing short-lived communication, runbooks owned by service teams,\n  ticket descriptions, or product documentation.\n- Mandating a single repository — domain repos following the same\n  conventions are explicitly allowed.\n- Pre-committing to a specific publication target (GitHub Pages vs\n  Okta-protected CDN proxy depends on access control needs).\n- Defining the full editorial workflow — that's the job of\n  [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html), [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html), and the curator\n  record.\n\n## Open questions\n\n- How tightly to couple \"markdown record\" to *this* repository's specific\n  build (MADR shape, `[[…]]` resolver, block fences) versus keeping the\n  format portable.\n- Whether to add a \"deprecated record\" lifecycle state with a redirect\n  mechanism in the build.\n- Long-term storage and search across multiple domain repos that adopt the\n  format.\n\n## Decision log\n\n- **2026-05-21** — Focused the post around the core decision and condensed long tutorial, playbook, or reference sections so readers can reach the guidance quickly.\n- **2026-05-20** — Chose **markdown in git, published as a static site**\n  over Confluence, Notion, and Jira-ADRs. Considered all three;\n  rejected because: Confluence/Notion lock content to one vendor and one\n  rich-text shape, neither survives diff review or AI ingestion well,\n  and Jira ADRs lock long-form writing into an issue tracker that wasn't\n  designed for it.\n- **2026-05-20** — Adopted **MADR-inspired** structure with a small\n  metadata header. Considered free-form markdown; rejected because the\n  whole corpus reads as one body of reasoning, and structural\n  consistency makes that legible.\n- **2026-05-20** — Allowed **multiple repositories** following the same\n  conventions, not a single monorepo. Considered enforcing one repo;\n  rejected because domain teams need locality and federated repos can\n  still adopt the same build + format.\n- **2026-05-20** — Treated **discussion venues as ephemeral**, the\n  markdown record as canonical. Considered embedding discussion threads\n  in records; rejected because the discussion fades while the decision\n  endures, and conflating them dilutes the record.\n\n## Sources\n\n- **Internal**\n  - [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html) — depends on this record's choice of\n    markdown for AI-readability.\n  - [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html) — same.\n  - [The Curator Role for Records, Principles, and Strategies](curator-role.html) — same.\n- **External**\n  - [MADR: Markdown Architectural Decision Records](https://adr.github.io/madr/)\n    — the structural inspiration.\n  - Michael Nygard, *Documenting Architecture Decisions* — the original\n    ADR pattern.\n  - Jekyll and similar static-site generators — informs the build\n    pipeline shape (markdown source, plain HTML output).\n\n## Changelog\n\n- **2026-05-21** — Shortened and refocused `index.md`; kept stable identifiers and permalinks. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Markdown Records as the Default Format\n\n> Backfilled after the post. This is the foundation that everything else in\n> this repository assumes; the spec captures why the choice is durable\n> rather than just expedient.\n\n## Intent\n\nEstablish markdown records in git, published as a static site, as\nOrganization's default format for high-quality, long-lived technical writing —\ndecisions, strategies, discussion documents, principles, foundational\nengineering records. The record should justify the choice well enough that\nfuture challenges (\"why not Confluence?\", \"why not Notion?\", \"why not\nADRs-in-Jira?\") can be answered without rediscovering the reasoning.\n\n## Audience\n\n- **Authors** of decisions, strategies, and principles deciding where to\n  put a new record.\n- **Reviewers and architects** evaluating proposals to migrate away from\n  markdown.\n- **Tool buyers / leadership** comparing markdown-in-git against SaaS\n  alternatives.\n- **AI agents** that will consume the corpus as long-form context.\n\n## Success criteria\n\n- [ ] Main record stays focused on the core decision; reference, tutorial, or playbook material is compact or moved out of the main flow.\n- [ ] Reader can state what kind of writing belongs in markdown records\n      and what doesn't (runbooks, product docs, Slack threads, etc.).\n- [ ] Reader can describe the canonical format (MADR-inspired markdown,\n      small metadata header) without looking it up.\n- [ ] Reader understands that discussion may happen elsewhere (PRs, Slack,\n      Google Docs) but the markdown record is the durable source of truth.\n- [ ] Reader sees how this foundation enables [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html),\n      [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html), the curator role, and the static-site\n      pipeline.\n- [ ] Reader can argue the choice against Confluence/Notion/Jira-ADRs with\n      reference to specific properties (diff-friendly, git-native,\n      AI-readable, no vendor lock-in).\n\n## Non-goals\n\n- Replacing short-lived communication, runbooks owned by service teams,\n  ticket descriptions, or product documentation.\n- Mandating a single repository — domain repos following the same\n  conventions are explicitly allowed.\n- Pre-committing to a specific publication target (GitHub Pages vs\n  Okta-protected CDN proxy depends on access control needs).\n- Defining the full editorial workflow — that's the job of\n  [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html), [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html), and the curator\n  record.\n\n## Open questions\n\n- How tightly to couple \"markdown record\" to *this* repository's specific\n  build (MADR shape, `[[…]]` resolver, block fences) versus keeping the\n  format portable.\n- Whether to add a \"deprecated record\" lifecycle state with a redirect\n  mechanism in the build.\n- Long-term storage and search across multiple domain repos that adopt the\n  format.\n\n## Decision log\n\n- **2026-05-21** — Focused the post around the core decision and condensed long tutorial, playbook, or reference sections so readers can reach the guidance quickly.\n- **2026-05-20** — Chose **markdown in git, published as a static site**\n  over Confluence, Notion, and Jira-ADRs. Considered all three;\n  rejected because: Confluence/Notion lock content to one vendor and one\n  rich-text shape, neither survives diff review or AI ingestion well,\n  and Jira ADRs lock long-form writing into an issue tracker that wasn't\n  designed for it.\n- **2026-05-20** — Adopted **MADR-inspired** structure with a small\n  metadata header. Considered free-form markdown; rejected because the\n  whole corpus reads as one body of reasoning, and structural\n  consistency makes that legible.\n- **2026-05-20** — Allowed **multiple repositories** following the same\n  conventions, not a single monorepo. Considered enforcing one repo;\n  rejected because domain teams need locality and federated repos can\n  still adopt the same build + format.\n- **2026-05-20** — Treated **discussion venues as ephemeral**, the\n  markdown record as canonical. Considered embedding discussion threads\n  in records; rejected because the discussion fades while the decision\n  endures, and conflating them dilutes the record.\n\n## Sources\n\n- **Internal**\n  - [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html) — depends on this record's choice of\n    markdown for AI-readability.\n  - [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html) — same.\n  - [The Curator Role for Records, Principles, and Strategies](curator-role.html) — same.\n- **External**\n  - [MADR: Markdown Architectural Decision Records](https://adr.github.io/madr/)\n    — the structural inspiration.\n  - Michael Nygard, *Documenting Architecture Decisions* — the original\n    ADR pattern.\n  - Jekyll and similar static-site generators — informs the build\n    pipeline shape (markdown source, plain HTML output).\n\n## Changelog\n\n- **2026-05-21** — Shortened and refocused `index.md`; kept stable identifiers and permalinks. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

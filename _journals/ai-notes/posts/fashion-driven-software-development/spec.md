@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-05-30
+revised: 2026-06-11
 ---
 
 # Spec: Software Has Seasons Now: Fashion-Driven Development for Generative AI Products
@@ -92,6 +92,14 @@ an operating-model shift.
 - A claim that fashion-driven development replaces durable architecture,
   testing, reliability, or product strategy.
 
+## Modalities
+
+Which docs this spec drives beyond the main article (`index.md`).
+
+- [x] `summary.md` — management summary
+- [x] `dialog.md` — two-host dialog
+- [x] `comics.md` — explainer comic
+
 ## Open questions
 
 None for the current draft.
@@ -155,6 +163,9 @@ None for the current draft.
 
 ## Changelog
 
+- **2026-06-11** - Added Modalities section; the spec now drives `summary.md`,
+  `dialog.md`, and `comics.md` alongside the article. Status `accepted`.
+  *(Zeljko, AI-mediated session)*
 - **2026-05-30** - Added the intro note that Samuel Beek's VEED experience
   helped frame the article's "software feels like fashion" metaphor. Status
   `accepted`. *(Zeljko, AI-mediated session)*

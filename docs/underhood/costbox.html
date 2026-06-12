@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">Under the Hood</a><span class="nav-right"><a class="nav-prev" href="documentation.html" title="Data + Automation + Curation = Useful Architectural Documentation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="economics.html" title="The Economic Value of Architecture: Two Metaphors">Next →</a></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"layout": "post", "title": "The IT Cost Box", "date": "2021-01-01 21:12:01 +0100", "categories": "general", "author": "by Željko Obrenović (obren.io)", "icon": "assets/icons/costs.png", "permalink": "costbox", "timetoread": "3 min", "excerpt": "In this post, I introduce a simple model for thinking about IT costs in three dimensions. This model presents IT costs as the volume of the box, where each side of the box shows three drivers of the cost: unit costs, size, and time."}, "tags": [], "blocks": [{"type": "markdown", "content": "![](assets/images/finops/money.jpg)\n\n> **KEY POINTS:**\n>\n>* In this post, I introduce a simple model for thinking about IT costs in three dimensions. \n>* The model presents IT costs as a volume of a box, where each side of the box shows three drivers of IT cost: unit costs, size, and time. You can optimize expenses on all of these three dimensions.\n>* Unit costs describe the price of units of resources needed to run the systems (e.g., compute, storage, or network resources). Size represents the number of resource units required to run the system. Time describes how the size changes in time.\n\n\n## Intro\n\n\nRunning IT systems always costs money. And architects are expected to help keep these costs under control. In this post, I discuss a simple model for thinking about IT costs in three dimensions. I want to help facilitate discussions around IT costs with this model by providing structure and a common vocabulary.\n\nFigure 1 illustrates this model. I borrow it from Gregor Hohpe's book [Cloud Strategy](https://architectelevator.com/book/cloudstrategy/). This model presents IT costs as the volume of the box. Each side of the box shows three drives of IT costs:\n* Unit costs, describing the price of units of resources needed to run the systems (e.g., compute, storage, or network resources).\n* Size, representing the number of resource units required to run the system.\n* Time, describing how the size changes in time.\n\n<div style=\"text-align: center\">\n<img src='assets/images/finops/costcube.png'>\n<br>\n<b>Figure 1:<\/b> The IT Cost Box (credit Gregor Hohpe, Cloud Strategy):<br>Cost[$] = size [units] * time [hours] * unit cost [$/unit/hour]\n<\/div>\n\n<br>\nTo calculate the IT system costs, you need to know the price of your units (e.g., price of VMs in the cloud), the amount of these units your system needs now, and how this usage of resources changes in time. \n\nYou can optimize IT costs around all of these three dimensions.\n\n\n## Optimizing For Unit Costs\n\nUnit costs describe the price of the smallest piece of resources you can use. What exactly is a unit depends on the infrastructure you are using. In our private cloud, examples of units are processors, storage disks, and network bandwidth. We usually express unit prices as the costs of using some amount of resource per some time unit. For example, running a virtual machine may cost you 10 dollars per day.\n\nIn a public cloud, when we use higher-level managed services like hosted databases and machine learning tools, a unit is frequently some discrete action you can perform on a service, e.g., the read or update actions. Then we usually express unit costs are price per action.\n\nIn general, as system developers, we have a limited amount of optimization options for unit sizes. If we run all systems in the same data center with the same hardware and VM options, we can only choose the number of VMs but not their characteristics. However, there are some possibilities to optimize for unit costs. \n\n\nFirstly, you need to be clear about what resources you need. We need to avoid being too defensive or greedy and use a much more significant amount of resources than we need. If you have several options for VMs, for example, then you need to choose the one most suited for your system tasks. Public cloud providers offer many combinations of CPU and RAM so that you can deploy applications that are compute or memory-intensive on virtual machines that match their needs more closely.  It makes no sense to always use the most expensive processors suitable for complex machine learning tasks, or to use costly SSD disks to store backup data accessed once a year. Having a good understanding of your workloads is the key to selecting instances suited for them. \n\n![](assets/images/finops/ferrari.jpg)\n<br>\n**Figure 1:** *Do you need a Ferrari to commute to your work in a city with frequent traffic jams and a speed limit of 50km/h? Similarly, do you need machine learning ready VMs for simple non-real-time data processing tasks?*\n\nSecond, an option that is sometimes available is using trading the stability for costs. For instance, Google Cloud offers Preemptible VMs. These virtual machines provide the same options as regular VMs. The difference is that they last for up to 24 hours, and Google may terminate them at any time. But if your applications are fault-tolerant and can withstand possible instance termination, then preemptible instances can reduce your costs by up to 80%.\n\nThe last way to reduce unit costs is through sound financial management. If you bundle your expenses, you may get a discount. For instance, customers typically get lower unit prices in the public cloud after their usage is above some threshold or commit to a minimum usage level.\n\n\n## Optimizing  For  Size\n\nOptimizing cost for size means using as few as possible resource units to run your system.\n\n![](assets/images/finops/traffic-jam.jpg)\n<br>\n**Figure 2:** *Most cars carry just one or two persons, while they can seat at least four comfortably. Similarly, running your VMs at a 25% utilization level will multiply the number of VMs you need.*\n\nWe can generally optimize by size by being more precise in defining resource needs or by aggregating workloads to more efficiently use resources. \n\nThe key to the first approach to optimizing for size lies in a good understanding of your usage patterns. Good instrumentation and monitoring are critical. A high level of automation also helps as it enables you to add or remove resources quickly. Optimizing for size by better utilizing individual resources may be complicated as having too few resources may cause your system to perform poorly or even crash. Reducing redundancy also needs to be done carefully, as more redundancy may increase your system's uptime.\n\nAnother approach you can apply to optimize for size is [aggregation of workloads](http://www.joeweinman.com/Resources/IEEE%20CCM%20Weinman%20Sep-Oct%202017%20Capacity,%20Utilization,%20Cost.pdf). Aggregation can create unarguable economic benefits in terms of investment required for service resource capacity, utilization of that capacity, and the delivered cost. However, these advantages need to be traded off against other factors, such as response time or data networking costs.\n\n## Optimizing For Time\n\nOptimizing for time means introducing elasticity or auto-scaling in your system design so that your resource creation and termination follow your usage pattern as real-time as possible. \n\nA typical development test environment, for instance, is utilized around 50 hours a week, roughly a quarter of the week's hours. Stopping or downscaling these environments when they're not needed can cut your cost dramatically. Similarly, our customers are much more active during the day than at night.\n\n![](assets/images/finops/empty-metro.jpg)\n<br>\n**Figure 3:** *You may need fewer carriages during the night.*\n\n## Looking Holistically\n\nAny optimization has its costs and risks. If you have a system that consumes resources inefficiently, you may reduce its costs if you invest in making the system more efficient. However, such investment may sometimes be more expensive than the eventual saving that it can bring during the system's lifetime. \n\nAnother topic to think about is where it makes sense to optimize first. If your system has irregular usage patterns, then optimizing for time may be the most cost-effective investment. If your system always has a high load and you may keep allocated resources statically, reduce the number you need or use cheaper units. \n\n\n## To Probe Further\n\n* Gregor Hohpe (2020): **[Cloud Strategy](https://architectelevator.com/book/cloudstrategy/)**, Chapter \"Cloud Savings Have To Be Earned\"\n\n* Joe Weinman: **[Articles on Cloud Economics](http://www.joeweinman.com/Papers.htm)**\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"layout": "post", "title": "The IT Cost Box", "date": "2021-01-01 21:12:01 +0100", "categories": "general", "author": "by Željko Obrenović (obren.io)", "icon": "assets/icons/costs.png", "permalink": "costbox", "timetoread": "3 min", "excerpt": "In this post, I introduce a simple model for thinking about IT costs in three dimensions. This model presents IT costs as the volume of the box, where each side of the box shows three drivers of the cost: unit costs, size, and time."}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "![](assets/images/finops/money.jpg)\n\n> **KEY POINTS:**\n>\n>* In this post, I introduce a simple model for thinking about IT costs in three dimensions. \n>* The model presents IT costs as a volume of a box, where each side of the box shows three drivers of IT cost: unit costs, size, and time. You can optimize expenses on all of these three dimensions.\n>* Unit costs describe the price of units of resources needed to run the systems (e.g., compute, storage, or network resources). Size represents the number of resource units required to run the system. Time describes how the size changes in time.\n\n\n## Intro\n\n\nRunning IT systems always costs money. And architects are expected to help keep these costs under control. In this post, I discuss a simple model for thinking about IT costs in three dimensions. I want to help facilitate discussions around IT costs with this model by providing structure and a common vocabulary.\n\nFigure 1 illustrates this model. I borrow it from Gregor Hohpe's book [Cloud Strategy](https://architectelevator.com/book/cloudstrategy/). This model presents IT costs as the volume of the box. Each side of the box shows three drives of IT costs:\n* Unit costs, describing the price of units of resources needed to run the systems (e.g., compute, storage, or network resources).\n* Size, representing the number of resource units required to run the system.\n* Time, describing how the size changes in time.\n\n<div style=\"text-align: center\">\n<img src='assets/images/finops/costcube.png'>\n<br>\n<b>Figure 1:<\/b> The IT Cost Box (credit Gregor Hohpe, Cloud Strategy):<br>Cost[$] = size [units] * time [hours] * unit cost [$/unit/hour]\n<\/div>\n\n<br>\nTo calculate the IT system costs, you need to know the price of your units (e.g., price of VMs in the cloud), the amount of these units your system needs now, and how this usage of resources changes in time. \n\nYou can optimize IT costs around all of these three dimensions.\n\n\n## Optimizing For Unit Costs\n\nUnit costs describe the price of the smallest piece of resources you can use. What exactly is a unit depends on the infrastructure you are using. In our private cloud, examples of units are processors, storage disks, and network bandwidth. We usually express unit prices as the costs of using some amount of resource per some time unit. For example, running a virtual machine may cost you 10 dollars per day.\n\nIn a public cloud, when we use higher-level managed services like hosted databases and machine learning tools, a unit is frequently some discrete action you can perform on a service, e.g., the read or update actions. Then we usually express unit costs are price per action.\n\nIn general, as system developers, we have a limited amount of optimization options for unit sizes. If we run all systems in the same data center with the same hardware and VM options, we can only choose the number of VMs but not their characteristics. However, there are some possibilities to optimize for unit costs. \n\n\nFirstly, you need to be clear about what resources you need. We need to avoid being too defensive or greedy and use a much more significant amount of resources than we need. If you have several options for VMs, for example, then you need to choose the one most suited for your system tasks. Public cloud providers offer many combinations of CPU and RAM so that you can deploy applications that are compute or memory-intensive on virtual machines that match their needs more closely.  It makes no sense to always use the most expensive processors suitable for complex machine learning tasks, or to use costly SSD disks to store backup data accessed once a year. Having a good understanding of your workloads is the key to selecting instances suited for them. \n\n![](assets/images/finops/ferrari.jpg)\n<br>\n**Figure 1:** *Do you need a Ferrari to commute to your work in a city with frequent traffic jams and a speed limit of 50km/h? Similarly, do you need machine learning ready VMs for simple non-real-time data processing tasks?*\n\nSecond, an option that is sometimes available is using trading the stability for costs. For instance, Google Cloud offers Preemptible VMs. These virtual machines provide the same options as regular VMs. The difference is that they last for up to 24 hours, and Google may terminate them at any time. But if your applications are fault-tolerant and can withstand possible instance termination, then preemptible instances can reduce your costs by up to 80%.\n\nThe last way to reduce unit costs is through sound financial management. If you bundle your expenses, you may get a discount. For instance, customers typically get lower unit prices in the public cloud after their usage is above some threshold or commit to a minimum usage level.\n\n\n## Optimizing  For  Size\n\nOptimizing cost for size means using as few as possible resource units to run your system.\n\n![](assets/images/finops/traffic-jam.jpg)\n<br>\n**Figure 2:** *Most cars carry just one or two persons, while they can seat at least four comfortably. Similarly, running your VMs at a 25% utilization level will multiply the number of VMs you need.*\n\nWe can generally optimize by size by being more precise in defining resource needs or by aggregating workloads to more efficiently use resources. \n\nThe key to the first approach to optimizing for size lies in a good understanding of your usage patterns. Good instrumentation and monitoring are critical. A high level of automation also helps as it enables you to add or remove resources quickly. Optimizing for size by better utilizing individual resources may be complicated as having too few resources may cause your system to perform poorly or even crash. Reducing redundancy also needs to be done carefully, as more redundancy may increase your system's uptime.\n\nAnother approach you can apply to optimize for size is [aggregation of workloads](http://www.joeweinman.com/Resources/IEEE%20CCM%20Weinman%20Sep-Oct%202017%20Capacity,%20Utilization,%20Cost.pdf). Aggregation can create unarguable economic benefits in terms of investment required for service resource capacity, utilization of that capacity, and the delivered cost. However, these advantages need to be traded off against other factors, such as response time or data networking costs.\n\n## Optimizing For Time\n\nOptimizing for time means introducing elasticity or auto-scaling in your system design so that your resource creation and termination follow your usage pattern as real-time as possible. \n\nA typical development test environment, for instance, is utilized around 50 hours a week, roughly a quarter of the week's hours. Stopping or downscaling these environments when they're not needed can cut your cost dramatically. Similarly, our customers are much more active during the day than at night.\n\n![](assets/images/finops/empty-metro.jpg)\n<br>\n**Figure 3:** *You may need fewer carriages during the night.*\n\n## Looking Holistically\n\nAny optimization has its costs and risks. If you have a system that consumes resources inefficiently, you may reduce its costs if you invest in making the system more efficient. However, such investment may sometimes be more expensive than the eventual saving that it can bring during the system's lifetime. \n\nAnother topic to think about is where it makes sense to optimize first. If your system has irregular usage patterns, then optimizing for time may be the most cost-effective investment. If your system always has a high load and you may keep allocated resources statically, reduce the number you need or use cheaper units. \n\n\n## To Probe Further\n\n* Gregor Hohpe (2020): **[Cloud Strategy](https://architectelevator.com/book/cloudstrategy/)**, Chapter \"Cloud Savings Have To Be Earned\"\n\n* Joe Weinman: **[Articles on Cloud Economics](http://www.joeweinman.com/Papers.htm)**\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="infra-tech-stack-aws-foundation.html">← AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: AWS Foundation — Inherit Central AVIV Group Tooling for 6-12 Months\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nTime-bound a decision to **inherit** AVIV Group's central AWS foundation\n(Organizations, Control Tower, AFT, access scripts) for the next 6-12\nmonths — and explicitly state that the steady-state is a simpler,\ncountry-delegated, AWS-native foundation. The post should make the\n\"inherit now, simplify later\" framing impossible to misread as a\npermanent commitment.\n\n## Audience\n\n- **Cloud and platform engineers** standing up new AWS accounts or\n  changing landing-zone configuration in the short term.\n- **Architecture group** evaluating exception requests to fork or\n  parallel-stand-up tooling.\n- **Engineering leadership** sizing the 6-12 month investment.\n- **AVIV Group central teams** as the parties whose tooling is\n  inherited.\n\n## Success criteria\n\n- [ ] Reader knows the inheritance is **time-bounded**, not permanent.\n- [ ] Reader can list the inherited components (Organizations, Control\n      Tower, AFT, access scripts).\n- [ ] Reader understands what is **not** in scope: workload\n      architecture, runtime, compute, messaging.\n- [ ] Reader sees the link to [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) (the broader cloud\n      decision) and [AWS Networking: Inherit Central AVIV Group Tooling, Simplify Deliberately](infra-tech-stack-networking.html) (the networking\n      counterpart).\n- [ ] The post stays focused as an ADR and does not absorb training,\n      account-request checklist, detailed readiness model, or\n      implementation-guide content.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Deciding workload architecture, runtime, or service-level patterns.\n- Forking or replacing the central AVIV Group tooling.\n- Committing Organization to follow every future AVIV Group change.\n- Defining the steady-state foundation in detail (deferred to a\n  later ADR).\n\n## Open questions\n\n- What triggers the \"ready to leave inheritance\" decision at the end\n  of the 6-12 month window — concrete signals, not just dates.\n- How much of the access-script custom tooling Organization eventually\n  owns vs replaces.\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the 6-12 month inheritance\n  decision, foundation/workload boundary, concrete inheritance-period\n  commitments, exception criteria, and revisit triggers. Kept\n  terminology as an appendix instead of inline explanation.\n- **2026-05-20** — Chose **inheritance** over parallel tooling for the\n  6-12 month window. Considered standing up Organization-specific tooling\n  immediately; rejected because the migration risk and the cost of\n  duplicating in-house tooling exceed the value of early independence.\n- **2026-05-20** — Bounded the decision to **6-12 months**.\n  Considered an open-ended commitment; rejected because the steady\n  state should be simpler and country-delegated, and an open commitment\n  drifts toward permanence by default.\n- **2026-05-20** — Committed to **no forking** of the central tooling\n  during the period. Considered selective forks; rejected because\n  forks defeat the cost-saving rationale and create silent divergence.\n\n## Sources\n\n- **Internal**\n  - [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) — the broader public-cloud decision this sits\n    underneath.\n  - [AWS Networking: Inherit Central AVIV Group Tooling, Simplify Deliberately](infra-tech-stack-networking.html) — the networking counterpart with\n    the same inheritance shape.\n  - [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html) — the compute decision that builds on\n    this foundation.\n- **External**\n  - AWS Organizations, AWS Control Tower, Account Factory for\n    Terraform (AFT) — the AWS-native components inherited.\n  - AVIV Group internal documentation on central AWS tooling.\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure,\n  removed checklist/learning-path material, and moved vocabulary to an\n  end appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  still `draft`. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: AWS Foundation — Inherit Central AVIV Group Tooling for 6-12 Months\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nTime-bound a decision to **inherit** AVIV Group's central AWS foundation\n(Organizations, Control Tower, AFT, access scripts) for the next 6-12\nmonths — and explicitly state that the steady-state is a simpler,\ncountry-delegated, AWS-native foundation. The post should make the\n\"inherit now, simplify later\" framing impossible to misread as a\npermanent commitment.\n\n## Audience\n\n- **Cloud and platform engineers** standing up new AWS accounts or\n  changing landing-zone configuration in the short term.\n- **Architecture group** evaluating exception requests to fork or\n  parallel-stand-up tooling.\n- **Engineering leadership** sizing the 6-12 month investment.\n- **AVIV Group central teams** as the parties whose tooling is\n  inherited.\n\n## Success criteria\n\n- [ ] Reader knows the inheritance is **time-bounded**, not permanent.\n- [ ] Reader can list the inherited components (Organizations, Control\n      Tower, AFT, access scripts).\n- [ ] Reader understands what is **not** in scope: workload\n      architecture, runtime, compute, messaging.\n- [ ] Reader sees the link to [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) (the broader cloud\n      decision) and [AWS Networking: Inherit Central AVIV Group Tooling, Simplify Deliberately](infra-tech-stack-networking.html) (the networking\n      counterpart).\n- [ ] The post stays focused as an ADR and does not absorb training,\n      account-request checklist, detailed readiness model, or\n      implementation-guide content.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Deciding workload architecture, runtime, or service-level patterns.\n- Forking or replacing the central AVIV Group tooling.\n- Committing Organization to follow every future AVIV Group change.\n- Defining the steady-state foundation in detail (deferred to a\n  later ADR).\n\n## Open questions\n\n- What triggers the \"ready to leave inheritance\" decision at the end\n  of the 6-12 month window — concrete signals, not just dates.\n- How much of the access-script custom tooling Organization eventually\n  owns vs replaces.\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the 6-12 month inheritance\n  decision, foundation/workload boundary, concrete inheritance-period\n  commitments, exception criteria, and revisit triggers. Kept\n  terminology as an appendix instead of inline explanation.\n- **2026-05-20** — Chose **inheritance** over parallel tooling for the\n  6-12 month window. Considered standing up Organization-specific tooling\n  immediately; rejected because the migration risk and the cost of\n  duplicating in-house tooling exceed the value of early independence.\n- **2026-05-20** — Bounded the decision to **6-12 months**.\n  Considered an open-ended commitment; rejected because the steady\n  state should be simpler and country-delegated, and an open commitment\n  drifts toward permanence by default.\n- **2026-05-20** — Committed to **no forking** of the central tooling\n  during the period. Considered selective forks; rejected because\n  forks defeat the cost-saving rationale and create silent divergence.\n\n## Sources\n\n- **Internal**\n  - [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) — the broader public-cloud decision this sits\n    underneath.\n  - [AWS Networking: Inherit Central AVIV Group Tooling, Simplify Deliberately](infra-tech-stack-networking.html) — the networking counterpart with\n    the same inheritance shape.\n  - [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html) — the compute decision that builds on\n    this foundation.\n- **External**\n  - AWS Organizations, AWS Control Tower, Account Factory for\n    Terraform (AFT) — the AWS-native components inherited.\n  - AVIV Group internal documentation on central AWS tooling.\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure,\n  removed checklist/learning-path material, and moved vocabulary to an\n  end appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  still `draft`. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

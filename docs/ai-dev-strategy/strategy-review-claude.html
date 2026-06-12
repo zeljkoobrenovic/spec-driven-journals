@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">AI Development Strategy for Software Modernization, 2026</a><span class="nav-right"><a class="nav-prev" href="strategy-review-codex.html" title="Review of the AI Development Strategy by Codex">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="review-gemini.html" title="Review of the AI Development Strategy by Gemini">Next →</a></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"title": "Review of the AI Development Strategy by Claude", "date": "2026-05-14 17:30:00 +0100", "author": "by Željko Obrenović (obren.io)", "permalink": "strategy-review-claude", "timetoread": "9 min", "excerpt": "A focused Claude review of the AI development strategy after the second improvement pass. The strategy is much clearer and ready for controlled execution, but still needs evidence, owners, controls, and pilot artifacts before enterprise promotion.", "icon": "assets/icons/review-claude.png"}, "tags": [], "blocks": [{"type": "markdown", "content": "> KEY POINTS:\n> * The second improvement pass made the strategy substantially more readable. It now teaches agentic coding before asking readers to accept the operating model.\n> * The strategy is ready for controlled execution, not final enterprise standardization.\n> * Most remaining gaps are execution evidence: real baselines, real pilot artifacts, registry rows, tested controls, policy sign-off, and cost data.\n> * Codex's updated review is the strongest execution gate. Gemini's multi-model framing is useful, but should remain a hypothesis to test.\n\n## Review Method\n\nThis review reread the AI development strategy after the second improvement pass and compared it with the Codex and Gemini reviews. It focuses on what changed, what is now strong enough, and what still blocks promotion from pilot strategy to enterprise standard.\n\n## Verdict\n\nThe strategy is now a credible Version 0.9.\n\nIt should be approved for controlled pilots with explicit evidence gates. It should not yet become mandatory enterprise policy because the operating model has not been proven in real repositories with real controls, owners, metrics, and cost data.\n\n## What Is Now Strong\n\n| Area | Why it works |\n| --- | --- |\n| Educational framing | The strategy explains agentic coding as a workflow, not as chatbot use. |\n| Tooling decision | Claude Code is framed as the 2026 default, with review and migration-back paths. |\n| Governance | The strategy now talks about hooks, permissions, registries, and audit trails instead of only principles. |\n| Reusable knowledge | Skills, MCP servers, subagents, and templates are treated as assets that compound. |\n| Human accountability | The policy keeps production decisions with accountable humans. |\n| Roadmap | The plan is closer to implementation, with clearer sequencing and review points. |\n\nThe most important change is audience empathy. A reader who has not internalized agentic coding can now follow the logic.\n\n## Remaining Gaps\n\nThe blockers are practical:\n\n1. **Evidence baselines.** The strategy needs current measures for delivery, quality, modernization, cost, and review effort.\n2. **Pilot artifacts.** The first pilots should publish prompts, Skills, diffs, test evidence, review notes, and lessons learned.\n3. **Registry reality.** Skills, MCP servers, hooks, templates, approved tools, and exceptions need real entries with owners.\n4. **Control validation.** Hooks, permission modes, audit trails, and CI checks must be tested, including failure cases.\n5. **Policy sign-off.** Security, Legal, Data Protection, and engineering leadership need explicit approval boundaries.\n6. **Cost model.** The strategy needs workflow-level cost tracking, not only license or token estimates.\n7. **Visual support.** A few diagrams would help readers see the operating model and control flow.\n\nNone of these require a larger narrative. They require execution.\n\n## Peer Review View\n\nCodex's review is the strongest readiness gate because it converts concerns into an evidence backlog and a 30/60/90-day plan.\n\nGemini's review is most useful where it challenges the single-tool default. Its large-context and multi-model points are worth testing, but they should not change the default operating model without pilot evidence.\n\nThe reviews now agree on the core posture: controlled pilots first, enterprise standard later.\n\n## What To Change Next\n\nThe next iteration should be smaller and more evidential:\n\n* Add a compact decision index that links the strategy chapters and ADRs.\n* Add pilot evidence pages instead of more explanatory prose.\n* Add owner names and dates to roadmap items.\n* Add a control-validation checklist with pass/fail evidence.\n* Add a cost and capacity section grounded in pilot data.\n* Make the six-month tooling review impossible to miss.\n\n## Final Recommendation\n\nKeep the strategy as the guiding document for pilots. Do not keep expanding it to answer every concern in prose.\n\nThe promotion criterion should be:\n\n> The strategy becomes enterprise standard only after pilots show measurable value, controls work in practice, ownership is funded, and exceptions are manageable.\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"title": "Review of the AI Development Strategy by Claude", "date": "2026-05-14 17:30:00 +0100", "author": "by Željko Obrenović (obren.io)", "permalink": "strategy-review-claude", "timetoread": "9 min", "excerpt": "A focused Claude review of the AI development strategy after the second improvement pass. The strategy is much clearer and ready for controlled execution, but still needs evidence, owners, controls, and pilot artifacts before enterprise promotion.", "icon": "assets/icons/review-claude.png"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> KEY POINTS:\n> * The second improvement pass made the strategy substantially more readable. It now teaches agentic coding before asking readers to accept the operating model.\n> * The strategy is ready for controlled execution, not final enterprise standardization.\n> * Most remaining gaps are execution evidence: real baselines, real pilot artifacts, registry rows, tested controls, policy sign-off, and cost data.\n> * Codex's updated review is the strongest execution gate. Gemini's multi-model framing is useful, but should remain a hypothesis to test.\n\n## Review Method\n\nThis review reread the AI development strategy after the second improvement pass and compared it with the Codex and Gemini reviews. It focuses on what changed, what is now strong enough, and what still blocks promotion from pilot strategy to enterprise standard.\n\n## Verdict\n\nThe strategy is now a credible Version 0.9.\n\nIt should be approved for controlled pilots with explicit evidence gates. It should not yet become mandatory enterprise policy because the operating model has not been proven in real repositories with real controls, owners, metrics, and cost data.\n\n## What Is Now Strong\n\n| Area | Why it works |\n| --- | --- |\n| Educational framing | The strategy explains agentic coding as a workflow, not as chatbot use. |\n| Tooling decision | Claude Code is framed as the 2026 default, with review and migration-back paths. |\n| Governance | The strategy now talks about hooks, permissions, registries, and audit trails instead of only principles. |\n| Reusable knowledge | Skills, MCP servers, subagents, and templates are treated as assets that compound. |\n| Human accountability | The policy keeps production decisions with accountable humans. |\n| Roadmap | The plan is closer to implementation, with clearer sequencing and review points. |\n\nThe most important change is audience empathy. A reader who has not internalized agentic coding can now follow the logic.\n\n## Remaining Gaps\n\nThe blockers are practical:\n\n1. **Evidence baselines.** The strategy needs current measures for delivery, quality, modernization, cost, and review effort.\n2. **Pilot artifacts.** The first pilots should publish prompts, Skills, diffs, test evidence, review notes, and lessons learned.\n3. **Registry reality.** Skills, MCP servers, hooks, templates, approved tools, and exceptions need real entries with owners.\n4. **Control validation.** Hooks, permission modes, audit trails, and CI checks must be tested, including failure cases.\n5. **Policy sign-off.** Security, Legal, Data Protection, and engineering leadership need explicit approval boundaries.\n6. **Cost model.** The strategy needs workflow-level cost tracking, not only license or token estimates.\n7. **Visual support.** A few diagrams would help readers see the operating model and control flow.\n\nNone of these require a larger narrative. They require execution.\n\n## Peer Review View\n\nCodex's review is the strongest readiness gate because it converts concerns into an evidence backlog and a 30/60/90-day plan.\n\nGemini's review is most useful where it challenges the single-tool default. Its large-context and multi-model points are worth testing, but they should not change the default operating model without pilot evidence.\n\nThe reviews now agree on the core posture: controlled pilots first, enterprise standard later.\n\n## What To Change Next\n\nThe next iteration should be smaller and more evidential:\n\n* Add a compact decision index that links the strategy chapters and ADRs.\n* Add pilot evidence pages instead of more explanatory prose.\n* Add owner names and dates to roadmap items.\n* Add a control-validation checklist with pass/fail evidence.\n* Add a cost and capacity section grounded in pilot data.\n* Make the six-month tooling review impossible to miss.\n\n## Final Recommendation\n\nKeep the strategy as the guiding document for pilots. Do not keep expanding it to answer every concern in prose.\n\nThe promotion criterion should be:\n\n> The strategy becomes enterprise standard only after pilots show measurable value, controls work in practice, ownership is funded, and exceptions are manageable.\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

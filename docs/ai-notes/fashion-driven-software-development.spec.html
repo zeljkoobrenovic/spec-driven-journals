@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -283,13 +317,14 @@
 <main>
     <nav class="post-nav"><a class="nav-back" href="fashion-driven-software-development.html">← Software Has Seasons Now: Fashion-Driven Development for Generative AI Products</a><span class="nav-right"></span></nav>
     <header class="post" id="post-header">
-        <p class="section"><span>SPEC</span> • <span class="post-status"><span class="status-dot" style="background:green"></span>accepted</span> • <span>revised 2026-05-30</span></p>
+        <p class="section"><span>SPEC</span> • <span class="post-status"><span class="status-dot" style="background:green"></span>accepted</span> • <span>revised 2026-06-11</span></p>
         <h1>Spec: Software Has Seasons Now: Fashion-Driven Development for Generative AI Products</h1>
         <p class="byline"></p>
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="fashion-driven-software-development.html">← Software Has Seasons Now: Fashion-Driven Development for Generative AI Products</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Software Has Seasons Now: Fashion-Driven Development for Generative AI Products\n\n## Intent\n\nDraft a new AI Notes article that uses fashion as a metaphor for software\ndevelopment when generative AI is part of the product itself, not only a tool\nused by developers. The post should distinguish AI-assisted development from\nAI-powered product development, then argue that model-powered products need a\nmore seasonal, taste-driven, evaluation-heavy operating model because new models\ncan obsolete old workflows, interfaces, and assumptions quickly. The post should\nalso make clear that model-powered product work often runs on short, seasonal\ntimelines, lacks long-term platform stability, and cannot be predicted\nrationally from model specs or benchmark curves alone because customer taste,\ntiming, culture, and competitor moves matter.\n\nThe post should also avoid implying that new model releases are simple,\nmonotonic upgrades. A newer model can be much better overall while becoming\nworse for a specific workflow, customer segment, quality criterion, safety\nboundary, cost profile, latency target, or product promise. Model capability is\nan unstable material that can regress local fit even as general capability\nimproves.\n\nThe post should explicitly explain how this extends modern product management\nwithout reducing product management to a feature-factory caricature. It should\nacknowledge that good product management already rejects output obsession and\nthe build trap. The AI-specific shift is that outcome-oriented product work now\nalso has to manage unstable model materials: roadmaps become seasonal portfolios,\nproduct briefs include value hypotheses and evaluation contracts, discovery\nincludes model-material scouting, and product managers must decide what to\npreserve, rebuild, retire, or test as the solution space changes.\n\n## Audience\n\n- Product and technology leaders building AI-powered products.\n- Engineering leaders deciding how to organize work around fast-moving model\n  capability.\n- Principal and staff engineers designing evaluation, quality, and rebuild\n  loops for model-dependent products.\n- Readers of [From Prompting to Intent: The Leadership Ladder for Working with AI](leadership-ladder.html) and [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html) who need a\n  product-development metaphor for fast AI capability shifts.\n\nReaders should leave with a concrete distinction: using AI to develop software\nis a productivity shift; building software whose value depends on AI models is\nan operating-model shift.\n\n## Success criteria\n\n- [x] Reader can distinguish AI-assisted development from AI-powered product\n      development.\n- [x] Reader sees the central thesis prominently: model-powered products may\n      need frequent reinterpretation around new materials.\n- [x] Reader understands why fashion is a useful metaphor: changing materials,\n      seasons, taste, collections, fit, craft, brand, and commercial response.\n- [x] Reader understands that model-powered product planning may need shorter\n      seasonal cycles because model capability, user expectations, and product\n      affordances lack long-term stability.\n- [x] Reader understands that demand and product fit are not rationally\n      predictable from model capability alone; taste, timing, social proof,\n      workflow fit, and customer behavior must be evaluated.\n- [x] Reader understands that new models are not automatic upgrades: they can\n      improve general capability while breaking specific workflows, golden\n      scenarios, expert controls, safety assumptions, or unit economics.\n- [x] Reader does not leave with a feature-factory caricature of product\n      management; the post acknowledges outcome-focused product management and\n      the build-trap critique.\n- [x] Reader understands how model-powered products extend modern product\n      management when the product material is unstable: roadmaps, product\n      briefs, discovery, launches, and success metrics all need to be reframed\n      around seasonal bets, material scouting, and evaluation.\n- [x] Reader understands that \"fashion-driven\" does not mean blindly chasing\n      trends or rebuilding for novelty.\n- [x] Reader sees why fast model progress can force product rebuilds, not only\n      incremental feature work.\n- [x] Reader understands why evaluation, tests, customer evidence, and business\n      value checks become more important when rebuild cycles accelerate.\n- [x] Reader gets practical operating principles for AI product teams.\n- [x] Reader sees the talk by Samuel Beek as inspiration, not as a transcript or\n      case study that needs to prove every claim.\n\n## Non-goals\n\n- A biographical article about Samuel Beek, VEED, or Schematik.\n- A detailed recap of the Engineering Excellence meetup.\n- A fashion-industry history lesson.\n- A technical tutorial for model evaluation frameworks.\n- A claim that every software team should rebuild continuously.\n- A claim that fashion-driven development replaces durable architecture,\n  testing, reliability, or product strategy.\n\n## Open questions\n\nNone for the current draft.\n\n## Decision log\n\n- **2026-05-30** - Retitled the post to `Software Has Seasons Now: Fashion-Driven Development for Generative AI Products`\n  to scope the argument to generative-model products without repeating\n  \"product\" in the title.\n- **2026-05-28** - Chose `Fashion-Driven Software Development` as the title\n  because it is memorable, opinionated, and directly carries the metaphor.\n- **2026-05-28** - Put the article in a new AI Notes section,\n  `AI Product Development`, because the post is more about product operating\n  model than general leadership.\n- **2026-05-28** - Treated the Samuel Beek / VEED / Schematik talk as\n  inspiration, not as a quoted source. The article generalizes the pattern\n  instead of depending on a precise event transcript.\n- **2026-05-28** - Made evaluation the center of the article because fast AI\n  capability change makes product-value validation more important than raw\n  implementation speed.\n- **2026-05-28** - Connected the post to [From Prompting to Intent: The Leadership Ladder for Working with AI](leadership-ladder.html),\n  [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html), and [Spec-Driven Authoring as a Lightweight Default for Posts](../foundations/spec-driven-authoring.html) so it fits the\n  existing AI Notes thread on intent, accountability, and spec-driven work.\n- **2026-05-28** - Emphasized short seasonal timelines, lack of long-term\n  stability, and limited rational predictability because those qualities make\n  the fashion metaphor stronger than a generic \"move faster\" argument.\n- **2026-05-28** - Revised the product-management framing to avoid treating\n  feature-factory work as good product management. The article now positions\n  fashion-driven product work as an extension of outcome-focused product\n  management under unstable model materials.\n- **2026-05-28** - Added the non-monotonic model-upgrade point: newer models may\n  be better overall while worse for a specific workflow, evaluation slice, or\n  product promise.\n\n## Sources\n\n- **Internal**\n  - [From Prompting to Intent: The Leadership Ladder for Working with AI](leadership-ladder.html) - intent, guardrails, and spec-driven work as the\n    operating layer for AI-assisted execution.\n  - [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html) - agency, judgment, and persuasion as durable\n    leadership capabilities in the AI transition.\n  - [Spec-Driven Authoring as a Lightweight Default for Posts](../foundations/spec-driven-authoring.html) - lightweight specs as contracts for\n    AI-mediated work.\n- **External**\n  - [Samuel Beek](https://samuelbeek.com/) - public profile; inspiration\n    source for the article prompt.\n  - [Schematik, Lightspeed company profile](https://lsvp.com/company/schematik/)\n    - confirms Schematik and Sam Beek's founder/CEO role.\n  - [Whale event listing](https://www.whale-academy.com/) - public event page\n    listing Samuel Beek as founder of Schematik and ex-CPO VEED.IO.\n  - [Muck Rack podcast snippet with Samuel Beek](https://muckrack.com/podcast/marketer-of-the-month/episodes/1492294-snippet-veed-cpo-samuel-beek-explains-how-/)\n    - supporting source for VEED product-testing framing.\n  - [Lars Holmquist, *Intelligence on tap: AI as a new design material*](https://interactions.acm.org/archive/view/july-august-2017/intelligence-on-tap)\n    - background source for treating AI as a design material.\n  - [Britannica, Fashion Industry](https://www.britannica.com/art/fashion-industry)\n    - background source for fashion as an industry of design, production,\n    distribution, marketing, and changing demand.\n  - [Melissa Perri, *Escaping the Build Trap*](https://www.oreilly.com/library/view/escaping-the-build/9781491973783/)\n    - reference point for product management as outcome-focused value creation\n    rather than output or feature production.\n\n## Changelog\n\n- **2026-05-30** - Added the intro note that Samuel Beek's VEED experience\n  helped frame the article's \"software feels like fashion\" metaphor. Status\n  `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Shortened several broad bold highlights so the skim path uses\n  tighter phrases rather than full clauses. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-30** - Added matching bold emphasis to the opening key-points block\n  so the skim path starts before the main body. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-30** - Added bold emphasis to key phrases so skimming readers can\n  follow the article's main argument through the body text. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Made a light grammar and clarity pass on the published\n  article, tightening model-powered wording and simplifying a few phrases.\n  Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Added a body paragraph connecting Holmquist's AI-as-design-\n  material framing to the article's generative-model seasonality argument.\n  Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Added Lars Holmquist's `Intelligence on tap: AI as a new\n  design material` to the source list and further reading. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Aligned the published title with the spec's generative-AI\n  product scope. Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Made model instability more explicit: new models can regress\n  golden scenarios, workflows, controls, safety boundaries, latency/cost\n  assumptions, or product fit even when they are stronger overall. Status\n  `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Reworked the product-management section so it acknowledges\n  outcome-focused product management and the build-trap critique, then explains\n  the AI-specific addition: unstable model materials require material scouting,\n  seasonal bets, and evaluation of product fit. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-28** - Added a product-management section and related references:\n  roadmaps as seasonal portfolios, product briefs as value hypotheses and\n  evaluation contracts, discovery as model-material scouting, and PM as editor\n  of coherent product change. Status `accepted`. *(Zeljko, AI-mediated\n  session)*\n- **2026-05-28** - Added explicit emphasis on short seasons, unstable model\n  materials, and the fact that product fit is not rationally predictable from\n  model benchmarks alone. Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Reduced the opening key-points list from six to five by\n  combining the central thesis with the model-release consequence. Status\n  `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Made the central thesis prominent in the excerpt, key\n  points, and opening: model-powered products may need frequent reinterpretation\n  around new materials. Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Initial spec and article draft. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Software Has Seasons Now: Fashion-Driven Development for Generative AI Products\n\n## Intent\n\nDraft a new AI Notes article that uses fashion as a metaphor for software\ndevelopment when generative AI is part of the product itself, not only a tool\nused by developers. The post should distinguish AI-assisted development from\nAI-powered product development, then argue that model-powered products need a\nmore seasonal, taste-driven, evaluation-heavy operating model because new models\ncan obsolete old workflows, interfaces, and assumptions quickly. The post should\nalso make clear that model-powered product work often runs on short, seasonal\ntimelines, lacks long-term platform stability, and cannot be predicted\nrationally from model specs or benchmark curves alone because customer taste,\ntiming, culture, and competitor moves matter.\n\nThe post should also avoid implying that new model releases are simple,\nmonotonic upgrades. A newer model can be much better overall while becoming\nworse for a specific workflow, customer segment, quality criterion, safety\nboundary, cost profile, latency target, or product promise. Model capability is\nan unstable material that can regress local fit even as general capability\nimproves.\n\nThe post should explicitly explain how this extends modern product management\nwithout reducing product management to a feature-factory caricature. It should\nacknowledge that good product management already rejects output obsession and\nthe build trap. The AI-specific shift is that outcome-oriented product work now\nalso has to manage unstable model materials: roadmaps become seasonal portfolios,\nproduct briefs include value hypotheses and evaluation contracts, discovery\nincludes model-material scouting, and product managers must decide what to\npreserve, rebuild, retire, or test as the solution space changes.\n\n## Audience\n\n- Product and technology leaders building AI-powered products.\n- Engineering leaders deciding how to organize work around fast-moving model\n  capability.\n- Principal and staff engineers designing evaluation, quality, and rebuild\n  loops for model-dependent products.\n- Readers of [From Prompting to Intent: The Leadership Ladder for Working with AI](leadership-ladder.html) and [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html) who need a\n  product-development metaphor for fast AI capability shifts.\n\nReaders should leave with a concrete distinction: using AI to develop software\nis a productivity shift; building software whose value depends on AI models is\nan operating-model shift.\n\n## Success criteria\n\n- [x] Reader can distinguish AI-assisted development from AI-powered product\n      development.\n- [x] Reader sees the central thesis prominently: model-powered products may\n      need frequent reinterpretation around new materials.\n- [x] Reader understands why fashion is a useful metaphor: changing materials,\n      seasons, taste, collections, fit, craft, brand, and commercial response.\n- [x] Reader understands that model-powered product planning may need shorter\n      seasonal cycles because model capability, user expectations, and product\n      affordances lack long-term stability.\n- [x] Reader understands that demand and product fit are not rationally\n      predictable from model capability alone; taste, timing, social proof,\n      workflow fit, and customer behavior must be evaluated.\n- [x] Reader understands that new models are not automatic upgrades: they can\n      improve general capability while breaking specific workflows, golden\n      scenarios, expert controls, safety assumptions, or unit economics.\n- [x] Reader does not leave with a feature-factory caricature of product\n      management; the post acknowledges outcome-focused product management and\n      the build-trap critique.\n- [x] Reader understands how model-powered products extend modern product\n      management when the product material is unstable: roadmaps, product\n      briefs, discovery, launches, and success metrics all need to be reframed\n      around seasonal bets, material scouting, and evaluation.\n- [x] Reader understands that \"fashion-driven\" does not mean blindly chasing\n      trends or rebuilding for novelty.\n- [x] Reader sees why fast model progress can force product rebuilds, not only\n      incremental feature work.\n- [x] Reader understands why evaluation, tests, customer evidence, and business\n      value checks become more important when rebuild cycles accelerate.\n- [x] Reader gets practical operating principles for AI product teams.\n- [x] Reader sees the talk by Samuel Beek as inspiration, not as a transcript or\n      case study that needs to prove every claim.\n\n## Non-goals\n\n- A biographical article about Samuel Beek, VEED, or Schematik.\n- A detailed recap of the Engineering Excellence meetup.\n- A fashion-industry history lesson.\n- A technical tutorial for model evaluation frameworks.\n- A claim that every software team should rebuild continuously.\n- A claim that fashion-driven development replaces durable architecture,\n  testing, reliability, or product strategy.\n\n## Modalities\n\nWhich docs this spec drives beyond the main article (`index.md`).\n\n- [x] `summary.md` — management summary\n- [x] `dialog.md` — two-host dialog\n- [x] `comics.md` — explainer comic\n\n## Open questions\n\nNone for the current draft.\n\n## Decision log\n\n- **2026-05-30** - Retitled the post to `Software Has Seasons Now: Fashion-Driven Development for Generative AI Products`\n  to scope the argument to generative-model products without repeating\n  \"product\" in the title.\n- **2026-05-28** - Chose `Fashion-Driven Software Development` as the title\n  because it is memorable, opinionated, and directly carries the metaphor.\n- **2026-05-28** - Put the article in a new AI Notes section,\n  `AI Product Development`, because the post is more about product operating\n  model than general leadership.\n- **2026-05-28** - Treated the Samuel Beek / VEED / Schematik talk as\n  inspiration, not as a quoted source. The article generalizes the pattern\n  instead of depending on a precise event transcript.\n- **2026-05-28** - Made evaluation the center of the article because fast AI\n  capability change makes product-value validation more important than raw\n  implementation speed.\n- **2026-05-28** - Connected the post to [From Prompting to Intent: The Leadership Ladder for Working with AI](leadership-ladder.html),\n  [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html), and [Spec-Driven Authoring as a Lightweight Default for Posts](../foundations/spec-driven-authoring.html) so it fits the\n  existing AI Notes thread on intent, accountability, and spec-driven work.\n- **2026-05-28** - Emphasized short seasonal timelines, lack of long-term\n  stability, and limited rational predictability because those qualities make\n  the fashion metaphor stronger than a generic \"move faster\" argument.\n- **2026-05-28** - Revised the product-management framing to avoid treating\n  feature-factory work as good product management. The article now positions\n  fashion-driven product work as an extension of outcome-focused product\n  management under unstable model materials.\n- **2026-05-28** - Added the non-monotonic model-upgrade point: newer models may\n  be better overall while worse for a specific workflow, evaluation slice, or\n  product promise.\n\n## Sources\n\n- **Internal**\n  - [From Prompting to Intent: The Leadership Ladder for Working with AI](leadership-ladder.html) - intent, guardrails, and spec-driven work as the\n    operating layer for AI-assisted execution.\n  - [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html) - agency, judgment, and persuasion as durable\n    leadership capabilities in the AI transition.\n  - [Spec-Driven Authoring as a Lightweight Default for Posts](../foundations/spec-driven-authoring.html) - lightweight specs as contracts for\n    AI-mediated work.\n- **External**\n  - [Samuel Beek](https://samuelbeek.com/) - public profile; inspiration\n    source for the article prompt.\n  - [Schematik, Lightspeed company profile](https://lsvp.com/company/schematik/)\n    - confirms Schematik and Sam Beek's founder/CEO role.\n  - [Whale event listing](https://www.whale-academy.com/) - public event page\n    listing Samuel Beek as founder of Schematik and ex-CPO VEED.IO.\n  - [Muck Rack podcast snippet with Samuel Beek](https://muckrack.com/podcast/marketer-of-the-month/episodes/1492294-snippet-veed-cpo-samuel-beek-explains-how-/)\n    - supporting source for VEED product-testing framing.\n  - [Lars Holmquist, *Intelligence on tap: AI as a new design material*](https://interactions.acm.org/archive/view/july-august-2017/intelligence-on-tap)\n    - background source for treating AI as a design material.\n  - [Britannica, Fashion Industry](https://www.britannica.com/art/fashion-industry)\n    - background source for fashion as an industry of design, production,\n    distribution, marketing, and changing demand.\n  - [Melissa Perri, *Escaping the Build Trap*](https://www.oreilly.com/library/view/escaping-the-build/9781491973783/)\n    - reference point for product management as outcome-focused value creation\n    rather than output or feature production.\n\n## Changelog\n\n- **2026-06-11** - Added Modalities section; the spec now drives `summary.md`,\n  `dialog.md`, and `comics.md` alongside the article. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Added the intro note that Samuel Beek's VEED experience\n  helped frame the article's \"software feels like fashion\" metaphor. Status\n  `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Shortened several broad bold highlights so the skim path uses\n  tighter phrases rather than full clauses. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-30** - Added matching bold emphasis to the opening key-points block\n  so the skim path starts before the main body. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-30** - Added bold emphasis to key phrases so skimming readers can\n  follow the article's main argument through the body text. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Made a light grammar and clarity pass on the published\n  article, tightening model-powered wording and simplifying a few phrases.\n  Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Added a body paragraph connecting Holmquist's AI-as-design-\n  material framing to the article's generative-model seasonality argument.\n  Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Added Lars Holmquist's `Intelligence on tap: AI as a new\n  design material` to the source list and further reading. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-30** - Aligned the published title with the spec's generative-AI\n  product scope. Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Made model instability more explicit: new models can regress\n  golden scenarios, workflows, controls, safety boundaries, latency/cost\n  assumptions, or product fit even when they are stronger overall. Status\n  `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Reworked the product-management section so it acknowledges\n  outcome-focused product management and the build-trap critique, then explains\n  the AI-specific addition: unstable model materials require material scouting,\n  seasonal bets, and evaluation of product fit. Status `accepted`. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-28** - Added a product-management section and related references:\n  roadmaps as seasonal portfolios, product briefs as value hypotheses and\n  evaluation contracts, discovery as model-material scouting, and PM as editor\n  of coherent product change. Status `accepted`. *(Zeljko, AI-mediated\n  session)*\n- **2026-05-28** - Added explicit emphasis on short seasons, unstable model\n  materials, and the fact that product fit is not rationally predictable from\n  model benchmarks alone. Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Reduced the opening key-points list from six to five by\n  combining the central thesis with the model-release consequence. Status\n  `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Made the central thesis prominent in the excerpt, key\n  points, and opening: model-powered products may need frequent reinterpretation\n  around new materials. Status `accepted`. *(Zeljko, AI-mediated session)*\n- **2026-05-28** - Initial spec and article draft. Status `accepted`.\n  *(Zeljko, AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

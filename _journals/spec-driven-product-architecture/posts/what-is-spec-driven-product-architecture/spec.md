@@ -1,6 +1,6 @@
 ---
 status: draft
-revised: 2026-05-22
+revised: 2026-06-11
 ---
 
 # Spec: What is spec-driven product architecture?
@@ -29,6 +29,14 @@ Product architects, engineering leaders, product leaders, and AI-agent users who
 - A tutorial for creating a full product domain.
 - A decision record about whether to adopt the approach.
 
+## Modalities
+
+Which docs this spec drives beyond the main article (`index.md`).
+
+- [x] `summary.md` — management summary
+- [x] `dialog.md` — two-host dialog
+- [x] `comics.md` — explainer comic
+
 ## Open questions
 
 - Whether to add diagrams or generated images in a later pass.
@@ -51,6 +59,7 @@ Product architects, engineering leaders, product leaders, and AI-agent users who
 
 ## Changelog
 
+- **2026-06-11** - Added Modalities section; the spec now drives `summary.md`, `dialog.md`, and `comics.md` alongside the article (pilot for the 1:N spec-to-docs refactor). Status `draft`. *(Spec-Driven Product Architecture, AI-mediated session)*
 - **2026-05-22** - Tightened the core-definition wording and converted generated-image captions into reader-facing captions. Status `draft`. *(Spec-Driven Product Architecture, AI-mediated session)*
 - **2026-05-22** - Generated the two illustration assets and updated captions from placeholders to generated illustrations. Status `draft`. *(Spec-Driven Product Architecture, AI-mediated session)*
 - **2026-05-22** - Added image placeholders for the product-domain layer model and dreaming/exploring/grounding loop. Status `draft`. *(Spec-Driven Product Architecture, AI-mediated session)*

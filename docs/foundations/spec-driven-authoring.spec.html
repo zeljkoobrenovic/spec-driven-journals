@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="spec-driven-authoring.html">← Spec-Driven Authoring as a Lightweight Default for Posts</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Spec-Driven Authoring as a Lightweight Default for Posts\n\n> The first post to use this convention is the one that introduces it. The\n> spec is the working contract; the post is the published artifact. This spec\n> therefore needs to be both a worked example and a clear definition of the\n> convention.\n\n## Intent\n\nEstablish a lightweight spec-driven workflow for substantive posts in\n`_journals/`. Authors write a short `spec.md` next to `index.md` before the\nfirst draft, using the seven-section template plus lifecycle front matter and\nchangelog. The record should teach when a spec is needed, how it differs from\nthe post and the AI-mediated session log, and how reviewers use it to check\nwhether the final post stayed inside its intended contract.\n\n## Audience\n\n- **Authors** of new foundations, principles, decisions, and strategy posts.\n- **Reviewers** evaluating PRs that introduce or substantially change a post.\n- **AI agents** picking up a post folder cold — the spec is the first file\n  they read.\n- **Curators and journal owners** checking whether the corpus is accumulating\n  spec/post drift.\n\nThe reader walks away knowing when to write a spec, what shape it takes, and\nhow the build surfaces it.\n\n## Success criteria\n\n- [ ] Main record stays focused on the core decision; reference, tutorial, or playbook material is compact or moved out of the main flow.\n- [ ] Reader can decide in under a minute whether a given change needs a spec.\n- [ ] Reader can copy `_wiring/spec-template.md` and produce a usable spec in\n      ten minutes.\n- [ ] Reader understands that the spec is a *working doc*, not a deliverable —\n      its job is to drive the post and the review, not to be polished.\n- [ ] Reader will not confuse the spec with the session log from\n      [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html). The spec is per-post and durable; the session\n      log is per-session and per-author.\n- [ ] Reader knows the four spec lifecycle values (`draft`, `accepted`,\n      `drifted`, `superseded`) and what to do when a spec/post mismatch\n      appears.\n- [ ] Reviewers have concrete checks for success criteria, non-goals, open\n      questions, sources, and drift.\n- [ ] Reader can improve a weak spec by making intent, audience, success\n      criteria, and non-goals more specific.\n- [ ] Reader sees at least one compact worked spec fragment that is good\n      enough to start an AI-mediated authoring session.\n- [ ] Reader can use diagrams to distinguish the artifact relationship, the\n      drafting routine, and the spec lifecycle without rereading the prose.\n\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the opening decision flow.\n\n## Non-goals\n\n- A heavyweight RFC process. This is intentionally a short working contract,\n  not a governance package.\n- A new journal. Specs live next to the posts they drive.\n- Build-time enforcement that every post has a spec — judgement, not a check.\n- Replacing the MADR-inspired structure of the post itself. The spec sits\n  above it; it does not duplicate it.\n- Replacing AI conversation/session logs. Specs are per-post; session logs are\n  per-session.\n- Defining a template for scripts, service READMEs, runbooks, or external\n  product documentation.\n\n## Open questions\n\n- Should any journals eventually enforce specs for specific record types, or\n  should the convention remain judgement-only?\n- Should drift be surfaced beyond the post byline (for example on index cards)\n  if enough specs are marked `drifted`?\n- When is a reviewed spec marked `accepted` if the post itself is still in\n  `draft:gray` decision status?\n\n## Decision log\n\n- **2026-05-21** — Focused the post around the core decision and condensed long tutorial, playbook, or reference sections so readers can reach the guidance quickly.\n- **2026-05-20** — Moved vocabulary from the opening flow into an\n  appendix so the main foundation record stays focused on decision,\n  rationale, and workflow.\n- **2026-05-20** — Adopted the **7-section \"Standard\" shape** (Intent,\n  Audience, Success criteria, Non-goals, Open questions, Decision log,\n  Sources) over the 5-section minimal shape and the 9-section extended\n  shape. The 5-section version lost the rejected-alternatives context\n  the Decision log captures; the 9-section version added Acceptance\n  examples and a Review checklist that read as template overhead\n  rather than per-spec signal.\n- **2026-05-20** — Chose **`spec.md` sibling rendered as a separate\n  page** over inlined fenced block, front-matter spec, and a dedicated\n  `_specs/` journal. Sibling page keeps the post uncluttered, surfaces\n  the spec via a link, and matches conventional spec-driven workflows.\n- **2026-05-20** — Made specs **optional** rather than build-enforced.\n  Considered failing the build when a substantive post lacked a spec;\n  rejected because judgement about \"substantive\" needs to stay with\n  authors, and enforcement at the wrong layer turns the spec into\n  paperwork.\n- **2026-05-20** — Kept the spec **per-post**, not per-session.\n  Session logs (per [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html)) record *how* a change\n  happened; specs record *what the post is for*. Conflating them would\n  lose one of those.\n- **2026-05-20** — Added the **`status:` / `revised:` lifecycle**\n  later in the session, after a question about evolution tracking.\n  Considered a build-time drift detector based on timestamps; rejected\n  in favour of an explicit `drifted` status that a human marks\n  intentionally.\n- **2026-05-20** — Made the record more educational by adding weak/strong\n  examples, a ten-minute drafting routine, review-comment patterns, and a\n  compact sample spec fragment. Chose examples over more policy prose because\n  this foundation should teach authors how to practice the convention.\n- **2026-05-20** — Added Mermaid diagrams for the artifact relationship,\n  drafting routine, and lifecycle. Chose diagrams only where they reduce\n  cognitive load; avoided diagramming every table because the post should stay\n  readable as prose.\n- **2026-05-20** — Expanded the post from a narrow convention record into a\n  fuller foundation record with learning outcomes, a mental model, vocabulary,\n  artifact separation, lifecycle guidance, and a reviewer checklist. Rejected\n  adding build enforcement in the same change because the foundation should\n  teach the practice before automating it.\n\n## Sources\n\n- **Internal**\n  - [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html) — the workflow specs drive.\n  - [Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](markdown-records.html) — the format specs and posts share.\n  - [The Curator Role for Records, Principles, and Strategies](curator-role.html) — companion record on stewarding the corpus over\n    time.\n  - [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) — venue for contentious specs or\n    changes that imply decision authority.\n- **External**\n  - [Spec-Driven Development with AI (GitHub blog)](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)\n    — the broader pattern this decision draws from.\n  - [MADR: Markdown Architectural Decision Records](https://adr.github.io/madr/)\n    — the structure the post body follows.\n\n## Changelog\n\n- **2026-05-21** — Shortened and refocused `index.md`; kept stable identifiers and permalinks. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Moved vocabulary in `index.md` to an end\n  appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Improved the post and this spec together: added\n  Mermaid diagrams for artifact flow, drafting routine, and lifecycle. Status\n  remains `draft` pending human review. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Improved the post and this spec together: added\n  educational examples, a drafting routine, and review-comment patterns.\n  Status remains `draft` pending human review. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Improved the post and this spec together: added\n  artifact separation, spec lifecycle, reviewer checks, stronger anti-patterns,\n  and clearer open questions. Status remains `draft` pending human review.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). This spec is the one that defines the template, so the\n  retrofit doubles as the template's first worked example. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Foundation specs were\n  backfilled and later cleaned up; keep them current during substantive\n  post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Added `status:` / `revised:` front matter and Changelog\n  section to match the lifecycle convention this record introduces.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec, drafted alongside the foundation it\n  describes. *(Zeljko, AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Spec-Driven Authoring as a Lightweight Default for Posts\n\n> The first post to use this convention is the one that introduces it. The\n> spec is the working contract; the post is the published artifact. This spec\n> therefore needs to be both a worked example and a clear definition of the\n> convention.\n\n## Intent\n\nEstablish a lightweight spec-driven workflow for substantive posts in\n`_journals/`. Authors write a short `spec.md` next to `index.md` before the\nfirst draft, using the seven-section template plus lifecycle front matter and\nchangelog. The record should teach when a spec is needed, how it differs from\nthe post and the AI-mediated session log, and how reviewers use it to check\nwhether the final post stayed inside its intended contract.\n\n## Audience\n\n- **Authors** of new foundations, principles, decisions, and strategy posts.\n- **Reviewers** evaluating PRs that introduce or substantially change a post.\n- **AI agents** picking up a post folder cold — the spec is the first file\n  they read.\n- **Curators and journal owners** checking whether the corpus is accumulating\n  spec/post drift.\n\nThe reader walks away knowing when to write a spec, what shape it takes, and\nhow the build surfaces it.\n\n## Success criteria\n\n- [ ] Main record stays focused on the core decision; reference, tutorial, or playbook material is compact or moved out of the main flow.\n- [ ] Reader can decide in under a minute whether a given change needs a spec.\n- [ ] Reader can copy `_wiring/spec-template.md` and produce a usable spec in\n      ten minutes.\n- [ ] Reader understands that the spec is a *working doc*, not a deliverable —\n      its job is to drive the post and the review, not to be polished.\n- [ ] Reader will not confuse the spec with the session log from\n      [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html). The spec is per-post and durable; the session\n      log is per-session and per-author.\n- [ ] Reader knows the four spec lifecycle values (`draft`, `accepted`,\n      `drifted`, `superseded`) and what to do when a spec/post mismatch\n      appears.\n- [ ] Reviewers have concrete checks for success criteria, non-goals, open\n      questions, sources, and drift.\n- [ ] Reader can improve a weak spec by making intent, audience, success\n      criteria, and non-goals more specific.\n- [ ] Reader sees at least one compact worked spec fragment that is good\n      enough to start an AI-mediated authoring session.\n- [ ] Reader can use diagrams to distinguish the artifact relationship, the\n      drafting routine, and the spec lifecycle without rereading the prose.\n\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the opening decision flow.\n\n## Non-goals\n\n- A heavyweight RFC process. This is intentionally a short working contract,\n  not a governance package.\n- A new journal. Specs live next to the posts they drive.\n- Build-time enforcement that every post has a spec — judgement, not a check.\n- Replacing the MADR-inspired structure of the post itself. The spec sits\n  above it; it does not duplicate it.\n- Replacing AI conversation/session logs. Specs are per-post; session logs are\n  per-session.\n- Defining a template for scripts, service READMEs, runbooks, or external\n  product documentation.\n\n## Open questions\n\n- Should any journals eventually enforce specs for specific record types, or\n  should the convention remain judgement-only?\n- Should drift be surfaced beyond the post byline (for example on index cards)\n  if enough specs are marked `drifted`?\n- When is a reviewed spec marked `accepted` if the post itself is still in\n  `draft:gray` decision status?\n\n## Decision log\n\n- **2026-05-21** — Focused the post around the core decision and condensed long tutorial, playbook, or reference sections so readers can reach the guidance quickly.\n- **2026-05-20** — Moved vocabulary from the opening flow into an\n  appendix so the main foundation record stays focused on decision,\n  rationale, and workflow.\n- **2026-05-20** — Adopted the **7-section \"Standard\" shape** (Intent,\n  Audience, Success criteria, Non-goals, Open questions, Decision log,\n  Sources) over the 5-section minimal shape and the 9-section extended\n  shape. The 5-section version lost the rejected-alternatives context\n  the Decision log captures; the 9-section version added Acceptance\n  examples and a Review checklist that read as template overhead\n  rather than per-spec signal.\n- **2026-05-20** — Chose **`spec.md` sibling rendered as a separate\n  page** over inlined fenced block, front-matter spec, and a dedicated\n  `_specs/` journal. Sibling page keeps the post uncluttered, surfaces\n  the spec via a link, and matches conventional spec-driven workflows.\n- **2026-05-20** — Made specs **optional** rather than build-enforced.\n  Considered failing the build when a substantive post lacked a spec;\n  rejected because judgement about \"substantive\" needs to stay with\n  authors, and enforcement at the wrong layer turns the spec into\n  paperwork.\n- **2026-05-20** — Kept the spec **per-post**, not per-session.\n  Session logs (per [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html)) record *how* a change\n  happened; specs record *what the post is for*. Conflating them would\n  lose one of those.\n- **2026-05-20** — Added the **`status:` / `revised:` lifecycle**\n  later in the session, after a question about evolution tracking.\n  Considered a build-time drift detector based on timestamps; rejected\n  in favour of an explicit `drifted` status that a human marks\n  intentionally.\n- **2026-05-20** — Made the record more educational by adding weak/strong\n  examples, a ten-minute drafting routine, review-comment patterns, and a\n  compact sample spec fragment. Chose examples over more policy prose because\n  this foundation should teach authors how to practice the convention.\n- **2026-05-20** — Added Mermaid diagrams for the artifact relationship,\n  drafting routine, and lifecycle. Chose diagrams only where they reduce\n  cognitive load; avoided diagramming every table because the post should stay\n  readable as prose.\n- **2026-05-20** — Expanded the post from a narrow convention record into a\n  fuller foundation record with learning outcomes, a mental model, vocabulary,\n  artifact separation, lifecycle guidance, and a reviewer checklist. Rejected\n  adding build enforcement in the same change because the foundation should\n  teach the practice before automating it.\n\n## Sources\n\n- **Internal**\n  - [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html) — the workflow specs drive.\n  - [Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](markdown-records.html) — the format specs and posts share.\n  - [The Curator Role for Records, Principles, and Strategies](curator-role.html) — companion record on stewarding the corpus over\n    time.\n  - [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) — venue for contentious specs or\n    changes that imply decision authority.\n- **External**\n  - [Spec-Driven Development with AI (GitHub blog)](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)\n    — the broader pattern this decision draws from.\n  - [MADR: Markdown Architectural Decision Records](https://adr.github.io/madr/)\n    — the structure the post body follows.\n\n## Changelog\n\n- **2026-05-21** — Shortened and refocused `index.md`; kept stable identifiers and permalinks. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Moved vocabulary in `index.md` to an end\n  appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Improved the post and this spec together: added\n  Mermaid diagrams for artifact flow, drafting routine, and lifecycle. Status\n  remains `draft` pending human review. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Improved the post and this spec together: added\n  educational examples, a drafting routine, and review-comment patterns.\n  Status remains `draft` pending human review. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Improved the post and this spec together: added\n  artifact separation, spec lifecycle, reviewer checks, stronger anti-patterns,\n  and clearer open questions. Status remains `draft` pending human review.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). This spec is the one that defines the template, so the\n  retrofit doubles as the template's first worked example. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Foundation specs were\n  backfilled and later cleaned up; keep them current during substantive\n  post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Added `status:` / `revised:` front matter and Changelog\n  section to match the lifecycle convention this record introduces.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec, drafted alongside the foundation it\n  describes. *(Zeljko, AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

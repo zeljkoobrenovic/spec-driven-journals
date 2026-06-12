@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="mobile-tech-stack.html">← Mobile Tech Stack: Start from AVIV Group's Native Baseline, Own the Apps</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Mobile Tech Stack — Start from AVIV's Native Baseline, Own the Apps\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nAdopt AVIV Group's current native mobile baseline (Swift + SwiftUI on\niOS, Kotlin + Jetpack Compose on Android) as the **starting point**,\nwhile making clear that Organization takes **its own source copies** and\noperates them as Organization-owned product codebases from day one.\nAlignment with AVIV is a fast start, not a standing commitment to\nfollow future AVIV mobile stack changes.\n\n## Audience\n\n- **Mobile engineers** picking up the inherited iOS and Android\n  codebases.\n- **Mobile tech leads** managing the fork relationship with AVIV.\n- **Engineering leadership** sizing the \"own the apps from day one\"\n  posture.\n- **AVIV Group mobile teams** as the upstream relationship counterparty.\n\n## Success criteria\n\n- [ ] Reader can name the four baseline choices: Swift, SwiftUI,\n      Kotlin, Jetpack Compose.\n- [ ] Reader knows Organization **copies the source** and owns its forks\n      from day one.\n- [ ] Reader understands there is **no automatic upstream\n      relationship** — AVIV changes do not become Organization changes\n      by default.\n- [ ] Reader sees the parallel with [Web Tech Stack: Start from AVIV Group's Golden Path, Own the Fork](web-tech-stack.html) — same\n      \"start from AVIV, own the fork\" shape.\n- [ ] The post stays focused as an ADR and does not absorb release\n      runbook, SDK, architecture, or upstream-contribution detail.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Cross-platform stacks (Kotlin Multiplatform, React Native, Flutter)\n  as a default.\n- A standing commitment to follow AVIV Group's future mobile stack\n  changes.\n- Choosing specific SDKs, third-party libraries, or release tooling.\n- Defining the upstream/downstream contribution model in detail.\n\n## Open questions\n\n- Process for selectively porting AVIV changes — opt-in mechanism\n  and decision criteria.\n- Whether and when to consider cross-platform alternatives.\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the baseline decision,\n  source-copy ownership, exception criteria, and revisit triggers.\n  Kept terminology as an appendix instead of inline explanation.\n- **2026-05-20** — Chose **AVIV's native baseline as starting point**.\n  Considered a green-field mobile stack; rejected because the\n  inherited apps already exist and a rewrite would delay product work\n  for no clear gain.\n- **2026-05-20** — Took **source copies, Organization-owned**, not a\n  shared codebase with AVIV. Considered a shared upstream; rejected\n  because Organization needs ownership of release cycles, dependency\n  upgrades, and roadmap decisions from day one.\n- **2026-05-20** — Made the alignment **a starting point, not a\n  standing commitment**. Considered binding Organization to AVIV's future\n  stack; rejected because that would create coupled drift risk.\n\n## Sources\n\n- **Internal**\n  - [Web Tech Stack: Start from AVIV Group's Golden Path, Own the Fork](web-tech-stack.html) — sibling record with the same shape (web,\n    not mobile).\n  - [Mobile Guild as a Cross-Team Mobile Consortium](../foundations/mobile-guild.html) — the community of practice this baseline feeds\n    into.\n- **External**\n  - Apple Swift, SwiftUI documentation.\n  - Kotlin and Jetpack Compose documentation.\n  - AVIV Group internal mobile platform documentation.\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure\n  and added end vocabulary appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  still `draft`. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Mobile Tech Stack — Start from AVIV's Native Baseline, Own the Apps\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nAdopt AVIV Group's current native mobile baseline (Swift + SwiftUI on\niOS, Kotlin + Jetpack Compose on Android) as the **starting point**,\nwhile making clear that Organization takes **its own source copies** and\noperates them as Organization-owned product codebases from day one.\nAlignment with AVIV is a fast start, not a standing commitment to\nfollow future AVIV mobile stack changes.\n\n## Audience\n\n- **Mobile engineers** picking up the inherited iOS and Android\n  codebases.\n- **Mobile tech leads** managing the fork relationship with AVIV.\n- **Engineering leadership** sizing the \"own the apps from day one\"\n  posture.\n- **AVIV Group mobile teams** as the upstream relationship counterparty.\n\n## Success criteria\n\n- [ ] Reader can name the four baseline choices: Swift, SwiftUI,\n      Kotlin, Jetpack Compose.\n- [ ] Reader knows Organization **copies the source** and owns its forks\n      from day one.\n- [ ] Reader understands there is **no automatic upstream\n      relationship** — AVIV changes do not become Organization changes\n      by default.\n- [ ] Reader sees the parallel with [Web Tech Stack: Start from AVIV Group's Golden Path, Own the Fork](web-tech-stack.html) — same\n      \"start from AVIV, own the fork\" shape.\n- [ ] The post stays focused as an ADR and does not absorb release\n      runbook, SDK, architecture, or upstream-contribution detail.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Cross-platform stacks (Kotlin Multiplatform, React Native, Flutter)\n  as a default.\n- A standing commitment to follow AVIV Group's future mobile stack\n  changes.\n- Choosing specific SDKs, third-party libraries, or release tooling.\n- Defining the upstream/downstream contribution model in detail.\n\n## Open questions\n\n- Process for selectively porting AVIV changes — opt-in mechanism\n  and decision criteria.\n- Whether and when to consider cross-platform alternatives.\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the baseline decision,\n  source-copy ownership, exception criteria, and revisit triggers.\n  Kept terminology as an appendix instead of inline explanation.\n- **2026-05-20** — Chose **AVIV's native baseline as starting point**.\n  Considered a green-field mobile stack; rejected because the\n  inherited apps already exist and a rewrite would delay product work\n  for no clear gain.\n- **2026-05-20** — Took **source copies, Organization-owned**, not a\n  shared codebase with AVIV. Considered a shared upstream; rejected\n  because Organization needs ownership of release cycles, dependency\n  upgrades, and roadmap decisions from day one.\n- **2026-05-20** — Made the alignment **a starting point, not a\n  standing commitment**. Considered binding Organization to AVIV's future\n  stack; rejected because that would create coupled drift risk.\n\n## Sources\n\n- **Internal**\n  - [Web Tech Stack: Start from AVIV Group's Golden Path, Own the Fork](web-tech-stack.html) — sibling record with the same shape (web,\n    not mobile).\n  - [Mobile Guild as a Cross-Team Mobile Consortium](../foundations/mobile-guild.html) — the community of practice this baseline feeds\n    into.\n- **External**\n  - Apple Swift, SwiftUI documentation.\n  - Kotlin and Jetpack Compose documentation.\n  - AVIV Group internal mobile platform documentation.\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure\n  and added end vocabulary appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  still `draft`. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

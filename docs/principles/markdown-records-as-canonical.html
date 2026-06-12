@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -290,7 +324,8 @@
         <a href="assets/images/markdown-records-as-canonical/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/markdown-records-as-canonical/logo.jpeg" alt=""></a>
         <p class="logo-credit">Inspired by Organization's Markdown Records foundational decision</p>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="capabilities-follow-ownership.html" title="Organisation Principle: Capabilities Follow Ownership">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="advice-in-public.html" title="Practice Principle: Advice in Public">Next →</a></span></nav>
     </footer>
@@ -299,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-MARKDOWN-RECORDS-AS-CANONICAL", "status": "draft:gray", "title": "Practice Principle: Markdown Records as Canonical", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "markdown-records-as-canonical", "timetoread": "12 min", "excerpt": "The canonical record of an Organization technical decision, strategy, or durable discussion is a markdown file in git. Slack threads, Google Docs, meeting notes, and wiki pages may support discussion, but the markdown record is the artifact other people will cite, search, link, and learn from in two years. Canonicality is what makes records trustworthy across time. Without it, the same decision is remembered in three different versions and acted on differently.", "tags": "practices, documentation, adr, markdown, git, knowledge-management", "logo": "assets/images/markdown-records-as-canonical/logo.jpeg", "logo_credit": "Inspired by Organization's Markdown Records foundational decision", "icon": "assets/icons/markdown-records-as-canonical.png"}, "tags": ["practices", "documentation", "adr", "markdown", "git", "knowledge-management"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: The canonical record of any durable technical artifact at Organization - decision, strategy, discussion document, principle, foundational practice - is a **markdown file in git**, published as a static site. Conversations may happen in Slack, Google Docs, pull requests, or meetings. The markdown record is what other people will read, cite, link, and learn from later. Where the markdown record and any other artifact disagree, the markdown record wins.\n\n## Statement\n\nOrganization commits to:\n\n* **Markdown** as the format for durable technical writing.\n* **Git** as the storage and history mechanism.\n* **A small static site generator** for publication.\n* **A MADR-inspired structure** for decision records.\n* **The markdown record as the source of truth.** Other artifacts support it but do not replace it.\n\nThis applies to architecture decisions, technical strategies, discussion documents, engineering principles, operating-model decisions, and similar foundational engineering records.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Markdown records are canonical. | All Organization writing is markdown. |\n| Conversation happens elsewhere; record lives in git. | Slack and Docs are forbidden. |\n| The markdown file is the source of truth. | The markdown file is immutable. |\n| Records have a stable structure. | Every record follows the same template. |\n| Static-site publication. | A complex documentation product. |\n\nThe principle is about *durability* and *trust over time*, not about banning conversational tools.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why durable technical reasoning needs a canonical artifact.\n* Decide when a Slack thread, deck, PR discussion, or Google Doc must be folded back into markdown.\n* Recognise metadata, status, and permalink stability as part of trust.\n* Use markdown records as context for humans and AI tools.\n\n## Rationale\n\nA technical decision's long-term value lives in the artifact, not in the conversation that produced it. The conversation evaporates: Slack threads scroll out of view, Google Docs lose owners, wikis drift, meeting notes are forgotten. The artifact, if it is kept somewhere durable, remains readable, searchable, citable, and reviewable years later.\n\nMarkdown in git has practical properties that make this work:\n\n* Plain text. Diff-friendly. Reviewable in pull requests.\n* Versioned. History tells you what changed and when.\n* Portable. No proprietary editor required.\n* AI-friendly. Claude Code and similar tools can read and write it directly.\n* Cheap to publish. A static site generator turns it into a readable, durable web artifact.\n\nOrganization's foundational decision on markdown records makes this concrete. The repository hosting this content is itself an instance of the principle.\n\n## Implications\n\n* **Decision records are markdown files in git.** Not Confluence pages, Google Docs, slide decks, or Notion entries.\n* **Front matter is small and stable.** A consistent metadata header keeps records comparable.\n* **The structure is MADR-inspired.** Decision, context, drivers, options, consequences, revisiting.\n* **Publication is via a small static site.** Generated HTML, served through GitHub Pages or an Okta-protected CDN proxy.\n* **Conversation tools are explicitly secondary.** Slack threads, Google Docs, and pull-request reviews are support; the markdown file is canonical.\n* **When conflict appears, the markdown record wins.** A decision is what the markdown says, not what someone remembers.\n* **Records are reviewed and updated, not orphaned.** Records with no owner are flagged the same way unowned capabilities are.\n\n## Canonicality Test\n\nA technical record is canonical only if readers can rely on it without asking around.\n\nUse this test:\n\n* Is there one stable markdown file that states the current decision or principle?\n* Does the file have stable metadata, including ID, status, owner, date, and permalink?\n* Are supporting conversations linked from the record rather than replacing it?\n* If Slack, Jira, a deck, and the markdown disagree, would everyone know the markdown wins?\n* Is the status current: proposed, accepted, deprecated, superseded, or archived?\n* Is there a clear owner who can update the record when reality changes?\n\nIf people need folklore to interpret the record, the record is not yet canonical. Improve the markdown until it can stand on its own.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Capture significant technical decisions as markdown ADRs in the appropriate journal.\n* Use pull requests to review and refine; merge the canonical version when the decision is made.\n* Link to the markdown record from Slack, Jira, and other tools, not the other way around.\n\nFor architects and senior engineers:\n\n* Write your reasoning down. The slide deck is for presentation; the markdown is for memory.\n* When advising a team, point them at existing records first.\n\nFor tech leads:\n\n* Make ADR writing a normal part of delivery, not a separate step.\n* Resist the urge to make \"the deck\" the artifact; the deck rots, the markdown does not.\n\nFor AI tooling:\n\n* Treat markdown records as primary context. CLAUDE.md, Skills, and subagents should read from and link to them.\n\n## Anti-Patterns\n\n* **Slack-as-record.** A \"decision\" lives in a Slack thread and is referenced by date.\n* **Doc-as-record.** A Google Doc with twenty comments is treated as authoritative even after the discussion ended.\n* **Deck-as-record.** The slides someone presented become the de facto reference; the slides go stale within months.\n* **Wiki sprawl.** A confusing Confluence tree where the same decision appears in three places, none authoritative.\n* **Markdown drift.** A markdown record exists but the canonical state is \"what we actually do, which is not in the record\".\n* **Pull-request graveyard.** The reasoning is in PR comments that nobody reads after merge.\n* **Permalink churn.** A record's URL changes every time the title is edited.\n\n## Examples\n\nAligned with the principle:\n\n* This principles journal. Each principle is a markdown file in git, published as a static site, with stable permalinks and an ownership story.\n* The Architecture Advisory Forum decision lives in `_journals/foundations/posts/architecture-advisory-forum/index.md`; the AAF meeting itself is a conversation supporting that record.\n* The AI tooling decision is a markdown ADR; the original strategy slides are an input to it, not the canonical version.\n\nOut of alignment with the principle:\n\n* A Confluence page captioned \"Final architecture decision\" updated quietly by anyone who has edit access.\n* A Slack pin labelled \"this is how we do it\" that nobody can locate two months later.\n* A \"v3\" Google Doc with no link to \"v2\" and no shared definition of which one is current.\n\n## Discussion Prompts\n\nUse these prompts in documentation reviews:\n\n* Which decision do people still explain from memory because the markdown record is missing or weak?\n* Where do supporting artifacts disagree with the canonical record?\n* What record should be updated before the next team or AI assistant relies on it?\n\n## Related Principles\n\n* [Practice Principle: Advice in Public](advice-in-public.html) - conversations make decisions better; markdown makes them durable.\n* [Organisation Principle: Decisions Stay with Teams](decisions-stay-with-teams.html) - team-owned decisions need a team-owned record.\n* [Practice Principle: Governance as Code](governance-as-code.html) - some governance is enforced in records (front-matter standards, permalink stability).\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - records, like capabilities, have owners and lifecycles.\n\n## Scope and Revisiting\n\nThis principle applies to Organization's high-quality, long-lived technical writing: ADRs, technical strategies, discussion documents, engineering principles, foundational engineering records, and operating-model decisions.\n\nIt does not apply to:\n\n* Short-lived team chat.\n* Ephemeral planning notes.\n* Product documentation aimed at users.\n* Service-local READMEs that belong with service code.\n* Operational runbooks that have a separate ownership and publication path.\n* Anything genuinely throwaway.\n\nThe principle should be revisited if:\n\n* The static-site generator stops scaling for real needs (cross-linking, search, navigation, contributor experience).\n* Access-control requirements outgrow what the protected static-hosting path can support.\n* A future toolchain becomes meaningfully cheaper while preserving markdown, git history, reviewability, and portability.\n\n## Authoritative References\n\n* MADR, [Markdown Architectural Decision Records](https://adr.github.io/madr/).\n* CommonMark, [Specification](https://commonmark.org/).\n* Organization Foundations, Markdown Records as the Default Format ([Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](../foundations/markdown-records.html)).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-MARKDOWN-RECORDS-AS-CANONICAL", "status": "draft:gray", "title": "Practice Principle: Markdown Records as Canonical", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "markdown-records-as-canonical", "timetoread": "12 min", "excerpt": "The canonical record of an Organization technical decision, strategy, or durable discussion is a markdown file in git. Slack threads, Google Docs, meeting notes, and wiki pages may support discussion, but the markdown record is the artifact other people will cite, search, link, and learn from in two years. Canonicality is what makes records trustworthy across time. Without it, the same decision is remembered in three different versions and acted on differently.", "tags": "practices, documentation, adr, markdown, git, knowledge-management", "logo": "assets/images/markdown-records-as-canonical/logo.jpeg", "logo_credit": "Inspired by Organization's Markdown Records foundational decision", "icon": "assets/icons/markdown-records-as-canonical.png"}, "tags": ["practices", "documentation", "adr", "markdown", "git", "knowledge-management"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: The canonical record of any durable technical artifact at Organization - decision, strategy, discussion document, principle, foundational practice - is a **markdown file in git**, published as a static site. Conversations may happen in Slack, Google Docs, pull requests, or meetings. The markdown record is what other people will read, cite, link, and learn from later. Where the markdown record and any other artifact disagree, the markdown record wins.\n\n## Statement\n\nOrganization commits to:\n\n* **Markdown** as the format for durable technical writing.\n* **Git** as the storage and history mechanism.\n* **A small static site generator** for publication.\n* **A MADR-inspired structure** for decision records.\n* **The markdown record as the source of truth.** Other artifacts support it but do not replace it.\n\nThis applies to architecture decisions, technical strategies, discussion documents, engineering principles, operating-model decisions, and similar foundational engineering records.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Markdown records are canonical. | All Organization writing is markdown. |\n| Conversation happens elsewhere; record lives in git. | Slack and Docs are forbidden. |\n| The markdown file is the source of truth. | The markdown file is immutable. |\n| Records have a stable structure. | Every record follows the same template. |\n| Static-site publication. | A complex documentation product. |\n\nThe principle is about *durability* and *trust over time*, not about banning conversational tools.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why durable technical reasoning needs a canonical artifact.\n* Decide when a Slack thread, deck, PR discussion, or Google Doc must be folded back into markdown.\n* Recognise metadata, status, and permalink stability as part of trust.\n* Use markdown records as context for humans and AI tools.\n\n## Rationale\n\nA technical decision's long-term value lives in the artifact, not in the conversation that produced it. The conversation evaporates: Slack threads scroll out of view, Google Docs lose owners, wikis drift, meeting notes are forgotten. The artifact, if it is kept somewhere durable, remains readable, searchable, citable, and reviewable years later.\n\nMarkdown in git has practical properties that make this work:\n\n* Plain text. Diff-friendly. Reviewable in pull requests.\n* Versioned. History tells you what changed and when.\n* Portable. No proprietary editor required.\n* AI-friendly. Claude Code and similar tools can read and write it directly.\n* Cheap to publish. A static site generator turns it into a readable, durable web artifact.\n\nOrganization's foundational decision on markdown records makes this concrete. The repository hosting this content is itself an instance of the principle.\n\n## Implications\n\n* **Decision records are markdown files in git.** Not Confluence pages, Google Docs, slide decks, or Notion entries.\n* **Front matter is small and stable.** A consistent metadata header keeps records comparable.\n* **The structure is MADR-inspired.** Decision, context, drivers, options, consequences, revisiting.\n* **Publication is via a small static site.** Generated HTML, served through GitHub Pages or an Okta-protected CDN proxy.\n* **Conversation tools are explicitly secondary.** Slack threads, Google Docs, and pull-request reviews are support; the markdown file is canonical.\n* **When conflict appears, the markdown record wins.** A decision is what the markdown says, not what someone remembers.\n* **Records are reviewed and updated, not orphaned.** Records with no owner are flagged the same way unowned capabilities are.\n\n## Canonicality Test\n\nA technical record is canonical only if readers can rely on it without asking around.\n\nUse this test:\n\n* Is there one stable markdown file that states the current decision or principle?\n* Does the file have stable metadata, including ID, status, owner, date, and permalink?\n* Are supporting conversations linked from the record rather than replacing it?\n* If Slack, Jira, a deck, and the markdown disagree, would everyone know the markdown wins?\n* Is the status current: proposed, accepted, deprecated, superseded, or archived?\n* Is there a clear owner who can update the record when reality changes?\n\nIf people need folklore to interpret the record, the record is not yet canonical. Improve the markdown until it can stand on its own.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Capture significant technical decisions as markdown ADRs in the appropriate journal.\n* Use pull requests to review and refine; merge the canonical version when the decision is made.\n* Link to the markdown record from Slack, Jira, and other tools, not the other way around.\n\nFor architects and senior engineers:\n\n* Write your reasoning down. The slide deck is for presentation; the markdown is for memory.\n* When advising a team, point them at existing records first.\n\nFor tech leads:\n\n* Make ADR writing a normal part of delivery, not a separate step.\n* Resist the urge to make \"the deck\" the artifact; the deck rots, the markdown does not.\n\nFor AI tooling:\n\n* Treat markdown records as primary context. CLAUDE.md, Skills, and subagents should read from and link to them.\n\n## Anti-Patterns\n\n* **Slack-as-record.** A \"decision\" lives in a Slack thread and is referenced by date.\n* **Doc-as-record.** A Google Doc with twenty comments is treated as authoritative even after the discussion ended.\n* **Deck-as-record.** The slides someone presented become the de facto reference; the slides go stale within months.\n* **Wiki sprawl.** A confusing Confluence tree where the same decision appears in three places, none authoritative.\n* **Markdown drift.** A markdown record exists but the canonical state is \"what we actually do, which is not in the record\".\n* **Pull-request graveyard.** The reasoning is in PR comments that nobody reads after merge.\n* **Permalink churn.** A record's URL changes every time the title is edited.\n\n## Examples\n\nAligned with the principle:\n\n* This principles journal. Each principle is a markdown file in git, published as a static site, with stable permalinks and an ownership story.\n* The Architecture Advisory Forum decision lives in `_journals/foundations/posts/architecture-advisory-forum/index.md`; the AAF meeting itself is a conversation supporting that record.\n* The AI tooling decision is a markdown ADR; the original strategy slides are an input to it, not the canonical version.\n\nOut of alignment with the principle:\n\n* A Confluence page captioned \"Final architecture decision\" updated quietly by anyone who has edit access.\n* A Slack pin labelled \"this is how we do it\" that nobody can locate two months later.\n* A \"v3\" Google Doc with no link to \"v2\" and no shared definition of which one is current.\n\n## Discussion Prompts\n\nUse these prompts in documentation reviews:\n\n* Which decision do people still explain from memory because the markdown record is missing or weak?\n* Where do supporting artifacts disagree with the canonical record?\n* What record should be updated before the next team or AI assistant relies on it?\n\n## Related Principles\n\n* [Practice Principle: Advice in Public](advice-in-public.html) - conversations make decisions better; markdown makes them durable.\n* [Organisation Principle: Decisions Stay with Teams](decisions-stay-with-teams.html) - team-owned decisions need a team-owned record.\n* [Practice Principle: Governance as Code](governance-as-code.html) - some governance is enforced in records (front-matter standards, permalink stability).\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - records, like capabilities, have owners and lifecycles.\n\n## Scope and Revisiting\n\nThis principle applies to Organization's high-quality, long-lived technical writing: ADRs, technical strategies, discussion documents, engineering principles, foundational engineering records, and operating-model decisions.\n\nIt does not apply to:\n\n* Short-lived team chat.\n* Ephemeral planning notes.\n* Product documentation aimed at users.\n* Service-local READMEs that belong with service code.\n* Operational runbooks that have a separate ownership and publication path.\n* Anything genuinely throwaway.\n\nThe principle should be revisited if:\n\n* The static-site generator stops scaling for real needs (cross-linking, search, navigation, contributor experience).\n* Access-control requirements outgrow what the protected static-hosting path can support.\n* A future toolchain becomes meaningfully cheaper while preserving markdown, git history, reviewability, and portability.\n\n## Authoritative References\n\n* MADR, [Markdown Architectural Decision Records](https://adr.github.io/madr/).\n* CommonMark, [Specification](https://commonmark.org/).\n* Organization Foundations, Markdown Records as the Default Format ([Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](../foundations/markdown-records.html)).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -613,26 +648,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

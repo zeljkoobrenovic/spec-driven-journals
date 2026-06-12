@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="infra-tech-stack-compute.html">← Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Compute Infrastructure — Docker, ECS Fargate, Ubuntu Base Images\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nCommit Organization to a **simple, mainstream, AWS-native compute pattern**:\nDocker containers on AWS ECS with the Fargate launch type, using Ubuntu\nas the foundational base image. Three orthogonal choices (packaging,\norchestration, hosting model) made together to remove diversity and\nprevent fragmentation across Lambda, EKS, EC2, and self-managed\nKubernetes.\n\n## Audience\n\n- **Backend engineers** packaging a new service.\n- **Platform / devex team** maintaining base images and templates.\n- **Architecture group** evaluating exception requests for Lambda,\n  EKS, or EC2.\n- **Cost-conscious leadership** sizing the Fargate spend vs alternatives.\n\n## Success criteria\n\n- [ ] Reader can separate **packaging** (Docker + Ubuntu),\n      **orchestration** (ECS), and **hosting model** (Fargate).\n- [ ] Reader knows ECS Fargate is the **default**; alternatives need\n      written exceptions.\n- [ ] Reader understands why **ECS over EKS**: easier to own,\n      sufficient for Organization's needs.\n- [ ] Reader can connect to [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) (provider) and\n      [Backend Services Platform: Standardize on .NET with C#](backend-tech-stack-framework.html) (.NET runs here).\n- [ ] The post stays focused as an ADR and does not absorb service\n      template, deployment-module, runbook, or learning-path detail.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Lambda or serverless function patterns as a default.\n- Self-managed Kubernetes or EKS as default orchestration.\n- Choosing service templates, IaC tools, or CI/CD pipelines.\n- Dictating image-size or build-pipeline optimisations.\n\n## Open questions\n\n- Concrete criteria for an \"approved exception\" (latency-sensitive\n  Lambda, GPU workloads, anything else).\n- Migration plan for services currently on non-default compute.\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the ECS Fargate default,\n  the included operational expectations, exception criteria, and\n  revisit triggers. Kept terminology as an appendix instead of inline\n  explanation.\n- **2026-05-20** — Chose **ECS Fargate** as default. Considered EKS;\n  rejected because Kubernetes operational complexity exceeds\n  Organization's needs and ECS is sufficient.\n- **2026-05-20** — Chose **Ubuntu** as base image. Considered Alpine\n  for size; rejected because Alpine's musl libc surfaces subtle\n  compatibility issues with mainstream runtimes that cost more\n  engineer-hours than the smaller image saves.\n- **2026-05-20** — Default **does not** include Lambda. Considered\n  Lambda-first for event-driven workloads; rejected because\n  serverless-only architectures fragment the runtime story and Kafka\n  consumers fit poorly with cold-start patterns.\n- **2026-05-20** — Default **does not** include EC2 launch type for\n  general workloads. Considered EC2 for cost reasons; rejected\n  because owning EC2 fleets is exactly the operational overhead\n  Fargate removes.\n\n## Sources\n\n- **Internal**\n  - [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) — the cloud target this builds on.\n  - [AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months](infra-tech-stack-aws-foundation.html) — the foundation it runs on.\n  - [Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone](infra-tech-stack-messaging.html) — Kafka clients run on this\n    compute.\n  - [Backend Services Platform: Standardize on .NET with C#](backend-tech-stack-framework.html) — the .NET services that target\n    this compute.\n- **External**\n  - AWS ECS and Fargate documentation.\n  - Docker official image guidance for production deployments.\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure,\n  removed learning/checklist material, and moved vocabulary to an end\n  appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  still `draft`. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Compute Infrastructure — Docker, ECS Fargate, Ubuntu Base Images\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nCommit Organization to a **simple, mainstream, AWS-native compute pattern**:\nDocker containers on AWS ECS with the Fargate launch type, using Ubuntu\nas the foundational base image. Three orthogonal choices (packaging,\norchestration, hosting model) made together to remove diversity and\nprevent fragmentation across Lambda, EKS, EC2, and self-managed\nKubernetes.\n\n## Audience\n\n- **Backend engineers** packaging a new service.\n- **Platform / devex team** maintaining base images and templates.\n- **Architecture group** evaluating exception requests for Lambda,\n  EKS, or EC2.\n- **Cost-conscious leadership** sizing the Fargate spend vs alternatives.\n\n## Success criteria\n\n- [ ] Reader can separate **packaging** (Docker + Ubuntu),\n      **orchestration** (ECS), and **hosting model** (Fargate).\n- [ ] Reader knows ECS Fargate is the **default**; alternatives need\n      written exceptions.\n- [ ] Reader understands why **ECS over EKS**: easier to own,\n      sufficient for Organization's needs.\n- [ ] Reader can connect to [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) (provider) and\n      [Backend Services Platform: Standardize on .NET with C#](backend-tech-stack-framework.html) (.NET runs here).\n- [ ] The post stays focused as an ADR and does not absorb service\n      template, deployment-module, runbook, or learning-path detail.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Lambda or serverless function patterns as a default.\n- Self-managed Kubernetes or EKS as default orchestration.\n- Choosing service templates, IaC tools, or CI/CD pipelines.\n- Dictating image-size or build-pipeline optimisations.\n\n## Open questions\n\n- Concrete criteria for an \"approved exception\" (latency-sensitive\n  Lambda, GPU workloads, anything else).\n- Migration plan for services currently on non-default compute.\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the ECS Fargate default,\n  the included operational expectations, exception criteria, and\n  revisit triggers. Kept terminology as an appendix instead of inline\n  explanation.\n- **2026-05-20** — Chose **ECS Fargate** as default. Considered EKS;\n  rejected because Kubernetes operational complexity exceeds\n  Organization's needs and ECS is sufficient.\n- **2026-05-20** — Chose **Ubuntu** as base image. Considered Alpine\n  for size; rejected because Alpine's musl libc surfaces subtle\n  compatibility issues with mainstream runtimes that cost more\n  engineer-hours than the smaller image saves.\n- **2026-05-20** — Default **does not** include Lambda. Considered\n  Lambda-first for event-driven workloads; rejected because\n  serverless-only architectures fragment the runtime story and Kafka\n  consumers fit poorly with cold-start patterns.\n- **2026-05-20** — Default **does not** include EC2 launch type for\n  general workloads. Considered EC2 for cost reasons; rejected\n  because owning EC2 fleets is exactly the operational overhead\n  Fargate removes.\n\n## Sources\n\n- **Internal**\n  - [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) — the cloud target this builds on.\n  - [AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months](infra-tech-stack-aws-foundation.html) — the foundation it runs on.\n  - [Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone](infra-tech-stack-messaging.html) — Kafka clients run on this\n    compute.\n  - [Backend Services Platform: Standardize on .NET with C#](backend-tech-stack-framework.html) — the .NET services that target\n    this compute.\n- **External**\n  - AWS ECS and Fargate documentation.\n  - Docker official image guidance for production deployments.\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure,\n  removed learning/checklist material, and moved vocabulary to an end\n  appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  still `draft`. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

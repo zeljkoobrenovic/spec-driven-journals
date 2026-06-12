@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -283,13 +317,14 @@
 <main>
     <nav class="post-nav"><a class="nav-back" href="prepare-for-ai-future.html">← AI Will Do the Heavy Lifting. You Still Need to Lead</a><span class="nav-right"></span></nav>
     <header class="post" id="post-header">
-        <p class="section"><span>SPEC</span> • <span class="post-status"><span class="status-dot" style="background:green"></span>accepted</span> • <span>revised 2026-05-28</span></p>
+        <p class="section"><span>SPEC</span> • <span class="post-status"><span class="status-dot" style="background:green"></span>accepted</span> • <span>revised 2026-06-12</span></p>
         <h1>Spec: AI Will Do the Heavy Lifting. You Still Need to Lead</h1>
         <p class="byline"></p>
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="prepare-for-ai-future.html">← AI Will Do the Heavy Lifting. You Still Need to Lead</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: AI Will Do the Heavy Lifting. You Still Need to Lead\n\n## Intent\n\nHelp technology leaders prepare for AI-shaped work by shifting attention from artifact production to agency, judgment, and persuasion. The post should create urgency without hype: AI can accelerate routine technical work, but leaders remain valuable when they initiate, evaluate, contextualize, and align people around decisions.\n\n## Audience\n\n- Principal engineers, staff engineers, and architects who increasingly guide technical direction through influence rather than formal authority.\n- Engineering managers and engineering directors who need to align AI-shaped technical work with delivery, teams, and business outcomes.\n- VPs of Engineering, CTOs, and other senior technology leaders deciding which skills to practice now rather than waiting for an AI operating model to become obvious.\n\nReaders should leave with a practical self-assessment frame and a short list of habits to start practicing immediately.\n\n## Success criteria\n\n- [x] Reader understands agency, judgment, and persuasion as the three core skills the post emphasizes.\n- [x] Reader can distinguish AI-generated outputs from human technical leadership accountability.\n- [x] Reader understands why agency, judgment, and persuasion can be supported by AI but cannot simply be delegated to AI.\n- [x] Reader sees what can go wrong when leaders lack agency, judgment, or persuasion, including hype-following, and what better leadership looks like in contrast.\n- [x] Reader recognizes the article as relevant beyond architecture titles, including senior IC, management, and executive engineering roles.\n- [x] Reader sees concrete role-specific stakes, a judgment comparison table, and a short practice loop they can try immediately.\n- [x] Reader gets practical actions without being told that every legacy skill is worthless.\n- [x] Reader understands that agency, judgment, and persuasion remain durable, but how leaders practice them will keep changing as AI capabilities evolve.\n- [x] Source references to Jakob Nielsen and Gregor Hohpe are clear enough to distinguish quotation, paraphrase, and adaptation.\n- [x] Illustrative scenarios are not presented as sourced case studies.\n- [x] The post works as a standalone AI Notes article, not only as a book chapter.\n\n## Non-goals\n\n- A catalog of AI architecture tools.\n- A prediction piece about exact AI capabilities in 2030.\n- A policy for AI governance, security, or model selection.\n- A claim that all legacy architecture skills should be abandoned immediately.\n- A proof that the illustrative scenarios happened in named organizations.\n\n## Open questions\n\n- Should this post later link to more concrete internal records about AI governance, AI engineering standards, or architecture operating models?\n- Should AI Notes adopt the same source-density expectations as decision journals, or stay lighter and essay-like?\n\n## Decision log\n\n- **2026-05-28** — Kept Nielsen's agency/judgment/persuasion frame as the post's backbone because it gives the article a memorable structure and a clear source.\n- **2026-05-28** — Reframed examples as illustrative scenarios instead of case studies because no organization-specific source was attached.\n- **2026-05-28** — Changed manuscript-specific wording to standalone note wording so the page makes sense inside the `ai-notes` journal.\n- **2026-05-28** — Softened capability claims by separating current AI assistance from speculative AI-native architecture practices.\n- **2026-05-28** — Added Hohpe as a sourced influence rather than leaving a standalone unsourced quotation.\n- **2026-05-28** — Broadened the target audience from IT architects to technology leaders, including principal engineers, staff engineers, engineering managers/directors, VPs of Engineering, CTOs, and architects.\n- **2026-05-28** — Polished the article by shortening the opening role list, replacing one architecture-design scenario with an AI adoption leadership scenario, and renaming a legacy subheading to avoid echoing removed book framing.\n- **2026-05-28** — Separated immediate practices from longer-term mindset shifts so the two post-closing sections have clearer jobs.\n- **2026-05-28** — Expanded the article with role-specific stakes, an `AI can suggest / Leaders must decide` judgment table, and a one-week practice loop.\n- **2026-05-28** — Added negative/positive contrast tables for agency, judgment, and persuasion so the cost of missing each skill is explicit.\n- **2026-05-28** — Added a section explaining why agency, judgment, and persuasion can be AI-supported but not fully AI-delegated.\n- **2026-05-28** — Performed a light final copy-edit to tighten wording without changing structure or argument.\n- **2026-05-28** — Added the point that agency, judgment, and persuasion are durable capabilities whose practical expression will keep changing as AI develops.\n\n## Sources\n\n- **External**\n  - [Jakob Nielsen, \"Use the AI Transition Period to Transition Your Career\"](https://www.uxtigers.com/post/ai-transition-career-transition) — agency, judgment, persuasion, transition-period framing, and the mammoth-hunter analogy.\n  - [Gregor Hohpe, \"Think Like An Architect, Part 2: Architects See More Dimensions\"](https://architectelevator.com/architecture/multiple-dimensions/) — the idea that architects make others smarter rather than being the smartest person in the room.\n\n## Changelog\n\n- **2026-05-28** — Elaborated the opening, judgment section, and immediate practices to make the article more actionable. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added evolving-practice framing for agency, judgment, and persuasion as AI capabilities develop. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added contrast examples for what happens when leaders lack agency, judgment, or persuasion. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added the AI-delegation boundary: AI can assist thinking, but leaders own direction, accountability, and consent. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Light copy-edit for flow and repetition. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Clarified the distinction between near-term practices and transition-era mindset shifts. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Polished the article after review; addressed remaining low-priority findings without changing the core thesis. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Broadened article and spec audience from architects to technology leaders while preserving the agency/judgment/persuasion frame. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added accepted spec after review-driven article revision; updated post for source fidelity, standalone framing, scenarios, capability precision, and alt text. *(Zeljko, AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: AI Will Do the Heavy Lifting. You Still Need to Lead\n\n## Intent\n\nHelp technology leaders prepare for AI-shaped work by shifting attention from artifact production to agency, judgment, and persuasion. The post should create urgency without hype: AI can accelerate routine technical work, but leaders remain valuable when they initiate, evaluate, contextualize, and align people around decisions.\n\n## Audience\n\n- Principal engineers, staff engineers, and architects who increasingly guide technical direction through influence rather than formal authority.\n- Engineering managers and engineering directors who need to align AI-shaped technical work with delivery, teams, and business outcomes.\n- VPs of Engineering, CTOs, and other senior technology leaders deciding which skills to practice now rather than waiting for an AI operating model to become obvious.\n\nReaders should leave with a practical self-assessment frame and a short list of habits to start practicing immediately.\n\n## Success criteria\n\n- [x] Reader understands agency, judgment, and persuasion as the three core skills the post emphasizes.\n- [x] Reader can distinguish AI-generated outputs from human technical leadership accountability.\n- [x] Reader understands why agency, judgment, and persuasion can be supported by AI but cannot simply be delegated to AI.\n- [x] Reader sees what can go wrong when leaders lack agency, judgment, or persuasion, including hype-following, and what better leadership looks like in contrast.\n- [x] Reader recognizes the article as relevant beyond architecture titles, including senior IC, management, and executive engineering roles.\n- [x] Reader sees concrete role-specific stakes, a judgment comparison table, and a short practice loop they can try immediately.\n- [x] Reader gets practical actions without being told that every legacy skill is worthless.\n- [x] Reader understands that agency, judgment, and persuasion remain durable, but how leaders practice them will keep changing as AI capabilities evolve.\n- [x] Source references to Jakob Nielsen and Gregor Hohpe are clear enough to distinguish quotation, paraphrase, and adaptation.\n- [x] Illustrative scenarios are not presented as sourced case studies.\n- [x] The post works as a standalone AI Notes article, not only as a book chapter.\n\n## Non-goals\n\n- A catalog of AI architecture tools.\n- A prediction piece about exact AI capabilities in 2030.\n- A policy for AI governance, security, or model selection.\n- A claim that all legacy architecture skills should be abandoned immediately.\n- A proof that the illustrative scenarios happened in named organizations.\n\n## Modalities\n\nWhich docs this spec drives beyond the main article (`index.md`).\n\n- [x] `summary.md` — management summary\n- [x] `dialog.md` — two-host dialog\n- [x] `comics.md` — explainer comic\n\n## Open questions\n\n- Should this post later link to more concrete internal records about AI governance, AI engineering standards, or architecture operating models?\n- Should AI Notes adopt the same source-density expectations as decision journals, or stay lighter and essay-like?\n\n## Decision log\n\n- **2026-05-28** — Kept Nielsen's agency/judgment/persuasion frame as the post's backbone because it gives the article a memorable structure and a clear source.\n- **2026-05-28** — Reframed examples as illustrative scenarios instead of case studies because no organization-specific source was attached.\n- **2026-05-28** — Changed manuscript-specific wording to standalone note wording so the page makes sense inside the `ai-notes` journal.\n- **2026-05-28** — Softened capability claims by separating current AI assistance from speculative AI-native architecture practices.\n- **2026-05-28** — Added Hohpe as a sourced influence rather than leaving a standalone unsourced quotation.\n- **2026-05-28** — Broadened the target audience from IT architects to technology leaders, including principal engineers, staff engineers, engineering managers/directors, VPs of Engineering, CTOs, and architects.\n- **2026-05-28** — Polished the article by shortening the opening role list, replacing one architecture-design scenario with an AI adoption leadership scenario, and renaming a legacy subheading to avoid echoing removed book framing.\n- **2026-05-28** — Separated immediate practices from longer-term mindset shifts so the two post-closing sections have clearer jobs.\n- **2026-05-28** — Expanded the article with role-specific stakes, an `AI can suggest / Leaders must decide` judgment table, and a one-week practice loop.\n- **2026-05-28** — Added negative/positive contrast tables for agency, judgment, and persuasion so the cost of missing each skill is explicit.\n- **2026-05-28** — Added a section explaining why agency, judgment, and persuasion can be AI-supported but not fully AI-delegated.\n- **2026-05-28** — Performed a light final copy-edit to tighten wording without changing structure or argument.\n- **2026-05-28** — Added the point that agency, judgment, and persuasion are durable capabilities whose practical expression will keep changing as AI develops.\n\n## Sources\n\n- **External**\n  - [Jakob Nielsen, \"Use the AI Transition Period to Transition Your Career\"](https://www.uxtigers.com/post/ai-transition-career-transition) — agency, judgment, persuasion, transition-period framing, and the mammoth-hunter analogy.\n  - [Gregor Hohpe, \"Think Like An Architect, Part 2: Architects See More Dimensions\"](https://architectelevator.com/architecture/multiple-dimensions/) — the idea that architects make others smarter rather than being the smartest person in the room.\n\n## Changelog\n\n- **2026-06-12** — Added Modalities section; the spec now drives `summary.md`,\n  `dialog.md`, and `comics.md` alongside the article. *(Zeljko, AI-mediated\n  session)*\n- **2026-05-28** — Elaborated the opening, judgment section, and immediate practices to make the article more actionable. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added evolving-practice framing for agency, judgment, and persuasion as AI capabilities develop. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added contrast examples for what happens when leaders lack agency, judgment, or persuasion. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added the AI-delegation boundary: AI can assist thinking, but leaders own direction, accountability, and consent. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Light copy-edit for flow and repetition. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Clarified the distinction between near-term practices and transition-era mindset shifts. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Polished the article after review; addressed remaining low-priority findings without changing the core thesis. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Broadened article and spec audience from architects to technology leaders while preserving the agency/judgment/persuasion frame. *(Zeljko, AI-mediated session)*\n- **2026-05-28** — Added accepted spec after review-driven article revision; updated post for source fidelity, standalone framing, scenarios, capability precision, and alt text. *(Zeljko, AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

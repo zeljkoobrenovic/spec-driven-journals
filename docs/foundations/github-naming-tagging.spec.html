@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="github-naming-tagging.html">← GitHub Naming and Tagging Conventions for Source Code</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: GitHub Naming and Tagging Conventions\n\n> Backfilled after the post. Part of the naming/tagging trio with\n> [AWS Account and Resource Naming and Tagging Conventions](aws-naming-tagging.html) and [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html); the same\n> `<domain>-<system>-<component>` vocabulary travels across all three.\n\n## Intent\n\nMake Organization's GitHub estate queryable as a graph. Standardise repository\nnames, repository topics, branch names, commit shape, and git tags so that\nhumans, AI assistants, automation, and audit tooling all read the\norganisation the same way. The record should be mechanical enough that a\nreader can apply it without judgement calls.\n\n## Audience\n\n- **Engineers** creating repositories, branches, commits, and release tags.\n- **Tech leads + architects** evaluating compliance and proposing exceptions.\n- **Platform and devex teams** building tooling that reads GitHub topics or\n  enforces the conventions in CI.\n- **AI agents and inventory tooling** that query the org via the GitHub API.\n\n## Success criteria\n\n- [ ] Main record stays focused on the core decision; reference, tutorial, or playbook material is compact or moved out of the main flow.\n- [ ] Reader can name a new repository correctly without asking.\n- [ ] Reader can identify the required GitHub topic prefixes (`domain-*`,\n      `system-*`, `lifecycle-*`, `tier-*`, `lang-*`) and what they mean.\n- [ ] Reader can construct a branch name and a commit message that pass the\n      convention check.\n- [ ] Reader knows when to use SemVer `vX.Y.Z` vs date-based\n      `release/YYYY.MM.DD[.N]` tags.\n- [ ] Reader sees the link to [AWS Account and Resource Naming and Tagging Conventions](aws-naming-tagging.html) and\n      [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html) and understands the shared vocabulary.\n\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the opening decision flow.\n\n## Non-goals\n\n- Changing ownership, team structure, or which team owns which repo.\n- Replacing [Jira as the Issue Tracker and a Unified Workflow Standard Across Teams](jira-workflow-standards.html) (Jira keys are referenced, not\n  redefined).\n- Defining the domain/system/component shortlist itself — that's a separate,\n  evolving artefact.\n- Dictating internal code structure beyond root packages and namespaces.\n\n## Open questions\n\n- The exact controlled vocabulary for `domain-*` and `system-*` topics —\n  intentionally deferred to the shortlist record.\n- Whether `lifecycle-*` should include a `lifecycle-archived` state distinct\n  from GitHub's own archived flag.\n- Migration plan for existing non-compliant repos (rename vs grandfather).\n- How to handle multi-language repos against the `lang-*` topic convention\n  (multiple topics? primary only?).\n\n## Decision log\n\n- **2026-05-21** — Focused the post around the core decision and condensed long tutorial, playbook, or reference sections so readers can reach the guidance quickly.\n- **2026-05-20** — Moved vocabulary from the opening flow into an\n  appendix so the main foundation record stays focused on decision,\n  rationale, and workflow.\n- **2026-05-20** — Used `<domain>-<system>-<component>` as the **shared\n  logical name** across this record, [AWS Account and Resource Naming and Tagging Conventions](aws-naming-tagging.html), and\n  [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html). Considered per-ecosystem-native names;\n  rejected because the value of the standard is precisely that one\n  artefact in GitHub, AWS, and a package registry are connectable by\n  string match.\n- **2026-05-20** — Required **flat topic prefixes** (`domain-*`,\n  `system-*`, `lifecycle-*`, `tier-*`, `lang-*`) on every repo.\n  Considered hierarchical topic names (`domain/listings`); rejected\n  because the GitHub API treats topics as flat strings and the prefix\n  convention preserves queryability without inventing structure GitHub\n  doesn't model.\n- **2026-05-20** — Adopted **Jira keys embedded in branch names and\n  commit footers**. Considered leaving Jira-references optional;\n  rejected because the same standard wants end-to-end traceability and\n  optional fields are routinely skipped.\n- **2026-05-20** — Used **SemVer for libraries**, **date-based tags for\n  deployable services**. Considered one scheme for both; rejected\n  because they answer different questions (compatibility vs release\n  ordering), and forcing one scheme hides one of those.\n- **2026-05-20** — Made the policy **mechanical**, not aspirational.\n  Considered guidelines-with-exceptions; rejected because the standard's\n  whole point is queryability — exceptions defeat it.\n\n## Sources\n\n- **Internal**\n  - [AWS Account and Resource Naming and Tagging Conventions](aws-naming-tagging.html) — companion record using the same\n    `<domain>-<system>-<component>` vocabulary.\n  - [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html) — companion record completing the\n    naming trio.\n  - [Jira as the Issue Tracker and a Unified Workflow Standard Across Teams](jira-workflow-standards.html) — the issue tracker whose keys this\n    record requires in branch and commit footers.\n- **External**\n  - Conventional Commits — the commit format this record adopts.\n  - SemVer 2.0 — the versioning scheme for libraries.\n  - GitHub API topic documentation — informs the flat-topic-with-prefix\n    pattern.\n\n## Changelog\n\n- **2026-05-21** — Shortened and refocused `index.md`; kept stable identifiers and permalinks. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Moved vocabulary in `index.md` to an end\n  appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: GitHub Naming and Tagging Conventions\n\n> Backfilled after the post. Part of the naming/tagging trio with\n> [AWS Account and Resource Naming and Tagging Conventions](aws-naming-tagging.html) and [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html); the same\n> `<domain>-<system>-<component>` vocabulary travels across all three.\n\n## Intent\n\nMake Organization's GitHub estate queryable as a graph. Standardise repository\nnames, repository topics, branch names, commit shape, and git tags so that\nhumans, AI assistants, automation, and audit tooling all read the\norganisation the same way. The record should be mechanical enough that a\nreader can apply it without judgement calls.\n\n## Audience\n\n- **Engineers** creating repositories, branches, commits, and release tags.\n- **Tech leads + architects** evaluating compliance and proposing exceptions.\n- **Platform and devex teams** building tooling that reads GitHub topics or\n  enforces the conventions in CI.\n- **AI agents and inventory tooling** that query the org via the GitHub API.\n\n## Success criteria\n\n- [ ] Main record stays focused on the core decision; reference, tutorial, or playbook material is compact or moved out of the main flow.\n- [ ] Reader can name a new repository correctly without asking.\n- [ ] Reader can identify the required GitHub topic prefixes (`domain-*`,\n      `system-*`, `lifecycle-*`, `tier-*`, `lang-*`) and what they mean.\n- [ ] Reader can construct a branch name and a commit message that pass the\n      convention check.\n- [ ] Reader knows when to use SemVer `vX.Y.Z` vs date-based\n      `release/YYYY.MM.DD[.N]` tags.\n- [ ] Reader sees the link to [AWS Account and Resource Naming and Tagging Conventions](aws-naming-tagging.html) and\n      [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html) and understands the shared vocabulary.\n\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the opening decision flow.\n\n## Non-goals\n\n- Changing ownership, team structure, or which team owns which repo.\n- Replacing [Jira as the Issue Tracker and a Unified Workflow Standard Across Teams](jira-workflow-standards.html) (Jira keys are referenced, not\n  redefined).\n- Defining the domain/system/component shortlist itself — that's a separate,\n  evolving artefact.\n- Dictating internal code structure beyond root packages and namespaces.\n\n## Open questions\n\n- The exact controlled vocabulary for `domain-*` and `system-*` topics —\n  intentionally deferred to the shortlist record.\n- Whether `lifecycle-*` should include a `lifecycle-archived` state distinct\n  from GitHub's own archived flag.\n- Migration plan for existing non-compliant repos (rename vs grandfather).\n- How to handle multi-language repos against the `lang-*` topic convention\n  (multiple topics? primary only?).\n\n## Decision log\n\n- **2026-05-21** — Focused the post around the core decision and condensed long tutorial, playbook, or reference sections so readers can reach the guidance quickly.\n- **2026-05-20** — Moved vocabulary from the opening flow into an\n  appendix so the main foundation record stays focused on decision,\n  rationale, and workflow.\n- **2026-05-20** — Used `<domain>-<system>-<component>` as the **shared\n  logical name** across this record, [AWS Account and Resource Naming and Tagging Conventions](aws-naming-tagging.html), and\n  [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html). Considered per-ecosystem-native names;\n  rejected because the value of the standard is precisely that one\n  artefact in GitHub, AWS, and a package registry are connectable by\n  string match.\n- **2026-05-20** — Required **flat topic prefixes** (`domain-*`,\n  `system-*`, `lifecycle-*`, `tier-*`, `lang-*`) on every repo.\n  Considered hierarchical topic names (`domain/listings`); rejected\n  because the GitHub API treats topics as flat strings and the prefix\n  convention preserves queryability without inventing structure GitHub\n  doesn't model.\n- **2026-05-20** — Adopted **Jira keys embedded in branch names and\n  commit footers**. Considered leaving Jira-references optional;\n  rejected because the same standard wants end-to-end traceability and\n  optional fields are routinely skipped.\n- **2026-05-20** — Used **SemVer for libraries**, **date-based tags for\n  deployable services**. Considered one scheme for both; rejected\n  because they answer different questions (compatibility vs release\n  ordering), and forcing one scheme hides one of those.\n- **2026-05-20** — Made the policy **mechanical**, not aspirational.\n  Considered guidelines-with-exceptions; rejected because the standard's\n  whole point is queryability — exceptions defeat it.\n\n## Sources\n\n- **Internal**\n  - [AWS Account and Resource Naming and Tagging Conventions](aws-naming-tagging.html) — companion record using the same\n    `<domain>-<system>-<component>` vocabulary.\n  - [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html) — companion record completing the\n    naming trio.\n  - [Jira as the Issue Tracker and a Unified Workflow Standard Across Teams](jira-workflow-standards.html) — the issue tracker whose keys this\n    record requires in branch and commit footers.\n- **External**\n  - Conventional Commits — the commit format this record adopts.\n  - SemVer 2.0 — the versioning scheme for libraries.\n  - GitHub API topic documentation — informs the flat-topic-with-prefix\n    pattern.\n\n## Changelog\n\n- **2026-05-21** — Shortened and refocused `index.md`; kept stable identifiers and permalinks. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Moved vocabulary in `index.md` to an end\n  appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

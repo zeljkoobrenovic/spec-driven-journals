@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="frontend-guild.html">← Frontend Guild as a Cross-Team Web Consortium</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Frontend Guild as a Cross-Team Web Consortium\n\n> Backfilled after the post. The companion record to [Backend Guild as a Cross-Team Community of Practice](backend-guild.html),\n> [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html), and [GenAI Guild as a Cross-Team Generative AI Consortium](genai-guild.html) — same shape, different scope.\n\n## Intent\n\nEstablish a Frontend Guild as a standing community of practice for **web\nfrontend** engineers across Organization teams, brands, and domains. The guild is\nthe organisation-wide web consortium that enables and empowers teams around\nstandards. The record should make the guild's purpose, mandate, and\nboundaries (especially against mobile) legible enough that engineers can\ndecide where to take a given web concern.\n\n## Audience\n\n- **Web frontend engineers** across teams, brands, and domains who might\n  join, contribute, or adopt guild standards.\n- **Engineering managers and tech leads** trying to understand the guild's\n  scope vs their own team's autonomy.\n- **Mobile engineers** who need to know what is *not* in scope (mobile\n  frontend is the Mobile Guild's job).\n- **Architecture group + Chief Architect** as the receiving end of guild\n  advice and proposals.\n- **AI agents** cross-linking from other foundations.\n\n## Success criteria\n\n- [ ] Reader can state the guild's purpose, scope (web only), composition,\n      mandate, and resources in their own words.\n- [ ] Reader can distinguish \"web consortium\" from \"standards body that\n      mandates compliance\" and \"delivery team\".\n- [ ] Reader understands mobile frontend is explicitly out of scope, and\n      knows the Mobile Guild exists for it.\n- [ ] Reader sees the parallel with [Backend Guild as a Cross-Team Community of Practice](backend-guild.html), [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html), and\n      [GenAI Guild as a Cross-Team Generative AI Consortium](genai-guild.html) and reads the four as one family of decisions.\n- [ ] Reader can articulate when guilds coordinate vs absorb each other's\n      scope (the web/mobile boundary).\n\n## Non-goals\n\n- Defining the design system, micro-frontend architecture, or other\n  technical standards themselves — the guild *owns* those, the record does\n  not pre-empt them.\n- Creating an approval gate for frontend changes in delivery teams.\n- Mandating that every team adopt every guild standard.\n- Covering mobile frontend, which belongs to [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html).\n\n## Open questions\n\n- Exact Slack channel and AWS space naming — left to bootstrap.\n- How \"coordination\" with the Mobile Guild works in practice when a topic\n  genuinely spans both (e.g. design tokens shared across web and mobile).\n- Whether the design-system working group becomes a long-lived sub-body of\n  the guild or a separate record.\n\n## Decision log\n\n- **2026-05-20** — Kept the guild **advisory and contributory**, mirroring\n  the other guilds. Considered standards-body authority that could mandate\n  compliance; rejected because mandated standards die without grassroots\n  ownership, and a consortium that earns adoption survives the next\n  framework cycle.\n- **2026-05-20** — Bounded scope to **web frontend** only. Considered\n  folding mobile in for a single \"frontend\" body; rejected because mobile\n  has materially different platforms, release cycles, and design\n  constraints — better served by a dedicated [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html) with\n  explicit coordination on shared topics.\n- **2026-05-20** — Adopted **experimentation-first** documentation\n  (working code in the guild's GitHub area first, prose after). Considered\n  standards-first publication; rejected because frontend choices age\n  fastest in this corpus and an experimentation-first cadence handles\n  that better.\n- **2026-05-20** — Membership **open to every Aviver**, small core\n  organising group. Same trade-off as [Backend Guild as a Cross-Team Community of Practice](backend-guild.html): open membership\n  with a sustaining core beats a closed roster.\n\n## Sources\n\n- **Internal**\n  - [Backend Guild as a Cross-Team Community of Practice](backend-guild.html) — sibling guild record; this spec was written to\n    mirror its shape, with web-frontend-specific scope.\n  - [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html) — sibling record; the web/mobile boundary in this\n    spec was negotiated against it.\n  - [GenAI Guild as a Cross-Team Generative AI Consortium](genai-guild.html) — sibling record; informs the guild family pattern.\n  - [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) — destination for guild proposals\n    that become decisions.\n- **External**\n  - Spotify guild/chapter/tribe model — pattern reference, not template.\n  - Modern frontend platform writing (design systems, micro-frontends,\n    white-label integration) — informs the topic surface the guild owns.\n\n## Changelog\n\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Frontend Guild as a Cross-Team Web Consortium\n\n> Backfilled after the post. The companion record to [Backend Guild as a Cross-Team Community of Practice](backend-guild.html),\n> [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html), and [GenAI Guild as a Cross-Team Generative AI Consortium](genai-guild.html) — same shape, different scope.\n\n## Intent\n\nEstablish a Frontend Guild as a standing community of practice for **web\nfrontend** engineers across Organization teams, brands, and domains. The guild is\nthe organisation-wide web consortium that enables and empowers teams around\nstandards. The record should make the guild's purpose, mandate, and\nboundaries (especially against mobile) legible enough that engineers can\ndecide where to take a given web concern.\n\n## Audience\n\n- **Web frontend engineers** across teams, brands, and domains who might\n  join, contribute, or adopt guild standards.\n- **Engineering managers and tech leads** trying to understand the guild's\n  scope vs their own team's autonomy.\n- **Mobile engineers** who need to know what is *not* in scope (mobile\n  frontend is the Mobile Guild's job).\n- **Architecture group + Chief Architect** as the receiving end of guild\n  advice and proposals.\n- **AI agents** cross-linking from other foundations.\n\n## Success criteria\n\n- [ ] Reader can state the guild's purpose, scope (web only), composition,\n      mandate, and resources in their own words.\n- [ ] Reader can distinguish \"web consortium\" from \"standards body that\n      mandates compliance\" and \"delivery team\".\n- [ ] Reader understands mobile frontend is explicitly out of scope, and\n      knows the Mobile Guild exists for it.\n- [ ] Reader sees the parallel with [Backend Guild as a Cross-Team Community of Practice](backend-guild.html), [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html), and\n      [GenAI Guild as a Cross-Team Generative AI Consortium](genai-guild.html) and reads the four as one family of decisions.\n- [ ] Reader can articulate when guilds coordinate vs absorb each other's\n      scope (the web/mobile boundary).\n\n## Non-goals\n\n- Defining the design system, micro-frontend architecture, or other\n  technical standards themselves — the guild *owns* those, the record does\n  not pre-empt them.\n- Creating an approval gate for frontend changes in delivery teams.\n- Mandating that every team adopt every guild standard.\n- Covering mobile frontend, which belongs to [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html).\n\n## Open questions\n\n- Exact Slack channel and AWS space naming — left to bootstrap.\n- How \"coordination\" with the Mobile Guild works in practice when a topic\n  genuinely spans both (e.g. design tokens shared across web and mobile).\n- Whether the design-system working group becomes a long-lived sub-body of\n  the guild or a separate record.\n\n## Decision log\n\n- **2026-05-20** — Kept the guild **advisory and contributory**, mirroring\n  the other guilds. Considered standards-body authority that could mandate\n  compliance; rejected because mandated standards die without grassroots\n  ownership, and a consortium that earns adoption survives the next\n  framework cycle.\n- **2026-05-20** — Bounded scope to **web frontend** only. Considered\n  folding mobile in for a single \"frontend\" body; rejected because mobile\n  has materially different platforms, release cycles, and design\n  constraints — better served by a dedicated [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html) with\n  explicit coordination on shared topics.\n- **2026-05-20** — Adopted **experimentation-first** documentation\n  (working code in the guild's GitHub area first, prose after). Considered\n  standards-first publication; rejected because frontend choices age\n  fastest in this corpus and an experimentation-first cadence handles\n  that better.\n- **2026-05-20** — Membership **open to every Aviver**, small core\n  organising group. Same trade-off as [Backend Guild as a Cross-Team Community of Practice](backend-guild.html): open membership\n  with a sustaining core beats a closed roster.\n\n## Sources\n\n- **Internal**\n  - [Backend Guild as a Cross-Team Community of Practice](backend-guild.html) — sibling guild record; this spec was written to\n    mirror its shape, with web-frontend-specific scope.\n  - [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html) — sibling record; the web/mobile boundary in this\n    spec was negotiated against it.\n  - [GenAI Guild as a Cross-Team Generative AI Consortium](genai-guild.html) — sibling record; informs the guild family pattern.\n  - [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) — destination for guild proposals\n    that become decisions.\n- **External**\n  - Spotify guild/chapter/tribe model — pattern reference, not template.\n  - Modern frontend platform writing (design systems, micro-frontends,\n    white-label integration) — informs the topic surface the guild owns.\n\n## Changelog\n\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

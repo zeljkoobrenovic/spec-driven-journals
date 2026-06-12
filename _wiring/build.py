@@ -407,6 +407,67 @@ def split_into_blocks(body: str):
     return blocks or [{"type": "markdown", "content": ""}]
 
 
+# --- modalities -----------------------------------------------------------
+
+# One spec can drive several "modality" docs living next to index.md in the
+# per-post folder. A modality is included iff its file exists (same
+# file-presence convention as spec.md detection). List order = tab order on
+# the rendered post page. The "index" entry is the post source itself and is
+# always present.
+_MODALITIES = [
+    # (key, tab label, sibling filename or None for index.md itself)
+    ("index", "Article", None),
+    ("summary", "Summary", "summary.md"),
+    ("dialog", "Conversation", "dialog.md"),
+    ("comics", "Comic", "comics.md"),
+]
+
+
+def _prepare_blocks(body: str, journal_name: str, crosslink_index: dict = None):
+    """Run a post/spec/modality body through the shared rewrite chain:
+    asset-path rewrite -> crosslink resolution -> block splitting."""
+    body = _rewrite_asset_paths(body, "assets/")
+    if crosslink_index:
+        body = _rewrite_crosslinks(body, journal_name, crosslink_index)
+    return split_into_blocks(body)
+
+
+def _collect_modalities(src: Path, body: str, journal_name: str, crosslink_index: dict = None):
+    """Build the list of modality payloads for a post.
+
+    ``src`` is the post source file, ``body`` its front-matter-stripped body.
+    Sibling modality files are only picked up for the per-post folder layout
+    (src is .../<slug>/index.md); flat-layout posts get just the index
+    modality. Unknown sibling .md files (spec.md, REVIEW.md, ...) are ignored
+    because only the explicit _MODALITIES registry is consulted.
+    """
+    is_folder_layout = src.stem == "index"
+    mods = []
+    for key, label, filename in _MODALITIES:
+        if key == "index":
+            # meta stays empty: the payload's top-level meta is canonical.
+            mods.append({
+                "key": "index",
+                "label": label,
+                "meta": {},
+                "blocks": _prepare_blocks(body, journal_name, crosslink_index),
+            })
+            continue
+        if not is_folder_layout:
+            continue
+        mod_src = src.parent / filename
+        if not mod_src.is_file():
+            continue
+        mod_meta, mod_body = parse_front_matter(mod_src.read_text(encoding="utf-8"))
+        mods.append({
+            "key": key,
+            "label": label,
+            "meta": mod_meta,
+            "blocks": _prepare_blocks(mod_body, journal_name, crosslink_index),
+        })
+    return mods
+
+
 # --- build ---------------------------------------------------------------
 
 def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_index: dict = None):
@@ -466,22 +527,19 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
         section_posts = []
         for rel, src, meta, body, slug in entries:
             # posts live at <journal>/<slug>.html; assets at <journal>/assets/
-            body = _rewrite_asset_paths(body, "assets/")
-            if crosslink_index:
-                body = _rewrite_crosslinks(body, journal_dir.name, crosslink_index)
             # If the post has its own assets/ folder colocated with index.md,
             # merge it into the journal-level docs/<j>/assets/ so the rewritten
-            # references resolve.
+            # references resolve (covers all modality files too).
             post_assets_src = src.parent / "assets"
             if post_assets_src.is_dir():
                 _merge_copytree(post_assets_src, out_dir / "assets")
-            blocks = split_into_blocks(body)
+            modalities = _collect_modalities(src, body, journal_dir.name, crosslink_index)
             tags = _parse_tags(meta.get("tags", ""))
 
             post_payload = {
                 "meta": meta,
                 "tags": tags,
-                "blocks": blocks,
+                "modalities": modalities,
             }
             post_logo_html = _logo_html(meta.get("logo", ""), meta.get("logo_credit", ""))
             idx = next(i for i, (s, _t) in enumerate(flat) if s == slug)
@@ -501,13 +559,17 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
                 spec_body = spec_src.read_text(encoding="utf-8")
                 # specs use plain markdown; no front matter expected, but tolerate it
                 spec_meta, spec_body = parse_front_matter(spec_body)
-                spec_body = _rewrite_asset_paths(spec_body, "assets/")
-                if crosslink_index:
-                    spec_body = _rewrite_crosslinks(spec_body, journal_dir.name, crosslink_index)
+                # Single-modality payload: the client shows no tab bar when
+                # there is exactly one modality, so spec pages look unchanged.
                 spec_payload = {
                     "meta": {},
                     "tags": [],
-                    "blocks": split_into_blocks(spec_body),
+                    "modalities": [{
+                        "key": "spec",
+                        "label": "Spec",
+                        "meta": {},
+                        "blocks": _prepare_blocks(spec_body, journal_dir.name, crosslink_index),
+                    }],
                 }
                 spec_status = (spec_meta.get("status") or "").strip().lower()
                 spec_revised = (spec_meta.get("revised") or "").strip()

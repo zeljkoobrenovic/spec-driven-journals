@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="backend-tech-stack-framework.html">← Backend Services Platform: Standardize on .NET with C#</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Backend Services Platform — Standardize on .NET with C#\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nState that .NET with C# is the default platform for Organization backend\nservices, name the narrow exceptions (small BFFs, simple API aggregation\nin Node.js/TypeScript), and make the skills-investment cost explicit so\nnobody is surprised by it later.\n\n## Audience\n\n- **Backend engineers** choosing a stack for a new service.\n- **Tech leads** mentoring engineers stronger in TypeScript than C#.\n- **Hiring managers** sizing the skills the platform requires.\n- **Architecture group** evaluating exception requests for other\n  languages.\n\n## Success criteria\n\n- [ ] Reader can pick the right platform for a new service without\n      asking.\n- [ ] Reader can identify when Node.js/TypeScript is acceptable (BFF,\n      aggregation) and when it isn't (core, Kafka-driven, business\n      logic).\n- [ ] Reader sees the skills-investment cost as part of the decision,\n      not a hidden surprise.\n- [ ] Reader can trace the dependencies on\n      [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html) and [Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone](infra-tech-stack-messaging.html).\n- [ ] The post stays focused as an ADR and does not absorb service-template,\n      training-plan, or implementation-guide content.\n- [ ] Vocabulary appears only as appendix reference material and does not\n      interrupt the decision flow.\n\n## Non-goals\n\n- Picking specific .NET libraries, frameworks, or NuGet packages.\n- Defining the service template contents.\n- Replacing other language choices for non-core uses (data pipelines,\n  ML tooling, ops scripts).\n- Deciding the timeline for migrating existing services.\n\n## Open questions\n\n- What counts as a \"narrow edge use case\" in practice — concrete\n  examples vs ambiguous ones.\n- Skills-investment plan: training budget, mentoring pairs, timeline.\n\n## Decision log\n\n- **2026-05-20** — Kept vocabulary, but moved it to an appendix so the\n  main ADR stays focused on the decision and consequences.\n- **2026-05-20** — Trimmed the post from a long educational guide into a\n  focused ADR. Kept the decision, exception boundary, rationale,\n  consequences, team expectations, and revisit triggers; removed detailed\n  code skeletons, lifecycle checklists, and learning-path content that\n  belongs in platform documentation.\n- **2026-05-20** — Chose **.NET with C#** as the default. Node.js with\n  TypeScript was considered as the default; rejected because the\n  target backend shape is business-logic-heavy, Kafka-driven, and\n  long-running, which fits .NET's strong-typing + hosting model better.\n- **2026-05-20** — Accepted **Node.js/TypeScript** for narrow edge\n  cases (BFFs, simple aggregation). Considered banning it outright;\n  rejected because frontend-adjacent glue is a legitimate use case\n  and forcing it onto C# would slow UI work for no platform benefit.\n- **2026-05-20** — Did **not** include Java, Kotlin, Go, Python as\n  default options. Considered Kotlin given mobile alignment; rejected\n  because mixing JVM languages in core backend would re-create the\n  diversity this decision exists to remove.\n\n## Sources\n\n- **Internal**\n  - [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) — the cloud target this builds on.\n  - [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html) — the runtime target (ECS Fargate).\n  - [Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone](infra-tech-stack-messaging.html) — the Kafka target on MSK.\n- **External**\n  - .NET LTS release schedule — informs the runtime baseline.\n  - Node.js LTS schedule — informs when edge-case Node services need\n    upgrade attention.\n\n## Changelog\n\n- **2026-05-20** — Refocused `index.md` into a shorter ADR and updated this\n  spec with the scope-control criterion. Status remains `draft` pending\n  human review. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Added vocabulary back as an end appendix rather than\n  inline explanatory material. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  kept `draft`; updated during the focus and spec cleanup passes. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide spec-driven\n  rollout. *(automated backfill)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Backend Services Platform — Standardize on .NET with C#\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nState that .NET with C# is the default platform for Organization backend\nservices, name the narrow exceptions (small BFFs, simple API aggregation\nin Node.js/TypeScript), and make the skills-investment cost explicit so\nnobody is surprised by it later.\n\n## Audience\n\n- **Backend engineers** choosing a stack for a new service.\n- **Tech leads** mentoring engineers stronger in TypeScript than C#.\n- **Hiring managers** sizing the skills the platform requires.\n- **Architecture group** evaluating exception requests for other\n  languages.\n\n## Success criteria\n\n- [ ] Reader can pick the right platform for a new service without\n      asking.\n- [ ] Reader can identify when Node.js/TypeScript is acceptable (BFF,\n      aggregation) and when it isn't (core, Kafka-driven, business\n      logic).\n- [ ] Reader sees the skills-investment cost as part of the decision,\n      not a hidden surprise.\n- [ ] Reader can trace the dependencies on\n      [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html) and [Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone](infra-tech-stack-messaging.html).\n- [ ] The post stays focused as an ADR and does not absorb service-template,\n      training-plan, or implementation-guide content.\n- [ ] Vocabulary appears only as appendix reference material and does not\n      interrupt the decision flow.\n\n## Non-goals\n\n- Picking specific .NET libraries, frameworks, or NuGet packages.\n- Defining the service template contents.\n- Replacing other language choices for non-core uses (data pipelines,\n  ML tooling, ops scripts).\n- Deciding the timeline for migrating existing services.\n\n## Open questions\n\n- What counts as a \"narrow edge use case\" in practice — concrete\n  examples vs ambiguous ones.\n- Skills-investment plan: training budget, mentoring pairs, timeline.\n\n## Decision log\n\n- **2026-05-20** — Kept vocabulary, but moved it to an appendix so the\n  main ADR stays focused on the decision and consequences.\n- **2026-05-20** — Trimmed the post from a long educational guide into a\n  focused ADR. Kept the decision, exception boundary, rationale,\n  consequences, team expectations, and revisit triggers; removed detailed\n  code skeletons, lifecycle checklists, and learning-path content that\n  belongs in platform documentation.\n- **2026-05-20** — Chose **.NET with C#** as the default. Node.js with\n  TypeScript was considered as the default; rejected because the\n  target backend shape is business-logic-heavy, Kafka-driven, and\n  long-running, which fits .NET's strong-typing + hosting model better.\n- **2026-05-20** — Accepted **Node.js/TypeScript** for narrow edge\n  cases (BFFs, simple aggregation). Considered banning it outright;\n  rejected because frontend-adjacent glue is a legitimate use case\n  and forcing it onto C# would slow UI work for no platform benefit.\n- **2026-05-20** — Did **not** include Java, Kotlin, Go, Python as\n  default options. Considered Kotlin given mobile alignment; rejected\n  because mixing JVM languages in core backend would re-create the\n  diversity this decision exists to remove.\n\n## Sources\n\n- **Internal**\n  - [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) — the cloud target this builds on.\n  - [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html) — the runtime target (ECS Fargate).\n  - [Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone](infra-tech-stack-messaging.html) — the Kafka target on MSK.\n- **External**\n  - .NET LTS release schedule — informs the runtime baseline.\n  - Node.js LTS schedule — informs when edge-case Node services need\n    upgrade attention.\n\n## Changelog\n\n- **2026-05-20** — Refocused `index.md` into a shorter ADR and updated this\n  spec with the scope-control criterion. Status remains `draft` pending\n  human review. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Added vocabulary back as an end appendix rather than\n  inline explanatory material. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  kept `draft`; updated during the focus and spec cleanup passes. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide spec-driven\n  rollout. *(automated backfill)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

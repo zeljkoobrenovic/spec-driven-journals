@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="ai-mediated-authoring.html">← AI-Mediated Authoring as the Default Way to Edit This Repository</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: AI-Mediated Authoring as the Default Way to Edit This Repository\n\n> Backfilled after the post. The most opinionated foundation in the\n> repository; the spec captures what the policy is for so future tweaks\n> stay aligned with the intent.\n\n## Intent\n\nMake AI-mediated authoring the default workflow for substantive changes to\nthis repository, with an explicit trivial-fix exception path. The point is\nto preserve the *reasoning* behind each change in durable form, not to \noutsource judgement. The record should teach authors and reviewers how to \noperate the workflow without turning it into theatre.\n\n## Audience\n\n- **Authors** of new posts, edits, restructures, and config/template\n  changes.\n- **Reviewers** evaluating PRs that touch `_journals/`, `_templates/`, or\n  `_wiring/`.\n- **Tooling owners** maintaining the AI agent contract (build script,\n  `CLAUDE.md`, memory, the `[[…]]` resolver).\n- **Future leadership** evaluating whether the policy still fits when the\n  AI tool landscape shifts.\n\n## Success criteria\n\n- [ ] Reader can decide in under a minute whether a given change is\n      substantive or trivial.\n- [ ] Reader can run a session that produces (a) the artefact change and\n      (b) a session log of the right shape.\n- [ ] Reader can write a session log that captures intent, outcome,\n      decisions, files changed, follow-ups, and cross-links — without\n      degenerating into a transcript.\n- [ ] Reviewers know to inspect both the diff *and* the session log.\n- [ ] Reader sees the policy is tool-agnostic and survives Claude Code →\n      Codex CLI → successor transitions.\n\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the opening decision flow.\n\n## Non-goals\n\n- Dictating which AI tool authors use.\n- Removing human accountability — the diff still goes through review.\n- Replacing direct editing of code or content outside `_journals/`.\n- Build-time enforcement (compliance currently relies on author honesty).\n- Replacing [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html) — the spec is *per post*; the session\n  log is *per session*.\n\n## Open questions\n\n- When (and whether) to add build-time enforcement that PRs touching\n  `_journals/` link a session log.\n- How to handle authors who legitimately need to hand-edit large changes\n  (accessibility, offline contexts, etc.) without breaking the policy.\n- Long-term scaling of the `ai-conversations` journal (folder per author,\n  file per session) once sessions accumulate by the hundred.\n- How the curator role ([The Curator Role for Records, Principles, and Strategies](curator-role.html)) interacts with this policy when\n  curation crosses the substantive/trivial boundary.\n\n## Decision log\n\n- **2026-05-20** — Moved vocabulary from the opening flow into an\n  appendix so the main foundation record stays focused on decision,\n  rationale, and workflow.\n- **2026-05-20** — Made AI-mediated authoring **the default** rather\n  than one option among many. Considered \"AI use is optional, authors\n  choose per change\"; rejected because optional use produces uneven\n  AI-readiness across the corpus and loses the reasoning trail.\n- **2026-05-20** — Kept the policy **tool-agnostic** (Claude Code, Codex\n  CLI, successors). Considered naming Claude Code specifically;\n  rejected because the policy should survive the next CLI tool\n  generation.\n- **2026-05-20** — Carved out an **explicit trivial-fix exception**\n  rather than treating the policy as absolute. Considered hard rule\n  with no exceptions; rejected because the exception path keeps the\n  rule honest and avoids theatre for one-character fixes.\n- **2026-05-20** — Defined the **session log shape** as concise\n  summary, not transcript. Considered including raw transcripts;\n  rejected because transcripts are noise, summaries are signal, and\n  signal is what the next reader needs.\n\n## Sources\n\n- **Internal**\n  - [Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](markdown-records.html) — the canonical format this policy assumes.\n  - [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html) — the broader AI coding policy this policy sits under.\n  - [The Curator Role for Records, Principles, and Strategies](curator-role.html) — companion record; the curator role works through\n    this same workflow.\n  - [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html) — companion record; specs and session logs\n    together capture intent (per post) and execution (per session).\n- **External**\n  - Claude Code, Codex CLI documentation — the tools this policy\n    assumes can read and edit the working tree safely.\n  - Pair-programming literature on intent, navigation, and review —\n    informs the author/agent role split.\n\n## Changelog\n\n- **2026-05-20** — Moved vocabulary in `index.md` to an end\n  appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. (Previously demonstrated as\n  `drifted` for the rendering prototype; that fiction has been cleared.)\n  *(Zeljko, AI-mediated session)*\n- **2026-05-17** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: AI-Mediated Authoring as the Default Way to Edit This Repository\n\n> Backfilled after the post. The most opinionated foundation in the\n> repository; the spec captures what the policy is for so future tweaks\n> stay aligned with the intent.\n\n## Intent\n\nMake AI-mediated authoring the default workflow for substantive changes to\nthis repository, with an explicit trivial-fix exception path. The point is\nto preserve the *reasoning* behind each change in durable form, not to \noutsource judgement. The record should teach authors and reviewers how to \noperate the workflow without turning it into theatre.\n\n## Audience\n\n- **Authors** of new posts, edits, restructures, and config/template\n  changes.\n- **Reviewers** evaluating PRs that touch `_journals/`, `_templates/`, or\n  `_wiring/`.\n- **Tooling owners** maintaining the AI agent contract (build script,\n  `CLAUDE.md`, memory, the `[[…]]` resolver).\n- **Future leadership** evaluating whether the policy still fits when the\n  AI tool landscape shifts.\n\n## Success criteria\n\n- [ ] Reader can decide in under a minute whether a given change is\n      substantive or trivial.\n- [ ] Reader can run a session that produces (a) the artefact change and\n      (b) a session log of the right shape.\n- [ ] Reader can write a session log that captures intent, outcome,\n      decisions, files changed, follow-ups, and cross-links — without\n      degenerating into a transcript.\n- [ ] Reviewers know to inspect both the diff *and* the session log.\n- [ ] Reader sees the policy is tool-agnostic and survives Claude Code →\n      Codex CLI → successor transitions.\n\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the opening decision flow.\n\n## Non-goals\n\n- Dictating which AI tool authors use.\n- Removing human accountability — the diff still goes through review.\n- Replacing direct editing of code or content outside `_journals/`.\n- Build-time enforcement (compliance currently relies on author honesty).\n- Replacing [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html) — the spec is *per post*; the session\n  log is *per session*.\n\n## Open questions\n\n- When (and whether) to add build-time enforcement that PRs touching\n  `_journals/` link a session log.\n- How to handle authors who legitimately need to hand-edit large changes\n  (accessibility, offline contexts, etc.) without breaking the policy.\n- Long-term scaling of the `ai-conversations` journal (folder per author,\n  file per session) once sessions accumulate by the hundred.\n- How the curator role ([The Curator Role for Records, Principles, and Strategies](curator-role.html)) interacts with this policy when\n  curation crosses the substantive/trivial boundary.\n\n## Decision log\n\n- **2026-05-20** — Moved vocabulary from the opening flow into an\n  appendix so the main foundation record stays focused on decision,\n  rationale, and workflow.\n- **2026-05-20** — Made AI-mediated authoring **the default** rather\n  than one option among many. Considered \"AI use is optional, authors\n  choose per change\"; rejected because optional use produces uneven\n  AI-readiness across the corpus and loses the reasoning trail.\n- **2026-05-20** — Kept the policy **tool-agnostic** (Claude Code, Codex\n  CLI, successors). Considered naming Claude Code specifically;\n  rejected because the policy should survive the next CLI tool\n  generation.\n- **2026-05-20** — Carved out an **explicit trivial-fix exception**\n  rather than treating the policy as absolute. Considered hard rule\n  with no exceptions; rejected because the exception path keeps the\n  rule honest and avoids theatre for one-character fixes.\n- **2026-05-20** — Defined the **session log shape** as concise\n  summary, not transcript. Considered including raw transcripts;\n  rejected because transcripts are noise, summaries are signal, and\n  signal is what the next reader needs.\n\n## Sources\n\n- **Internal**\n  - [Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions](markdown-records.html) — the canonical format this policy assumes.\n  - [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html) — the broader AI coding policy this policy sits under.\n  - [The Curator Role for Records, Principles, and Strategies](curator-role.html) — companion record; the curator role works through\n    this same workflow.\n  - [Spec-Driven Authoring as a Lightweight Default for Posts](spec-driven-authoring.html) — companion record; specs and session logs\n    together capture intent (per post) and execution (per session).\n- **External**\n  - Claude Code, Codex CLI documentation — the tools this policy\n    assumes can read and edit the working tree safely.\n  - Pair-programming literature on intent, navigation, and review —\n    informs the author/agent role split.\n\n## Changelog\n\n- **2026-05-20** — Moved vocabulary in `index.md` to an end\n  appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. (Previously demonstrated as\n  `drifted` for the rendering prototype; that fiction has been cleared.)\n  *(Zeljko, AI-mediated session)*\n- **2026-05-17** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="capabilities-follow-ownership.html">← Organisation Principle: Capabilities Follow Ownership</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Organisation Principle — Capabilities Follow Ownership\n\n> Filled in during the second pass over backfilled specs. Status `draft`.\n\n## Intent\n\nState that every shared capability at Organization (service, library,\nplatform, golden path, Skill, MCP server, subagent, CLAUDE.md\nfragment, runbook) has a **named owner, a lifecycle, and a\ndecommissioning plan**. Capabilities without owners decay silently and\npoison the platform. If a capability cannot be owned, it should not\nbe shared.\n\n## Audience\n\n- **Platform owners** maintaining shared capabilities.\n- **Architecture group** evaluating new shared capabilities.\n- **Engineering leadership** sizing platform investment.\n\n## Success criteria\n\n- [ ] Reader can name what counts as a \"capability\" (broad list,\n      not just services).\n- [ ] Reader knows every capability needs **owner + lifecycle +\n      decommissioning plan**.\n- [ ] Reader knows unowned shared things should not exist as shared.\n\n## Non-goals\n\n- Naming specific owners.\n- Defining the lifecycle stages in detail.\n\n## Open questions\n\n- How to surface unowned capabilities systematically.\n\n## Decision log\n\n- **2026-05-20** — Made the scope **broad** (Skills, MCP, runbooks\n  count). Considered scoping to services; rejected because all\n  shared things share the ownership-decay problem.\n- **2026-05-20** — Required a **decommissioning plan**. Considered\n  owner + lifecycle only; rejected because decommissioning is the\n  test that owner + lifecycle are real.\n\n## Sources\n\n- **Internal**\n  - [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](../tech-strategy/ownership-clarification.html) — operationalises this principle\n    for the strategy.\n  - [AI Operating Model: Dedicated AI Engineering Enablement Function](../ai-decisions-log/ai-operating-model.html) — applies it to AI platform.\n- **External**\n  - Team Topologies (Skelton & Pais).\n\n## Changelog\n\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created.\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Organisation Principle — Capabilities Follow Ownership\n\n> Filled in during the second pass over backfilled specs. Status `draft`.\n\n## Intent\n\nState that every shared capability at Organization (service, library,\nplatform, golden path, Skill, MCP server, subagent, CLAUDE.md\nfragment, runbook) has a **named owner, a lifecycle, and a\ndecommissioning plan**. Capabilities without owners decay silently and\npoison the platform. If a capability cannot be owned, it should not\nbe shared.\n\n## Audience\n\n- **Platform owners** maintaining shared capabilities.\n- **Architecture group** evaluating new shared capabilities.\n- **Engineering leadership** sizing platform investment.\n\n## Success criteria\n\n- [ ] Reader can name what counts as a \"capability\" (broad list,\n      not just services).\n- [ ] Reader knows every capability needs **owner + lifecycle +\n      decommissioning plan**.\n- [ ] Reader knows unowned shared things should not exist as shared.\n\n## Non-goals\n\n- Naming specific owners.\n- Defining the lifecycle stages in detail.\n\n## Open questions\n\n- How to surface unowned capabilities systematically.\n\n## Decision log\n\n- **2026-05-20** — Made the scope **broad** (Skills, MCP, runbooks\n  count). Considered scoping to services; rejected because all\n  shared things share the ownership-decay problem.\n- **2026-05-20** — Required a **decommissioning plan**. Considered\n  owner + lifecycle only; rejected because decommissioning is the\n  test that owner + lifecycle are real.\n\n## Sources\n\n- **Internal**\n  - [Ownership Clarification Plan: Named Owners for Estates, Platforms, and Legacy Surfaces](../tech-strategy/ownership-clarification.html) — operationalises this principle\n    for the strategy.\n  - [AI Operating Model: Dedicated AI Engineering Enablement Function](../ai-decisions-log/ai-operating-model.html) — applies it to AI platform.\n- **External**\n  - Team Topologies (Skelton & Pais).\n\n## Changelog\n\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created.\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -290,7 +324,8 @@
         <a href="assets/images/ai-output-must-be-governed/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/ai-output-must-be-governed/logo.jpeg" alt=""></a>
         <p class="logo-credit">Inspired by Organization's AI policy and AI engineering standards</p>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="governance-as-code.html" title="Practice Principle: Governance as Code">← Previous</a></span></nav>
     </footer>
@@ -299,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-AI-OUTPUT-MUST-BE-GOVERNED", "status": "draft:gray", "title": "Practice Principle: AI Output Must Be Governed", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "ai-output-must-be-governed", "timetoread": "12 min", "excerpt": "AI-generated code, configuration, and documentation at Organization is treated as draft input. Human accountability does not move. Every AI change flows through the same engineering standards, reviews, tests, observability, and security gates as human work, plus AI-specific controls: scoped permission modes, hooks, secrets handling, approved tool registries, and audit trails. The principle is simple: AI accelerates engineering work; it does not relax engineering governance.", "tags": "practices, ai, claude-code, governance, policy, accountability, security", "logo": "assets/images/ai-output-must-be-governed/logo.jpeg", "logo_credit": "Inspired by Organization's AI policy and AI engineering standards", "icon": "assets/icons/ai-output-must-be-governed.png"}, "tags": ["practices", "ai", "claude-code", "governance", "policy", "accountability", "security"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: AI-generated output - code, infrastructure, configuration, documentation, automation - is **draft input**, not authoritative work. It is reviewed, tested, and accepted by a named human accountable for the change. AI agents operate inside scoped permissions, with explicit hooks, approved tool registries, secrets handling, and audit trails. The acceleration AI provides is real; the engineering bar AI must clear is not lowered.\n\n## Statement\n\nAt Organization:\n\n* **Human accountability for AI-generated changes is non-negotiable.** A named human reviews, approves, and owns the result.\n* **AI output goes through the same engineering gates as human output.** Tests, CI checks, security scans, observability, code review, ADRs.\n* **AI agents have scoped capabilities.** Permission modes, hook scripts, allowlists for commands, MCP servers, subagents, and tool registries.\n* **Sensitive data is classified before AI access.** What may be sent to a model is a policy decision, not a developer decision.\n* **Audit trails exist.** Who used which agent, with which tools, on which repository, generating which changes, approved by whom.\n* **Default agent is Claude Code**; other agents only by exception.\n\nThe principle integrates AI into Organization's existing governance rather than carving out a separate, lighter regime for it.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| AI output is draft input. | AI output is untrustworthy. |\n| Humans approve and own changes. | Humans must hand-write every line. |\n| AI agents run in scoped modes. | AI agents are tightly caged. |\n| Engineering gates apply equally to AI. | AI gets an extra, harsher gate. |\n| Audit trails are kept. | All AI use is surveilled. |\n\nThe principle aims to make AI a normal, governed development tool. It rejects both \"AI is special and must be banned\" and \"AI is special and gets to skip the rules\".\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why AI output is draft input, even when it looks correct.\n* Review AI-generated changes with the same accountability as human-written changes.\n* Identify the extra governance surfaces created by agents, Skills, MCP servers, hooks, and prompts.\n* Recognise unsafe AI usage patterns before they become incidents.\n\n## Rationale\n\nAI-assisted development has two failure modes Organization needs to avoid simultaneously.\n\nThe first is **rejection**. If governance is too heavy or too theatrical, teams will either avoid AI tooling entirely or work around it informally. Organization loses the acceleration without gaining safety.\n\nThe second is **dilution**. If AI tools bypass normal gates - because they \"feel fast\", because reviewers trust the model, because permission modes are too permissive - the engineering bar drops invisibly. Reviewers approve more code than they understand. Tests are written by the same model that wrote the code they cover. Security scans run on output nobody fully read. Drift accumulates faster than humans can catch.\n\nThe principle threads between these failures by:\n\n* Keeping accountability with humans, where it has always been.\n* Treating AI as a powerful, governed development tool, not a peer engineer.\n* Encoding controls in the *agent* (permission modes, hooks, registries) rather than in policy alone.\n* Demanding the same observability and audit posture for AI-driven work as for human-driven work.\n\nThe AI strategy and AI policy decisions implement this principle as concrete controls. The principle generalises those controls into a stable expectation.\n\n## Implications\n\n* **A named human approves every AI-driven change.** Approval is meaningful: the reviewer has read and understood the change.\n* **AI-generated code passes the standard CI gates.** Tests, linting, security scans, observability templates - all apply.\n* **Claude Code runs with explicit settings.** Permission modes, hook scripts, allowlists, and CLAUDE.md fragments are configured per project.\n* **MCP servers, Skills, and subagents are registered.** Capabilities outside the default set are added by request and reviewed.\n* **Data classification rules are clear.** What can be sent to which model, in which mode, is a policy decision with an ADR.\n* **Audit trails are real.** Tool usage, approvals, exceptions, incidents.\n* **Exceptions to the default agent are recorded.** Codex, Gemini, or other agents may be used when justified, by ADR.\n* **Incidents involving AI are handled like any other incident.** Same retrospective process, same lessons-learned discipline.\n\n## Review Checklist\n\nBefore accepting AI-generated work, the accountable human should be able to answer yes to these questions:\n\n* Do I understand the change well enough to explain it without mentioning the AI tool?\n* Did the change pass the same tests, scans, and review expectations as human-written work?\n* Are secrets, customer data, and internal-only context handled according to policy?\n* Are the AI tools, MCP servers, Skills, and subagents used in the session approved for this repository?\n* Did the agent stay inside the expected permission mode and command scope?\n* Is there enough audit trail to reconstruct what happened if this change causes an incident?\n* Have I checked that generated tests are testing behaviour, not simply mirroring generated implementation?\n\nIf the answer to any of these is unclear, the work is still draft input. The right response is not to ban the tool; it is to finish the engineering review.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Read AI-generated changes as carefully as you would read a colleague's PR. Approval is a load-bearing act.\n* Use Claude Code with the standard settings and CLAUDE.md fragments.\n* Treat suspicious behaviour - hallucinated APIs, secrets pasted into prompts, unexpected tool use - as an incident, not a quirk.\n* Add tests; do not let the model both write and test the same change without human eyes.\n\nFor platform and AI Engineering Enablement roles:\n\n* Maintain the default agent settings, permission modes, hooks, Skills, MCP allowlists, and CLAUDE.md fragments.\n* Run the six-month review on AI tooling.\n* Track adoption, usage patterns, exceptions, and incidents.\n\nFor security and compliance roles:\n\n* Classify data ahead of AI usage; do not leave classification to the moment of the prompt.\n* Define what counts as a reportable AI incident.\n* Audit the audit trails periodically.\n\nFor tech leads:\n\n* Watch for \"AI made me do it\" patterns in PR reviews. The model proposes; the human disposes.\n* Block changes that bypass the AI controls; route them through the exception process.\n\n## Anti-Patterns\n\n* **Approval without reading.** Reviewers rubber-stamping AI PRs because \"it's just AI\".\n* **YOLO mode in production repos.** Permission modes that grant the agent broad write access without hooks or approvals.\n* **AI-written tests for AI-written code.** No independent human verification of either side.\n* **Tool sprawl.** MCP servers, subagents, and Skills proliferating without registration or review.\n* **Secrets in prompts.** Pasting `.env` content or credentials into an AI session.\n* **Bypass via personal accounts.** Engineers using personal AI accounts on company code to \"avoid the rules\".\n* **Shadow agents.** Use of non-default AI tools without an exception ADR.\n* **Audit blackout.** No record of which AI did what, in which repository, with which permissions.\n\n## Examples\n\nAligned with the principle:\n\n* A developer uses Claude Code to refactor a service. The change goes through CI, security scans, code review, and is approved by a named human.\n* MCP servers and Skills used by the team are listed in the registry with owners.\n* A data classification rule prevents production customer data being sent to a model.\n* A six-month AI tooling review evaluates incidents, satisfaction, and effectiveness, with outcomes recorded as an ADR.\n\nOut of alignment with the principle:\n\n* A PR approved with a single \"looks fine - generated by Claude\" comment.\n* Claude Code running with no settings file, no hooks, and no CLAUDE.md.\n* A Skill written by one engineer being used across the org with no registration or ownership.\n* AI agents wired into production deployment paths without explicit approval gates.\n\n## Discussion Prompts\n\nUse these prompts in onboarding or team retrospectives:\n\n* What would make us confident that an AI-generated change was understood by a human?\n* Which AI controls are currently encoded, and which still depend on memory or policy text?\n* Where could AI speed tempt us to skip evidence, review, or ownership?\n\n## Related Principles\n\n* [Practice Principle: Governance as Code](governance-as-code.html) - AI controls are themselves encoded as settings, hooks, and registries.\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - Skills, MCP servers, and subagents are capabilities with owners.\n* [Organisation Principle: Tooling Decisions Are Explicit and Reversible](tooling-explicit-and-reversible.html) - the AI tooling default is dated and reviewed.\n* [Operational Principle: Production Ready](production-ready.html) - AI-driven changes still need to meet readiness.\n* [Operational Principle: Observable by Default](observable-by-default.html) - AI-driven changes still need to be observable.\n* [Practice Principle: Markdown Records as Canonical](markdown-records-as-canonical.html) - AI tooling decisions and exceptions live as ADRs.\n\n## Scope and Revisiting\n\nThis principle applies to all use of AI assistants - code, configuration, infrastructure, documentation, automation - in Organization's engineering work. It applies to Claude Code as the default agent, and to any other agent used by exception.\n\nIt does not apply to:\n\n* Non-engineering uses of AI (for example, marketing or content) that have their own governance regime.\n* Personal experimentation outside any Organization repository or system.\n\nThe principle should be revisited if:\n\n* Agent capabilities change shape significantly (for example, autonomous multi-step deployments that need a different governance model).\n* The default agent choice changes after a review cycle.\n* Incident patterns reveal that current controls are insufficient.\n* Regulation explicitly governs AI in software development in ways that require additional or different controls.\n\n## Authoritative References\n\n* Organization AI Decisions Log, AI Coding Policy: Human Accountability with Executable Controls ([AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html)).\n* Organization AI Decisions Log, AI Engineering Standards: Governance-as-Code for Modernization ([AI Engineering Standards: Governance-as-Code for Modernization](../ai-decisions-log/ai-engineering-standards.html)).\n* Organization AI Decisions Log, AI Developer Tooling: Claude Code as the Default Agent Platform for 2026 ([AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html)).\n* Anthropic, [Claude Code Documentation](https://docs.anthropic.com/claude/docs/claude-code).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-AI-OUTPUT-MUST-BE-GOVERNED", "status": "draft:gray", "title": "Practice Principle: AI Output Must Be Governed", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "ai-output-must-be-governed", "timetoread": "12 min", "excerpt": "AI-generated code, configuration, and documentation at Organization is treated as draft input. Human accountability does not move. Every AI change flows through the same engineering standards, reviews, tests, observability, and security gates as human work, plus AI-specific controls: scoped permission modes, hooks, secrets handling, approved tool registries, and audit trails. The principle is simple: AI accelerates engineering work; it does not relax engineering governance.", "tags": "practices, ai, claude-code, governance, policy, accountability, security", "logo": "assets/images/ai-output-must-be-governed/logo.jpeg", "logo_credit": "Inspired by Organization's AI policy and AI engineering standards", "icon": "assets/icons/ai-output-must-be-governed.png"}, "tags": ["practices", "ai", "claude-code", "governance", "policy", "accountability", "security"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: AI-generated output - code, infrastructure, configuration, documentation, automation - is **draft input**, not authoritative work. It is reviewed, tested, and accepted by a named human accountable for the change. AI agents operate inside scoped permissions, with explicit hooks, approved tool registries, secrets handling, and audit trails. The acceleration AI provides is real; the engineering bar AI must clear is not lowered.\n\n## Statement\n\nAt Organization:\n\n* **Human accountability for AI-generated changes is non-negotiable.** A named human reviews, approves, and owns the result.\n* **AI output goes through the same engineering gates as human output.** Tests, CI checks, security scans, observability, code review, ADRs.\n* **AI agents have scoped capabilities.** Permission modes, hook scripts, allowlists for commands, MCP servers, subagents, and tool registries.\n* **Sensitive data is classified before AI access.** What may be sent to a model is a policy decision, not a developer decision.\n* **Audit trails exist.** Who used which agent, with which tools, on which repository, generating which changes, approved by whom.\n* **Default agent is Claude Code**; other agents only by exception.\n\nThe principle integrates AI into Organization's existing governance rather than carving out a separate, lighter regime for it.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| AI output is draft input. | AI output is untrustworthy. |\n| Humans approve and own changes. | Humans must hand-write every line. |\n| AI agents run in scoped modes. | AI agents are tightly caged. |\n| Engineering gates apply equally to AI. | AI gets an extra, harsher gate. |\n| Audit trails are kept. | All AI use is surveilled. |\n\nThe principle aims to make AI a normal, governed development tool. It rejects both \"AI is special and must be banned\" and \"AI is special and gets to skip the rules\".\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why AI output is draft input, even when it looks correct.\n* Review AI-generated changes with the same accountability as human-written changes.\n* Identify the extra governance surfaces created by agents, Skills, MCP servers, hooks, and prompts.\n* Recognise unsafe AI usage patterns before they become incidents.\n\n## Rationale\n\nAI-assisted development has two failure modes Organization needs to avoid simultaneously.\n\nThe first is **rejection**. If governance is too heavy or too theatrical, teams will either avoid AI tooling entirely or work around it informally. Organization loses the acceleration without gaining safety.\n\nThe second is **dilution**. If AI tools bypass normal gates - because they \"feel fast\", because reviewers trust the model, because permission modes are too permissive - the engineering bar drops invisibly. Reviewers approve more code than they understand. Tests are written by the same model that wrote the code they cover. Security scans run on output nobody fully read. Drift accumulates faster than humans can catch.\n\nThe principle threads between these failures by:\n\n* Keeping accountability with humans, where it has always been.\n* Treating AI as a powerful, governed development tool, not a peer engineer.\n* Encoding controls in the *agent* (permission modes, hooks, registries) rather than in policy alone.\n* Demanding the same observability and audit posture for AI-driven work as for human-driven work.\n\nThe AI strategy and AI policy decisions implement this principle as concrete controls. The principle generalises those controls into a stable expectation.\n\n## Implications\n\n* **A named human approves every AI-driven change.** Approval is meaningful: the reviewer has read and understood the change.\n* **AI-generated code passes the standard CI gates.** Tests, linting, security scans, observability templates - all apply.\n* **Claude Code runs with explicit settings.** Permission modes, hook scripts, allowlists, and CLAUDE.md fragments are configured per project.\n* **MCP servers, Skills, and subagents are registered.** Capabilities outside the default set are added by request and reviewed.\n* **Data classification rules are clear.** What can be sent to which model, in which mode, is a policy decision with an ADR.\n* **Audit trails are real.** Tool usage, approvals, exceptions, incidents.\n* **Exceptions to the default agent are recorded.** Codex, Gemini, or other agents may be used when justified, by ADR.\n* **Incidents involving AI are handled like any other incident.** Same retrospective process, same lessons-learned discipline.\n\n## Review Checklist\n\nBefore accepting AI-generated work, the accountable human should be able to answer yes to these questions:\n\n* Do I understand the change well enough to explain it without mentioning the AI tool?\n* Did the change pass the same tests, scans, and review expectations as human-written work?\n* Are secrets, customer data, and internal-only context handled according to policy?\n* Are the AI tools, MCP servers, Skills, and subagents used in the session approved for this repository?\n* Did the agent stay inside the expected permission mode and command scope?\n* Is there enough audit trail to reconstruct what happened if this change causes an incident?\n* Have I checked that generated tests are testing behaviour, not simply mirroring generated implementation?\n\nIf the answer to any of these is unclear, the work is still draft input. The right response is not to ban the tool; it is to finish the engineering review.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Read AI-generated changes as carefully as you would read a colleague's PR. Approval is a load-bearing act.\n* Use Claude Code with the standard settings and CLAUDE.md fragments.\n* Treat suspicious behaviour - hallucinated APIs, secrets pasted into prompts, unexpected tool use - as an incident, not a quirk.\n* Add tests; do not let the model both write and test the same change without human eyes.\n\nFor platform and AI Engineering Enablement roles:\n\n* Maintain the default agent settings, permission modes, hooks, Skills, MCP allowlists, and CLAUDE.md fragments.\n* Run the six-month review on AI tooling.\n* Track adoption, usage patterns, exceptions, and incidents.\n\nFor security and compliance roles:\n\n* Classify data ahead of AI usage; do not leave classification to the moment of the prompt.\n* Define what counts as a reportable AI incident.\n* Audit the audit trails periodically.\n\nFor tech leads:\n\n* Watch for \"AI made me do it\" patterns in PR reviews. The model proposes; the human disposes.\n* Block changes that bypass the AI controls; route them through the exception process.\n\n## Anti-Patterns\n\n* **Approval without reading.** Reviewers rubber-stamping AI PRs because \"it's just AI\".\n* **YOLO mode in production repos.** Permission modes that grant the agent broad write access without hooks or approvals.\n* **AI-written tests for AI-written code.** No independent human verification of either side.\n* **Tool sprawl.** MCP servers, subagents, and Skills proliferating without registration or review.\n* **Secrets in prompts.** Pasting `.env` content or credentials into an AI session.\n* **Bypass via personal accounts.** Engineers using personal AI accounts on company code to \"avoid the rules\".\n* **Shadow agents.** Use of non-default AI tools without an exception ADR.\n* **Audit blackout.** No record of which AI did what, in which repository, with which permissions.\n\n## Examples\n\nAligned with the principle:\n\n* A developer uses Claude Code to refactor a service. The change goes through CI, security scans, code review, and is approved by a named human.\n* MCP servers and Skills used by the team are listed in the registry with owners.\n* A data classification rule prevents production customer data being sent to a model.\n* A six-month AI tooling review evaluates incidents, satisfaction, and effectiveness, with outcomes recorded as an ADR.\n\nOut of alignment with the principle:\n\n* A PR approved with a single \"looks fine - generated by Claude\" comment.\n* Claude Code running with no settings file, no hooks, and no CLAUDE.md.\n* A Skill written by one engineer being used across the org with no registration or ownership.\n* AI agents wired into production deployment paths without explicit approval gates.\n\n## Discussion Prompts\n\nUse these prompts in onboarding or team retrospectives:\n\n* What would make us confident that an AI-generated change was understood by a human?\n* Which AI controls are currently encoded, and which still depend on memory or policy text?\n* Where could AI speed tempt us to skip evidence, review, or ownership?\n\n## Related Principles\n\n* [Practice Principle: Governance as Code](governance-as-code.html) - AI controls are themselves encoded as settings, hooks, and registries.\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - Skills, MCP servers, and subagents are capabilities with owners.\n* [Organisation Principle: Tooling Decisions Are Explicit and Reversible](tooling-explicit-and-reversible.html) - the AI tooling default is dated and reviewed.\n* [Operational Principle: Production Ready](production-ready.html) - AI-driven changes still need to meet readiness.\n* [Operational Principle: Observable by Default](observable-by-default.html) - AI-driven changes still need to be observable.\n* [Practice Principle: Markdown Records as Canonical](markdown-records-as-canonical.html) - AI tooling decisions and exceptions live as ADRs.\n\n## Scope and Revisiting\n\nThis principle applies to all use of AI assistants - code, configuration, infrastructure, documentation, automation - in Organization's engineering work. It applies to Claude Code as the default agent, and to any other agent used by exception.\n\nIt does not apply to:\n\n* Non-engineering uses of AI (for example, marketing or content) that have their own governance regime.\n* Personal experimentation outside any Organization repository or system.\n\nThe principle should be revisited if:\n\n* Agent capabilities change shape significantly (for example, autonomous multi-step deployments that need a different governance model).\n* The default agent choice changes after a review cycle.\n* Incident patterns reveal that current controls are insufficient.\n* Regulation explicitly governs AI in software development in ways that require additional or different controls.\n\n## Authoritative References\n\n* Organization AI Decisions Log, AI Coding Policy: Human Accountability with Executable Controls ([AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html)).\n* Organization AI Decisions Log, AI Engineering Standards: Governance-as-Code for Modernization ([AI Engineering Standards: Governance-as-Code for Modernization](../ai-decisions-log/ai-engineering-standards.html)).\n* Organization AI Decisions Log, AI Developer Tooling: Claude Code as the Default Agent Platform for 2026 ([AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html)).\n* Anthropic, [Claude Code Documentation](https://docs.anthropic.com/claude/docs/claude-code).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -613,26 +648,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

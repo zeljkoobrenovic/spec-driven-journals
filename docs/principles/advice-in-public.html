@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -290,7 +324,8 @@
         <a href="assets/images/advice-in-public/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/advice-in-public/logo.jpeg" alt=""></a>
         <p class="logo-credit">Inspired by Andrew Harmel-Law and the Architecture Advisory Forum</p>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="markdown-records-as-canonical.html" title="Practice Principle: Markdown Records as Canonical">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="governance-as-code.html" title="Practice Principle: Governance as Code">Next →</a></span></nav>
     </footer>
@@ -299,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-ADVICE-IN-PUBLIC", "status": "draft:gray", "title": "Practice Principle: Advice in Public", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "advice-in-public", "timetoread": "12 min", "excerpt": "Architecture advice happens in the open at Organization. Decisions are made by teams; the conversations supporting those decisions take place where many people can listen, contribute, and learn. The Architecture Advisory Forum is the standing venue, but the principle is broader: prefer ADRs over private memos, public PR reviews over private feedback, and shared forums over 1-1 escalations. Conversation is a learning multiplier; private advice serves one team, public advice serves the organisation.", "tags": "practices, advice-process, communication, aaf, learning-organisation, transparency", "logo": "assets/images/advice-in-public/logo.jpeg", "logo_credit": "Inspired by Andrew Harmel-Law and the Architecture Advisory Forum", "icon": "assets/icons/advice-in-public.png"}, "tags": ["practices", "advice-process", "communication", "aaf", "learning-organisation", "transparency"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Advice that shapes Organization's technical decisions happens **in public**. The default venue is the Architecture Advisory Forum; the default written form is an ADR with reviewable comments; the default conversation is one many people can witness. Private advice is allowed and sometimes necessary, but the bias is toward shared learning. The organisation gets smarter only if many people hear the same conversations.\n\n## Statement\n\nOrganization prefers:\n\n* **Public forums over private meetings** for architecture advice.\n* **Public ADRs over private memos** for proposals.\n* **Public PR reviews over private feedback** for code-level architecture.\n* **Open invites over closed lists** for advisory conversations.\n* **Documented disagreement over silent dissent.**\n\nPrivacy is allowed and sometimes required (personnel, sensitive business, security incidents). The default is public.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| The default venue is open. | All conversations must be public. |\n| Many people listening is the value. | Many people speaking is the value. |\n| Disagreement is documented. | Disagreement must escalate. |\n| ADRs and forums are primary. | Slack and 1-1s are forbidden. |\n| Public advice creates learning. | Public advice replaces expertise. |\n\nThe principle is about *bias*, not absolutism. Some conversations belong in private. Most do not.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why public advice creates organisational learning, not just transparency.\n* Decide when advice belongs in the AAF, an ADR, a PR, or a private conversation.\n* Turn a useful private exchange into a public record without exposing sensitive detail.\n* Recognise when private advice is becoming hidden authority.\n\n## Rationale\n\nPrivate architecture advice has a known failure mode. Two people exchange context, and only two people learn. The next time the same question arises, a different two people repeat the same conversation. Over a year, the organisation rediscovers the same answers dozens of times, each rediscovery costing the time of senior engineers and never producing a durable shared understanding.\n\nPublic advice changes the economics:\n\n* One conversation educates many.\n* Tacit knowledge becomes visible.\n* New joiners ramp by listening, not just by asking.\n* Cross-team patterns emerge from exposure, not mandate.\n* Disagreements happen openly and are resolved with reasoning.\n* The organisation accumulates a shared trail that future decisions can cite.\n\nThe Architecture Advisory Forum is the central instance of this principle. It is explicitly *open-invite*, not because every attendee will contribute, but because the audience itself is part of the value.\n\nThe principle also reinforces decision ownership. Public advice supports teams that own the decision; private advice tends to look like instruction whether it is intended that way or not.\n\n## Implications\n\n* **AAF is open-invite, weekly, on a stable cadence.** Anyone can attend.\n* **Proposed decisions arrive as ADRs.** The text is the starting point for advice.\n* **PR comments are reviewed in the open.** Significant architectural feedback goes on the PR, not in DMs.\n* **Disagreement is documented.** Dissent shows up in the ADR, the PR, or the forum minutes, not in private channels.\n* **1-1 conversations summarise into the public artifact.** If a useful 1-1 advice exchange happens, the outcome is folded into the ADR or PR.\n* **Privacy is justified, not assumed.** Personnel, security incidents, sensitive business: yes. Architecture: no.\n* **Conversation quality is curated.** Public does not mean low-signal; people who attend are expected to contribute, not just spectate.\n\n## Application Questions\n\nUse this principle whenever advice could change a technical decision or teach more than one team. A useful test is simple: if the same explanation would be valuable to a second team later, the advice should probably leave a public trace.\n\nAsk these questions before keeping advice private:\n\n* Is the topic genuinely confidential, or merely uncomfortable?\n* Would another team learn from this reasoning?\n* Is the advice likely to become precedent?\n* Is a senior person's private opinion being mistaken for authority?\n* Can the useful part be summarised in an ADR, PR, or AAF note without exposing sensitive detail?\n\nPublic advice does not mean every conversation must happen in a meeting. It means the reasoning that shaped the decision is visible enough for others to inspect, challenge, and reuse.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Bring decisions to the AAF as ADRs while advice can still change them.\n* Use the forum to gather advice; the decision remains yours.\n* Capture advice received - in the ADR, in PR comments, or in linked notes - so the trail is durable.\n\nFor senior engineers and architects:\n\n* Default to giving advice in public.\n* When you find yourself repeating the same 1-1 advice, raise the pattern in the AAF and write it down.\n* Use the public forum to model the behaviour you want others to repeat.\n\nFor platform and AI Engineering Enablement roles:\n\n* Make AAF attendance easy and rewarding.\n* Capture and link meeting outcomes back into the relevant ADRs.\n* Treat the public trail as part of the platform's documentation.\n\nFor senior leadership:\n\n* Attend the AAF as a listener. Modelling presence without dominance is itself valuable.\n* Resist setting up parallel private forums for \"the important decisions\"; those undercut the principle.\n\n## Anti-Patterns\n\n* **DM-as-default.** All useful advice happens in private messages; the public artifact is empty.\n* **Shadow forum.** A small private group makes the real decisions; the AAF is briefed afterwards.\n* **Audience-without-participation.** The forum exists but only three people ever speak.\n* **Performance.** Public discussions become performative because everyone is watching; honest disagreement moves to private.\n* **Silent dissent.** A senior engineer disagrees in private but stays quiet in public.\n* **Permanent privacy.** A topic is treated as sensitive once and never re-opened to the public.\n* **Forum theatre.** The AAF runs but the decisions were already made and only the appearance of advice remains.\n\n## Examples\n\nAligned with the principle:\n\n* A team brings a proposed caching pattern to the AAF, hears advice from several other teams, updates the ADR with what changed.\n* A PR comment from a platform engineer about a Kafka topic design becomes the seed for an ADR.\n* A senior engineer who is asked the same question repeatedly turns the answer into a markdown record and links to it in future replies.\n\nOut of alignment with the principle:\n\n* A platform decision quietly emerges from a senior architect's private conversations; nobody else can find the rationale.\n* AAF attendance shrinks to a closed list of senior engineers because juniors \"don't have much to add\".\n* A team's \"consultation\" amounts to one DM with one architect.\n\n## Discussion Prompts\n\nUse these prompts in onboarding or team retrospectives:\n\n* Which recent technical conversation should have left a more public trail?\n* Where are we using private advice because it is genuinely sensitive, and where are we using it because it is convenient?\n* What repeated 1-1 advice should become an ADR, principle, or AAF topic?\n\n## Related Principles\n\n* [Organisation Principle: Decisions Stay with Teams](decisions-stay-with-teams.html) - public advice supports team-owned decisions.\n* [Practice Principle: Markdown Records as Canonical](markdown-records-as-canonical.html) - the public trail lives as markdown.\n* [Practice Principle: Governance as Code](governance-as-code.html) - some advice patterns are encoded in checks and templates rather than meetings.\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - public advice prevents tacit knowledge becoming personal capital.\n\n## Scope and Revisiting\n\nThis principle applies to architecture advice for Organization's technical decisions: design, integration, platform, tooling, AI configuration, and operating model.\n\nIt does not apply to:\n\n* Personnel and performance conversations.\n* Security incident response (which has its own forum and confidentiality rules).\n* Genuinely confidential commercial or legal topics.\n* Internal team retrospectives where psychological safety requires privacy.\n\nThe principle should be revisited if:\n\n* AAF attendance and participation drop persistently.\n* The volume of architectural decisions outgrows what a single forum can support and the principle needs additional venues.\n* Cultural or organisational shifts mean \"public\" no longer scales the way it does today.\n\n## Authoritative References\n\n* Andrew Harmel-Law, [Scaling the Practice of Architecture, Conversationally](https://martinfowler.com/articles/scaling-architecture-conversationally.html).\n* Will Larson, [An Elegant Puzzle: Systems of Engineering Management](https://lethain.com/an-elegant-puzzle/), Stripe Press.\n* Organization Foundations, Architecture Advisory Forum ([Architecture Advisory Forum as a Standing Advice Ritual](../foundations/architecture-advisory-forum.html)).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-ADVICE-IN-PUBLIC", "status": "draft:gray", "title": "Practice Principle: Advice in Public", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "advice-in-public", "timetoread": "12 min", "excerpt": "Architecture advice happens in the open at Organization. Decisions are made by teams; the conversations supporting those decisions take place where many people can listen, contribute, and learn. The Architecture Advisory Forum is the standing venue, but the principle is broader: prefer ADRs over private memos, public PR reviews over private feedback, and shared forums over 1-1 escalations. Conversation is a learning multiplier; private advice serves one team, public advice serves the organisation.", "tags": "practices, advice-process, communication, aaf, learning-organisation, transparency", "logo": "assets/images/advice-in-public/logo.jpeg", "logo_credit": "Inspired by Andrew Harmel-Law and the Architecture Advisory Forum", "icon": "assets/icons/advice-in-public.png"}, "tags": ["practices", "advice-process", "communication", "aaf", "learning-organisation", "transparency"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Advice that shapes Organization's technical decisions happens **in public**. The default venue is the Architecture Advisory Forum; the default written form is an ADR with reviewable comments; the default conversation is one many people can witness. Private advice is allowed and sometimes necessary, but the bias is toward shared learning. The organisation gets smarter only if many people hear the same conversations.\n\n## Statement\n\nOrganization prefers:\n\n* **Public forums over private meetings** for architecture advice.\n* **Public ADRs over private memos** for proposals.\n* **Public PR reviews over private feedback** for code-level architecture.\n* **Open invites over closed lists** for advisory conversations.\n* **Documented disagreement over silent dissent.**\n\nPrivacy is allowed and sometimes required (personnel, sensitive business, security incidents). The default is public.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| The default venue is open. | All conversations must be public. |\n| Many people listening is the value. | Many people speaking is the value. |\n| Disagreement is documented. | Disagreement must escalate. |\n| ADRs and forums are primary. | Slack and 1-1s are forbidden. |\n| Public advice creates learning. | Public advice replaces expertise. |\n\nThe principle is about *bias*, not absolutism. Some conversations belong in private. Most do not.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why public advice creates organisational learning, not just transparency.\n* Decide when advice belongs in the AAF, an ADR, a PR, or a private conversation.\n* Turn a useful private exchange into a public record without exposing sensitive detail.\n* Recognise when private advice is becoming hidden authority.\n\n## Rationale\n\nPrivate architecture advice has a known failure mode. Two people exchange context, and only two people learn. The next time the same question arises, a different two people repeat the same conversation. Over a year, the organisation rediscovers the same answers dozens of times, each rediscovery costing the time of senior engineers and never producing a durable shared understanding.\n\nPublic advice changes the economics:\n\n* One conversation educates many.\n* Tacit knowledge becomes visible.\n* New joiners ramp by listening, not just by asking.\n* Cross-team patterns emerge from exposure, not mandate.\n* Disagreements happen openly and are resolved with reasoning.\n* The organisation accumulates a shared trail that future decisions can cite.\n\nThe Architecture Advisory Forum is the central instance of this principle. It is explicitly *open-invite*, not because every attendee will contribute, but because the audience itself is part of the value.\n\nThe principle also reinforces decision ownership. Public advice supports teams that own the decision; private advice tends to look like instruction whether it is intended that way or not.\n\n## Implications\n\n* **AAF is open-invite, weekly, on a stable cadence.** Anyone can attend.\n* **Proposed decisions arrive as ADRs.** The text is the starting point for advice.\n* **PR comments are reviewed in the open.** Significant architectural feedback goes on the PR, not in DMs.\n* **Disagreement is documented.** Dissent shows up in the ADR, the PR, or the forum minutes, not in private channels.\n* **1-1 conversations summarise into the public artifact.** If a useful 1-1 advice exchange happens, the outcome is folded into the ADR or PR.\n* **Privacy is justified, not assumed.** Personnel, security incidents, sensitive business: yes. Architecture: no.\n* **Conversation quality is curated.** Public does not mean low-signal; people who attend are expected to contribute, not just spectate.\n\n## Application Questions\n\nUse this principle whenever advice could change a technical decision or teach more than one team. A useful test is simple: if the same explanation would be valuable to a second team later, the advice should probably leave a public trace.\n\nAsk these questions before keeping advice private:\n\n* Is the topic genuinely confidential, or merely uncomfortable?\n* Would another team learn from this reasoning?\n* Is the advice likely to become precedent?\n* Is a senior person's private opinion being mistaken for authority?\n* Can the useful part be summarised in an ADR, PR, or AAF note without exposing sensitive detail?\n\nPublic advice does not mean every conversation must happen in a meeting. It means the reasoning that shaped the decision is visible enough for others to inspect, challenge, and reuse.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Bring decisions to the AAF as ADRs while advice can still change them.\n* Use the forum to gather advice; the decision remains yours.\n* Capture advice received - in the ADR, in PR comments, or in linked notes - so the trail is durable.\n\nFor senior engineers and architects:\n\n* Default to giving advice in public.\n* When you find yourself repeating the same 1-1 advice, raise the pattern in the AAF and write it down.\n* Use the public forum to model the behaviour you want others to repeat.\n\nFor platform and AI Engineering Enablement roles:\n\n* Make AAF attendance easy and rewarding.\n* Capture and link meeting outcomes back into the relevant ADRs.\n* Treat the public trail as part of the platform's documentation.\n\nFor senior leadership:\n\n* Attend the AAF as a listener. Modelling presence without dominance is itself valuable.\n* Resist setting up parallel private forums for \"the important decisions\"; those undercut the principle.\n\n## Anti-Patterns\n\n* **DM-as-default.** All useful advice happens in private messages; the public artifact is empty.\n* **Shadow forum.** A small private group makes the real decisions; the AAF is briefed afterwards.\n* **Audience-without-participation.** The forum exists but only three people ever speak.\n* **Performance.** Public discussions become performative because everyone is watching; honest disagreement moves to private.\n* **Silent dissent.** A senior engineer disagrees in private but stays quiet in public.\n* **Permanent privacy.** A topic is treated as sensitive once and never re-opened to the public.\n* **Forum theatre.** The AAF runs but the decisions were already made and only the appearance of advice remains.\n\n## Examples\n\nAligned with the principle:\n\n* A team brings a proposed caching pattern to the AAF, hears advice from several other teams, updates the ADR with what changed.\n* A PR comment from a platform engineer about a Kafka topic design becomes the seed for an ADR.\n* A senior engineer who is asked the same question repeatedly turns the answer into a markdown record and links to it in future replies.\n\nOut of alignment with the principle:\n\n* A platform decision quietly emerges from a senior architect's private conversations; nobody else can find the rationale.\n* AAF attendance shrinks to a closed list of senior engineers because juniors \"don't have much to add\".\n* A team's \"consultation\" amounts to one DM with one architect.\n\n## Discussion Prompts\n\nUse these prompts in onboarding or team retrospectives:\n\n* Which recent technical conversation should have left a more public trail?\n* Where are we using private advice because it is genuinely sensitive, and where are we using it because it is convenient?\n* What repeated 1-1 advice should become an ADR, principle, or AAF topic?\n\n## Related Principles\n\n* [Organisation Principle: Decisions Stay with Teams](decisions-stay-with-teams.html) - public advice supports team-owned decisions.\n* [Practice Principle: Markdown Records as Canonical](markdown-records-as-canonical.html) - the public trail lives as markdown.\n* [Practice Principle: Governance as Code](governance-as-code.html) - some advice patterns are encoded in checks and templates rather than meetings.\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - public advice prevents tacit knowledge becoming personal capital.\n\n## Scope and Revisiting\n\nThis principle applies to architecture advice for Organization's technical decisions: design, integration, platform, tooling, AI configuration, and operating model.\n\nIt does not apply to:\n\n* Personnel and performance conversations.\n* Security incident response (which has its own forum and confidentiality rules).\n* Genuinely confidential commercial or legal topics.\n* Internal team retrospectives where psychological safety requires privacy.\n\nThe principle should be revisited if:\n\n* AAF attendance and participation drop persistently.\n* The volume of architectural decisions outgrows what a single forum can support and the principle needs additional venues.\n* Cultural or organisational shifts mean \"public\" no longer scales the way it does today.\n\n## Authoritative References\n\n* Andrew Harmel-Law, [Scaling the Practice of Architecture, Conversationally](https://martinfowler.com/articles/scaling-architecture-conversationally.html).\n* Will Larson, [An Elegant Puzzle: Systems of Engineering Management](https://lethain.com/an-elegant-puzzle/), Stripe Press.\n* Organization Foundations, Architecture Advisory Forum ([Architecture Advisory Forum as a Standing Advice Ritual](../foundations/architecture-advisory-forum.html)).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -613,26 +648,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

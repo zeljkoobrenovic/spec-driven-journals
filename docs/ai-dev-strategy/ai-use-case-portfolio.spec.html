@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="ai-use-case-portfolio.html">← Claude Code Use-Case Portfolio</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Claude Code Use-Case Portfolio\n\n> Filled in during the second pass over backfilled specs. Status `draft`.\n\n## Intent\n\nName **six high-priority agentic coding workflows** for modernization:\nlegacy understanding, modernization documentation, test generation,\nservice template generation, PR review assistance, developer\nself-service. Each mapped to specific subagents, Skills, MCP servers,\nevidence requirements, and human accountability points.\n\n## Audience\n\n- **Engineers** picking which workflow applies to their work.\n- **AI Engineering Enablement** building the workflows.\n- **Tech leads** sequencing workflow rollout.\n\n## Success criteria\n\n- [ ] Reader can name the six workflows.\n- [ ] Reader knows each has **subagents + Skills + MCP +\n      evidence**.\n- [ ] Reader knows accountability stays with humans.\n\n## Non-goals\n\n- Implementing the workflows.\n- Defining every workflow's internals.\n\n## Open questions\n\n- Whether six is right; whether new workflows emerge from pilots.\n\n## Decision log\n\n- **2026-05-20** — Picked **six workflows**. Considered fewer;\n  rejected because each addresses a distinct modernization\n  question.\n\n## Sources\n\n- **Internal**\n  - [Strategic Principles for AI in Software Modernization](strategic-principles.html) — guides workflow design.\n  - [Claude Code Enablement](claude-code-enablement.html) — provides primitives.\n  - [Strategy by Current Landscape: .NET, Java, and Node.js Estates](strategy-by-landscape.html) — applies workflows to estates.\n- **External**\n  - Anthropic Claude Code workflow patterns.\n\n## Changelog\n\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n- **2026-05-20** — Initial spec created.\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Claude Code Use-Case Portfolio\n\n> Filled in during the second pass over backfilled specs. Status `draft`.\n\n## Intent\n\nName **six high-priority agentic coding workflows** for modernization:\nlegacy understanding, modernization documentation, test generation,\nservice template generation, PR review assistance, developer\nself-service. Each mapped to specific subagents, Skills, MCP servers,\nevidence requirements, and human accountability points.\n\n## Audience\n\n- **Engineers** picking which workflow applies to their work.\n- **AI Engineering Enablement** building the workflows.\n- **Tech leads** sequencing workflow rollout.\n\n## Success criteria\n\n- [ ] Reader can name the six workflows.\n- [ ] Reader knows each has **subagents + Skills + MCP +\n      evidence**.\n- [ ] Reader knows accountability stays with humans.\n\n## Non-goals\n\n- Implementing the workflows.\n- Defining every workflow's internals.\n\n## Open questions\n\n- Whether six is right; whether new workflows emerge from pilots.\n\n## Decision log\n\n- **2026-05-20** — Picked **six workflows**. Considered fewer;\n  rejected because each addresses a distinct modernization\n  question.\n\n## Sources\n\n- **Internal**\n  - [Strategic Principles for AI in Software Modernization](strategic-principles.html) — guides workflow design.\n  - [Claude Code Enablement](claude-code-enablement.html) — provides primitives.\n  - [Strategy by Current Landscape: .NET, Java, and Node.js Estates](strategy-by-landscape.html) — applies workflows to estates.\n- **External**\n  - Anthropic Claude Code workflow patterns.\n\n## Changelog\n\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n- **2026-05-20** — Initial spec created.\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

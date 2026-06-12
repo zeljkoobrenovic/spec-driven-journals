@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -290,7 +324,8 @@
         <a href="assets/images/production-ready/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/production-ready/logo.jpeg" alt=""></a>
         <p class="logo-credit">Inspired by the JLP Engineering Principles 'Production Ready' principle</p>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="standardize-before-diverging.html" title="Design Principle: Standardize Before Diverging">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="cloud-native-on-aws.html" title="Operational Principle: Cloud Native on AWS">Next →</a></span></nav>
     </footer>
@@ -299,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-PRODUCTION-READY", "status": "draft:gray", "title": "Operational Principle: Production Ready", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "production-ready", "timetoread": "12 min", "excerpt": "A service is not done when it works in staging. It is done when it is fit to run in production. That means observability, health checks, secrets handling, deploy and rollback, capacity, on-call ownership, runbooks, security defaults, and data-protection considerations are all in place before traffic flows. Production-readiness is a property of the *service*, validated against an explicit checklist, owned by the team that runs it. It is not a stage in a release plan.", "tags": "operations, production, sre, on-call, observability, reliability", "logo": "assets/images/production-ready/logo.jpeg", "logo_credit": "Inspired by the JLP Engineering Principles 'Production Ready' principle", "icon": "assets/icons/production-ready.png"}, "tags": ["operations", "production", "sre", "on-call", "observability", "reliability"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: An Organization service is **Production Ready** when it can be operated safely and recoverably by the team that owns it. Production-readiness is checked against an explicit list, signed off by the owning team, and refreshed on a regular cadence. Services that fail the list do not receive production traffic, regardless of how complete the features are.\n\n## Statement\n\nProduction Ready means a service has:\n\n* **Ownership**: a named team, an on-call rotation, and a documented escalation path.\n* **Observability**: structured logs, metrics, and traces with consistent shapes.\n* **Health**: liveness and readiness checks aligned with the runtime.\n* **Deployability**: automated build, deploy, and rollback through CI/CD.\n* **Configurability**: secrets and configuration loaded from approved sources.\n* **Resilience**: documented behaviour under partial failure, retries, timeouts.\n* **Capacity**: known limits and a known scaling strategy.\n* **Security**: authentication, authorisation, transport, and dependency hygiene.\n* **Data**: classification of data handled, retention, and protection.\n* **Runbooks**: written, current, and discoverable.\n\nA service that ships without these is not \"early\"; it is *not production ready*.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Readiness is a checklist on the service. | Readiness is a one-time gate at launch. |\n| The owning team confirms readiness. | A central team approves readiness. |\n| The bar is consistent across services. | The bar is identical regardless of risk. |\n| Production-readiness can be lost. | Once granted, it is permanent. |\n| The list is small enough to read. | The list grows freely. |\n\nThe point is to make readiness a property maintained by the team, not a stage in a release process.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why feature completeness is not production readiness.\n* Evaluate a service against ownership, observability, deployability, resilience, security, data, and runbook expectations.\n* Treat readiness as a maintained property rather than a launch ceremony.\n* Recognise when a service has lost production readiness after going live.\n\n## Rationale\n\nOutages, near-misses, and slow incidents share root causes that are often unglamorous: a missing log line, an unowned alert, a deploy that cannot be rolled back, a runbook that links to a deleted document, a secret in a config file. None of those root causes are technically hard to fix. They go unfixed because they are nobody's main job, until they are an incident.\n\nA Production Ready checklist makes the unglamorous explicit. It puts the responsibility for each item on the team that runs the service. It removes the ambiguity about whether a service is \"ready enough\" by replacing taste with a list.\n\nThe principle aligns with the way Organization's platform is shaping up. ECS Fargate provides standard places to wire health checks, observability, and deploy. AWS provides standard places to manage secrets and access. The platform's job is to make the readiness items easy to satisfy; the team's job is to satisfy them.\n\n## Implications\n\n* **A platform-supported checklist exists.** It is short, current, and reflects what is genuinely needed.\n* **Readiness is the owning team's call.** A team confirms its own service against the list and is accountable for the answer.\n* **Going live requires readiness.** Production traffic is gated by the readiness state.\n* **Readiness can be revoked.** A service that loses ownership, stops emitting metrics, or accumulates unanswered alerts is no longer ready.\n* **Risk shapes scope, not standards.** A higher-risk service may need more, but never less than the baseline.\n* **Defaults satisfy most items.** Templates, base images, and platform defaults should pre-satisfy logging, metrics, health checks, deploy, and secrets.\n* **Runbooks live near the service.** Stored in the repository or a known location, kept current, written for the person paged at 3am.\n\n## Readiness Tests\n\nBefore production traffic flows, the owning team should be able to demonstrate readiness rather than assert it.\n\nUseful tests:\n\n* Can a new engineer find the owner, runbook, dashboards, alerts, and escalation path in five minutes?\n* Can the team deploy and roll back without manual infrastructure work?\n* Can the service lose a dependency and fail in the documented way?\n* Can an on-call engineer distinguish \"service is down\" from \"dependency is down\" from \"traffic changed\"?\n* Are secrets rotated through the approved path?\n* Are data classification, retention, and deletion responsibilities clear?\n* Has the team practiced at least one likely failure mode?\n\nProduction-ready is not a promise that nothing will fail. It is evidence that the team can understand, contain, and recover from failure.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Use the platform defaults so most items are satisfied without custom work.\n* Treat the readiness checklist as a small, ongoing job, not a launch gate.\n* Practice rollback regularly enough that you trust it.\n* Run game days for non-trivial services.\n* When your service changes shape - new data, new traffic, new dependencies - re-check readiness.\n\nFor platform and SRE roles:\n\n* Maintain the readiness checklist as a real, working document.\n* Make the items cheap to satisfy via defaults, templates, and tooling.\n* Detect drift: services without ownership, stale runbooks, silent alerts.\n* Treat readiness as a shared signal, not a stick.\n\nFor tech leads:\n\n* Build readiness into delivery plans, not after them.\n* Block launches that materially miss readiness; do not let them slide on the promise of a follow-up.\n\n## Anti-Patterns\n\n* **\"Production-ready means features work.\"** Features in staging are not the same as a service in production.\n* **Launch and forget.** A service goes live and never has its readiness re-checked.\n* **Orphan services.** Services in production with no named owner; their on-call is \"whoever notices\".\n* **Vanity dashboards.** Metrics that look impressive but are unrelated to user-facing reliability.\n* **Runbooks as wishes.** \"Restart and see\" is not a runbook.\n* **Untested rollback.** Rollback exists in theory; nobody has run it under pressure.\n* **Secret in a file.** Secrets in config files because the secret store felt like extra work.\n* **Readiness theatre.** A checkbox exercise that says yes regardless of the actual state.\n\n## Examples\n\nAligned with the principle:\n\n* A new backend service ships on .NET, ECS Fargate, Ubuntu base, with structured logs, metrics, traces, health checks, and rollback wired up before launch.\n* Secrets come from AWS Secrets Manager via the standard pattern.\n* A runbook in the service repo lists the top five alerts and the first action for each.\n* The team runs a quarterly game day and refreshes the runbook based on what they learned.\n\nOut of alignment with the principle:\n\n* A service ships with logs but no metrics or traces because \"we'll add them later\".\n* On-call is \"whoever was last in the repo\".\n* Rollback has not been used in production in 18 months and nobody is sure it still works.\n* A runbook page is the original launch slide deck.\n\n## Discussion Prompts\n\nUse these prompts before launch and after incidents:\n\n* What would the on-call engineer need at 3am that is still missing?\n* Which readiness item are we treating as follow-up work, and what risk does that create?\n* How would we prove rollback, escalation, and observability work before traffic arrives?\n\n## Related Principles\n\n* [Operational Principle: Observable by Default](observable-by-default.html) - readiness depends on visible signals.\n* [Operational Principle: Cloud Native on AWS](cloud-native-on-aws.html) - readiness uses AWS-native primitives where they exist.\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - services in production must have a named owner.\n* [Practice Principle: Governance as Code](governance-as-code.html) - readiness items should be enforced by automation where possible.\n\n## Scope and Revisiting\n\nThis principle applies to every service that receives production traffic, processes production data, or is part of a production-critical pipeline. It applies whether the service is owned by an Organization product team or maintained from an AVIV Group inheritance.\n\nIt does not apply to internal experiments, ad-hoc scripts, or sandboxes with no production data and no production traffic.\n\nThe principle should be revisited if:\n\n* The platform changes shape enough that the checklist needs major re-shaping (for example, a move to a different runtime).\n* Major regulatory or compliance requirements add or remove items.\n* Repeated incidents reveal that the current checklist is missing a category.\n\n## Authoritative References\n\n* Google SRE Book, [Service Best Practices and Readiness Reviews](https://sre.google/sre-book/).\n* Susan J. Fowler, *Production-Ready Microservices*, O'Reilly.\n* John Lewis Partnership, [Production Ready Principle](https://engineering-principles.jlp.engineering/).\n* AWS, [Operational Excellence Pillar](https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html).\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-PRODUCTION-READY", "status": "draft:gray", "title": "Operational Principle: Production Ready", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "production-ready", "timetoread": "12 min", "excerpt": "A service is not done when it works in staging. It is done when it is fit to run in production. That means observability, health checks, secrets handling, deploy and rollback, capacity, on-call ownership, runbooks, security defaults, and data-protection considerations are all in place before traffic flows. Production-readiness is a property of the *service*, validated against an explicit checklist, owned by the team that runs it. It is not a stage in a release plan.", "tags": "operations, production, sre, on-call, observability, reliability", "logo": "assets/images/production-ready/logo.jpeg", "logo_credit": "Inspired by the JLP Engineering Principles 'Production Ready' principle", "icon": "assets/icons/production-ready.png"}, "tags": ["operations", "production", "sre", "on-call", "observability", "reliability"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: An Organization service is **Production Ready** when it can be operated safely and recoverably by the team that owns it. Production-readiness is checked against an explicit list, signed off by the owning team, and refreshed on a regular cadence. Services that fail the list do not receive production traffic, regardless of how complete the features are.\n\n## Statement\n\nProduction Ready means a service has:\n\n* **Ownership**: a named team, an on-call rotation, and a documented escalation path.\n* **Observability**: structured logs, metrics, and traces with consistent shapes.\n* **Health**: liveness and readiness checks aligned with the runtime.\n* **Deployability**: automated build, deploy, and rollback through CI/CD.\n* **Configurability**: secrets and configuration loaded from approved sources.\n* **Resilience**: documented behaviour under partial failure, retries, timeouts.\n* **Capacity**: known limits and a known scaling strategy.\n* **Security**: authentication, authorisation, transport, and dependency hygiene.\n* **Data**: classification of data handled, retention, and protection.\n* **Runbooks**: written, current, and discoverable.\n\nA service that ships without these is not \"early\"; it is *not production ready*.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Readiness is a checklist on the service. | Readiness is a one-time gate at launch. |\n| The owning team confirms readiness. | A central team approves readiness. |\n| The bar is consistent across services. | The bar is identical regardless of risk. |\n| Production-readiness can be lost. | Once granted, it is permanent. |\n| The list is small enough to read. | The list grows freely. |\n\nThe point is to make readiness a property maintained by the team, not a stage in a release process.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why feature completeness is not production readiness.\n* Evaluate a service against ownership, observability, deployability, resilience, security, data, and runbook expectations.\n* Treat readiness as a maintained property rather than a launch ceremony.\n* Recognise when a service has lost production readiness after going live.\n\n## Rationale\n\nOutages, near-misses, and slow incidents share root causes that are often unglamorous: a missing log line, an unowned alert, a deploy that cannot be rolled back, a runbook that links to a deleted document, a secret in a config file. None of those root causes are technically hard to fix. They go unfixed because they are nobody's main job, until they are an incident.\n\nA Production Ready checklist makes the unglamorous explicit. It puts the responsibility for each item on the team that runs the service. It removes the ambiguity about whether a service is \"ready enough\" by replacing taste with a list.\n\nThe principle aligns with the way Organization's platform is shaping up. ECS Fargate provides standard places to wire health checks, observability, and deploy. AWS provides standard places to manage secrets and access. The platform's job is to make the readiness items easy to satisfy; the team's job is to satisfy them.\n\n## Implications\n\n* **A platform-supported checklist exists.** It is short, current, and reflects what is genuinely needed.\n* **Readiness is the owning team's call.** A team confirms its own service against the list and is accountable for the answer.\n* **Going live requires readiness.** Production traffic is gated by the readiness state.\n* **Readiness can be revoked.** A service that loses ownership, stops emitting metrics, or accumulates unanswered alerts is no longer ready.\n* **Risk shapes scope, not standards.** A higher-risk service may need more, but never less than the baseline.\n* **Defaults satisfy most items.** Templates, base images, and platform defaults should pre-satisfy logging, metrics, health checks, deploy, and secrets.\n* **Runbooks live near the service.** Stored in the repository or a known location, kept current, written for the person paged at 3am.\n\n## Readiness Tests\n\nBefore production traffic flows, the owning team should be able to demonstrate readiness rather than assert it.\n\nUseful tests:\n\n* Can a new engineer find the owner, runbook, dashboards, alerts, and escalation path in five minutes?\n* Can the team deploy and roll back without manual infrastructure work?\n* Can the service lose a dependency and fail in the documented way?\n* Can an on-call engineer distinguish \"service is down\" from \"dependency is down\" from \"traffic changed\"?\n* Are secrets rotated through the approved path?\n* Are data classification, retention, and deletion responsibilities clear?\n* Has the team practiced at least one likely failure mode?\n\nProduction-ready is not a promise that nothing will fail. It is evidence that the team can understand, contain, and recover from failure.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Use the platform defaults so most items are satisfied without custom work.\n* Treat the readiness checklist as a small, ongoing job, not a launch gate.\n* Practice rollback regularly enough that you trust it.\n* Run game days for non-trivial services.\n* When your service changes shape - new data, new traffic, new dependencies - re-check readiness.\n\nFor platform and SRE roles:\n\n* Maintain the readiness checklist as a real, working document.\n* Make the items cheap to satisfy via defaults, templates, and tooling.\n* Detect drift: services without ownership, stale runbooks, silent alerts.\n* Treat readiness as a shared signal, not a stick.\n\nFor tech leads:\n\n* Build readiness into delivery plans, not after them.\n* Block launches that materially miss readiness; do not let them slide on the promise of a follow-up.\n\n## Anti-Patterns\n\n* **\"Production-ready means features work.\"** Features in staging are not the same as a service in production.\n* **Launch and forget.** A service goes live and never has its readiness re-checked.\n* **Orphan services.** Services in production with no named owner; their on-call is \"whoever notices\".\n* **Vanity dashboards.** Metrics that look impressive but are unrelated to user-facing reliability.\n* **Runbooks as wishes.** \"Restart and see\" is not a runbook.\n* **Untested rollback.** Rollback exists in theory; nobody has run it under pressure.\n* **Secret in a file.** Secrets in config files because the secret store felt like extra work.\n* **Readiness theatre.** A checkbox exercise that says yes regardless of the actual state.\n\n## Examples\n\nAligned with the principle:\n\n* A new backend service ships on .NET, ECS Fargate, Ubuntu base, with structured logs, metrics, traces, health checks, and rollback wired up before launch.\n* Secrets come from AWS Secrets Manager via the standard pattern.\n* A runbook in the service repo lists the top five alerts and the first action for each.\n* The team runs a quarterly game day and refreshes the runbook based on what they learned.\n\nOut of alignment with the principle:\n\n* A service ships with logs but no metrics or traces because \"we'll add them later\".\n* On-call is \"whoever was last in the repo\".\n* Rollback has not been used in production in 18 months and nobody is sure it still works.\n* A runbook page is the original launch slide deck.\n\n## Discussion Prompts\n\nUse these prompts before launch and after incidents:\n\n* What would the on-call engineer need at 3am that is still missing?\n* Which readiness item are we treating as follow-up work, and what risk does that create?\n* How would we prove rollback, escalation, and observability work before traffic arrives?\n\n## Related Principles\n\n* [Operational Principle: Observable by Default](observable-by-default.html) - readiness depends on visible signals.\n* [Operational Principle: Cloud Native on AWS](cloud-native-on-aws.html) - readiness uses AWS-native primitives where they exist.\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - services in production must have a named owner.\n* [Practice Principle: Governance as Code](governance-as-code.html) - readiness items should be enforced by automation where possible.\n\n## Scope and Revisiting\n\nThis principle applies to every service that receives production traffic, processes production data, or is part of a production-critical pipeline. It applies whether the service is owned by an Organization product team or maintained from an AVIV Group inheritance.\n\nIt does not apply to internal experiments, ad-hoc scripts, or sandboxes with no production data and no production traffic.\n\nThe principle should be revisited if:\n\n* The platform changes shape enough that the checklist needs major re-shaping (for example, a move to a different runtime).\n* Major regulatory or compliance requirements add or remove items.\n* Repeated incidents reveal that the current checklist is missing a category.\n\n## Authoritative References\n\n* Google SRE Book, [Service Best Practices and Readiness Reviews](https://sre.google/sre-book/).\n* Susan J. Fowler, *Production-Ready Microservices*, O'Reilly.\n* John Lewis Partnership, [Production Ready Principle](https://engineering-principles.jlp.engineering/).\n* AWS, [Operational Excellence Pillar](https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html).\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -613,26 +648,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

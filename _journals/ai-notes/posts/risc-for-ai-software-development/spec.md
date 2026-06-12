@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-05-30
+revised: 2026-06-12
 ---
 
 # Spec: Can RISC-Inspired Platforms Make AI Less Risky?
@@ -57,6 +57,14 @@ easier to inspect, test, debug, and maintain.
 - A claim that AI-generated code should be trusted because it is small.
 - A claim that custom code is always cheaper than dependency reuse.
 
+## Modalities
+
+Which docs this spec drives beyond the main article (`index.md`).
+
+- [x] `summary.md` — management summary
+- [x] `dialog.md` — two-host dialog
+- [x] `comics.md` — explainer comic
+
 ## Open questions
 
 None for the current draft.
@@ -101,6 +109,9 @@ None for the current draft.
 
 ## Changelog
 
+- **2026-06-12** - Added Modalities section; the spec now drives `summary.md`,
+  `dialog.md`, and `comics.md` alongside the article. Status `accepted`.
+  *(Zeljko, AI-mediated session)*
 - **2026-05-30** - Aligned the published post title and closing claim with the
   revised RISC-inspired platform framing. Status `accepted`. *(Zeljko,
   AI-mediated session)*

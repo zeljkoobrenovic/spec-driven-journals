@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -290,7 +324,8 @@
         <a href="assets/images/inherit-then-simplify/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/inherit-then-simplify/logo.jpeg" alt=""></a>
         <p class="logo-credit">Inspired by Organization's tech and AI decisions logs</p>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="decisions-stay-with-teams.html" title="Organisation Principle: Decisions Stay with Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="tooling-explicit-and-reversible.html" title="Organisation Principle: Tooling Decisions Are Explicit and Reversible">Next →</a></span></nav>
     </footer>
@@ -299,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-INHERIT-THEN-SIMPLIFY", "status": "draft:gray", "title": "Organisation Principle: Inherit, Then Simplify", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "inherit-then-simplify", "timetoread": "12 min", "excerpt": "Organization starts from AVIV Group's existing technology and tooling: AWS contract, account foundation, networking, web and mobile golden paths, and operating practices. These give a fast start, real scale, and a coherent baseline. The principle is to inherit deliberately, then simplify deliberately. Inheritance does not mean acceptance forever. Simplification does not mean a rewrite. Both happen in time-bounded steps, with each step justified by reduced complexity, lower cost, or clearer ownership.", "tags": "organisation, inheritance, simplification, aviv-group, platform, modernization", "logo": "assets/images/inherit-then-simplify/logo.jpeg", "logo_credit": "Inspired by Organization's tech and AI decisions logs", "icon": "assets/icons/inherit-then-simplify.png"}, "tags": ["organisation", "inheritance", "simplification", "aviv-group", "platform", "modernization"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization inherits AVIV Group's existing technology and tooling as the starting point for cloud, networking, web, mobile, and operating practices. The inherited baseline is honoured for a defined time window. During and after that window, Organization simplifies the baseline in evolutionary steps, each one justified by reduced complexity, lower cost, or clearer ownership. Inheritance buys time and consistency; simplification turns that into long-term ownership.\n\n## Statement\n\nOrganization's posture toward shared technology is two-phase:\n\n1. **Inherit.** Start from AVIV Group's existing setup where one exists: AWS organisation, account foundation, networking, web stack, mobile stack, operating model, contracts, and procurement.\n2. **Simplify.** During an agreed time window (typically 6-12 months) and afterwards, reduce custom complexity, consolidate accounts, simplify networking, and align operations toward simpler, more conventional patterns.\n\nBoth phases are explicit. Inheritance is not \"default forever\". Simplification is not \"rewrite from scratch\".\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Start from the inherited baseline. | Accept the inherited baseline as final. |\n| Simplify over time. | Replace everything quickly. |\n| Inheritance has a time window. | The window expires with no plan. |\n| Simplification is incremental. | Simplification is a programme. |\n| Diverge with intent. | Diverge as soon as a team feels like it. |\n\nThe principle balances speed and ownership. Inheritance buys speed; simplification buys long-term control.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why inheritance can be a deliberate strategy rather than passive acceptance.\n* Distinguish alignment during the inheritance window from permanent dependency.\n* Propose simplification steps that reduce complexity without triggering a rewrite.\n* Identify when a fork or divergence creates real ownership obligations.\n\n## Rationale\n\nOrganization could in theory build everything from scratch. The cost would be real: re-platforming AWS, redesigning networking, rebuilding mobile and web platforms, re-negotiating cloud contracts. None of those reduce Organization's actual product complexity in the short term.\n\nInheriting from AVIV Group gives:\n\n* A working AWS estate and contract leverage.\n* A landing-zone-style account model with established guardrails.\n* A web Golden Path (React, TypeScript, Gemini Design System, Unified Frontend) and a mobile native baseline (Swift/SwiftUI, Kotlin/Jetpack Compose).\n* Operating practices that have been refined over multiple AVIV Group brands.\n\nInheriting also imports complexity:\n\n* Custom tooling (for example, AFT-based account factories, custom networking, custom access scripts).\n* Coupling to AVIV Group's roadmap.\n* Operating model assumptions Organization may not share long-term.\n\nTherefore: inherit *and then simplify*. The simplification path makes inheritance sustainable. Without it, Organization is permanently a downstream consumer of decisions made elsewhere.\n\nThis principle is the meta-pattern behind Organization's AWS Foundation, AWS Networking, Web Tech Stack, and Mobile Tech Stack decisions.\n\n## Implications\n\n* **Each inheritance has a time window.** \"Inherit for 6-12 months\" is a concrete commitment with a review date, not an indefinite arrangement.\n* **Forks are owned.** When Organization takes its own copy (for example, Gemini Design System, Unified Frontend, mobile apps), the fork has a named owner and a clear divergence policy.\n* **Simplification has criteria.** Each simplification step articulates the complexity it removes and the consequences.\n* **The default during inheritance is alignment.** Teams do not diverge from inherited patterns silently.\n* **The default after the window is review.** What stays as-is, what simplifies, what diverges - all decisions, all written down.\n* **Divergence costs are paid by Organization.** If Organization diverges, Organization owns the tooling, golden paths, and AI context for the divergent path.\n\n## Inheritance Review Questions\n\nEvery inherited capability should be reviewed with the same frame:\n\n* What value did inheritance give us immediately?\n* Which parts are still useful and should remain aligned with AVIV Group?\n* Which parts create local complexity, cost, or unclear ownership?\n* Which teams depend on the inherited shape today?\n* What simplification step would remove the most complexity with the least migration risk?\n* What would Organization need to own if it diverged?\n* What is the next review date, and what evidence should be available by then?\n\nThe useful answer is rarely \"keep everything\" or \"replace everything\". The useful answer is usually a narrow simplification step with a named owner and a measurable reduction in complexity.\n\n## What This Means for Teams\n\nFor service teams:\n\n* During the inheritance window, use the AVIV Group baseline by default for inherited domains (cloud, networking, web, mobile).\n* When pain arises, capture it precisely - this becomes simplification input.\n* Avoid hand-rolled local divergence; raise it as a proposal.\n\nFor platform and architecture roles:\n\n* Maintain explicit inheritance status: what is inherited, until when, with what review.\n* Map the simplification roadmap: account consolidation, networking simplification, fork ownership, operating-model adjustments.\n* Negotiate with AVIV Group functions where relevant.\n\nFor tech leads:\n\n* Treat inheritance as a fact, not a punishment. The cost of fighting it during the window is higher than the cost of accepting it.\n* Treat the simplification window as an opportunity. Bring proposals with evidence.\n\n## Anti-Patterns\n\n* **Inheritance forever.** No review date, no plan to simplify, no ownership.\n* **Reject-on-arrival.** Organization teams refusing the inherited baseline before learning what it does and why.\n* **Silent divergence.** Local \"we'll just do our own\" patterns without an ADR.\n* **Big-bang re-platforming.** \"We'll cut ties with AVIV Group entirely in one programme\" - replaces the inheritance complexity with rewrite complexity.\n* **Fork orphaning.** Organization takes its own copy of a platform but does not staff it; the fork goes stale.\n* **Simplification theatre.** Renaming inherited tooling without reducing its complexity.\n* **One-foot-each.** Teams half-inheriting and half-diverging on the same component, with no clear ownership of either side.\n\n## Examples\n\nAligned with the principle:\n\n* Organization uses AVIV Group's AWS foundation tooling for 6-12 months while planning a simpler, country-delegated model.\n* Organization takes its own source copies of Gemini and Unified Frontend, accepting ownership and reserving the right to diverge.\n* The AWS account estate consolidates from ~200 accounts to a smaller, key set; each consolidation is a named, time-bounded effort.\n* Mobile apps run on the inherited native baseline; Organization operates them as Organization-owned codebases.\n\nOut of alignment with the principle:\n\n* \"We won't touch AVIV Group tooling, ever\" or \"We will replace everything in Q1\".\n* A team forks a shared platform with no plan to maintain the fork.\n* Custom networking simplification is celebrated while the simplification never lands.\n* Inherited operating practices are followed even when Organization's situation has clearly diverged.\n\n## Discussion Prompts\n\nUse these prompts during inheritance reviews:\n\n* What inherited thing is still buying us speed, and what has become drag?\n* Which simplification step is small enough to complete without a rewrite programme?\n* If we diverge, what new ownership work are we accepting?\n\n## Related Principles\n\n* [Design Principle: Evolutionary Systems](evolutionary-systems.html) - simplification is an evolutionary path, not a rewrite.\n* [Design Principle: Standardize Before Diverging](standardize-before-diverging.html) - inheritance is the default; divergence is by ADR.\n* [Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)](small-and-simple.html) - the long-term goal of simplification is a smaller, simpler estate.\n* [Organisation Principle: Tooling Decisions Are Explicit and Reversible](tooling-explicit-and-reversible.html) - inherited tooling is a default that can be replaced by ADR.\n\n## Scope and Revisiting\n\nThis principle applies to all domains where AVIV Group provides an existing baseline: AWS contract and foundation, networking, web platform, mobile platform, operating model, procurement, security baseline, and similar.\n\nIt does not apply to greenfield areas where Organization is choosing its own primary technology (for example, the .NET backend platform decision, the MSK messaging decision, the AI tooling decision); those are made on their own merits.\n\nThe principle should be revisited if:\n\n* AVIV Group's roadmap diverges significantly from Organization's needs.\n* The cost of inheritance exceeds the cost of simplification more sharply than expected.\n* Regulatory or organisational changes alter the relationship between Organization and AVIV Group.\n* A simplification window ends without a planned next phase.\n\n## Authoritative References\n\n* Martin Fowler, [Strangler Fig Application](https://martinfowler.com/bliki/StranglerFigApplication.html).\n* AWS, [Account Strategy and Multi-Account Best Practices](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/welcome.html).\n* Organization Tech Decisions Log, [AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months](../tech-decisions-log/infra-tech-stack-aws-foundation.html).\n* Organization Tech Decisions Log, [Web Tech Stack: Start from AVIV Group's Golden Path, Own the Fork](../tech-decisions-log/web-tech-stack.html).\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-INHERIT-THEN-SIMPLIFY", "status": "draft:gray", "title": "Organisation Principle: Inherit, Then Simplify", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "inherit-then-simplify", "timetoread": "12 min", "excerpt": "Organization starts from AVIV Group's existing technology and tooling: AWS contract, account foundation, networking, web and mobile golden paths, and operating practices. These give a fast start, real scale, and a coherent baseline. The principle is to inherit deliberately, then simplify deliberately. Inheritance does not mean acceptance forever. Simplification does not mean a rewrite. Both happen in time-bounded steps, with each step justified by reduced complexity, lower cost, or clearer ownership.", "tags": "organisation, inheritance, simplification, aviv-group, platform, modernization", "logo": "assets/images/inherit-then-simplify/logo.jpeg", "logo_credit": "Inspired by Organization's tech and AI decisions logs", "icon": "assets/icons/inherit-then-simplify.png"}, "tags": ["organisation", "inheritance", "simplification", "aviv-group", "platform", "modernization"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization inherits AVIV Group's existing technology and tooling as the starting point for cloud, networking, web, mobile, and operating practices. The inherited baseline is honoured for a defined time window. During and after that window, Organization simplifies the baseline in evolutionary steps, each one justified by reduced complexity, lower cost, or clearer ownership. Inheritance buys time and consistency; simplification turns that into long-term ownership.\n\n## Statement\n\nOrganization's posture toward shared technology is two-phase:\n\n1. **Inherit.** Start from AVIV Group's existing setup where one exists: AWS organisation, account foundation, networking, web stack, mobile stack, operating model, contracts, and procurement.\n2. **Simplify.** During an agreed time window (typically 6-12 months) and afterwards, reduce custom complexity, consolidate accounts, simplify networking, and align operations toward simpler, more conventional patterns.\n\nBoth phases are explicit. Inheritance is not \"default forever\". Simplification is not \"rewrite from scratch\".\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Start from the inherited baseline. | Accept the inherited baseline as final. |\n| Simplify over time. | Replace everything quickly. |\n| Inheritance has a time window. | The window expires with no plan. |\n| Simplification is incremental. | Simplification is a programme. |\n| Diverge with intent. | Diverge as soon as a team feels like it. |\n\nThe principle balances speed and ownership. Inheritance buys speed; simplification buys long-term control.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why inheritance can be a deliberate strategy rather than passive acceptance.\n* Distinguish alignment during the inheritance window from permanent dependency.\n* Propose simplification steps that reduce complexity without triggering a rewrite.\n* Identify when a fork or divergence creates real ownership obligations.\n\n## Rationale\n\nOrganization could in theory build everything from scratch. The cost would be real: re-platforming AWS, redesigning networking, rebuilding mobile and web platforms, re-negotiating cloud contracts. None of those reduce Organization's actual product complexity in the short term.\n\nInheriting from AVIV Group gives:\n\n* A working AWS estate and contract leverage.\n* A landing-zone-style account model with established guardrails.\n* A web Golden Path (React, TypeScript, Gemini Design System, Unified Frontend) and a mobile native baseline (Swift/SwiftUI, Kotlin/Jetpack Compose).\n* Operating practices that have been refined over multiple AVIV Group brands.\n\nInheriting also imports complexity:\n\n* Custom tooling (for example, AFT-based account factories, custom networking, custom access scripts).\n* Coupling to AVIV Group's roadmap.\n* Operating model assumptions Organization may not share long-term.\n\nTherefore: inherit *and then simplify*. The simplification path makes inheritance sustainable. Without it, Organization is permanently a downstream consumer of decisions made elsewhere.\n\nThis principle is the meta-pattern behind Organization's AWS Foundation, AWS Networking, Web Tech Stack, and Mobile Tech Stack decisions.\n\n## Implications\n\n* **Each inheritance has a time window.** \"Inherit for 6-12 months\" is a concrete commitment with a review date, not an indefinite arrangement.\n* **Forks are owned.** When Organization takes its own copy (for example, Gemini Design System, Unified Frontend, mobile apps), the fork has a named owner and a clear divergence policy.\n* **Simplification has criteria.** Each simplification step articulates the complexity it removes and the consequences.\n* **The default during inheritance is alignment.** Teams do not diverge from inherited patterns silently.\n* **The default after the window is review.** What stays as-is, what simplifies, what diverges - all decisions, all written down.\n* **Divergence costs are paid by Organization.** If Organization diverges, Organization owns the tooling, golden paths, and AI context for the divergent path.\n\n## Inheritance Review Questions\n\nEvery inherited capability should be reviewed with the same frame:\n\n* What value did inheritance give us immediately?\n* Which parts are still useful and should remain aligned with AVIV Group?\n* Which parts create local complexity, cost, or unclear ownership?\n* Which teams depend on the inherited shape today?\n* What simplification step would remove the most complexity with the least migration risk?\n* What would Organization need to own if it diverged?\n* What is the next review date, and what evidence should be available by then?\n\nThe useful answer is rarely \"keep everything\" or \"replace everything\". The useful answer is usually a narrow simplification step with a named owner and a measurable reduction in complexity.\n\n## What This Means for Teams\n\nFor service teams:\n\n* During the inheritance window, use the AVIV Group baseline by default for inherited domains (cloud, networking, web, mobile).\n* When pain arises, capture it precisely - this becomes simplification input.\n* Avoid hand-rolled local divergence; raise it as a proposal.\n\nFor platform and architecture roles:\n\n* Maintain explicit inheritance status: what is inherited, until when, with what review.\n* Map the simplification roadmap: account consolidation, networking simplification, fork ownership, operating-model adjustments.\n* Negotiate with AVIV Group functions where relevant.\n\nFor tech leads:\n\n* Treat inheritance as a fact, not a punishment. The cost of fighting it during the window is higher than the cost of accepting it.\n* Treat the simplification window as an opportunity. Bring proposals with evidence.\n\n## Anti-Patterns\n\n* **Inheritance forever.** No review date, no plan to simplify, no ownership.\n* **Reject-on-arrival.** Organization teams refusing the inherited baseline before learning what it does and why.\n* **Silent divergence.** Local \"we'll just do our own\" patterns without an ADR.\n* **Big-bang re-platforming.** \"We'll cut ties with AVIV Group entirely in one programme\" - replaces the inheritance complexity with rewrite complexity.\n* **Fork orphaning.** Organization takes its own copy of a platform but does not staff it; the fork goes stale.\n* **Simplification theatre.** Renaming inherited tooling without reducing its complexity.\n* **One-foot-each.** Teams half-inheriting and half-diverging on the same component, with no clear ownership of either side.\n\n## Examples\n\nAligned with the principle:\n\n* Organization uses AVIV Group's AWS foundation tooling for 6-12 months while planning a simpler, country-delegated model.\n* Organization takes its own source copies of Gemini and Unified Frontend, accepting ownership and reserving the right to diverge.\n* The AWS account estate consolidates from ~200 accounts to a smaller, key set; each consolidation is a named, time-bounded effort.\n* Mobile apps run on the inherited native baseline; Organization operates them as Organization-owned codebases.\n\nOut of alignment with the principle:\n\n* \"We won't touch AVIV Group tooling, ever\" or \"We will replace everything in Q1\".\n* A team forks a shared platform with no plan to maintain the fork.\n* Custom networking simplification is celebrated while the simplification never lands.\n* Inherited operating practices are followed even when Organization's situation has clearly diverged.\n\n## Discussion Prompts\n\nUse these prompts during inheritance reviews:\n\n* What inherited thing is still buying us speed, and what has become drag?\n* Which simplification step is small enough to complete without a rewrite programme?\n* If we diverge, what new ownership work are we accepting?\n\n## Related Principles\n\n* [Design Principle: Evolutionary Systems](evolutionary-systems.html) - simplification is an evolutionary path, not a rewrite.\n* [Design Principle: Standardize Before Diverging](standardize-before-diverging.html) - inheritance is the default; divergence is by ADR.\n* [Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)](small-and-simple.html) - the long-term goal of simplification is a smaller, simpler estate.\n* [Organisation Principle: Tooling Decisions Are Explicit and Reversible](tooling-explicit-and-reversible.html) - inherited tooling is a default that can be replaced by ADR.\n\n## Scope and Revisiting\n\nThis principle applies to all domains where AVIV Group provides an existing baseline: AWS contract and foundation, networking, web platform, mobile platform, operating model, procurement, security baseline, and similar.\n\nIt does not apply to greenfield areas where Organization is choosing its own primary technology (for example, the .NET backend platform decision, the MSK messaging decision, the AI tooling decision); those are made on their own merits.\n\nThe principle should be revisited if:\n\n* AVIV Group's roadmap diverges significantly from Organization's needs.\n* The cost of inheritance exceeds the cost of simplification more sharply than expected.\n* Regulatory or organisational changes alter the relationship between Organization and AVIV Group.\n* A simplification window ends without a planned next phase.\n\n## Authoritative References\n\n* Martin Fowler, [Strangler Fig Application](https://martinfowler.com/bliki/StranglerFigApplication.html).\n* AWS, [Account Strategy and Multi-Account Best Practices](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/welcome.html).\n* Organization Tech Decisions Log, [AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months](../tech-decisions-log/infra-tech-stack-aws-foundation.html).\n* Organization Tech Decisions Log, [Web Tech Stack: Start from AVIV Group's Golden Path, Own the Fork](../tech-decisions-log/web-tech-stack.html).\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -613,26 +648,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

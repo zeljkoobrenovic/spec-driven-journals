@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="infra-tech-stack-messaging.html">← Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Messaging Infrastructure — Amazon MSK as the Kafka Backbone\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nCommit Organization to **Amazon MSK** as the strategic Kafka backbone for\nbackend messaging, with SQS / SNS / EventBridge available for narrow\nuse cases but not the default. Make the **skills-investment cost**\nexplicit — Kafka is genuinely new to Organization, and building expertise\nis part of the cost of this decision, not a footnote.\n\n## Audience\n\n- **Backend engineers** choosing between Kafka, SQS, SNS, and\n  EventBridge for a given integration.\n- **Architecture group** evaluating exceptions toward Pulsar, Kinesis,\n  or Confluent Cloud.\n- **Engineering leadership** sizing the Kafka skills-investment.\n- **Data and analytics teams** consuming event streams downstream.\n\n## Success criteria\n\n- [ ] Reader knows **MSK (managed Kafka)** is the default for durable\n      event streams and async service-to-service integration.\n- [ ] Reader can identify when SQS / SNS / EventBridge is acceptable\n      (simple queues, AWS-native fan-out, AWS-service event routing).\n- [ ] Reader sees Kafka skills-investment as part of the decision,\n      not a hidden surprise.\n- [ ] Reader can trace dependencies to [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) and\n      [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html).\n- [ ] The post stays focused as an ADR and does not absorb topic\n      design, schema-governance, consumer implementation, or learning\n      path detail.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Self-managed Kafka on EC2 or third-party Kafka-as-a-Service.\n- Choosing schema registry, serialization formats, or topic naming\n  conventions.\n- Defining the migration plan from existing messaging.\n- Dictating consumer/producer client library specifics.\n\n## Open questions\n\n- Concrete training plan for Kafka expertise (timeline, mentors,\n  reference implementations).\n- Where the SQS / SNS / EventBridge boundary sits in practice —\n  guidelines on \"narrow well-justified use case\".\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the MSK default,\n  Kafka/SQS/SNS/EventBridge boundary, skill cost, exception criteria,\n  and revisit triggers. Kept terminology as an appendix instead of\n  inline explanation.\n- **2026-05-20** — Chose **Amazon MSK** as the Kafka provider.\n  Considered Confluent Cloud; rejected because it sits outside the\n  AVIV Group AWS contract and operating model, raising commercial\n  and integration friction. Considered self-managed Kafka on EC2;\n  rejected because Organization has neither the in-house expertise nor\n  the desire to operate Kafka infrastructure.\n- **2026-05-20** — Made **Kafka the default** for async integration.\n  Considered SQS/SNS as the default; rejected because Kafka's durable\n  log model is the better fit for the event-driven backend shape this\n  ADR series is building toward.\n- **2026-05-20** — Kept **SQS, SNS, EventBridge** as accepted narrow\n  options. Considered banning them; rejected because they are the\n  right tool for specific use cases (simple queues, AWS-native\n  routing) and a Kafka-only world adds friction without value.\n- **2026-05-20** — Explicitly accepted the **skills-investment cost**\n  in the decision body, not as a footnote. Considered downplaying it;\n  rejected because hidden costs surface later as surprises.\n\n## Sources\n\n- **Internal**\n  - [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) — the cloud target.\n  - [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html) — where Kafka clients run.\n  - [Backend Services Platform: Standardize on .NET with C#](backend-tech-stack-framework.html) — the .NET clients that produce\n    and consume Kafka events.\n- **External**\n  - Amazon MSK documentation.\n  - Apache Kafka documentation and protocol reference.\n  - Confluent Cloud (considered and rejected).\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure,\n  removed tutorial/learning-path material, and moved vocabulary to an\n  end appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  still `draft`. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Messaging Infrastructure — Amazon MSK as the Kafka Backbone\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nCommit Organization to **Amazon MSK** as the strategic Kafka backbone for\nbackend messaging, with SQS / SNS / EventBridge available for narrow\nuse cases but not the default. Make the **skills-investment cost**\nexplicit — Kafka is genuinely new to Organization, and building expertise\nis part of the cost of this decision, not a footnote.\n\n## Audience\n\n- **Backend engineers** choosing between Kafka, SQS, SNS, and\n  EventBridge for a given integration.\n- **Architecture group** evaluating exceptions toward Pulsar, Kinesis,\n  or Confluent Cloud.\n- **Engineering leadership** sizing the Kafka skills-investment.\n- **Data and analytics teams** consuming event streams downstream.\n\n## Success criteria\n\n- [ ] Reader knows **MSK (managed Kafka)** is the default for durable\n      event streams and async service-to-service integration.\n- [ ] Reader can identify when SQS / SNS / EventBridge is acceptable\n      (simple queues, AWS-native fan-out, AWS-service event routing).\n- [ ] Reader sees Kafka skills-investment as part of the decision,\n      not a hidden surprise.\n- [ ] Reader can trace dependencies to [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) and\n      [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html).\n- [ ] The post stays focused as an ADR and does not absorb topic\n      design, schema-governance, consumer implementation, or learning\n      path detail.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Self-managed Kafka on EC2 or third-party Kafka-as-a-Service.\n- Choosing schema registry, serialization formats, or topic naming\n  conventions.\n- Defining the migration plan from existing messaging.\n- Dictating consumer/producer client library specifics.\n\n## Open questions\n\n- Concrete training plan for Kafka expertise (timeline, mentors,\n  reference implementations).\n- Where the SQS / SNS / EventBridge boundary sits in practice —\n  guidelines on \"narrow well-justified use case\".\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the MSK default,\n  Kafka/SQS/SNS/EventBridge boundary, skill cost, exception criteria,\n  and revisit triggers. Kept terminology as an appendix instead of\n  inline explanation.\n- **2026-05-20** — Chose **Amazon MSK** as the Kafka provider.\n  Considered Confluent Cloud; rejected because it sits outside the\n  AVIV Group AWS contract and operating model, raising commercial\n  and integration friction. Considered self-managed Kafka on EC2;\n  rejected because Organization has neither the in-house expertise nor\n  the desire to operate Kafka infrastructure.\n- **2026-05-20** — Made **Kafka the default** for async integration.\n  Considered SQS/SNS as the default; rejected because Kafka's durable\n  log model is the better fit for the event-driven backend shape this\n  ADR series is building toward.\n- **2026-05-20** — Kept **SQS, SNS, EventBridge** as accepted narrow\n  options. Considered banning them; rejected because they are the\n  right tool for specific use cases (simple queues, AWS-native\n  routing) and a Kafka-only world adds friction without value.\n- **2026-05-20** — Explicitly accepted the **skills-investment cost**\n  in the decision body, not as a footnote. Considered downplaying it;\n  rejected because hidden costs surface later as surprises.\n\n## Sources\n\n- **Internal**\n  - [Public Cloud: Consolidate on AWS via AVIV Group Contract](infra-tech-aws.html) — the cloud target.\n  - [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html) — where Kafka clients run.\n  - [Backend Services Platform: Standardize on .NET with C#](backend-tech-stack-framework.html) — the .NET clients that produce\n    and consume Kafka events.\n- **External**\n  - Amazon MSK documentation.\n  - Apache Kafka documentation and protocol reference.\n  - Confluent Cloud (considered and rejected).\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure,\n  removed tutorial/learning-path material, and moved vocabulary to an\n  end appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  still `draft`. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

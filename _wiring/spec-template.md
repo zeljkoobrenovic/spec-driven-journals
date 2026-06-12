@@ -42,6 +42,16 @@ session does not drift into adjacent topics.
 
 - ...
 
+## Modalities
+
+Which docs this spec drives beyond the main article (`index.md`, always
+present). Check what this post warrants; default is article only. Each
+checked modality is authored by its skill and lives next to `index.md`.
+
+- [ ] `summary.md` — management summary
+- [ ] `dialog.md` — two-host dialog
+- [ ] `comics.md` — explainer comic
+
 ## Open questions
 
 Anything still unresolved. Leave these in until they are answered or moved

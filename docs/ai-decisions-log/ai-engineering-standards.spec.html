@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="ai-engineering-standards.html">← AI Engineering Standards: Governance-as-Code for Modernization</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: AI Engineering Standards — Governance-as-Code for Modernization\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nMake engineering standards **executable through the AI developer\nplatform**: CLAUDE.md files, shared fragments, settings, hooks, Skills,\nMCP servers, subagents, pull request templates, and CI gates encode\n*how modernization work is done here*. Standards versioned with the\ncode, applied across repositories, reviewed every six months alongside\nthe AI tooling and policy decisions. Deviations allowed but **visible**\n— a deviation with no written reason is a bug.\n\n## Audience\n\n- **Repository maintainers** maintaining CLAUDE.md and local controls.\n- **AI Engineering Enablement** maintaining shared fragments.\n- **Reviewers** checking that standards were applied.\n- **Architecture group** evaluating deviation patterns.\n\n## Success criteria\n\n- [ ] Reader can identify which AI-platform primitives encode each\n      kind of standard (CLAUDE.md, settings, hooks, Skills, MCP,\n      subagents, PR templates, CI gates).\n- [ ] Reader knows **deviations must be visible** with a reason and\n      review date.\n- [ ] Reader can connect to the broader strategic ADRs the standards\n      reference (backend framework, compute, messaging, AWS).\n- [ ] Reader sees the **six-month review** cycle.\n- [ ] The post stays focused as an ADR and does not absorb examples,\n      templates, lifecycle guides, review checklists, learning\n      exercises, or success-measure catalog content.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Listing every concrete standard (those live in CLAUDE.md per\n  repo).\n- Replacing the existing architecture review process.\n- Mandating identical CLAUDE.md content across repos — shared\n  fragments + local additions.\n- Eliminating local customisation.\n\n## Open questions\n\n- How to detect deviations that are missing the required reason\n  / review date.\n- Concrete CI gates that should be universal vs repo-specific.\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the governance-as-code\n  decision, artifact mapping, minimum repository standard package,\n  deviation model, consequences, and revisit triggers. Kept terminology\n  as an appendix instead of inline explanation.\n- **2026-05-20** — Chose **governance-as-code** over policy-as-wiki.\n  Considered wiki policy with manual checks; rejected because\n  manual checks degrade and the AI platform already runs in the\n  developer's loop.\n- **2026-05-20** — Made standards **versioned with the code**.\n  Considered central standards registry; rejected because central\n  registries drift from the repos they govern.\n- **2026-05-20** — Required **visible deviations**. Considered\n  silently allowing local overrides; rejected because invisible\n  overrides accumulate into the fragmentation the strategy removes.\n- **2026-05-20** — Aligned **review cycle with tooling and policy**\n  (six-month). Considered separate review cycles; rejected because\n  the three are interdependent and reviewing them together exposes\n  inconsistencies.\n\n## Sources\n\n- **Internal**\n  - [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](ai-tooling.html) — the platform standards run on.\n  - [AI Coding Policy: Human Accountability with Executable Controls](ai-policy.html) — the policy standards enforce.\n  - [AI Operating Model: Dedicated AI Engineering Enablement Function](ai-operating-model.html) — the function maintaining shared\n    fragments.\n  - [Backend Services Platform: Standardize on .NET with C#](../tech-decisions-log/backend-tech-stack-framework.html), [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](../tech-decisions-log/infra-tech-stack-compute.html),\n    [Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone](../tech-decisions-log/infra-tech-stack-messaging.html), [Public Cloud: Consolidate on AWS via AVIV Group Contract](../tech-decisions-log/infra-tech-aws.html) — the\n    strategic ADRs the standards reference.\n- **External**\n  - Policy-as-code patterns (OPA, Conftest) — informs the\n    governance-as-code framing.\n  - Claude Code CLAUDE.md, Skills, MCP, settings documentation.\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure,\n  removed examples/templates/checklists/learning material, and moved\n  vocabulary to an end appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: AI Engineering Standards — Governance-as-Code for Modernization\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nMake engineering standards **executable through the AI developer\nplatform**: CLAUDE.md files, shared fragments, settings, hooks, Skills,\nMCP servers, subagents, pull request templates, and CI gates encode\n*how modernization work is done here*. Standards versioned with the\ncode, applied across repositories, reviewed every six months alongside\nthe AI tooling and policy decisions. Deviations allowed but **visible**\n— a deviation with no written reason is a bug.\n\n## Audience\n\n- **Repository maintainers** maintaining CLAUDE.md and local controls.\n- **AI Engineering Enablement** maintaining shared fragments.\n- **Reviewers** checking that standards were applied.\n- **Architecture group** evaluating deviation patterns.\n\n## Success criteria\n\n- [ ] Reader can identify which AI-platform primitives encode each\n      kind of standard (CLAUDE.md, settings, hooks, Skills, MCP,\n      subagents, PR templates, CI gates).\n- [ ] Reader knows **deviations must be visible** with a reason and\n      review date.\n- [ ] Reader can connect to the broader strategic ADRs the standards\n      reference (backend framework, compute, messaging, AWS).\n- [ ] Reader sees the **six-month review** cycle.\n- [ ] The post stays focused as an ADR and does not absorb examples,\n      templates, lifecycle guides, review checklists, learning\n      exercises, or success-measure catalog content.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Listing every concrete standard (those live in CLAUDE.md per\n  repo).\n- Replacing the existing architecture review process.\n- Mandating identical CLAUDE.md content across repos — shared\n  fragments + local additions.\n- Eliminating local customisation.\n\n## Open questions\n\n- How to detect deviations that are missing the required reason\n  / review date.\n- Concrete CI gates that should be universal vs repo-specific.\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the governance-as-code\n  decision, artifact mapping, minimum repository standard package,\n  deviation model, consequences, and revisit triggers. Kept terminology\n  as an appendix instead of inline explanation.\n- **2026-05-20** — Chose **governance-as-code** over policy-as-wiki.\n  Considered wiki policy with manual checks; rejected because\n  manual checks degrade and the AI platform already runs in the\n  developer's loop.\n- **2026-05-20** — Made standards **versioned with the code**.\n  Considered central standards registry; rejected because central\n  registries drift from the repos they govern.\n- **2026-05-20** — Required **visible deviations**. Considered\n  silently allowing local overrides; rejected because invisible\n  overrides accumulate into the fragmentation the strategy removes.\n- **2026-05-20** — Aligned **review cycle with tooling and policy**\n  (six-month). Considered separate review cycles; rejected because\n  the three are interdependent and reviewing them together exposes\n  inconsistencies.\n\n## Sources\n\n- **Internal**\n  - [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](ai-tooling.html) — the platform standards run on.\n  - [AI Coding Policy: Human Accountability with Executable Controls](ai-policy.html) — the policy standards enforce.\n  - [AI Operating Model: Dedicated AI Engineering Enablement Function](ai-operating-model.html) — the function maintaining shared\n    fragments.\n  - [Backend Services Platform: Standardize on .NET with C#](../tech-decisions-log/backend-tech-stack-framework.html), [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](../tech-decisions-log/infra-tech-stack-compute.html),\n    [Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone](../tech-decisions-log/infra-tech-stack-messaging.html), [Public Cloud: Consolidate on AWS via AVIV Group Contract](../tech-decisions-log/infra-tech-aws.html) — the\n    strategic ADRs the standards reference.\n- **External**\n  - Policy-as-code patterns (OPA, Conftest) — informs the\n    governance-as-code framing.\n  - Claude Code CLAUDE.md, Skills, MCP, settings documentation.\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure,\n  removed examples/templates/checklists/learning material, and moved\n  vocabulary to an end appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

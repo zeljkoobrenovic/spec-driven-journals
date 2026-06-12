@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="ai-operating-model.html">← AI Operating Model: Dedicated AI Engineering Enablement Function</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: AI Operating Model — Dedicated AI Engineering Enablement Function\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nEstablish a **dedicated AI Engineering Enablement function** owning the\nshared AI developer platform (Claude Code defaults, CLAUDE.md templates,\nSkills, MCP / subagent registries, policy controls, exception process,\nadoption support, incident coordination, six-month review). Product\nteams keep delivery accountability; enablement owns shared primitives,\n**not product features**. This is a platform operating model, not an AI\ncentre that does teams' work.\n\n## Audience\n\n- **AI Engineering Enablement function** running the platform.\n- **Product teams** consuming the shared primitives.\n- **Engineering leadership** sizing the function's staffing and scope.\n- **Security and compliance** as policy-control stakeholders.\n\n## Success criteria\n\n- [ ] Reader can name the function's owned surface (defaults,\n      templates, registries, policy controls, exception process,\n      adoption, incidents, reviews).\n- [ ] Reader knows the function **does not** do product teams' work.\n- [ ] Reader can identify the **six-month review cycle**\n      (next: 2026-11-15).\n- [ ] Reader can route the right concern to the right party\n      (platform vs product).\n- [ ] The post stays focused as an ADR and does not absorb registry\n      examples, maturity models, detailed cadence tables, or staffing\n      implementation content.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Building an \"AI centre of excellence\" that takes over team work.\n- Replacing existing engineering management structures.\n- Defining the function's headcount or budget.\n- Listing every approved tool / Skill / MCP (those live in the\n  registry).\n\n## Open questions\n\n- Concrete staffing model — small core team, embedded liaisons, or\n  hybrid.\n- How exceptions get prioritised when the exception queue grows.\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the enablement-function\n  decision, ownership boundaries, operating commitments, consequences,\n  team expectations, and revisit triggers. Kept terminology as an\n  appendix instead of inline explanation.\n- **2026-05-20** — Chose **dedicated function**, not distributed\n  ownership. Considered making this a guild responsibility;\n  rejected because shared platforms need a single accountable\n  owner to avoid bystander dynamics.\n- **2026-05-20** — Limited scope to **shared primitives**, not\n  product features. Considered embedding enablement in product\n  teams; rejected because that turns shared platforms into local\n  forks and undermines the compounding benefit.\n- **2026-05-20** — Made the function **own policy controls**, not\n  just defaults. Considered separating policy enforcement from\n  enablement; rejected because the two are tightly coupled and\n  splitting them creates handoff cost.\n- **2026-05-20** — Set the **six-month review** as a function\n  responsibility. Considered making it an architecture-group\n  review; rejected because the AAF doesn't have the platform\n  context to do it well.\n\n## Sources\n\n- **Internal**\n  - [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](ai-tooling.html) — the platform this function owns.\n  - [AI Coding Policy: Human Accountability with Executable Controls](ai-policy.html) — the policy this function enforces.\n  - [AI Engineering Standards: Governance-as-Code for Modernization](ai-engineering-standards.html) — the standards this function\n    operationalises.\n  - [Architecture Advisory Forum as a Standing Advice Ritual](../foundations/architecture-advisory-forum.html) — where exceptions surface for\n    advice.\n- **External**\n  - Team Topologies (Skelton & Pais) — informs the\n    platform-team-vs-product-team split.\n  - Internal Developer Platform writing — informs the \"shared\n    primitives, not features\" framing.\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure,\n  removed registry examples/cadence/maturity material, and moved\n  vocabulary to an end appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: AI Operating Model — Dedicated AI Engineering Enablement Function\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nEstablish a **dedicated AI Engineering Enablement function** owning the\nshared AI developer platform (Claude Code defaults, CLAUDE.md templates,\nSkills, MCP / subagent registries, policy controls, exception process,\nadoption support, incident coordination, six-month review). Product\nteams keep delivery accountability; enablement owns shared primitives,\n**not product features**. This is a platform operating model, not an AI\ncentre that does teams' work.\n\n## Audience\n\n- **AI Engineering Enablement function** running the platform.\n- **Product teams** consuming the shared primitives.\n- **Engineering leadership** sizing the function's staffing and scope.\n- **Security and compliance** as policy-control stakeholders.\n\n## Success criteria\n\n- [ ] Reader can name the function's owned surface (defaults,\n      templates, registries, policy controls, exception process,\n      adoption, incidents, reviews).\n- [ ] Reader knows the function **does not** do product teams' work.\n- [ ] Reader can identify the **six-month review cycle**\n      (next: 2026-11-15).\n- [ ] Reader can route the right concern to the right party\n      (platform vs product).\n- [ ] The post stays focused as an ADR and does not absorb registry\n      examples, maturity models, detailed cadence tables, or staffing\n      implementation content.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Building an \"AI centre of excellence\" that takes over team work.\n- Replacing existing engineering management structures.\n- Defining the function's headcount or budget.\n- Listing every approved tool / Skill / MCP (those live in the\n  registry).\n\n## Open questions\n\n- Concrete staffing model — small core team, embedded liaisons, or\n  hybrid.\n- How exceptions get prioritised when the exception queue grows.\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around the enablement-function\n  decision, ownership boundaries, operating commitments, consequences,\n  team expectations, and revisit triggers. Kept terminology as an\n  appendix instead of inline explanation.\n- **2026-05-20** — Chose **dedicated function**, not distributed\n  ownership. Considered making this a guild responsibility;\n  rejected because shared platforms need a single accountable\n  owner to avoid bystander dynamics.\n- **2026-05-20** — Limited scope to **shared primitives**, not\n  product features. Considered embedding enablement in product\n  teams; rejected because that turns shared platforms into local\n  forks and undermines the compounding benefit.\n- **2026-05-20** — Made the function **own policy controls**, not\n  just defaults. Considered separating policy enforcement from\n  enablement; rejected because the two are tightly coupled and\n  splitting them creates handoff cost.\n- **2026-05-20** — Set the **six-month review** as a function\n  responsibility. Considered making it an architecture-group\n  review; rejected because the AAF doesn't have the platform\n  context to do it well.\n\n## Sources\n\n- **Internal**\n  - [AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](ai-tooling.html) — the platform this function owns.\n  - [AI Coding Policy: Human Accountability with Executable Controls](ai-policy.html) — the policy this function enforces.\n  - [AI Engineering Standards: Governance-as-Code for Modernization](ai-engineering-standards.html) — the standards this function\n    operationalises.\n  - [Architecture Advisory Forum as a Standing Advice Ritual](../foundations/architecture-advisory-forum.html) — where exceptions surface for\n    advice.\n- **External**\n  - Team Topologies (Skelton & Pais) — informs the\n    platform-team-vs-product-team split.\n  - Internal Developer Platform writing — informs the \"shared\n    primitives, not features\" framing.\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure,\n  removed registry examples/cadence/maturity material, and moved\n  vocabulary to an end appendix. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

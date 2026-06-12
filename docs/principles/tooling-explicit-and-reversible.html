@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -290,7 +324,8 @@
         <a href="assets/images/tooling-explicit-and-reversible/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/tooling-explicit-and-reversible/logo.jpeg" alt=""></a>
         <p class="logo-credit">Inspired by Organization's AI tooling decision and Dan McKinley's Choose Boring Technology</p>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="inherit-then-simplify.html" title="Organisation Principle: Inherit, Then Simplify">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="capabilities-follow-ownership.html" title="Organisation Principle: Capabilities Follow Ownership">Next →</a></span></nav>
     </footer>
@@ -299,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-TOOLING-EXPLICIT-AND-REVERSIBLE", "status": "draft:gray", "title": "Organisation Principle: Tooling Decisions Are Explicit and Reversible", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "tooling-explicit-and-reversible", "timetoread": "12 min", "excerpt": "Pick tools deliberately, write down why, plan how to leave. Organization's tooling decisions - Claude Code as the AI default, .NET as the backend default, ECS as compute, MSK as messaging - are dated and reviewable, not eternal. A reversible tooling decision is one whose context, scope, and exit path are explicit enough that the next review can compare evidence to a stated frame, not to taste.", "tags": "organisation, tooling, ai, reversibility, governance, review-cadence", "logo": "assets/images/tooling-explicit-and-reversible/logo.jpeg", "logo_credit": "Inspired by Organization's AI tooling decision and Dan McKinley's Choose Boring Technology", "icon": "assets/icons/tooling-explicit-and-reversible.png"}, "tags": ["organisation", "tooling", "ai", "reversibility", "governance", "review-cadence"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization's tooling decisions are made explicitly, documented as ADRs, and reviewed on a cadence. They are reversible: each decision includes the conditions under which it would be revisited and the practical steps for moving away. Tooling is a platform choice, not a permanent identity. Explicitness and reversibility together make tooling defensible without being defensive.\n\n## Statement\n\nEvery shared tooling decision at Organization has:\n\n* **A named default.** Claude Code for AI coding. .NET for backend services. ECS Fargate for compute. MSK for messaging. AWS for cloud.\n* **An ADR**. Decision, drivers, considered options, consequences.\n* **A review cadence.** Typically six months for AI tooling; longer for slower-moving stacks.\n* **An exit path.** What would change the decision; what migration would look like.\n* **An exception process.** How a team can deviate, with a recorded reason.\n\nA tooling decision is \"good\" when the next review can compare it to evidence against a stated frame, not when it lasts forever.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Decisions are dated. | Decisions are temporary by nature. |\n| Reviews happen on a cadence. | Reviews happen continuously. |\n| Reversibility is designed in. | Reversibility means cheap. |\n| Defaults exist. | Defaults are mandatory. |\n| Exceptions are allowed. | Exceptions are the norm. |\n\nThe principle is about making tooling decisions *defensible by frame*, not *defensible by fashion*.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why tooling decisions need a decision frame, review date, and exit path.\n* Compare tooling evidence against the original ADR instead of personal preference.\n* Identify lock-in honestly without treating all lock-in as unacceptable.\n* Distinguish confirming, narrowing, replacing, or retiring a tooling default.\n\n## Rationale\n\nTooling decisions are some of the easiest to make badly and some of the hardest to revisit:\n\n* They feel permanent because they shape teams' day-to-day work.\n* They acquire emotional attachment quickly (especially developer tools).\n* They embed into hiring, training, and platform engineering investments.\n* They produce sunk costs that resist reversal.\n\nWithout explicit frames, tooling debates become preference fights. With them, the conversation has somewhere to land: \"according to the ADR, the decision is for these reasons, with this review date, and these exit conditions; here is the evidence we should examine.\"\n\nOrganization's AI tooling decision makes this concrete. Claude Code is the default for 2026. The decision is dated, paired with a six-month review cycle, and explicitly framed as a platform choice rather than a model choice. Codex, Gemini, and others remain available by exception when they fit specific workflows. Each piece is part of being explicit and reversible.\n\n## Implications\n\n* **A tooling decision is an ADR, not an announcement.** The ADR includes context, drivers, options, decision, and consequences.\n* **Review dates are real.** Six-month reviews for fast-moving tooling (AI), longer for slower-moving (cloud, language).\n* **Exit paths are designed.** \"If we change our mind, here is what would have to happen\" is part of the ADR.\n* **Lock-in is acknowledged, not denied.** If a tool creates significant lock-in, the ADR says so, and the trade-off is accepted explicitly.\n* **Exception process is documented.** Teams can request to use a non-default tool, with an ADR.\n* **Reviews compare evidence to the original frame.** \"Did the assumptions hold? Did costs land where expected? Did the trade-offs play out?\"\n* **Reversal is a real option in reviews.** A review that cannot end in reversal is not a review.\n\n## Reversibility Test\n\nA tooling ADR should make reversal thinkable even when reversal is expensive.\n\nAsk:\n\n* What data, code, workflow, or training becomes coupled to this tool?\n* Which teams would have to change behaviour if the decision reversed?\n* What export, migration, compatibility, or parallel-run path exists?\n* Which assumptions should be checked at the next review?\n* What evidence would narrow the tool's scope rather than fully replace it?\n* What would make the tool a default, an exception, or a deprecated choice?\n* Who owns the review and the migration plan if reversal becomes necessary?\n\nReversibility does not mean every decision is cheap to undo. It means the organisation knows what undoing would require before the decision becomes identity.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Read the ADR before choosing tools for a new project.\n* Use the default unless you can write a useful exception.\n* Treat the next review as input: bring evidence, not opinions.\n\nFor platform and architecture roles:\n\n* Maintain the tooling ADRs. Keep them current.\n* Schedule reviews. Run them. Publish the outcomes.\n* Track the evidence: usage, cost, satisfaction, productivity signals.\n\nFor tech leads:\n\n* When a tooling change is proposed, ask for the ADR.\n* When a review approaches, gather the team's lived experience as input.\n\nFor senior leadership:\n\n* Resist the urge to change a tooling decision outside its review cadence.\n* Protect the review cadence; it is the principle's main defence against drift.\n\n## Anti-Patterns\n\n* **Tooling-by-announcement.** A decision is communicated in slides with no ADR.\n* **Eternal commitment.** No review date; the decision becomes a tradition.\n* **Lock-in denial.** \"We can switch easily\" said about a tool that has shaped six months of platform work.\n* **Exception soup.** Exceptions granted in Slack and accumulated until exceptions outnumber the default.\n* **Vanity reversal.** Reversal driven by hype, not evidence.\n* **Vanity persistence.** Persistence driven by sunk-cost, not evidence.\n* **Review theatre.** A meeting where the outcome was decided in advance.\n\n## Examples\n\nAligned with the principle:\n\n* Claude Code is adopted as the 2026 default AI tool, in an ADR, with a six-month review cycle.\n* .NET is adopted as the default backend platform with an ADR explaining drivers and trade-offs.\n* A team uses Codex by exception for a specific narrow workflow; the exception is recorded.\n* The six-month AI review evaluates evidence and either confirms, narrows, or reverses the decision.\n\nOut of alignment with the principle:\n\n* \"We're standardising on tool X\" announced without an ADR.\n* A team adopts a new database engine because the maintainer gave a good talk.\n* A review skipped because \"the decision is obviously still right\".\n* An ADR that explicitly says \"this is irreversible\".\n\n## Discussion Prompts\n\nUse these prompts during tooling reviews:\n\n* Which original assumption has the strongest evidence for or against it now?\n* What would we do differently if we were making this decision today?\n* Are we keeping the tool because it still wins, or because switching feels hard?\n\n## Related Principles\n\n* [Design Principle: Standardize Before Diverging](standardize-before-diverging.html) - tooling defaults are the most visible standards.\n* [Practice Principle: Markdown Records as Canonical](markdown-records-as-canonical.html) - tooling decisions live as ADRs.\n* [Organisation Principle: Decisions Stay with Teams](decisions-stay-with-teams.html) - tooling decisions, like other decisions, are owned not approved.\n* [Practice Principle: AI Output Must Be Governed](ai-output-must-be-governed.html) - AI tooling decisions carry specific governance obligations.\n\n## Scope and Revisiting\n\nThis principle applies to Organization's shared tooling: developer tools, AI coding tools, languages, runtimes, cloud, messaging, observability, CI/CD, repositories, and similar.\n\nIt does not apply to tooling chosen inside one team that has no operational footprint outside it (for example, a personal IDE preference).\n\nThe principle should be revisited if:\n\n* The review cadence proves consistently mismatched to how fast the relevant tooling category changes.\n* The exception process either becomes a bottleneck or stops being meaningful.\n* A class of tooling decisions becomes more or less reversible due to platform changes.\n\n## Authoritative References\n\n* Dan McKinley, [Choose Boring Technology](https://boringtechnology.club/).\n* MADR, [Markdown Architectural Decision Records](https://adr.github.io/madr/).\n* Organization AI Decisions Log, AI Tooling Decision ([AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html)).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-TOOLING-EXPLICIT-AND-REVERSIBLE", "status": "draft:gray", "title": "Organisation Principle: Tooling Decisions Are Explicit and Reversible", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "tooling-explicit-and-reversible", "timetoread": "12 min", "excerpt": "Pick tools deliberately, write down why, plan how to leave. Organization's tooling decisions - Claude Code as the AI default, .NET as the backend default, ECS as compute, MSK as messaging - are dated and reviewable, not eternal. A reversible tooling decision is one whose context, scope, and exit path are explicit enough that the next review can compare evidence to a stated frame, not to taste.", "tags": "organisation, tooling, ai, reversibility, governance, review-cadence", "logo": "assets/images/tooling-explicit-and-reversible/logo.jpeg", "logo_credit": "Inspired by Organization's AI tooling decision and Dan McKinley's Choose Boring Technology", "icon": "assets/icons/tooling-explicit-and-reversible.png"}, "tags": ["organisation", "tooling", "ai", "reversibility", "governance", "review-cadence"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization's tooling decisions are made explicitly, documented as ADRs, and reviewed on a cadence. They are reversible: each decision includes the conditions under which it would be revisited and the practical steps for moving away. Tooling is a platform choice, not a permanent identity. Explicitness and reversibility together make tooling defensible without being defensive.\n\n## Statement\n\nEvery shared tooling decision at Organization has:\n\n* **A named default.** Claude Code for AI coding. .NET for backend services. ECS Fargate for compute. MSK for messaging. AWS for cloud.\n* **An ADR**. Decision, drivers, considered options, consequences.\n* **A review cadence.** Typically six months for AI tooling; longer for slower-moving stacks.\n* **An exit path.** What would change the decision; what migration would look like.\n* **An exception process.** How a team can deviate, with a recorded reason.\n\nA tooling decision is \"good\" when the next review can compare it to evidence against a stated frame, not when it lasts forever.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Decisions are dated. | Decisions are temporary by nature. |\n| Reviews happen on a cadence. | Reviews happen continuously. |\n| Reversibility is designed in. | Reversibility means cheap. |\n| Defaults exist. | Defaults are mandatory. |\n| Exceptions are allowed. | Exceptions are the norm. |\n\nThe principle is about making tooling decisions *defensible by frame*, not *defensible by fashion*.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why tooling decisions need a decision frame, review date, and exit path.\n* Compare tooling evidence against the original ADR instead of personal preference.\n* Identify lock-in honestly without treating all lock-in as unacceptable.\n* Distinguish confirming, narrowing, replacing, or retiring a tooling default.\n\n## Rationale\n\nTooling decisions are some of the easiest to make badly and some of the hardest to revisit:\n\n* They feel permanent because they shape teams' day-to-day work.\n* They acquire emotional attachment quickly (especially developer tools).\n* They embed into hiring, training, and platform engineering investments.\n* They produce sunk costs that resist reversal.\n\nWithout explicit frames, tooling debates become preference fights. With them, the conversation has somewhere to land: \"according to the ADR, the decision is for these reasons, with this review date, and these exit conditions; here is the evidence we should examine.\"\n\nOrganization's AI tooling decision makes this concrete. Claude Code is the default for 2026. The decision is dated, paired with a six-month review cycle, and explicitly framed as a platform choice rather than a model choice. Codex, Gemini, and others remain available by exception when they fit specific workflows. Each piece is part of being explicit and reversible.\n\n## Implications\n\n* **A tooling decision is an ADR, not an announcement.** The ADR includes context, drivers, options, decision, and consequences.\n* **Review dates are real.** Six-month reviews for fast-moving tooling (AI), longer for slower-moving (cloud, language).\n* **Exit paths are designed.** \"If we change our mind, here is what would have to happen\" is part of the ADR.\n* **Lock-in is acknowledged, not denied.** If a tool creates significant lock-in, the ADR says so, and the trade-off is accepted explicitly.\n* **Exception process is documented.** Teams can request to use a non-default tool, with an ADR.\n* **Reviews compare evidence to the original frame.** \"Did the assumptions hold? Did costs land where expected? Did the trade-offs play out?\"\n* **Reversal is a real option in reviews.** A review that cannot end in reversal is not a review.\n\n## Reversibility Test\n\nA tooling ADR should make reversal thinkable even when reversal is expensive.\n\nAsk:\n\n* What data, code, workflow, or training becomes coupled to this tool?\n* Which teams would have to change behaviour if the decision reversed?\n* What export, migration, compatibility, or parallel-run path exists?\n* Which assumptions should be checked at the next review?\n* What evidence would narrow the tool's scope rather than fully replace it?\n* What would make the tool a default, an exception, or a deprecated choice?\n* Who owns the review and the migration plan if reversal becomes necessary?\n\nReversibility does not mean every decision is cheap to undo. It means the organisation knows what undoing would require before the decision becomes identity.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Read the ADR before choosing tools for a new project.\n* Use the default unless you can write a useful exception.\n* Treat the next review as input: bring evidence, not opinions.\n\nFor platform and architecture roles:\n\n* Maintain the tooling ADRs. Keep them current.\n* Schedule reviews. Run them. Publish the outcomes.\n* Track the evidence: usage, cost, satisfaction, productivity signals.\n\nFor tech leads:\n\n* When a tooling change is proposed, ask for the ADR.\n* When a review approaches, gather the team's lived experience as input.\n\nFor senior leadership:\n\n* Resist the urge to change a tooling decision outside its review cadence.\n* Protect the review cadence; it is the principle's main defence against drift.\n\n## Anti-Patterns\n\n* **Tooling-by-announcement.** A decision is communicated in slides with no ADR.\n* **Eternal commitment.** No review date; the decision becomes a tradition.\n* **Lock-in denial.** \"We can switch easily\" said about a tool that has shaped six months of platform work.\n* **Exception soup.** Exceptions granted in Slack and accumulated until exceptions outnumber the default.\n* **Vanity reversal.** Reversal driven by hype, not evidence.\n* **Vanity persistence.** Persistence driven by sunk-cost, not evidence.\n* **Review theatre.** A meeting where the outcome was decided in advance.\n\n## Examples\n\nAligned with the principle:\n\n* Claude Code is adopted as the 2026 default AI tool, in an ADR, with a six-month review cycle.\n* .NET is adopted as the default backend platform with an ADR explaining drivers and trade-offs.\n* A team uses Codex by exception for a specific narrow workflow; the exception is recorded.\n* The six-month AI review evaluates evidence and either confirms, narrows, or reverses the decision.\n\nOut of alignment with the principle:\n\n* \"We're standardising on tool X\" announced without an ADR.\n* A team adopts a new database engine because the maintainer gave a good talk.\n* A review skipped because \"the decision is obviously still right\".\n* An ADR that explicitly says \"this is irreversible\".\n\n## Discussion Prompts\n\nUse these prompts during tooling reviews:\n\n* Which original assumption has the strongest evidence for or against it now?\n* What would we do differently if we were making this decision today?\n* Are we keeping the tool because it still wins, or because switching feels hard?\n\n## Related Principles\n\n* [Design Principle: Standardize Before Diverging](standardize-before-diverging.html) - tooling defaults are the most visible standards.\n* [Practice Principle: Markdown Records as Canonical](markdown-records-as-canonical.html) - tooling decisions live as ADRs.\n* [Organisation Principle: Decisions Stay with Teams](decisions-stay-with-teams.html) - tooling decisions, like other decisions, are owned not approved.\n* [Practice Principle: AI Output Must Be Governed](ai-output-must-be-governed.html) - AI tooling decisions carry specific governance obligations.\n\n## Scope and Revisiting\n\nThis principle applies to Organization's shared tooling: developer tools, AI coding tools, languages, runtimes, cloud, messaging, observability, CI/CD, repositories, and similar.\n\nIt does not apply to tooling chosen inside one team that has no operational footprint outside it (for example, a personal IDE preference).\n\nThe principle should be revisited if:\n\n* The review cadence proves consistently mismatched to how fast the relevant tooling category changes.\n* The exception process either becomes a bottleneck or stops being meaningful.\n* A class of tooling decisions becomes more or less reversible due to platform changes.\n\n## Authoritative References\n\n* Dan McKinley, [Choose Boring Technology](https://boringtechnology.club/).\n* MADR, [Markdown Architectural Decision Records](https://adr.github.io/madr/).\n* Organization AI Decisions Log, AI Tooling Decision ([AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html)).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -613,26 +648,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-05-28
+revised: 2026-06-12
 ---
 
 # Spec: From Prompting to Intent: The Leadership Ladder for Working with AI
@@ -132,6 +132,14 @@ but it does not tell the reader what practical problem the post solves.
 - A claim that organizations should grant broad autonomy to AI systems without
   competence evidence, auditability, and human override.
 
+## Modalities
+
+Which docs this spec drives beyond the main article (`index.md`).
+
+- [x] `summary.md` — management summary
+- [x] `dialog.md` — two-host dialog
+- [x] `comics.md` — explainer comic
+
 ## Open questions
 
 None for the current draft.
@@ -249,6 +257,9 @@ Resolved in the 2026-05-28 rewrite:
 
 ## Changelog
 
+- **2026-06-12** - Added Modalities section; the spec now drives `summary.md`,
+  `dialog.md`, and `comics.md` alongside the article. Status `accepted`.
+  *(Zeljko, AI-mediated session)*
 - **2026-05-28** - Connected the article more explicitly to spec-driven
   development, adding a dedicated section and practice guidance that treats
   specs as written intent boundaries for AI-assisted work. Status `accepted`.

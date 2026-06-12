@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="genai-guild.html">← GenAI Guild as a Cross-Team Generative AI Consortium</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: GenAI Guild as a Cross-Team Generative AI Consortium\n\n> Backfilled after the post. Companion to [Backend Guild as a Cross-Team Community of Practice](backend-guild.html),\n> [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html), and [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html); same guild shape with a\n> GenAI-specific four-pillar mandate.\n\n## Intent\n\nEstablish a GenAI Guild as a standing community of practice that moves\nOrganization from ad-hoc GenAI experimentation to measurable productivity gains\nacross Product & Technology. The guild operates through four pillars\n(Evangelization & Knowledge Sharing, Architecture & Standards, Research &\nInnovation, Tooling & Licensing). The record should make the purpose,\nmandate, scope, and resourcing legible enough that any engineer can decide\nhow to engage.\n\n## Audience\n\n- **All Avivers** experimenting with or building on GenAI — the guild is\n  explicitly open.\n- **Architecture team** as the facilitating body.\n- **Security, legal, and procurement** as parties affected by Shadow AI\n  mitigation and tooling/licensing choices.\n- **Engineering leadership** as the audience for productivity-gain framing.\n- **AI agents** cross-linking from AI-related decisions and strategy\n  records.\n\n## Success criteria\n\n- [ ] Reader can state the guild's purpose (productivity gains, not\n      experimentation theatre) in one sentence.\n- [ ] Reader can name the four pillars and what each is for.\n- [ ] Reader understands the guild is advisory and contributory, not a\n      governance/procurement gate.\n- [ ] Reader knows the scope (enterprise GenAI adoption) and what is out of\n      scope (classical ML, recommender systems unless they intersect with\n      GenAI).\n- [ ] Reader can find the right Slack channel (open vs volunteer) for their\n      level of engagement.\n\n## Non-goals\n\n- Defining the AI tooling allowlist itself. The guild *owns* that work; the\n  record does not pre-empt it.\n- Becoming the AI-policy authority — that lives in [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html) and related\n  records.\n- Centralising AI procurement.\n- Absorbing classical ML/AI work that does not intersect with GenAI.\n\n## Open questions\n\n- How the guild's \"Architecture & Standards\" pillar interacts with the\n  [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) without duplicating it.\n- Whether Shadow AI mitigation needs its own record once the guild has run\n  long enough to see real patterns.\n- How \"measurable productivity gains\" gets measured — the guild owns the\n  question, but the metric framework is not yet defined.\n\n## Decision log\n\n- **2026-05-20** — Adopted a **four-pillar structure** (Evangelization &\n  Knowledge Sharing, Architecture & Standards, Research & Innovation,\n  Tooling & Licensing). Considered a flat working-group model; rejected\n  because GenAI adoption has genuinely distinct concerns\n  (evangelism vs governance vs experimentation vs procurement) that need\n  separate organising buckets.\n- **2026-05-20** — Kept the guild **advisory and contributory**,\n  facilitated by the Architecture team. Considered placing it under a\n  procurement or security function for tighter Shadow AI control;\n  rejected because policing-oriented bodies kill adoption, and the\n  Shadow AI risk is best mitigated by making the legitimate path\n  attractive.\n- **2026-05-20** — Bounded scope to **GenAI**, not all ML/AI. Classical\n  ML, recommender systems, and search ranking are out unless they\n  intersect with GenAI capabilities. Considered widening to all AI;\n  rejected because the audience, tooling, and risks of classical ML\n  diverge enough to warrant separate framing.\n- **2026-05-20** — Provisioned **two Slack channels** (open +\n  volunteer-core). Considered a single channel; rejected because GenAI\n  adoption has a large curious audience and a smaller active-contributor\n  group, and a single channel buries one inside the other.\n\n## Sources\n\n- **Internal**\n  - [Backend Guild as a Cross-Team Community of Practice](backend-guild.html), [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html), [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html) — sibling\n    guild records; this spec mirrors their shape with GenAI-specific\n    pillars.\n  - [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html) — the workflow this spec was authored\n    through; also informs the guild's posture on AI-in-the-org.\n  - [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) — destination for guild proposals\n    that become decisions.\n- **External**\n  - Spotify guild/chapter/tribe model — pattern reference.\n  - Public writing on enterprise GenAI adoption (Shadow AI, evaluation\n    frameworks, agentic patterns) — informs the four-pillar mandate.\n  - Claude Code, Codex CLI, and MCP server documentation — informs the\n    Tooling & Licensing pillar's surface.\n\n## Changelog\n\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: GenAI Guild as a Cross-Team Generative AI Consortium\n\n> Backfilled after the post. Companion to [Backend Guild as a Cross-Team Community of Practice](backend-guild.html),\n> [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html), and [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html); same guild shape with a\n> GenAI-specific four-pillar mandate.\n\n## Intent\n\nEstablish a GenAI Guild as a standing community of practice that moves\nOrganization from ad-hoc GenAI experimentation to measurable productivity gains\nacross Product & Technology. The guild operates through four pillars\n(Evangelization & Knowledge Sharing, Architecture & Standards, Research &\nInnovation, Tooling & Licensing). The record should make the purpose,\nmandate, scope, and resourcing legible enough that any engineer can decide\nhow to engage.\n\n## Audience\n\n- **All Avivers** experimenting with or building on GenAI — the guild is\n  explicitly open.\n- **Architecture team** as the facilitating body.\n- **Security, legal, and procurement** as parties affected by Shadow AI\n  mitigation and tooling/licensing choices.\n- **Engineering leadership** as the audience for productivity-gain framing.\n- **AI agents** cross-linking from AI-related decisions and strategy\n  records.\n\n## Success criteria\n\n- [ ] Reader can state the guild's purpose (productivity gains, not\n      experimentation theatre) in one sentence.\n- [ ] Reader can name the four pillars and what each is for.\n- [ ] Reader understands the guild is advisory and contributory, not a\n      governance/procurement gate.\n- [ ] Reader knows the scope (enterprise GenAI adoption) and what is out of\n      scope (classical ML, recommender systems unless they intersect with\n      GenAI).\n- [ ] Reader can find the right Slack channel (open vs volunteer) for their\n      level of engagement.\n\n## Non-goals\n\n- Defining the AI tooling allowlist itself. The guild *owns* that work; the\n  record does not pre-empt it.\n- Becoming the AI-policy authority — that lives in [AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html) and related\n  records.\n- Centralising AI procurement.\n- Absorbing classical ML/AI work that does not intersect with GenAI.\n\n## Open questions\n\n- How the guild's \"Architecture & Standards\" pillar interacts with the\n  [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) without duplicating it.\n- Whether Shadow AI mitigation needs its own record once the guild has run\n  long enough to see real patterns.\n- How \"measurable productivity gains\" gets measured — the guild owns the\n  question, but the metric framework is not yet defined.\n\n## Decision log\n\n- **2026-05-20** — Adopted a **four-pillar structure** (Evangelization &\n  Knowledge Sharing, Architecture & Standards, Research & Innovation,\n  Tooling & Licensing). Considered a flat working-group model; rejected\n  because GenAI adoption has genuinely distinct concerns\n  (evangelism vs governance vs experimentation vs procurement) that need\n  separate organising buckets.\n- **2026-05-20** — Kept the guild **advisory and contributory**,\n  facilitated by the Architecture team. Considered placing it under a\n  procurement or security function for tighter Shadow AI control;\n  rejected because policing-oriented bodies kill adoption, and the\n  Shadow AI risk is best mitigated by making the legitimate path\n  attractive.\n- **2026-05-20** — Bounded scope to **GenAI**, not all ML/AI. Classical\n  ML, recommender systems, and search ranking are out unless they\n  intersect with GenAI capabilities. Considered widening to all AI;\n  rejected because the audience, tooling, and risks of classical ML\n  diverge enough to warrant separate framing.\n- **2026-05-20** — Provisioned **two Slack channels** (open +\n  volunteer-core). Considered a single channel; rejected because GenAI\n  adoption has a large curious audience and a smaller active-contributor\n  group, and a single channel buries one inside the other.\n\n## Sources\n\n- **Internal**\n  - [Backend Guild as a Cross-Team Community of Practice](backend-guild.html), [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html), [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html) — sibling\n    guild records; this spec mirrors their shape with GenAI-specific\n    pillars.\n  - [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html) — the workflow this spec was authored\n    through; also informs the guild's posture on AI-in-the-org.\n  - [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) — destination for guild proposals\n    that become decisions.\n- **External**\n  - Spotify guild/chapter/tribe model — pattern reference.\n  - Public writing on enterprise GenAI adoption (Shadow AI, evaluation\n    frameworks, agentic patterns) — informs the four-pillar mandate.\n  - Claude Code, Codex CLI, and MCP server documentation — informs the\n    Tooling & Licensing pillar's surface.\n\n## Changelog\n\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

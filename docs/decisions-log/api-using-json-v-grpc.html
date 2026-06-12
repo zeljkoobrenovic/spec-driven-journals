@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         <a href="assets/images/api-vs-grpc.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/api-vs-grpc.jpeg" alt=""></a>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">Decisions Log</a><span class="nav-right"><a class="nav-prev" href="secrets-storage.html" title="Secrets storage">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="snake-case-v-camelcase-for-a-rest-api.html" title="Snake_case v. camelCase for a REST API?">Next →</a></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"title": "API using JSON v. gRPC", "date": "2020-01-21 21:12:01 +0100", "icon": "assets/icons/grpc.png", "author": "by Team", "permalink": "api-using-json-v-grpc", "excerpt": "We will use gRPC for the new service's API. Binary serialization, schema-first contracts, and built-in streaming outweigh the lower discoverability and library reach of JSON over HTTP for our workload.", "logo": "assets/images/api-vs-grpc.jpeg", "tags": "accepted"}, "tags": ["accepted"], "blocks": [{"type": "markdown", "content": "> **Status**: Accepted (2020-01-21)\n>\n> **Decision**: We will use gRPC, not JSON over HTTP, for the new service's API. We accept the higher learning curve and narrower client support in exchange for binary efficiency, schema-first contracts, and first-class streaming.\n\n## Context\n\nWe are designing the API for a new service that will be consumed by multiple internal clients and is expected to handle large payloads and, in the near future, real-time streaming. Two options are on the table:\n\n- **JSON over HTTP.** Ubiquitous, easy to consume from any language, trivially debuggable. The cost is verbose payloads, no schema enforcement out of the box, and request/response-only semantics.\n- **gRPC.** Protobuf-based binary serialization over HTTP/2, with schema-first interface definitions and built-in support for unary, server-streaming, client-streaming, and bidirectional calls. The cost is a heavier toolchain and clients that must speak gRPC.\n\n## Decision\n\nThe new service will expose its API over gRPC. All internal clients will consume it via generated gRPC stubs. If we later need a browser- or third-party-facing surface, we will put a thin JSON/HTTP gateway in front of the same gRPC service rather than maintain two parallel implementations.\n\n## Rationale\n\n1. **Payload efficiency.** Protobuf encoding is significantly smaller and faster to parse than JSON for the data volumes we expect. This matters both for latency-sensitive paths and for inter-service bandwidth costs.\n2. **Schema-first contracts.** `.proto` files give us a single source of truth for the API. Breaking changes are caught at compile time in every client language we generate stubs for, rather than at runtime against a hand-written client.\n3. **Streaming as a first-class feature.** Bidirectional streaming is built into the protocol, so we will not need to bolt on WebSockets or Server-Sent Events when real-time use cases land.\n4. **Cross-language stubs.** gRPC generates idiomatic clients for every language we currently use, removing a class of hand-written serialization bugs.\n\n## Implications\n\n1. **Tooling investment.** Teams will need to learn protobuf, gRPC's status codes, and the generation toolchain. We will document the workflow and provide build-system integration.\n2. **Client reach.** Browsers and external partners cannot consume gRPC directly. We accept this and will introduce gRPC-Web or a JSON gateway only when we have a concrete client that needs one.\n3. **Debugging surface.** Wire traffic is binary, so `curl`-style debugging is replaced by `grpcurl` and equivalent tooling. We will standardize on a small set of these tools.\n4. **Observability.** Tracing and metrics interceptors must be added explicitly — they will be part of the shared service template rather than left to each team.\n\n## Conclusion\n\ngRPC matches the shape of the workload — internal clients, large payloads, streaming on the horizon — better than JSON over HTTP. The toolchain cost is real but bounded, and the schema-first contract removes a category of integration bugs we have repeatedly hit in earlier projects.\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"title": "API using JSON v. gRPC", "date": "2020-01-21 21:12:01 +0100", "icon": "assets/icons/grpc.png", "author": "by Team", "permalink": "api-using-json-v-grpc", "excerpt": "We will use gRPC for the new service's API. Binary serialization, schema-first contracts, and built-in streaming outweigh the lower discoverability and library reach of JSON over HTTP for our workload.", "logo": "assets/images/api-vs-grpc.jpeg", "tags": "accepted"}, "tags": ["accepted"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: Accepted (2020-01-21)\n>\n> **Decision**: We will use gRPC, not JSON over HTTP, for the new service's API. We accept the higher learning curve and narrower client support in exchange for binary efficiency, schema-first contracts, and first-class streaming.\n\n## Context\n\nWe are designing the API for a new service that will be consumed by multiple internal clients and is expected to handle large payloads and, in the near future, real-time streaming. Two options are on the table:\n\n- **JSON over HTTP.** Ubiquitous, easy to consume from any language, trivially debuggable. The cost is verbose payloads, no schema enforcement out of the box, and request/response-only semantics.\n- **gRPC.** Protobuf-based binary serialization over HTTP/2, with schema-first interface definitions and built-in support for unary, server-streaming, client-streaming, and bidirectional calls. The cost is a heavier toolchain and clients that must speak gRPC.\n\n## Decision\n\nThe new service will expose its API over gRPC. All internal clients will consume it via generated gRPC stubs. If we later need a browser- or third-party-facing surface, we will put a thin JSON/HTTP gateway in front of the same gRPC service rather than maintain two parallel implementations.\n\n## Rationale\n\n1. **Payload efficiency.** Protobuf encoding is significantly smaller and faster to parse than JSON for the data volumes we expect. This matters both for latency-sensitive paths and for inter-service bandwidth costs.\n2. **Schema-first contracts.** `.proto` files give us a single source of truth for the API. Breaking changes are caught at compile time in every client language we generate stubs for, rather than at runtime against a hand-written client.\n3. **Streaming as a first-class feature.** Bidirectional streaming is built into the protocol, so we will not need to bolt on WebSockets or Server-Sent Events when real-time use cases land.\n4. **Cross-language stubs.** gRPC generates idiomatic clients for every language we currently use, removing a class of hand-written serialization bugs.\n\n## Implications\n\n1. **Tooling investment.** Teams will need to learn protobuf, gRPC's status codes, and the generation toolchain. We will document the workflow and provide build-system integration.\n2. **Client reach.** Browsers and external partners cannot consume gRPC directly. We accept this and will introduce gRPC-Web or a JSON gateway only when we have a concrete client that needs one.\n3. **Debugging surface.** Wire traffic is binary, so `curl`-style debugging is replaced by `grpcurl` and equivalent tooling. We will standardize on a small set of these tools.\n4. **Observability.** Tracing and metrics interceptors must be added explicitly — they will be part of the shared service template rather than left to each team.\n\n## Conclusion\n\ngRPC matches the shape of the workload — internal clients, large payloads, streaming on the horizon — better than JSON over HTTP. The toolchain cost is real but bounded, and the schema-first contract removes a category of integration bugs we have repeatedly hit in earlier projects.\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

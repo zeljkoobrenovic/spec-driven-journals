@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -290,7 +324,8 @@
         <a href="assets/images/standardize-before-diverging/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/standardize-before-diverging/logo.jpeg" alt=""></a>
         <p class="logo-credit">Inspired by Organization's tech-decisions log and AI strategy</p>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="smarts-in-the-nodes.html" title="Design Principle: Smarts in the Nodes, not the Network">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="production-ready.html" title="Operational Principle: Production Ready">Next →</a></span></nav>
     </footer>
@@ -299,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-STANDARDIZE-BEFORE-DIVERGING", "status": "draft:gray", "title": "Design Principle: Standardize Before Diverging", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "standardize-before-diverging", "timetoread": "12 min", "excerpt": "Adopt a default before allowing variation. Organization's backend on .NET, compute on ECS Fargate, messaging on MSK, cloud on AWS, and AI tooling on Claude Code are all defaults. Teams may diverge from a default by ADR, but they may not diverge by accident. The principle protects the cost compounding of a shared platform: a golden path is only valuable if most teams are on it. Variation has to earn its keep, not be granted by silence.", "tags": "design, standardization, golden-path, exceptions, governance", "logo": "assets/images/standardize-before-diverging/logo.jpeg", "logo_credit": "Inspired by Organization's tech-decisions log and AI strategy", "icon": "assets/icons/standardize-before-diverging.png"}, "tags": ["design", "standardization", "golden-path", "exceptions", "governance"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization picks defaults and stays on them until there is a written, owned reason to diverge. A team may propose an exception by ADR, name the costs, and accept the responsibility for the divergence. Silence is not a license. The platform's value compounds only when most teams use the default; exceptions are a managed minority, not a parallel norm.\n\n## Statement\n\nFor every shared technology decision, Organization:\n\n1. Picks a single default.\n2. Documents the default as the expected choice.\n3. Makes the default the easiest path - tooling, examples, support, hiring, training.\n4. Permits divergence only through a documented exception.\n5. Reviews exceptions on a schedule.\n\nThe principle applies to programming languages, runtimes, container bases, cloud provider, messaging, AI tooling, observability, repository conventions, and any other choice where shared compounding matters more than local optimisation.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| There is a default. | The default fits every case. |\n| Divergence requires an ADR. | Divergence is forbidden. |\n| Defaults should be easy. | Non-defaults should be impossible. |\n| Exceptions get reviewed. | Exceptions are temporary by definition. |\n| The platform compounds on the default. | The platform must do everything. |\n\nThe principle does not mean uniformity at any cost. It means *deliberate* divergence by *named* owners with *known* trade-offs.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why defaults compound platform value.\n* Distinguish deliberate divergence from accidental variation.\n* Write or review an exception ADR that names local benefit and global cost.\n* Recognise when a default is failing because it is not the easiest path.\n\n## Rationale\n\nA shared engineering platform pays off through repetition. Every team that adopts the default reduces the marginal cost of:\n\n* Adding observability.\n* Adding security defaults.\n* Onboarding new engineers.\n* Sharing patterns and golden templates.\n* Operating systems on-call.\n* Applying AI tooling like Claude Code with shared CLAUDE.md context.\n\nVariation, by contrast, taxes the platform. Each new runtime, base image, cloud provider, broker, or convention duplicates work that the default already does. The platform either supports the variant - which makes it weaker - or doesn't support it - which leaves the team alone with the consequences.\n\nOrganization's strategic decisions are a long list of defaults. Backend on .NET. Compute on ECS Fargate. Container base on Ubuntu. Messaging on MSK. Cloud on AWS. AI tooling on Claude Code. AVIV Group as the inherited starting point for web, mobile, and AWS foundation tooling. This principle is the meta-decision behind those choices.\n\n## Implications\n\n* **Defaults are written down.** Every shared choice has a record stating what it is, who owns it, and how to depart from it.\n* **Divergence is by ADR.** A team that wants to diverge writes an ADR, names the alternative, the cost, the owner, and the revisit trigger.\n* **Defaults are made cheap.** Templates, golden paths, CI defaults, and Skills target the default. Friction lives on the divergence path, not the default path.\n* **Exceptions are reviewed periodically.** Exceptions that have not been used or have stopped being justified should be retired.\n* **A default that is not the easy path is not a default.** If most teams ignore it, the principle is failing.\n* **A default that is mandatory has stopped being a principle and become an edict.** Edicts produce malicious compliance.\n\n## Exception Test\n\nA divergence proposal should answer these questions before work starts:\n\n* Which default is being diverged from?\n* What requirement is not met by improving or using the default?\n* What local benefit does the divergence create?\n* What global cost does it add to hiring, support, operations, AI context, security, or platform tooling?\n* Which team owns the divergence and its lifecycle?\n* What evidence would cause the team to return to the default?\n* When will the exception be reviewed?\n\nThe test is not meant to block every exception. It ensures exceptions are deliberate enough that the organisation can learn from them instead of accumulating accidental variety.\n\n## What This Means for Teams\n\nFor service teams:\n\n* If a default exists for what you need, use it. Even if a different choice would be marginally better in isolation.\n* If you need to diverge, write the ADR before you start, not after.\n* Treat your divergence as a cost your team owns: tooling gaps, hiring constraints, lack of golden paths.\n\nFor platform and architecture roles:\n\n* Maintain the list of defaults publicly.\n* Invest in making the default the easy path: templates, Skills, sane defaults, observability, security.\n* Run periodic exception reviews.\n\nFor tech leads:\n\n* Before proposing a new technology, ask whether the default can be improved to cover the case.\n* When mentoring teams, prefer the default unless there is a real reason not to.\n* Bring divergence proposals to the Architecture Advisory Forum early.\n\n## Anti-Patterns\n\n* **Best-tool-for-the-job per team.** Every team chooses its own runtime, broker, and database, justified locally and expensive globally.\n* **Default by silence.** A default exists in slides but not in tooling; teams quietly diverge because no path supports the default.\n* **Default by edict.** A default is enforced bureaucratically without ever being made the easy path.\n* **Exception drift.** Exceptions accumulate, are never reviewed, and gradually outnumber default usage.\n* **Standard-then-shadow.** A team officially adopts the default but maintains a parallel non-default system \"for now\".\n* **Single-team standard.** A standard set by one team for everyone else, without consultation.\n* **Greenfield exemption.** New work is allowed to diverge because \"it's new\"; old work keeps the default.\n\n## Examples\n\nAligned with the principle:\n\n* New backend service starts on .NET, ECS Fargate, Ubuntu base, MSK for messaging - no ADR needed.\n* A team needing a small TypeScript BFF writes a short ADR explaining the narrow scope, with .NET still the default for new core services.\n* Claude Code is the default AI coding tool; Codex or Gemini use is allowed by exception with a recorded rationale.\n* AVIV Group's web Golden Path is the starting point; divergence is recorded and owned.\n\nOut of alignment with the principle:\n\n* A team adopts a new runtime \"just for this service\" without an ADR, and the runtime spreads.\n* A new database engine is introduced because a vendor demo was compelling, with no review of how it compares to the default.\n* The default is documented but the only golden template ships for a different runtime.\n* Exceptions are granted in Slack threads with no recording.\n\n## Discussion Prompts\n\nUse these prompts in exception reviews:\n\n* Is the default genuinely insufficient, or is it merely less familiar?\n* What global cost does this local optimisation create?\n* What would make the exception unnecessary in six months?\n\n## Related Principles\n\n* [Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)](small-and-simple.html) - a small palette of defaults is itself a form of simplicity.\n* [Organisation Principle: Inherit, Then Simplify](inherit-then-simplify.html) - inherited defaults are honoured until simplified, not abandoned.\n* [Organisation Principle: Tooling Decisions Are Explicit and Reversible](tooling-explicit-and-reversible.html) - tooling defaults are deliberately chosen and revisited on a cadence.\n* [Practice Principle: Governance as Code](governance-as-code.html) - defaults are reinforced through executable golden paths.\n\n## Scope and Revisiting\n\nThis principle applies to all shared technology choices: language, runtime, cloud, messaging, observability, AI tooling, repository structure, and similar.\n\nIt does not apply to choices that are local to one component and do not affect other teams (for example, a library used only within one service that has no operational footprint outside it).\n\nThe principle should be revisited if:\n\n* The defaults stop reflecting where Organization actually invests.\n* The exception process becomes a bottleneck or a rubber stamp.\n* A major shift in the AVIV Group relationship changes what \"inherited\" means.\n\n## Authoritative References\n\n* Mike Amundsen, [Paved Roads vs Guard Rails](https://www.thoughtworks.com/insights/blog/microservices/paved-roads-vs-guard-rails).\n* Spotify Engineering, [Paved Path for Backend Services](https://engineering.atspotify.com/).\n* Charity Majors, [Paved Roads](https://charity.wtf/).\n* Organization, AI Tooling Decision: Claude Code as Default ([AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html)).\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-STANDARDIZE-BEFORE-DIVERGING", "status": "draft:gray", "title": "Design Principle: Standardize Before Diverging", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "standardize-before-diverging", "timetoread": "12 min", "excerpt": "Adopt a default before allowing variation. Organization's backend on .NET, compute on ECS Fargate, messaging on MSK, cloud on AWS, and AI tooling on Claude Code are all defaults. Teams may diverge from a default by ADR, but they may not diverge by accident. The principle protects the cost compounding of a shared platform: a golden path is only valuable if most teams are on it. Variation has to earn its keep, not be granted by silence.", "tags": "design, standardization, golden-path, exceptions, governance", "logo": "assets/images/standardize-before-diverging/logo.jpeg", "logo_credit": "Inspired by Organization's tech-decisions log and AI strategy", "icon": "assets/icons/standardize-before-diverging.png"}, "tags": ["design", "standardization", "golden-path", "exceptions", "governance"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization picks defaults and stays on them until there is a written, owned reason to diverge. A team may propose an exception by ADR, name the costs, and accept the responsibility for the divergence. Silence is not a license. The platform's value compounds only when most teams use the default; exceptions are a managed minority, not a parallel norm.\n\n## Statement\n\nFor every shared technology decision, Organization:\n\n1. Picks a single default.\n2. Documents the default as the expected choice.\n3. Makes the default the easiest path - tooling, examples, support, hiring, training.\n4. Permits divergence only through a documented exception.\n5. Reviews exceptions on a schedule.\n\nThe principle applies to programming languages, runtimes, container bases, cloud provider, messaging, AI tooling, observability, repository conventions, and any other choice where shared compounding matters more than local optimisation.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| There is a default. | The default fits every case. |\n| Divergence requires an ADR. | Divergence is forbidden. |\n| Defaults should be easy. | Non-defaults should be impossible. |\n| Exceptions get reviewed. | Exceptions are temporary by definition. |\n| The platform compounds on the default. | The platform must do everything. |\n\nThe principle does not mean uniformity at any cost. It means *deliberate* divergence by *named* owners with *known* trade-offs.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Explain why defaults compound platform value.\n* Distinguish deliberate divergence from accidental variation.\n* Write or review an exception ADR that names local benefit and global cost.\n* Recognise when a default is failing because it is not the easiest path.\n\n## Rationale\n\nA shared engineering platform pays off through repetition. Every team that adopts the default reduces the marginal cost of:\n\n* Adding observability.\n* Adding security defaults.\n* Onboarding new engineers.\n* Sharing patterns and golden templates.\n* Operating systems on-call.\n* Applying AI tooling like Claude Code with shared CLAUDE.md context.\n\nVariation, by contrast, taxes the platform. Each new runtime, base image, cloud provider, broker, or convention duplicates work that the default already does. The platform either supports the variant - which makes it weaker - or doesn't support it - which leaves the team alone with the consequences.\n\nOrganization's strategic decisions are a long list of defaults. Backend on .NET. Compute on ECS Fargate. Container base on Ubuntu. Messaging on MSK. Cloud on AWS. AI tooling on Claude Code. AVIV Group as the inherited starting point for web, mobile, and AWS foundation tooling. This principle is the meta-decision behind those choices.\n\n## Implications\n\n* **Defaults are written down.** Every shared choice has a record stating what it is, who owns it, and how to depart from it.\n* **Divergence is by ADR.** A team that wants to diverge writes an ADR, names the alternative, the cost, the owner, and the revisit trigger.\n* **Defaults are made cheap.** Templates, golden paths, CI defaults, and Skills target the default. Friction lives on the divergence path, not the default path.\n* **Exceptions are reviewed periodically.** Exceptions that have not been used or have stopped being justified should be retired.\n* **A default that is not the easy path is not a default.** If most teams ignore it, the principle is failing.\n* **A default that is mandatory has stopped being a principle and become an edict.** Edicts produce malicious compliance.\n\n## Exception Test\n\nA divergence proposal should answer these questions before work starts:\n\n* Which default is being diverged from?\n* What requirement is not met by improving or using the default?\n* What local benefit does the divergence create?\n* What global cost does it add to hiring, support, operations, AI context, security, or platform tooling?\n* Which team owns the divergence and its lifecycle?\n* What evidence would cause the team to return to the default?\n* When will the exception be reviewed?\n\nThe test is not meant to block every exception. It ensures exceptions are deliberate enough that the organisation can learn from them instead of accumulating accidental variety.\n\n## What This Means for Teams\n\nFor service teams:\n\n* If a default exists for what you need, use it. Even if a different choice would be marginally better in isolation.\n* If you need to diverge, write the ADR before you start, not after.\n* Treat your divergence as a cost your team owns: tooling gaps, hiring constraints, lack of golden paths.\n\nFor platform and architecture roles:\n\n* Maintain the list of defaults publicly.\n* Invest in making the default the easy path: templates, Skills, sane defaults, observability, security.\n* Run periodic exception reviews.\n\nFor tech leads:\n\n* Before proposing a new technology, ask whether the default can be improved to cover the case.\n* When mentoring teams, prefer the default unless there is a real reason not to.\n* Bring divergence proposals to the Architecture Advisory Forum early.\n\n## Anti-Patterns\n\n* **Best-tool-for-the-job per team.** Every team chooses its own runtime, broker, and database, justified locally and expensive globally.\n* **Default by silence.** A default exists in slides but not in tooling; teams quietly diverge because no path supports the default.\n* **Default by edict.** A default is enforced bureaucratically without ever being made the easy path.\n* **Exception drift.** Exceptions accumulate, are never reviewed, and gradually outnumber default usage.\n* **Standard-then-shadow.** A team officially adopts the default but maintains a parallel non-default system \"for now\".\n* **Single-team standard.** A standard set by one team for everyone else, without consultation.\n* **Greenfield exemption.** New work is allowed to diverge because \"it's new\"; old work keeps the default.\n\n## Examples\n\nAligned with the principle:\n\n* New backend service starts on .NET, ECS Fargate, Ubuntu base, MSK for messaging - no ADR needed.\n* A team needing a small TypeScript BFF writes a short ADR explaining the narrow scope, with .NET still the default for new core services.\n* Claude Code is the default AI coding tool; Codex or Gemini use is allowed by exception with a recorded rationale.\n* AVIV Group's web Golden Path is the starting point; divergence is recorded and owned.\n\nOut of alignment with the principle:\n\n* A team adopts a new runtime \"just for this service\" without an ADR, and the runtime spreads.\n* A new database engine is introduced because a vendor demo was compelling, with no review of how it compares to the default.\n* The default is documented but the only golden template ships for a different runtime.\n* Exceptions are granted in Slack threads with no recording.\n\n## Discussion Prompts\n\nUse these prompts in exception reviews:\n\n* Is the default genuinely insufficient, or is it merely less familiar?\n* What global cost does this local optimisation create?\n* What would make the exception unnecessary in six months?\n\n## Related Principles\n\n* [Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)](small-and-simple.html) - a small palette of defaults is itself a form of simplicity.\n* [Organisation Principle: Inherit, Then Simplify](inherit-then-simplify.html) - inherited defaults are honoured until simplified, not abandoned.\n* [Organisation Principle: Tooling Decisions Are Explicit and Reversible](tooling-explicit-and-reversible.html) - tooling defaults are deliberately chosen and revisited on a cadence.\n* [Practice Principle: Governance as Code](governance-as-code.html) - defaults are reinforced through executable golden paths.\n\n## Scope and Revisiting\n\nThis principle applies to all shared technology choices: language, runtime, cloud, messaging, observability, AI tooling, repository structure, and similar.\n\nIt does not apply to choices that are local to one component and do not affect other teams (for example, a library used only within one service that has no operational footprint outside it).\n\nThe principle should be revisited if:\n\n* The defaults stop reflecting where Organization actually invests.\n* The exception process becomes a bottleneck or a rubber stamp.\n* A major shift in the AVIV Group relationship changes what \"inherited\" means.\n\n## Authoritative References\n\n* Mike Amundsen, [Paved Roads vs Guard Rails](https://www.thoughtworks.com/insights/blog/microservices/paved-roads-vs-guard-rails).\n* Spotify Engineering, [Paved Path for Backend Services](https://engineering.atspotify.com/).\n* Charity Majors, [Paved Roads](https://charity.wtf/).\n* Organization, AI Tooling Decision: Claude Code as Default ([AI Developer Tooling: Claude Code as the Default Agent Platform for 2026](../ai-decisions-log/ai-tooling.html)).\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -613,26 +648,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="aws-naming-tagging.html">← AWS Account and Resource Naming and Tagging Conventions</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: AWS Account and Resource Naming and Tagging Conventions\n\n> Backfilled after the post. Companion to [GitHub Naming and Tagging Conventions for Source Code](github-naming-tagging.html) and\n> [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html); the AWS view of the org should line up\n> with the GitHub view.\n\n## Intent\n\nStandardise AWS account structure, resource naming, and resource tagging so\nthat cost, ownership, blast radius, and compliance scope are all queryable\nfrom tags alone. Make the AWS view of Organization's estate align with the\nGitHub view via the shared `<domain>-<system>-<component>` vocabulary. The\nrecord should be mechanical and enforceable, not aspirational.\n\n## Audience\n\n- **Cloud engineers and platform team** provisioning accounts and resources.\n- **FinOps and security teams** reading cost reports, audit dashboards, and\n  compliance scopes off tags.\n- **Domain teams** that own workloads and need to know what to put on their\n  resources.\n- **Tooling owners** writing SCPs, AWS Config rules, tag policies, and\n  inventory exports.\n- **AI agents** correlating an AWS resource with its GitHub repo and owning\n  team.\n\n## Success criteria\n\n- [ ] Main record stays focused on the core decision; reference, tutorial, or playbook material is compact or moved out of the main flow.\n- [ ] Reader can name a new AWS account (`org-<domain>-<env>`) and place it\n      under the correct OU.\n- [ ] Reader can name a resource (`org-<domain>-<system>-<component>-<env>\n      [-<qualifier>]`) without ambiguity.\n- [ ] Reader can list the required tag keys from memory or the table:\n      `Owner`, `Domain`, `System`, `Component`, `Environment`, `CostCenter`,\n      `DataClass`, `Compliance`, `ManagedBy`, `RepoUrl`.\n- [ ] Reader understands names are for humans and tags are authoritative\n      for tooling.\n- [ ] Reader sees enforcement is automated (SCP/Config/tag policies), not\n      manual review.\n\n## Non-goals\n\n- Defining the controlled vocabularies for `Environment`, `CostCenter`,\n  `DataClass`, `Compliance` — those are governed lists maintained by the\n  platform team.\n- Changing IAM permissions, account-vending workflow, or the operating model.\n- Replacing existing service runbooks or migration plans.\n- Covering non-AWS clouds.\n\n## Open questions\n\n- Migration path for existing non-compliant resources (rename impossible for\n  many AWS types — re-create or grandfather with a deprecation tag?).\n- How to handle multi-tenant resources where `Owner` is ambiguous.\n- Whether the `qualifier` slot in resource names should have its own\n  controlled vocabulary.\n- Whether `RepoUrl` should be enforced via tag policy or remain advisory.\n\n## Decision log\n\n- **2026-05-21** — Focused the post around the core decision and condensed long tutorial, playbook, or reference sections so readers can reach the guidance quickly.\n- **2026-05-20** — Made **tags authoritative**, not resource names.\n  Considered embedding all metadata in names; rejected because resource\n  names are mostly immutable in AWS, while tags can evolve with\n  ownership and lifecycle. Names are for humans; tags are for tools.\n- **2026-05-20** — Required a **fixed set of tag keys** (`Owner`,\n  `Domain`, `System`, `Component`, `Environment`, `CostCenter`,\n  `DataClass`, `Compliance`, `ManagedBy`, `RepoUrl`). Considered\n  team-by-team tag conventions; rejected because cross-account cost\n  reports and audit dashboards need uniform keys to be useful at all.\n- **2026-05-20** — Adopted **automated enforcement** (SCPs, AWS Config\n  rules, tag policies) for production. Considered review-time\n  enforcement only; rejected because manual review of every resource\n  doesn't scale and silent drift is the default failure mode.\n- **2026-05-20** — Used **PascalCase tag keys, controlled-vocabulary\n  tag values**. Considered free-form values; rejected because free-form\n  tag values defeat reporting — by the second year they would contain\n  every spelling variant of the same concept.\n- **2026-05-20** — One AWS account per **single primary purpose**.\n  Considered multi-purpose accounts to reduce account count; rejected\n  because the account boundary is AWS's strongest isolation primitive,\n  and merging purposes inside one account is the most common source of\n  blast-radius incidents.\n\n## Sources\n\n- **Internal**\n  - [GitHub Naming and Tagging Conventions for Source Code](github-naming-tagging.html) — companion record; the AWS view should\n    line up with the GitHub view via the shared\n    `<domain>-<system>-<component>` vocabulary.\n  - [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html) — third leaf of the naming trio.\n- **External**\n  - AWS Well-Architected Framework, tagging best practices — informs\n    the required tag keys.\n  - AWS Organizations and Service Control Policies documentation —\n    informs the enforcement model.\n  - FinOps Foundation guidance on cost allocation by tags — informs\n    `CostCenter`, `Owner`, `Domain`, `System` as cost-cuttable keys.\n\n## Changelog\n\n- **2026-05-21** — Shortened and refocused `index.md`; kept stable identifiers and permalinks. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: AWS Account and Resource Naming and Tagging Conventions\n\n> Backfilled after the post. Companion to [GitHub Naming and Tagging Conventions for Source Code](github-naming-tagging.html) and\n> [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html); the AWS view of the org should line up\n> with the GitHub view.\n\n## Intent\n\nStandardise AWS account structure, resource naming, and resource tagging so\nthat cost, ownership, blast radius, and compliance scope are all queryable\nfrom tags alone. Make the AWS view of Organization's estate align with the\nGitHub view via the shared `<domain>-<system>-<component>` vocabulary. The\nrecord should be mechanical and enforceable, not aspirational.\n\n## Audience\n\n- **Cloud engineers and platform team** provisioning accounts and resources.\n- **FinOps and security teams** reading cost reports, audit dashboards, and\n  compliance scopes off tags.\n- **Domain teams** that own workloads and need to know what to put on their\n  resources.\n- **Tooling owners** writing SCPs, AWS Config rules, tag policies, and\n  inventory exports.\n- **AI agents** correlating an AWS resource with its GitHub repo and owning\n  team.\n\n## Success criteria\n\n- [ ] Main record stays focused on the core decision; reference, tutorial, or playbook material is compact or moved out of the main flow.\n- [ ] Reader can name a new AWS account (`org-<domain>-<env>`) and place it\n      under the correct OU.\n- [ ] Reader can name a resource (`org-<domain>-<system>-<component>-<env>\n      [-<qualifier>]`) without ambiguity.\n- [ ] Reader can list the required tag keys from memory or the table:\n      `Owner`, `Domain`, `System`, `Component`, `Environment`, `CostCenter`,\n      `DataClass`, `Compliance`, `ManagedBy`, `RepoUrl`.\n- [ ] Reader understands names are for humans and tags are authoritative\n      for tooling.\n- [ ] Reader sees enforcement is automated (SCP/Config/tag policies), not\n      manual review.\n\n## Non-goals\n\n- Defining the controlled vocabularies for `Environment`, `CostCenter`,\n  `DataClass`, `Compliance` — those are governed lists maintained by the\n  platform team.\n- Changing IAM permissions, account-vending workflow, or the operating model.\n- Replacing existing service runbooks or migration plans.\n- Covering non-AWS clouds.\n\n## Open questions\n\n- Migration path for existing non-compliant resources (rename impossible for\n  many AWS types — re-create or grandfather with a deprecation tag?).\n- How to handle multi-tenant resources where `Owner` is ambiguous.\n- Whether the `qualifier` slot in resource names should have its own\n  controlled vocabulary.\n- Whether `RepoUrl` should be enforced via tag policy or remain advisory.\n\n## Decision log\n\n- **2026-05-21** — Focused the post around the core decision and condensed long tutorial, playbook, or reference sections so readers can reach the guidance quickly.\n- **2026-05-20** — Made **tags authoritative**, not resource names.\n  Considered embedding all metadata in names; rejected because resource\n  names are mostly immutable in AWS, while tags can evolve with\n  ownership and lifecycle. Names are for humans; tags are for tools.\n- **2026-05-20** — Required a **fixed set of tag keys** (`Owner`,\n  `Domain`, `System`, `Component`, `Environment`, `CostCenter`,\n  `DataClass`, `Compliance`, `ManagedBy`, `RepoUrl`). Considered\n  team-by-team tag conventions; rejected because cross-account cost\n  reports and audit dashboards need uniform keys to be useful at all.\n- **2026-05-20** — Adopted **automated enforcement** (SCPs, AWS Config\n  rules, tag policies) for production. Considered review-time\n  enforcement only; rejected because manual review of every resource\n  doesn't scale and silent drift is the default failure mode.\n- **2026-05-20** — Used **PascalCase tag keys, controlled-vocabulary\n  tag values**. Considered free-form values; rejected because free-form\n  tag values defeat reporting — by the second year they would contain\n  every spelling variant of the same concept.\n- **2026-05-20** — One AWS account per **single primary purpose**.\n  Considered multi-purpose accounts to reduce account count; rejected\n  because the account boundary is AWS's strongest isolation primitive,\n  and merging purposes inside one account is the most common source of\n  blast-radius incidents.\n\n## Sources\n\n- **Internal**\n  - [GitHub Naming and Tagging Conventions for Source Code](github-naming-tagging.html) — companion record; the AWS view should\n    line up with the GitHub view via the shared\n    `<domain>-<system>-<component>` vocabulary.\n  - [Package Naming Conventions Across JVM, npm, Python, .NET, and OCI](package-naming-conventions.html) — third leaf of the naming trio.\n- **External**\n  - AWS Well-Architected Framework, tagging best practices — informs\n    the required tag keys.\n  - AWS Organizations and Service Control Policies documentation —\n    informs the enforcement model.\n  - FinOps Foundation guidance on cost allocation by tags — informs\n    `CostCenter`, `Owner`, `Domain`, `System` as cost-cuttable keys.\n\n## Changelog\n\n- **2026-05-21** — Shortened and refocused `index.md`; kept stable identifiers and permalinks. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

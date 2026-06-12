@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -290,7 +324,8 @@
         <a href="assets/images/governance-as-code/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/governance-as-code/logo.jpeg" alt=""></a>
         <p class="logo-credit">Inspired by Organization's AI engineering standards and policy-as-code thinking</p>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="advice-in-public.html" title="Practice Principle: Advice in Public">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="ai-output-must-be-governed.html" title="Practice Principle: AI Output Must Be Governed">Next →</a></span></nav>
     </footer>
@@ -299,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-GOVERNANCE-AS-CODE", "status": "draft:gray", "title": "Practice Principle: Governance as Code", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "governance-as-code", "timetoread": "12 min", "excerpt": "Encode engineering standards, policies, and review rules as executable artifacts: CI checks, pre-commit hooks, IaC guardrails, Claude Code settings, CLAUDE.md fragments, Skills, MCP allowlists, and pull-request templates. Governance documented only in policy decks fails silently and gets discovered during incidents. Governance encoded in the platform fails loudly and gets fixed in pull requests. The principle is not 'no human review'; it is 'standards that can be enforced should be'.", "tags": "practices, governance, ci, hooks, claude-code, policy, automation", "logo": "assets/images/governance-as-code/logo.jpeg", "logo_credit": "Inspired by Organization's AI engineering standards and policy-as-code thinking", "icon": "assets/icons/governance-as-code.png"}, "tags": ["practices", "governance", "ci", "hooks", "claude-code", "policy", "automation"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization expresses engineering standards, policies, and review rules as **executable artifacts** wherever feasible: CI gates, hooks, infrastructure-as-code guardrails, Claude Code settings, CLAUDE.md fragments, Skills, MCP allowlists, repository configurations, and templates. The default is \"encode the rule\"; written policy is a complement, not a substitute. Human review remains essential for judgement; executable governance handles the well-defined, repeatable parts.\n\n## Statement\n\nFor every engineering standard, Organization asks:\n\n1. **Can this be checked automatically?** If yes, encode it.\n2. **Can the default behaviour satisfy it?** If yes, ship the default that way.\n3. **Does it need human judgement?** Keep it as a written standard and review check.\n\nThe result is governance that lives partly in code, partly in templates, partly in CLAUDE.md and AI configuration, and partly in written policy. The written part exists; it just stops being the only line of defence.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Encode what can be encoded. | Encode everything. |\n| Defaults satisfy most rules. | Defaults replace standards. |\n| Written policy still matters. | Written policy is the primary mechanism. |\n| Human review handles judgement. | Human review is bypassed. |\n| AI configuration is part of governance. | AI replaces governance. |\n\nThe principle expects a layered model: defaults, executable checks, written standards, human review. Each layer catches what the others cannot.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Decide which standards should be defaults, checks, guardrails, review prompts, or written policy.\n* Explain why encoded governance reduces drift without replacing judgement.\n* Recognise noisy or ownerless checks as governance failures.\n* Treat AI settings, hooks, Skills, and MCP allowlists as part of the governance surface.\n\n## Rationale\n\nStandards written only as policy documents fail in predictable ways:\n\n* People forget them between writing and applying them.\n* New joiners do not know they exist.\n* Reviewers miss them because the rule is not surfaced at review time.\n* Drift accumulates silently between incidents.\n* Compliance becomes annual rather than continuous.\n\nEncoded governance fixes most of these:\n\n* The check runs every time, not only when remembered.\n* The default already complies, so most code is correct by construction.\n* Reviewers see violations as failed builds, not as policy memos.\n* Drift is detected when it happens.\n\nOrganization's AI strategy makes this particularly powerful. Claude Code settings, hooks, CLAUDE.md fragments, Skills, MCP allowlists, and pull-request templates are all places where governance can be encoded. The AI engineering standards decision is built explicitly around this idea: governance-as-code for modernization.\n\n## Implications\n\n* **Standards are paired with checks.** A written standard without an enforcement story is incomplete.\n* **Golden paths embody standards.** Templates, base images, and project scaffolds satisfy standards by default.\n* **CI runs the gate, not the auditor.** Continuous, deterministic checks beat periodic audits.\n* **Hooks catch local issues early.** Pre-commit and pre-push hooks reduce CI churn.\n* **IaC guardrails enforce cloud policies.** AWS Organisations SCPs, Terraform policy modules, and CI scans cover infrastructure rules.\n* **Claude Code is part of the governance surface.** Permission modes, hook scripts, Skills, MCP allowlists, and CLAUDE.md fragments enforce policy at AI authoring time.\n* **Pull-request templates make rules visible at the moment of review.**\n* **Written standards are kept current and small.** They are reference material, not the only enforcement.\n\n## Encoding Ladder\n\nNot every rule belongs in the same layer. Use this ladder when deciding how to govern a standard:\n\n| Layer | Use when | Example |\n| --- | --- | --- |\n| **Default** | The desired behaviour can be generated or scaffolded. | New services start with structured logging enabled. |\n| **Local check** | The issue can be caught before CI. | Pre-commit hook blocks committed secrets. |\n| **CI gate** | The rule is deterministic and important enough to block merge. | Dependency scan fails on critical vulnerabilities. |\n| **Platform guardrail** | The rule must hold even if a repository bypasses checks. | AWS SCP prevents public S3 buckets. |\n| **Review prompt** | The rule needs human judgement. | PR template asks whether an ADR is needed. |\n| **Written policy** | The rule needs explanation, exceptions, or legal framing. | AI data-classification policy. |\n\nGood governance chooses the lowest layer that reliably works. Over-encoding judgement creates friction; under-encoding deterministic rules creates drift.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Use the templates. They satisfy most standards out of the box.\n* When a check fails, treat it as feedback, not as paperwork. The standard exists for a reason; the check surfaces it.\n* If you find yourself bypassing a check repeatedly, raise the standard for review.\n\nFor platform and AI Engineering Enablement roles:\n\n* Own the encoded surface: templates, CI checks, hooks, IaC modules, Claude Code defaults, Skills, MCP allowlists.\n* Keep the written standards small, current, and linked to the executable artifacts that enforce them.\n* Provide a clear path for teams to propose changes.\n\nFor security, data, and compliance roles:\n\n* Express policy in the encoded layer where possible.\n* Distinguish \"must be enforced\" from \"must be reviewed\" from \"must be advised\".\n* Avoid pure-text policy where an executable expression is feasible.\n\nFor tech leads:\n\n* Treat encoded governance as a load-bearing part of the platform.\n* Push back on proposals to weaken checks without changing the underlying standard.\n\n## Anti-Patterns\n\n* **PDF policy.** Standards live only in documents that no engineer reads at review time.\n* **Manual audits.** Quarterly compliance sweeps that catch problems months after they were introduced.\n* **Bypass culture.** Skipped checks (`--no-verify`, \"approve and merge\") become routine because the checks were too noisy or too wrong.\n* **Encode everything.** Excessive automation that catches no real risk and creates significant friction.\n* **Encoded but unowned.** A CI check that fails for years with no one fixing the underlying issue or the check itself.\n* **AI bypass.** Claude Code used in modes that disable the encoded governance, \"just for this change\".\n* **Policy without defaults.** Standards exist but no template satisfies them, so every project must implement them from scratch.\n\n## Examples\n\nAligned with the principle:\n\n* The default container base image is Ubuntu with security defaults; teams inherit compliance without writing it.\n* A CI check blocks secrets committed in the repository.\n* A Claude Code hook prevents writing to specific paths or running certain commands without explicit approval.\n* A CLAUDE.md fragment encodes Organization's coding conventions and pull-request rules; Claude Code applies them when generating changes.\n* A pull-request template lists the readiness items, with links to the encoded checks.\n\nOut of alignment with the principle:\n\n* A 60-page policy PDF that nobody opens.\n* A CI gate that has been disabled for six months because it kept \"false-positiving\".\n* Claude Code used in YOLO mode, with no settings, no hooks, no CLAUDE.md, because \"we need to move fast\".\n* Standards that require teams to implement boilerplate to comply, with no template to lean on.\n\n## Discussion Prompts\n\nUse these prompts when reviewing standards:\n\n* Which standard are we relying on people to remember that could be encoded?\n* Which encoded check is noisy, unowned, or no longer aligned with the standard?\n* Which governance rule needs human judgement rather than automation?\n\n## Related Principles\n\n* [Design Principle: Standardize Before Diverging](standardize-before-diverging.html) - encoded defaults are the visible expression of standards.\n* [Operational Principle: Production Ready](production-ready.html) - readiness items are partly encoded.\n* [Operational Principle: Observable by Default](observable-by-default.html) - observability is enforced through templates and CI.\n* [Practice Principle: AI Output Must Be Governed](ai-output-must-be-governed.html) - AI output flows through the encoded governance layer.\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - encoded governance artifacts are themselves capabilities with owners.\n\n## Scope and Revisiting\n\nThis principle applies to Organization's engineering standards, security policies, infrastructure rules, AI configuration, and any policy that produces repeatable, machine-checkable expectations.\n\nIt does not apply to:\n\n* Standards that require human judgement (for example, architectural quality, design taste).\n* Personnel, legal, and commercial policies outside engineering.\n* One-off compliance exercises.\n\nThe principle should be revisited if:\n\n* The encoded surface becomes too rigid to evolve standards safely.\n* Bypass rates rise in ways that suggest the checks are wrong rather than the code.\n* A new class of standards emerges that does not fit the executable model.\n\n## Authoritative References\n\n* Organization AI Decisions Log, AI Engineering Standards: Governance-as-Code for Modernization ([AI Engineering Standards: Governance-as-Code for Modernization](../ai-decisions-log/ai-engineering-standards.html)).\n* Organization AI Decisions Log, AI Coding Policy: Human Accountability with Executable Controls ([AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html)).\n* AWS, [Service Control Policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html).\n* Open Policy Agent, [Policy as Code](https://www.openpolicyagent.org/).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-GOVERNANCE-AS-CODE", "status": "draft:gray", "title": "Practice Principle: Governance as Code", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "governance-as-code", "timetoread": "12 min", "excerpt": "Encode engineering standards, policies, and review rules as executable artifacts: CI checks, pre-commit hooks, IaC guardrails, Claude Code settings, CLAUDE.md fragments, Skills, MCP allowlists, and pull-request templates. Governance documented only in policy decks fails silently and gets discovered during incidents. Governance encoded in the platform fails loudly and gets fixed in pull requests. The principle is not 'no human review'; it is 'standards that can be enforced should be'.", "tags": "practices, governance, ci, hooks, claude-code, policy, automation", "logo": "assets/images/governance-as-code/logo.jpeg", "logo_credit": "Inspired by Organization's AI engineering standards and policy-as-code thinking", "icon": "assets/icons/governance-as-code.png"}, "tags": ["practices", "governance", "ci", "hooks", "claude-code", "policy", "automation"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization expresses engineering standards, policies, and review rules as **executable artifacts** wherever feasible: CI gates, hooks, infrastructure-as-code guardrails, Claude Code settings, CLAUDE.md fragments, Skills, MCP allowlists, repository configurations, and templates. The default is \"encode the rule\"; written policy is a complement, not a substitute. Human review remains essential for judgement; executable governance handles the well-defined, repeatable parts.\n\n## Statement\n\nFor every engineering standard, Organization asks:\n\n1. **Can this be checked automatically?** If yes, encode it.\n2. **Can the default behaviour satisfy it?** If yes, ship the default that way.\n3. **Does it need human judgement?** Keep it as a written standard and review check.\n\nThe result is governance that lives partly in code, partly in templates, partly in CLAUDE.md and AI configuration, and partly in written policy. The written part exists; it just stops being the only line of defence.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Encode what can be encoded. | Encode everything. |\n| Defaults satisfy most rules. | Defaults replace standards. |\n| Written policy still matters. | Written policy is the primary mechanism. |\n| Human review handles judgement. | Human review is bypassed. |\n| AI configuration is part of governance. | AI replaces governance. |\n\nThe principle expects a layered model: defaults, executable checks, written standards, human review. Each layer catches what the others cannot.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Decide which standards should be defaults, checks, guardrails, review prompts, or written policy.\n* Explain why encoded governance reduces drift without replacing judgement.\n* Recognise noisy or ownerless checks as governance failures.\n* Treat AI settings, hooks, Skills, and MCP allowlists as part of the governance surface.\n\n## Rationale\n\nStandards written only as policy documents fail in predictable ways:\n\n* People forget them between writing and applying them.\n* New joiners do not know they exist.\n* Reviewers miss them because the rule is not surfaced at review time.\n* Drift accumulates silently between incidents.\n* Compliance becomes annual rather than continuous.\n\nEncoded governance fixes most of these:\n\n* The check runs every time, not only when remembered.\n* The default already complies, so most code is correct by construction.\n* Reviewers see violations as failed builds, not as policy memos.\n* Drift is detected when it happens.\n\nOrganization's AI strategy makes this particularly powerful. Claude Code settings, hooks, CLAUDE.md fragments, Skills, MCP allowlists, and pull-request templates are all places where governance can be encoded. The AI engineering standards decision is built explicitly around this idea: governance-as-code for modernization.\n\n## Implications\n\n* **Standards are paired with checks.** A written standard without an enforcement story is incomplete.\n* **Golden paths embody standards.** Templates, base images, and project scaffolds satisfy standards by default.\n* **CI runs the gate, not the auditor.** Continuous, deterministic checks beat periodic audits.\n* **Hooks catch local issues early.** Pre-commit and pre-push hooks reduce CI churn.\n* **IaC guardrails enforce cloud policies.** AWS Organisations SCPs, Terraform policy modules, and CI scans cover infrastructure rules.\n* **Claude Code is part of the governance surface.** Permission modes, hook scripts, Skills, MCP allowlists, and CLAUDE.md fragments enforce policy at AI authoring time.\n* **Pull-request templates make rules visible at the moment of review.**\n* **Written standards are kept current and small.** They are reference material, not the only enforcement.\n\n## Encoding Ladder\n\nNot every rule belongs in the same layer. Use this ladder when deciding how to govern a standard:\n\n| Layer | Use when | Example |\n| --- | --- | --- |\n| **Default** | The desired behaviour can be generated or scaffolded. | New services start with structured logging enabled. |\n| **Local check** | The issue can be caught before CI. | Pre-commit hook blocks committed secrets. |\n| **CI gate** | The rule is deterministic and important enough to block merge. | Dependency scan fails on critical vulnerabilities. |\n| **Platform guardrail** | The rule must hold even if a repository bypasses checks. | AWS SCP prevents public S3 buckets. |\n| **Review prompt** | The rule needs human judgement. | PR template asks whether an ADR is needed. |\n| **Written policy** | The rule needs explanation, exceptions, or legal framing. | AI data-classification policy. |\n\nGood governance chooses the lowest layer that reliably works. Over-encoding judgement creates friction; under-encoding deterministic rules creates drift.\n\n## What This Means for Teams\n\nFor service teams:\n\n* Use the templates. They satisfy most standards out of the box.\n* When a check fails, treat it as feedback, not as paperwork. The standard exists for a reason; the check surfaces it.\n* If you find yourself bypassing a check repeatedly, raise the standard for review.\n\nFor platform and AI Engineering Enablement roles:\n\n* Own the encoded surface: templates, CI checks, hooks, IaC modules, Claude Code defaults, Skills, MCP allowlists.\n* Keep the written standards small, current, and linked to the executable artifacts that enforce them.\n* Provide a clear path for teams to propose changes.\n\nFor security, data, and compliance roles:\n\n* Express policy in the encoded layer where possible.\n* Distinguish \"must be enforced\" from \"must be reviewed\" from \"must be advised\".\n* Avoid pure-text policy where an executable expression is feasible.\n\nFor tech leads:\n\n* Treat encoded governance as a load-bearing part of the platform.\n* Push back on proposals to weaken checks without changing the underlying standard.\n\n## Anti-Patterns\n\n* **PDF policy.** Standards live only in documents that no engineer reads at review time.\n* **Manual audits.** Quarterly compliance sweeps that catch problems months after they were introduced.\n* **Bypass culture.** Skipped checks (`--no-verify`, \"approve and merge\") become routine because the checks were too noisy or too wrong.\n* **Encode everything.** Excessive automation that catches no real risk and creates significant friction.\n* **Encoded but unowned.** A CI check that fails for years with no one fixing the underlying issue or the check itself.\n* **AI bypass.** Claude Code used in modes that disable the encoded governance, \"just for this change\".\n* **Policy without defaults.** Standards exist but no template satisfies them, so every project must implement them from scratch.\n\n## Examples\n\nAligned with the principle:\n\n* The default container base image is Ubuntu with security defaults; teams inherit compliance without writing it.\n* A CI check blocks secrets committed in the repository.\n* A Claude Code hook prevents writing to specific paths or running certain commands without explicit approval.\n* A CLAUDE.md fragment encodes Organization's coding conventions and pull-request rules; Claude Code applies them when generating changes.\n* A pull-request template lists the readiness items, with links to the encoded checks.\n\nOut of alignment with the principle:\n\n* A 60-page policy PDF that nobody opens.\n* A CI gate that has been disabled for six months because it kept \"false-positiving\".\n* Claude Code used in YOLO mode, with no settings, no hooks, no CLAUDE.md, because \"we need to move fast\".\n* Standards that require teams to implement boilerplate to comply, with no template to lean on.\n\n## Discussion Prompts\n\nUse these prompts when reviewing standards:\n\n* Which standard are we relying on people to remember that could be encoded?\n* Which encoded check is noisy, unowned, or no longer aligned with the standard?\n* Which governance rule needs human judgement rather than automation?\n\n## Related Principles\n\n* [Design Principle: Standardize Before Diverging](standardize-before-diverging.html) - encoded defaults are the visible expression of standards.\n* [Operational Principle: Production Ready](production-ready.html) - readiness items are partly encoded.\n* [Operational Principle: Observable by Default](observable-by-default.html) - observability is enforced through templates and CI.\n* [Practice Principle: AI Output Must Be Governed](ai-output-must-be-governed.html) - AI output flows through the encoded governance layer.\n* [Organisation Principle: Capabilities Follow Ownership](capabilities-follow-ownership.html) - encoded governance artifacts are themselves capabilities with owners.\n\n## Scope and Revisiting\n\nThis principle applies to Organization's engineering standards, security policies, infrastructure rules, AI configuration, and any policy that produces repeatable, machine-checkable expectations.\n\nIt does not apply to:\n\n* Standards that require human judgement (for example, architectural quality, design taste).\n* Personnel, legal, and commercial policies outside engineering.\n* One-off compliance exercises.\n\nThe principle should be revisited if:\n\n* The encoded surface becomes too rigid to evolve standards safely.\n* Bypass rates rise in ways that suggest the checks are wrong rather than the code.\n* A new class of standards emerges that does not fit the executable model.\n\n## Authoritative References\n\n* Organization AI Decisions Log, AI Engineering Standards: Governance-as-Code for Modernization ([AI Engineering Standards: Governance-as-Code for Modernization](../ai-decisions-log/ai-engineering-standards.html)).\n* Organization AI Decisions Log, AI Coding Policy: Human Accountability with Executable Controls ([AI Coding Policy: Human Accountability with Executable Controls](../ai-decisions-log/ai-policy.html)).\n* AWS, [Service Control Policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html).\n* Open Policy Agent, [Policy as Code](https://www.openpolicyagent.org/).\n* John Lewis Partnership, [Engineering Principles](https://engineering-principles.jlp.engineering/).\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -613,26 +648,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

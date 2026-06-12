@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="first-targets.html">← First Targets: Where to Concentrate the First Wave of Simplification</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: First Targets — Where to Concentrate the First Wave\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nName the **five target groups** for the first wave of simplification:\ndelivery path fragmentation, legacy backend and integration surfaces,\nAWS account estate, legacy technology footprint, ownership hotspots.\nEach chosen for high delivery friction, high ownership confusion, high\noperational burden, high fragmentation, and a realistic path to\ncontainment, consolidation, or retirement. The post identifies\n*where*, not *what specifically* — concrete candidates come from\n[Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html).\n\n## Audience\n\n- **[Operating Model: How the Strategy Stays Alive Day to Day](operate.html) forum** sequencing the first wave.\n- **Domain and platform owners** of the five target areas.\n- **Engineering leadership** sizing the first-wave investment.\n- **Strategy owner** validating that first-wave focus matches\n  diagnosis.\n\n## Success criteria\n\n- [ ] Reader can name the five target groups and why each is in\n      scope.\n- [ ] Reader knows the criteria used to choose targets (friction,\n      confusion, burden, fragmentation, realism).\n- [ ] Reader knows what this post **does not** commit to: named\n      systems, dates, budgets, project plans.\n- [ ] Reader can trace from here to [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html) (the wave\n      plan).\n\n## Non-goals\n\n- Naming specific systems, services, or projects.\n- Sequencing the targets across waves (that's [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html)).\n- Allocating budget or staffing.\n\n## Open questions\n\n- Whether five is the right count, or whether the legacy backend\n  group should split into two.\n- How long the first wave should run before being re-scoped.\n\n## Decision log\n\n- **2026-05-20** — Chose **five target groups** at this layer.\n  Considered fewer with sharper edges; rejected because the diagnosis\n  identifies five distinct fragmentation surfaces and merging them\n  would obscure trade-offs.\n- **2026-05-20** — Deferred **named systems and dates** to\n  [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html). Considered including them here; rejected\n  because mixing \"where\" with \"what specifically\" would conflate two\n  decisions that benefit from separation.\n- **2026-05-20** — Included **realism criterion** (containment,\n  consolidation, retirement). Considered choosing targets purely by\n  impact; rejected because impact-only selection produces ambitious\n  waves that don't ship.\n\n## Sources\n\n- **Internal**\n  - [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html) — the fragmentation evidence.\n  - [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) — the policies these targets serve.\n  - [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) — the phases these targets land in.\n  - [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html) — the next-step wave plan.\n- **External**\n  - Lean / WIP-limit thinking — informs \"small number of well-chosen\n    targets\" framing.\n\n## Changelog\n\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: First Targets — Where to Concentrate the First Wave\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nName the **five target groups** for the first wave of simplification:\ndelivery path fragmentation, legacy backend and integration surfaces,\nAWS account estate, legacy technology footprint, ownership hotspots.\nEach chosen for high delivery friction, high ownership confusion, high\noperational burden, high fragmentation, and a realistic path to\ncontainment, consolidation, or retirement. The post identifies\n*where*, not *what specifically* — concrete candidates come from\n[Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html).\n\n## Audience\n\n- **[Operating Model: How the Strategy Stays Alive Day to Day](operate.html) forum** sequencing the first wave.\n- **Domain and platform owners** of the five target areas.\n- **Engineering leadership** sizing the first-wave investment.\n- **Strategy owner** validating that first-wave focus matches\n  diagnosis.\n\n## Success criteria\n\n- [ ] Reader can name the five target groups and why each is in\n      scope.\n- [ ] Reader knows the criteria used to choose targets (friction,\n      confusion, burden, fragmentation, realism).\n- [ ] Reader knows what this post **does not** commit to: named\n      systems, dates, budgets, project plans.\n- [ ] Reader can trace from here to [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html) (the wave\n      plan).\n\n## Non-goals\n\n- Naming specific systems, services, or projects.\n- Sequencing the targets across waves (that's [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html)).\n- Allocating budget or staffing.\n\n## Open questions\n\n- Whether five is the right count, or whether the legacy backend\n  group should split into two.\n- How long the first wave should run before being re-scoped.\n\n## Decision log\n\n- **2026-05-20** — Chose **five target groups** at this layer.\n  Considered fewer with sharper edges; rejected because the diagnosis\n  identifies five distinct fragmentation surfaces and merging them\n  would obscure trade-offs.\n- **2026-05-20** — Deferred **named systems and dates** to\n  [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html). Considered including them here; rejected\n  because mixing \"where\" with \"what specifically\" would conflate two\n  decisions that benefit from separation.\n- **2026-05-20** — Included **realism criterion** (containment,\n  consolidation, retirement). Considered choosing targets purely by\n  impact; rejected because impact-only selection produces ambitious\n  waves that don't ship.\n\n## Sources\n\n- **Internal**\n  - [Diagnosis: Inherited Complexity, Three Eras, and Structural Fragmentation](diagnosis.html) — the fragmentation evidence.\n  - [Policy: Nine Core Policies, Five Decision Rules, and the Things to Refuse](policy.html) — the policies these targets serve.\n  - [Roadmap: Six Phases from Visibility to Material Legacy Retirement](roadmap.html) — the phases these targets land in.\n  - [Prioritization and Waves: Scoring Method and the First Wave Plan](prioritization.html) — the next-step wave plan.\n- **External**\n  - Lean / WIP-limit thinking — informs \"small number of well-chosen\n    targets\" framing.\n\n## Changelog\n\n- **2026-05-20** — Filled in during second-pass spec rewrite.\n  *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

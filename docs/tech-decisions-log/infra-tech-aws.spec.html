@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="infra-tech-aws.html">← Public Cloud: Consolidate on AWS via AVIV Group Contract</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Public Cloud — Consolidate on AWS via AVIV Group Contract\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nCommit Organization to **AWS as its strategic public cloud** and consolidate\nbackend workloads under AVIV Group's existing AWS commercial contract.\nMake three distinct choices visible: provider (AWS), commercial\n(inheriting AVIV's contract), operating-model (delegate non-differentiating\ncross-cutting work to AVIV's central functions). Each is separately\nrevisitable.\n\n## Audience\n\n- **Engineering leadership** evaluating cloud strategy.\n- **Architecture group** ensuring workload-level architecture stays\n  owned by Organization.\n- **FinOps and procurement** seeing where the commercial line sits.\n- **Workload teams** that need to know workload-level decisions stay\n  with them.\n\n## Success criteria\n\n- [ ] Reader can separate **provider**, **commercial**, and\n      **operating-model** choices — three distinct ideas, not one.\n- [ ] Reader knows Organization does not negotiate its own AWS master\n      contract.\n- [ ] Reader knows workload architecture, security posture, and\n      product roadmap stay with Organization.\n- [ ] Reader can trace this as the starting point that\n      [AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months](infra-tech-stack-aws-foundation.html) and downstream ADRs build on.\n- [ ] The post stays focused as an ADR and does not absorb service\n      selection, FinOps process, or workload-design guidance.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Multi-cloud strategy or future cloud-provider changes.\n- Workload-level architecture, security posture, or service\n  decisions.\n- Defining what \"non-differentiating cross-cutting work\" includes in\n  full detail.\n- Committing Organization to follow every future AVIV Group cloud decision.\n\n## Open questions\n\n- What signals would trigger an Organization-specific commercial\n  relationship outside AVIV's contract.\n- How the FinOps boundary works in practice (AVIV baseline vs\n  workload-level decisions).\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around provider choice,\n  commercial model, responsibility boundary, exception criteria, and\n  revisit triggers. Kept terminology as an appendix instead of inline\n  explanation.\n- **2026-05-20** — Chose **AWS** as the strategic public cloud.\n  Considered multi-cloud and Azure; rejected because the inherited\n  AWS surface already exists and a parallel cloud would multiply cost\n  and complexity for no clear product gain.\n- **2026-05-20** — Inherited **AVIV Group's commercial contract**\n  rather than negotiating independently. Considered an independent\n  Organization contract; rejected because AVIV's scale unlocks better\n  unit costs and EDP terms that an independent Organization could not.\n- **2026-05-20** — Delegated **non-differentiating cross-cutting\n  work** (procurement, baseline FinOps, AWS relationship) to AVIV\n  Group. Considered building all of these in-house; rejected because\n  they are not where Organization creates product value.\n\n## Sources\n\n- **Internal**\n  - [AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months](infra-tech-stack-aws-foundation.html) — the foundation decision\n    that builds on this commercial choice.\n  - [AWS Networking: Inherit Central AVIV Group Tooling, Simplify Deliberately](infra-tech-stack-networking.html) — the networking counterpart.\n  - [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html) — the compute target.\n  - [Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone](infra-tech-stack-messaging.html) — the messaging target on MSK.\n- **External**\n  - AWS Enterprise Discount Program and consolidated billing model.\n  - AVIV Group AWS commercial agreement (referenced, not public).\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure\n  and moved cloud vocabulary to an end appendix. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  still `draft`. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Public Cloud — Consolidate on AWS via AVIV Group Contract\n\n> Filled in during the second pass over backfilled specs. Status `draft`;\n> keep this spec current with substantive post changes.\n\n## Intent\n\nCommit Organization to **AWS as its strategic public cloud** and consolidate\nbackend workloads under AVIV Group's existing AWS commercial contract.\nMake three distinct choices visible: provider (AWS), commercial\n(inheriting AVIV's contract), operating-model (delegate non-differentiating\ncross-cutting work to AVIV's central functions). Each is separately\nrevisitable.\n\n## Audience\n\n- **Engineering leadership** evaluating cloud strategy.\n- **Architecture group** ensuring workload-level architecture stays\n  owned by Organization.\n- **FinOps and procurement** seeing where the commercial line sits.\n- **Workload teams** that need to know workload-level decisions stay\n  with them.\n\n## Success criteria\n\n- [ ] Reader can separate **provider**, **commercial**, and\n      **operating-model** choices — three distinct ideas, not one.\n- [ ] Reader knows Organization does not negotiate its own AWS master\n      contract.\n- [ ] Reader knows workload architecture, security posture, and\n      product roadmap stay with Organization.\n- [ ] Reader can trace this as the starting point that\n      [AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months](infra-tech-stack-aws-foundation.html) and downstream ADRs build on.\n- [ ] The post stays focused as an ADR and does not absorb service\n      selection, FinOps process, or workload-design guidance.\n- [ ] Vocabulary appears only as appendix reference material and does\n      not interrupt the decision flow.\n\n## Non-goals\n\n- Multi-cloud strategy or future cloud-provider changes.\n- Workload-level architecture, security posture, or service\n  decisions.\n- Defining what \"non-differentiating cross-cutting work\" includes in\n  full detail.\n- Committing Organization to follow every future AVIV Group cloud decision.\n\n## Open questions\n\n- What signals would trigger an Organization-specific commercial\n  relationship outside AVIV's contract.\n- How the FinOps boundary works in practice (AVIV baseline vs\n  workload-level decisions).\n\n## Decision log\n\n- **2026-05-20** — Refocused the post around provider choice,\n  commercial model, responsibility boundary, exception criteria, and\n  revisit triggers. Kept terminology as an appendix instead of inline\n  explanation.\n- **2026-05-20** — Chose **AWS** as the strategic public cloud.\n  Considered multi-cloud and Azure; rejected because the inherited\n  AWS surface already exists and a parallel cloud would multiply cost\n  and complexity for no clear product gain.\n- **2026-05-20** — Inherited **AVIV Group's commercial contract**\n  rather than negotiating independently. Considered an independent\n  Organization contract; rejected because AVIV's scale unlocks better\n  unit costs and EDP terms that an independent Organization could not.\n- **2026-05-20** — Delegated **non-differentiating cross-cutting\n  work** (procurement, baseline FinOps, AWS relationship) to AVIV\n  Group. Considered building all of these in-house; rejected because\n  they are not where Organization creates product value.\n\n## Sources\n\n- **Internal**\n  - [AWS Foundation: Inherit Central AVIV Group Tooling for 6-12 Months](infra-tech-stack-aws-foundation.html) — the foundation decision\n    that builds on this commercial choice.\n  - [AWS Networking: Inherit Central AVIV Group Tooling, Simplify Deliberately](infra-tech-stack-networking.html) — the networking counterpart.\n  - [Compute Infrastructure: Standardize on Docker, ECS Fargate, and Ubuntu Base Images](infra-tech-stack-compute.html) — the compute target.\n  - [Messaging Infrastructure: Standardize on Amazon MSK as the Kafka Backbone](infra-tech-stack-messaging.html) — the messaging target on MSK.\n- **External**\n  - AWS Enterprise Discount Program and consolidated billing model.\n  - AVIV Group AWS commercial agreement (referenced, not public).\n\n## Changelog\n\n- **2026-05-20** — Rewrote `index.md` into the shorter ADR structure\n  and moved cloud vocabulary to an end appendix. *(Zeljko,\n  AI-mediated session)*\n- **2026-05-20** — Filled in during second-pass spec rewrite. Status\n  still `draft`. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Initial spec created as part of journal-wide rollout.\n  *(automated backfill)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

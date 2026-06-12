@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-05-28
+revised: 2026-06-12
 ---
 
 # Spec: AI Will Do the Heavy Lifting. You Still Need to Lead
@@ -39,6 +39,14 @@ Readers should leave with a practical self-assessment frame and a short list of 
 - A claim that all legacy architecture skills should be abandoned immediately.
 - A proof that the illustrative scenarios happened in named organizations.
 
+## Modalities
+
+Which docs this spec drives beyond the main article (`index.md`).
+
+- [x] `summary.md` — management summary
+- [x] `dialog.md` — two-host dialog
+- [x] `comics.md` — explainer comic
+
 ## Open questions
 
 - Should this post later link to more concrete internal records about AI governance, AI engineering standards, or architecture operating models?
@@ -68,6 +76,9 @@ Readers should leave with a practical self-assessment frame and a short list of 
 
 ## Changelog
 
+- **2026-06-12** — Added Modalities section; the spec now drives `summary.md`,
+  `dialog.md`, and `comics.md` alongside the article. *(Zeljko, AI-mediated
+  session)*
 - **2026-05-28** — Elaborated the opening, judgment section, and immediate practices to make the article more actionable. *(Zeljko, AI-mediated session)*
 - **2026-05-28** — Added evolving-practice framing for agency, judgment, and persuasion as AI capabilities develop. *(Zeljko, AI-mediated session)*
 - **2026-05-28** — Added contrast examples for what happens when leaders lack agency, judgment, or persuasion. *(Zeljko, AI-mediated session)*

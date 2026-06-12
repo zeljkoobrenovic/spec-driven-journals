@@ -68,11 +68,23 @@ The templates expect the post payload shape to remain:
 {
   "meta": {},
   "tags": [],
-  "blocks": [
-    {"type": "markdown", "content": "..."}
+  "modalities": [
+    {
+      "key": "index",
+      "label": "Article",
+      "meta": {},
+      "blocks": [
+        {"type": "markdown", "content": "..."}
+      ]
+    }
   ]
 }
 ```
+
+Each modality is one doc driven by the post's spec (`index.md` = the
+`index` modality, plus optional `summary.md` / `dialog.md` / `comics.md`
+siblings — see `_MODALITIES` in `build.py`). A plain post has exactly one
+modality and renders without a tab bar.
 
 When adding a custom block type:
 

@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -289,7 +323,8 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="backend-guild.html">← Backend Guild as a Cross-Team Community of Practice</a><span class="nav-right"></span></nav>
     </footer>
@@ -298,7 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {}, "tags": [], "blocks": [{"type": "markdown", "content": "# Spec: Backend Guild as a Cross-Team Community of Practice\n\n> Backfilled after the post. Captures the contract this record holds the\n> organisation to, so future revisions stay anchored.\n\n## Intent\n\nEstablish a Backend Guild as a standing community of practice for backend and\ndistributed-systems engineers across Organization teams, brands, and domains —\nwithout turning it into a governance body. The record should make the\nguild's purpose, mandate, and resourcing legible enough that any engineer can\ndecide whether and how to participate.\n\n## Audience\n\n- **Backend engineers** across teams, brands, and domains who might join,\n  contribute, or pull from the guild's golden paths.\n- **Engineering managers and tech leads** trying to understand what the guild\n  is and isn't responsible for relative to their team.\n- **Architecture group + Chief Architect** as the receiving end of guild\n  advice and proposals.\n- **AI agents** picking up the file to extend or cross-link from other\n  foundations.\n\n## Success criteria\n\n- [ ] Reader can state the guild's purpose, composition, mandate, and\n      resources in their own words.\n- [ ] Reader can distinguish the guild from a delivery team, an architecture\n      review board, and a procurement function.\n- [ ] Reader knows the guild is advisory and contributory, not decisional.\n- [ ] Reader can locate the Slack channel, repos, and AWS space (or\n      understand they exist and are dedicated).\n- [ ] Reader recognises the parallel shape with [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html),\n      [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html), and [GenAI Guild as a Cross-Team Generative AI Consortium](genai-guild.html) without confusing scopes.\n\n## Non-goals\n\n- Defining backend golden paths themselves. The record establishes the body\n  that owns them, not the paths.\n- Creating an approval gate for backend changes in delivery teams.\n- Standardising backend tech choices across all teams.\n- Replacing the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) as the venue for\n  cross-team architecture advice.\n\n## Open questions\n\n- Concrete naming for the Slack channel and the AWS space — left to\n  bootstrap.\n- How the guild interacts with domain-specific architecture working groups\n  (overlap or hand-off?).\n- Whether external thought-leadership coordination should be its own record\n  later.\n\n## Decision log\n\n- **2026-05-20** — Kept the guild **advisory and contributory**, not a\n  governance body. Considered a decision-making board to give it teeth;\n  rejected because it would duplicate the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html)\n  and undermine team-owned decisions.\n- **2026-05-20** — Scoped the guild to **backend and distributed\n  systems**. Considered a broader \"platform\" scope including\n  infrastructure and devex; rejected because it would blur the boundary\n  with the platform team and dilute the guild's centre of gravity.\n- **2026-05-20** — Made guild membership **open to every Aviver**.\n  Considered a fixed roster for accountability; rejected because closed\n  membership turns guilds into ad-hoc architecture boards in practice.\n- **2026-05-20** — Provisioned a **dedicated AWS account or space**.\n  Considered shared sandbox accounts; rejected because reference\n  implementations need owned space and shared sandboxes blur ownership.\n- **2026-05-20** — Adopted a **bi-weekly cadence** rather than monthly or\n  weekly. Bi-weekly is the rhythm most likely to sustain without becoming\n  a calendar burden or losing momentum.\n\n## Sources\n\n- **Internal**\n  - [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html) — companion guild record; same shape, different\n    scope.\n  - [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html) — companion guild record.\n  - [GenAI Guild as a Cross-Team Generative AI Consortium](genai-guild.html) — companion guild record with a four-pillar mandate.\n  - [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) — the forum where guild proposals\n    surface as ADRs. Boundary between the guild (community of practice)\n    and the AAF (advice ritual) was checked against this record.\n  - [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html) — the workflow this spec was authored\n    through.\n- **External**\n  - Spotify's guild/chapter/tribe model — read as inspiration, not\n    template. The \"advisory only\" framing here is deliberately distinct\n    from Spotify's \"chapter lead\" authority.\n  - Andrew Harmel-Law, *Scaling the Practice of Architecture,\n    Conversationally* — informs the advice-process framing the guild\n    operates inside.\n\n## Changelog\n\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}</script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Backend Guild as a Cross-Team Community of Practice\n\n> Backfilled after the post. Captures the contract this record holds the\n> organisation to, so future revisions stay anchored.\n\n## Intent\n\nEstablish a Backend Guild as a standing community of practice for backend and\ndistributed-systems engineers across Organization teams, brands, and domains —\nwithout turning it into a governance body. The record should make the\nguild's purpose, mandate, and resourcing legible enough that any engineer can\ndecide whether and how to participate.\n\n## Audience\n\n- **Backend engineers** across teams, brands, and domains who might join,\n  contribute, or pull from the guild's golden paths.\n- **Engineering managers and tech leads** trying to understand what the guild\n  is and isn't responsible for relative to their team.\n- **Architecture group + Chief Architect** as the receiving end of guild\n  advice and proposals.\n- **AI agents** picking up the file to extend or cross-link from other\n  foundations.\n\n## Success criteria\n\n- [ ] Reader can state the guild's purpose, composition, mandate, and\n      resources in their own words.\n- [ ] Reader can distinguish the guild from a delivery team, an architecture\n      review board, and a procurement function.\n- [ ] Reader knows the guild is advisory and contributory, not decisional.\n- [ ] Reader can locate the Slack channel, repos, and AWS space (or\n      understand they exist and are dedicated).\n- [ ] Reader recognises the parallel shape with [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html),\n      [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html), and [GenAI Guild as a Cross-Team Generative AI Consortium](genai-guild.html) without confusing scopes.\n\n## Non-goals\n\n- Defining backend golden paths themselves. The record establishes the body\n  that owns them, not the paths.\n- Creating an approval gate for backend changes in delivery teams.\n- Standardising backend tech choices across all teams.\n- Replacing the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) as the venue for\n  cross-team architecture advice.\n\n## Open questions\n\n- Concrete naming for the Slack channel and the AWS space — left to\n  bootstrap.\n- How the guild interacts with domain-specific architecture working groups\n  (overlap or hand-off?).\n- Whether external thought-leadership coordination should be its own record\n  later.\n\n## Decision log\n\n- **2026-05-20** — Kept the guild **advisory and contributory**, not a\n  governance body. Considered a decision-making board to give it teeth;\n  rejected because it would duplicate the [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html)\n  and undermine team-owned decisions.\n- **2026-05-20** — Scoped the guild to **backend and distributed\n  systems**. Considered a broader \"platform\" scope including\n  infrastructure and devex; rejected because it would blur the boundary\n  with the platform team and dilute the guild's centre of gravity.\n- **2026-05-20** — Made guild membership **open to every Aviver**.\n  Considered a fixed roster for accountability; rejected because closed\n  membership turns guilds into ad-hoc architecture boards in practice.\n- **2026-05-20** — Provisioned a **dedicated AWS account or space**.\n  Considered shared sandbox accounts; rejected because reference\n  implementations need owned space and shared sandboxes blur ownership.\n- **2026-05-20** — Adopted a **bi-weekly cadence** rather than monthly or\n  weekly. Bi-weekly is the rhythm most likely to sustain without becoming\n  a calendar burden or losing momentum.\n\n## Sources\n\n- **Internal**\n  - [Frontend Guild as a Cross-Team Web Consortium](frontend-guild.html) — companion guild record; same shape, different\n    scope.\n  - [Mobile Guild as a Cross-Team Mobile Consortium](mobile-guild.html) — companion guild record.\n  - [GenAI Guild as a Cross-Team Generative AI Consortium](genai-guild.html) — companion guild record with a four-pillar mandate.\n  - [Architecture Advisory Forum as a Standing Advice Ritual](architecture-advisory-forum.html) — the forum where guild proposals\n    surface as ADRs. Boundary between the guild (community of practice)\n    and the AAF (advice ritual) was checked against this record.\n  - [AI-Mediated Authoring as the Default Way to Edit This Repository](ai-mediated-authoring.html) — the workflow this spec was authored\n    through.\n- **External**\n  - Spotify's guild/chapter/tribe model — read as inspiration, not\n    template. The \"advisory only\" framing here is deliberately distinct\n    from Spotify's \"chapter lead\" authority.\n  - Andrew Harmel-Law, *Scaling the Practice of Architecture,\n    Conversationally* — informs the advice-process framing the guild\n    operates inside.\n\n## Changelog\n\n- **2026-05-20** — Retrofitted to 7-section template (added Decision log\n  and Sources). *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Reset status to `draft`. Specs were backfilled and later cleaned up; keep them current during substantive post edits. *(Zeljko, AI-mediated session)*\n- **2026-05-20** — Backfilled spec after the post existed. *(Zeljko,\n  AI-mediated session)*\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -612,26 +647,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>

@@ -149,6 +149,40 @@
             background-color: var(--tag-bg);
         }
 
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -290,7 +324,8 @@
         <a href="assets/images/evolutionary-systems/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/evolutionary-systems/logo.jpeg" alt=""></a>
         <p class="logo-credit">Inspired by the JLP Engineering Principles 'Evolutionary Systems' principle</p>
     </header>
-    <article id="content"></article>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="index.html">ORG Engineering Principles</a><span class="nav-right"><a class="nav-prev" href="small-and-simple.html" title="Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="smarts-in-the-nodes.html" title="Design Principle: Smarts in the Nodes, not the Network">Next →</a></span></nav>
     </footer>
@@ -299,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-EVOLUTIONARY-SYSTEMS", "status": "draft:gray", "title": "Design Principle: Evolutionary Systems", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "evolutionary-systems", "timetoread": "12 min", "excerpt": "Design Organization systems for change. The next change is closer and more probable than the next clean rewrite. Architectures should enable small, safe, incremental changes throughout their lifecycle, not optimise for a fixed end-state that will never quite arrive. This shows up as backwards-compatible contracts, additive schema changes, feature flags, well-defined seams, reversible deploys, and a strong bias against grand re-architectures. Evolutionary systems are how Organization makes long-term progress without big-bang risk.", "tags": "design, evolution, change, refactoring, fitness-functions", "logo": "assets/images/evolutionary-systems/logo.jpeg", "logo_credit": "Inspired by the JLP Engineering Principles 'Evolutionary Systems' principle", "icon": "assets/icons/evolutionary-systems.png"}, "tags": ["design", "evolution", "change", "refactoring", "fitness-functions"], "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization systems should be designed and operated to support **easy, incremental change** for as long as they live. The next change matters more than the next rewrite. Contracts, schemas, deployments, and integrations should be shaped so that a small change can be made safely, observed in production, and reversed if necessary. Big-bang re-architectures are a sign that evolution failed earlier, not a celebrated norm.\n\n## Statement\n\nOrganization systems should be:\n\n* Easy to change in small steps.\n* Hard to break with a single deploy.\n* Reversible when a change is wrong.\n* Backwards-compatible across contracts and schemas wherever feasible.\n* Continuously refactored, not periodically rewritten.\n\nA system that is *only* easy to change at the start of its life is not evolutionary. A system that requires a programme of work to change after two years has stopped being evolutionary, regardless of how clean its diagram looks.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Optimise for the next change. | Avoid all big decisions. |\n| Prefer additive, backwards-compatible changes. | Never break a contract. |\n| Refactor continuously. | Refactor for its own sake. |\n| Reversibility is a property of the change pipeline. | Reversibility means manual rollback scripts. |\n| Big-bang re-architecture is a smell. | Re-architecture is forbidden. |\n\nEvolutionary design is a way of thinking about *future* changes. It is not a license to defer every hard decision indefinitely.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Design changes as small, observable, reversible steps.\n* Recognise when a migration plan has become a big-bang rewrite.\n* Use contracts, schemas, feature flags, and fitness signals to support evolution.\n* Explain why continuous refactoring is cheaper than periodic rescue projects.\n\n## Rationale\n\nThe most reliable fact about a system in production is that someone will need to change it. They will need to change it because of:\n\n* New product behaviour.\n* New regulatory or compliance requirements.\n* New scale or cost constraints.\n* New security expectations.\n* A failed assumption that the original design baked in.\n\nIf the cost of each change is high, two things happen. First, the team stops making small changes and waits for \"the next refactor\". Second, the refactor never quite arrives, because the system has grown around the friction.\n\nEvolutionary design lowers the cost of each step. It accepts that the system in three years' time is going to differ from the one in production today, and prefers to get there by many small, observable steps rather than one large unobservable jump.\n\nThis principle also lines up with how Organization's wider strategy is structured. Inheriting AVIV Group's tooling and then simplifying over 6-12 months is an evolutionary move. Taking the AVIV web stack as a starting point and reserving the right to diverge is evolutionary. The AI strategy's \"incremental over big-bang\" rule is the same principle, expressed differently.\n\n## Implications\n\n* **Contracts are evolved, not replaced.** Add fields, support both shapes during a transition, retire old shapes once consumers have moved.\n* **Schemas use additive migrations.** Add columns; backfill; deprecate old columns; remove later. Never combine \"add\", \"rename\", and \"drop\" into one deployment.\n* **Feature flags are part of the architecture.** They make change a runtime decision rather than a deployment event.\n* **Deploys are reversible.** Rolling back a deploy should not require a database restore.\n* **Strangler patterns over rewrites.** Replace systems by routing traffic away from them piece by piece.\n* **Fitness functions guard against regression.** Performance, error rate, security, and architectural properties should be measured continuously, not audited once.\n* **Refactoring is part of the work, not a separate quarter.** Every change leaves the affected area at least as clean as it found it.\n\n## Evolutionary Design Checklist\n\nA proposed change is evolutionary when it can move through production in controlled steps. Ask:\n\n* Can old and new behaviour run side by side for at least one deploy?\n* Can the change be enabled for a subset of users, traffic, tenants, or consumers?\n* Can rollback happen without restoring a database from backup?\n* Are contract and schema changes additive before they are destructive?\n* Is the migration observable through metrics, logs, traces, and business signals?\n* Is there a clear retirement plan for flags, adapters, compatibility layers, and old paths?\n* Does each step deliver learning or value, rather than only preparing for a future cutover?\n\nIf the plan has only two states - \"old system\" and \"new system\" - it is probably a rewrite plan, not an evolutionary plan.\n\n## What This Means for Teams\n\nFor service teams:\n\n* When changing a published contract, support old and new in parallel for at least one deploy.\n* Treat database migrations as a sequence of additive, reversible steps.\n* Wrap risky changes in feature flags with a clear off-switch and a clear retirement date.\n* Use canary or progressive deploys where the platform supports them.\n* Pay refactoring cost continuously rather than letting it accumulate.\n\nFor platform and architecture roles:\n\n* Make rollback and progressive deploy the default in golden paths.\n* Provide patterns for additive schema changes, contract versioning, and feature flagging.\n* Track architectural fitness signals - error rate, latency, change failure rate, lead time - as first-class outputs of the platform.\n\nFor tech leads:\n\n* Push back on changes that bundle \"fix\", \"refactor\", and \"rewrite\" into a single deploy.\n* Plan migrations in slices with clear, observable milestones.\n* Treat any decision that says \"we'll fix it in the rewrite\" as a red flag.\n\n## Anti-Patterns\n\n* **The Big Rewrite.** A new system replaces an old one in a single cutover, after a long parallel build, with limited production feedback until the end.\n* **Breaking change as default.** Every consumer is forced to update at the same time because the producer changed the contract.\n* **One-way migration.** A deploy that cannot be rolled back without data loss or a restore.\n* **Refactor quarter.** A long pause in feature work to \"clean things up\", followed by a return to the same patterns.\n* **Feature flag graveyard.** Hundreds of unused flags accumulating, hiding the real control flow.\n* **Architecture as a frozen artifact.** A diagram approved once and not updated as the system evolves.\n* **\"We'll fix it in the rewrite.\"** Used as a license to add the very debt the rewrite is supposed to remove.\n\n## Examples\n\nAligned with the principle:\n\n* Adding a new Kafka event type while keeping the old one supported until consumers migrate.\n* Migrating from one library to another via an internal adapter that lets services move one at a time.\n* Splitting a large service by extracting one route at a time behind a feature flag.\n* Consolidating AWS accounts gradually rather than re-platforming everything in one cutover.\n\nOut of alignment with the principle:\n\n* A \"v2\" service rebuilt next to \"v1\" for nine months and switched over in a single weekend.\n* A schema change that renames and drops columns in the same migration.\n* A library upgrade that requires every team to deploy on the same day.\n* A re-architecture proposal whose only success criterion is \"v2 is live\".\n\n## Discussion Prompts\n\nUse these prompts in design reviews:\n\n* What is the smallest safe step that teaches us something useful?\n* Which part of the plan is reversible, and which part is not?\n* What compatibility layer, flag, or metric needs a retirement date?\n\n## Related Principles\n\n* [Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)](small-and-simple.html) - small pieces are individually easier to evolve.\n* [Design Principle: Standardize Before Diverging](standardize-before-diverging.html) - shared defaults give you safe seams to evolve along.\n* [Organisation Principle: Inherit, Then Simplify](inherit-then-simplify.html) - inherited estates become simpler through evolution, not replacement.\n* [Operational Principle: Production Ready](production-ready.html) - evolutionary change depends on production feedback.\n\n## Scope and Revisiting\n\nThis principle applies to all Organization-owned systems: backend services, web and mobile applications, data and integration pipelines, internal platforms, and shared libraries.\n\nIt does not apply to genuinely throwaway prototypes, short-lived experiments, or one-off scripts; though even there, a habit of reversibility usually pays off.\n\nThe principle should be revisited if:\n\n* The platform stops supporting safe, progressive deploys or rollback.\n* The cost of running parallel versions of a contract or schema becomes unsustainable.\n* A radical architectural shift (for example, a regulatory event) requires a deliberate, exceptional big-bang change.\n\n## Authoritative References\n\n* Neal Ford, Rebecca Parsons, Patrick Kua, *Building Evolutionary Architectures*, O'Reilly.\n* Martin Fowler, [Strangler Fig Application](https://martinfowler.com/bliki/StranglerFigApplication.html).\n* John Lewis Partnership, [Evolutionary Systems Principle](https://engineering-principles.jlp.engineering/).\n* DORA, [Four Key Metrics](https://dora.dev/research/).\n"}]}</script>
+<script id="data" type="application/json">{"meta": {"id": "ORG-PRIN-EVOLUTIONARY-SYSTEMS", "status": "draft:gray", "title": "Design Principle: Evolutionary Systems", "date": "2026-05-16", "author": "Organization Tech Strategy", "permalink": "evolutionary-systems", "timetoread": "12 min", "excerpt": "Design Organization systems for change. The next change is closer and more probable than the next clean rewrite. Architectures should enable small, safe, incremental changes throughout their lifecycle, not optimise for a fixed end-state that will never quite arrive. This shows up as backwards-compatible contracts, additive schema changes, feature flags, well-defined seams, reversible deploys, and a strong bias against grand re-architectures. Evolutionary systems are how Organization makes long-term progress without big-bang risk.", "tags": "design, evolution, change, refactoring, fitness-functions", "logo": "assets/images/evolutionary-systems/logo.jpeg", "logo_credit": "Inspired by the JLP Engineering Principles 'Evolutionary Systems' principle", "icon": "assets/icons/evolutionary-systems.png"}, "tags": ["design", "evolution", "change", "refactoring", "fitness-functions"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Organization systems should be designed and operated to support **easy, incremental change** for as long as they live. The next change matters more than the next rewrite. Contracts, schemas, deployments, and integrations should be shaped so that a small change can be made safely, observed in production, and reversed if necessary. Big-bang re-architectures are a sign that evolution failed earlier, not a celebrated norm.\n\n## Statement\n\nOrganization systems should be:\n\n* Easy to change in small steps.\n* Hard to break with a single deploy.\n* Reversible when a change is wrong.\n* Backwards-compatible across contracts and schemas wherever feasible.\n* Continuously refactored, not periodically rewritten.\n\nA system that is *only* easy to change at the start of its life is not evolutionary. A system that requires a programme of work to change after two years has stopped being evolutionary, regardless of how clean its diagram looks.\n\n## How to Read This Principle\n\n| What it says | What it does **not** say |\n| --- | --- |\n| Optimise for the next change. | Avoid all big decisions. |\n| Prefer additive, backwards-compatible changes. | Never break a contract. |\n| Refactor continuously. | Refactor for its own sake. |\n| Reversibility is a property of the change pipeline. | Reversibility means manual rollback scripts. |\n| Big-bang re-architecture is a smell. | Re-architecture is forbidden. |\n\nEvolutionary design is a way of thinking about *future* changes. It is not a license to defer every hard decision indefinitely.\n\n## How to Apply This Principle\n\nUse this principle to:\n\n* Design changes as small, observable, reversible steps.\n* Recognise when a migration plan has become a big-bang rewrite.\n* Use contracts, schemas, feature flags, and fitness signals to support evolution.\n* Explain why continuous refactoring is cheaper than periodic rescue projects.\n\n## Rationale\n\nThe most reliable fact about a system in production is that someone will need to change it. They will need to change it because of:\n\n* New product behaviour.\n* New regulatory or compliance requirements.\n* New scale or cost constraints.\n* New security expectations.\n* A failed assumption that the original design baked in.\n\nIf the cost of each change is high, two things happen. First, the team stops making small changes and waits for \"the next refactor\". Second, the refactor never quite arrives, because the system has grown around the friction.\n\nEvolutionary design lowers the cost of each step. It accepts that the system in three years' time is going to differ from the one in production today, and prefers to get there by many small, observable steps rather than one large unobservable jump.\n\nThis principle also lines up with how Organization's wider strategy is structured. Inheriting AVIV Group's tooling and then simplifying over 6-12 months is an evolutionary move. Taking the AVIV web stack as a starting point and reserving the right to diverge is evolutionary. The AI strategy's \"incremental over big-bang\" rule is the same principle, expressed differently.\n\n## Implications\n\n* **Contracts are evolved, not replaced.** Add fields, support both shapes during a transition, retire old shapes once consumers have moved.\n* **Schemas use additive migrations.** Add columns; backfill; deprecate old columns; remove later. Never combine \"add\", \"rename\", and \"drop\" into one deployment.\n* **Feature flags are part of the architecture.** They make change a runtime decision rather than a deployment event.\n* **Deploys are reversible.** Rolling back a deploy should not require a database restore.\n* **Strangler patterns over rewrites.** Replace systems by routing traffic away from them piece by piece.\n* **Fitness functions guard against regression.** Performance, error rate, security, and architectural properties should be measured continuously, not audited once.\n* **Refactoring is part of the work, not a separate quarter.** Every change leaves the affected area at least as clean as it found it.\n\n## Evolutionary Design Checklist\n\nA proposed change is evolutionary when it can move through production in controlled steps. Ask:\n\n* Can old and new behaviour run side by side for at least one deploy?\n* Can the change be enabled for a subset of users, traffic, tenants, or consumers?\n* Can rollback happen without restoring a database from backup?\n* Are contract and schema changes additive before they are destructive?\n* Is the migration observable through metrics, logs, traces, and business signals?\n* Is there a clear retirement plan for flags, adapters, compatibility layers, and old paths?\n* Does each step deliver learning or value, rather than only preparing for a future cutover?\n\nIf the plan has only two states - \"old system\" and \"new system\" - it is probably a rewrite plan, not an evolutionary plan.\n\n## What This Means for Teams\n\nFor service teams:\n\n* When changing a published contract, support old and new in parallel for at least one deploy.\n* Treat database migrations as a sequence of additive, reversible steps.\n* Wrap risky changes in feature flags with a clear off-switch and a clear retirement date.\n* Use canary or progressive deploys where the platform supports them.\n* Pay refactoring cost continuously rather than letting it accumulate.\n\nFor platform and architecture roles:\n\n* Make rollback and progressive deploy the default in golden paths.\n* Provide patterns for additive schema changes, contract versioning, and feature flagging.\n* Track architectural fitness signals - error rate, latency, change failure rate, lead time - as first-class outputs of the platform.\n\nFor tech leads:\n\n* Push back on changes that bundle \"fix\", \"refactor\", and \"rewrite\" into a single deploy.\n* Plan migrations in slices with clear, observable milestones.\n* Treat any decision that says \"we'll fix it in the rewrite\" as a red flag.\n\n## Anti-Patterns\n\n* **The Big Rewrite.** A new system replaces an old one in a single cutover, after a long parallel build, with limited production feedback until the end.\n* **Breaking change as default.** Every consumer is forced to update at the same time because the producer changed the contract.\n* **One-way migration.** A deploy that cannot be rolled back without data loss or a restore.\n* **Refactor quarter.** A long pause in feature work to \"clean things up\", followed by a return to the same patterns.\n* **Feature flag graveyard.** Hundreds of unused flags accumulating, hiding the real control flow.\n* **Architecture as a frozen artifact.** A diagram approved once and not updated as the system evolves.\n* **\"We'll fix it in the rewrite.\"** Used as a license to add the very debt the rewrite is supposed to remove.\n\n## Examples\n\nAligned with the principle:\n\n* Adding a new Kafka event type while keeping the old one supported until consumers migrate.\n* Migrating from one library to another via an internal adapter that lets services move one at a time.\n* Splitting a large service by extracting one route at a time behind a feature flag.\n* Consolidating AWS accounts gradually rather than re-platforming everything in one cutover.\n\nOut of alignment with the principle:\n\n* A \"v2\" service rebuilt next to \"v1\" for nine months and switched over in a single weekend.\n* A schema change that renames and drops columns in the same migration.\n* A library upgrade that requires every team to deploy on the same day.\n* A re-architecture proposal whose only success criterion is \"v2 is live\".\n\n## Discussion Prompts\n\nUse these prompts in design reviews:\n\n* What is the smallest safe step that teaches us something useful?\n* Which part of the plan is reversible, and which part is not?\n* What compatibility layer, flag, or metric needs a retirement date?\n\n## Related Principles\n\n* [Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)](small-and-simple.html) - small pieces are individually easier to evolve.\n* [Design Principle: Standardize Before Diverging](standardize-before-diverging.html) - shared defaults give you safe seams to evolve along.\n* [Organisation Principle: Inherit, Then Simplify](inherit-then-simplify.html) - inherited estates become simpler through evolution, not replacement.\n* [Operational Principle: Production Ready](production-ready.html) - evolutionary change depends on production feedback.\n\n## Scope and Revisiting\n\nThis principle applies to all Organization-owned systems: backend services, web and mobile applications, data and integration pipelines, internal platforms, and shared libraries.\n\nIt does not apply to genuinely throwaway prototypes, short-lived experiments, or one-off scripts; though even there, a habit of reversibility usually pays off.\n\nThe principle should be revisited if:\n\n* The platform stops supporting safe, progressive deploys or rollback.\n* The cost of running parallel versions of a contract or schema becomes unsustainable.\n* A radical architectural shift (for example, a regulatory event) requires a deliberate, exceptional big-bang change.\n\n## Authoritative References\n\n* Neal Ford, Rebecca Parsons, Patrick Kua, *Building Evolutionary Architectures*, O'Reilly.\n* Martin Fowler, [Strangler Fig Application](https://martinfowler.com/bliki/StranglerFigApplication.html).\n* John Lewis Partnership, [Evolutionary Systems Principle](https://engineering-principles.jlp.engineering/).\n* DORA, [Four Key Metrics](https://dora.dev/research/).\n"}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -613,26 +648,97 @@
             }
         };
 
-        const mermaidNodes = [];
-        data.blocks.forEach(function (block) {
-            const r = renderers[block.type];
-            if (!r) {
-                const pre = document.createElement('pre');
-                pre.textContent = '[unknown block type: ' + block.type + ']';
-                root.appendChild(pre);
-                return;
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
             }
-            const node = r(block);
-            if (node instanceof Node) {
-                root.appendChild(node);
-                if (block.type === 'mermaid') mermaidNodes.push(node);
-            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
         });
 
-        if (mermaidNodes.length && window.mermaid) {
-            window.mermaid.initialize({startOnLoad: false, theme: 'default'});
-            window.mermaid.run({nodes: mermaidNodes});
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
         }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
     })();
 </script>
 </body>
