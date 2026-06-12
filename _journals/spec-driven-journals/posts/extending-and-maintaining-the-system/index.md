@@ -35,9 +35,10 @@ The most important contracts are:
 | `_journals/<journal>/config.yaml` defines journal order. | Authors can inspect the table of contents in one file. |
 | Posts use front matter plus markdown body. | Metadata and prose stay together. |
 | Non-trivial posts have sibling specs. | Intent stays visible across sessions. |
+| Modality files are discovered by presence (`summary.md`, `dialog.md`, `comics.md`). | One spec can drive several docs without config changes; the explicit registry keeps other sibling files ignored. |
 | Generated pages live under `docs/`. | Publication output is separate from source. |
 | Cross-links use double-bracket permalink syntax. | Links survive title changes. |
-| Blocks use `{type, content}`. | New renderers can plug in without changing the payload shape. |
+| Blocks use `{type, content}` inside per-modality payloads. | New renderers can plug in without changing the payload shape. |
 | The core build uses the Python standard library. | A new machine can build without dependency setup. |
 
 ![Journal maintenance contracts map](assets/images/journal-maintenance-contracts-map.png)
@@ -81,8 +82,9 @@ To add a post:
 2. Create `_journals/<journal>/posts/<slug>/spec.md` if the work is substantive.
 3. Add front matter with a stable `permalink`.
 4. Add the post path to `config.yaml`.
-5. Build the journal.
-6. Inspect the generated post and spec pages.
+5. Add modality docs (`summary.md`, `dialog.md`, `comics.md`) if the spec calls for them.
+6. Build the journal.
+7. Inspect the generated post and spec pages, including modality tabs.
 
 For per-post folders, use the same slug for folder and permalink unless there is a clear reason not to. The system does not require that, but readers and maintainers benefit from the alignment.
 

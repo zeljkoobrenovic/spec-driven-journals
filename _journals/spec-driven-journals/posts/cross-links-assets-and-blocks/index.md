@@ -17,6 +17,8 @@ Spec-Driven Journals uses a small content model, but it is not limited to plain 
 
 Posts can link to other records by permalink, include images and media, render tables, and use custom block fences for diagrams and visualizations. The goal is to keep authoring simple while making generated pages useful.
 
+Everything in this article applies to every modality file in a post folder, not only `index.md`. A `summary.md`, `dialog.md`, or `comics.md` goes through the same pipeline: the same cross-link resolution, the same asset-path rewriting, and the same block fences.
+
 Read this after [[anatomy-of-a-journal]]. Once the folder structure is clear, this article explains what can go inside the post body and how the build and renderer treat it.
 
 ## Content Features At A Glance

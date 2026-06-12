@@ -65,14 +65,19 @@ Current journals use this layout:
 posts/<slug>/
   index.md
   spec.md
+  summary.md     (optional modality)
+  dialog.md      (optional modality)
+  comics.md      (optional modality)
   assets/
     images/
     icons/
 ```
 
-`index.md` is the published article source.
+`index.md` is the published article source — the required, default modality.
 
 `spec.md` is the working contract for non-trivial articles. When present, it is rendered as `docs/<journal>/<permalink>.spec.html`, and the post page gets a "View spec" link in its byline.
+
+`summary.md`, `dialog.md`, and `comics.md` are optional **modality** docs driven by the same spec: a management summary, a two-host conversation, and an explainer comic. Each one that exists becomes a tab on the same generated post page (Article · Summary · Conversation · Comic), with the article as the default tab. Discovery is file presence — no config changes needed — and the post URL stays stable; tabs are deep-linkable via URL hash (`#summary`, `#dialog`, `#comics`).
 
 Per-post `assets/` are merged into the generated journal-level `assets/` folder. That lets body content use simple paths such as:
 
@@ -137,6 +142,7 @@ The important spec sections are:
 - Audience
 - Success criteria
 - Non-goals
+- Modalities (which docs the spec drives beyond the article)
 - Open questions
 - Decision log
 - Sources
@@ -167,5 +173,6 @@ Before considering a post wired correctly, check:
 - Any images use `assets/...` paths.
 - The scoped journal build writes `docs/<journal>/<permalink>.html`.
 - The generated page has a "View spec" link if the spec exists.
+- If modality files exist, the generated page shows their tabs and the article stays the default.
 
 That is the basic anatomy. The next article, [[cross-links-assets-and-blocks]], explains how content inside those post folders becomes links, images, diagrams, and richer rendered blocks.

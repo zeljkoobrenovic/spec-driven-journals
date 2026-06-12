@@ -28,8 +28,9 @@ The canonical layer contains files that humans and AI agents should edit:
 | Source file | Why it matters |
 | --- | --- |
 | `_journals/<journal>/config.yaml` | Declares the journal title, description, sections, and ordered post list. |
-| `_journals/<journal>/posts/<slug>/index.md` | The published article source. |
+| `_journals/<journal>/posts/<slug>/index.md` | The published article source — the required, default modality. |
 | `_journals/<journal>/posts/<slug>/spec.md` | The working contract for non-trivial article work. |
+| `_journals/<journal>/posts/<slug>/summary.md`, `dialog.md`, `comics.md` | Optional modality docs driven by the same spec, rendered as tabs on the post page. |
 | `_journals/<journal>/posts/<slug>/assets/` | Per-post images and other media. |
 | `_templates/index.html` and `_templates/post.html` | Shared rendering templates. |
 | `_templates/site.css` | Shared visual styling. |
@@ -85,10 +86,11 @@ Specs are part of the source of truth, but they are not the same as posts.
 
 | Artifact | Role |
 | --- | --- |
-| `spec.md` | States the intent and contract for a post. |
-| `index.md` | Carries the published argument. |
+| `spec.md` | States the intent and contract for a post — and which modalities it drives. |
+| `index.md` | Carries the published argument (the Article tab). |
+| `summary.md`, `dialog.md`, `comics.md` | Optional modality docs derived from the same spec and article. |
 | generated `.spec.html` | Lets reviewers inspect the contract in the browser. |
-| generated post HTML | Lets readers inspect the article in the browser. |
+| generated post HTML | Lets readers inspect all modalities of the post as tabs in the browser. |
 
 When a post changes direction, the spec should change first. If the post has moved beyond the spec, the spec is drifted and should be reconciled.
 

@@ -1,6 +1,6 @@
 ---
 status: draft
-revised: 2026-05-22
+revised: 2026-06-12
 ---
 
 # Spec: Spec-Driven Authoring Workflow
@@ -28,6 +28,14 @@ Authors, reviewers, and AI-agent operators doing substantive content work in Spe
 - Git branching or pull-request policy.
 - Instructions for generating icons or logos.
 
+## Modalities
+
+Which docs this spec drives beyond the main article (`index.md`).
+
+- [x] `summary.md` — management summary
+- [x] `dialog.md` — two-host dialog
+- [x] `comics.md` — explainer comic
+
 ## Open questions
 
 - None for this draft.
@@ -52,6 +60,7 @@ Authors, reviewers, and AI-agent operators doing substantive content work in Spe
 
 ## Changelog
 
+- **2026-06-12** - Added Modalities section; the spec now drives summary.md, dialog.md, and comics.md alongside the article. Status `draft`. *(Zeljko, AI-mediated session)*
 - **2026-05-22** - Initial spec and article draft. Status `draft`. *(Spec-Driven Journals, AI-mediated session)*
 - **2026-05-22** - Added illustration requirement and placeholder plan. Status `draft`. *(Spec-Driven Journals, AI-mediated session)*
 - **2026-05-22** - Added readability and sequence review updates. Status `draft`. *(Spec-Driven Journals, AI-mediated session)*

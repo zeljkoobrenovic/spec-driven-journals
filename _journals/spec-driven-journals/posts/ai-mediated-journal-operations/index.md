@@ -96,12 +96,26 @@ The spec gives the agent a compact contract:
 - audience
 - success criteria
 - non-goals
+- modalities
 - open questions
 - decision log
 - sources
 - changelog
 
 Without that contract, the agent may optimize for fluent prose. With that contract, it can optimize for a specific article outcome.
+
+## Modality Skills
+
+The modality docs that share a post folder with `index.md` are agent-authored by design. Four skills in `.claude/skills/` define the formats and workflows:
+
+| Skill | Writes | Notes |
+| --- | --- | --- |
+| `detailed-article` | `index.md` | Canonical home of the house style; required, default tab. |
+| `management-summary` | `summary.md` | 300–500 words keyed to the spec's success criteria and non-goals. |
+| `podcast-dialog` | `dialog.md` | Two named hosts, consistent per journal, success criteria as conversation beats. |
+| `explainer-comics` | `comics.md` + panels | Panel placeholders plus a Gemini generation script with a shared style block for cross-panel consistency. |
+
+All four share two rules: the spec is a read-only contract (drift gets flagged, not silently patched), and every run ends with a build plus verification that the generated page embeds the new modality.
 
 ## What Agents Should Avoid
 

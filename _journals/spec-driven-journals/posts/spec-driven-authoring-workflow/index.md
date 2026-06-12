@@ -27,10 +27,11 @@ For a non-trivial article, work in this order:
 2. Create or update `spec.md`.
 3. Draft or revise `index.md`.
 4. Add the post to `config.yaml` if it is new.
-5. Build the affected journal.
-6. Inspect the generated post and spec pages.
-7. Return fixes to source.
-8. Summarize changed files, build result, and remaining gaps.
+5. Add modality docs (`summary.md`, `dialog.md`, `comics.md`) if the spec calls for them.
+6. Build the affected journal.
+7. Inspect the generated post and spec pages.
+8. Return fixes to source.
+9. Summarize changed files, build result, and remaining gaps.
 
 The important part is the order. The spec comes before the article when the article's intent is meaningful enough to drift.
 
@@ -87,6 +88,19 @@ The distinction matters:
 
 If the post discovers a better direction, update the spec. If the spec no longer describes the post, the work has drifted.
 
+## One Spec, Several Modalities
+
+A spec can drive more than the article. The spec's **Modalities** section declares which additional docs the post warrants:
+
+| Modality file | Tab | What it is |
+| --- | --- | --- |
+| `index.md` | Article | The detailed main article — required, default tab. |
+| `summary.md` | Summary | A management summary (300–500 words) keyed to the spec's success criteria and non-goals. |
+| `dialog.md` | Conversation | A two-host conversation that walks the success criteria as dialogue beats. |
+| `comics.md` | Comic | An explainer comic of generated panels, one beat per panel. |
+
+The article is always written first; the other modalities derive from the spec plus the finished article. Each modality has a dedicated authoring skill (in `.claude/skills/`: `detailed-article`, `management-summary`, `podcast-dialog`, `explainer-comics`), and all of them treat the spec as a read-only contract — if a modality reveals drift, the spec gets reconciled, not bypassed.
+
 ## Build The Journal
 
 For a normal full publication pass, Spec-Driven Journals documents:
@@ -113,6 +127,7 @@ After building, check the generated files:
 - `docs/<journal>/index.html`
 - `docs/<journal>/<permalink>.html`
 - `docs/<journal>/<permalink>.spec.html` when a spec exists
+- modality tabs on the post page when `summary.md`, `dialog.md`, or `comics.md` exist
 - copied assets under `docs/<journal>/assets/`
 
 Also check for visible unresolved cross-links:

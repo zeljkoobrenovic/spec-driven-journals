@@ -1,6 +1,6 @@
 ---
 status: draft
-revised: 2026-05-22
+revised: 2026-06-12
 ---
 
 # Spec: Extending and Maintaining the System
@@ -30,6 +30,14 @@ Spec-Driven Journals maintainers, technical editors, and AI agents making struct
 - CI/CD design.
 - Visual redesign plan.
 
+## Modalities
+
+Which docs this spec drives beyond the main article (`index.md`).
+
+- [x] `summary.md` — management summary
+- [x] `dialog.md` — two-host dialog
+- [x] `comics.md` — explainer comic
+
 ## Open questions
 
 - Whether Spec-Driven Journals should eventually add a formal test suite or keep relying on scoped builds and inspection.
@@ -55,6 +63,7 @@ Spec-Driven Journals maintainers, technical editors, and AI agents making struct
 
 ## Changelog
 
+- **2026-06-12** - Added Modalities section; the spec now drives summary.md, dialog.md, and comics.md alongside the article. Status `draft`. *(Zeljko, AI-mediated session)*
 - **2026-05-22** - Initial spec and article draft. Status `draft`. *(Spec-Driven Journals, AI-mediated session)*
 - **2026-05-22** - Added illustration requirement and placeholder plan. Status `draft`. *(Spec-Driven Journals, AI-mediated session)*
 - **2026-05-22** - Added readability and sequence review updates. Status `draft`. *(Spec-Driven Journals, AI-mediated session)*

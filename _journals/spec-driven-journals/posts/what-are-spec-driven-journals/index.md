@@ -26,6 +26,8 @@ The project name, **Spec-Driven Journals**, describes two connected ideas:
 
 The spec is the working contract. The post is the published artifact. The generated HTML is the reader-facing output.
 
+One spec can drive more than one published doc. Besides the main article (`index.md`), a post folder can carry sibling **modality** files — `summary.md` (management summary), `dialog.md` (two-host conversation), and `comics.md` (explainer comic) — all rendered as tabs on the same post page. A tab appears when the file exists; the article stays the default tab and the post URL never changes.
+
 ## Official Project And Publication
 
 Use these two links as the stable entry points for Spec-Driven Journals:
@@ -47,6 +49,7 @@ Spec-driven journals give the work a stable home:
 - each journal has a `config.yaml`
 - each post has front matter and markdown body
 - substantial posts have a `spec.md`
+- one spec can drive several modality docs (article, summary, dialog, comic) shown as tabs
 - generated output lives under `docs/`
 - cross-record links use stable permalinks
 

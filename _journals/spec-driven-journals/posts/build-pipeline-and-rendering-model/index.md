@@ -28,12 +28,13 @@ At a high level, `_wiring/build.py` does this:
 3. Parse each journal config.
 4. Read the posts listed in each section.
 5. Parse front matter and markdown body.
-6. Rewrite `assets/...` paths.
-7. Resolve double-bracket permalink cross-links.
-8. Split custom fenced blocks from markdown.
-9. Merge per-post assets into generated journal assets.
-10. Render post pages, spec pages, and the journal index.
-11. Write output under `docs/<journal>/`.
+6. Collect sibling modality files (`summary.md`, `dialog.md`, `comics.md`) when present.
+7. Rewrite `assets/...` paths in every modality body.
+8. Resolve double-bracket permalink cross-links.
+9. Split custom fenced blocks from markdown.
+10. Merge per-post assets into generated journal assets.
+11. Render post pages (with modality tabs), spec pages, and the journal index.
+12. Write output under `docs/<journal>/`.
 
 The successful build line looks like:
 
@@ -69,13 +70,22 @@ Each post becomes a JSON payload shaped like this:
 {
   "meta": {},
   "tags": [],
-  "blocks": [
-    {"type": "markdown", "content": "..."}
+  "modalities": [
+    {
+      "key": "index",
+      "label": "Article",
+      "meta": {},
+      "blocks": [
+        {"type": "markdown", "content": "..."}
+      ]
+    }
   ]
 }
 ```
 
-The `meta` object comes from front matter. `tags` is parsed from the comma-separated `tags:` field. `blocks` contains markdown plus any custom block types extracted by the build.
+The `meta` object comes from front matter. `tags` is parsed from the comma-separated `tags:` field. `modalities` holds one entry per doc the post ships — the article plus any sibling `summary.md`, `dialog.md`, or `comics.md` (registry: `_MODALITIES` in `build.py`; list order is tab order). Each modality's `blocks` contains markdown plus any custom block types extracted by the build.
+
+A plain post has exactly one modality, and the renderer shows no tab bar — the page looks like a single-article page. With more than one modality, the renderer shows a tab bar; the article is the default tab, non-default tabs render lazily on first activation, and the URL hash (`#summary`, `#dialog`, `#comics`) deep-links a tab.
 
 This payload is embedded into the generated HTML inside:
 
@@ -106,7 +116,7 @@ When a post folder has `spec.md`, the build renders a sibling page:
 docs/<journal>/<permalink>.spec.html
 ```
 
-The post page gets a "View spec" link in the byline. The spec page uses the same post template, the same markdown renderer, and the same cross-link logic.
+The post page gets a "View spec" link in the byline. The spec page uses the same post template, the same markdown renderer, and the same cross-link logic. Internally the spec payload is a single-modality payload, which is why spec pages never show a tab bar — the renderer has one code path for both cases.
 
 Spec front matter controls the status chip:
 
@@ -162,21 +172,24 @@ The browser side handles presentation concerns:
 
 - render markdown
 - render tags
+- render modality tabs and lazily render non-default panes
 - initialize Mermaid
 - render force graphs
 - render bubble charts
 - handle custom block renderers
 
+Lazy pane rendering is not an optimization detail: Mermaid, force-graph, and D3 measure their container's width, which is zero inside a hidden element. Panes therefore render on first activation, after they become visible.
+
 This split keeps the build script small and makes renderer changes visible in one template.
 
 ## What To Preserve
 
-The most important implementation contract is the payload envelope:
+The most important implementation contract is the block envelope:
 
 ```json
 {"type": "...", "content": "..."}
 ```
 
-New block types can be added, but the dispatcher expects that envelope. Changing it would require coordinated changes in `build.py` and `_templates/post.html`.
+New block types can be added, but the dispatcher expects that envelope. Changing it would require coordinated changes in `build.py` and `_templates/post.html`. The modality layer wraps *above* this envelope — adding a modality never touches the block contract.
 
 The system is easy to extend because the contract is small. It stays easy only if extensions keep that contract clear.
