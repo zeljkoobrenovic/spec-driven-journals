@@ -51,8 +51,8 @@ the other probes it the way a skeptical colleague would.
   ```
 
   The renderer's existing `**bold**` rule handles this — no template work.
-- **Optional segment headings** (`## The problem`, `## The pushback`,
-  `## Where this breaks`) every 4–8 turns to keep the tab scannable.
+- **Optional segment headings** in Title Case (`## The Problem`, `## The
+  Pushback`, `## Where This Breaks`) every 4–8 turns to keep the tab scannable.
 - **Arc**:
   1. *Cold open* — Ben asks the bluntest version of "why should I care?".
   2. *Body* — walk the spec's Success criteria as conversation beats; Ben

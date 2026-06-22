@@ -49,8 +49,21 @@ article: each panel is one beat of the argument.
 
    `--replace` swaps each completed placeholder for a markdown figure
    (`![alt](asset)` + `**Panel N:** *caption*`).
+
+   **Single-panel-insert caveat.** `--replace` numbers each figure by its
+   position *among the `comic-panel` blocks being replaced this run*, not by its
+   position in the full strip. When you insert one new panel into an
+   already-rendered comic (the rest are plain `![]()` figures, not blocks), the
+   one block is "panel 1 of 1", so `--replace` writes `**Panel 1:**` and leaves
+   the temporary placeholder line behind. After generating, **manually fix the
+   caption to the correct strip number and delete the leftover placeholder line.**
+   When inserting mid-strip, also renumber the trailing figures and rename their
+   image files first (descending order, to avoid collisions), so the final
+   sequence stays contiguous.
 6. Run `python3 _wiring/build.py`; confirm `[built] <journal>` and that
-   `docs/<journal>/<permalink>.html` contains `"key": "comics"`.
+   `docs/<journal>/<permalink>.html` contains `"key": "comics"`. Verify the
+   `**Panel N:**` captions run 1..N with no gaps or duplicates, and that every
+   referenced `comic-NN-*.jpeg` exists on disk.
 7. Tell the user the Comic tab is live at `<permalink>.html#comics`.
 
 ## Style block (one per file, first)

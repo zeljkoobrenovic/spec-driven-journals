@@ -59,6 +59,13 @@ modality files that may now be stale.
   `Anti-Patterns` → `Examples` → `Related Principles`/cross-links →
   `Scope and Revisiting` → `Authoritative References`. Sections may be
   omitted, but keep the order.
+- **Section headings use Title Case** — capitalize principal words; keep articles,
+  coordinating conjunctions, and short prepositions (`a`, `the`, `and`, `or`,
+  `to`, `by`, `in`, `of`, `for`) lowercase unless first; capitalize the first
+  word after a colon. E.g. `## The Root: A Trap We Built by Being True to
+  Ourselves`, not `## The root: a trap we built by being true to ourselves`.
+  Applies to every `##`/`###` heading, including descriptive ones on reflective
+  posts. (The MADR section names above are already in this form.)
 - **Tables of contrasts** ("What it says / What it does **not** say") and
   grouped bullets read well in the rendered HTML — prefer them over long
   prose.

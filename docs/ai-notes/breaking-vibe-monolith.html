@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Breaking Down the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">AI Notes</a><span class="nav-right"><a class="nav-prev" href="risc-for-ai-software-development.html" title="Can RISC-Inspired Platforms Make AI Less Risky?">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="fashion-driven-software-development.html" title="Software Has Seasons Now: Fashion-Driven Development for Generative AI Products">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">AI Software Development</p>
+        <h1>Breaking Down the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2026-06-21  ·  18 min · <a class="spec-link" href="breaking-vibe-monolith.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/breaking-vibe-monolith/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/breaking-vibe-monolith/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">AI Notes</a><span class="nav-right"><a class="nav-prev" href="risc-for-ai-software-development.html" title="Can RISC-Inspired Platforms Make AI Less Risky?">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="fashion-driven-software-development.html" title="Software Has Seasons Now: Fashion-Driven Development for Generative AI Products">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Breaking Down the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool", "date": "2026-06-21", "author": "by Željko Obrenović (obren.io)", "permalink": "breaking-vibe-monolith", "timetoread": "18 min", "excerpt": "Software now grows faster than our trust in it. AI-built systems can be modular on paper and still behave as one rigid blob, because the architecture never holds still long enough to reason about. The job of architecture in this era is to cool the system down — freeze the seams that matter, and let AI move fast inside them.", "tags": "ai-assisted development, software architecture, trust, sustainability, team topologies, cognitive load", "icon": "assets/icons/vibe-monolith.png", "logo": "assets/images/breaking-vibe-monolith/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["ai-assisted development", "software architecture", "trust", "sustainability", "team topologies", "cognitive load"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **KEY POINTS:**\n>\n> * IT architecture in the age of AI comes down to **trust** and **sustainability** — and **software now grows faster than our trust in it**. That gap, not raw capability, is the problem.\n> * We lean on **brute force on both sides**: brute-force generation *and* brute-force after-the-fact verification. Brute force burns hardware, money, tokens, and — most of all — people. It does not scale.\n> * The architectural symptom is **continuous re-architecting**. The failure mode is not that AI won't refactor; it's that it **won't stop re-architecting** the foundations.\n> * The result can be a **Vibe Monolith**: a system that is modular on paper yet behaves as one rigid entity, because its parts grow deeply coupled and its architecture never holds still.\n> * The bill lands as **cognitive load and lost ownership**, and as **high-functioning burnout** — concentrated on the engineers who are *best* at AI.\n> * Architecture's job now is to **cool the system down**: freeze the highest-blast-radius seams — **domain boundaries, API contracts, the data model** — and let AI move fast inside them. **The way out of the burn is not more force; it is better structure.**\n\n<br>\nThe way I see it, IT architecture in the age of AI comes down to two things: **trust** and **sustainability**. Almost everything interesting about how we build software right now is a story about one or both of them — and, more often than not, about how we are running short on both.\n\n## Software Is Growing Faster Than Our Trust\n\nA startup CTO in Amsterdam recently told me he had just merged a single pull request of **17,000 lines of code** — one to two person-years of work, landing in one PR.\n\nSit with that for a second, because it tells the whole story in miniature. A pull request is, at its heart, a **trust mechanism**. It is the checkpoint where a human being looks at a change and says: *I understand this well enough to vouch for it.* Nobody on earth meaningfully reviews 17,000 lines. So the ceremony still happens — the PR is opened, approved, merged — but **the trust it was supposed to manufacture has quietly evaporated**. The artifact survived; its purpose did not.\n\nThat is the core problem of this era, made physical. AI boosts development effort in two broad ways: it supports the software development lifecycle itself — writing code, generating tests, drafting documentation, reviewing changes — and it adds entirely new product capabilities that were previously impractical to build. But the pace of all this makes it genuinely difficult to maintain trust and sustainability in our architecture. We do not have enough time to understand the implications of each AI-driven integration before the next one lands. **Software is now growing much faster than our trust in it — and that gap is the problem.**\n\nThis is not how we used to work. Many traditional approaches, agile chief among them, were designed to build trust *alongside* the development of the system. Short iterations, working software, continuous feedback, retrospectives — these were mechanisms for the team's confidence to grow in step with the codebase. With AI in the loop, that co-evolution breaks down. **The code races ahead; the trust lags behind** (Figure 1). A 17,000-line PR is what it looks like when a year of incremental trust-building checkpoints collapses into one indigestible lump.\n\n![Line chart with a steep CODE curve rising far above a flatter TRUST curve, the widening gap between them shaded.](assets/images/breaking-vibe-monolith/trust-gap.jpeg)\n**Figure 1:** *Software now grows faster than our trust in it; the widening gap is the problem.*\n\n## We Are Using Brute Force — for Both Building and Believing\n\nCurrent approaches to building *and* trusting AI-developed systems lean heavily on **brute force, on both sides of the equation**.\n\n| | How brute force shows up | Why it fails |\n| --- | --- | --- |\n| **Building** | An agent generates a large amount of working code quickly, often as something close to a black box. We accept it because it runs. | \"It runs\" is not \"we understand it.\" Volume outpaces comprehension. |\n| **Believing** | We throw effort at verification *after the fact* — extensive testing and evaluation to gain confidence in what was produced. | We have no clear, shared picture of what \"good\" looks like for these systems, so we often cannot evaluate them properly even when we want to. |\n\nOn the trust side especially, brute force is harder than it sounds. **We are testing against a standard we have not fully defined, and reviewing volumes no human was built to review.** Verification has become its own escalating cost.\n\n## Brute Force Does Not Scale — Everything and Everyone Is Burning\n\nBrute-force trust-building is fundamentally unsustainable, because **brute force burns resources, and right now it is burning all of them at once**.\n\n* **Hardware.** A global fight for the compute to train models, with everyone racing to secure as much as possible.\n* **Inference.** Servers overloaded and expensive; we burn tokens to get results.\n* **Verification.** We burn still more compute to test and evaluate those results.\n* **People.** Most importantly, the engineers — absorbing enormous pressure as the rate of change outstrips anyone's ability to keep up.\n\nThere is a **second-order version** of this that is even harder to undo. The technical debt being generated now requires senior human judgment to fix — but in many places we are cutting the very junior engineers who would have *become* those seniors, hollowing out the career ladder. **We are burning not just current people but the pipeline of future ones.** A model of progress whose primary lever is \"apply more force\" eventually runs into the limits of all of this: hardware, money, tokens, and people.\n\n## The Architectural Symptom: Continuous Re-Architecting\n\nArchitecturally, the most striking thing I observe with an AI-powered SDLC is **continuous re-architecting**.\n\nThe fingerprint is in the metrics. Across the projects I see, there is a dramatic increase in **churn** — code revised or thrown away shortly after it was written — alongside a sharp rise in the raw number of commits. My intuition is that a huge part of this comes directly from continuous re-architecting. This isn't only my impression: GitClear's analysis of roughly 211 million changed lines found **code churn — lines reverted or rewritten within two weeks — projected to double** across the AI-adoption period, while the share of *moved* (refactored, reused) code fell. In the fully agentic projects I'm seeing — the 17k-PR world — it runs far higher than that conservative, published floor.\n\nIt is worth being precise about *why*, because the published explanation and mine are subtly different, and **the difference is the point.**\n\n| | The published failure mode | The one I'm describing |\n| --- | --- | --- |\n| Era | **Autocomplete** — a developer tab-completing suggestions into a file. | **Agentic** — AI developing systems end-to-end. |\n| What goes wrong | AI **under-refactors**: it pastes and duplicates rather than consolidating, partly because a limited context window means it never sees enough surrounding code to reuse it. | AI **won't stop re-architecting**: it constantly reworks the foundational elements — data structures, APIs, domain boundaries, core concepts. |\n| The trap | Duplication and missed reuse. | Rapid rewrites of exactly the things that traditionally demand careful, deliberate planning because they are expensive and risky to change. |\n\nThe under-refactoring finding is real, and it belongs to the autocomplete era. What I'm describing is closer to the opposite. When we develop systems end-to-end with AI, we are not just adding incremental features on top of a stable base, and we are not just duplicating. **We are constantly reworking the foundations themselves.** With AI doing the heavy lifting, we are tempted — and often effectively forced — to rewrite them rapidly without fully grasping the long-term implications.\n\nThe obvious risk is technical debt and instability. But there is a subtler problem that shows up *even when the resulting system is objectively elegant*. I call it the **Vibe Monolith**.\n\n## A Taxonomy of Monoliths — and Why the Vibe Monolith Is Different\n\nIt helps to be precise, because \"monolith\" gets used loosely. There are several distinct kinds, and they differ in *where the coupling lives* (Figure 2):\n\n| Kind | Where the coupling lives | The deal you get |\n| --- | --- | --- |\n| **Classic monolith** | One application, one database. Everything in one place. | Simple to start; everything is entangled by default. |\n| **Distributed monolith** | Many services on paper, so tightly interdependent they behave as one. | You pay the cost of distribution without earning its benefits. |\n| **Release monolith** | Code and data are isolated, but nothing ships without coordinating across dozens of teams. | Coupling lives in the release process, not the code. |\n| **Vibe Monolith** | The components are genuinely modular — but the *architecture itself won't hold still*. | A clean diagram that still behaves, and breaks, as one thing. |\n\nThe **Vibe Monolith** is a new and different animal, and it is a product of AI-driven development specifically.\n\n![Two-by-two grid of four monolith types showing where coupling lives: classic, distributed, release, and vibe.](assets/images/breaking-vibe-monolith/monolith-taxonomy.jpeg)\n**Figure 2:** *Four kinds of monolith. The Vibe Monolith's coupling is in time: the architecture itself won't hold still.*\n\nWith AI building the system — agents working end-to-end across the whole codebase — you can end up with something that is *technically* well-architected, with components that genuinely **are** modular and decoupled, and yet the overall **vibe** of the system is monolithic. The modularity is real on paper but doesn't translate into the property that matters.\n\nThe reason is *how* the parts come to interact. Because the system is generated by brute force and end-to-end, the components grow **deeply dependent on one another** in ways that produce rigidity and inflexibility. The system *feels* like a single entity: a change in one part can ripple out and have unforeseen consequences somewhere else entirely. **You lose agility even though the architecture diagram looks clean.**\n\nThe deeper issue is **stability over time**. You might have a well-architected system at one specific moment — but with continuous re-architecting, that architecture is not stable. It won't look the same next week. And that instability is what makes the Vibe Monolith so costly, because it means **you cannot safely reason about, or work on, just one part of the system in isolation.** The boundaries you'd rely on to contain your attention keep moving.\n\n## The Real Cost: Cognitive Load and the Collapse of Clear Ownership\n\nA stable architecture is not just a technical nicety — it is the thing that lets humans and teams **divide and conquer**. This is the central argument of *Team Topologies*: the fundamental unit of delivery is the team, not the individual, and a team's cognitive load must be deliberately managed. Crucially, by **Conway's Law**, team boundaries become service boundaries — a monolithic organization produces a monolithic architecture regardless of microservices intent. The Vibe Monolith attacks exactly the seams this depends on, and the bill comes due on two levels.\n\n**Individually**, cognitive load goes through the roof. Without stable structures to lean on, you have to hold far more of the system in your head at once, because you can't trust that the part you're not looking at will stay put. And it's worth being precise about the *kind* of load: not the **intrinsic** difficulty of the domain, but **extraneous** load — the avoidable burden imposed by weak boundaries and shifting structure. Good architecture, in this framing, is not merely modular; it is **merciful**. Continuous re-architecting is the opposite: it manufactures extraneous load for free.\n\n**At the team level**, it's worse. A stable architecture is what you use to split work, draw boundaries, and assign teams clear, durable responsibilities. When the architecture is constantly evolving, **you cannot establish clear ownership and accountability** — there are no stable seams to organize around. *Team Topologies* even has a name for the precursor: \"hidden monoliths and coupling in the software-delivery chain.\" The Vibe Monolith is arguably the **AI-native cousin of the hidden monolith**. The result is confusion, miscommunication, and ultimately an erosion of trust in the system as a whole. **The architecture problem becomes an organizational problem.**\n\n## The Burden Lands on Your Best People\n\nHere is the observation I find most counterintuitive, and most important. Another CTO, at a startup scaling up, told me that the people on his teams who are *really good* at leveraging AI in the SDLC are **the ones feeling the most incredible burden of it**.\n\nThat should stop you, because it inverts the naive expectation.\n\n| What we assume | What's actually happening |\n| --- | --- |\n| AI helps the strong and exposes the weak. | The people most fluent with AI are carrying the heaviest load. |\n| The ones who can't keep up are the ones who burn out. | The ones who adapted *hardest* are the ones burning out. |\n| More AI means less work. | The *kind* of work changed — from authoring to validating — and the new kind is heavier. |\n\nThe reason is a shift in the *kind* of work, not just the amount. Developers have moved from being the primary authors of code to being **validators of machine-generated output**; the transformation has moved to the cognitive layer. Execution got cheap — less manual coding, less boilerplate, faster iteration — but it has been replaced by interpretation, verification, and decision-making. That is not less work. It is **different, and heavier, work**. And the people best at AI are precisely the ones who have absorbed the most of it.\n\nThere is a clinical name for what that CTO is describing: **high-functioning burnout**. It is a documented state where, under sustained high cognitive load, performance is *maintained* while mental reserves steadily erode. It is not a collapse — which is exactly why it's so dangerous, and why it's invisible to everyone but the person experiencing it. **The output stays high while the person hollows out.** If these burdens stay invisible, development remains formally fast while becoming structurally more fragile — and the real question is not how much AI accelerates development, but **at what cost we can sustain that speed.**\n\nThe numbers behind \"incredible burden\" are not subtle. Industry telemetry on AI-heavy teams (Faros AI, *The AI Engineering Report*) points the same way: as AI adoption rises, **PR size, files touched per PR, and bugs per PR all climb together** — reviewers are not getting more of the same work, they're getting **structurally harder work**. And you cannot automate your way out: even as AI agents review a growing share of PRs, human review time keeps climbing, because someone still has to adjudicate what the agent flagged. **White-box review — a human reading every line — simply does not scale** when agents produce thousands of lines an hour. The 17k-line PR is the artifact; the burned-out senior is its human cost. Tellingly, this whole burden is mostly *unmeasured*: validation time, tech debt, and burnout sit outside standard productivity metrics, and managers consistently report rosier conditions than the people doing the work. **What we don't measure, we can't manage — and right now we're not measuring the cost.**\n\nAnd here is the connection back to the Vibe Monolith — the part that makes this more than a burnout story. **The burden does not spread evenly.** When the architecture won't hold still, there are no stable seams to distribute ownership across, so responsibility collapses onto whoever can still mentally model the whole thing. Meanwhile \"drive-by\" contributions surge from people who open PRs without understanding the codebase, leaving the maintenance and refactoring to the few still in touch with it — which makes *their* burden worse. The people best at AI are exactly those few. **The instability at the system level is what manufactures the burnout at the human level.** The two halves of the problem close the loop — and, like any feedback loop, it tightens on each turn (Figure 3).\n\n![Closed four-node feedback loop: unstable architecture, no stable seams, ownership falls on the few, the few burn out, looping back.](assets/images/breaking-vibe-monolith/burnout-loop.jpeg)\n**Figure 3:** *A self-reinforcing loop: architectural instability concentrates ownership, which burns out the few who hold the system together.*\n\n\n> One honest caveat, because it makes the point *more* believable rather than less: the productivity gains are themselves uneven and idiosyncratic. Some engineers derive far more benefit from AI workflows than equally clever, equally diligent peers — finding a workflow that clicks with your own habits matters more than any global optimum. There's even evidence that AI makes some experienced developers slower while *feeling* faster. The productivity story is genuinely messy. That's all the more reason **not to treat raw speed as the thing to optimize.**\n\n## Why Small Teams Fly and Scaling Stalls\n\nThis framing explains something I keep seeing in practice.\n\n**Good architecture is, functionally, stability that lets you split work and define teams with clear responsibilities.** Without it, you simply cannot scale work beyond one person or a small, tightly-knit group — there's no stable structure to coordinate around.\n\nThat, I think, is exactly why **individual productivity has shot up so dramatically** with AI, and why I see startups of up to ten people moving astonishingly fast. At that size, the whole system *can* live in a handful of heads. You don't need stable architectural boundaries to coordinate, because you barely need to coordinate at all. The senior-developer productivity gains are real, and a large share of new product MVPs are now built primarily this way.\n\nScaling *beyond* that is the real challenge — and the Vibe Monolith is a big part of why. **The very thing that makes a small team fast — everyone touching everything, end-to-end, at speed — is the thing that doesn't survive contact with a larger organization** that needs durable boundaries to function. It shows up in the data as a cliff: a large majority of AI-built applications never make it to production, and the gap between \"works on my machine\" and \"works for 10,000 users\" is where most of them die. **AI removes the *individual* constraint while leaving the *coordination* constraint fully intact.** That is precisely why the curve bends right around the point where one team becomes many.\n\n## The Role of Architecture: Cooling the System Down\n\nSo what is architecture *for* in this new era? Its job is to **cool the system down** — to introduce the stability that prevents everything, and everyone, from burning out under brute force.\n\nThe industry is converging on the same diagnosis, and it's close to a paraphrase of this whole essay: vibe coding is a symptom of systems that generate code faster than they can govern it, and the fix is not slower generation — it's **governance that matches the speed**. This is also why the human-in-the-loop doesn't disappear as models improve. The opposite: as AI becomes more capable, **human oversight becomes *more* valuable, not less**. Architecture is how we make that oversight tractable instead of crushing.\n\nConcretely, cooling the system down means deciding **what must stay stable while everything above it stays fluid.** Not everything can be in motion at once. The seams worth freezing are the ones with the **highest blast radius** when they move:\n\n| Seam to freeze | Why it has the highest blast radius |\n| --- | --- |\n| **Domain boundaries** | The bounded contexts that decide who owns what. These are the org chart in disguise; let them drift and ownership drifts with them. |\n| **API contracts** | The interfaces between parts. If these hold, teams can change their internals freely without coordinating — which is the entire point of decoupling. |\n| **The data model** | The shared structures everything else depends on. Re-architecting these underneath a running system is where the worst instability lives. |\n\n![Layered diagram: a fast warm fluid AI layer on top resting on three frozen blue foundation bars labeled domain boundaries, API contracts, and data model.](assets/images/breaking-vibe-monolith/frozen-seams-stack.jpeg)\n**Figure 4:** *Cool the system down: freeze the high-blast-radius seams and let AI move fast in the fluid layer above them.*\n\n\n**Let the AI move fast *inside* these boundaries; hold the boundaries themselves stable, deliberately, as a first-class architectural act** (Figure 4). Around that, the practices the field keeps rediscovering all do the same thing:\n\n* a lightweight architecture forum focused on contracts and guardrails;\n* cognitive load checked regularly, and teams resized along their natural fracture lines;\n* golden paths and a platform layer to absorb the extraneous load.\n\nEach of these converts raw, fast, end-to-end AI development into something a larger group of people can sustainably build on. This is the same instinct behind [Can RISC-Inspired Platforms Make AI Less Risky?](risc-for-ai-software-development.html): shrink and stabilize the surface humans and AI must reason about together. And it echoes [Software Has Seasons Now: Fashion-Driven Development for Generative AI Products](fashion-driven-software-development.html): decide what is the durable, stable core and what is allowed to change every season.\n\nWe have already seen, at the model layer, that **cleverness in structure can substitute for brute expenditure of resources** — DeepSeek being the obvious example of achieving strong results without simply burning ever more compute and money. The same principle is the one that matters for how we architect systems. **The way out of the burn is not more force — it is better structure.**\n\n## What to Do on Monday\n\n\"Cool the system down\" is a principle, not a task. Here is the principle made concrete — small, cheap moves that convert brute force into structure without slowing anyone down.\n\n| Move | What it looks like | What it buys you |\n| --- | --- | --- |\n| **Name the frozen seams** | Write down — explicitly — which domain boundaries, API contracts, and data-model shapes are off-limits to casual change. Put them where the agent and the team both read them. | Re-architecting needs a deliberate decision instead of happening by default on every run. |\n| **Gate the seams, not the code** | Require a human sign-off when a PR touches a frozen seam; let everything *inside* the boundaries flow. | Scarce review attention lands where blast radius is highest, not spread thin across 17,000 lines. |\n| **Measure the unmeasured** | Track churn (lines reverted within two weeks), PR size, and a simple \"could one person still explain this PR?\" check alongside velocity. | The hidden cost becomes visible before it shows up as a resignation. |\n| **Find who holds the whole system** | Identify the one or two people everything routes through, and treat their load as a system risk, not a personal strength. | You catch high-functioning burnout while it is still reversible. |\n| **Run a lightweight architecture forum** | A short, regular review focused only on contracts and guardrails — not designs, not code. | Boundaries get defended continuously instead of rediscovered after they have already drifted. |\n\nNone of these slow generation down. They are governance that **matches** the speed — which is the whole point.\n\n## Closing Thought\n\nTrust and sustainability are not soft concerns layered on top of the \"real\" engineering. **In the age of AI, they *are* the engineering problem.** Software now outgrows our trust by default — a year of work in a single unreviewable PR. Brute force buys speed by spending hardware, money, tokens, and the people we can least afford to lose, concentrating the worst of it on the very engineers who are best at this. Architecture — real architecture, the kind that creates stable structures people can organize around — is how we **close the gap between how fast we can build and how fast we can believe in, and sustain, what we've built.**\n\n## To Probe Further\n\n* GitClear, [*AI Copilot Code Quality* (2025)](https://www.gitclear.com/ai_assistant_code_quality_2025_research) — churn projected to double, rising duplication, and the decline of refactoring across ~211M changed lines.\n* [Faros AI](https://www.faros.ai/) — engineering-intelligence telemetry on how PR size, review time, and defect rates move under AI adoption.\n* [Team Topologies](https://teamtopologies.com/), Matthew Skelton & Manuel Pais — cognitive load (intrinsic vs. extraneous), Conway's Law, hidden monoliths, and team boundaries built on stable architectural seams.\n* [Conway's Law](https://www.melconway.com/Home/Conways_Law.html), Melvin Conway — organizations design systems that mirror their communication structure.\n* [Platform engineering / golden paths](https://platformengineering.org/) — a platform layer that absorbs extraneous load so teams can move fast safely.\n* [Can RISC-Inspired Platforms Make AI Less Risky?](risc-for-ai-software-development.html) — reducing the platform surface humans and AI must reason about together.\n* [Software Has Seasons Now: Fashion-Driven Development for Generative AI Products](fashion-driven-software-development.html) — deciding what is the durable core and what is allowed to change.\n\n## Questions to Consider\n\nUse these if your organization is scaling AI-assisted development past a single small team.\n\n* When you approve a large AI-generated PR, are you manufacturing trust — or just performing the ceremony?\n* Is your team's churn telling you about healthy iteration, or about continuous re-architecting of the foundations?\n* Could your system be a Vibe Monolith — modular on the diagram, yet impossible to change one part without rippling everywhere?\n* Which seams in your system are *deliberately* frozen — domain boundaries, API contracts, the data model — and which drift with every agent run?\n* Who on your team can still mentally model the whole system, and what is that costing them?\n* Are your best AI users your most energized people, or your most quietly depleted ones?\n* Is your answer to AI-era pressure \"apply more force,\" or \"build better structure\"?\n* If you froze just three seams on Monday, which would they be — and what is stopping you from writing them down today?\n"}]}, {"key": "summary", "label": "Summary", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "IT architecture in the age of AI comes down to **trust** and **sustainability**, and we are short on both: software now grows faster than our trust in it. The defining new failure mode is the **Vibe Monolith** — a system that is modular on paper yet behaves as one rigid entity, because AI generates it end-to-end and **continuously re-architects** the foundations, so the architecture never holds still long enough to reason about one part in isolation.\n\n**What changes**\n\n* A 17,000-line PR is a trust mechanism that no longer manufactures trust — the ceremony survives, its purpose does not. White-box review does not scale when agents write thousands of lines an hour.\n* Brute force is now used on *both* sides: brute-force generation and brute-force after-the-fact verification. It burns hardware, money, tokens — and, most of all, people.\n* Modularity on the diagram stops guaranteeing agility. When the architecture won't hold still, you can't safely change one part without rippling everywhere, and you can't draw durable team boundaries (Conway's Law).\n* The burden lands hardest on your **best AI users**: high-functioning burnout, where output stays high while the person hollows out. System-level instability is what manufactures the human cost.\n* Small teams fly because the whole system fits in a few heads; scaling stalls because AI removes the individual constraint while leaving the coordination constraint intact.\n\n**What to do Monday**\n\n* Five cheap first moves, none of which slow generation down: **name the frozen seams** explicitly, **gate the seams not the code** (human sign-off only where blast radius is highest), **measure the unmeasured** (churn, PR size, \"could one person still explain this?\"), **find who holds the whole system** and treat their load as a risk, and **run a lightweight architecture forum** on contracts and guardrails.\n\n**What it costs**\n\n* Holding seams stable is deliberate work — that forum, the cognitive-load checks, golden paths, and a platform layer are governance that matches the speed of generation rather than slowing it.\n* Human-in-the-loop oversight does not go away as models improve; it becomes *more* valuable, and architecture is what makes it tractable instead of crushing.\n\n**What we are not doing**\n\n* Not arguing AI development is bad or should be slowed — the fix is governance, not brakes.\n* Not relitigating microservices vs. monolith; a Vibe Monolith can hide inside a clean microservice architecture.\n* Not treating burnout as an individual failing — it is a structural consequence of architectural instability.\n\nThe architectural move is to **cool the system down**: freeze the highest-blast-radius seams — **domain boundaries, API contracts, the data model** — and let AI move fast inside them. The way out of the burn is not more force; it is better structure.\n\n*The Article tab covers the monolith taxonomy, the burnout loop, and the full \"cooling down\" argument; the Conversation and Comic tabs walk the same path more informally.*\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "9 min listen"}, "blocks": [{"type": "markdown", "content": "## The 17,000-Line Pull Request\n\n**Ben:** So give it to me straight. A CTO merges a 17,000-line pull request and you want me to be alarmed. Big PRs happen. Why is this the end of the world?\n\n**Ana:** Because a pull request isn't really about lines. It's a trust mechanism. It's the one moment where a human looks at a change and says, \"I understand this well enough to vouch for it.\" Nobody on earth meaningfully reviews 17,000 lines. So the ceremony still happens — opened, approved, merged — but the trust it was supposed to manufacture has quietly evaporated. The artifact survived. Its purpose didn't.\n\n**Ben:** Okay, but that's a discipline problem. Tell people to write smaller PRs.\n\n**Ana:** It's not discipline, it's physics. That PR was one to two person-years of work landing at once. AI made the writing cheap and left the reviewing exactly as expensive as it always was. The whole thesis fits in one line: software now grows faster than our trust in it. That gap — not whether the model is smart enough — is the problem.\n\n**Ben:** Didn't we solve this already? Agile, short iterations, continuous feedback?\n\n**Ana:** That's exactly what's breaking. Agile was a machine for growing trust *alongside* the code — your confidence rose in step with the system. With AI in the loop, the code races ahead and the trust lags behind. A 17k PR is what it looks like when a year of incremental checkpoints collapses into one indigestible lump.\n\n## Brute Force on Both Sides\n\n**Ben:** Fine, but the fix is obvious then — test it harder. Throw evaluation at it until you trust it.\n\n**Ana:** That's brute force, and it's the trap. We're using brute force on *both* sides now. Brute force to generate — an agent spits out a pile of working code and we accept it because it runs. And brute force to believe — we try to earn confidence by testing exhaustively after the fact.\n\n**Ben:** What's wrong with testing exhaustively?\n\n**Ana:** We don't have a shared picture of what \"good\" even looks like for these systems. So we're testing against a standard we haven't defined, reviewing volumes no human was built to review. And brute force burns resources — all of them at once. Hardware, inference servers, tokens to generate, more compute to verify, and most of all, people.\n\n**Ben:** People burn out everywhere. That's not AI-specific.\n\n**Ana:** This part is. The tech debt being generated now needs senior judgment to fix — and a lot of places are cutting the junior engineers who'd have *become* those seniors. We're burning the current people and the pipeline of future ones. \"Apply more force\" eventually hits the wall of all of it.\n\n## The Vibe Monolith\n\n**Ben:** You've got a name for the architectural version of this. The \"Vibe Monolith.\" Sounds like a slogan.\n\n**Ana:** It's a specific thing. Picture a system AI built end-to-end. The components are genuinely modular and decoupled — the diagram is clean, it would pass review. And yet the whole thing *feels* monolithic. Change one part and it ripples somewhere else entirely. The modularity is real on paper but doesn't buy you the agility modularity is supposed to buy.\n\n**Ben:** Isn't that just a distributed monolith with a trendy name? Services that are secretly coupled — we've had that term for years.\n\n**Ana:** Close cousin, real distinction. A distributed monolith is coupled *at a moment* — you can see the tangle. The Vibe Monolith's defining trait is that the architecture won't hold *still*. You might have a beautifully architected system today. With continuous re-architecting, it won't look the same next week. The boundaries you'd lean on to contain your attention keep moving.\n\n**Ben:** Wait — I thought the known problem was that AI *under*-refactors. Copies and pastes, never consolidates. Now you're saying it refactors too much?\n\n**Ana:** Both are true, in different eras. Under-refactoring is the autocomplete era — a dev tab-completing into a file, limited context, so it duplicates. What I'm seeing is the agentic era, and it's the opposite failure: AI won't *stop* re-architecting. It keeps reworking the foundations — data structures, APIs, domain boundaries, the core concepts. Exactly the things that traditionally demand slow, careful planning because they're expensive to change.\n\n## Why It Lands on Your Best People\n\n**Ben:** Let me push on the human side. You claim AI burns out the *best* engineers. That's backwards. AI should help the strong and expose the weak.\n\n**Ana:** That's the naive expectation, and the reality inverts it. A CTO told me the people on his teams who are really good at leveraging AI are the ones feeling the most incredible burden. They didn't fail to adapt — they adapted *hardest*. That's the trap.\n\n**Ben:** Why would being good at the tool punish you?\n\n**Ana:** Because the *kind* of work changed. Developers went from authoring code to validating machine-generated output. Execution got cheap; interpretation, verification, and judgment replaced it. That's not less work — it's heavier work, and it moved to the cognitive layer. The people best at AI absorbed the most of it.\n\n**Ben:** And nobody notices because they keep shipping?\n\n**Ana:** That's the dangerous part. There's a name for it — high-functioning burnout. Under sustained load, performance is *maintained* while reserves erode. It's not a collapse, which is exactly why it's invisible to everyone but the person living it. Output stays high while the person hollows out.\n\n**Ben:** Here's my real objection, though. You've got an architecture story and a burnout story and you're stapling them together.\n\n**Ana:** They're not stapled — they close a loop. When the architecture won't hold still, there are no stable seams to distribute ownership across. So responsibility collapses onto whoever can still model the whole thing in their head. Meanwhile drive-by PRs surge from people who don't understand the codebase, dumping the cleanup on the few who do. The system-level instability is what *manufactures* the human cost. That's the whole point.\n\n## What Architecture Is For Now\n\n**Ben:** So your answer is, what — slow down? Generate less?\n\n**Ana:** No. The fix isn't slower generation, it's governance that matches the speed. Architecture's job now is to cool the system down — add the stability that keeps everything and everyone from burning out under brute force.\n\n**Ben:** \"Cool it down\" is vague. Give me something I can do on Monday.\n\n**Ana:** Decide what stays stable while everything above it stays fluid. Freeze the seams with the highest blast radius. Three of them: domain boundaries — they're the org chart in disguise, so let them drift and ownership drifts too. API contracts — hold those and teams change their internals freely without coordinating. And the data model — re-architecting that under a running system is where the worst instability lives. Let the AI move fast *inside* those boundaries; hold the boundaries themselves still, deliberately.\n\n**Ben:** That's still mostly a principle. Anything smaller, for actual Monday?\n\n**Ana:** Sure — five cheap moves. Write the frozen seams down where the agent and the team both read them. Gate *only* those seams with a human sign-off; let everything inside flow. Measure what you're not measuring — churn, PR size, \"could one person still explain this PR?\" Find the one or two people everything routes through and treat their load as a system risk, not a personal strength. And run a short, regular forum on contracts and guardrails only — not designs, not code. None of that slows generation; it's governance that matches the speed.\n\n**Ben:** And if the models keep getting better, doesn't the human eventually drop out of the loop?\n\n**Ana:** Opposite. As AI gets more capable, human oversight gets *more* valuable, not less — architecture is what makes that oversight tractable instead of crushing. It's the same instinct as [Can RISC-Inspired Platforms Make AI Less Risky?](risc-for-ai-software-development.html): shrink and stabilize the surface humans and AI reason about together. And it's why small teams fly and scaling stalls — AI removes the individual constraint but leaves the coordination constraint fully intact.\n\n**Ben:** Last one. What are you *not* claiming? Because this could read as \"AI bad.\"\n\n**Ana:** Three things I'm not saying. Not that AI development is bad or should be braked — governance, not brakes. Not that this is microservices versus monolith — a Vibe Monolith can hide inside a perfectly clean microservice architecture. And not that burnout is a personal failing — it's a structural consequence of unstable architecture. The takeaway is one sentence: the way out of the burn is not more force. It's better structure.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "An eight-panel explainer comic for *The Vibe Monolith*: software outgrows our trust, AI never stops re-architecting, and the fix is to freeze the seams that matter.\n\n<!-- comic-style\n{\n  \"cast\": \"MAYA: a pragmatic staff engineer / architect, short dark hair, glasses, rolled-up sleeves, calm and slightly amused, often holding a marker or a small set of building blocks. REX: an over-eager boxy robot AI assistant, one bent antenna, glowing rectangular eyes, perpetually generating too much code too fast.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with blue/teal accents on a light cream background, generous white space, hand-lettered speech bubbles with SHORT readable text (max 8 words per bubble), simple geometric workshop/control-room settings mixing machinery with software symbols, no photorealism, no dense text, no title text.\"\n}\n-->\n\n![Comic panel: a robot pushes a giant 17,000-line code scroll at an engineer holding a tiny approval stamp.](assets/images/breaking-vibe-monolith/comic-01-the-giant-pr.jpeg)\n**Panel 1:** *A pull request is a trust mechanism. Nobody reviews 17,000 lines.*\n\n![Comic panel: a robot races ahead with a tall code stack while an engineer with a TRUST flag falls behind.](assets/images/breaking-vibe-monolith/comic-02-trust-falls-behind.jpeg)\n**Panel 2:** *Software now grows faster than our trust in it. That gap is the problem.*\n\n![Comic panel: a robot cranks a code machine while an engineer cranks a test machine, both overheating.](assets/images/breaking-vibe-monolith/comic-03-brute-force-both-sides.jpeg)\n**Panel 3:** *Brute force on both sides — building and believing — burns hardware, tokens, and people.*\n\n![Comic panel: a robot repeatedly tears down and rebuilds a tower of foundation blocks while an engineer watches.](assets/images/breaking-vibe-monolith/comic-04-never-stops-rearchitecting.jpeg)\n**Panel 4:** *The failure mode isn't that AI won't refactor — it's that it won't stop re-architecting.*\n\n![Comic panel: a clean modular diagram on the wall above a single quivering blob where poking one box sparks another.](assets/images/breaking-vibe-monolith/comic-05-the-vibe-monolith.jpeg)\n**Panel 5:** *The Vibe Monolith: clean diagram, but it behaves — and breaks — as one thing.*\n\n![Comic panel: an expert engineer carries the whole system on her back, smiling and sweating, as a robot adds another box.](assets/images/breaking-vibe-monolith/comic-06-burden-on-the-best.jpeg)\n**Panel 6:** *Small teams fly, but scaling stalls: the burden piles onto your best people — high-functioning burnout, output high while they hollow out.*\n\n![Comic panel: an engineer freezes three labeled pillars in blue ice while a robot builds freely between them.](assets/images/breaking-vibe-monolith/comic-07-freeze-the-seams.jpeg)\n**Panel 7:** *Cool the system down: freeze the high-blast-radius seams, let AI move fast inside them.*\n\n![Comic panel: an engineer and a calm robot stand before a stable structure with a cool snowflake icon, giving a thumbs-up.](assets/images/breaking-vibe-monolith/comic-08-better-structure.jpeg)\n**Panel 8:** *The way out of the burn is not more force — it is better structure.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>
