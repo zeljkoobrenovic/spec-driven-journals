@@ -1,5 +1,5 @@
 ---
-title: "Breaking Down the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool"
+title: "Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool"
 date: 2026-06-21
 author: by Željko Obrenović (obren.io)
 permalink: breaking-vibe-monolith

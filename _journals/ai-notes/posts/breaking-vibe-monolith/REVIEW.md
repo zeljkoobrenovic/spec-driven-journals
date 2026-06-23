@@ -1,4 +1,4 @@
-# Review: Breaking Down the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool
+# Review: Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool
 
 **Reviewed:** 2026-06-21 · **Reviewer:** post-review skill (AI-mediated)
 **Files reviewed:** spec.md, index.md, summary.md, dialog.md, comics.md

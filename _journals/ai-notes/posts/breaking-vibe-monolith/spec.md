@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-06-21
 ---
 
-# Spec: Breaking Down the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool
+# Spec: Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool
 
 ## Intent
 
@@ -150,7 +150,7 @@ None for the current draft.
 
 ## Changelog
 
-- **2026-06-21** — Retitled to "Breaking Down the Vibe Monolith: Architecting
+- **2026-06-21** — Retitled to "Breaking Up the Vibe Monolith: Architecting
   AI-Built Systems to Keep Their Cool" (visible `title` only; `permalink` and the
   `breaking-vibe-monolith` slug unchanged for URL/cross-link stability). Intent
   and criteria unchanged → stays `accepted`. *(Zeljko, AI-mediated session)*
