@@ -93,8 +93,10 @@ Operates on any prose file in a post folder: usually `index.md`, but also
 - Avoid stacking bold phrases back-to-back; it reads as shouting.
 - Keep emphasis consistent: a core term bolded once in a section should not be
   bolded on every repetition.
-- For posts with an existing ADR **Status / Decision** highlight blockquote, that
-  block is already the scannable summary — do not pile extra bold into it.
+- For posts with an existing opening highlight blockquote — the ADR **Status /
+  Decision** block, or the essay **KEY POINTS** block — that block is already the
+  scannable summary (and KEY POINTS already carries intentional bold); do not pile
+  extra bold into it.
 
 ## Anti-patterns
 

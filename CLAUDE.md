@@ -113,6 +113,22 @@ Foundation-, decision-, and principle-shaped posts open with a fixed two-line hi
 
 For principle posts, replace `**Decision**` with `**Principle**`. Keep it short, keep the labels exact, and align the visible status with the front-matter `status:` value. The main body should start with `## Statement` (principles) or `## Decision` (decisions); the highlight is the scannable summary, not a duplicate of that section.
 
+### Essay-shaped opening highlight: KEY POINTS
+
+Essay-shaped posts (the `ai-notes` journal) open instead with a **KEY POINTS** blockquote of **exactly three bullets** that capture the essence of the essay — typically the problem, the core insight or symptom, and the resolution. Three is the rule: force the synthesis down to three, collapsing related threads into one bullet rather than adding a fourth. Each bullet is one or two sentences, leads with **bolded** key phrases, and stands alone so a skim reader gets the whole argument from the block.
+
+```markdown
+> **KEY POINTS:**
+>
+> * **First essential point** — the problem or gap.
+> * **Second essential point** — the core insight, mechanism, or symptom.
+> * **Third essential point** — the resolution or the move it argues for.
+
+<br>
+```
+
+Follow the block with a `<br>` before the lead paragraph.
+
 ### Cross-record links: `[[name]]`
 
 Posts link to other records with `[[record-name]]`, where `record-name` is the target post's `permalink:`. The build resolves these at compile time (`build_crosslink_index` + `_rewrite_crosslinks` in `build.py`):

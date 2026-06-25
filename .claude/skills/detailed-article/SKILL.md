@@ -43,17 +43,45 @@ modality files that may now be stale.
 - **Front matter**: `title`, `date`, `author`, `excerpt`, `permalink`,
   `timetoread`, `tags`; ADR-shaped posts also carry `id` and
   `status: <state>:<colour>` (e.g. `proposed:orange`, `accepted:green`).
-- **Opening highlight** before the first `## Heading`:
+- **Opening highlight** before the first `## Heading`. Two shapes — pick by
+  post kind:
 
-  ```markdown
-  > **Status**: PROPOSED
-  >
-  > **Decision**: One paragraph stating the decision clearly enough that a
-  > reader gets the direction before reading the body.
-  ```
+  - **ADR-shaped posts** (decisions, principles, foundations) — a fixed
+    two-line status/decision blockquote:
 
-  Use `**Principle**` instead of `**Decision**` for principle posts. Keep the
-  visible status aligned with the front-matter `status:` value.
+    ```markdown
+    > **Status**: PROPOSED
+    >
+    > **Decision**: One paragraph stating the decision clearly enough that a
+    > reader gets the direction before reading the body.
+    ```
+
+    Use `**Principle**` instead of `**Decision**` for principle posts. Keep
+    the visible status aligned with the front-matter `status:` value.
+
+  - **Essay-shaped posts** (e.g. the `ai-notes` journal) — a **KEY POINTS**
+    blockquote of **exactly three bullets** that capture the *essence* of the
+    essay: typically the problem, the core insight or symptom, and the
+    resolution. Three is the rule, not a range — force the synthesis down to
+    three even when the essay has many threads; collapse related ideas into a
+    single bullet rather than adding a fourth. Each bullet is one or two
+    sentences, leads with **bolded** key phrases, and stands on its own so a
+    skim reader gets the whole argument from the block alone.
+
+    ```markdown
+    > **KEY POINTS:**
+    >
+    > * **First essential point** — the problem or the gap, stated so it lands
+    >   before the body.
+    > * **Second essential point** — the core insight, mechanism, or symptom
+    >   that the essay turns on.
+    > * **Third essential point** — the resolution or the move it argues for.
+
+    <br>
+    ```
+
+    Follow the block with a `<br>` before the lead paragraph, matching the
+    existing `ai-notes` posts.
 - **Body order (MADR-inspired)**: `Statement`/`Decision` → `How to Read This`
   → `Rationale` → `Implications` → `What This Means for Teams` →
   `Anti-Patterns` → `Examples` → `Related Principles`/cross-links →

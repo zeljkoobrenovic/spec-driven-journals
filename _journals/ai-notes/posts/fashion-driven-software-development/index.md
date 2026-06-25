@@ -12,10 +12,9 @@ icon: "assets/icons/fashion.png"
 ---
 > **KEY POINTS:**
 >
-> * **Model-powered products** may need **frequent reinterpretation** around new materials because every major model release can change what is possible, what customers expect, what breaks, and what should be rebuilt.
-> * Fashion is a useful metaphor because it combines **short seasons**, **changing materials**, taste, collections, craft, brand identity, and commercial response.
-> * Fashion-driven software development is **not fad-driven development**. It means moving fast while protecting **customer value and trust**.
-> * Fashion-driven software development **extends modern product management** rather than replacing it: outcome thinking still matters, but roadmaps, product briefs, discovery, and evaluation must account for **unstable model materials**.
+> * **When the model is the product's material, every major release can change the product itself** — what is possible, what customers expect, what breaks, and what should be rebuilt — so model-powered products need **frequent reinterpretation** around new materials.
+> * **Fashion is the useful metaphor** for this: **short seasons** and **changing materials** combined with taste, craft, and brand identity. It is **not fad-driven development** — the point is moving fast while protecting **customer value and trust**, not chasing novelty.
+> * **It extends modern product management rather than replacing it.** Outcome thinking still matters, but roadmaps, discovery, and evaluation must now account for **unstable model materials**.
 
 <br>
 **Model-powered products** may need **frequent reinterpretation** around new materials. That is the central thesis of fashion-driven software development. When an AI model is only a tool used by developers, a better model may help the team build faster. But when a generative model is part of **the product's material**, a better model can change the product itself: its workflow, interface, quality bar, unit economics, customer promise, and competitive position. The **planning horizon** becomes shorter. Stability becomes more seasonal. Product fit becomes harder to predict from capability charts alone.

@@ -12,11 +12,9 @@ icon: "assets/icons/processor.png"
 ---
 > **KEY POINTS:**
 >
-> * The **bottleneck** for AI-assisted software development is not only whether AI can generate code. It is whether engineers can **understand, verify, and trust** what it generates.
-> * RISC — **Reduced Instruction Set Computer** — is a useful analogy for the platform surface we ask AI to build on: frameworks, libraries, dependencies, SaaS APIs, runtime conventions, and architectural patterns.
-> * Reduced platforms can make AI-generated systems easier to review, test, debug, secure, and maintain.
-> * **AI changes the economics of abstraction**. If AI can cheaply generate small, fit-for-purpose code, reinventing the wheel may sometimes be safer than importing a large opaque wheel.
-> * **Simple does not mean primitive**. The goal is the smallest reliable platform humans and AI can reason about together.
+> * **The bottleneck is not whether AI can generate code — it is whether engineers can understand, verify, and trust it.** The platform surface we ask AI to build on (frameworks, libraries, dependencies, SaaS APIs, runtime conventions) is what makes that hard.
+> * **RISC — Reduced Instruction Set Computer — is the analogy**: a deliberately reduced platform makes AI-generated systems easier to review, test, debug, secure, and maintain. And because **AI changes the economics of abstraction**, cheaply generating small, fit-for-purpose code can be safer than importing a large opaque wheel.
+> * **Simple does not mean primitive.** The goal is the smallest reliable platform humans and AI can reason about together.
  
 <br>
 Software engineering is learning the wrong lesson from AI if the only question is "How much code can we generate?"
