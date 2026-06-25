@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Is the Reactor, Not the Plant</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Obren on AI</a><span class="nav-right"><a class="nav-next" href="breaking-vibe-monolith.html" title="Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">AI Software Development</p>
+        <h1>AI Is the Reactor, Not the Plant</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2026-06-25  ·  14 min · <a class="spec-link" href="ai-is-the-reactor-not-the-plant.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/ai-is-the-reactor-not-the-plant/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/ai-is-the-reactor-not-the-plant/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Obren on AI</a><span class="nav-right"><a class="nav-next" href="breaking-vibe-monolith.html" title="Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "AI Is the Reactor, Not the Plant", "date": "2026-06-25", "author": "by Željko Obrenović (obren.io)", "permalink": "ai-is-the-reactor-not-the-plant", "timetoread": "14 min", "excerpt": "Generative AI gives us raw power the way a reactor core gives off heat. But almost none of a nuclear plant is the core. The hard, expensive, durable engineering is everything built around it to control, channel, and contain that power. The same is becoming true of AI.", "tags": "generative ai, ai agents, evaluation, guardrails, orchestration, observability, platform design", "icon": "assets/icons/nuclear-power-plant.png", "logo": "assets/images/ai-is-the-reactor-not-the-plant/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["generative ai", "ai agents", "evaluation", "guardrails", "orchestration", "observability", "platform design"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **KEY POINTS:**\n>\n> * **Generative AI is raw power, like the heat from a reactor core.** A reactor core is, in the words of the U.S. nuclear regulator, simply \"the heat source for the power plant, just like the boiler is for a coal plant.\" Powerful, dense — and on its own, not yet useful.\n> * **Almost none of a nuclear plant is the core.** The reactor is a minority of the cost and a small share of the engineering. The plant is the control rods, the cooling loops, the containment, the instrumentation, the layered safety systems — the machinery that turns a raw reaction into something \"predictable and controllable.\"\n> * **The same shift is happening with AI.** The model is the reactor. The product, and most of the real work, is the plant around it: evaluation, guardrails, orchestration, observability, and the human and organizational systems that channel raw capability into something we can trust.\n\n<br>\nIt is easy to be dazzled by the core.\n\nA modern AI model, like a reactor core, is a remarkable thing: a dense source of raw power that did not exist at this scale a few years ago. And like a reactor core, it tempts us into the wrong question. With nuclear power, the naive question is \"how hot can the core get?\" With AI, it is \"which model is best?\" or \"how capable is the latest release?\"\n\nBoth are the wrong primary question, for the same reason. **The power of the core is not where the value is, and it is not where most of the work is.** The value and the work are in everything built around the core to control it, channel it, contain it, and convert it into something useful and safe. A reactor core that is not surrounded by a plant is not a power station. It is just a hazard.\n\nThis article takes that analogy seriously — and only as far as it actually holds. Nuclear power gives us a few hard, verifiable facts about where the engineering really goes. AI is starting to teach us the same lesson.\n\n## What a Reactor Core Actually Is\n\nStrip away the mystique and a reactor core does one thing: it gets hot. The U.S. Nuclear Regulatory Commission describes the reactor plainly as \"the heat source for the power plant, just like the boiler is for a coal plant.\" The exotic part is *how* it gets hot — a self-sustaining fission chain reaction — but its job in the plant is humble. It is a heat source.\n\nThat heat is only worth anything once it is made **steady**. The same NRC training material puts it well: by controlling the chain reaction, \"heat energy is consistent and constant. As a result, the steam generation — and by extension the generation of electricity — is predictable and controllable.\" The entire economic point of the plant is to take a raw, intense reaction and render it *predictable and controllable*.\n\nLeft to itself, an unchecked reaction runs away — the rate of fission climbs rapidly and the core produces far more energy than anything around it can use or absorb. Uncontrolled, the core is both useless (you cannot run a grid on an unsteady, runaway heat source) and dangerous. **Control is not a feature added to a reactor. It is the thing that makes a reactor a reactor rather than a hazard.**\n\nSo the core matters enormously — and yet, on its own, it produces nothing you would want. Hold that thought, because it is exactly the shape of where AI is today.\n\n## Most of the Plant Is Not the Core\n\nHere is the fact that makes the analogy more than a turn of phrase: **most of a nuclear power plant — by cost, by components, and by engineering effort — is not the reactor.**\n\nA few numbers, attributed and kept conservative:\n\n* The World Nuclear Association's cost breakdown (from its 2020 supply-chain report) puts the **\"nuclear island\" at about 28%** of plant cost. That figure already bundles in the reactor coolant system and steam supply, so the reactor vessel and core *alone* are a smaller slice still.\n* The rest — the **conventional island (turbine) at ~15%, the balance of plant at ~18%, and site and civil works at ~20%** — adds up to more than half the cost, none of it the reactor.\n* Instrumentation and control systems, on their own, are about **8%** — a line item roughly comparable to major mechanical equipment.\n* A much older U.S. Department of Energy breakdown (from 1980, for a hypothetical plant — so treat it as illustrative, not a constant) put the reactor itself at just **15–20%** of *direct* cost, *co-equal* with the turbine and the plant structures. (This is a share of direct cost, a different base from the WNA percentages above, so the two are not strictly comparable — but both point the same way.) In that same estimate, the plant's engineering design \"cost nearly as much as the reactor itself,\" and roughly **a third of the total was indirect cost** — engineering services, construction management, overhead.\n\n| The intuition | The reality |\n| --- | --- |\n| The reactor is the plant. | The reactor is a **minority** of the plant — a small share of cost, components, and engineering. |\n| The hard part is the core. | The hard part is the **control, cooling, containment, instrumentation, and conversion** around the core. |\n| Build a better core and you have a better plant. | A better core is wasted without the plant to channel it. The plant is what produces power you can sell. |\n\nThe point is directional, not decimal: **the reactor is the smaller part of the problem.** The engineering, the cost, and the difficulty live in the systems that turn raw heat into safe, steady, sellable electricity.\n\n![Proportional bar showing a nuclear plant's cost split: a small reactor 'nuclear island' segment beside larger balance-of-plant, turbine, civil-works, and instrumentation-and-control segments.](assets/images/ai-is-the-reactor-not-the-plant/plant-cost-breakdown.jpeg)\n**Figure 1:** *Where the money actually goes: the reactor 'nuclear island' (~28%) is a minority; the systems around it — turbine, balance of plant, civil works, instrumentation and control — make up the rest. (Shares from the World Nuclear Association's 2020 cost-by-activity breakdown.)*\n\n\n## The Three Jobs of the Plant\n\nWhy does so much of the plant exist? Because raw power has to be made usable, and that takes three distinct jobs. The triad below is the article's own framing, and it rhymes with how nuclear engineers think: international safety guidance (the IAEA) names three fundamental safety functions a plant must ensure at all times — **control the reaction, remove the heat, and confine the material.** The labels are not identical (the IAEA's \"remove the heat\" is about cooling the core safely, where the plant's *channel* job is about converting that heat into sellable electricity), but the shape is the same: three things any plant — nuclear or AI — has to do with a raw power source.\n\n| Job | In a reactor | In an AI system |\n| --- | --- | --- |\n| **Control** — set and hold the rate | Control rods of neutron-absorbing material (boron, cadmium, hafnium) slide in to slow the reaction and out to speed it up; a moderator and coolant keep it in its working range. | Prompts, system instructions, tool permissions, retrieval, and orchestration set what the model does and how far it can reach. This is the \"throttle.\" |\n| **Channel** — convert raw output into useful work | Coolant loops carry heat to a turbine; the turbine converts it into electricity the grid can actually use. | Evaluations, structured outputs, schemas, and workflows convert raw generation into a specific, checkable result a product can use. |\n| **Contain** — assume things will go wrong, and bound the damage | Three physical barriers — fuel cladding, the coolant system, and the containment building — each there in case the one inside it fails. | Sandboxes, output filters, human review, rate limits, and rollback bound the blast radius when the model is wrong, manipulated, or misused. |\n\n![Three-row diagram mapping reactor mechanisms to AI equivalents: control rods to throttles/permissions, coolant-to-turbine to evals/workflows, and containment walls to sandboxes/review.](assets/images/ai-is-the-reactor-not-the-plant/control-channel-contain-mapping.jpeg)\n**Figure 2:** *The three jobs, mapped: control (set the rate), channel (convert raw output into useful work), and contain (bound the damage) — each with a reactor mechanism and its AI equivalent.*\n\nNotice that none of these three jobs is \"make the core hotter.\" They are all about what happens *around* the core. **In AI terms, almost none of the engineering that makes a product trustworthy is model training. It is the plant.**\n\nThis is the same instinct behind [Can RISC-Inspired Platforms Make AI Less Risky?](risc-for-ai-software-development.html): the adoption bottleneck is not whether the model can generate something, but whether we can inspect, test, and trust it. The control plane is where trust is manufactured.\n\n## Defense in Depth: No Single Guardrail\n\nThere is one more nuclear idea worth borrowing carefully, because the AI field keeps rediscovering it under other names.\n\nNuclear safety does not rely on any single safeguard. The governing philosophy, **defense in depth**, stacks independent layers — the IAEA describes five levels, from preventing problems, to catching them early, to engineered systems that stop core damage, to mitigating an accident, to limiting consequences if all else fails. The NRC defines it as \"successive compensatory measures.\" Crucially, the rules require **at least two diverse and independent shutdown systems**, where one alone can hold the reaction in check. Each layer is designed on the assumption that the layer inside it *might fail*.\n\nThe AI parallel is direct. A single guardrail — one prompt, one filter, one \"please don't do that\" — is the equivalent of trusting one shutoff. Real systems layer them:\n\n* **Prevent** — constrained tools, least-privilege permissions, narrow scopes.\n* **Catch early** — input validation, evaluation gates, anomaly detection on outputs.\n* **Stop damage** — sandboxes, human-in-the-loop on high-blast-radius actions.\n* **Mitigate** — rate limits, circuit breakers, the ability to roll back.\n* **Limit consequences** — audit logs, monitoring, incident response.\n\nThe lesson is not \"add more filters.\" It is **assume each safeguard can fail, and design the next one to still hold.** That is what defense in depth means, and it is why the control plane is layered, not a single wall.\n\n![Five concentric rings around a glowing core, each labeled with a defense-in-depth level and its AI safeguard, with a crack in one inner ring and the next ring still holding.](assets/images/ai-is-the-reactor-not-the-plant/defense-in-depth-layers.jpeg)\n**Figure 3:** *Defense in depth: independent layers, each designed on the assumption that the one inside it can fail — prevent, catch early, stop damage, mitigate, limit consequences.*\n\n\n## Widening Out: Organizations and Society Are Plants Too\n\nSo far this is an engineering point. But the same shape repeats at larger scales, and it is worth following — carefully — one level up.\n\n**For an organization**, the model is, again, just the core. An enterprise does not get value from \"having access to a frontier model.\" It gets value from the operating model around it: who is accountable for what an agent does, which decisions a human must still make, how work is reviewed, how failures are caught and fixed. [Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool](breaking-vibe-monolith.html) makes the engineering version of this case — that the way out of brute-force AI development is *better structure*, not more force — and [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html) makes the human version: the scarce skill becomes judgment, accountability, and deciding, not generating. The reactor got cheap. The plant did not.\n\n**For society**, the pattern is the same and the stakes are higher: the raw capability is arriving faster than the institutions, norms, laws, and accountability structures that channel and contain it. It is fair to say that much of the hard, slow, unglamorous work of making nuclear power a net good for society was not the physics of the core but the social \"plant\" around it — regulation, operating discipline, liability, oversight, and public trust. With AI, that plant is largely still under construction.\n\nA caution here, because this is where analogies get stretched: this is a claim about *structure*, not about *danger*. The point is not that AI is a physical hazard on the level of fission. It is that **with any powerful general-purpose capability, the capability is the easy part. Channeling it safely toward what we actually want is the hard, expensive, durable part — and that is mostly built around the core, not inside it.**\n\n## Where the Analogy Breaks\n\nThe strongest version of an analogy is the one that names its own limits. This one breaks in at least four places, and saying so keeps it a tool rather than a slogan.\n\n| Where it holds | Where it breaks |\n| --- | --- |\n| Raw power is a minority of the system; the value is in the control plane around it. | **AI is not physically dangerous like fission.** A commercial reactor's failure modes are heat and radiation. A model cannot melt down or explode. The danger from AI is wrong outputs, misuse, and over-trust — real, but a different kind of risk. |\n| Both need control, channeling, and containment to be useful. | **A reactor's physics are fixed and well-understood; a model's behavior is not.** Control rods obey known nuclear physics. Model behavior is statistical, shifts between versions, and resists exhaustive specification. The \"core\" itself keeps changing under you. |\n| Layered safety beats any single safeguard. | **Nuclear safety has decades of standards, regulators, and operating data.** AI's \"plant\" is being designed in public, in real time, without a settled rulebook. We are improvising the containment while the core runs. |\n| The core alone produces nothing useful. | **A model alone is still useful in a way a bare reactor core is not.** You can get real value from a raw model in a chat box. The analogy is about where *durable, trustworthy, production* value comes from — not about the model being inert. |\n\nIf you find yourself saying \"AI will melt down\" or \"we need a containment dome for GPUs,\" you have crossed from using the analogy to abusing it. The useful part is narrow and sturdy: **the power is the small part; the plant around it is the work.**\n\n## What to Do on Monday\n\nThe mental model is only worth having if it changes where you spend effort. Here is the principle made concrete.\n\n| Move | What it looks like | What it buys you |\n| --- | --- | --- |\n| **Budget for the plant, not the core** | When planning an AI feature, expect most of the work to be evals, guardrails, orchestration, observability, and review — not prompting the model. Staff and schedule accordingly. | Estimates stop being wildly optimistic; the \"90% done\" demo does not turn into six months of plant-building. |\n| **Build the throttle first** | Before scaling usage, decide what the model is *allowed* to do: tool scopes, permissions, and limits. Control before capability. | You can turn power up safely because you can turn it down. |\n| **Layer your safeguards** | Don't rely on one filter or one review. Assume each safeguard fails and design the next layer to hold. | A single bad output or jailbreak does not become an incident. |\n| **Measure the conversion, not the core** | Track whether raw output becomes a *correct, checkable* result — eval pass rates, escaped-defect rates — not just \"the model is impressive.\" | You optimize the part that actually produces value. |\n| **Name who owns the reaction** | Decide, explicitly, which decisions a human still makes and who is accountable when an agent acts. | Accountability does not quietly evaporate into \"the AI did it.\" |\n\nNone of these are about getting a better model. They are about building the plant — which is where the value, and most of the work, has always been.\n\n## Closing Thought\n\nThe reactor core is a genuine marvel, and so is a frontier model. But a marvel is not yet a power station. The lesson nuclear engineering learned the hard way — that the core is the small part, and the plant around it is the cost, the engineering, and the entire reason any value comes out — is the lesson the AI field is now learning in fast-forward.\n\n**Generative AI handed us a reactor core. The work ahead is the plant.** Most of it is not making the model more powerful. It is control, channeling, and containment — the unglamorous machinery that turns raw capability into something we can trust, sell, and live with. That is not the boring part of the AI revolution. **It is the revolution.**\n\n## To Probe Further\n\n* U.S. NRC, [*Reactor Concepts Manual (R-100)*](https://www.nrc.gov/cdn/legacy/reading-rm/training/reactor-concepts-training-course.pdf) — the reactor as a heat source \"just like the boiler is for a coal plant\"; the three barriers to fission-product escape; control rods.\n* World Nuclear Association, [*Nuclear Power Reactors*](https://world-nuclear.org/information-library/nuclear-fuel-cycle/nuclear-power-reactors/nuclear-power-reactors) and [*Economics of Nuclear Power*](https://world-nuclear.org/information-library/economic-aspects/economics-of-nuclear-power) — control rods, moderator, coolant; the cost-by-activity breakdown showing the reactor as a minority of plant cost.\n* IAEA, [*SSR-2/1, Safety of Nuclear Power Plants: Design*](https://www-pub.iaea.org/MTCD/publications/PDF/Pub1534_web.pdf) — five levels of defense in depth; the three fundamental safety functions; two diverse, independent shutdown systems.\n* IFP, [*Why Does Nuclear Power Plant Construction Cost So Much?*](https://ifp.org/nuclear-power-plant-construction-costs/) — a 1980 DOE breakdown (illustrative, historical) putting the reactor at ~15–20% of direct cost, co-equal with turbine and structures.\n* [Can RISC-Inspired Platforms Make AI Less Risky?](risc-for-ai-software-development.html) — trust, not capability, as the adoption bottleneck; reducing the platform surface humans and AI must reason about.\n* [Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool](breaking-vibe-monolith.html) — the way out of brute-force AI development is better structure, not more force.\n* [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html) — when generation gets cheap, judgment and accountability become the scarce skills.\n\n## Questions to Consider\n\nUse these if your team is moving an AI feature from a demo toward something you would put your name on.\n\n* When you scoped your last AI project, did you budget for the core or for the plant — and which one ran over?\n* If your one main guardrail failed silently tonight, what is the *second* thing that would catch it?\n* Can you turn the power down? Do you have a throttle — scopes, limits, a kill switch — or only an on switch?\n* Are you measuring how impressive the model is, or whether its raw output reliably becomes a correct, checkable result?\n* When an agent acts, who is accountable — and would that answer survive an incident review?\n* Which of your AI investments are making the core hotter, and which are building the plant? Which list is longer, and which should be?\n"}]}, {"key": "summary", "label": "Summary", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "Generative AI gives us raw power the way a reactor core gives off heat — dense, impressive, and on its own **not yet useful**. The U.S. nuclear regulator describes a reactor core plainly as \"the heat source for the power plant, just like the boiler is for a coal plant.\" Its output only becomes valuable once it is made \"predictable and controllable.\" The same is becoming true of AI: the model is the core; **the product, and most of the work, is the plant built around it.**\n\n**The fact that anchors the analogy**\n\n* Most of a nuclear plant — by cost, components, and engineering — is **not** the reactor. The World Nuclear Association puts the \"nuclear island\" at about 28% of plant cost; turbine, balance of plant, and civil works together exceed it. A 1980 DOE breakdown (illustrative, and a share of *direct* cost — a different base) put the reactor itself at just 15–20%, co-equal with the turbine and structures, with about a third of total cost being indirect engineering and management.\n* The reactor matters enormously — and yet produces nothing sellable until the plant around it controls, channels, and contains it.\n\n**The three jobs of the plant**\n\n* **Control** the rate — control rods, moderator, coolant. In AI: prompts, tool permissions, retrieval, orchestration. The throttle.\n* **Channel** raw output into useful work — coolant loops to a turbine. In AI: evaluations, schemas, structured outputs, workflows that turn raw generation into a checkable result.\n* **Contain** — three physical barriers, each assuming the one inside it can fail. In AI: sandboxes, output filters, human review, rate limits, rollback.\n\n**Defense in depth**\n\n* Nuclear safety never relies on one safeguard. The IAEA stacks five independent layers and mandates at least two diverse, independent shutdown systems. The AI lesson is identical: **assume each guardrail fails, and design the next to still hold** — not \"add more filters.\"\n\n**It widens — carefully**\n\n* For an **organization**, value comes from the operating model around the model: accountability, review, who decides. For **society**, capability is arriving faster than the institutions that channel it. This is a claim about *structure*, not danger.\n\n**Where it breaks**\n\n* AI is **not** physically dangerous like fission — it cannot melt down or explode; its risks are wrong outputs, misuse, and over-trust. A model's behavior is not fixed physics; it shifts between versions. And unlike nuclear, AI's \"plant\" is being built in public without a settled rulebook. A bare model is still useful in a way a bare reactor core is not.\n\n**What to do Monday**\n\n* Budget for the plant, not the core (most work is evals, guardrails, orchestration, observability — not prompting). Build the throttle before scaling. Layer safeguards. Measure whether raw output becomes a *correct, checkable* result. Name who is accountable when an agent acts.\n\nGenerative AI handed us a reactor core. The work ahead is the plant — and that is not the boring part of the AI revolution. **It is the revolution.**\n\n*The Article tab carries the full argument, the attributed nuclear facts, and the limits of the analogy; the Conversation and Comic tabs walk the same path more informally.*\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "9 min listen"}, "blocks": [{"type": "markdown", "content": "## The Wrong Question\n\n**Ben:** Okay, your pitch is that AI is like a nuclear reactor. I'll be honest, that sounds like the kind of metaphor that falls apart the moment you poke it.\n\n**Ana:** Good — poke it, because the whole point is to use it only where it actually holds. Start with one fact. People ask \"which model is best?\" the way someone might ask \"how hot can the reactor get?\" And it's the wrong first question for the same reason in both cases.\n\n**Ben:** Why is it wrong? Hotter core, more power, no?\n\n**Ana:** Because the heat isn't where the value is, and it isn't where the work is. A reactor core is — and this is the U.S. nuclear regulator's own description — \"the heat source for the power plant, just like the boiler is for a coal plant.\" That's it. It's a boiler. An exotic one, but a boiler.\n\n**Ben:** That feels deliberately deflating.\n\n**Ana:** It's supposed to be. The core's heat is only worth anything once it's made *steady*. The same regulator says the point of controlling the reaction is that the electricity becomes \"predictable and controllable.\" Raw, the reaction is useless — you can't run a grid on something that won't hold still — and dangerous. So control isn't a feature you bolt onto a reactor. Control is what makes it a reactor instead of a hazard.\n\n## Most of the Plant Isn't the Core\n\n**Ben:** Fine, but the reactor is still the expensive, hard part. That's where the engineering goes.\n\n**Ana:** That's the assumption I want to break, and there are numbers. The World Nuclear Association breaks down plant cost by activity. The \"nuclear island\" — and that already bundles in the coolant system and steam supply, so it's bigger than just the reactor — is about 28%. The turbine, the balance of plant, and the civil works together come to more than half. None of that is the reactor.\n\n**Ben:** One source, one number. Convince me.\n\n**Ana:** There's an older one, from a 1980 Department of Energy study — I'll flag it as illustrative, it's decades old and hypothetical. It put the reactor itself at 15 to 20% of direct cost. Co-equal with the turbine. Co-equal with the plant *structures*. And it noted the plant's engineering design cost nearly as much as the reactor. Roughly a third of the whole thing was indirect cost — engineering, construction management, overhead.\n\n**Ben:** So the marvel in the middle is a minority line item.\n\n**Ana:** That's the shape of it. The core matters enormously and produces nothing sellable on its own. Now hold that next to AI, because that is exactly where we are. The model is astonishing. And almost none of the work of turning it into something you'd trust is the model.\n\n## The Three Jobs\n\n**Ben:** So what *is* all that other engineering doing? In the reactor, I mean.\n\n**Ana:** Three jobs, and they map cleanly. The international safety guidance actually names them: control the reaction, remove the heat, confine the material. Control, channel, contain.\n\n**Ben:** Translate.\n\n**Ana:** Control is the throttle. In a reactor, control rods — they're made of neutron absorbers, boron, cadmium — slide in to slow it down, out to speed it up. In AI, your throttle is prompts, tool permissions, what the agent is allowed to touch, the orchestration around it.\n\n**Ben:** Channel?\n\n**Ana:** Turning raw output into useful work. The reactor sends heat through coolant loops to a turbine that makes electricity the grid can actually use. In AI, that's your evals, your schemas, your structured outputs — the machinery that converts raw generation into a specific, checkable result a product can rely on.\n\n**Ben:** And contain.\n\n**Ana:** Assume it goes wrong and bound the damage. A reactor has three physical barriers — the fuel cladding, the coolant system, the containment building — each one there in case the one inside it fails. In AI: sandboxes, output filters, human review, rate limits, the ability to roll back. None of those three jobs is \"make the core hotter.\" They're all about what surrounds the core.\n\n## No Single Guardrail\n\n**Ben:** You mentioned barriers \"in case the one inside fails.\" That's a specific idea, isn't it.\n\n**Ana:** It's the one I most want people to steal. It's called defense in depth. Nuclear safety never trusts a single safeguard. The IAEA describes five independent layers — prevent the problem, catch it early, engineered systems to stop core damage, mitigate an accident, limit the consequences if everything else fails. And the rules require at least two *diverse, independent* shutdown systems, where either one alone can hold the reaction.\n\n**Ben:** And the AI version is \"more filters.\"\n\n**Ana:** No — and that's the trap. The lesson isn't add more of the same wall. It's: assume each safeguard *will* fail, and design the next one so it still holds. One prompt, one filter, one \"please don't do that\" is trusting a single shutoff. Layer them, and make the layers different from each other.\n\n## Where It Breaks\n\n**Ben:** Here's where I push. If you tell a room \"AI is a nuclear reactor,\" somebody walks out saying AI is going to melt down. You've scared people with a bad analogy.\n\n**Ana:** And they'd be misusing it, and I'd want to stop them. So let me name where it breaks, because the strongest version of an analogy is the one that says where it ends. First: AI is not physically dangerous like fission. A commercial reactor's failure is heat and radiation. A model can't melt down or explode. The risk from AI is wrong outputs, misuse, over-trust — real, but a completely different kind of risk.\n\n**Ben:** That's a big one. What else?\n\n**Ana:** A reactor's physics are fixed and understood. Control rods obey known laws. A model's behavior is statistical, it shifts between versions, it resists being fully specified — the core itself keeps changing under you. Third: nuclear has decades of regulators and operating data. AI's \"plant\" is being built in public, in real time, with no settled rulebook. And fourth — this one matters — a bare model is still useful in a way a bare reactor core isn't. You get real value from a model in a chat box. The analogy is about where *durable, production, trustworthy* value comes from. It's not that the model is inert.\n\n**Ben:** So the honest version is narrow.\n\n**Ana:** Narrow and sturdy. The power is the small part. The plant around it is the work. If you catch yourself saying \"we need a containment dome for our GPUs,\" you've left the useful part behind.\n\n## What To Do Monday\n\n**Ben:** Give me the version a team can act on, not admire.\n\n**Ana:** Budget for the plant, not the core. When you scope an AI feature, expect most of the effort to be evals, guardrails, orchestration, observability, review — not prompting the model. That alone fixes most of the wildly optimistic estimates.\n\n**Ben:** The \"it's basically done, we just need to productionize it\" estimate.\n\n**Ana:** Which then takes six months. Next: build the throttle before you scale. Decide what the model is *allowed* to do before you turn usage up — because you can only safely turn power up if you can turn it down. Layer your safeguards. Measure the conversion, not the core — track whether raw output reliably becomes a correct, checkable result, not how impressive the demo felt. And name who owns the reaction. When an agent acts, who's accountable? Would that answer survive an incident review?\n\n**Ben:** None of which is \"get a better model.\"\n\n**Ana:** None of it. And that's the whole thing. The reactor got cheap. The plant didn't. Generative AI handed us a core. The work ahead — the control, the channeling, the containment — is the plant. That's not the boring part of this revolution. That *is* the revolution.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "An eight-panel explainer comic for *AI Is the Reactor, Not the Plant*: generative AI is raw power like a reactor core, but almost all the value and engineering is the plant built around it to control, channel, and contain that power.\n\n<!-- comic-style\n{\n  \"cast\": \"MAYA: a pragmatic staff engineer / architect, short dark hair, glasses, rolled-up sleeves, calm and slightly amused, often holding a marker or a wrench. REX: an over-eager boxy robot AI assistant, one bent antenna, glowing rectangular eyes, perpetually excited about raw power.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with blue/teal accents and a warm orange glow for the reactor core, on a light cream background, generous white space, hand-lettered speech bubbles with SHORT readable text (max 8 words per bubble), simple geometric control-room and power-plant settings mixing machinery with software symbols, no photorealism, no dense text, no title text.\"\n}\n-->\n\n![Comic panel: a robot proudly holds a small glowing orange core labeled AI MODEL while an engineer stands unimpressed.](assets/images/ai-is-the-reactor-not-the-plant/comic-01-the-glowing-core.jpeg)\n**Panel 1:** *Generative AI is raw power — a glowing core. Dazzling, and on its own, not yet useful.*\n\n![Comic panel: an engineer taps a glowing core with a wrench next to a thermometer; the robot looks deflated.](assets/images/ai-is-the-reactor-not-the-plant/comic-02-just-a-boiler.jpeg)\n**Panel 2:** *A reactor core is, plainly, 'the heat source for the power plant, just like the boiler is for a coal plant' (U.S. NRC).*\n\n![Comic panel: a bare glowing core radiates wild heat lines while a nearby lightbulb stays dark.](assets/images/ai-is-the-reactor-not-the-plant/comic-03-uncontrolled-is-useless.jpeg)\n**Panel 3:** *Uncontrolled, the core is both useless and a hazard. Control is what makes a reactor a reactor.*\n\n![Comic panel: a cutaway plant where a tiny glowing core sits dwarfed by cooling, turbine, and containment machinery.](assets/images/ai-is-the-reactor-not-the-plant/comic-04-mostly-not-the-core.jpeg)\n**Panel 4:** *Most of a plant — cost, components, engineering — is NOT the reactor. The marvel in the middle is a minority line item.*\n\n![Comic panel: three vignettes around a core labeled control, channel, and contain.](assets/images/ai-is-the-reactor-not-the-plant/comic-05-control-channel-contain.jpeg)\n**Panel 5:** *The plant does three jobs: control the rate, channel raw output into useful work, contain the damage when it fails.*\n\n![Comic panel: a core wrapped in several concentric colored shields; the robot pokes the outer one while an inner holds.](assets/images/ai-is-the-reactor-not-the-plant/comic-06-defense-in-depth.jpeg)\n**Panel 6:** *Defense in depth: no single guardrail. Assume each safeguard fails, and design the next one to still hold.*\n\n![Comic panel: a robot in a hazmat suit aims a fire extinguisher at a laptop while an engineer holds a sign reading NOT a bomb.](assets/images/ai-is-the-reactor-not-the-plant/comic-07-where-it-breaks.jpeg)\n**Panel 7:** *Mind the limits: a model can't melt down or explode. The analogy is about structure, not physical danger.*\n\n![Comic panel: an engineer and a calm robot stand before a complete humming plant with a lit lightbulb, giving a thumbs-up.](assets/images/ai-is-the-reactor-not-the-plant/comic-08-the-plant-is-the-work.jpeg)\n**Panel 8:** *AI handed us a reactor core. The work ahead is the plant — and that is the revolution.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>
