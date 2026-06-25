@@ -25,6 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 JOURNALS_DIR = ROOT / "_journals"
 TEMPLATES_DIR = ROOT / "_templates"
 DOCS_DIR = ROOT / "docs"
+INCLUDES_DIR = DOCS_DIR / "_includes"
 
 
 # --- tiny YAML subset parser ----------------------------------------------
@@ -752,12 +753,32 @@ def _embed_json(obj) -> str:
     return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
 
 
+def apply_includes(template: str) -> str:
+    """Substitute `<!-- @<file-name> -->` placeholders in a template with the
+    contents of the matching file under docs/_includes/.
+
+    For each file in docs/_includes/, replaces every occurrence of the comment
+    `<!-- @<file-name> -->` (e.g. `<!-- @CUSTOM_HEADER.html -->`) with that
+    file's text. Placeholders with no matching include file are left untouched,
+    so they stay visible as a hint that the include is missing.
+    """
+    if not INCLUDES_DIR.is_dir():
+        return template
+    for inc in sorted(INCLUDES_DIR.iterdir()):
+        if not inc.is_file():
+            continue
+        placeholder = f"<!-- @{inc.name} -->"
+        if placeholder in template:
+            template = template.replace(placeholder, inc.read_text(encoding="utf-8"))
+    return template
+
+
 def main():
     if not TEMPLATES_DIR.exists():
         print("Missing _templates/ directory", file=sys.stderr)
         sys.exit(1)
-    index_tpl = (TEMPLATES_DIR / "index.html").read_text(encoding="utf-8")
-    post_tpl = (TEMPLATES_DIR / "post.html").read_text(encoding="utf-8")
+    index_tpl = apply_includes((TEMPLATES_DIR / "index.html").read_text(encoding="utf-8"))
+    post_tpl = apply_includes((TEMPLATES_DIR / "post.html").read_text(encoding="utf-8"))
 
     DOCS_DIR.mkdir(exist_ok=True)
 

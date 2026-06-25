@@ -40,6 +40,10 @@ There is no test suite, lint config, or CI yet.
 
 The templates use plain `__PLACEHOLDER__` string substitution (not Jinja). Placeholders in `index.html`: `__TITLE__`, `__DESCRIPTION__`, `__JOURNAL__`, `__LOGO_HTML__`, `__DATA_JSON__`. In `post.html`: `__TITLE__`, `__SECTION_HTML__`, `__BYLINE__`, `__LOGO_HTML__`, `__POST_NAV__`, `__DATA_JSON__`.
 
+### HTML includes (`docs/_includes/`)
+
+Before any per-journal substitution, both templates run through `apply_includes()` once in `main()`. For each file under `docs/_includes/`, the build replaces every `<!-- @<file-name> -->` comment in the template with that file's contents — e.g. `<!-- @CUSTOM_HEADER.html -->` is replaced by `docs/_includes/CUSTOM_HEADER.html`. This is a shared site-wide snippet mechanism (analytics tags, a global header, etc.) injected into every page. A placeholder with no matching include file is left untouched (visible as a missing-include hint); a placeholder whose include file is empty is replaced with nothing. The substitution is applied to the template strings, so it lands in every journal's `index.html` and every post page.
+
 ## config.yaml shape
 
 ```yaml
