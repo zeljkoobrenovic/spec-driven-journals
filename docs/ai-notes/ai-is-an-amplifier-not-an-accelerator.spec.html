@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spec: AI Is an Amplifier, Not an Accelerator</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="ai-is-an-amplifier-not-an-accelerator.html">← AI Is an Amplifier, Not an Accelerator</a><span class="nav-right"></span></nav>
+    <header class="post" id="post-header">
+        <p class="section"><span>SPEC</span> • <span class="post-status"><span class="status-dot" style="background:green"></span>accepted</span> • <span>revised 2026-06-29</span></p>
+        <h1>Spec: AI Is an Amplifier, Not an Accelerator</h1>
+        <p class="byline"></p>
+        <div class="tags" id="tags"></div>
+        
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="ai-is-an-amplifier-not-an-accelerator.html">← AI Is an Amplifier, Not an Accelerator</a><span class="nav-right"></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: AI Is an Amplifier, Not an Accelerator\n\n> Working doc for the post in this folder. The spec drives the post; the post\n> is the artifact. Source plan: `PLAN.md` in this folder.\n\n## Intent\n\nCorrect the default mental model of AI as an **accelerator** — a thing that\nmakes everything faster — and replace it with the more accurate one: AI is an\n**amplifier**. Acceleration is additive and one-directional (always faster).\nAmplification is multiplicative and *sign-preserving*: `output = gain × input`.\nPoint AI at a strong team, a clean codebase, a clear goal, or a skilled person\nand it multiplies that strength. Point it at a brittle process, a messy\ncodebase, or a confused goal and it multiplies the mess — faster, bigger, and\nmore expensive. The sign of the effect is not fixed: AI can accelerate you *or\nslow you down*, make work cheaper *or more expensive*, raise quality *or scale\nslop*. The reader should leave understanding that the leverage is almost never\nin the AI itself — it is in the thing being amplified — so the work that matters\nis fixing the input, not chasing the multiplier. The post stays pragmatic: each\nclaim is backed by a cited study, and it ends with concrete moves.\n\nA second, equally important consequence follows from the same arithmetic, and\nthe post must land it: **a system is not a single number — it is many parts in\nseries, and an amplifier acts on parts, not on the whole.** Amplifying one part\nof an *unbalanced* system does not speed the system up; it moves the strain to\nwhatever part you did not amplify (the bottleneck), and usually makes that part\nworse. You can generate UIs fast but not connect them to backend and legacy as\nfast; you can build new systems fast but they still meet fragile legacy that\ngets *less* stable as the rest moves faster; work-in-progress piles up in front\nof code review and integration. This is the Theory of Constraints reasserting\nitself, and it explains the measured gap between **individual** productivity\n(reliably up) and **team / system** throughput (often flat or worse): the gains\nare real locally and then absorbed — or reversed — at the bottleneck and in the\ncoordination friction between people moving at different speeds.\n\n## Audience\n\n- Engineers and technical leaders deciding where to spend AI effort, who have\n  absorbed the \"AI makes us faster\" framing and are about to be surprised by the\n  bill, the slowdown, or the slop.\n- Decision-makers evaluating AI adoption who expect a uniform speedup across\n  teams and tasks.\n- Readers of the ai-notes spine — [AI Is the Reactor, Not the Plant](ai-is-the-reactor-not-the-plant.html),\n  [Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool](breaking-vibe-monolith.html), [Can RISC-Inspired Platforms Make AI Less Risky?](risc-for-ai-software-development.html),\n  [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html) — who want the *dynamic, signed* companion to the\n  reactor's *static* \"the work is in the plant\" point.\n\n## Success criteria\n\n- [ ] Reader leaves with one sticky mental model: **AI is a multiplier, not an\n      adder** — `gain × input`, and the input can be negative.\n- [ ] Reader can articulate why \"accelerator\" is the wrong word: acceleration is\n      additive and always positive; amplification preserves sign.\n- [ ] Reader sees the **speed** claim cut both ways, with citable evidence\n      (experienced devs measured *slower* with AI while believing they were\n      faster; juniors gain far more than seniors; gains flip negative outside the\n      task frontier).\n- [ ] Reader sees the **cost** claim cut both ways: cheap to generate, expensive\n      to own — generation cost falls while review/maintenance cost can rise.\n- [ ] Reader sees that **quality** and **organizational** outcomes are set by the\n      input (standards, guardrails, operating model), citing the DORA \"amplifier\"\n      finding.\n- [ ] Reader is given the metaphor's limits explicitly (AI also *adds* new\n      capability; \"gain\" is jagged, not one scalar) so it stays a tool, not a\n      slogan.\n- [ ] Reader understands that **a system is series-connected, and amplifying one\n      part moves the strain to the bottleneck** — fast new code meets slow review,\n      fragile legacy, and integration; the unamplified part becomes the problem and\n      often gets worse (Theory of Constraints; CircleCI feature-vs-main throughput).\n- [ ] Reader understands the **individual-vs-team gap**: individual productivity\n      reliably rises, but team/system throughput often does not, because gains are\n      absorbed at the bottleneck and lost to coordination friction (DORA 2024;\n      Brooks-style communication overhead).\n- [ ] Reader gets a short, concrete \"what to do\" that follows from the model:\n      fix the input, find the sign before scaling, budget for ownership, and\n      **amplify the bottleneck, not the part that is already fast**.\n- [ ] Reader does **not** come away thinking AI never helps, or that the post is\n      anti-AI — it is a model correction, not a verdict.\n\n## Non-goals\n\n- Not an AI-hype or AI-doom piece, and not a verdict on whether AI is \"worth it.\"\n  It is a mental-model correction with a pragmatic angle.\n- Not a literature review. Studies serve the idea; the idea does not serve the\n  studies.\n- Not a claim that AI is *only* a multiplier — the limits section concedes it\n  also adds genuinely new capability and that gain varies task to task.\n- Not a re-run of [AI Is the Reactor, Not the Plant](ai-is-the-reactor-not-the-plant.html). Reactor = *where the work\n  is* (static). Amplifier = *which direction the work goes* (dynamic, signed).\n  Reference it; don't duplicate it.\n- Not a precise-numbers argument. Cost/debt figures are attributed and used\n  directionally, never as settled constants.\n\n## Modalities\n\n- [x] `summary.md` — management summary. Warranted: there is a clean leadership\n      takeaway (don't buy speed; fix the input).\n- [x] `dialog.md` — two-host dialog. Warranted: the \"it cut both ways\" spectrum\n      (faster *or* slower, cheaper *or* costlier) plays well as back-and-forth.\n- [x] `comics.md` — explainer comic. The multiplier-with-a-negative-input image\n      is a strong visual gag and carries the \"amplify what?\" beat well; shipped\n      after the article and summary landed.\n\n## Structure\n\nHouse style (KEY POINTS block → MADR-ish body → contrast tables → Monday moves →\nClosing → To Probe Further → Questions). Section order:\n\n1. **The Wrong Word** — the accelerator framing and why it misleads; introduce\n   amplifier.\n2. **A Multiplier, Not an Adder** — the mechanism: `gain × input`, sign\n   preserved; lineage (Engelbart's \"intelligence amplification\"; Jobs' \"bicycle\n   for the mind\").\n3. **It Amplifies Speed (in Both Directions)** — METR −19% (and the +20%\n   perception gap); Copilot juniors +27–39% vs seniors +8–13%; BCG/Harvard\n   jagged frontier (+12.2% inside, −19% correct outside).\n4. **It Amplifies Cost** — cheap to generate, expensive to own; the cost-structure\n   data.\n5. **It Amplifies the Bottleneck (Friction in an Unbalanced System)** — a system\n   is series-connected; amplify one part of an unbalanced system and the strain\n   moves to the part you didn't (review, integration, fragile legacy), often\n   making it worse. Theory of Constraints; CircleCI feature-branch +59% while\n   median main-branch throughput fell; the legacy-gets-less-stable dynamic.\n6. **Why Your Team Didn't Get Faster (Even Though You Did)** — individual gains\n   real but absorbed at the bottleneck and lost to coordination friction; DORA\n   2024 (individuals felt more productive; system throughput/stability down);\n   Brooks-style communication overhead as everyone moves at different speeds.\n7. **It Amplifies Quality — and Slop** — standards/guardrails set the sign; tie to\n   the reactor \"plant.\"\n8. **It Amplifies Organizations** — DORA amplifier finding, seven profiles, the\n   foundational capabilities that decide the sign.\n9. **Where the Metaphor Breaks** — holds/breaks contrast table.\n10. **What to Do on Monday** — move / what-it-looks-like / what-it-buys table\n    (now includes \"amplify the bottleneck, not the fast part\").\n11. **Closing Thought** — the multiplier acts on the number you give it; the work\n    is the number.\n\nInline figures (article-illustrator): the `gain × input` diagram with a\nnegative-input branch; the speed spectrum from −19% to +39%; cheap-to-generate /\nexpensive-to-own cost curve; the DORA amplifier split; **an unbalanced-pipeline\nfigure (one stage sped up, work-in-progress piling at the next stage / the\nfragile-legacy bottleneck)**. Attribute every number; keep claims directional.\n\n## Open questions\n\n- None blocking. (Resolved: `comics.md` is shipped — see Modalities.)\n\n## Decision log\n\n- **2026-06-29** — Framed the whole post on the **multiplier vs. adder**\n  distinction rather than just \"amplifier sounds nicer than accelerator.\" Chosen\n  because the sign-preservation (`gain × input`, input can be negative) is what\n  makes the claim falsifiable and practical, not just rhetorical. Rejected: a\n  looser \"AI amplifies everything\" framing with no mechanism.\n- **2026-06-29** — Organized the body around **four axes** (speed, cost, quality,\n  organization), each a cliché the post refuses with data. Rejected: a single\n  software-delivery focus (too narrow) and a pure org/society essay (too far from\n  the strongest evidence, which is software-delivery-centric).\n- **2026-06-29** — Added a **systems/friction** strand (two new sections: the\n  bottleneck, and the individual-vs-team gap) at the author's request. Chosen\n  because it sharpens the thesis from \"amplifying a negative is bad\" to the more\n  practical \"amplifying *one part of an unbalanced system* relocates and worsens\n  the strain\" — grounded in the Theory of Constraints rather than asserted.\n  Placed right after Cost (the bottleneck is where relocated cost lands) and\n  before Quality/Organization. Rejected: folding it into the Organizations\n  section (too cramped; the constraint point and the coordination point each\n  deserve their own beat) and adding it as a single section (the *system has a\n  bottleneck* and *teams don't get the individual gain* are distinct claims with\n  distinct evidence).\n- **2026-06-29** — Placed in the **AI Software Development** section beside\n  reactor / vibe-monolith / risc. The evidence base is software-delivery-centric;\n  the org widening keeps it from being narrowly dev-only but doesn't move it to\n  Leadership.\n- **2026-06-29** — Load-bearing evidence is the **peer-reviewed / first-party**\n  studies (METR, BCG-HBS, Copilot RCTs, DORA); the AI-code debt figures are\n  *corroborating colour*, attributed and hedged, never load-bearing — same\n  discipline the reactor post used for cost percentages.\n\n## Sources\n\n- **Internal**\n  - [AI Is the Reactor, Not the Plant](ai-is-the-reactor-not-the-plant.html) — the static companion: value/work is in\n    the plant around the core. Amplifier is the signed, dynamic version.\n  - [Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool](breaking-vibe-monolith.html) — AI amplifies bad structure into a faster blob.\n  - [Can RISC-Inspired Platforms Make AI Less Risky?](risc-for-ai-software-development.html) — trust/inspectability as the bottleneck;\n    standards set the sign.\n  - [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html) — judgment and direction become scarce because AI\n    amplifies whatever direction it is given.\n- **External** (full citations in the post's \"To Probe Further\")\n  - DORA / Google Cloud, *2025 State of AI-assisted Software Development* — the\n    headline \"AI is an amplifier\"; adoption ~90%, low trust, throughput up but\n    instability up, seven team profiles, foundational capabilities. The post's\n    spine.\n  - METR (Jul 2025), *Measuring the Impact of Early-2025 AI on Experienced\n    Open-Source Developer Productivity* — experienced devs **−19%** slower yet\n    self-estimated **+20%** faster. The keystone \"it can slow you down\" fact.\n  - Copilot field experiments (Microsoft/Accenture; MIT Sloan write-up) — juniors\n    **+27–39%**, seniors **+8–13%**; juniors accept more suggestions.\n  - Dell'Acqua et al., *Navigating the Jagged Technological Frontier* (BCG ×\n    Harvard, 2023) — inside frontier **+12.2%** tasks / **+25.1%** faster /\n    better quality; outside **−19%** less likely correct.\n  - AI-code cost/debt cluster (GitClear 211M LOC; 8.1M-PR / 4,800-team analysis;\n    industry write-ups) — duplication ~8×, ~1.7× issues/PR, incidents +23.5%,\n    maintenance up to 4× by year two. Directional, attributed.\n  - Eliyahu Goldratt, *The Goal* / Theory of Constraints — a system's throughput\n    is set by its bottleneck; \"any improvement made anywhere besides the\n    bottleneck is an illusion\"; speeding a non-bottleneck just piles up\n    work-in-progress in front of the constraint. The formal backbone of the\n    bottleneck section.\n  - DORA / Google Cloud, *2024 Accelerate State of DevOps* — ~75% used AI and felt\n    more productive individually, yet AI was associated with *negative* effects on\n    delivery throughput and stability — the measured individual-vs-system gap.\n  - CircleCI 2026 data (via industry write-ups) — feature-branch throughput up\n    ~59% YoY while median main-branch throughput fell; PR queues 10–15/week →\n    50–100. The bottleneck made visible. Directional, attributed.\n  - Fred Brooks, *The Mythical Man-Month* (Brooks's Law) — communication paths\n    grow ~with the square of team size; integration and the critical path don't\n    parallelize. The coordination-friction half of the team-gap section.\n  - Engelbart, *Augmenting Human Intellect: A Conceptual Framework* (SRI, 1962) —\n    \"intelligence amplification\"; the augmented capability belongs to the\n    human+tool system.\n  - Steve Jobs, \"bicycle for the mind\" — \"a tool can amplify an inherent ability.\"\n\n## Changelog\n\n- **2026-06-29** — Systems/friction strand propagated to all four modalities:\n  two new article sections (\"It Amplifies the Bottleneck\", \"Why Your Team Didn't\n  Get Faster\") + a fifth inline figure; a new summary bullet pair; a two-segment\n  dialog addition; a new comic panel (07-the-bottleneck, strip now 9 panels).\n  KEY POINTS third bullet rewritten to carry the \"which part\" idea (still exactly\n  three bullets). Spec and post agree again; status stays `accepted`.\n- **2026-06-29** — Spec extended (author request) with a **systems/friction**\n  strand: two new sections (the bottleneck; the individual-vs-team gap), new\n  success criteria, new sources (Theory of Constraints, DORA 2024, CircleCI,\n  Brooks's Law). Spec updated *before* the article per the spec-first rule.\n- **2026-06-29** — Article, summary, and dialog written and reviewed\n  (post-review: 0 blockers, 0 major). Spec and post agree. Status `draft →\n  accepted`. Four inline figures staged as placeholders, awaiting image\n  generation. *(Željko Obrenović, AI-mediated session)*\n- **2026-06-29** — Initial spec from `PLAN.md`. Status `draft`. Four-axis\n  amplifier framing, three modalities planned (article + summary + dialog; comics\n  deferred). *(Željko Obrenović, AI-mediated session)*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

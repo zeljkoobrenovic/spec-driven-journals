@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Is an Amplifier, Not an Accelerator</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Obren on AI</a><span class="nav-right"><a class="nav-prev" href="ai-is-the-reactor-not-the-plant.html" title="AI Is the Reactor, Not the Plant">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="breaking-vibe-monolith.html" title="Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">AI Software Development</p>
+        <h1>AI Is an Amplifier, Not an Accelerator</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2026-06-29  ·  15 min · <a class="spec-link" href="ai-is-an-amplifier-not-an-accelerator.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/ai-is-an-amplifier-not-an-accelerator/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/ai-is-an-amplifier-not-an-accelerator/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Obren on AI</a><span class="nav-right"><a class="nav-prev" href="ai-is-the-reactor-not-the-plant.html" title="AI Is the Reactor, Not the Plant">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="breaking-vibe-monolith.html" title="Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "AI Is an Amplifier, Not an Accelerator", "date": "2026-06-29", "author": "by Željko Obrenović (obren.io)", "permalink": "ai-is-an-amplifier-not-an-accelerator", "timetoread": "15 min", "excerpt": "We keep calling AI an accelerator — a thing that makes everything faster. But an accelerator only adds speed. AI multiplies. It takes whatever you already have — a skill, a process, a codebase, a goal — and makes it bigger. And a multiplier works on whatever sign you feed it. Point it at strength and it compounds the strength. Point it at a mess and it compounds the mess, faster and more expensively. The work is never the multiplier. It is the number you feed it.", "tags": "generative ai, productivity, ai amplifier, technical debt, evaluation, organizational design, leadership", "icon": "assets/icons/ai-is-an-amplifier-not-an-accelerator.png", "logo": "assets/images/ai-is-an-amplifier-not-an-accelerator/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["generative ai", "productivity", "ai amplifier", "technical debt", "evaluation", "organizational design", "leadership"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **KEY POINTS:**\n>\n> * **\"Accelerator\" is the wrong word.** An accelerator only adds speed, always in the same direction. AI doesn't add — it *multiplies*. It takes whatever you already have and makes it bigger: a skill, a process, a codebase, a goal.\n> * **A multiplier keeps the sign of its input.** Point AI at strength and it compounds the strength. Point it at a mess — a brittle process, a confused goal, no standards — and it compounds the mess, faster and more expensively. The same tool that makes one developer 39% faster makes another, on a codebase he knows by heart, measurably *slower*.\n> * **So the leverage is never in the AI — it is in what, and which part, you amplify.** An amplifier acts on one part, not the whole: speed up the fast stage of an unbalanced system and you just jam the bottleneck behind it. That is why individuals feel faster while their teams often don't. The durable work isn't a bigger multiplier; it's fixing the input and widening the slowest part.\n\n<br>\nThere is a comfortable story we tell about AI, and it goes like this: AI is an **accelerator**. It makes everything faster. Coding, writing, research, analysis — point AI at the work and the work goes quicker. Buy the tools, hand them out, and the whole organization speeds up.\n\nIt is a comforting story because it asks almost nothing of us. An accelerator is a pedal. You press it and you go faster; the only decision is how hard to press. If AI is an accelerator, **the AI strategy is a purchasing decision**.\n\nThe story is wrong — or, more precisely, it is true often enough to be dangerous. AI is not an accelerator. **It is an amplifier.** And the difference between those two words is the difference between an AI strategy that compounds your strengths and one that quietly, expensively compounds your problems.\n\n## The Wrong Word\n\nAn accelerator and an amplifier are not the same kind of thing, and the gap between them is exactly where most AI disappointment lives.\n\nAn **accelerator adds**. It contributes its own quantity — speed — on top of whatever you were doing, and it does so in one direction. Press the pedal and you go faster, never backwards. The effect is uniform: the same pedal, the same pressure, the same extra speed, regardless of where you were headed. If you were driving toward a cliff, an accelerator gets you there sooner, but we don't usually describe a pedal as \"the thing that drove me off the cliff.\" We blame the driver. The pedal just added speed.\n\nAn **amplifier multiplies**. It does not contribute a quantity of its own; it takes the signal you give it and scales it. A guitar amplifier makes a clean chord gloriously loud — and makes a buzzing, badly-fretted mess gloriously loud too. It has no opinion about the music. It multiplies whatever reaches its input, faithfully, including the noise.\n\nThat distinction sounds pedantic until you notice it predicts the entire pattern of who wins and who loses with AI. The accelerator story predicts that everyone speeds up by roughly the same amount. The amplifier story predicts something very different: that AI's effect on you depends almost entirely on **what you already have** — and that for some people, on some tasks, the effect runs the *wrong way*.\n\nThe evidence says the amplifier story is the right one.\n\n## A Multiplier, Not an Adder\n\nHere is the whole idea in one line of arithmetic:\n\n**output = gain × input**\n\nAn accelerator is addition: `output = input + speed`. The added term is always positive, so the output always moves the same way. An amplifier is multiplication: `output = gain × input`. And multiplication does something addition never does — **it preserves the sign of its input.** A large gain applied to a positive input gives you a large positive result. The *same* large gain applied to a negative input gives you a large *negative* result. The amplifier doesn't decide the direction. You do, with the input. The amplifier only decides the magnitude.\n\nThis is why \"amplifier\" is not just a nicer-sounding synonym for \"accelerator.\" It makes a sharper, falsifiable claim: **AI makes whatever you feed it more so.** A strong skill, more so. A clear process, more so. A clean codebase, more so. But also: a confused goal, more so. A brittle process, more so. A codebase no one understands, more so — and now no one understands it *faster*.\n\n![A multiplier diagram: a small positive input and a small negative input both pass through a triangular gain block labeled AI and emerge much larger, one a tall upward bar and one a tall downward bar.](assets/images/ai-is-an-amplifier-not-an-accelerator/multiplier-diagram.jpeg)\n**Figure 1:** *output = gain x input. An accelerator only adds speed, always in the same direction. An amplifier multiplies - and multiplication keeps the sign. The same gain that compounds a positive input compounds a negative one just as hard.*\n\nThis is not a new idea; it is one of the oldest ideas in computing, and it predates the chatbots by sixty years. In 1962, Douglas Engelbart wrote *Augmenting Human Intellect: A Conceptual Framework*, and the word he reached for was not \"automation\" but **amplification** — \"intelligence amplification.\" His key move was to insist that the amplified capability does not belong to the machine. It belongs to the *system*: the human plus the tool, working together. The tool multiplies the human; it does not replace them, and it cannot supply what the human fails to bring.\n\nSteve Jobs popularized the same instinct with his \"bicycle for the mind\" — \"a tool,\" he said, \"can amplify an inherent ability a man has.\" Note the word *inherent*. A bicycle makes a strong rider gloriously fast. It also lets someone pedaling confidently in the wrong direction get lost twice as quickly. The bicycle amplifies the rider's ability, including the ability to be wrong about where they're going.\n\nAI is that, at a scale and speed we have never had before. Which means the interesting questions are no longer about the multiplier. They are about the input — and, just as much, about *which part* of the system you point the multiplier at. Let's walk through where AI's sign flips, and what decides it.\n\n## It Amplifies Speed (in Both Directions)\n\nStart with the claim at the heart of the accelerator story: *AI makes you faster*. It is true. It is also, for a meaningful set of people and tasks, false — and the studies that measure it carefully keep finding the multiplier, not the pedal.\n\nThe clearest result is also the most uncomfortable one. In mid-2025, the research group **METR** ran a randomized controlled trial with sixteen experienced open-source developers, working on their *own* large, mature repositories — codebases they had contributed to for years and knew intimately. With state-of-the-art AI tools, they were **19% slower** than without them. The twist that makes the study unforgettable: afterward, the same developers estimated that the AI had sped them up by about **20%**. They were wrong about the *sign* of the effect. **The amplifier ran backwards, and they couldn't feel it.**\n\nNow hold that next to the opposite result. Large field experiments with GitHub Copilot, run at Microsoft and Accenture, found real and substantial speedups — but distributed in a revealing way. The biggest gains went to **junior developers and recent hires, who completed 27–39% more tasks**. The most senior developers gained far less — on the order of **8–13%**. Same tool, very different multipliers, sorted by what the user already had. AI amplified the juniors' modest baseline a great deal and the seniors' deep expertise comparatively little — and, in the METR setting of deep expertise on a familiar codebase, the multiplier went negative.\n\nThe mechanism behind this scatter has a name. In their 2023 study *Navigating the Jagged Technological Frontier*, researchers from Harvard and Boston Consulting Group gave consultants a battery of tasks. On the eighteen tasks that sat *inside* AI's \"frontier\" of competence, AI users **completed 12.2% more tasks, 25.1% faster, at higher quality**. On a task deliberately chosen to sit just *outside* that frontier, AI users were **19% less likely to reach the correct answer** than colleagues working without it. The frontier is \"jagged\" — capability that is dazzling on one task and quietly misleading on an adjacent one that looks just as easy. AI amplified performance on one side of that ragged line and degraded it on the other.\n\n| The accelerator story | What the studies actually found |\n| --- | --- |\n| AI makes everyone faster. | AI makes *some people* faster on *some tasks* — and makes others slower. The sign depends on the user and the task. |\n| Experts gain the most; they can drive the tool hardest. | Juniors often gain most (**+27–39%**); experts on familiar work gain least, and sometimes go **negative** (**−19%**, METR). |\n| If it feels faster, it is faster. | Developers measured **19% slower** *believed* they were **20% faster**. The felt speedup and the real one can have opposite signs. |\n| The tool is the variable. | The *task's fit to the frontier* is the variable. Same tool, **+12.2%** inside the frontier, **−19%** outside it. |\n\n![A horizontal spectrum crossing zero: a red point near minus nineteen percent for experienced developers on a familiar codebase, a point near zero for tasks outside the frontier, and green points up to plus thirty-nine percent for junior developers.](assets/images/ai-is-an-amplifier-not-an-accelerator/speed-spectrum.jpeg)\n**Figure 2:** *Speed is not one number. The same AI runs from roughly minus nineteen percent (experienced developers on familiar code) to plus thirty-nine percent (juniors), depending on the user and the task's fit to the frontier.*\n\nThe practical lesson is not \"AI is slow.\" It is that **speed is an output, not a property of the tool** — `gain × input`, where the input is your skill, your familiarity with the work, and the task's fit to what AI is actually good at. Feed it the right combination and the multiplier is large and positive. Feed it the wrong one and you can be slower while feeling faster, which is the most expensive way to be slow.\n\n## It Amplifies Cost\n\nThe second cliché is *AI makes things cheaper*. Again: true, and dangerously incomplete. AI doesn't lower cost uniformly. It amplifies your **cost structure** — and most software has a cost structure where the cheap part and the expensive part are different parts.\n\nGenerating code is the cheap part, and AI makes it radically cheaper. But **generating code was never where software cost lived**. The cost lives in *owning* it: reviewing it, testing it, debugging it, understanding it six months later, and changing it safely when everything around it has moved. AI pours its multiplier onto the cheap end — and **the volume it produces lands squarely on the expensive end**.\n\nThe early measurements point one way, and it is not the way the savings story predicts. Treat the specific figures that follow as **directional, not decimal** — several come from vendor analyses and the field is young — but the direction is consistent. Analyses of large code corpora have found that AI-assisted code carries **roughly 1.7× more issues per pull request** than human-written code, and that incidents per pull request rose by about **23.5%** as AI adoption climbed. A study of 211 million lines of code found **duplicated code blocks rising roughly eightfold** in 2024 while refactoring — the deliberate work of *removing* duplication — fell to historic lows. Some analyses project that unmanaged AI-generated code drives maintenance costs toward **4× their previous level by the second year**, and that the most debt-laden organizations ship features markedly slower and spend substantially more on upkeep than their peers.\n\nAnd the direction is exactly what the amplifier predicts: when you multiply the cheap step (writing) and leave the expensive steps (reviewing, owning) to humans, you don't remove cost. You **relocate and often inflate it** — and you move it downstream, where it is harder to see and more expensive to fix.\n\n| What gets cheaper | What can get more expensive |\n| --- | --- |\n| **Generating** a first draft, a function, a migration, a test. | **Reviewing** far more code than before — the bottleneck moves to human attention. |\n| **Starting** — green-field velocity, prototypes, exploration. | **Owning** — debugging, understanding, and safely changing what was generated. |\n| The **typing**. The keystrokes. The blank-page problem. | The **judgment** — was this the right thing to build, and is it correct? |\n| Cost **per line produced**. | Cost **per line maintained**, multiplied by far more lines, much of it duplicated. |\n\n![A lifecycle cost chart: a small green downward arrow over the early Generate stage, and a large rising red-shaded region over the later Review, Test, Debug, and Maintain stages.](assets/images/ai-is-an-amplifier-not-an-accelerator/cheap-to-generate-expensive-to-own.jpeg)\n**Figure 3:** *Cheap to generate, expensive to own. AI pushes down the small cost at the start and pushes up the large cost downstream, where reviewing, debugging, and maintaining far more code now lives.*\nThe savings are real, but they are not free, and they do not land where the demo suggests. \"Cheaper to generate\" and \"cheaper to own\" are different claims, and AI strengthens the first while it can quietly weaken the second. The bill arrives later, in a different budget line, which is precisely why it surprises people.\n\n## It Amplifies the Bottleneck\n\nSo far we have treated \"the input\" as a single thing. But a real system is not one number — it is a chain of stages in series: design, build, review, integrate, test, deploy, operate. And here is the part the accelerator story completely misses: **an amplifier acts on a part, not on the whole.** You do not turn up \"the system.\" You turn up *one stage*. And turning up one stage of an unbalanced chain does not speed the chain up. It moves the strain to whatever stage you did not touch.\n\nThis is not a new or controversial idea. It is **the Theory of Constraints**, which Eliyahu Goldratt spent a career making unavoidable: the throughput of a system is set by its slowest stage — its bottleneck — and *\"any improvement made anywhere besides the bottleneck is an illusion.\"* Speed up a non-bottleneck and you do not get more output. You get a **pile of work-in-progress stacking up in front of the constraint**, which was already the limiting stage and is now simply more overwhelmed.\n\nAI is the most powerful non-bottleneck accelerator the industry has ever deployed, and it is being pointed almost entirely at one stage: writing code. Watch what happens to the stages downstream of it.\n\n* **Code review.** When generation gets multiplied and review does not, review becomes the constraint — and the queue in front of it grows. Teams that handled ten to fifteen pull requests a week describe facing fifty to a hundred. One 2026 dataset captured the shape precisely: **feature-branch throughput up roughly 59% year over year, while the median team's main-branch throughput actually fell.** Code is produced faster and reaches users *slower*. The amplifier worked perfectly — on the wrong stage.\n* **Integration and legacy.** You can generate a polished new UI in an afternoon, but you cannot connect it to the backend, the auth system, and the twelve-year-old billing service any faster than before — that work is gated by systems AI does not understand and cannot safely change. AI-generated code, as practitioners keep noting, \"looks right\" but lacks the context that lives in the integration quirks and tribal knowledge of the old system.\n* **Fragile legacy gets less stable, not more.** This is the cruelest version. When the parts around a fragile system speed up — more changes, more frequently, flowing into it from a faster pipeline — the fragile system is asked to absorb more change per unit time than it was ever built for. Amplifying the healthy parts of an unbalanced system can make the weak part **fail more often**, because you have increased exactly the load it cannot handle.\n\n![A left-to-right pipeline: a large glowing 'AI: generate' stage pushes a fast stream of code blocks that pile up in a backlog at a narrow downstream 'review / integrate / legacy' bottleneck.](assets/images/ai-is-an-amplifier-not-an-accelerator/bottleneck-pipeline.jpeg)\n**Figure 4:** *Amplify one stage of an unbalanced pipeline and you don't speed up the system - you pile work in front of the bottleneck. AI multiplies 'generate', so the strain moves to review, integration, and fragile legacy, the stages it cannot speed up.*\n\n\nThe lesson is sharp and it inverts the usual instinct. **The highest-leverage place to apply AI is almost never the stage that is already fastest.** It is the bottleneck — and the bottleneck is rarely \"writing code.\" Amplify the fast part of an unbalanced system and you make the imbalance worse, not better.\n\n## Why Your Team Didn't Get Faster (Even Though You Did)\n\nThis is the systems story playing out at human scale, and it explains one of the most consistent — and most disorienting — findings about AI at work: **individuals reliably report getting faster, while their teams often don't.**\n\nThe numbers are stark when you put the two levels side by side. In DORA's 2024 research, around three-quarters of developers were using AI and most felt more productive with it — and yet, that year, AI adoption was associated with a *negative* effect on software delivery throughput and stability at the team level. Individual perception said \"faster.\" The system measurement said \"not faster, and a bit less stable.\" Both were true at once, and that is exactly what the bottleneck model predicts: the individual gain is real, and then it is **absorbed at the constraint** before it ever becomes team throughput.\n\nThere is a second tax on top of the bottleneck, and it is the oldest result in software management. Fred Brooks observed half a century ago that the communication paths in a team grow roughly with the *square* of its size, and that the genuinely hard work — integration, architectural decisions, untangling a subtle bug — sits on a critical path that does not parallelize. AI does nothing to relieve that, and can quietly make it worse: when each person generates and changes more, faster, there is **more for everyone else to keep up with.** More code to review, more decisions to align on, more divergence to reconcile. You sped up the producers and added load to the coordinators — who were the bottleneck.\n\n| Level | What AI does | Net effect |\n| --- | --- | --- |\n| **Individual** | Multiplies one person's output on the stage they personally own — writing, drafting, scaffolding. | Reliably positive, and *felt* strongly. This part of the accelerator story is basically true. |\n| **Team / system** | Pours that multiplied output into a shared chain — review, integration, coordination — whose slow stages it does not speed up. | Often flat or negative, because the gain is absorbed at the constraint and partly eaten by added coordination friction. |\n\nNone of this means individual gains are fake. It means **a gain at a non-bottleneck stage is not yet a system gain** — and may never become one unless you also widen the constraint. The amplifier multiplied the part you pointed it at. The system moves at the speed of the part you didn't.\n\n## It Amplifies Quality — and Slop\n\nThe third cliché is *AI raises quality*. By now the shape of the correction is familiar: AI amplifies the **standards and guardrails you already have**. Where those are strong — real evaluations, tests that mean something, review that catches things, a clear definition of \"good\" — AI compounds quality, because every output passes through a filter that keeps the sign positive. Where those are weak or absent, AI compounds **slop** at exactly the same rate, because nothing stands between raw generation and the codebase.\n\nThis is the dynamic, signed version of an argument made statically in [AI Is the Reactor, Not the Plant](ai-is-the-reactor-not-the-plant.html): a model is a reactor core, and the value comes from the \"plant\" of evaluation, guardrails, and review built around it. The amplifier framing adds the direction. Your standards are not a quality *bonus* that AI lets you skip. They are the thing that decides whether the multiplier points up or down. Remove them and you have not saved effort — you have flipped the sign and pointed a very powerful multiplier at your own codebase. The same instinct runs through [Can RISC-Inspired Platforms Make AI Less Risky?](risc-for-ai-software-development.html): the bottleneck was never whether the model can *generate* something. It is whether you can *trust* what it generated — and trust is manufactured by the standards upstream of the AI, not by the AI.\n\n## It Amplifies Organizations\n\nThe last cliché is the biggest, and it zooms out from the single team to the whole organization: *AI lifts every company that adopts it*. It does not. It amplifies your **operating model** — and the most authoritative evidence we have says so almost in these exact words.\n\nThe **2025 DORA report** — Google's long-running, large-scale study of software delivery — landed on a one-line headline: **\"AI is an amplifier.\"** In its own framing, AI \"magnifies the strengths of high-performing organizations and the dysfunctions of struggling ones.\" With roughly **90% of respondents now using AI**, the report found that AI adoption was associated with higher delivery throughput — *and* with rising delivery instability. The hopeful \"we'll just fail fast and fix fast\" story did not hold up: the speed did not pay for the instability. Where the organization was strong, AI accelerated the flow of value; where it was brittle, AI exposed and widened the cracks.\n\nTellingly, the report identified **seven distinct team profiles**, from teams that combine high throughput *and* high stability to teams stuck with foundational process problems — and **the differentiator was never \"do they have AI.\"** Nearly everyone has AI. The differentiator was the **foundations AI lands on**: a clear, communicated stance on AI use; healthy internal data that AI tools can actually reach; strong version-control discipline; working in small batches; a genuine user focus; and a high-quality internal platform. Where those foundations were present, AI's multiplier ran positive. Where they were missing, the *same* AI produced a negligible — or negative — effect. As DORA's lead author put it, the greatest returns on AI come not from the tools but \"from a strategic focus on the underlying organizational systems.\"\n\n![One AI input arrow forking into two paths: a green upward path to an organized rising system, and a red downward path to a tangled, falling broken system.](assets/images/ai-is-an-amplifier-not-an-accelerator/dora-amplifier-split.jpeg)\n**Figure 5:** *DORA's finding, in one picture: the same AI amplifies a strong organization's strengths upward and a struggling one's dysfunction downward. The differentiator is never whether you have AI - it is the foundation it lands on.*\nTrust, meanwhile, stayed low: only around a third of developers reported trusting AI output, and a vanishingly small share reported *high* trust. An organization that hands powerful generation to a workforce that doesn't trust it, without the foundations to channel it, is not buying acceleration. It is buying a louder amplifier and hoping the signal turns out to be music.\n\n[Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool](breaking-vibe-monolith.html) makes the engineering version of this point — that the way out of brute-force AI development is *better structure*, not more force — and [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html) makes the human version: when generation gets cheap, the scarce, decisive inputs become judgment, direction, and accountability. Those are exactly the inputs an amplifier multiplies. Supply them and AI compounds good decisions. Withhold them and it compounds confusion, on schedule and at scale.\n\n## Where the Metaphor Breaks\n\nThe strongest version of a metaphor is the one that names its own limits, so that it stays a tool rather than hardening into a slogan. \"Amplifier\" breaks in two important places.\n\n| Where it holds | Where it breaks |\n| --- | --- |\n| AI multiplies what you already have — skill, structure, standards, direction — and preserves the sign of that input. | **AI also adds genuinely new capability.** A pure amplifier only scales an existing signal; it cannot create one. AI can do things you could not do at all — a non-coder ships a working script, a novice drafts in a language they don't speak. That is closer to *new signal* than to gain on an old one. |\n| The same gain runs positive on a strong input and negative on a weak one — which is why outcomes scatter so widely. | **\"Gain\" is not one number.** A real amplifier has a roughly constant gain. AI's gain is *jagged* — large on one task, near zero or negative on an adjacent one that looks identical. There is no single multiplier you can write down for \"AI,\" only a different one for each user, task, and context. |\n\nIf you catch yourself saying \"AI can't help you do anything new, it only scales what you've got,\" you have over-rotated. The useful, sturdy core of the metaphor is narrower: **for the work you already do, AI's effect is dominated by what you bring to it, and that effect is signed.** It can run the wrong way. The pedal can't.\n\n## What to Do on Monday\n\nA mental model earns its keep only if it changes where you spend effort. Everything here points the same direction: **stop optimizing the multiplier and start fixing the input.**\n\n| Move | What it looks like | What it buys you |\n| --- | --- | --- |\n| **Fix the input, not the multiplier** | Before reaching for a better model or a faster tool, ask what you're feeding it: the skill, the process, the codebase, the goal. Improve *that* first. | You stop spending on gain you can't use. A bigger multiplier on a bad input just gets you to the wrong place faster. |\n| **Find your sign before you scale** | Pilot on a real task and *measure* — don't trust the felt speedup. Is the output actually faster, cheaper, better? Establish the sign before you roll it out. | You don't amplify a negative across the whole org. The METR developers felt **+20%** while running **−19%**; measurement is the only defense. |\n| **Budget for ownership, not generation** | Plan for the review, testing, and maintenance load of far more code — not the keystrokes saved. Staff the expensive end. | The \"it's basically done\" demo doesn't become a year of paying down debt in a budget line no one forecast. |\n| **Put your standards upstream of the AI** | Evals, tests, review, a clear definition of \"good\" — in front of the generator, not after. They decide the sign. | The multiplier points up. Without them you've pointed a powerful tool at your own codebase with no filter. |\n| **Match the task to the frontier** | Use AI hardest where it is strong and where you can check the result; keep a human firmly in front of the jagged edge. | You collect the **+12%** inside the frontier without eating the **−19%** outside it. |\n| **Amplify the bottleneck, not the fast part** | Find the slowest stage in your actual delivery chain — usually review, integration, or fragile legacy, *not* writing code — and point AI (and effort) there first. | Individual speedups become *system* speedups instead of a bigger pile of work-in-progress jammed in front of the constraint. |\n| **Name who owns the direction** | Decide explicitly who supplies the goal, the judgment, and the accountability — the inputs the amplifier multiplies. | Direction doesn't quietly evaporate into \"the AI did it,\" leaving a fast, confident march the wrong way. |\n\nNone of these are about getting a bigger multiplier. They are about the number you feed it — which is where the leverage was the whole time.\n\n## Closing Thought\n\n\"Accelerator\" flatters us. It says the gains are automatic and the only choice is how hard to press. \"Amplifier\" asks the harder question, and the more useful one: *amplify what?*\n\nBecause the multiplier is real, and it is large, and it is indifferent. It will take a sharp skill and make it sharper, a clean system and make it cleaner, a clear goal and pursue it relentlessly. It will also take a brittle process and shatter it faster, a confused goal and chase it harder, a quietly accumulating mess and compound it past the point where anyone can see the bottom. **The gain does not care which one you hand it.**\n\nAnd because it acts on parts, not on wholes, it asks a second question right behind the first: *amplify which part?* Turn up the stage that was already fast and you just move the strain to the one you didn't — the review queue, the integration seam, the fragile legacy, the overloaded coordinator. A system moves at the speed of its slowest part, and the amplifier has no opinion about which part you point it at.\n\nSo the work of the AI era is not, mostly, about the AI. It is about the input: the skills worth amplifying, the standards that keep the sign positive, the *bottleneck* worth widening, the structure that holds, the direction worth multiplying. AI handed us an enormous multiplier. **The work — the durable, unglamorous, entirely human work — is being worth multiplying, and knowing which part to multiply.**\n\n## To Probe Further\n\n* DORA / Google Cloud, [*2025 State of AI-assisted Software Development*](https://dora.dev/research/2025/) — the headline finding that \"AI is an amplifier\" of organizational strengths and dysfunction; ~90% adoption, low trust, throughput up alongside instability, the seven team profiles, and the foundational capabilities that decide the sign.\n* METR, [*Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity*](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) — experienced developers measured **19% slower** with AI on their own repositories while estimating they were **20% faster**.\n* Dell'Acqua et al., [*Navigating the Jagged Technological Frontier*](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321) (Harvard / BCG, 2023) — **+12.2%** tasks and **+25.1%** faster inside the frontier; **−19%** less likely correct on a task outside it. The origin of the \"jagged frontier.\"\n* MIT Sloan, [*How generative AI affects highly skilled workers*](https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-affects-highly-skilled-workers) — the Copilot field experiments: juniors and new hires up **27–39%**, senior developers up **8–13%**.\n* GitClear / industry analyses of AI-generated code — duplication rising ~**8×**, ~**1.7×** more issues per pull request, incidents per PR up **~23.5%**, and maintenance burden compounding downstream. (Directional; attribute and hedge.)\n* Eliyahu Goldratt, *The Goal* / the [Theory of Constraints](https://www.lean.org/the-lean-post/articles/what-is-the-theory-of-constraints-and-how-does-it-compare-to-lean-thinking/) — a system's throughput is set by its bottleneck, and improving a non-bottleneck just stacks work-in-progress in front of the constraint. The backbone of \"it amplifies the bottleneck.\"\n* DORA / Google Cloud, [*2024 Accelerate State of DevOps*](https://dora.dev/research/2024/dora-report/) — most developers used AI and felt more productive, while AI adoption was associated with a *negative* effect on team-level delivery throughput and stability. The measured individual-vs-system gap.\n* Fred Brooks, *The Mythical Man-Month* (Brooks's Law) — communication paths grow with the square of team size, and the critical path (integration, architecture, hard debugging) does not parallelize. Why faster individuals can mean a more, not less, congested team.\n* Douglas Engelbart, [*Augmenting Human Intellect: A Conceptual Framework*](https://www.dougengelbart.org/pubs/papers/scanned/Doug_Engelbart-AugmentingHumanIntellect.pdf) (SRI, 1962) — \"intelligence amplification\"; the amplified capability belongs to the human-plus-tool system, not the tool.\n* [AI Is the Reactor, Not the Plant](ai-is-the-reactor-not-the-plant.html) — the static companion: the value and the work are in the \"plant\" of evals, guardrails, and review around the model. Amplifier is the signed, dynamic version.\n* [Can RISC-Inspired Platforms Make AI Less Risky?](risc-for-ai-software-development.html) — trust, not capability, as the adoption bottleneck; standards as what makes output inspectable and safe.\n* [Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool](breaking-vibe-monolith.html) — the way out of brute-force AI development is better structure, not more force.\n* [AI Will Do the Heavy Lifting. You Still Need to Lead](prepare-for-ai-future.html) — when generation gets cheap, judgment, direction, and accountability become the scarce, decisive inputs.\n\n## Questions to Consider\n\nUse these if your team is moving an AI initiative from a demo toward something you'd put your name on.\n\n* For your last AI win, was the gain in the *tool* — or in a strong input (a skilled person, a clean codebase, a clear goal) that the tool happened to multiply?\n* Have you actually *measured* the sign of your AI effect, or are you trusting the felt speedup? Would your number survive the METR test — faster in reality, not just in perception?\n* When you costed your AI plan, did you budget for the cheap part (generation) or the expensive part (review, testing, ownership of far more code)?\n* What stands between raw AI output and your codebase? If the honest answer is \"not much,\" which way is your multiplier pointing?\n* Where is the real bottleneck in your delivery chain — and is it the stage you're pointing AI at, or a different one (review, integration, that one fragile legacy service)? Are you widening the constraint or feeding it?\n* Your developers say they're faster. Is your *team* shipping more to users — or did the gain disappear somewhere between the individual and the system?\n* Which of your AI investments are making the multiplier bigger, and which are improving the input? Which list is longer — and which should be?\n* If AI amplifies your operating model, what exactly would it amplify about yours tomorrow morning — your strengths, or your dysfunction?\n"}]}, {"key": "summary", "label": "Summary", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "AI is not an accelerator — a pedal that makes everything uniformly faster. It is an **amplifier**: a multiplier that scales whatever you already have. The arithmetic is `output = gain × input`, and multiplication preserves sign. Point AI at strength — a skilled person, a clean codebase, a clear goal, strong standards — and it compounds the strength. Point it at a mess — a brittle process, a confused goal, no review — and it compounds the mess, faster and more expensively. The leverage is never in the AI. It is in the input.\n\n**What changes**\n\n- **Stop treating AI adoption as a purchasing decision.** A bigger multiplier (better model, faster tool) on a weak input just reaches the wrong place sooner. The work is improving the input — skills, process, standards, direction — not chasing the multiplier.\n- **Measure the sign before you scale.** AI's effect on speed runs both ways: large field studies show juniors gaining 27–39% while experienced developers on familiar code were measured *19% slower* — and believed they were 20% *faster*. Felt speedup is not real speedup. Pilot and measure before rolling out.\n- **Budget for ownership, not generation.** Generating code is the cheap part AI makes cheaper; reviewing, testing, debugging, and maintaining far more code is the expensive part it can make costlier. Staff the downstream end.\n- **Amplify the bottleneck, not the part that's already fast.** A system runs at the speed of its slowest stage. AI multiplies code generation, so the strain moves to review, integration, and fragile legacy — and an unbalanced system gets *worse*, not faster. This is the Theory of Constraints: improving a non-bottleneck just piles up work in front of the real constraint.\n- **Don't mistake individual gains for team gains.** Developers reliably feel faster; team throughput often doesn't move (DORA's 2024 data even showed a negative system-level effect). The individual gain is real and then absorbed at the bottleneck and lost to coordination friction. Measure delivery to users, not keystrokes per developer.\n- **Put standards upstream of the AI.** Evals, tests, and review are not a quality bonus you can skip — they decide whether the multiplier points up or down. Without them, you scale slop at full speed.\n- **Expect AI to amplify your operating model.** The 2025 DORA study found AI magnifies the strengths of high-performing organizations and the dysfunction of struggling ones. The differentiator is never whether you have AI; it is the foundation it lands on.\n\n**What it costs**\n\n- Honesty about your own inputs. The model forces an uncomfortable question — *amplify what?* — and the answer may be \"fix our foundations first.\"\n- Patience against the speed narrative. Slower, measured rollout beats a fast rollout that amplifies a negative across the whole organization.\n\n**What we are not doing**\n\n- Not arguing AI is overrated or not worth it — the gains are real where the input is strong. This is a model correction, not a verdict.\n- Not claiming AI is *only* a multiplier — it also adds genuinely new capability, and its \"gain\" is jagged, not one fixed number.\n- Not offering precise cost figures — the maintenance and debt numbers are directional and attributed, not settled constants.\n\n*The Article tab covers the evidence, the four axes (speed, cost, quality, organization), where the metaphor breaks, and the concrete moves. See also [AI Is the Reactor, Not the Plant](ai-is-the-reactor-not-the-plant.html) for the static companion: the work is in the plant around the model.*\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "9 min listen"}, "blocks": [{"type": "markdown", "content": "## The Wrong Word\n\n**Ben:** Okay, let me start with the obvious pushback. \"AI is an amplifier, not an accelerator.\" That sounds like a word game. My team ships faster with AI. It accelerates us. Why do I care which noun you use?\n\n**Ana:** Because the noun predicts what happens to you, and it's a falsifiable prediction. An accelerator is a pedal — it adds speed, always in the same direction. Press it, go faster. The accelerator story says everyone speeds up by roughly the same amount. An amplifier doesn't add anything of its own. It multiplies the signal you give it. And that makes a completely different prediction: that AI's effect on you depends almost entirely on what you already have — and that for some people, on some tasks, it runs the wrong way.\n\n**Ben:** \"Runs the wrong way.\" You mean AI makes people *slower*.\n\n**Ana:** Sometimes, yes — and we can measure it. But let me give you the one-line version first, because it's just arithmetic. An accelerator is addition: output equals input *plus* speed. The added bit is always positive, so you always move the same direction. An amplifier is multiplication: output equals gain *times* input. And multiplication does something addition never does — it keeps the sign of the input. Big gain on a positive input, big positive result. The same big gain on a *negative* input, big *negative* result. The amplifier doesn't pick the direction. You do, with the input.\n\n**Ben:** So when you point AI at a mess —\n\n**Ana:** It makes the mess bigger. Faster. More expensively. A guitar amp makes a clean chord gloriously loud and a buzzing, badly-fretted mess gloriously loud too. It has no opinion about the music.\n\n## The Speed Story Cuts Both Ways\n\n**Ben:** Fine, give me the slower-with-AI study. I'm skeptical of it.\n\n**Ana:** You should be skeptical, so here's the careful one. METR, mid-2025, randomized controlled trial. Sixteen experienced open-source developers working on their *own* repositories — codebases they'd contributed to for years. With state-of-the-art AI tools, they were nineteen percent *slower*.\n\n**Ben:** Maybe they were just bad at using the tools.\n\n**Ana:** Here's the part that makes it unforgettable. Afterward, those same developers estimated the AI had sped them up by about twenty percent. They were wrong about the *sign*. They felt a speedup that, when measured, was a slowdown. That's the most expensive way to be slow — slow while feeling fast, so you never investigate it.\n\n**Ben:** But that contradicts everything I hear about productivity gains.\n\n**Ana:** No — it completes it. The Copilot field experiments at Microsoft and Accenture found real, big speedups. But look at *who* got them: junior developers and recent hires completed twenty-seven to thirty-nine percent more tasks. The most senior developers? Eight to thirteen percent. Same tool, wildly different multipliers, sorted by what the user already had. AI amplified the juniors' modest baseline a lot and the seniors' deep expertise a little — and in the METR setting of deep expertise on familiar code, the multiplier went negative.\n\n**Ben:** So the variable isn't the tool. It's the person.\n\n**Ana:** The person *and* the task. There's a 2023 Harvard–BCG study that named the mechanism: the \"jagged frontier.\" On eighteen tasks inside AI's zone of competence, consultants using AI did twelve percent more, twenty-five percent faster, at higher quality. On one task chosen to sit just *outside* that zone — a task that looked just as easy — AI users were nineteen percent *less* likely to get the right answer. The frontier is jagged. Dazzling on one task, quietly misleading on the one next to it.\n\n## \"But It Makes Things Cheaper\"\n\n**Ben:** Let's talk money, because that's the part leadership actually cares about. AI makes things cheaper. Generating code costs almost nothing now.\n\n**Ana:** Generating code is the cheap part, and yes, AI makes it radically cheaper. But generating code was never where software cost lived. The cost lives in *owning* it — reviewing it, testing it, debugging it, understanding it six months later, changing it safely when everything around it has moved. AI pours its multiplier onto the cheap end, and the volume it produces lands on the expensive end.\n\n**Ben:** Got a number, or is this vibes?\n\n**Ana:** Directional numbers, attributed — I won't pretend they're precise. Analyses of large code corpora find AI-assisted code carrying roughly one-point-seven times more issues per pull request, and incidents per pull request up around twenty-three percent as AI adoption climbed. One study of 211 million lines of code found duplicated code blocks rising about eightfold in a year, while refactoring — the work of *removing* duplication — fell to historic lows. Some projections put unmanaged AI-code maintenance at four times its previous level by year two.\n\n**Ben:** Okay, suppose I grant the numbers are rough. Even directionally — so what? More issues per pull request, more duplication. We'll catch it in review.\n\n**Ana:** With *whose* time? That's the move. The cost didn't disappear — it relocated, downstream, onto the reviewers, the on-call rotation, the person who has to understand this code in six months. Multiply the cheap step and leave the expensive steps to humans, and you don't remove cost; you push it where it's harder to see and more expensive to fix. \"Cheaper to generate\" and \"cheaper to own\" are different claims. AI strengthens the first and can quietly weaken the second. That's why the bill surprises people — it shows up later, in a different budget line, charged to a different team.\n\n## The Bottleneck Problem\n\n**Ben:** Here's where I push back hardest. Forget the skeptics — my developers genuinely ship more code with AI. I can see it. How is that not just a win?\n\n**Ana:** Because a system isn't one number. It's a chain — design, build, review, integrate, test, deploy. And an amplifier acts on a *part*, not the whole. You didn't turn up \"the system.\" You turned up one stage: writing code. Now watch what happens to the stage right after it.\n\n**Ben:** Review.\n\n**Ana:** Review. Generation got multiplied; review didn't. So review becomes the constraint, and the queue in front of it grows. Teams that handled ten or fifteen pull requests a week are suddenly looking at fifty to a hundred. One 2026 dataset caught the exact shape: feature-branch throughput up about fifty-nine percent year over year, while the *median* team's main-branch throughput actually fell. Code gets written faster and reaches users slower.\n\n**Ben:** That's almost funny. The amplifier worked perfectly —\n\n**Ana:** — on the wrong stage. This is just the Theory of Constraints, which Goldratt spent a career on. The system's speed is set by its slowest stage, the bottleneck. And his line is brutal: \"any improvement made anywhere besides the bottleneck is an illusion.\" Speed up a non-bottleneck and you don't get more output — you get a pile of work-in-progress stacked in front of the constraint.\n\n**Ben:** And the bottleneck for most teams isn't typing.\n\n**Ana:** It almost never is. It's review, it's integration, it's that one fragile legacy service. You can generate a beautiful new UI in an afternoon. You cannot connect it to the auth system and the twelve-year-old billing service any faster than before — AI doesn't understand that system and can't safely change it. And here's the cruel part: when everything around a fragile system speeds up, more changes flowing into it more often, it gets asked to absorb more change than it was built for. So it fails *more*. Amplifying the healthy parts of an unbalanced system can break the weak part.\n\n## Why the Team Didn't Get Faster\n\n**Ben:** So tie it back for me. My developers feel faster. You're saying the team isn't.\n\n**Ana:** That's the most consistent finding in the whole space, and it's disorienting the first time you see it. DORA's 2024 research: about three-quarters of developers using AI, most feeling more productive — and that same year, AI adoption was associated with a *negative* effect on team-level throughput and stability. Individual perception said faster. System measurement said not faster, slightly less stable. Both true at once.\n\n**Ben:** How are both true?\n\n**Ana:** Because the individual gain is real, and then it's absorbed at the bottleneck before it ever becomes team throughput. And there's a second tax on top — the oldest result in software. Brooks: communication paths grow with the square of team size, and the hard work, integration and architecture and untangling a nasty bug, sits on a critical path that doesn't parallelize. When everyone generates and changes more, faster, there's just more for everyone else to keep up with. More to review, more to align on, more divergence to reconcile. You sped up the producers and dumped load on the coordinators — who were the bottleneck.\n\n**Ben:** So what's the move? Don't give people AI?\n\n**Ana:** No — point it at the bottleneck instead of the part that's already fast. Find the slowest stage in your real delivery chain and aim AI and effort *there* first. A gain at a non-bottleneck stage isn't a system gain yet, and might never be one unless you widen the constraint. The system moves at the speed of the part you *didn't* amplify.\n\n## Quality, Slop, and Organizations\n\n**Ben:** Where does quality land in this?\n\n**Ana:** Same shape. AI amplifies the standards you already have. Strong evals, tests that mean something, review that catches things — AI compounds quality, because every output passes a filter that keeps the sign positive. Weak or absent standards — AI compounds *slop* at exactly the same rate, because nothing stands between raw generation and your codebase. Your standards aren't a quality bonus you get to skip with AI. They're the thing that decides whether the multiplier points up or down.\n\n**Ben:** And at the organization level?\n\n**Ana:** This is where it stops being my opinion. The 2025 DORA report — Google's big, long-running study of software delivery — landed on a one-line headline: \"AI is an amplifier.\" Their words: it \"magnifies the strengths of high-performing organizations and the dysfunctions of struggling ones.\" Around ninety percent of respondents use AI now. Adoption correlated with higher throughput *and* rising instability. The hopeful \"we'll just fail fast and fix fast\" story didn't hold — the speed didn't pay for the instability.\n\n**Ben:** So everyone has AI and it sorts them anyway.\n\n**Ana:** Exactly. They found seven team profiles, and the differentiator was never \"do they have AI.\" Nearly everyone does. The differentiator was the foundation AI lands on — a clear stance on AI use, healthy internal data the tools can reach, strong version control, small batches, real user focus, a quality internal platform. Where those were present, the multiplier ran positive. Where they were missing, the *same* AI did nothing — or made it worse.\n\n## Where It Breaks\n\n**Ben:** Alright, steelman against yourself. Where does \"amplifier\" break? Because every metaphor does.\n\n**Ana:** Two places, and naming them keeps it a tool instead of a slogan. First: AI also *adds* genuinely new capability. A pure amplifier only scales an existing signal — it can't create one. But AI can do things you couldn't do at all. A non-coder ships a working script. A novice drafts in a language they don't speak. That's closer to new signal than to gain on an old one.\n\n**Ben:** And the second?\n\n**Ana:** \"Gain\" isn't one number. A real amplifier has a roughly constant gain. AI's gain is jagged — large on one task, near zero or negative on the one next to it. So there's no single multiplier you can write down for \"AI.\" Just a different one for every user, task, and context. If you catch yourself saying \"AI can't help you do anything new, it only scales what you've got,\" you've over-rotated. The sturdy core is narrower: for the work you already do, AI's effect is dominated by what you bring to it, and that effect is *signed*. It can run the wrong way. A pedal can't.\n\n**Ben:** So what do I actually do Monday morning?\n\n**Ana:** Stop optimizing the multiplier and start fixing the input. Before reaching for a better model, ask what you're feeding it — the skill, the process, the codebase, the goal — and improve *that*. Measure the sign before you scale, because the felt speedup lies. Budget for ownership, not generation. Put your standards upstream of the AI. Match the task to the frontier. And name who owns the direction, so it doesn't evaporate into \"the AI did it.\"\n\n**Ben:** And the thing you're *not* saying — just so I don't misquote you.\n\n**Ana:** I'm not saying AI is overrated, or not worth it. Where the input is strong, the gains are real and large. This isn't a verdict on AI; it's a correction to the mental model. And it's the dynamic twin of the point in [AI Is the Reactor, Not the Plant](ai-is-the-reactor-not-the-plant.html) — that the work is in the plant around the model. Amplifier just adds the direction: the plant is what keeps your sign positive. AI handed us an enormous multiplier. The work — the durable, unglamorous, entirely human work — is being worth multiplying.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "A short comic on why AI is an amplifier, not an accelerator — and why the work is the input, not the multiplier.\n\n<!-- comic-style\n{\n  \"cast\": \"MAYA: a pragmatic staff engineer / architect, short dark hair, glasses, rolled-up sleeves, calm and slightly amused, often holding a marker. REX: an over-eager boxy robot AI assistant, one bent antenna, glowing rectangular eyes, perpetually excited, who physically embodies an amplifier — his chest is a big triangular gain dial he loves to crank up.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with blue/teal accents on a light cream background, generous white space, hand-lettered speech bubbles with SHORT readable text (max 8 words per bubble). Use a recurring motif: a glowing GREEN plus-sign for good inputs and a glowing RED minus-sign for bad inputs, both scaled UP after passing through Rex's triangular gain dial. Simple geometric office and whiteboard settings mixing people with software symbols, no photorealism, no dense text, no title text.\"\n}\n-->\n\n![Comic panel: an excited robot stomps a giant gas pedal labeled AI and zooms ahead while an engineer watches skeptically.](assets/images/ai-is-an-amplifier-not-an-accelerator/comic-01-the-pedal.jpeg)\n**Panel 1:** *The comfortable story: AI is a pedal. Press it, go faster.*\n\n![Comic panel: an engineer taps the robot's chest, which is a triangular amplifier dial, while a discarded gas pedal lies on the floor.](assets/images/ai-is-an-amplifier-not-an-accelerator/comic-02-not-a-pedal.jpeg)\n**Panel 2:** *But AI doesn't add speed. It multiplies. It's an amplifier, not a pedal.*\n\n![Comic panel: a small green plus-sign enters the robot's gain dial and comes out as a huge green plus-sign.](assets/images/ai-is-an-amplifier-not-an-accelerator/comic-03-good-input-amplified.jpeg)\n**Panel 3:** *Feed it a strength — a skill, a clean codebase, a clear goal — and it makes it bigger.*\n\n![Comic panel: a small red minus-sign enters the robot's gain dial and comes out as a huge red minus-sign, knocking the robot back.](assets/images/ai-is-an-amplifier-not-an-accelerator/comic-04-bad-input-amplified.jpeg)\n**Panel 4:** *Feed it a mess and the same dial makes that bigger too. The amplifier doesn't care about the sign.*\n\n![Comic panel: a developer runs on a treadmill cheered by the robot, a speedometer reads minus nineteen percent while their thought bubble says it feels twenty percent faster.](assets/images/ai-is-an-amplifier-not-an-accelerator/comic-05-felt-fast-was-slow.jpeg)\n**Panel 5:** *Measured: 19% slower. Felt: 20% faster. The amplifier can run backwards — and you won't feel it.*\n\n![Comic panel: the robot hands over a tiny one-dollar tag for generating code while a huge mountain of review, test, debug and maintain boxes looms with an expensive price tag.](assets/images/ai-is-an-amplifier-not-an-accelerator/comic-06-cheap-to-make-costly-to-own.jpeg)\n**Panel 6:** *Cheap to generate, expensive to own. The bill just moved downstream — and got bigger.*\n\n![Comic panel: the robot blasts a firehose of code blocks that pile up and jam at a narrow doorway labeled review and legacy, with a cracked legacy box wobbling.](assets/images/ai-is-an-amplifier-not-an-accelerator/comic-07-the-bottleneck.jpeg)\n**Panel 7:** *Amplify the fast stage and the work just jams the bottleneck behind it — review, integration, fragile legacy. The system runs at the speed of the part you didn't speed up.*\n\n![Comic panel: the robot reaches for a bigger-gain knob but the engineer stops him and polishes the small green plus-sign on the input side instead.](assets/images/ai-is-an-amplifier-not-an-accelerator/comic-08-fix-the-input.jpeg)\n**Panel 8:** *So stop cranking the dial. The leverage was never the multiplier — it's the input, and the part, you choose to amplify.*\n\n![Comic panel: an engineer stands beside the robot whose gain dial glows steady green, under the hand-lettered question 'amplify what?'.](assets/images/ai-is-an-amplifier-not-an-accelerator/comic-09-amplify-what.jpeg)\n**Panel 9:** *The amplifier is real, large, and indifferent. The only question that matters is: amplify what?*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>
