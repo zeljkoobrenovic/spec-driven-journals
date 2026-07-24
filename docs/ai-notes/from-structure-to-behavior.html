@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>From Structure to Behavior, From Output to Outcome</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Obren on AI</a><span class="nav-right"><a class="nav-next" href="ai-is-the-reactor-not-the-plant.html" title="AI Is the Reactor, Not the Plant">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">AI Software Development</p>
+        <h1>From Structure to Behavior, From Output to Outcome</h1>
+        <p class="byline">by Željko Obrenović (obren.io)  ·  2026-07-24  ·  14 min · <a class="spec-link" href="from-structure-to-behavior.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/from-structure-to-behavior/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/from-structure-to-behavior/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Obren on AI</a><span class="nav-right"><a class="nav-next" href="ai-is-the-reactor-not-the-plant.html" title="AI Is the Reactor, Not the Plant">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "From Structure to Behavior, From Output to Outcome", "date": "2026-07-24", "author": "by Željko Obrenović (obren.io)", "permalink": "from-structure-to-behavior", "timetoread": "14 min", "excerpt": "For fifty years, software engineering optimized structure — coupling, boundaries, topology — because structure was expensive and behavior was hard to specify. Users never saw any of it; they only ever see behavior. Now that AI makes structure cheap to produce, the scarce work shifts to specifying behavior and outcomes — the same correction product management made when it moved from output to outcome. And when every discipline's scarce work becomes the same activity, the borders between product management, design, architecture, and engineering start to collapse into one spec-shaped conversation.", "tags": "ai, sdlc, software architecture, behavior, outcomes, product management, spec-driven development", "icon": "assets/icons/from-structure-to-behavior.png", "logo": "assets/images/from-structure-to-behavior/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["ai", "sdlc", "software architecture", "behavior", "outcomes", "product management", "spec-driven development"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **KEY POINTS:**\n>\n> * **We optimized what we could control, not what users experience.** For decades the profession's center of gravity was structure — separation of concerns, loose coupling, domain boundaries, deployment topology — because structure was expensive to build and behavior was hard to specify. But end users never see the structure. They only see the behavior. Structure was a proxy, and it made sense only while construction was the bottleneck.\n> * **AI removes the constraint that justified the proxy — and software is making a trip product management already made.** When agents can produce and regenerate structure cheaply, attention snaps to the thing structure was always in service of: behavior — and because end-to-end systems now come together in days, behavior can finally be *observed* early instead of only specified in advance. Product management went through the identical correction — from output to outcome — when shipping features stopped being the bottleneck. It is one pattern, seen twice.\n> * **When every discipline's scarce work becomes specifying behavior and outcomes, the borders between them collapse — and the work gets harder, not easier.** Product managers, designers, enterprise and business architects, and engineers converge on drafting sections of the same spec. But behavior is harder to specify, verify, and agree on than structure ever was. The shift raises the bar; it does not lower it.\n\n<br>\nGregor Hohpe recently posted [an observation on LinkedIn](https://www.linkedin.com/posts/ghohpe_structure-behavior-activity-7486322897817538561-Bc1T) that I have not been able to put down. His argument, compressed: an AI-led SDLC pushes developers and architects away from *looking at structure* and toward *defining behavior* — and that is a huge step forward. The profession has spent decades absorbed in structural questions — are the concerns separated, is everything loosely coupled and modular, are the domain boundaries right, how many servers and how are they load balanced — while losing sight of a plain fact: *\"the end users don't see the structure. They only see the behavior.\"* Now that producing structure has become cheap, we can finally give behavior the attention it was always owed — with an honest warning attached: while highly valuable, this is also harder. And he signs off with a wink at Barry O'Reilly: who would have thought it would be the *agents* that finally get us off the structuralism train?\n\nIt is a short post, but it names something big: the deepest change AI brings to software development is not faster coding. It is a change in *what the work is about*. And — this is the part I want to add — it is not the first time a discipline has made exactly this move. Product management made the same trip a decade ago, under a different name: **from output to outcome**. Seen together, the two shifts are one pattern. And that pattern, followed to its end, starts to dissolve the borders between fields we have always treated as separate: product management, design, enterprise architecture, business architecture, and software engineering.\n\nThis note works through that argument: why we were structuralists, what AI changed, why product management's story is the same story, and what happens when every discipline's scarce work converges on the same activity.\n\n## Why We Were Structuralists\n\nLet's start by being fair to structure, because the point is not that fifty years of software engineering were a mistake.\n\nBehavior — what the system does for a real user in a real situation — is a lagging indicator and only fully observable when the system runs, in production, under real load, in front of real people. That is the last possible moment, and the most expensive place to discover you were wrong. Specifications of behavior existed, but they were prose: nobody could execute them, verify them, or keep them synchronized with code that changed daily.\n\nStructure, by contrast, was visible *early*. You could review a module diagram before a line was written. You could check coupling, count dependencies, argue about domain boundaries at the whiteboard. And structure genuinely correlated with what everyone feared most: the cost of change. In a world where construction was slow and expensive — where a wrong boundary meant months of rework by hand — structural discipline was the best available predictor of whether a system would survive its own evolution.\n\n![Timeline diagram showing structure inspectable at design time while behavior is only observable months later in production.](assets/images/from-structure-to-behavior/structure-early-behavior-late.jpeg)\n**Figure 1:** *Why structure became the proxy: it was inspectable at the whiteboard, while behavior only showed up months later, in production — the most expensive place to be wrong.*\n\nSo the profession did the rational thing. It optimized the proxy it could see and control:\n\n| What we could inspect early | What actually mattered |\n| --- | --- |\n| Separation of concerns, module boundaries | Whether the user's job gets done |\n| Loose coupling, dependency direction | How the system behaves at the edges and under stress |\n| Domain models, layer diagrams | Whether the behavior changes safely when needs change |\n| Deployment topology, load balancing | What the user experiences when things fail |\n\nA whole professional identity grew around the left column. Design reviews reviewed structure. Architecture boards approved structure. Career ladders rewarded fluency in structural pattern languages. None of that was foolish — it was an honest adaptation to a real constraint: **structure was expensive to build and behavior was impossible to specify verifiably, so structure became our stand-in for quality.**\n\nThe trouble with a proxy is only ever that it eventually gets mistaken for the goal. Hohpe's sentence is the diagnosis: we sometimes forgot that end users don't see the structure. No user has ever thanked a team for its hexagonal architecture. Users experience behavior — the system responded, the payment cleared, the answer was right, the failure was handled gracefully. Structure was always in service of behavior. We just spent so long in the service quarters that we started treating them as the house.\n\n## What AI Changed\n\nAI-driven SDLC changes exactly one variable in that fifty-year equation, but it is the load-bearing one: **producing structure is no longer expensive.**\n\nAn agent can scaffold a service, split a module, introduce a queue, or rearrange boundaries in minutes. More importantly, it can do it *again* — regeneration is nearly as cheap as generation, which quietly devalues the thing structural discipline was hoarded for: the cost of changing your mind. When rework by hand cost months, getting the structure right up front was precious. When restructuring costs an afternoon of agent time plus review, the up-front structural bet is no longer where the risk lives.\n\nAnd cheap structure has a second effect, just as important as the first: it collapses the feedback loop on behavior itself. Recall why behavior made such a poor object of engineering attention — it was a lagging indicator, only fully observable once the system ran, and building the system took months. That lag is what made structure the only thing we *could* inspect early. When an agent can assemble a working end-to-end system in days, the lag largely disappears. Behavior stops being something you can only argue about in prose and becomes something you can observe, this week, in a running system — put it in front of real users, watch what happens, and let what you see sharpen the specification. Cheap structure does not just force us to face behavior; it finally hands us the instrument for studying it.\n\n![Before/after diagram contrasting a months-long one-way path from spec to observed behavior with a tight days-long loop feeding observations back into the spec.](assets/images/from-structure-to-behavior/shortened-feedback-loop.jpeg)\n**Figure 2:** *The second effect of cheap structure: the feedback loop on behavior collapses from quarters to days — behavior becomes something you observe and learn from, not just something you specify in advance.*\n\nWhere does the risk live instead? Exactly where it always secretly lived: in whether anyone can say, precisely, **what the system should do**. Give an agent a vague intent and it will produce a plausible structure for the wrong behavior — flawlessly modular, beautifully decoupled, wrong. The binding constraint on an AI-led SDLC is not the ability to build; it is the quality of the specification of behavior: what should happen, for whom, under which conditions, at which edges, with which trade-offs when goals conflict.\n\nThis is the mechanism behind Hohpe's \"forces.\" It is not that AI *invites* us to think about behavior — the industry has accepted such invitations before and politely declined (behavior-driven development literally had the word in its name in 2006, and still mostly became a test-naming convention). It is that AI removes the activity we used to hide in. When structure took months, \"we're building\" was a legitimate answer to \"what does it do?\" Now structure takes hours, and the question arrives immediately, and it turns out the question was always the hard part.\n\nThe economics echo a pattern from [AI Is the Reactor, Not the Plant](ai-is-the-reactor-not-the-plant.html): when one stage of a value chain becomes abundant, value migrates to the stages that stay scarce. Generation of structure became abundant. Specification of behavior stayed scarce. The work moves accordingly.\n\n## Product Management Already Made This Trip\n\nHere is the part that convinces me this is a durable shift and not commentary on a hype cycle: **another discipline already lived through exactly this correction, one bottleneck earlier.**\n\nFor years, product management's unit of achievement was the *output*: the feature shipped, the release delivered, the roadmap item checked off. Roadmaps were lists of outputs; success was velocity against the list. Melissa Perri gave the failure mode its name — the **build trap**: organizations so busy measuring what they ship that they stop asking what shipping it *changed*. The correction, when it came, had a slogan sharp enough to survive: **outcomes over output**. Josh Seiden's definition of an outcome is worth quoting precisely, because of the word it turns on: an outcome is *\"a change in customer behavior that drives business results.\"*\n\nLook at the two shifts side by side:\n\n| | Software engineering | Product management |\n| --- | --- | --- |\n| **What we optimized** | Structure — the artifact we could design and review | Output — the feature we could ship and count |\n| **Why it was rational** | Construction was expensive; structure predicted cost of change | Delivery was expensive; shipping was the visible bottleneck |\n| **What users actually experience** | Behavior | Outcomes — changes in *their* behavior |\n| **What broke the proxy** | AI made structure cheap to produce | Agile/continuous delivery made shipping cheap and constant |\n| **Where the scarce work moved** | Specifying intended behavior | Specifying intended outcomes |\n| **The failure mode it named** | Structure-worship; architecture as an end in itself | The build trap; the feature factory |\n\nSame shape, twice. A discipline optimizes the controllable artifact instead of the intended effect, because the artifact is visible and the effect is hard to specify and measure. Then the artifact stops being scarce — and the discipline is forced, uncomfortably, to face the effect directly.\n\nAnd notice that the two right-hand destinations are not merely analogous — they *connect*. Seiden's outcome is a change in customer behavior. A system's behavior is what produces that change. Specify the outcome and you have constrained the behavior; specify the behavior and you had better be able to say which outcome justifies it. The engineer's new scarce work and the product manager's scarce work are two altitudes of the same description: **what should happen in the world, and what should the system do to cause it.**\n\n## The Borders Collapse\n\nWhich brings us to the consequence I think is still underrated.\n\nOur discipline borders were drawn along the old division of labor, and the old division of labor was organized around *artifacts*: product managers owned requirement documents, designers owned mockups, business architects owned capability maps, enterprise architects owned landscape diagrams and standards, engineers owned code and its structure. Each border existed because each artifact demanded its own craft, its own tools, and its own full-time attention — and because translating between the artifacts was itself expensive, we built roles, rituals, and entire meeting genres around the handoffs.\n\nBut watch what the shift does to each of those crafts. When structure is generated, the engineer's contribution moves up to specifying behavior. When mockups are generated, the designer's contribution moves up to specifying interaction behavior and its intent. When capability maps and landscape diagrams are generated, the architects' contribution moves up to specifying which outcomes the capabilities exist to produce and which constraints the behavior must respect. The product manager was already there, holding outcomes. Every discipline's residual work — the part the agents cannot do, because it is a decision about what should be true rather than a derivation of what follows — lands on the same patch of ground:\n\n| Discipline | Old scarce artifact | Residual scarce work |\n| --- | --- | --- |\n| Product management | Roadmaps, requirement docs | Which customer and business outcomes, in which order, at what evidence threshold |\n| Design | Mockups, flows | How the product should behave in interaction — and why that behavior serves the outcome |\n| Business architecture | Capability maps | Which capabilities the outcomes require, and what each is worth |\n| Enterprise architecture | Landscape diagrams, standards | Which constraints behavior must respect across the estate — cost, risk, compliance, evolution |\n| Software engineering | Code and its structure | What the system should do precisely — edges, failure modes, trade-offs — stated verifiably |\n\nRead the right-hand column top to bottom: it is one document. Not five artifacts to hand off between five roles — one layered specification of intended outcomes and the behavior that produces them, drafted at different altitudes by people with different expertise. The borders between the disciplines were load-bearing when the artifacts were separate crafts. When the artifact converges, the borders stop being walls and become sections of the same spec.\n\n![Diagram showing five separate discipline artifacts converging into one layered specification co-authored by five people at different altitudes.](assets/images/from-structure-to-behavior/five-artifacts-one-spec.jpeg)\n**Figure 3:** *The borders were made of artifacts. When the artifacts converge, five disciplines become concurrent authors of one layered spec — outcomes at the top, behavior and constraints below.*\n\n\nI want to be careful here, because this claim is easy to inflate. Border collapse does not mean the *expertise* collapses. A designer's judgment about interaction, an enterprise architect's judgment about systemic risk, a product manager's judgment about evidence and markets — these remain distinct, hard-won, and non-interchangeable. What collapses is the *artifact boundary* and the translation industry built on top of it: the ritual by which intent degrades as it is re-expressed from strategy deck to requirements doc to design file to architecture diagram to ticket to code. When all of those become views of one specification, the disciplines stop being sequential stations and become concurrent authors.\n\n## What the Shared Artifact Looks Like\n\nIt is fair to ask whether this converged specification is a real thing or a rhetorical convenience. This is the question my [What Is Spec-Driven Product Architecture?](../spec-driven-product-architecture/what-is-spec-driven-product-architecture.html) work tries to answer constructively, so I will use it as the worked example — not because it is the only possible shape, but because building it taught me what the shape demands.\n\nSpec-driven product architecture moves the specification boundary above software design: the spec is a structured model of a whole product domain, connecting the layers the disciplines used to own separately — customer groups and jobs to be done, strategy and KPIs, product capabilities, implementation-facing product bricks, teams, roadmaps, and the evidence that grounds it all. The model is plain structured files in a repository, authored and validated by humans and AI agents together, and rendered into documentation nobody has to keep synchronized by hand.\n\nTwo properties matter for this note's argument:\n\n- **It is outcome-anchored at the top and behavior-shaped at the bottom.** The model starts from customers, their jobs, and the outcomes that define success — Seiden's territory — and refines downward into capabilities and bricks whose whole justification is the behavior they enable. A brick with no path upward to an outcome is a visible anomaly, not a hidden one. The old borders — product to design to architecture to engineering — appear inside the model as *adjacent layers of one structure*, not as separate documents in separate tools owned by separate departments.\n- **It is specific enough for agents to work in.** An agent asked to \"write a product strategy\" produces plausible prose. An agent asked to extend a validated, cross-referenced model — preserve these identifiers, respect this schema, keep references consistent, pass validation — produces something other agents and other humans can check, compare, and build from. The discipline that structure-thinking taught us for fifty years does not disappear; it gets repointed at the specification itself. The spec becomes the thing that must be well-structured, loosely coupled, and evolvable — because the spec is now the long-lived artifact, and the code is increasingly its regenerable projection.\n\nThat last inversion is worth sitting with: we spent decades structuring code and leaving intent in prose. The shift ends with intent structured and code fluid.\n\n![Before/after diagram: rigid structured code beside a flimsy intent note, versus a solid structured spec beside fluid regenerable code.](assets/images/from-structure-to-behavior/intent-structured-code-fluid.jpeg)\n**Figure 4:** *The inversion: we spent decades structuring code and leaving intent in prose. Now the spec becomes the long-lived, well-structured artifact — and code its regenerable projection.*\n\n\n## The Warning: Behavior Is Harder\n\nHohpe ends with a warning — *while highly valuable, this is also harder* — and it deserves more than a nod, because everything in this note becomes hype the moment that clause is dropped.\n\nBehavior is harder than structure in at least three compounding ways:\n\n- **Harder to specify completely.** A structure is finite: components, relations, done. Behavior is a space — inputs times states times timing times failure modes — and it explodes combinatorially. Every practitioner who has tried to write \"complete\" acceptance criteria knows the tail never ends. Specifying behavior well means choosing which parts of the space to pin down precisely and which to leave to judgment — itself a judgment call that structure never demanded.\n- **Harder to verify.** You can check a structure against a diagram by looking. Behavior can only be verified by exercising it — testing, simulation, production observation. Fast end-to-end assembly shortens that loop enormously — exercising behavior in a working system is now a days-away option, not a quarters-away one — but the most important behaviors (what happens under conditions you did not anticipate) resist advance verification by definition. This is the ground where Barry O'Reilly — the postscript's addressee — has been working for years: residuality theory is explicitly a break with the *structuralist* tradition of treating a system as a static picture, insisting instead that systems are processes revealed under stress, and that design should proceed by stressing naive designs to see what survives. The postscript's joke has an edge: architecture's own avant-garde spent a decade arguing us off the structuralism train, and what finally moved the crowd was the agents making structure too cheap to worship.\n- **Harder to agree on.** Structural debates were contained: engineers argued with engineers, and the loser's objection rarely reached the CFO. Behavior is where every discipline's claims meet — product's outcome, design's interaction, architecture's constraint, engineering's precision — which is exactly *why* the borders collapse, and exactly why the collapsed conversation is more demanding than any of the separate ones were. One shared spec means the disagreements that handoffs used to bury now have to be resolved, explicitly, in one place.\n\nAnd one more caution, from the earlier notes in this journal: cheap structure is not *ignorable* structure. Generated architecture still fails in structured ways — [Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool](breaking-vibe-monolith.html) is about what happens when it quietly congeals — and a human still has to understand what was generated well enough to own it, the whole argument of [You Can Outsource Thinking. You Cannot Outsource Understanding.](outsource-thinking-not-understanding.html). Structure leaves the center of the craft; it does not leave the craft. It moves from the thing we lovingly author to the thing we rigorously review.\n\n## What to Do on Monday\n\n| Role | Move | What it buys you |\n| --- | --- | --- |\n| **Engineer** | Before asking an agent to build, write the behavior first: what should happen, at which edges, under which failures — in a form someone could check the result against. Judge your specs the way you used to judge designs. | The agent's structural output becomes verifiable against intent instead of merely plausible. |\n| **Architect** | Reallocate review time: less on whether the structure matches the pattern language, more on whether anyone can state the behavior and constraints the structure must serve. Treat the spec as the artifact whose structure you now own. | Your structural judgment lands where it still compounds — on the long-lived artifact. |\n| **Product manager** | Push your outcome definitions one level down: not just \"which metric moves\" but which *behavior* — of the user and of the system — moves it. Expect to co-author with engineers and designers in the same document, not upstream of them. | Your outcomes become executable context for agents and teams instead of slideware. |\n| **Designer / business architect** | Find where your artifact's intent currently degrades in translation to other artifacts, and move that intent into the shared spec instead. | Your judgment survives contact with delivery instead of dissolving at the handoff. |\n| **Leader** | Stop staffing the translation chain as if artifact handoffs were the work. Fund one shared, validated specification and the cross-discipline conversation it forces. | You collect the actual dividend of the shift: intent that survives from strategy to running system. |\n\n## Closing Thought\n\nEvery discipline, given a hard goal and an expensive craft, eventually starts worshipping the craft. Software engineering optimized structure because structure was what we could see, control, and be excellent at while construction was the bottleneck. Product management counted outputs for the same reason. Neither was foolish; both were adaptations to constraints — and both proxies quietly became the point.\n\nAI does not make software development easier. It removes the layer of legitimate, absorbing, skillful work that stood between us and the questions we were always ultimately responsible for: What should this system do? For whom? What should change in the world because it exists? Those questions were forever deferred at the bottom of the backlog while we argued about boundaries and shipped features. Now the structure takes an afternoon, the feature ships itself, and the questions are standing at the front of the queue with no one left to hide behind.\n\nThe disciplines that grew up around the proxies will find that the walls between them were made of artifacts, and the artifacts are melting. What remains is one conversation, at several altitudes, about behavior and outcomes — the conversation users were having with us all along, whether we attended or not. They never saw the structure. They only ever saw the behavior. Now, finally, so must we.\n\n## To Probe Further\n\n* Gregor Hohpe, [LinkedIn post](https://www.linkedin.com/posts/ghohpe_structure-behavior-activity-7486322897817538561-Bc1T) (2026) — the anchor observation: an AI-led SDLC forces the move from structure to behavior; \"the end users don't see the structure. They only see the behavior\"; and the honest warning that behavior is harder.\n* Gregor Hohpe, [*The Software Architect Elevator*](https://architectelevator.com/) (2020) — the same author's earlier frame: architects create value by riding between the business penthouse and the technical engine room. This note argues the elevator ride is becoming everyone's commute.\n* Barry O'Reilly, [*Residues: Time, Change, and Uncertainty in Software Architecture*](https://leanpub.com/residuality) — the explicit break with structuralism the postscript nods to: systems as processes revealed under stress, not static pictures; design by stressing naive architectures and keeping what survives.\n* Josh Seiden, [*Outcomes Over Output*](https://www.senseandrespondpress.com/managing-outcomes) (2019) — the canonical statement of the product-side shift, with the definition this note's analogy turns on: an outcome is \"a change in customer behavior that drives business results.\"\n* Melissa Perri, [*Escaping the Build Trap*](https://melissaperri.com/book) (2018) — the diagnosis of output-worship: organizations measuring shipping instead of change, the feature factory as the product twin of structure-worship.\n* Marty Cagan, *Inspired* (2018) and *Empowered* (2020) — the operating model the border collapse points toward: teams given outcomes to achieve rather than outputs to deliver.\n* Dan North, [*Introducing BDD*](https://dannorth.net/introducing-bdd/) (2006) — the historical precedent: renaming tests to \"behaviors\" changed what engineers wrote down. The industry saw the destination twenty years ago; it took agents to make the trip compulsory.\n* [What Is Spec-Driven Product Architecture?](../spec-driven-product-architecture/what-is-spec-driven-product-architecture.html) — the worked example of the converged artifact: a structured, validated product-domain model connecting customers, strategy, capabilities, bricks, teams, roadmap, and evidence, co-authored by humans and agents.\n* [AI Is the Reactor, Not the Plant](ai-is-the-reactor-not-the-plant.html) — when generation becomes abundant, value migrates to what stays scarce. Here: specification of behavior.\n* [You Can Outsource Thinking. You Cannot Outsource Understanding.](outsource-thinking-not-understanding.html) — generated structure still has to be understood by a human who can own it; the last human mile applies to architecture too.\n* [Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool](breaking-vibe-monolith.html) — the counterweight: cheap structure quietly congeals into expensive structure if nobody reviews it. Structure leaves the center of the craft, not the craft.\n\n## Questions to Consider\n\nUse these if your organization is adopting AI-led development and the role boundaries are starting to feel warm to the touch.\n\n* In your last design review, how much time went to structure (boundaries, coupling, topology) versus behavior (what the system should do, at which edges, under which failures)? Is that ratio a decision or a habit?\n* Could your team state, in a form an agent could work against and a reviewer could verify, what your current project is supposed to *do* — not how it is shaped?\n* Where does intent degrade most in your delivery chain — strategy deck to requirements, requirements to design, design to tickets, tickets to code? What would it mean to hold that intent in one shared, validated artifact instead?\n* Product management learned to ask \"what changed for the customer?\" instead of \"what did we ship?\" What is your engineering organization's equivalent question — and does anyone ask it?\n* If structure became free tomorrow, what fraction of your architects' and senior engineers' current work would remain? Is that fraction where your best judgment is currently pointed?\n* Who in your organization can specify behavior precisely — edges, failure modes, trade-offs? Are they in the room where outcomes are decided, or five handoffs downstream?\n* Which of your discipline borders exist because the expertise differs, and which exist only because the artifacts used to?\n"}]}, {"key": "summary", "label": "Summary", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "An AI-led SDLC moves the scarce work of software from defining **structure** (boundaries, coupling, topology) to defining **behavior** (what the system should do, for whom, at which edges). The reason is simple, as Gregor Hohpe put it: end users never see the structure — they only see the behavior — and now that AI makes structure cheap to produce, the proxy we optimized for fifty years has lost its justification.\n\nProduct management already made this exact trip, one bottleneck earlier: when continuous delivery made shipping cheap and constant, the discipline was forced from **output** (features shipped) to **outcome** (change in customer behavior). It is one pattern, seen twice: a profession optimizes the artifact it can control instead of the effect it exists to cause — until producing the artifact stops being the bottleneck.\n\nFollowed to its end, the pattern collapses the borders between product management, design, enterprise architecture, business architecture, and software engineering. When each discipline's residual work — the part agents cannot do — is specifying intended outcomes and the behavior that produces them, the five disciplines are no longer sequential stations passing artifacts; they are concurrent authors of one layered specification. [What Is Spec-Driven Product Architecture?](../spec-driven-product-architecture/what-is-spec-driven-product-architecture.html) is the worked example of that shared artifact.\n\n**What changes**\n\n- The feedback loop on behavior collapses: end-to-end systems come together in days, so behavior can be *observed* early in a running system — in front of real users — instead of only argued about in prose. Cheap structure both forces attention to behavior and supplies the instrument for studying it.\n- Design and architecture reviews shift their weight: less \"does the structure match the pattern language,\" more \"can anyone state, verifiably, what this should do and why.\"\n- Engineers write behavior first — edges, failure modes, trade-offs — in a form agents can build against and reviewers can check results against.\n- Product managers push outcomes one level down (which behavior moves the metric) and co-author with engineers and designers in the same document, not upstream of them.\n- The specification becomes the long-lived, carefully structured artifact; code becomes increasingly its regenerable projection. Structural discipline gets repointed at the spec.\n- Leaders stop staffing the translation chain (strategy deck → requirements → design file → diagram → ticket) as if handoffs were the work, and fund one shared, validated spec instead.\n\n**What it costs**\n\n- Behavior is harder than structure — harder to specify completely, harder to verify, harder to agree on. The shift raises the skill bar; it does not lower it.\n- One shared spec means disagreements the handoffs used to bury must now be resolved explicitly, across disciplines, in one place.\n- Generated structure still has to be reviewed and understood by a human who can own it ([You Can Outsource Thinking. You Cannot Outsource Understanding.](outsource-thinking-not-understanding.html)); cheap structure is not ignorable structure.\n\n**What we are not doing**\n\n- Not declaring architecture or architects dead: structural *production* is commoditized; structural *judgment* about operability, cost, and failure modes survives — repointed at the spec.\n- Not predicting job losses or proposing a new org chart. Borders blur; expertise stays distinct and non-interchangeable.\n\nThe Article tab covers the full argument: why structure-worship was rational, the output-to-outcome parallel, the border-collapse table, and Hohpe's warning taken seriously.\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "9 min listen"}, "blocks": [{"type": "markdown", "content": "## The Quote\n\n**Ben:** Straight version first. Gregor Hohpe posts on LinkedIn that an AI-led SDLC forces us \"from looking at structure to defining behavior,\" and this deserves a whole essay? Every week there's a new aphorism about AI changing everything.\n\n**Ana:** Most of those aphorisms are about speed — AI writes the code faster, ships the feature faster. This one isn't about speed at all. It says the *subject* of the work changes. For fifty years, the center of software engineering was structure: separation of concerns, loose coupling, domain boundaries, how many servers, how they're load balanced. Hohpe's point is that users never see any of that. They only ever see behavior — the payment cleared, the answer was right, the failure was handled. And now that AI makes structure cheap to produce, we've run out of reasons not to face the thing users actually experience.\n\n**Ben:** \"We were enamored with structure.\" That's a strong accusation to hang on a profession.\n\n**Ana:** It's not an accusation, and the essay spends a whole section being fair about it. Structure-worship was *rational*. Think about what you could actually inspect for most of the field's history. Behavior only fully shows up when the system runs in production, in front of real people — the last and most expensive possible moment to learn you were wrong. Structure was visible *early*. You could review a module diagram before a line of code existed. And structure genuinely predicted the thing everyone feared: the cost of change. When a wrong boundary meant months of manual rework, structural discipline was the best available proxy for quality.\n\n**Ben:** So the profession optimized the proxy.\n\n**Ana:** The proxy it could see and control. Design reviews reviewed structure. Architecture boards approved structure. Career ladders rewarded fluency in pattern languages. All of it honest adaptation to a real constraint. The trouble with a proxy is only ever one thing: eventually it gets mistaken for the goal. No user has ever thanked a team for its hexagonal architecture.\n\n## What Actually Changed\n\n**Ben:** Okay, and AI changes this how? Agents write code — that makes construction cheaper. Why does cheaper construction change what architects *think about*?\n\n**Ana:** Because it changes exactly one variable in the equation, and it's the load-bearing one. Structural discipline was hoarded against the cost of changing your mind. An agent can scaffold a service, split a module, rearrange boundaries in an afternoon — and, more importantly, do it *again*. Regeneration is nearly as cheap as generation. When restructuring costs an afternoon plus review instead of months of rework, the up-front structural bet is no longer where the risk lives.\n\n**Ben:** Then where does the risk live?\n\n**Ana:** Where it always secretly lived: in whether anyone can say, precisely, what the system should *do*. Give an agent a vague intent and it produces a plausible structure for the wrong behavior — flawlessly modular, beautifully decoupled, wrong. The binding constraint on an AI-led SDLC isn't the ability to build. It's the quality of the behavior specification: what should happen, for whom, at which edges, with which trade-offs when goals conflict.\n\n**Ben:** Hold on — there's an upside you're underselling. If structure is cheap, I can stand up a whole end-to-end system in days. That's not just less hiding room; that's a different instrument.\n\n**Ana:** That's the second gift, and it matters just as much. Remember why behavior made such a poor object of attention: it was a lagging indicator — only observable once the system ran, and building the system took months. That lag is *why* structure was the only thing we could inspect early. Now the lag mostly disappears. Behavior stops being something you argue about in prose and becomes something you observe, this week, in a running system in front of real users — and what you observe sharpens the spec. Cheap structure doesn't just force us to face behavior. It finally hands us the instrument for studying it.\n\n**Ben:** The industry has heard this sermon before, though. Behavior-driven development had the word in its name twenty years ago, and it mostly became a test-naming convention.\n\n**Ana:** Right — and that history is in the essay, because it sharpens what's different. BDD was an *invitation* to think about behavior, and the industry politely declined, because there was somewhere legitimate to hide. When structure took months, \"we're building\" was an acceptable answer to \"what does it do?\" Now structure takes hours. The question arrives immediately, and there's no absorbing, skillful work left to hide in. Hohpe's word is \"forces,\" and it's the right word.\n\n## The Trip Product Management Already Made\n\n**Ben:** Now the part you added: output to outcome. Product management's slogan. Why does a product-side correction tell us anything about architects?\n\n**Ana:** Because it's the identical pattern, one bottleneck earlier — and that's what convinces me this is durable and not commentary on a hype cycle. For years, product management's unit of achievement was the output: the feature shipped, the roadmap item checked. Melissa Perri named the failure mode the build trap — organizations so busy measuring what they ship that they stop asking what shipping it changed. The correction came as \"outcomes over output,\" and Josh Seiden's definition of an outcome is worth quoting exactly: *a change in customer behavior that drives business results.*\n\n**Ben:** Notice the word.\n\n**Ana:** Notice the word. A discipline optimizes the controllable artifact instead of the intended effect, because the artifact is visible and the effect is hard to specify and measure. Then the artifact stops being scarce — for product it was agile and continuous delivery making shipping constant; for engineering it's agents making structure cheap — and the discipline is forced, uncomfortably, to face the effect directly. Same shape, twice. And the two destinations aren't just analogous, they *connect*: the outcome is a change in the customer's behavior; the system's behavior is what produces that change. Two altitudes of the same description.\n\n## Everyone Becomes a PM?\n\n**Ben:** Here's where I push back hardest. \"The borders collapse between product management, design, enterprise architecture, business architecture, and engineering.\" That reads like every consulting deck since 2015. Is the claim that everyone becomes a generalist? Because I've watched that movie, and it ends with nobody knowing anything deeply.\n\n**Ana:** That reading is exactly what the essay fences off, so let's be precise about what collapses. The old discipline borders were drawn along *artifacts*: PMs owned requirements docs, designers owned mockups, business architects owned capability maps, enterprise architects owned landscape diagrams, engineers owned code and its structure. Each border existed because each artifact was its own craft — and because translating between artifacts was expensive, we built roles and entire meeting genres around the handoffs.\n\n**Ben:** And the artifacts are now generated.\n\n**Ana:** So watch what's left. When mockups are generated, the designer's residual contribution is specifying interaction behavior and why it serves the outcome. When capability maps are generated, the architects' residual contribution is which outcomes the capabilities exist to produce and which constraints behavior must respect. The engineer's residual contribution is stating precisely what the system should do — edges, failure modes, trade-offs. The PM was already there, holding outcomes. Line up the residual work of all five disciplines and read it top to bottom: it's one document. Not five artifacts handed between five roles — one layered specification, drafted at different altitudes.\n\n**Ben:** But the expertise —\n\n**Ana:** — does not collapse, and the essay says so in bold, twice. A designer's judgment about interaction, an enterprise architect's judgment about systemic risk, a PM's judgment about evidence and markets: distinct, hard-won, non-interchangeable. What collapses is the artifact boundary and the *translation industry* built on it — the ritual by which intent degrades from strategy deck to requirements doc to design file to diagram to ticket to code. The disciplines stop being sequential stations and become concurrent authors.\n\n**Ben:** Is this converged spec a real thing, or a rhetorical convenience? Show me one.\n\n**Ana:** That's the honest question, and it's why the essay includes one worked example: [What Is Spec-Driven Product Architecture?](../spec-driven-product-architecture/what-is-spec-driven-product-architecture.html). A structured product-domain model — customers and jobs at the top, strategy and KPIs, capabilities, implementation-facing bricks, teams, roadmap, evidence at the bottom — plain structured files in a repository, co-authored and validated by humans and agents. Outcome-anchored at the top, behavior-shaped at the bottom, and specific enough that an agent extending it has to preserve identifiers, respect schemas, and pass validation. The old borders appear inside it as adjacent layers of one structure, not separate documents in separate tools.\n\n**Ben:** And the fifty years of structural discipline?\n\n**Ana:** Gets repointed, not retired. The spec is now the long-lived artifact — the thing that has to be well-structured, loosely coupled, evolvable. The code becomes increasingly its regenerable projection. We spent decades structuring code and leaving intent in prose; the shift ends with intent structured and code fluid.\n\n## The Part That's Harder\n\n**Ben:** Hohpe's own warning — \"while highly valuable, this is also harder.\" Most people quoting him drop that clause.\n\n**Ana:** And the moment you drop it, everything I just said becomes hype. Behavior is harder than structure in three compounding ways. Harder to *specify completely* — a structure is finite, components and relations; behavior is a combinatorial space of inputs, states, timing, and failure modes, and the tail never ends. Harder to *verify* — you check a structure by looking at it; behavior only by exercising it, and the behaviors that matter most are the ones under conditions you didn't anticipate. And harder to *agree on* — structural debates were contained among engineers; behavior is where product's outcome, design's interaction, architecture's constraint, and engineering's precision all meet. One shared spec means the disagreements handoffs used to bury have to be resolved explicitly, in one place.\n\n**Ben:** And the postscript — Barry O'Reilly and the \"structuralism train\"?\n\n**Ana:** That's not an in-joke, it has an edge. O'Reilly's residuality theory is an explicit break with the structuralist tradition in architecture — the habit of treating a system as a static picture rather than a process revealed under stress. Architecture's own avant-garde spent a decade arguing us off the structuralism train on intellectual grounds. What finally moved the crowd was agents making structure too cheap to worship.\n\n## What We're Not Saying\n\n**Ben:** Close it out. What is this essay explicitly *not* claiming?\n\n**Ana:** Four fences. It's not an obituary for architecture or architects — structural *production* is commoditized; structural *judgment* about operability, cost, and failure modes survives, and behavior specification needs it. It's not an org-design piece — no job-loss predictions, no new org chart; borders blur, expertise doesn't become interchangeable. It's not a pitch — spec-driven product architecture appears as one worked example, one section, with pointers out. And it's not a claim that cheap structure is *ignorable* structure — generated architecture still congeals into expensive architecture if nobody reviews it, which is the whole point of [Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool](breaking-vibe-monolith.html), and a human still has to understand what was generated well enough to own it, which is [You Can Outsource Thinking. You Cannot Outsource Understanding.](outsource-thinking-not-understanding.html).\n\n**Ben:** Revisit condition?\n\n**Ana:** Watch the reviews. The essay's Monday test is a ratio: in your last design review, how much time went to structure versus behavior — and is that ratio a decision or a habit? If, two years from now, reviews still spend their weight on boundary diagrams while agents generate the boundaries, either the shift stalled or we did. Users never saw the structure. They only ever saw the behavior. Sooner or later, so must we.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "<!-- comic-style\n{\n  \"cast\": \"MAYA: a pragmatic staff engineer / architect, short dark hair, glasses, rolled-up sleeves, calm and slightly amused, often holding a marker. REX: an over-eager boxy robot AI assistant, one bent antenna, glowing rectangular eyes, perpetually excited; here he is a tireless structure-printer — he cheerfully spits out finished architecture diagrams, module maps, and scaffolded services like a printer spitting pages.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with blue/teal accents on a light cream background, generous white space, hand-lettered speech bubbles with SHORT readable text (max 8 words per bubble). Recurring motif: STRUCTURE (boxes-and-arrows diagrams, module maps, server racks) is drawn in cool blue/teal; BEHAVIOR and OUTCOMES (what a user experiences on a screen, a payment clearing, a happy user) glow warm amber. Simple geometric office and whiteboard settings mixing people with software symbols, no photorealism, no dense text, no title text.\"\n}\n-->\n\nAn eight-panel walk through the whole idea: structure was the proxy we could see, behavior is the thing users get — and now that Rex prints structure for free, everyone ends up writing the same spec.\n\n![Comic panel: engineers admire a wall-sized architecture diagram while a user behind a wall sees only a plain button on a laptop.](assets/images/from-structure-to-behavior/comic-01-the-shrine.jpeg)\n**Panel 1:** *We were enamored with structure. Users never see it — they only ever see the behavior.*\n\n![Comic panel: an engineer confidently reviews a module diagram while behavior is a distant hazy cloud behind a door labeled PROD.](assets/images/from-structure-to-behavior/comic-02-honest-proxy.jpeg)\n**Panel 2:** *Structure-worship was rational: structure was visible early; behavior only showed up in production, the most expensive place to be wrong.*\n\n![Comic panel: an excited robot prints a fountain of architecture diagrams while an engineer watches the pages pile up.](assets/images/from-structure-to-behavior/comic-03-structure-is-cheap.jpeg)\n**Panel 3:** *AI changes the one load-bearing variable: producing — and re-producing — structure is no longer expensive.*\n\n![Comic panel: a robot presents a perfect modular diagram while a small screen shows a confused user getting the wrong result.](assets/images/from-structure-to-behavior/comic-04-beautifully-wrong.jpeg)\n**Panel 4:** *Give an agent vague intent and it builds a plausible structure for the wrong behavior. The constraint is the spec, not the build.*\n\n![Comic panel split in two: a product manager stacking feature crates mirrors an engineer stacking architecture diagrams, one amber user glowing above both.](assets/images/from-structure-to-behavior/comic-05-same-trip-twice.jpeg)\n**Panel 5:** *Product management already made this trip: from output to outcome. Structure is engineering's output; behavior is its outcome.*\n\n![Comic panel: cubicle walls between five discipline desks fall as everyone converges on one shared glowing document.](assets/images/from-structure-to-behavior/comic-06-walls-fall.jpeg)\n**Panel 6:** *The borders were made of artifacts. When the artifacts converge, five disciplines become concurrent authors of one spec.*\n\n![Comic panel: an engineer faces a small tidy structure diagram beside an enormous branching map of behaviors and edge cases.](assets/images/from-structure-to-behavior/comic-07-behavior-is-harder.jpeg)\n**Panel 7:** *Hohpe's warning, kept: behavior is harder than structure — to specify, to verify, to agree on. The bar goes up, not down.*\n\n![Comic panel: an engineer and a user share a desk watching a task succeed on screen while a robot quietly prints structure pages behind them.](assets/images/from-structure-to-behavior/comic-08-face-the-user.jpeg)\n**Panel 8:** *Structure moves from the thing we lovingly author to the thing we rigorously review. What we face now is what users always saw.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        let liHtml = inline(itemBuf.join('\n'));
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push('<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>
