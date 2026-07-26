@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Planning</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="engineering-strategy.html" title="Engineering Strategy">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="organizational-values.html" title="Organizational Values">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Setting Direction</p>
+        <h1>Planning</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-25  ·  9 min · <a class="spec-link" href="planning.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/planning/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/planning/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="engineering-strategy.html" title="Engineering Strategy">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="organizational-values.html" title="Organizational Values">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EXEC-PLANNING", "status": "draft:gray", "title": "Planning", "date": "2026-07-25", "author": "Željko Obrenović", "permalink": "planning", "timetoread": "9 min", "excerpt": "I treat planning as an ongoing process, not an annual event, and I sequence it into three deliberately separated phases: establish the financial plan, determine functional portfolio allocation, agree on the roadmap. Debating everything at once ruins all three debates. I keep allocation steady, emphasize outcomes over micromanaged projects, and judge each cycle by whether it empowered teams and improved the system — not just this year's plan.", "tags": "engineering executive, planning, budgeting, allocation, roadmaps, leadership", "icon": "assets/icons/planning.png", "logo": "assets/images/planning/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering executive", "planning", "budgeting", "allocation", "roadmaps", "leadership"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I treat planning as an ongoing, dynamic process — not an annual event — and I sequence it into three deliberately separated phases: establish the financial plan, determine functional portfolio allocation, agree on the roadmap. Debating budget, allocation, and roadmap at once ruins all three debates. I keep allocation steady, prefer durable constraints over flexible ones, emphasize outcomes over micromanaged projects, and judge every cycle by two questions: does this plan empower teams rather than constrain them, and are we improving the system, not just this cycle?\n\n## Statement\n\nMy planning practice rests on a small set of commitments:\n\n- **Planning is ongoing, not a season.** The annual budget is prepared before the year starts, functional allocation is reviewed on a rolling basis, quarterly planning happens in the weeks before each quarter — and plans evolve as reality changes.\n- **Sequence the decisions.** Financial planning, functional allocation, and roadmap discussions are separate conversations, held in that order. Each phase settles a constraint the next one works within.\n- **Prefer durable constraints.** A steady allocation with intentional, narrow changes beats reactive churn; large buckets beat tiny slices; and I avoid overreacting to early results.\n- **Emphasize outcomes, not projects.** Executives own trade-offs and outcomes; teams retain autonomy over implementation details. Planning that generates volumes of new, unscoped work — or micromanaged task lists — has failed.\n- **Improve the system each cycle.** Planning stays time-boxed, and every year the process itself gets better.\n\n![Three nested frames numbered one to three, labeled Financial plan, Allocation, and Roadmap, each containing the next.](assets/images/planning/three-phase-sequence.jpeg)\n**Figure 1:** *The sequence: each phase settles a constraint the next one works within — budget, then allocation, then roadmap.*\n\n\n## How to Read This\n\nThis record tells my leadership team and peer executives which debate belongs to which phase — so a roadmap conversation does not silently reopen the budget, and a budget conversation does not silently rewrite the roadmap. It is a vision of how I plan, not a planning-process manual. The working checklist — the concrete moves in each phase, the pitfalls, and the final sanity check — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Mixing the debates ruins all three.** Budget, allocation, and roadmap are different decisions with different participants and different cadences. When they are debated at once, every roadmap disagreement becomes a budget renegotiation, every allocation question becomes a project pitch, and conflicts get resolved in 1:1 side deals instead of open group discussion. Sequencing fixes this: the financial plan sets the envelope, allocation divides it into steady portfolios, and the roadmap fills the portfolios with outcomes. Coupling roadmap changes directly to budget shifts is how side deals start — I keep them decoupled.\n\n**Steady allocation beats reactive churn.** Allocation is a long-term investment posture — infrastructure, developer experience, product, cross-functional work, and an explicit, long-running budget for validating new ideas. Changing it every time an early result disappoints destroys the compounding those investments need. So I keep allocation fairly steady, make changes narrowly and intentionally, and update it as impact data improves — not as enthusiasm fluctuates. This is also where measurement earns its keep: the impact data that feeds allocation comes from [Measuring Engineering Organizations](measuring-engineering-organizations.html).\n\n![Side-by-side charts of steady allocation bands with a compounding curve versus churning bands with a sawtooth line that keeps resetting.](assets/images/planning/steady-vs-churn.jpeg)\n**Figure 2:** *Steady allocation lets long-term investments compound; reactive churn keeps resetting them.*\n\n\n**Headcount is not the universal answer.** Before requesting additional headcount I model the org structure that would absorb it and compare the hiring plan against historical recruiting capacity. Velocity discussions that default to \"we need more headcount\" skip the harder questions — whether expenses are growing faster than revenue in some business lines, and what hypotheses would improve the underperforming segments.\n\n**Plans exist to empower teams.** The point of a plan is a shared set of constraints inside which teams can move fast, not a detailed task list that removes their judgment. Outcomes come first, projects second; teams keep the flexibility to adjust implementation details. A planning process that disempowers teams produces compliance, not commitment.\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Sequence budget → allocation → roadmap. | The phases never interact — each settles the constraints the next works within. |\n| Keep allocation steady; change narrowly and intentionally. | Never update allocation — it moves as impact data improves. |\n| Prefer durable constraints over flexible ones. | Plans are fixed — they evolve as reality changes; the process is ongoing. |\n| Emphasize outcomes; teams own implementation. | Executives stay out of trade-offs — a clear executive sponsor owns them. |\n| Keep planning time-boxed and improve it yearly. | Planning is a yearly checkbox — a plan nobody references afterward is a failed plan. |\n\nBefore finalizing any plan, I run the sanity check: are financial constraints clear and stable, is the engineering allocation explicit and steady, is the roadmap aligned with both company goals and real capacity, have we avoided mixing the three debates, does the plan empower teams, and are we improving the system — not just this cycle?\n\n![Circular loop of Plan, Execute, Learn, and Improve-the-process nodes with a sanity-check gate before the Plan node.](assets/images/planning/planning-cycle-loop.jpeg)\n**Figure 3:** *Planning as a loop, not a season: every cycle passes the sanity check and leaves the process itself better.*\n\n\n## Anti-Patterns\n\n- **Planning as checkbox ritual.** A plan that is never referenced after planning season ends, judged by the polish of its formatting rather than the quality of its decisions, with no executive sponsor owning the trade-offs.\n- **\"We need more headcount.\"** The default answer to every velocity discussion — offered before modeling the org structure, checking historical recruiting capacity, or asking whether the least efficient teams are being disproportionately rewarded.\n- **Shiny project bias.** A roadmap centered on what executives find most interesting, while compliance, security, reliability, and functional responsibilities quietly starve.\n- **Idea-generation season.** Treating planning as the annual invitation to invent new work, generating large volumes of unscoped projects that crowd out functional priorities.\n- **Side-deal roadmapping.** Resolving conflicts in 1:1 conversations instead of open group discussion, and letting roadmap changes silently reopen budget decisions.\n- **Over-planned task lists.** Detailed project plans that strip teams of autonomy in execution decisions — correct on paper, disempowering in practice.\n\n## Related Records\n\n- [Engineering Strategy](engineering-strategy.html) — the long-term direction planning resources; strategy sets the direction, planning sequences the investment.\n- [Measuring Engineering Organizations](measuring-engineering-organizations.html) — the impact data that feeds allocation reviews and roadmap validation.\n- [Working with Your CEO, Peers, and Engineering](working-with-your-ceo-peers-and-engineering.html) — the Finance, Product, and CEO relationships each planning phase depends on.\n- [Running Engineering Processes](run-engineering-processes.html) — planning is itself an engineering process: clearly owned, time-boxed, and improved each cycle.\n\n## Scope and Revisiting\n\nThis principle governs how I run budgeting, allocation, and roadmapping for an engineering organization; the phase boundaries matter more than any specific calendar. I revisit it at the end of every annual cycle — what the sanity check caught, which pitfalls appeared anyway — and whenever the company's financial posture changes sharply enough to reopen the constraints mid-year.\n\n## Authoritative References\n\n- Will Larson, *The Engineering Executive's Primer* (O'Reilly, 2024) — the \"Planning\" chapter this record's checklist distills; the principle above is my operating commitment to it.\n- Will Larson, [How to plan as an engineering executive](https://lethain.com/planning/) — the freely available companion essay.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "3 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle, grouped by planning phase — mindset first, then the three sequenced phases, the process, and the pitfalls. The Article tab carries the rationale, implications, and anti-patterns.*\n\n### Planning Mindset\n\n- [ ] Treat planning as an ongoing, dynamic process (not a one-time event).\n- [ ] Separate financial planning, functional allocation, and roadmap discussions.\n- [ ] Sequence decisions instead of debating everything at once.\n- [ ] Accept that plans will evolve as reality changes.\n- [ ] Prefer durable constraints over flexible ones.\n\n### Phase 1: Establish the Financial Plan\n\n**Annual Financial Foundation**\n\n- [ ] Align on revenue targets by business line.\n- [ ] Define expense targets by function.\n- [ ] Finalize headcount plan (roles + hiring timing).\n- [ ] Ensure Engineering is aligned on total budget constraints.\n- [ ] Agree whether the financial plan is fixed or adjustable during the year.\n\n**Engineering Cost Management**\n\n- [ ] Segment Engineering expenses:\n  - [ ] Headcount\n  - [ ] Production (cloud, vendors)\n  - [ ] Development (CI/CD, tooling)\n- [ ] Review business lines where expenses grow faster than revenue.\n- [ ] Document hypotheses for improving underperforming segments.\n\n**Capitalizing Engineering Costs (if relevant)**\n\n- [ ] Agree with Finance on capitalization approach:\n  - [ ] Ticket-based\n  - [ ] Project-based\n  - [ ] Role-based\n- [ ] Ensure approach:\n  - [ ] Is auditor-defensible\n  - [ ] Works for Finance reporting timelines\n  - [ ] Minimizes overhead for Engineering\n\n**Headcount Discipline**\n\n- [ ] Decide whether Engineering headcount growth constrains company growth.\n- [ ] Model org structure before requesting additional headcount.\n- [ ] Compare the hiring plan against the historical recruiting capacity.\n- [ ] Avoid treating headcount as the universal solution.\n\n**Vendor Contracts**\n\n- [ ] Identify renewal deadlines early.\n- [ ] Check actual usage vs. contracted volume.\n- [ ] Push for:\n  - [ ] Volume discounts\n  - [ ] Shorter commitments (unless a meaningful tradeoff)\n  - [ ] Service credits for past reliability issues\n- [ ] Align the negotiation strategy before engaging the vendor.\n\n### Phase 2: Determine Functional Portfolio Allocation\n\n**Set Allocation Strategy**\n\n- [ ] Define steady-state allocation percentages (e.g., Infra / DevEx / Product).\n- [ ] Explicitly decide % for:\n  - [ ] Cross-functional work\n  - [ ] Functional/internal priorities\n- [ ] Review Engineering investments annually.\n- [ ] Update allocation as impact data improves.\n\n**Allocation Discipline**\n\n- [ ] Keep allocation fairly steady (avoid frequent churn).\n- [ ] Make changes narrowly and intentionally.\n- [ ] Choose appropriate granularity (large buckets > tiny slices).\n- [ ] Avoid overreacting to early results.\n\n**Unscoped vs Scoped Work**\n\n- [ ] Separate validated projects from exploratory initiatives.\n- [ ] Allocate a fixed % for validating new ideas.\n- [ ] Avoid comparing the raw potential of unscoped ideas to scoped work.\n- [ ] Keep validation budget long-running and explicit.\n\n### Phase 3: Agree on the Roadmap\n\n**Roadmap Construction**\n\n- [ ] Ensure Product, Engineering, and Design collaborate.\n- [ ] Validate roadmap with stakeholders (Sales, Marketing, etc.).\n- [ ] Resolve conflicts in open group discussions (not 1:1 side deals).\n- [ ] Avoid coupling roadmap changes directly to budget shifts.\n\n**Scope Discipline**\n\n- [ ] Avoid mixing concrete projects with vague ideas.\n- [ ] Emphasize outcomes first, projects second.\n- [ ] Maintain flexibility for teams to adjust implementation details.\n- [ ] Prevent planning from disempowering teams.\n\n**Prevent Common Roadmapping Failures**\n\n- [ ] Avoid over-planning detailed task lists.\n- [ ] Avoid a roadmap driven by executives' \"exciting ideas.\"\n- [ ] Avoid turning planning into idea-generation season.\n- [ ] Don't let cross-functional work crowd out functional priorities.\n\n### Planning Process & Timeline\n\n- [ ] The annual budget is prepared before the year starts.\n- [ ] Functional allocation is reviewed on a rolling basis.\n- [ ] Quarterly planning is done in the weeks preceding each quarter.\n- [ ] Keep planning time-boxed (don't let it expand indefinitely).\n- [ ] Improve the process each year.\n\n### Pitfalls to Watch For\n\n**Planning as Checkbox Ritual**\n\n- [ ] Plans are referenced after the planning cycle ends.\n- [ ] Focus is on the quality of decisions rather than the formatting.\n- [ ] Clear executive sponsor owns trade-offs.\n\n**Inefficient Resource Allocation**\n\n- [ ] Executives optimize for the company, not their own function.\n- [ ] Budget allocation is respected after being set.\n- [ ] The least efficient teams are not disproportionately rewarded.\n- [ ] Velocity discussions don't default to \"we need more headcount.\"\n\n**Shiny Project Bias**\n\n- [ ] Planning is not centered on what executives find most interesting.\n- [ ] Compliance, security, and reliability receive proper attention.\n- [ ] Functional responsibilities aren't neglected.\n\n**Diminishing Team Ownership**\n\n- [ ] Executives prioritize outcomes, not micromanaged projects.\n- [ ] Planning doesn't generate large volumes of new, unscoped work.\n- [ ] Teams retain autonomy in execution decisions.\n\n### Final Executive Sanity Check\n\n- Before finalizing your plan, ask:\n\n- [ ] Are financial constraints clear and stable?\n- [ ] Is the engineering allocation explicit and steady?\n- [ ] Is the roadmap aligned with both company goals and real capacity?\n- [ ] Have we avoided mixing budgeting, allocation, and roadmap debates?\n- [ ] Does this plan empower teams rather than constrain them?\n- [ ] Are we improving the system, not just this cycle?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why I run planning as three separate debates, in strict order — in seven panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. LEO: an eager young engineering manager, curly hair, round glasses, laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a chaotic meeting where Leo and colleagues wave budget, allocation, and roadmap papers while Vera watches from the doorway.](assets/images/planning/comic-01-planning-season.jpeg)\n**Panel 1:** *The hook: planning season — budget, allocation, and roadmap all fighting in one room.*\n\n![Comic panel: three speech bubbles tangle into a knot above the table as Vera warns that mixing them ruins all three.](assets/images/planning/comic-02-three-ruined-debates.jpeg)\n**Panel 2:** *The problem: every roadmap disagreement reopens the budget, every allocation question becomes a pitch.*\n\n![Comic panel: two colleagues exchange a folded roadmap page behind a pillar while Vera watches, frowning.](assets/images/planning/comic-03-side-deals.jpeg)\n**Panel 3:** *The wrong way: conflicts resolved in hallway side deals instead of open group discussion.*\n\n![Comic panel: Vera draws three numbered whiteboard boxes labeled Budget, Allocation, and Roadmap in sequence.](assets/images/planning/comic-04-three-phases.jpeg)\n**Panel 4:** *The principle: sequence the decisions — budget sets the envelope, allocation divides it, the roadmap fills it.*\n\n![Comic panel: Vera steadies a tray of large jars while Leo tries to shuffle beans between them.](assets/images/planning/comic-05-steady-allocation.jpeg)\n**Panel 5:** *How it plays out: steady allocation in big buckets beats reactive churn — compounding needs calm.*\n\n![Comic panel: Leo holds a sign reading more headcount while Vera calmly tells him to model the org first.](assets/images/planning/comic-06-more-headcount.jpeg)\n**Panel 6:** *The reflex to resist: 'we need more headcount' — asked before modeling the org or checking recruiting capacity.*\n\n![Comic panel: Vera hands a team an open frame and they run freely inside it.](assets/images/planning/comic-07-plans-empower.jpeg)\n**Panel 7:** *The closer: a plan is a shared constraint teams move fast inside — judged by whether it empowers them.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

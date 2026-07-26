@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calibrating Your Standards</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="internal-communication.html" title="Internal Communication">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="inspected-trust.html" title="Inspected Trust">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Operating the Organization</p>
+        <h1>Calibrating Your Standards</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-25  ·  8-10 min · <a class="spec-link" href="calibrating-your-standards.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/calibrating-your-standards/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/calibrating-your-standards/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="internal-communication.html" title="Internal Communication">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="inspected-trust.html" title="Inspected Trust">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EXEC-CALIBRATING-YOUR-STANDARDS", "status": "draft:gray", "title": "Calibrating Your Standards", "date": "2026-07-25", "author": "Željko Obrenović", "permalink": "calibrating-your-standards", "timetoread": "8-10 min", "excerpt": "I keep my personal standards calibrated against what the organization actually supports. When I am frustrated about performance, I first check whether the frustration is really about misaligned expectations; I diagnose whether a gap is a deliberate leadership tradeoff before treating it as incompetence; I escalate carefully and rarely; I refuse to burn out compensating for constraints that won't change; and I raise standards through role modeling — model, document, share — rather than force.", "tags": "engineering executive, standards, alignment, role modeling, burnout, leadership", "icon": "assets/icons/standards.png", "logo": "assets/images/calibrating-your-standards/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering executive", "standards", "alignment", "role modeling", "burnout", "leadership"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I calibrate my standards against what the organization actually supports before I fight for them. Misaligned standards are an alignment problem to diagnose, not a performance problem to win: much of what feels like others underperforming is a deliberate tradeoff leadership has already accepted. I escalate carefully and only when it matters, I refuse to burn out compensating for constraints that will not change, and where I want the bar raised, I raise it by role modeling — model the approach, document it, share it with teams that opt in — rather than by force.\n\n## Statement\n\nMy standards are mine; the organization's tolerances are the organization's. Keeping the two calibrated is my job, and it has a sequence:\n\n- **Audit first.** Before acting on frustration, I ask whether I am consistently operating at a higher standard than my organization supports, whether I am overworking to maintain standards others don't share, and whether my frustration about performance is actually frustration about misaligned expectations.\n- **Diagnose the gap.** A standard the organization doesn't meet is usually not incompetence — it is often a deliberate tradeoff (speed, cost, focus) that leadership knowingly tolerates. I check before I escalate.\n- **Escalate carefully.** When I do raise an issue, I frame it as impact-driven rather than personal criticism, I distinguish ethical obligation from frustration, I accept that pushing too hard can label me as \"difficult,\" and I prepare for slow change rather than immediate resolution.\n- **Refuse the burnout trap.** I do not compensate indefinitely for a peer's underperformance that management is unwilling to address, and I do not grind against constraints that realistically won't change. I choose the battles that matter most.\n- **Raise the bar by role modeling, not force.** Where I want a higher standard, I model it visibly, refine it until it works, write a practical guide that explains how *and* why, share it with interested teams — and let go of the teams that don't engage.\n- **Adapt when necessary.** Some seasons reward flexibility over rigidity; some lessons are not worth learning and some penalties not worth paying.\n\n![Pipeline diagram of the calibration sequence: audit first, diagnose the gap, then escalate carefully, adapt, or role model via model-document-share, with the burnout trap crossed out below.](assets/images/calibrating-your-standards/calibration-sequence.jpeg)\n**Figure 1:** *The calibration sequence: audit, diagnose, then act — and never via the burnout trap.*\n\n\n## How to Read This\n\nThis record is for my leadership team, so they understand how I choose battles and why I do not fight every one — and for future me, when frustration next masquerades as principle. It is a vision of how I operate, not a quality manifesto or a performance-management guide. The working checklist — the self-audit questions, the misalignment diagnosis, the model–document–share sequence, the final alignment check — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Frustration about performance is often frustration about misaligned expectations.** When I am the only person upset about a standard, the most likely explanation is not that everyone else is wrong — it is that leadership has knowingly accepted a tradeoff I have not. Diagnosing that first turns an emotional grievance into an answerable question: is this a deliberate choice, and if so, do I disagree with the *strategy*, not the execution? Escalating a performance issue that leadership sees as acceptable is really an attempt to hold the CEO accountable for a known, deprioritized issue — which is a strategy disagreement wearing a quality costume, and should be handled as one, per [Working with Your CEO, Peers, and Engineering](working-with-your-ceo-peers-and-engineering.html).\n\n![Decision flow from a frustration icon through the question of whether a standards gap is a deliberate tradeoff, branching to strategy disagreement or real performance gap, with a crossed-out shortcut straight to escalation.](assets/images/calibrating-your-standards/gap-diagnosis-flow.jpeg)\n**Figure 2:** *Diagnose before escalating: a knowingly accepted tradeoff is a strategy question, not a performance problem.*\n\n\n**Compensating for unshared standards is a burnout machine.** Overworking to single-handedly hold a bar nobody else is held to does not raise the organization's standard — it hides the gap, exhausts me, and postpones the honest conversation. The question is never only \"is this standard right?\" but \"is the penalty for lowering my standard here actually acceptable?\" Often it is. This is [Managing Priorities and Energy](managing-energy.html) applied to quality: energy spent grinding against immovable constraints is energy stolen from battles I could actually win.\n\n**Role modeling outperforms escalation and force.** Force produces compliance that evaporates when attention moves on; escalation spends relationship capital and often changes nothing. What durably raises a standard is demonstrating a better approach visibly and consistently, refining it until it works, documenting it so it explains how and why — evaluating outcomes rather than assuming superiority — and sharing it with teams that opt in. The teams that engage become the proof; the teams that don't are let go of, not besieged. Adoption by evidence survives; adoption by decree does not.\n\n![Circular loop of model, refine, document, and share, with opt-in teams adopting the shared guide and non-engaging teams released, and a crossed-out gavel marking adoption by decree.](assets/images/calibrating-your-standards/model-document-share-loop.jpeg)\n**Figure 3:** *Raising the bar by evidence: model, refine, document, share — and let go of teams that do not engage.*\n\n\n**Winning arguments is not the goal.** The final check on any standards battle is whether I am improving outcomes or just winning arguments, and whether I am preserving relationships while maintaining integrity. A won argument that erodes a relationship and changes no outcome is a loss.\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Diagnose whether a gap is a deliberate tradeoff before escalating. | Never escalate — ethical obligations still get raised, carefully. |\n| Accept that leadership may knowingly tolerate a lower standard. | Abandon my standards — I keep them, and choose where to apply them. |\n| Raise standards through model–document–share. | Force adoption on teams that don't engage — I let go of those. |\n| Refuse to overwork compensating for unshared standards. | Stop caring about quality — I stop *subsidizing* misalignment, not caring. |\n| Adapt when the season rewards flexibility. | Standards are relative and nothing is worth fighting for — some penalties are worth paying. |\n\n## Anti-Patterns\n\n- **Overworking to hold a standard nobody else shares.** Quietly absorbing the gap between my bar and the organization's — nights, weekends, heroics — until burnout arrives and the standard collapses anyway.\n- **Escalating a deliberate tradeoff to the CEO as a performance problem.** Trying to hold the CEO accountable for an issue leadership has knowingly deprioritized, then being surprised when the escalation reads as not understanding the strategy.\n- **Winning arguments instead of improving outcomes.** Measuring success by debates won and points conceded, while the actual outcomes — and the relationships needed to change them — deteriorate.\n- **Standards by decree.** Mandating a higher bar without modeling it, documenting it, or proving it works, and mistaking the resulting compliance theater for adoption.\n- **Grinding against immovable constraints.** Treating every organizational tolerance as a battle to fight, rather than choosing the few that matter most and adapting on the rest.\n- **The lesson not worth learning.** Clinging to a standard whose enforcement costs more — in energy, relationships, and focus — than the standard ever returns.\n\n## Related Records\n\n- [Inspected Trust](inspected-trust.html) — how I verify the organization's work against standards; this record calibrates the standards themselves against what the organization supports.\n- [Organizational Values](organizational-values.html) — the values the organization commits to collectively; this record covers my personal bar where it exceeds or diverges from them.\n- [Working with Your CEO, Peers, and Engineering](working-with-your-ceo-peers-and-engineering.html) — careful escalation and company-first framing when a standards gap turns out to be a strategy disagreement.\n- [Managing Priorities and Energy](managing-energy.html) — the burnout trap this record refuses is an energy-management failure in quality clothing.\n- [Leadership Styles](leadership-styles.html) — role modeling is one deliberate style among several; this record explains when I reach for it.\n\n## Scope and Revisiting\n\nThis principle governs how I handle every gap between my personal standards and the organization's tolerances — technical, operational, and behavioral. I revisit it whenever I notice sustained frustration (the audit trigger), when a role-modeled approach fails to spread (evidence the approach, not the audience, may be wrong), and at each change of role or company, when the tolerances reset and the calibration must start over.\n\n## Authoritative References\n\n- Will Larson, *The Engineering Executive's Primer* (O'Reilly, 2024) — the \"Calibrating Your Standards\" chapter this record's checklist distills; the principle above is my operating commitment to it.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "3 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle, in the order I use it: audit myself first, diagnose the gap, then choose the response. The Article tab carries the rationale, implications, and anti-patterns.*\n\n### Self-Awareness: Audit Your Standards\n\n- [ ] Am I consistently operating at a higher standard than my organization supports?\n- [ ] Am I overworking to maintain standards that others don't share?\n- [ ] Is my frustration about performance actually frustration about misaligned expectations?\n- [ ] Are my standards helping me achieve long-term impact — or burning me out?\n\n### Diagnose Misalignment\n\n- [ ] Does leadership knowingly tolerate a lower standard in this area?\n- [ ] Is this a deliberate tradeoff (speed, cost, focus) rather than incompetence?\n- [ ] Am I escalating a performance issue that leadership sees as acceptable?\n- [ ] Am I unintentionally trying to hold the CEO accountable for a known but deprioritized issue?\n\n### Escalate Carefully\n\n- [ ] Have I framed the issue as impact-driven rather than personal criticism?\n- [ ] Have I considered that this disagreement reflects a difference in strategy?\n- [ ] Am I escalating out of ethical obligation — or frustration?\n- [ ] Do I understand that pushing too hard may label me as \"difficult\"?\n- [ ] Am I prepared for slow change rather than immediate resolution?\n\n### Avoid the Burnout Trap\n\n- [ ] Am I compensating for a peer's underperformance that management is unwilling to address?\n- [ ] Am I grinding against constraints that realistically won't change?\n- [ ] Is the penalty for lowering my standard here actually acceptable?\n- [ ] Am I choosing battles that matter most?\n\n### Use Role Modeling Instead of Force\n\n**Model**\n\n- [ ] Have I clearly identified the area I want to improve?\n- [ ] Am I demonstrating a high-standard approach visibly and consistently?\n- [ ] Have I tested and refined the approach until it works well?\n\n**Document**\n\n- [ ] Have I written a clear, practical guide to the approach?\n- [ ] Does it explain both *how* and *why*?\n- [ ] Does it evaluate outcomes rather than assume superiority?\n\n**Share**\n\n- [ ] Have I shared the documented approach with interested teams?\n- [ ] Am I engaging those who opt in?\n- [ ] Am I letting go of teams that don't engage?\n\n### Adapt When Necessary\n\n- [ ] What matters most at this moment — excellence, speed, stability, relationships?\n- [ ] Is this a season where flexibility is more valuable than rigidity?\n- [ ] Am I holding onto a \"lesson not worth learning\"?\n- [ ] Are some penalties not worth paying?\n\n### Final Alignment Check\n\n- [ ] Are my standards aligned with the organization's tolerances?\n- [ ] Are my standards serving my long-term goals?\n- [ ] Am I improving outcomes — or just winning arguments?\n- [ ] Am I preserving relationships while maintaining integrity?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why misaligned standards are an alignment problem to diagnose, not a battle to win — in seven panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. LEO: an eager young engineering manager, curly hair, round glasses, laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Leo throws his hands up in frustration over scattered papers while Vera watches calmly.](assets/images/calibrating-your-standards/comic-01-nobody-meets-my-bar.jpeg)\n**Panel 1:** *The hook: frustration that everyone else is below the bar.*\n\n![Comic panel: Vera holds a hand mirror up to a surprised Leo.](assets/images/calibrating-your-standards/comic-02-audit-first.jpeg)\n**Panel 2:** *The reframe: audit first — check whose expectations are miscalibrated.*\n\n![Comic panel: Vera shows Leo a balance scale weighing a rocket labeled Speed against a gem labeled Polish.](assets/images/calibrating-your-standards/comic-03-deliberate-tradeoff.jpeg)\n**Panel 3:** *The diagnosis: most gaps are deliberate tradeoffs leadership already accepted.*\n\n![Comic panel: Leo alone at night straining to hold a heavy bar labeled High Bar above his head.](assets/images/calibrating-your-standards/comic-04-burnout-trap.jpeg)\n**Panel 4:** *The wrong way: quietly absorbing the gap until burnout.*\n\n![Comic panel: Vera circles one item on a list of battle flags and crosses out the rest while Leo watches.](assets/images/calibrating-your-standards/comic-05-choose-battles.jpeg)\n**Panel 5:** *The discipline: choose the few battles that matter, let the rest go.*\n\n![Comic panel: Vera demonstrates work, writes a small guide, and hands it to an interested team while another group walks away.](assets/images/calibrating-your-standards/comic-06-model-document-share.jpeg)\n**Panel 6:** *The principle: raise standards by model, document, share — never by decree.*\n\n![Comic panel: close-up of Vera holding her notebook and saying to improve outcomes rather than win arguments.](assets/images/calibrating-your-standards/comic-07-outcomes-not-arguments.jpeg)\n**Panel 7:** *The closer: the goal is better outcomes, not won arguments.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

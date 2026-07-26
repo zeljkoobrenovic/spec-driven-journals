@@ -243,6 +243,16 @@
             margin-bottom: 6px;
         }
 
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
         article hr {
             border: none;
             border-top: 1px solid var(--rule);
@@ -511,6 +521,7 @@
                     const baseIndent = firstMatch[1].length;
                     const isOrdered = ordered.test(line);
                     const items = [];
+                    let hasTask = false;
                     while (i < lines.length) {
                         const cur = lines[i];
                         if (!cur.trim()) {
@@ -556,13 +567,21 @@
                             i++;
                         }
 
-                        let liHtml = inline(itemBuf.join('\n'));
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
                         if (nestedBuf.length) {
                             liHtml += renderMarkdown(nestedBuf.join('\n'));
                         }
-                        items.push('<li>' + liHtml + '</li>');
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
                     }
-                    out.push((isOrdered ? '<ol>' : '<ul>') + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
                     continue;
                 }
 

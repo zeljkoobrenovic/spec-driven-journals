@@ -149,12 +149,12 @@ Link liberally — a `[[name]]` whose target doesn't exist yet survives the buil
 
 - `index.html` builds the section list from embedded JSON and provides a search input that filters by `title + excerpt` substring (case-insensitive).
 - `post.html` contains a small markdown renderer and a `renderers` dispatch table keyed by block type.
-- `post.html` renders one `<article class="pane">` per modality inside `#content`, plus a tab bar (`#modality-tabs`) when there is more than one modality. The default (`index`) pane renders on load; other panes render lazily on first activation — this matters because mermaid / force-graph / D3 measure container widths and break inside `display:none` elements. Tab selection is reflected in the URL hash (`#summary`, `#dialog`, `#comics`); a hash is only treated as a tab when it matches a modality key.
+- `post.html` renders one `<article class="pane">` per modality inside `#content`, plus a tab bar (`#modality-tabs`) when there is more than one modality. The default (`index`) pane renders on load; other panes render lazily on first activation — this matters because mermaid / force-graph / D3 measure container widths and break inside `display:none` elements. Tab selection is reflected in the URL hash (`#checklist`, `#summary`, `#dialog`, `#comics`); a hash is only treated as a tab when it matches a modality key.
 - The renderer treats post content as **trusted** and lets raw HTML pass through unescaped — several posts embed inline `<blockquote style="…">` / `<div>` markup. Don't reintroduce a blanket HTML-escape in the inline pass.
 
 ### Markdown subset supported by `post.html`
 
-ATX headings (`#`–`######`), paragraphs, blockquotes, fenced code (```), inline code, bold/italic, links, images, unordered/ordered lists, hr, and **GitHub-flavored tables** (header row + `| --- |` separator + body rows). Inline formatting applies inside table cells. The paragraph collector stops at table rows so a table doesn't get swallowed into a `<p>`.
+ATX headings (`#`–`######`), paragraphs, blockquotes, fenced code (```), inline code, bold/italic, links, images, unordered/ordered lists, task lists (`- [ ]` / `- [x]` render as clickable, unpersisted checkboxes; the list drops its bullet markers), hr, and **GitHub-flavored tables** (header row + `| --- |` separator + body rows). Inline formatting applies inside table cells. The paragraph collector stops at table rows so a table doesn't get swallowed into a `<p>`.
 
 If you need anything fancier, add it to the renderer in `_templates/post.html` rather than pre-rendering on the Python side — the build deliberately keeps the server-side logic minimal.
 
@@ -239,6 +239,7 @@ One spec can drive several docs of different modalities, all living in the same 
 | Modality | File | Tab label | What it is |
 | --- | --- | --- | --- |
 | `index` | `index.md` | Article | The detailed main article — **required**, default and first tab |
+| `checklist` | `checklist.md` | Checklist | Operational working checklist (grouped action bullets; the part you run) |
 | `summary` | `summary.md` | Summary | Management summary (300–500 words) |
 | `dialog` | `dialog.md` | Conversation | Two-host podcast-style conversation |
 | `comics` | `comics.md` | Comic | Explainer comic (generated panel images) |
@@ -246,9 +247,9 @@ One spec can drive several docs of different modalities, all living in the same 
 - **Discovery is file presence**, same as `spec.md`: a tab appears iff the file exists next to `index.md`. No `config.yaml` changes; only the folder layout supports modalities. The registry (`_MODALITIES` in `build.py`) is an explicit allow-list, so other sibling `.md` files (`spec.md`, `REVIEW.md`, …) stay ignored.
 - Modality files go through the same pipeline as posts (asset rewrite, `[[…]]` cross-links, block fences). Front matter is tolerated and stored as the modality's `meta` (e.g. `timetoread:`) but not rendered yet; title/byline/tags/hero always come from `index.md`.
 - With one modality the tab bar is hidden and the page looks exactly like a plain post. Spec pages are built as single-modality payloads and never show tabs.
-- Deep-link a tab with the URL hash: `<slug>.html#summary`, `#dialog`, `#comics`.
+- Deep-link a tab with the URL hash: `<slug>.html#checklist`, `#summary`, `#dialog`, `#comics`.
 - Per-modality images live in the post's `assets/` folder like everything else — the per-post merge covers them.
-- **Authoring skills** in `.claude/skills/`, one per modality: `detailed-article` (writes `index.md`; canonical home of the house style), `management-summary`, `podcast-dialog`, and `explainer-comics` (includes `scripts/generate_comic_panels.py` for Gemini panel generation). All four treat `spec.md` as the read-only contract and end by running the build and verifying the output.
+- **Authoring skills** in `.claude/skills/`, one per modality: `detailed-article` (writes `index.md`; canonical home of the house style), `operational-checklist`, `management-summary`, `podcast-dialog`, and `explainer-comics` (includes `scripts/generate_comic_panels.py` for Gemini panel generation). All five treat `spec.md` as the read-only contract and end by running the build and verifying the output.
 
 ### House style for new posts
 

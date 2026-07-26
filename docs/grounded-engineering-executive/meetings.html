@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Meetings</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="run-engineering-processes.html" title="Running Engineering Processes">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="internal-communication.html" title="Internal Communication">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Operating the Organization</p>
+        <h1>Meetings</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-25  ·  9 min · <a class="spec-link" href="meetings.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/meetings/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/meetings/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="run-engineering-processes.html" title="Running Engineering Processes">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="internal-communication.html" title="Internal Communication">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EXEC-MEETINGS", "status": "draft:gray", "title": "Meetings", "date": "2026-07-25", "author": "Željko Obrenović", "permalink": "meetings", "timetoread": "9 min", "excerpt": "Every meeting I run has a clear purpose — decision, review, development, alignment, or Q&A — and exists to fill a communication gap, not because meetings are the default. I run a small core cadence, anchor sessions to written documents with discussion prioritized over presentation, and give every recurring meeting a clear owner. Each one is held to a single quality bar that ends with the question: would we cancel this if it stopped adding value?", "tags": "engineering executive, meetings, cadence, communication, culture, leadership", "icon": "assets/icons/meeting.png", "logo": "assets/images/meetings/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering executive", "meetings", "cadence", "communication", "culture", "leadership"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Every meeting I run has a clear purpose — decision, review, development, alignment, or Q&A — and fills a communication gap rather than being the default. I run a small core cadence: weekly team, leadership, tech spec review, and incident review; monthly managers, Staff+, and org-wide Q&A. Every session is anchored to a written document with discussion prioritized over presentation, has a clear owner, and is held to one shared quality bar whose last question is the one that matters: would we cancel this if it stopped adding value?\n\n## Statement\n\nI run meetings as a deliberate portfolio, not a calendar accretion:\n\n- **Purpose before existence.** Each meeting names its purpose — decision, review, development, alignment, or Q&A — and exists to fill a communication gap. Meetings distribute context, communicate culture, and surface concerns; a meeting doing none of these gets iterated, paused, or cancelled.\n- **A small core cadence.** Weekly: each manager's team meeting, the engineering leadership meeting (a working session, not status theater), the tech spec review, and the incident review. Monthly: the engineering managers meeting, the Staff+ engineers meeting, and the org-wide Q&A. Around the core sit 1:1s, skip-levels with a fixed time budget, cross-functional execution reviews, show-and-tells, tech talks, and an all-hands that does not duplicate the company's.\n- **Documents anchor, discussion decides.** Reviews are anchored to concise written documents — the tech spec, the incident write-up — with reading as a prerequisite (or reading time built in) and discussion prioritized over the author presenting slides.\n- **Every meeting has an owner.** A clear owner per recurring session, consistent leader attendance, and executive behavior that models what is expected — and even when I am not leading, I remain accountable for quality.\n- **One quality bar for all of it.** Anchored to a document? Discussion over presentation? Right people in the room? Clear output? And: would we cancel this if it stopped adding value?\n\n![Concept map showing five meeting purposes feeding a core cadence ring of four weekly and three monthly meetings, with supporting meeting types orbiting outside.](assets/images/meetings/meeting-portfolio-map.jpeg)\n**Figure 1:** *The meeting portfolio: five purposes, a small weekly and monthly core cadence, and supporting formats around it.*\n\n## How to Read This\n\nThis record tells my managers and Staff+ engineers why the meeting portfolio looks the way it does — and what standard any new recurring session must clear. It is a vision of the cadence and its quality bar, not a company-specific calendar of days, durations, and attendee lists. The working checklist — the full cadence, the scaling guidelines, and the quality bar — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Meetings must fill communication gaps, not be the default.** A meeting is the most expensive communication instrument an organization owns: it spends everyone's hour simultaneously. That cost is justified exactly when something cheaper cannot do the job — when context needs distributing interactively, when culture needs communicating in person, when concerns need a forum to surface. When a meeting is scheduled because meetings are how things are done, the portfolio grows until it crowds out the work it was meant to coordinate. The written and async layer around meetings is [Internal Communication](internal-communication.html)'s territory; this record governs what earns synchronous time.\n\n**Written documents plus discussion beat presentations.** A presentation optimizes for the presenter; a document plus discussion optimizes for the decision. Anchoring spec and incident reviews to concise write-ups — read beforehand or in built-in reading time — means the meeting starts where the thinking ends, feedback lands on substance, and incident reviews stay focused on learning rather than blame. It also builds writing culture as a side effect: authors learn their document must stand on its own. First-time facilitators get a practice run, because facilitation is a skill, not an assumption.\n\n![Side-by-side comparison of a presentation-dominated review timeline versus a document-anchored review where reading is short and discussion fills most of the time.](assets/images/meetings/document-anchored-review.jpeg)\n**Figure 2:** *Two review shapes: a presentation optimizes for the presenter; a document plus discussion optimizes for the decision.*\n\n\n**The Q&A only works if it is safe to ask.** The monthly org-wide Q&A exists to surface concerns, test trust, and highlight contributors — which is why the tone is \"no questions off limits\", the tooling supports pre-submitted, upvoted, and anonymous questions, and I avoid recording unless necessary: a recorded Q&A is a Q&A where nobody asks the real question. It stays a single shared forum even as the organization grows.\n\n**Scaling is about engagement, not headcount.** Meetings split when participant context genuinely diverges — not because attendance grew, and not because one or two participants are difficult; those participants get held accountable for behavior instead. Developmental sessions stay at ten or fewer active participants, and when the organization outgrows a meeting, it gets pushed down a layer rather than diluted in place.\n\n![Decision flow showing that a meeting splits only when participant context diverges, while growing attendance pushes the meeting down a layer and difficult participants are held accountable instead.](assets/images/meetings/split-decision-loop.jpeg)\n**Figure 3:** *When to split a meeting: diverged context splits it; headcount and difficult participants do not.*\n\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Every meeting has a named purpose and fills a gap. | More meetings mean more alignment — the default is *not* holding one. |\n| Run the core cadence: four weekly, three monthly. | The cadence is sacred — every session must keep passing the quality bar. |\n| Anchor reviews to documents; discussion over presentation. | Slides are banned — presentation just never substitutes for discussion. |\n| Split meetings when context diverges. | Split when attendance grows or two participants are difficult — optimize for engagement, and hold people accountable. |\n| Every recurring session has a clear owner. | Ownership outsources accountability — the executive still answers for quality. |\n\n## Anti-Patterns\n\n- **Status theater.** The leadership meeting spent reading out updates that a document could have carried — instead of working prioritized topics from a running shared agenda as a \"first team\" of leaders.\n- **The presentation review.** A tech spec or incident \"review\" where the author narrates slides to an audience that has not read the document, and feedback never reaches substance.\n- **The premature split.** Dividing a well-functioning meeting because one or two participants are difficult — solving a behavior problem with an org-chart tool and paying the fragmentation cost forever.\n- **The recorded Q&A.** Recording the org-wide Q&A \"for convenience\" and then wondering why the submitted questions are all safe ones.\n- **The ownerless recurring meeting.** A session on everyone's calendar that no one owns, no one prepares, and no one would defend — surviving purely by recurrence.\n- **Immortal calendar entries.** Meetings that continue because they have always existed. If we would not cancel it when it stops adding value, we are not running the meeting — it is running us.\n\n## Related Records\n\n- [Internal Communication](internal-communication.html) — the written and async communication system this synchronous portfolio sits inside.\n- [Running Engineering Processes](run-engineering-processes.html) — who owns and runs processes in general; this record applies that ownership stance to each recurring session.\n- [Gelling Your Engineering Leadership Team](gelling-your-engineering-leadership-team.html) — the weekly leadership meeting is where the \"first team\" mindset is built or lost.\n- [Inspected Trust](inspected-trust.html) — the Q&A's trust-testing role is inspection in the open: concerns surfacing is evidence the system works.\n- [Organizational Values](organizational-values.html) — show-and-tells and demos are where culture and values get reinforced in public.\n\n## Scope and Revisiting\n\nThis principle governs the meeting portfolio of any engineering organization I lead; exact days, durations, and attendee lists flex with company size and time zones. The revisiting mechanism is built in: every recurring session faces the quality bar continuously, and any session that stops adding value gets iterated, paused, or cancelled — including the ones I like.\n\n## Authoritative References\n\n- Will Larson, *The Engineering Executive's Primer* (O'Reilly, 2024) — the \"Meetings\" chapter this record's checklist distills; the principle above is my operating commitment to it.\n- Will Larson, [Meetings for an effective eng organization](https://lethain.com/eng-org-meetings/) — the freely available companion essay.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "3 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle, grouped from foundations through the core cadence to the shared quality bar. The Article tab carries the rationale, implications, and anti-patterns.*\n\n### Foundations: Why You're Running Meetings\n\n- [ ] Clear purpose for each meeting (decision, review, development, alignment, Q&A).\n- [ ] Meetings fill communication gaps (do not default to them).\n- [ ] Used to:\n  - [ ] Distribute context\n  - [ ] Communicate culture\n  - [ ] Surface concerns\n- [ ] Willing to iterate, pause, or cancel low-value meetings.\n\n### Core Meeting Cadence\n\n**Weekly Team Meetings**\n\n- [ ] Each manager meets weekly with their direct team.\n- [ ] Clear agenda.\n- [ ] Focused on execution and alignment.\n- [ ] Tight, well-run, and ends on time.\n\n**Weekly Engineering Leadership Meeting**\n\n- [ ] Includes all direct reports.\n- [ ] May include Recruiting, People, and Finance partners.\n- [ ] Running, shared agenda doc.\n- [ ] Prioritized topics before the meeting starts.\n- [ ] Used as a working session (not status theater).\n- [ ] Builds \"first team\" mindset among leaders.\n- [ ] Meets weekly (unless org is very small).\n\n**Weekly Tech Spec Review**\n\n- [ ] Anchored to a concise written document.\n- [ ] Reading is a prerequisite (or reading time built in).\n- [ ] Discussion-driven (not the author presenting slides).\n- [ ] Feedback-centered.\n- [ ] Clear process for getting specs scheduled.\n- [ ] Dedicated meeting owner.\n- [ ] First-time facilitators get a practice run.\n\n**Weekly Incident Review**\n\n- [ ] Anchored to the written incident write-up.\n- [ ] Focus on learning, not blame.\n- [ ] Discussion over the presentation.\n- [ ] Clear scheduling process.\n- [ ] Owned by a responsible leader.\n- [ ] Attendance by senior engineering leadership.\n\n**Monthly Engineering Managers Meeting**\n\n- [ ] All engineering managers attend.\n- [ ] Format:\n  - [ ] 1-minute updates (working on / excited about / worried about)\n  - [ ] Development topic presentation (~30 min)\n  - [ ] Open Q&A\n- [ ] Focused on craft and leadership development.\n- [ ] Adjusted for pressing issues when needed.\n\n**Monthly Staff+ Engineers Meeting**\n\n- [ ] All Staff+ engineers attend.\n- [ ] Similar development format as managers session.\n- [ ] Managers generally excluded.\n- [ ] Focused on technical leadership growth.\n\n**Monthly Engineering Q&A**\n\n- [ ] 60 minutes.\n- [ ] Start with new hire intros.\n- [ ] Short intro message from Head of Eng.\n- [ ] The majority of the time is reserved for Q&A.\n- [ ] \"No questions off limits\" tone.\n- [ ] Tool supports:\n  - [ ] Pre-submitted questions\n  - [ ] Upvoting\n  - [ ] Anonymous questions\n- [ ] Reminder sent 1 hour before the session.\n- [ ] Rotate times across time zones if needed.\n- [ ] Avoid recording (unless necessary).\n- [ ] Use to:\n  - [ ] Surface concerns\n  - [ ] Test trust\n  - [ ] Highlight contributors\n\n### Additional High-Value Meetings\n\n**1:1 Meetings**\n\n- [ ] Weekly with direct reports.\n- [ ] Regular cadence with key peers.\n- [ ] Flexible duration (30–60 mins).\n- [ ] Focused on support, growth, and alignment.\n\n**Skip-Level Meetings**\n\n- [ ] Fixed time budget (e.g., 1–2 hrs/week).\n- [ ] Structured format (group or 1:1).\n- [ ] Don't crowd out core work.\n\n**Execution Review (Cross-Functional)**\n\n- [ ] Weekly or monthly cadence.\n- [ ] Tracks execution and resolves blockers.\n- [ ] Cross-functional (not Eng-only).\n- [ ] Clear owners and follow-ups.\n\n**Show-and-Tells / Demos**\n\n- [ ] Regular cadence (weekly–monthly).\n- [ ] Celebrate work.\n- [ ] Reinforce culture and values.\n\n**Tech Talks / Learning Sessions**\n\n- [ ] Reading groups or knowledge sharing.\n- [ ] Encourages collective learning.\n\n**Engineering All-Hands**\n\n- [ ] Clear format (roadmap/demo/culture).\n- [ ] Aligned with company-wide meetings.\n- [ ] Not duplicative of the company all-hands.\n\n### Scaling Guidelines\n\n- [ ] Split meetings when participant context diverges.\n- [ ] Keep developmental sessions ≤10 active participants.\n- [ ] Push meetings down a layer if the org grows too large.\n- [ ] Maintain org-wide Q&A as a single shared forum.\n- [ ] Don't split prematurely due to 1–2 difficult participants.\n- [ ] Hold participants accountable for behavior.\n- [ ] Optimize for engagement, not headcount.\n\n### Ownership & Leadership\n\n- [ ] Clear the meeting owner for each recurring session.\n- [ ] The leader shows up consistently.\n- [ ] Executive models behavior expected from others.\n- [ ] Coordination support (EA/program manager).\n- [ ] Even if not leading, the executive remains accountable for quality.\n\n### Quality Bar\n\n- For every meeting, ask:\n\n- [ ] Is it anchored to a written document?\n- [ ] Is discussion prioritized over presentation?\n- [ ] Are the right people in the room?\n- [ ] Is there a clear output (decision, alignment, learning)?\n- [ ] Would we cancel this if it stopped adding value?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "How a deliberate meeting portfolio replaces calendar accretion — in seven panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. LEO: an eager young engineering manager, curly hair, round glasses, laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Leo shows Vera a laptop calendar completely filled with meeting blocks while looking exhausted.](assets/images/meetings/comic-01-calendar-wall.jpeg)\n**Panel 1:** *The hook: the calendar fills itself when meetings are the default.*\n\n![Comic panel: Vera points at a wall clock surrounded by eight small team silhouettes, each with an hourglass overhead.](assets/images/meetings/comic-02-most-expensive-hour.jpeg)\n**Panel 2:** *The problem: meetings are the most expensive communication instrument there is.*\n\n![Comic panel: a presenter reads slides to a bored conference table while Leo whispers to Vera.](assets/images/meetings/comic-03-status-theater.jpeg)\n**Panel 3:** *The wrong way: status theater instead of a working session.*\n\n![Comic panel: Vera at a whiteboard showing five boxes labeled Decision, Review, Development, Alignment, and Q&A.](assets/images/meetings/comic-04-purpose-before-existence.jpeg)\n**Panel 4:** *The principle: purpose before existence — a meeting must fill a gap.*\n\n![Comic panel: a meeting room where everyone quietly reads a one-page document while Vera signals to wait.](assets/images/meetings/comic-05-documents-anchor.jpeg)\n**Panel 5:** *How it plays out: documents anchor, discussion decides.*\n\n![Comic panel: Leo examines a cobweb-covered stone tablet calendar entry while Vera stands beside him.](assets/images/meetings/comic-06-immortal-meeting.jpeg)\n**Panel 6:** *What it costs: immortal meetings that no one owns and no one would defend.*\n\n![Comic panel: close-up of Vera closing her notebook and asking whether the meeting would be cancelled if it stopped adding value.](assets/images/meetings/comic-07-would-we-cancel-it.jpeg)\n**Panel 7:** *The closer: hold every meeting to the cancellation question.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

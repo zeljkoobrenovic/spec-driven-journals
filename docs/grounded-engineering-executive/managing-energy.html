@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Managing Priorities and Energy</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="leadership-styles.html" title="Leadership Styles">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="personal-and-organizational-prestige.html" title="Personal and Organizational Prestige">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Leading Yourself</p>
+        <h1>Managing Priorities and Energy</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-25  ·  8 min · <a class="spec-link" href="managing-energy.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/managing-energy/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/managing-energy/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="leadership-styles.html" title="Leadership Styles">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="personal-and-organizational-prestige.html" title="Personal and Organizational Prestige">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EXEC-MANAGING-ENERGY", "status": "draft:gray", "title": "Managing Priorities and Energy", "date": "2026-07-25", "author": "Željko Obrenović", "permalink": "managing-energy", "timetoread": "8 min", "excerpt": "My default priority order is company, then team, then self — but I hold it deliberately loosely. A long-term executive career requires both impact and energy, so I keep some energizing work in the mix even when it is not the maximally important thing, as long as it stays orthogonal to company needs, never opposed to them. Sustainability is an operating constraint, not a perk.", "tags": "engineering executive, priorities, energy, sustainability, alignment, leadership", "icon": "assets/icons/energy.png", "logo": "assets/images/managing-energy/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering executive", "priorities", "energy", "sustainability", "alignment", "leadership"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I prioritize company over team over self — and I deliberately break that hierarchy in small, controlled ways to stay energized. A long-term career requires both impact and energy; strict prioritization optimizes the first while quietly draining the second. My guardrail is simple: energizing detours must be modest, must not create burdens for others, and must be orthogonal to company needs — never opposed to them. If the imbalance between impact and energy persists for about a year, the fix is no longer a work-mix adjustment; it is reassessing the role.\n\n## Statement\n\nTwo forces govern what I work on:\n\n- **The alignment hierarchy.** Before taking on work I ask, in order: does this serve the company first? Does this strengthen the team? Only then: where do my personal preferences fit? Individual or team preferences do not outrank company priorities.\n- **The energy counterweight.** I track what energizes me — and expect every member of my team to know what energizes them — and I intentionally keep some of that work in the mix, even when it is not the maximally important thing available. The same allowance I claim for myself, I extend to others.\n\nThe synthesis is **orthogonal, not opposed**: small deviations from strict priority order are acceptable when they restore energy, remain modest and controlled, create no maintenance or coordination burden for others, and are neutral with respect to company goals. Work that runs *against* the company's needs is never acceptable, regardless of how energizing it is.\n\n![Diagram of a large company-priorities arrow with small perpendicular energizing detours marked acceptable and a backward-pointing opposed arrow crossed out.](assets/images/managing-energy/orthogonal-not-opposed.jpeg)\n**Figure 1:** *The guardrail: energizing detours run orthogonal to company needs — never against them.*\n\n\n## How to Read This\n\nThis record explains a pattern my team will occasionally observe: me (or, with my blessing, them) spending a bounded slice of time on work that is not the top priority. That is not inconsistency; it is deliberate policy with guardrails. This is also not a personal-productivity system — no calendar mechanics here — and not health advice; sustainability appears here strictly as an operating constraint on how the role gets done. The organizational-scale version of the same concern — the team's pace, not just mine — starts in [First 90 Days](first-90-days.html). The working checklist, including the weekly reflection, lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Strict prioritization is correct and unsustainable.** The company→team→self hierarchy is right as a default: an executive who routinely puts personal preference above company need is failing at the job. But applied rigidly, it produces a leader doing exclusively draining work — correct in every individual decision and burned out within two years. Optimizing each decision can pessimize the career.\n\n![Two charts comparing strict prioritization, where energy drains until impact collapses at burnout, with an energizing mix where both curves stay sustainable.](assets/images/managing-energy/impact-vs-energy-curves.jpeg)\n**Figure 2:** *Optimizing every decision can pessimize the career: energy is the reserve impact draws on.*\n\n\n**Energy is positive-sum when it is managed openly.** Knowing what energizes each person lets me route real work to the people it energizes — the same task can drain one leader and recharge another. Treating energy as a legitimate planning input, rather than a private struggle, turns it from a hidden tax into an allocation problem with good solutions.\n\n**The repayment is eventual, not immediate.** Leadership roles run on an *eventual quid pro quo*: I generally prioritize company and team over personal work, and trust that the reward arrives — decoupled from any immediate effort. Short-term \"what's in it for me?\" thinking corrodes exactly the trust an executive most needs. But *eventual* has a boundary: if the imbalance persists for about a year despite deliberately increasing energizing work, the honest conclusion is that the role or environment needs reassessing — not that I should try harder.\n\n**Apparent misalignment is usually missing context.** When someone's priorities look wrong to me — or mine look wrong to them — my first question is: *what context might I be missing?* Seniority creates knowledge gaps as well as insight: I hold strategic context others lack, and I lack tactical context others hold. So I operate from curiosity rather than judgment, share strategic context widely, and deliberately seek tactical context from the people close to execution.\n\n**Rigidity has a relationship cost.** Overvaluing \"correctness\" — treating every deviation from strict priorities as a character flaw — alienates exactly the people progress depends on. I mute my desire for strict adherence when progress requires flexibility.\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Company → team → self is the default order. | The hierarchy is absolute — followed too rigidly, it burns people out. |\n| Some energizing work stays in the mix, deliberately. | Work whatever you enjoy — deviations are modest, controlled, and orthogonal. |\n| Others get the same energy allowance I claim. | Energizing side work may create burdens for other teams. It may not. |\n| Persistent imbalance (~1 year) means reassessing the role. | Grind until the role reassesses you. |\n| Question apparent misalignment with curiosity. | Tolerate genuine opposition to company needs. |\n\nTwo habits make this concrete:\n\n- **The gray-area sanity check.** When I am unsure whether a piece of work is orthogonal or opposed — or whether a deviation is still \"modest\" — I check it with a trusted peer. Uncertainty about alignment is itself a warning sign.\n- **The weekly reflection.** Five questions, briefly: What energized me this week? What drained me? Did I prioritize correctly? Did I adapt intelligently? Is my current path sustainable for 12+ months?\n\n![Timeline from weekly reflections through work-mix adjustments to a one-year marker where the path splits between role fits and reassess role.](assets/images/managing-energy/imbalance-escalation-ladder.jpeg)\n**Figure 3:** *The hard trigger: past a year of imbalance, the conversation is no longer about work mix.*\n\n\n## Anti-Patterns\n\n- **Rigid hierarchy martyrdom.** Following company→team→self so strictly that every week is 100% draining work, then being surprised by burnout — mine or a team member's.\n- **Hobby-driven architecture.** Introducing tools or technologies because they are personally interesting — an \"energizing\" deviation that saddles other teams with maintenance and coordination cost. That is opposed, not orthogonal.\n- **Immediate quid pro quo.** Keeping score on every sacrifice and expecting prompt repayment — leadership rewards are real but decoupled in time.\n- **Judgment before context.** Reading a colleague's differing priorities as bad faith instead of asking what context one of us is missing.\n- **Correctness over relationships.** Winning every prioritization argument while alienating the peers and team the priorities are for.\n\n## Related Records\n\n- [First 90 Days](first-90-days.html) — sustainability practices start during the ramp; this record is their steady-state form.\n- [Leadership Styles](leadership-styles.html) — style choice is another place where self-awareness beats rigid adherence.\n- [Working with Your CEO, Peers, and Engineering](working-with-your-ceo-peers-and-engineering.html) — the context-awareness habit applied to peer and CEO relationships.\n- [Inspected Trust](inspected-trust.html) — curiosity-before-judgment is the same move inspection makes when concerns arise.\n\n## Scope and Revisiting\n\nThis principle governs my own work mix and the allowances I extend to my team. I revisit it at the weekly reflection (cheaply) and whenever the reflection's last question — sustainable for 12+ months? — gets a \"no\" two weeks running. The one-year imbalance rule is the hard trigger: past it, the conversation changes from work mix to role fit.\n\n## Authoritative References\n\n- Will Larson, *The Engineering Executive's Primer* (O'Reilly, 2024) — the \"Managing Priorities and Energy\" chapter this record's checklist distills.\n- Will Larson, [Manage your priorities and energy](https://lethain.com/frameworks-decision-making/) — the freely available companion essay.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "3 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*\n\n### Company → Team → Self (Baseline Alignment)\n\n- [ ] Before making a decision, ask: does this serve the company first?\n- [ ] Next ask: does this strengthen the team?\n- [ ] Then ask: where do my personal preferences fit?\n- [ ] Avoid prioritizing individual or team preferences over company priorities.\n- [ ] Re-evaluate if you are following this hierarchy too rigidly.\n\n### Balance Impact with Engagement\n\n- [ ] Am I doing work that is impactful?\n- [ ] Am I staying personally energized and engaged?\n- [ ] If I am burning out, have I adjusted my work mix?\n- [ ] Am I sacrificing long-term sustainability for short-term correctness?\n- Reminder: a long-term career requires both impact *and* energy.\n\n### Energy Management (Positive-Sum Thinking)\n\n- [ ] Do I know what types of work energize me?\n- [ ] Does each team member know what energizes them?\n- [ ] Have I intentionally included some energizing work in the mix?\n- [ ] Am I allowing others to do energizing work, even when it is not maximally important?\n- [ ] Is energizing work avoiding negative spillover onto other teams?\n\n### Strategic Rule-Breaking (with Guardrails)\n\n- [ ] If I am deviating from strict priorities, is it to restore energy?\n- [ ] Is the deviation modest and controlled?\n- [ ] Will it create maintenance, execution, or coordination burdens for others?\n- [ ] Is it orthogonal (neutral) to company goals — not opposed to them?\n- OK: small orthogonal work. Not OK: work in opposition to the company's needs.\n\n### Eventual Quid Pro Quo\n\n- [ ] Generally prioritize company and team over personal work.\n- [ ] If de-energized, intentionally increase energizing work until balance returns.\n- [ ] If imbalance persists for about a year, seriously reassess the role or environment.\n- [ ] Avoid short-term \"what's in it for me?\" thinking in leadership roles.\n- [ ] Expect repayment and reward timing to be decoupled from immediate effort.\n\n### Context Awareness (Mirrors of Misalignment)\n\n- [ ] When something seems misaligned, ask: what context might I be missing?\n- [ ] Operate from curiosity rather than judgment.\n- [ ] Share strategic context more widely if you are senior; seek tactical context if you are senior and removed from execution.\n- [ ] Recognize that seniority creates knowledge gaps as well as insight.\n\n### Orthogonal, Not Opposed\n\n- [ ] Limit outside or exploratory work to moderate levels.\n- [ ] Avoid introducing tools or technologies purely for personal interest.\n- [ ] Sanity-check gray-area decisions with a trusted peer.\n- [ ] If uncertain whether something is aligned, treat that as a warning sign.\n\n### Flexibility over Rigid Adherence\n\n- [ ] Am I overvaluing \"correctness\" at the expense of progress?\n- [ ] Do I equate lack of adherence with character flaws?\n- [ ] Am I building relationships or alienating others through rigidity?\n- [ ] Can I mute my desire for strict adherence when progress requires flexibility?\n\n### Quick Weekly Reflection\n\n- [ ] What energized me this week?\n- [ ] What drained me?\n- [ ] Did I prioritize correctly?\n- [ ] Did I adapt intelligently?\n- [ ] Is my current path sustainable for 12+ months?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Company first, team second, self third — and why you must break that order a little to survive the job.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. LEO: an eager young engineering manager, curly hair, round glasses, laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Leo presents a Company-Team-Self pyramid and Vera calls it correct and unsustainable.](assets/images/managing-energy/comic-01-company-first-right.jpeg)\n**Panel 1:** *The hook: company over team over self is right — and rigidly applied, unsustainable.*\n\n![Comic panel: an executive checks off every task on a conveyor belt while their overhead battery drains to red, as Vera notes every decision right, career wrong.](assets/images/managing-energy/comic-02-the-draining-battery.jpeg)\n**Panel 2:** *The problem: exclusively draining work — correct in every decision, burned out within two years.*\n\n![Comic panel: a slumped leader holds a trophy labeled Correct at a desk of gray folders while Vera warns about optimizing decisions and pessimizing the career.](assets/images/managing-energy/comic-03-the-martyr.jpeg)\n**Panel 3:** *Anti-pattern: rigid hierarchy martyrdom — all draining work, then surprise burnout.*\n\n![Comic panel: Vera draws a big Company arrow, an approved perpendicular amber arrow, and a crossed-out opposing arrow, saying orthogonal is fine and opposed never is.](assets/images/managing-energy/comic-04-orthogonal-not-opposed.jpeg)\n**Panel 4:** *The principle: energizing detours must be orthogonal to company needs — never opposed.*\n\n![Comic panel: two leaders swap task cards and both of their battery icons rise, while Vera says same task, different battery.](assets/images/managing-energy/comic-05-route-by-energy.jpeg)\n**Panel 5:** *Positive-sum energy: route real work to the people it energizes.*\n\n![Comic panel: a short guardrailed amber detour loops off a blue highway past signs for smallness, no burden, and a peer check.](assets/images/managing-energy/comic-06-the-guardrails.jpeg)\n**Panel 6:** *The guardrails: modest, controlled, burden-free — and gray areas get a peer sanity check.*\n\n![Comic panel: Vera taps a twelve-month calendar where every month shows a low battery, saying a year off balance means reassessing the role.](assets/images/managing-energy/comic-07-the-one-year-rule.jpeg)\n**Panel 7:** *The hard trigger: a year of persistent imbalance changes the question from work mix to role fit.*\n\n![Comic panel: Vera reflects in an armchair over a notebook page with five question marks and a full battery doodle, asking if the pace is sustainable for twelve more months.](assets/images/managing-energy/comic-08-weekly-reflection.jpeg)\n**Panel 8:** *Closer: a brief weekly reflection — what energized, what drained, and is this sustainable?*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

@@ -48,6 +48,7 @@ Which docs this spec drives beyond the main article (`index.md`, always
 present). Check what this post warrants; default is article only. Each
 checked modality is authored by its skill and lives next to `index.md`.
 
+- [ ] `checklist.md` — operational checklist
 - [ ] `summary.md` — management summary
 - [ ] `dialog.md` — two-host dialog
 - [ ] `comics.md` — explainer comic

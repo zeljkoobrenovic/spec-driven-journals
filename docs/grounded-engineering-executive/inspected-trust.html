@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inspected Trust</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="calibrating-your-standards.html" title="Calibrating Your Standards">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="hiring.html" title="Hiring">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Operating the Organization</p>
+        <h1>Inspected Trust</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-25  ·  9 min · <a class="spec-link" href="inspected-trust.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/inspected-trust/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/inspected-trust/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="calibrating-your-standards.html" title="Calibrating Your Standards">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="hiring.html" title="Hiring">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EXEC-INSPECTED-TRUST", "status": "draft:gray", "title": "Inspected Trust", "date": "2026-07-25", "author": "Željko Obrenović", "permalink": "inspected-trust", "timetoread": "9 min", "excerpt": "I trust first, then verify. Trust alone is not a management technique — it is an abdication dressed up as empowerment. I pair trust with inspection: forums that review outcomes and process quality, learning spikes that go to the people doing the work, and direct engagement with data. Inspection is support and accountability, not suspicion — and it applies to my own work too.", "tags": "engineering executive, trust, inspection, accountability, judgment, leadership", "icon": "assets/icons/trust.png", "logo": "assets/images/inspected-trust/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering executive", "trust", "inspection", "accountability", "judgment", "leadership"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I practice inspected trust: trust first, then verify. I do not rely on trust alone as a management technique, and I do not confuse empowerment with the absence of oversight. I separate the quality of judgment and process from the randomness of outcomes — rewarding good process even when outcomes fail, and refusing to reward bad process that got lucky. Inspection is support and accountability, not suspicion, and it is reciprocal: my own work is inspectable too.\n\n## Statement\n\nTrust is necessary and insufficient. My operating model has three parts:\n\n- **Trust first.** People get real ownership and the benefit of the doubt from day one. Inspection does not mean I make their decisions.\n- **Then verify.** I maintain lightweight, consistent mechanisms — metric review forums, learning spikes, direct engagement with data — that let me independently see how work is actually going, rather than relying solely on prepared narratives.\n- **Judge process, not just outcomes.** Performance falls into four categories: good process with a good outcome; good process with a bad outcome (a *good error*); bad process with a good outcome (a *bad success*); and bad process with a bad outcome. The middle two are where leadership judgment is actually tested — I protect good errors and refuse to celebrate bad successes.\n\n![Two-by-two matrix of process quality versus outcome with four cells: deserved win, good error to protect, bad success not to reward, and bad process to fix, with the two off-diagonal cells highlighted.](assets/images/inspected-trust/process-outcome-matrix.jpeg)\n**Figure 1:** *The four performance categories: the off-diagonal — good errors and bad successes — is where leadership judgment is tested.*\n\n\n## How to Read This\n\nIf you report to me, this record is the explanation you are owed in advance: when I ask detailed questions, look at raw data, or talk directly to people doing the work, that is the system working — not a signal that you have lost my confidence. Discomfort with inspection is worth talking about openly; persistent discomfort is usually a misalignment signal, and I treat it as something to explore, not to suppress. What \"good\" looks like — the standards themselves — is a separate record, [Calibrating Your Standards](calibrating-your-standards.html); this one is about how I verify without destroying trust. The working checklist, including the quarterly self-assessment, lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Blind trust fails the people it means to honor.** The common failure mode is a new leader \"thrashing\" for months while everyone politely assumes they will figure it out — until the damage is visible and the feedback arrives too late to be useful. Letting someone fail without feedback is not respect; it is neglect. Early, small course corrections are the kind thing, not the controlling thing.\n\n![Two trajectories from start to goal: one drifting off course until a late crash and one giant feedback bubble, the other corrected by small early nudges and reaching the goal.](assets/images/inspected-trust/feedback-timing.jpeg)\n**Figure 2:** *Feedback timing: months of silence then one heavy correction, versus early small course corrections that actually help.*\n\n\n**Outcomes are noisy; judgment is the signal.** If I evaluate my leadership bench purely on outcomes, I promote the lucky and punish the unlucky. Separating process quality from outcomes lets me catch a bad decision process *before* it produces its inevitable bad outcome, and lets me keep backing a leader whose good decision happened to land badly.\n\n**Narratives filter; data and proximity do not.** Every summary I receive was prepared by someone who chose what to include. So I keep small, diverse data sources: I go directly to the individuals doing the work (learning spikes), talk across functions, understand how the data in a report was prepared, and cross-reference new information against known sources. Not because people lie, but because filtering is structural.\n\n![Diagram of information flowing from engineers to an executive through filtering funnels that drop details, with two direct bypass paths labeled learning spike and raw data carrying unfiltered information.](assets/images/inspected-trust/narrative-filter-bypass.jpeg)\n**Figure 3:** *Narratives filter structurally: learning spikes and direct data engagement are the unfiltered lines of sight.*\n\n\n**Misalignment compounds; confusion is a trust risk.** When something seems confusing or contradictory, I investigate immediately rather than letting it ride. When concerns are raised about a team or a leader, I assume there may be a real issue, validate it independently, seek multiple perspectives, consider what context I might be missing, form my own view before prescribing solutions — and close the loop with whoever raised the concern.\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Trust is paired with validation. | Trust is withheld until proven. It is granted first. |\n| I engage directly with data and the people doing the work. | I make their decisions or redesign their work. |\n| Discomfort with inspection is a signal to explore. | Discomfort is insubordination. |\n| Good process is rewarded even when outcomes fail. | Outcomes don't matter. They matter — they are just not the whole signal. |\n| Inspection is reciprocal — my work is inspectable. | Inspection flows only downhill. |\n\nThe concrete toolkit:\n\n- **Inspection forums** — weekly or monthly metric reviews that track goals continuously (not quarterly-only), with genuine executive engagement, focused on outcomes *and* process quality.\n- **Learning spikes** — short, direct dives: go to the individuals doing the work, talk across functions, look for omitted context and filtered information.\n- **Direct engagement with data** — understand how the data was prepared, identify reporting bias, cross-reference against known sources.\n- **Intolerance for misalignment** — investigate confusion immediately; resolve ambiguity before it compounds.\n\nWhen introducing this into a culture that has not had it: start with one or two critical problems rather than everywhere at once, confirm executive peer tolerance first, frame inspection as a long-term investment in the team's success, be explicit that inspection is not distrust — and expect, and withstand, defensive reactions.\n\n## Anti-Patterns\n\n- **Empowerment as absence.** \"I trust my leaders\" used as a reason to have no visibility at all — until the surprise arrives.\n- **Damage before feedback.** Waiting for a failure to become undeniable before saying anything, then delivering all the accumulated feedback at once.\n- **Rewarding bad successes.** Celebrating an outcome that good luck rescued from a bad process — which teaches the organization that process doesn't matter.\n- **Punishing good errors.** Treating a sound decision with an unlucky outcome as incompetence — which teaches the organization to hide risk.\n- **Inspection as ambush.** Springing deep-dives only when something is already wrong, so inspection *is* a signal of distrust — the consistent, routine version is what makes it neutral.\n- **One-way inspection.** Inspecting the organization while treating my own work as beyond question.\n\n## Related Records\n\n- [Calibrating Your Standards](calibrating-your-standards.html) — what \"good\" looks like; this record is how I verify against it.\n- [First 90 Days](first-90-days.html) — the trust reservoir built during the ramp is what inspection draws on.\n- [Measuring Engineering Organizations](measuring-engineering-organizations.html) — the metrics that inspection forums review.\n- [Running Engineering Processes](run-engineering-processes.html) — the operational processes inspection plugs into.\n- [Gelling Your Engineering Leadership Team](gelling-your-engineering-leadership-team.html) — a gelled leadership team is one where inspection reads as support.\n\n## Scope and Revisiting\n\nThis principle governs how I manage my leadership bench and how I engage with work anywhere in my organization. I revisit it when inspection stops producing clarity (forums degenerating into preparation theater is the classic failure), and whenever a defensive reaction reveals that the \"inspection ≠ distrust\" framing has not actually landed.\n\n## Authoritative References\n\n- Will Larson, *The Engineering Executive's Primer* (O'Reilly, 2024) — the \"Inspected Trust\" chapter this record's checklist distills.\n- Will Larson, [Better to micromanage than be disengaged](https://lethain.com/better-micromanage-than-disengaged/) — the freely available companion essay; the title is a provocation, the argument is this principle.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "3 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*\n\n### Mindset Shift: From Blind Trust to Inspected Trust\n\n- [ ] Avoid relying on trust alone as a management technique.\n- [ ] Separate judgment and process quality from outcomes.\n- [ ] Recognize the four categories of performance: good process + good decision + good outcome; good process + good decision + bad outcome (*good error*); bad process + bad decision + good outcome (*bad success*); bad process + bad decision + bad outcome.\n- [ ] Treat inspection as support and accountability — not suspicion.\n- [ ] View discomfort with inspection as a signal to explore alignment issues.\n\n### Avoid Common Trust Pitfalls\n\n- [ ] Don't assume the initial \"trust reservoir\" will sustain itself.\n- [ ] Avoid letting new leaders thrash without feedback.\n- [ ] Don't confuse empowerment with the absence of oversight.\n- [ ] Intervene early, before misalignment compounds; prevent \"damage before feedback\" cycles.\n\n### Practice Inspected Trust When Concerns Arise\n\n- [ ] Assume there may be a real issue, and independently validate the situation.\n- [ ] Seek multiple perspectives, cross-functional if needed; consider missing context.\n- [ ] Form your own view before prescribing solutions.\n- [ ] Close the loop with the original reporter after validation.\n\n### Use Effective Inspection Tools\n\n- [ ] **Inspection forums** — weekly or monthly metric reviews; track goals regularly (not quarterly-only); ensure executive engagement; focus on outcomes *and* process quality.\n- [ ] **Learning spikes** — go directly to individuals doing the work; talk across functions; avoid relying solely on summarized narratives; look for omitted or filtered context.\n- [ ] **Engage directly with data** — don't rely exclusively on heavily prepared summaries; understand how data was prepared; identify reporting bias; cross-reference against known sources.\n- [ ] **Intolerance for misalignment** — investigate confusion immediately; dig into unclear decisions and contradictory statements; resolve ambiguity before it compounds; treat persistent confusion as a trust risk.\n\n### Introduce Inspection into a Low-Inspection Culture\n\n- [ ] Start with 1–2 critical problems; don't expand everywhere at once.\n- [ ] Confirm executive peer tolerance before rollout.\n- [ ] Frame inspection as a long-term investment in team success; be explicit that inspection ≠ distrust.\n- [ ] Expect and withstand defensive reactions; reinforce that feedback is part of leadership maturity.\n\n### Protect and Build Real Trust\n\n- [ ] Pair trust with validation; catch errors early to enable learning.\n- [ ] Reward strong process even when outcomes fail; avoid mistaking good errors for incompetence; avoid rewarding bad successes.\n- [ ] Make inspection reciprocal — allow your own work to be inspected too.\n\n### Ongoing Leadership Habits\n\n- [ ] Evaluate leadership bench strength on judgment, not the randomness of outcomes.\n- [ ] Maintain small, diverse data sources.\n- [ ] Continually clarify strategy and alignment.\n- [ ] Treat inspection as a gift — it means taking the work seriously — and stay consistent even when it feels uncomfortable.\n\n### Quarterly Self-Assessment\n\n- [ ] Am I relying on trust alone anywhere?\n- [ ] Where might I be mistaking outcomes for judgment?\n- [ ] What misalignments am I tolerating?\n- [ ] Where do I need a learning spike?\n- [ ] Are my inspection forums producing clarity, or just preparation work?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Trust first, then verify — why trust alone is an abdication, in seven panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. LEO: an eager young engineering manager, curly hair, round glasses, laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Leo proudly declares he fully trusts his team with zero check-ins while Vera raises an eyebrow.](assets/images/inspected-trust/comic-01-full-trust.jpeg)\n**Panel 1:** *The hook: empowerment as the absence of any oversight.*\n\n![Comic panel: a team lead drowns in chaos behind a wall while Leo stands relaxed and unaware on the other side.](assets/images/inspected-trust/comic-02-thrashing-unseen.jpeg)\n**Panel 2:** *The problem: letting someone fail without feedback is neglect, not respect.*\n\n![Comic panel: Vera holds out a handshake in one hand and a magnifying glass in the other while Leo watches.](assets/images/inspected-trust/comic-03-trust-then-verify.jpeg)\n**Panel 3:** *The principle: inspected trust — trust first, then verify.*\n\n![Comic panel: Vera sits with two engineers at their desk, looking together at a dashboard on a monitor.](assets/images/inspected-trust/comic-04-learning-spike.jpeg)\n**Panel 4:** *How it plays out: learning spikes — go to the work, not the summary.*\n\n![Comic panel: Vera marks a simple two-by-two grid on a whiteboard, starring good process with a bad outcome.](assets/images/inspected-trust/comic-05-good-error-bad-success.jpeg)\n**Panel 5:** *The judgment test: good errors get protected, bad successes get no parade.*\n\n![Comic panel: a relaxed routine metrics review where Vera and three team members sit comfortably around a table.](assets/images/inspected-trust/comic-06-support-not-suspicion.jpeg)\n**Panel 6:** *The tone: routine and consistent — that is what keeps inspection neutral.*\n\n![Comic panel: close-up of Vera handing her own open notebook to Leo and inviting inspection of her work.](assets/images/inspected-trust/comic-07-inspect-me-too.jpeg)\n**Panel 7:** *The closer: inspection flows both ways.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

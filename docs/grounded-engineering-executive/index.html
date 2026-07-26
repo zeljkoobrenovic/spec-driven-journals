@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grounded Engineering Executive</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            margin-bottom: 0;
+            border: 1px solid var(--rule);
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/iStock-1397610425.jpg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/iStock-1397610425.jpg" alt=""></a>
+        <p class="logo-credit">Image by miniseries from iStock</p>
+        <div style="padding: 4px;">
+            <h1>Grounded Engineering Executive</h1>
+            <p>Željko Obrenović's vision of how he operates as an engineering executive — durable operating principles, each grounded in a concrete working checklist. Informed by practice and by Will Larson's &quot;The Engineering Executive's Primer&quot;.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Start Here", "description": "What this journal is, why it exists in writing, and how to read it.", "posts": [{"id": "EXEC-INTRODUCTION", "status": "draft:gray", "title": "Introduction", "excerpt": "This journal is my operating model as an engineering executive, written down: 21 operating principles, each stated as a quotable commitment, argued in an ADR-shaped record, and paired with a runnable checklist. It exists in writing because alignment is cheaper in writing — and because an operating model that is written down can be inspected, including by the people it affects. Start here for the map.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "tags": ["engineering executive", "operating principles", "introduction", "leadership"]}]}, {"title": "Getting the Role", "description": "How I approach finding, evaluating, and starting an engineering executive role: deliberate search, and a first 90 days that prioritizes learning over change.", "posts": [{"id": "EXEC-GETTING-THE-JOB", "status": "draft:gray", "title": "Getting the Job", "excerpt": "I treat the search for an engineering executive role as a one-of-one process: unstructured, variable, and not generalizable from past interviews. I start from an honest answer to why I want the role at all, work the search through my network and recruiters without relying on either alone, and negotiate the full contract without negotiating trust away. Above all, I keep the freedom to walk away — the goal is not an executive job, it is the right one.", "url": "getting-the-job.html", "icon": "assets/icons/job-search.png", "tags": ["engineering executive", "job search", "career", "negotiation", "interviews", "leadership"]}, {"id": "EXEC-FIRST-90-DAYS", "status": "draft:gray", "title": "First 90 Days", "excerpt": "In my first 90 days as an engineering executive I prioritize learning over change. I work to understand the business, the people, the way work gets done, and the technology before modifying any of them — and I limit early changes to one or two high-leverage improvements. Moving slower than my instincts tell me is not caution for its own sake; it is the fastest route to durable impact.", "url": "first-90-days.html", "icon": "assets/icons/starting.png", "tags": ["engineering executive", "onboarding", "first 90 days", "learning", "trust", "leadership"]}]}, {"title": "Setting Direction", "description": "How I set direction for an engineering organization: strategy that creates real leverage, planning that serves the business, values that are actually used, and measurement that speaks to both engineers and the CEO.", "posts": [{"id": "EXEC-ENGINEERING-STRATEGY", "status": "draft:gray", "title": "Engineering Strategy", "excerpt": "I write engineering strategy personally, ground it in an honest diagnosis, and publish only policies I am willing to enforce. A strategy is diagnosis, guiding policies, and coherent actions — anything else is a vision statement wearing a strategy costume. This record describes how I produce, socialize, launch, and review one.", "url": "engineering-strategy.html", "icon": "assets/icons/eng-strategy.png", "tags": ["engineering executive", "strategy", "diagnosis", "guiding policies", "leverage", "governance"]}, {"id": "EXEC-PLANNING", "status": "draft:gray", "title": "Planning", "excerpt": "I treat planning as an ongoing process, not an annual event, and I sequence it into three deliberately separated phases: establish the financial plan, determine functional portfolio allocation, agree on the roadmap. Debating everything at once ruins all three debates. I keep allocation steady, emphasize outcomes over micromanaged projects, and judge each cycle by whether it empowered teams and improved the system — not just this year's plan.", "url": "planning.html", "icon": "assets/icons/planning.png", "tags": ["engineering executive", "planning", "budgeting", "allocation", "roadmaps", "leadership"]}, {"id": "EXEC-ORGANIZATIONAL-VALUES", "status": "draft:gray", "title": "Organizational Values", "excerpt": "Values exist to guide real decisions, not to decorate walls. I test every candidate value three ways — reversible, applicable, honest — and I change behavior before documenting it, never the other way around. I prefer extending existing company values over inventing new ones, roll values out slowly with buy-in, and integrate them into hiring, onboarding, promotions, and major decisions so they are used, not framed.", "url": "organizational-values.html", "icon": "assets/icons/values.png", "tags": ["engineering executive", "values", "culture", "decision-making", "leadership"]}, {"id": "EXEC-MEASURING-ENGINEERING-ORGANIZATIONS", "status": "draft:gray", "title": "Measuring Engineering Organizations", "excerpt": "I measure an engineering organization for a specific audience. What I measure for myself — to plan, operate, optimize, and inspire — is not what I present to the CEO, Finance, or peer organizations, and I never present optimization metrics as proof of business impact. I only measure what feeds decisions, start with easy wins to build trust, use metrics to improve the system rather than judge individuals, and treat measuring something imperfect as strictly better than measuring nothing.", "url": "measuring-engineering-organizations.html", "icon": "assets/icons/measuring.png", "tags": ["engineering executive", "metrics", "measurement", "stakeholders", "data", "leadership"]}]}, {"title": "Operating the Organization", "description": "How I run the engineering organization day to day: clearly owned processes, meetings that earn their cost, deliberate internal communication, calibrated standards, and trust that is inspected rather than assumed.", "posts": [{"id": "EXEC-RUN-ENGINEERING-PROCESSES", "status": "draft:gray", "title": "Running Engineering Processes", "excerpt": "Every process is a trade-off between quality and overhead, so before changing who runs engineering processes I identify which organizational pattern we are actually in. My default is baseline: engineers and managers running engineering-scoped processes themselves. I improve execution within the pattern before adding specialized headcount, make process ownership sustainable and valued, and commit to a model for years rather than chasing process fads.", "url": "run-engineering-processes.html", "icon": "assets/icons/processes.png", "tags": ["engineering executive", "processes", "organization", "operations", "ownership", "leadership"]}, {"id": "EXEC-MEETINGS", "status": "draft:gray", "title": "Meetings", "excerpt": "Every meeting I run has a clear purpose — decision, review, development, alignment, or Q&A — and exists to fill a communication gap, not because meetings are the default. I run a small core cadence, anchor sessions to written documents with discussion prioritized over presentation, and give every recurring meeting a clear owner. Each one is held to a single quality bar that ends with the question: would we cancel this if it stopped adding value?", "url": "meetings.html", "icon": "assets/icons/meeting.png", "tags": ["engineering executive", "meetings", "cadence", "communication", "culture", "leadership"]}, {"id": "EXEC-INTERNAL-COMMUNICATION", "status": "draft:gray", "title": "Internal Communication", "excerpt": "I run internal communication as a deliberate operating system, not a byproduct of doing the work. I maintain a steady drip of short, predictable updates rather than rare grand announcements; I extract the real concern behind executive feedback instead of debating incidentals; I test significant messages before broadcasting them; and I structure every important communication as a packet, kept short, repeated across every channel.", "url": "internal-communication.html", "icon": "assets/icons/comms.png", "tags": ["engineering executive", "communication", "updates", "writing", "leadership"]}, {"id": "EXEC-CALIBRATING-YOUR-STANDARDS", "status": "draft:gray", "title": "Calibrating Your Standards", "excerpt": "I keep my personal standards calibrated against what the organization actually supports. When I am frustrated about performance, I first check whether the frustration is really about misaligned expectations; I diagnose whether a gap is a deliberate leadership tradeoff before treating it as incompetence; I escalate carefully and rarely; I refuse to burn out compensating for constraints that won't change; and I raise standards through role modeling — model, document, share — rather than force.", "url": "calibrating-your-standards.html", "icon": "assets/icons/standards.png", "tags": ["engineering executive", "standards", "alignment", "role modeling", "burnout", "leadership"]}, {"id": "EXEC-INSPECTED-TRUST", "status": "draft:gray", "title": "Inspected Trust", "excerpt": "I trust first, then verify. Trust alone is not a management technique — it is an abdication dressed up as empowerment. I pair trust with inspection: forums that review outcomes and process quality, learning spikes that go to the people doing the work, and direct engagement with data. Inspection is support and accountability, not suspicion — and it applies to my own work too.", "url": "inspected-trust.html", "icon": "assets/icons/trust.png", "tags": ["engineering executive", "trust", "inspection", "accountability", "judgment", "leadership"]}]}, {"title": "Talent", "description": "How I build the team: an executive's role in hiring, and onboarding that turns new engineers into productive colleagues.", "posts": [{"id": "EXEC-HIRING", "status": "draft:gray", "title": "Hiring", "excerpt": "As an executive I own the hiring system, not individual hires: documented loops, a written leveling framework, standardized compensation governance, trained interviewers and hiring managers, and monthly metrics. I resist over-optimizing a process that is already fast and stable, I show up personally only where an executive adds unique value, and I follow the process by default while breaking it deliberately when the business demands it.", "url": "hiring.html", "icon": "assets/icons/hiring.png", "tags": ["engineering executive", "hiring", "recruiting", "leveling", "compensation", "leadership"]}, {"id": "EXEC-ENGINEERING-ONBOARDING", "status": "draft:gray", "title": "Engineering Onboarding", "excerpt": "I run engineering onboarding as a program with clear goals and, above all, clear ownership: an executive sponsor, a program orchestrator with protected time, the team manager, and an onboarding buddy — each with explicit duties. The curriculum starts with three core sessions and is strengthened by surveys rather than up-front over-design. Attendance is required at every level, and investment is sized to hiring volume. Onboarding fails from unclear ownership and over-engineering, not from starting simple.", "url": "engineering-onboarding.html", "icon": "assets/icons/onboarding.png", "tags": ["engineering executive", "onboarding", "ownership", "program design", "talent", "leadership"]}]}, {"title": "Working with Peers and the Business", "description": "How I work beyond the engineering organization: balancing the CEO, executive peers, and Engineering; gelling the leadership team; onboarding peer executives; curating a network; and engineering's role in mergers and acquisitions.", "posts": [{"id": "EXEC-CEO-PEERS-ENGINEERING", "status": "draft:gray", "title": "Working with Your CEO, Peers, and Engineering", "excerpt": "I serve three constituencies — the CEO, my executive peers, and Engineering — and I balance them as a company-first leader, not as Engineering's ambassador. I diagnose honestly whether I am supported, tolerated, or resented; I gather perspectives beyond the CEO's narrative before acting; I bridge conflicting cross-functional stories into company-first framings; I treat disagreement as a signal of growth, not dysfunction; and when uncertain I ask what maximizes company impact over the next three years.", "url": "working-with-your-ceo-peers-and-engineering.html", "icon": "assets/icons/ceo.png", "tags": ["engineering executive", "CEO", "executive peers", "alignment", "conflict", "leadership"]}, {"id": "EXEC-GELLING-LEADERSHIP-TEAM", "status": "draft:gray", "title": "Gelling Your Engineering Leadership Team", "excerpt": "A leadership team is built and maintained, never assumed. In my first 60–90 days I debug the team — who should stay, which relationships are broken, whether the structure brings the right leaders and domains into the room — and act decisively on what I find. Then I operate it on explicit values, clear structure and rituals, and deliberate space for human connection; I referee defections from values immediately; and I keep maintaining the team continuously, because gelled is a state you sustain, not a milestone you pass.", "url": "gelling-your-engineering-leadership-team.html", "icon": "assets/icons/team.png", "tags": ["engineering executive", "leadership team", "team values", "expectations", "accountability", "leadership"]}, {"id": "EXEC-ONBOARDING-PEER-EXECUTIVES", "status": "draft:gray", "title": "Onboarding Peer Executives", "excerpt": "When a new peer executive joins, I treat their onboarding as my job, not HR's. I commit personally to their success, share my mental framework of the company in their first two weeks, make role expectations and escalation paths explicit rather than implicit, and invest in a durable partnership cadence. Early, deliberate support is the cheapest way to prevent a mediocre peer from lingering.", "url": "onboarding-peer-executives.html", "icon": "assets/icons/peer-onboarding.png", "tags": ["engineering executive", "onboarding", "peer executives", "partnership", "trust", "leadership"]}, {"id": "EXEC-YOUR-NETWORK", "status": "draft:gray", "title": "Your Network", "excerpt": "I build my executive network as a long-term exchange of value, not extraction. I clarify one or two learning goals, prioritize relationships aligned to what I am actively learning, favor working together and precise near-network outreach over vague asks, and prefer small curated peer circles over large forums. The whole practice runs at a sustainable, modest rhythm — networking stays important, but never my top priority.", "url": "your-network.html", "icon": "assets/icons/network.png", "tags": ["engineering executive", "network", "peers", "outreach", "community", "leadership"]}, {"id": "EXEC-MERGERS-AND-ACQUISITIONS", "status": "draft:gray", "title": "Mergers and Acquisitions", "excerpt": "In M&A, strategy comes before deals: I do not start evaluating an acquisition until the business strategy and a written, deal-specific thesis exist. Engineering due diligence is a disciplined evaluation run against that thesis, the integration plan is drafted before closing, and when I am overruled I document my dissent professionally — from a company perspective, not an engineering one. My final sanity check: would I still approve the deal if I had to personally run the integration?", "url": "mergers-and-acquisitions.html", "icon": "assets/icons/mna.png", "tags": ["engineering executive", "mergers and acquisitions", "due diligence", "integration", "strategy", "leadership"]}]}, {"title": "Leading Yourself", "description": "How I lead myself so the organization gets a sustainable executive: deliberate leadership styles, managed priorities and energy, and prestige built for the organization, not the ego.", "posts": [{"id": "EXEC-LEADERSHIP-STYLES", "status": "draft:gray", "title": "Leadership Styles", "excerpt": "I choose my leadership style by the situation, not by habit: policy for recurring decisions that must scale without me in the room, consensus when context is distributed and buy-in drives execution, conviction when a high-stakes, non-recurring decision is stalled and someone must decide. Any style can be misused and no single style works everywhere — so I deliberately practice my weaker styles to stay fluent in all three. The goal is adaptability, not purity.", "url": "leadership-styles.html", "icon": "assets/icons/leadership.png", "tags": ["engineering executive", "leadership styles", "decision making", "policy", "consensus", "conviction"]}, {"id": "EXEC-MANAGING-ENERGY", "status": "draft:gray", "title": "Managing Priorities and Energy", "excerpt": "My default priority order is company, then team, then self — but I hold it deliberately loosely. A long-term executive career requires both impact and energy, so I keep some energizing work in the mix even when it is not the maximally important thing, as long as it stays orthogonal to company needs, never opposed to them. Sustainability is an operating constraint, not a perk.", "url": "managing-energy.html", "icon": "assets/icons/energy.png", "tags": ["engineering executive", "priorities", "energy", "sustainability", "alignment", "leadership"]}, {"id": "EXEC-PRESTIGE", "status": "draft:gray", "title": "Personal and Organizational Prestige", "excerpt": "I optimize for prestige — ambient, positive, easily discoverable familiarity — not audience size. I first check whether I need to invest at all; when I do, it is a small number of timeless, high-quality artifacts, distributed simply, kept discoverable, and repeated only occasionally. The same principle scales to my organization: meaningful engineering problems and a little excellent content beat a heavy content machine. Pageviews and follower counts are explicitly not the measure.", "url": "personal-and-organizational-prestige.html", "icon": "assets/icons/prestige.png", "tags": ["engineering executive", "prestige", "reputation", "writing", "engineering brand", "leadership"]}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    let matchStatus = true;
+                    if (activeStatuses.size) {
+                        const liStatus = li.dataset.status || '';
+                        // any-match: post status must equal one of the selected statuses
+                        matchStatus = false;
+                        for (const s of activeStatuses) {
+                            if (liStatus === s.toLowerCase()) {
+                                matchStatus = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag && matchStatus;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>
