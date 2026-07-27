@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Engineering Culture</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="management-approaches.html" title="Management Approaches">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="careers-and-performance.html" title="Careers, Hiring, and Performance">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Appendix: An Elegant Puzzle</p>
+        <h1>Engineering Culture</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-26  ·  9 min · <a class="spec-link" href="engineering-culture.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/engineering-culture/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/engineering-culture/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="management-approaches.html" title="Management Approaches">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="careers-and-performance.html" title="Careers, Hiring, and Performance">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EXEC-ENGINEERING-CULTURE", "status": "draft:gray", "title": "Engineering Culture", "date": "2026-07-26", "author": "Željko Obrenović", "permalink": "engineering-culture", "timetoread": "9 min", "excerpt": "I build culture through mechanics, not slogans. Inclusion means access to opportunity and access to membership, and I measure both. Important people decisions — project leads, senior roles, promotions — run on rubrics and structured processes so opportunity does not pool around the same few people. My peers are my first team. And hero culture is a system-design failure I reset, not a work ethic I reward.", "tags": "engineering executive, culture, inclusion, opportunity, membership, hero culture", "icon": "assets/icons/engineering-culture.png", "logo": "assets/images/engineering-culture/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering executive", "culture", "inclusion", "opportunity", "membership", "hero culture"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I build culture through mechanics, not slogans. Inclusion is access to opportunity and to membership, and I measure both. Important people decisions run on rubrics and structured processes, respected even when inconvenient. My peers are my first team. Company freedoms are managed deliberately, not imported from other contexts. And hero culture is a system-design failure I reset — not a work ethic I reward.\n\n## Statement\n\nCulture is not what I say in all-hands; it is what my organization's mechanics reward, measure, and tolerate. My operating model has five parts:\n\n- **Inclusion is opportunity plus membership.** Everyone gets access to *opportunity* — professional success and development — and to *membership* — participating as a version of themselves they are comfortable with. Both are built deliberately and both are measured.\n- **Important people decisions run on structure.** Promotions, hiring, performance designations, management transitions, project-lead selection, and senior-role fills all use rubrics and structured processes — respected even when inconvenient.\n- **Peers are my first team.** My identity shifts from \"my team\" to \"my peer team\" — and I ask the same shift of my leadership bench.\n- **Freedoms are managed deliberately.** Every positive freedom can reduce a negative freedom, and vice versa; I balance them consciously instead of importing another company's practices.\n- **Heroes get systems fixed, not medals.** When a project only survives on someone's heroic effort, the problem is system design, not insufficient effort — and my job is the reset.\n\n![Inclusion shown as a roof supported by two pillars, opportunity and membership, each pillar fitted with measurement gauges at its base.](assets/images/engineering-culture/inclusion-two-pillars.jpeg)\n**Figure 1:** *Inclusion is operational: two pillars — opportunity and membership — each with its own measurements.*\n\n## How to Read This\n\nThis is an **appendix record**. The core of this journal is grounded in Will Larson's *The Engineering Executive's Primer*; this record is grounded in his earlier, manager-focused book, *An Elegant Puzzle: Systems of Engineering Management*, read through an executive lens: the same mechanics, applied across an organization with more leverage and less excuse.\n\nThe boundary with [Organizational Values](organizational-values.html) matters: that record is about the values we *state* — how they are selected, written, and kept honest. This record is about the *mechanics* that make culture real: who gets opportunities, how they are selected, what gets measured, what gets rewarded. Values without these mechanics are posters.\n\nThe working checklist — all six sections — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Opportunity pools by default.** Left alone, important work flows to the same few names, again and again. Not malice; convenience under deadline pressure. Rubrics, structured project-lead selection, explicit education budgets, and direct outreach to people who would not put themselves forward interrupt that default. And because the default reasserts itself quietly, I measure: retention by cohort, usage rate (who actually gets picked), level distribution across backgrounds, and time at level before promotion. When the numbers say opportunity is pooling, no stated value contradicts them.\n\n**Membership is what makes people stay after opportunity gets them in.** Someone can have every professional opportunity and still leave, because they never got to participate as themselves. So I invest in a *portfolio* of membership-building formats — recurring social events inside working hours, ERGs, offsites, coffee chats across teams — and avoid events that exclude people through diet, physical ability, caregiving, or timing. Here too I measure: referral rate by cohort, attendance, coffee-chat completion — in partnership with HR.\n\n**Structured selection is fairer *and* produces better leaders.** The fair version of filling a project lead — scope document, broad announcement, private applications, at least three working days, a nudge to strong candidates who will not self-select, criteria-based evaluation, a sponsor, feedback to rejected applicants, a public record — is slower than tapping the obvious person. It is also how the obvious person stops being the only person. For senior roles, the structured tools — feedback from four or five coworkers, a 90-day plan, a strategy document with feedback, presentations to peers and to an executive — double as development: every applicant leaves stronger, selected or not.\n\n![A structured selection pipeline with stages from scope document to feedback, contrasted with a crossed-out shortcut arrow pointing to the same favorite person.](assets/images/engineering-culture/project-lead-pipeline.jpeg)\n**Figure 2:** *Fair selection is a pipeline, not a tap on the shoulder — slower per decision, and the reason the obvious person stopped being the only person.*\n\n**Zero-sum peers make every cultural mechanism fail.** If my leadership team competes for scarce rewards, every rubric becomes a negotiation and every selection a turf claim. So I work the peer relationship deliberately: learn what peers are working on and what constrains them, and spend enough time together that they are people, not abstract roles to project motives onto. The identity shift — from \"my team\" to \"my peer team first\" — is discussed explicitly, not assumed.\n\n**Hero culture is the anti-mechanic.** When \"work harder\" becomes the default answer, the organization has substituted effort for design. The hero burns out; teammates who cannot contribute around the hero become alienated; and the project stays broken anyway, because projects fail one sprint at a time and are fixed the same way. My first question in a struggling system is whether this is an effort issue or a system-design issue — almost always the latter. Short bursts of effort covering months of bad process get stopped, not celebrated. Where I set the original direction, I say so, cut losses quickly, and reset. Where I do not control policy, I help the team reach a reset point — and I step back from systems that absorb effort without improving, rather than pushing more people into hero mode.\n\n![Split illustration of a lone hero spiraling around a broken machine versus a team pausing the machine and redesigning it together.](assets/images/engineering-culture/hero-spiral-vs-reset.jpeg)\n**Figure 3:** *Doing it harder versus resetting the system: heroes keep broken machines limping; redesign is what actually fixes them.*\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Inclusion is defined operationally and measured. | Inclusion is a sentiment or a training session. |\n| Important people decisions run on rubrics and structured processes. | Process replaces judgment — the criteria are still mine to set. |\n| Internal candidates get a structured path to senior roles. | Internal candidates are preferred by default — evaluation stays fair. |\n| Heroic effort signals a broken system to reset. | Hard work is suspect. Effort matters — inside a working system. |\n| Peers are my first team. | My own organization comes second in care — only in identity. |\n\nThe concrete toolkit:\n\n- **Rubrics** for promotions, hiring, performance designations, and management transitions — used consistently, even when inconvenient.\n- **Structured project-lead selection** — the full pipeline, recorded publicly, tracking over time who gets leaned on for important work.\n- **A membership portfolio** — recurring events in working hours, ERGs, offsites, coffee chats — measured with HR as a partner.\n- **Deliberate freedom management** — name the positive freedoms we enable and the negative freedoms we protect; balance freedom with consequence; keep or change processes on fit, not fashion.\n- **System resets** — named ownership of the original direction, quick loss-cutting, and a refusal to let bursts of effort mask process failure.\n\n## Anti-Patterns\n\n- **Culture as posters.** Stated values with unmeasured mechanics — the failure mode this record and [Organizational Values](organizational-values.html) together prevent.\n- **The usual suspects.** Every important project going to the two people who always deliver — burning them out and teaching everyone else that applying is pointless.\n- **Process theater.** Running the structured selection with the winner already chosen. One discovered instance destroys years of credibility.\n- **Exclusion by event design.** Team bonding built around one format — late-night drinks, physical activities — that quietly filters out caregivers, non-drinkers, and others.\n- **Importing culture blindly.** Adopting another company's freedoms or rituals without checking which negative freedoms they erode here.\n- **Rewarding the hero.** Celebrating whoever kept the broken system alive — guaranteeing the system stays broken and the hero keeps burning.\n\n## Related Records\n\n- [Organizational Values](organizational-values.html) — the values we state; this record is the mechanics that make them real.\n- [Hiring](hiring.html) — the rubric discipline here extends structured hiring to every people decision.\n- [Gelling Your Engineering Leadership Team](gelling-your-engineering-leadership-team.html) — the peer-first identity shift is what a gelled first team runs on.\n- [Managing Priorities and Energy](managing-energy.html) — hero burnout is the organizational version of that record's personal energy failure.\n- [Careers, Hiring, and Performance](careers-and-performance.html) — appendix sibling: the career and performance mechanics that opportunity feeds into.\n- [Organizational Design](organizational-design.html) — appendix sibling: the structures these cultural mechanics operate within.\n\n## Scope and Revisiting\n\nThis principle governs how I allocate opportunity, build membership, select leaders, and respond to struggling systems anywhere in my organization. I revisit it when the measurements say the mechanics are not working — opportunity pooling despite the rubrics, membership metrics flat despite the portfolio — and whenever I catch myself about to tap the usual person instead of running the process.\n\n## Authoritative References\n\n- Will Larson, *An Elegant Puzzle: Systems of Engineering Management* (Stripe Press, 2019) — the culture chapters this record's checklist distills.\n- Many of the book's chapters began as freely available essays on [lethain.com](https://lethain.com/).\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*\n\n## 1. Opportunity and Membership\n\n### Define inclusion\n\n- [ ] Ensure individuals have access to **opportunity** and **membership**.\n- [ ] Treat **opportunity** as access to professional success and development.\n- [ ] Treat **membership** as participation as a version of themselves they feel comfortable with.\n\n### Improve opportunity\n\n- [ ] Create rubrics for important people decisions.\n- [ ] Use rubrics for promotions, hiring, performance designations, management transitions, and similar decisions.\n- [ ] Use structured processes to select project leads.\n- [ ] Make education and conference budgets explicit.\n- [ ] Reach out directly to people who may not apply for opportunities on their own.\n- [ ] Create training and learning programs available to everyone.\n- [ ] Respect the process even when it is inconvenient.\n- [ ] Avoid concentrating opportunities among a small group of people.\n\n### Measure opportunity\n\n- [ ] Track retention by cohort.\n- [ ] Track usage rate: who is picked for project-selection opportunities.\n- [ ] Track level distribution across different backgrounds.\n- [ ] Track time at level before promotion.\n- [ ] Review whether opportunities are distributed fairly.\n\n### Improve membership\n\n- [ ] Create recurring weekly social events during working hours.\n- [ ] Support Employee Resource Groups.\n- [ ] Hold team offsites regularly.\n- [ ] Use coffee chats to connect people across teams.\n- [ ] Encourage team lunches, while being mindful of comfort and accessibility.\n- [ ] Offer a portfolio of membership-building activities rather than relying on a single format.\n- [ ] Avoid events that exclude people because of diet, physical ability, caregiving, timing, or comfort.\n\n### Measure membership\n\n- [ ] Track retention as a long-term signal.\n- [ ] Track referral rate by cohort.\n- [ ] Track attendance at recurring events and team lunches.\n- [ ] Track quantity and completion rate of coffee chats.\n- [ ] Partner with HR to collect and interpret the data.\n\n## 2. Select Project Leads Fairly\n\n- [ ] Define the project's scope and goals in a short document.\n- [ ] Specify the time commitment.\n- [ ] Specify requirements to apply, or explicitly state there are none.\n- [ ] Specify clear selection criteria.\n- [ ] Announce the opportunity broadly.\n- [ ] Allow people to apply privately.\n- [ ] Do not show applicants who else has applied.\n- [ ] Give people at least three working days to apply.\n- [ ] Personally nudge strong candidates who may not self-select.\n- [ ] Select the project lead based on the stated criteria.\n- [ ] Consider every applicant against the criteria.\n- [ ] Write a short rationale for each applicant where possible.\n- [ ] Privately confirm with the selected lead.\n- [ ] Assign a sponsor who has successfully completed a similar project.\n- [ ] Notify applicants who were not selected.\n- [ ] Give helpful feedback to rejected applicants.\n- [ ] Kick off the project with the lead, sponsor, and relevant stakeholders.\n- [ ] Record the project, selected lead, sponsor, and project brief in a public spreadsheet.\n- [ ] Track who gets leaned on for important work over time.\n\n## 3. Make Your Peers Your First Team\n\n- [ ] Learn what your peers are working on.\n- [ ] Invest time in understanding peer goals, constraints, and priorities.\n- [ ] Spend time together so peers become people, not abstract roles.\n- [ ] Avoid projecting motives onto peers you do not know well.\n- [ ] Create conditions where peers help one another succeed.\n- [ ] Avoid zero-sum culture around scarce rewards.\n- [ ] Explicitly discuss shifting identity from \"my team only\" to \"my peer team first.\"\n- [ ] Treat peer collaboration as a core part of management work.\n- [ ] Join a rapidly expanding company where peer learning is abundant, when possible.\n- [ ] Make your peers your first team.\n\n## 4. Build Inclusive Senior-Role Processes\n\n- [ ] Announce senior roles internally.\n- [ ] Ask for internal candidates.\n- [ ] Encourage eligible people to apply, especially those who are uncertain.\n- [ ] Give candidates a week or two to consider applying.\n- [ ] Ensure every internal candidate has a structured way to apply.\n- [ ] Evaluate candidates fairly; do not default to preferring internal candidates.\n\n### Evaluate candidates on\n\n- [ ] Partnership with peers and managed teams.\n- [ ] Execution and operational excellence.\n- [ ] Vision for the team's future.\n- [ ] Strategy to move from current state to future state.\n- [ ] Spoken and written communication.\n- [ ] Stakeholder management.\n\n### Use structured assessment tools\n\n- [ ] Collect feedback from four or five coworkers.\n- [ ] Include peers from other teams.\n- [ ] Include people the candidate has managed.\n- [ ] Include people the candidate would not manage.\n- [ ] Ask candidates to write a 90-day transition plan.\n- [ ] Provide feedback on the 90-day plan.\n- [ ] Ask candidates to write a vision/strategy document.\n- [ ] Provide feedback on the strategy document.\n- [ ] Have candidates present their strategy to peers.\n- [ ] Have candidates present one-on-one to an executive.\n- [ ] Use the process as practice and development, not only evaluation.\n\n## 5. Manage Company Freedoms Deliberately\n\n- [ ] Identify the positive freedoms your culture enables.\n- [ ] Identify the negative freedoms your culture protects against.\n- [ ] Recognize that every positive freedom can reduce a negative freedom.\n- [ ] Recognize that every negative freedom can eliminate a positive freedom.\n- [ ] Balance freedom with consequence.\n- [ ] Avoid treating freedom as an excuse for not taking accountability.\n- [ ] Use systems thinking to understand cultural freedoms.\n- [ ] Keep processes that are working.\n- [ ] Change processes when they no longer fit new projects or circumstances.\n- [ ] Avoid blindly importing cultural practices from companies in different contexts.\n- [ ] Place positive and negative freedoms in the right circumstances.\n\n## 6. Kill Your Heroes, Stop Doing It Harder\n\n### Watch for hero culture\n\n- [ ] Notice when \"work harder\" becomes the default answer.\n- [ ] Recognize that heroic work often prevents nonheroes from contributing.\n- [ ] Watch for burned-out heroes.\n- [ ] Watch for alienated teammates.\n- [ ] Watch for projects that remain broken despite heroic effort.\n- [ ] Do not reward systems that depend on one or two exceptional people.\n\n### Reset broken systems\n\n- [ ] Identify whether the problem is an effort issue or a system design issue.\n- [ ] Look for stockpiles of accumulated problems rather than single causes.\n- [ ] Accept that projects fail one sprint at a time.\n- [ ] Accept that fixing projects also takes time.\n- [ ] Stop using short bursts of effort to cover months of bad process.\n- [ ] Reset direction when you have the authority to do so.\n- [ ] Take responsibility when you set the original direction.\n- [ ] Cut losses quickly when decisions were wrong.\n- [ ] Help the team reach a reset point when you do not control policy.\n- [ ] Step back from broken systems that absorb effort without improving.\n- [ ] Avoid creating rifts by pushing others into hero mode.\n- [ ] Learn from mistakes and move forward.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Culture is mechanics, not posters — why heroes get systems fixed instead of medals, in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. LEO: an eager young engineering manager, curly hair, round glasses, laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Leo proudly presents a wall of value posters to Vera while one exhausted engineer works alone at a cluttered desk behind him.](assets/images/engineering-culture/comic-01-great-culture.jpeg)\n**Panel 1:** *The hook: great posters, one always-on hero — and Leo is proud of both.*\n\n![Vera points at a project board where every card shows the same face, while sidelined teammates watch and the hero slumps, exhausted.](assets/images/engineering-culture/comic-02-same-few-names.jpeg)\n**Panel 2:** *The problem: every opportunity goes to the same few people — the hero burns out, the rest check out.*\n\n![Vera draws a whiteboard diagram of inclusion as a roof on two measured pillars, opportunity and membership, as Leo takes notes.](assets/images/engineering-culture/comic-03-culture-is-mechanics.jpeg)\n**Panel 3:** *The principle: inclusion is opportunity plus membership — both built deliberately, both measured.*\n\n![Leo posts a project-lead announcement while teammates submit private applications and Vera encourages a hesitant engineer to apply.](assets/images/engineering-culture/comic-04-fair-selection.jpeg)\n**Panel 4:** *How it plays out: scope doc, broad announcement, private applications — and a personal nudge to those who hold back.*\n\n![Vera and peer executives assemble one shared puzzle at a table beneath a crossed-out tug-of-war icon while Leo watches from the doorway.](assets/images/engineering-culture/comic-05-peers-first-team.jpeg)\n**Panel 5:** *The identity shift: peers as the first team — collaboration at the top instead of a zero-sum contest.*\n\n![Vera pauses a broken machine and guides the exhausted hero away to rest while Leo lowers a small megaphone reading work harder.](assets/images/engineering-culture/comic-06-kill-your-heroes.jpeg)\n**Panel 6:** *Kill your heroes: stop doing it harder — pause the broken system and fix the design.*\n\n![The full team redesigns the machine over blueprints while Vera and Leo watch a wall chart trend upward.](assets/images/engineering-culture/comic-07-system-reset.jpeg)\n**Panel 7:** *The reset pays off: a redesigned system the whole team can carry — improving one sprint at a time.*\n\n![Close-up of Vera presenting her open notebook filled with small gauges and charts while Leo rolls up an old value poster.](assets/images/engineering-culture/comic-08-measured-culture.jpeg)\n**Panel 8:** *The closer: not a slogan — a culture you can measure and inspect.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

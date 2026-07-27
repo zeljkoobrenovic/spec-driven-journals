@@ -94,6 +94,12 @@ tab (shared VERA/LEO cast) telling the why-write-it-down story.
 
 ## Changelog
 
+- **2026-07-26** — Map, lead, and sources updated again for the second
+  appendix, "Appendix: Team Topologies" (nine records grounded in Skelton &
+  Pais). *(Željko, AI-mediated session)*
+- **2026-07-26** — Map, lead, and sources updated for the new "Appendix: An
+  Elegant Puzzle" section (five records grounded in Larson's earlier book).
+  *(Željko, AI-mediated session)*
 - **2026-07-26** — Comics modality (`comics.md`, VERA/LEO cast) and three
   inline explainer illustrations added; images generated with Gemini.
   *(Željko, AI-mediated session)*

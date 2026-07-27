@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Problem with Org Charts</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="careers-and-performance.html" title="Careers, Hiring, and Performance">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="conways-law.html" title="Conway's Law">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Appendix: Team Topologies</p>
+        <h1>The Problem with Org Charts</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-26  ·  8 min · <a class="spec-link" href="org-chart-problems.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/org-chart-problems/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/org-chart-problems/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="careers-and-performance.html" title="Careers, Hiring, and Performance">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="conways-law.html" title="Conway's Law">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EXEC-ORG-CHART-PROBLEMS", "status": "draft:gray", "title": "The Problem with Org Charts", "date": "2026-07-26", "author": "Željko Obrenović", "permalink": "org-chart-problems", "timetoread": "8 min", "excerpt": "I treat the org chart as a filing system, not a model of how work happens. The organization actually runs on three overlapping structures — formal, informal, and value creation — and the systems we ship mirror our communication paths, not our reporting lines. So I design for the flow of change: intentional team interactions, architecture and team structure shaped together, and decisions made close to the work instead of escalated up the chart.", "tags": "engineering executive, team topologies, org charts, organization design, flow of change", "icon": "assets/icons/org-chart-problems.png", "logo": "assets/images/org-chart-problems/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering executive", "team topologies", "org charts", "organization design", "flow of change"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: The org chart is not the organization. It is a snapshot drawn for reporting and compliance; real work routes around it through informal networks and value streams the chart never shows. I do not design by rearranging boxes. I design for the flow of change: I map how communication actually happens, make team interactions intentional and limited, shape architecture and team structure together, and push decisions to the people with the context instead of escalating them up reporting lines. I redesign only for a compelling reason, at the right time, with multiple options on the table.\n\n## Statement\n\nMy operating model for reading — and refusing to over-read — the org chart has five parts:\n\n- **Three structures, not one.** Every organization runs on a *formal structure* (the chart, for compliance and accountability), an *informal structure* (the networks people actually use), and a *value creation structure* (how work really gets delivered). The chart shows only the first. I manage all three.\n- **Communication paths shape systems.** Per Conway's Law, architectures mirror how we communicate, not how we report. So I design software architecture and team interactions together, never separately.\n- **Design for the flow of change.** Team interactions are intentional and limited; unnecessary communication paths are reduced; architectures support team-scoped flow and fast feedback from running systems.\n- **Decisions in context, not up the chart.** People with the best local information decide. Escalation strips a decision of context at every hop.\n- **Redesign is rare and deliberate.** Only for a compelling reason, at the right time, after developing multiple design options — never because the chart looks untidy.\n\n![A tidy org chart of boxes and lines floating above a tangled web of actual communication paths that ignore the chart's structure.](assets/images/org-chart-problems/chart-vs-web.jpeg)\n**Figure 1:** *The chart and the reality beneath it: work flows through communication paths the org chart never shows.*\n\n## How to Read This\n\nThis is an **appendix record**: unlike the core records in this journal, grounded in Will Larson's *The Engineering Executive's Primer*, this one is grounded in Matthew Skelton and Manuel Pais's *Team Topologies* — read here through an executive lens, complementing the Primer-grounded records. I read the book as the executive who owns the chart and must resist mistaking it for the territory. This record explains why I ask \"who does this team actually talk to?\" before \"who does it report to,\" and why I send decisions back down when they reach my desk stripped of context. The working checklist lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**The chart answers the wrong question.** An org chart is genuinely useful for what it was built for: compliance, accountability, budget rollups. The trouble starts when I treat it as a plan of how work happens. Plans built on the chart assume people communicate along reporting lines; in practice, people talk to whoever they need to get the job done. When work patterns diverge from the chart, I read that as data, not disobedience — the gap between the formal structure and the real communication pattern is my best diagnostic of where the design is failing.\n\n**Systems mirror communication, whether I like it or not.** Conway's observation — that organizations produce designs that copy their communication structures — is a design constraint with teeth. If four teams must coordinate to ship one change, the architecture grows four-way coupling to match. So I never let an architecture decision and a team-structure decision travel separately: I design them together, choose architectures that support team-scoped flow, and prefer structures that encourage modular, decoupled systems. This inverts a common instinct: more communication between teams is not automatically better. Unnecessary communication paths are a smell; intentional, limited interactions are the goal.\n\n![Three translucent layers over the same organization: formal hierarchy, informal social network, and value-creation flow.](assets/images/org-chart-problems/three-structures.jpeg)\n**Figure 2:** *One organization, three structures: the chart draws only the formal layer; the informal and value-creation layers do the work.*\n\n**Three structures, one organization.** The formal structure exists for compliance; the informal structure is the ad-hoc network people improvise; the value creation structure is how work actually gets delivered. Organizations that thrive lean on the second and third: they equip small teams with the context and trust to act, rather than forcing every decision through the first. My job is not to eliminate the chart — it is to stop pretending the chart is where delivery happens.\n\n**Decisions decay as they climb.** When decisions route up the reporting line by default, the people deciding know the least and the people who know the most wait. I get better outcomes by trusting teams with clear purpose and boundaries to decide in place — which is also why excessive matrix management and unclear reporting lines matter: they blur exactly the ownership that in-context decision-making depends on.\n\n**Cognitive load is the sizing constraint the chart cannot see.** The team, not the individual, is the primary unit of delivery, and its responsibilities must fit its cognitive capacity. Too many domains or services on one box looks efficient on paper and produces context switching and delivery bottlenecks in practice. I keep team sizes within effective collaboration limits, bound multi-team groupings by Dunbar's number, and give teams the autonomy, mastery, and purpose that make ownership real. When a team struggles, my first move is to change its environment — load, boundaries, interactions — not its people.\n\n**Reorgs are surgery, not spring cleaning.** Because the informal and value-creation structures carry the delivery, every restructure tears tissue the chart does not show. So I redesign only for a compelling reason, develop multiple options, pick the right time, and keep watching afterward for teams, responsibilities, or communication paths drifting out of alignment as business, technology, and regulation shift.\n\n![Contrast of change bouncing up and down a hierarchy versus flowing horizontally through an autonomous team with a fast feedback loop.](assets/images/org-chart-problems/flow-of-change.jpeg)\n**Figure 3:** *Design for the flow of change: work moves horizontally through teams and feeds back fast — not up and down the chart.*\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| The chart models reporting, not work; keep it for compliance and accountability. | Throw the org chart away. |\n| Map the informal and value-creation structures before redesigning anything. | The informal network is always right and should be formalized wholesale. |\n| Reduce unnecessary communication paths; make interactions intentional. | Teams should be isolated — the *right* interactions are the point. |\n| Design architecture and team structure together. | Either one dictates the other, one-way. |\n| Push decisions to the people with the context. | Nobody escalates anything — genuine cross-cutting calls still come to me. |\n| Redesign only with a compelling reason, options, and timing. | The structure is frozen — misalignment signals are acted on. |\n\nConcretely: reorg proposals that arrive as rearranged boxes go back with the question \"what flow of change does this improve?\" Before any redesign, I want the actual communication patterns, not just the intended ones, and at least two design options. Responsibility discussions include a cognitive-load check: what is this team already carrying? And when a decision reaches me that a team could have made with the context they hold, I return it — with the trust made explicit.\n\n## Anti-Patterns\n\n- **Chart-first reorgs.** Redrawing boxes for symmetry, then discovering the value streams the old informal network quietly carried.\n- **The chart as a communication plan.** Assuming information flows along reporting lines, then being surprised when knowledge routes around the hierarchy.\n- **More communication as a virtue.** Unbounded communication paths are coordination debt, not culture.\n- **Matrix fog.** Excessive matrix management and unclear reporting lines that dissolve the ownership in-context decisions depend on.\n- **The overloaded box.** Piling domains and services onto one team because the chart has room in the box, ignoring cognitive capacity.\n- **Escalation as the default.** Routing decisions up the chart until they reach someone with authority and no context.\n- **Reorg as a reflex.** Restructuring without a compelling reason, without alternatives, at whatever time the calendar allows.\n\n## Related Records\n\n- [Organizational Design](organizational-design.html) — appendix sibling; sizing, team states, and investment sequencing within the structure.\n- [Internal Communication](internal-communication.html) — the communication system that must work with the informal structure, not against it.\n- [Conway's Law](conways-law.html) — appendix sibling; the mirroring force this record leans on, in full.\n- [Team-First Thinking](team-first-thinking.html) — appendix sibling; the team as the unit of delivery, cognitive load as its budget.\n- [The Next-Generation Operating Model](next-gen-operating-model.html) — appendix sibling; the operating model that replaces chart-first management.\n\n## Scope and Revisiting\n\nThis principle governs how I read organizational structure, when I allow redesigns, and where decisions get made. I revisit it whenever a reorg proposal reaches my desk, whenever the gap between chart and observed communication widens, and whenever business, technology, or regulatory shifts change what the value-creation structure must deliver. The review questions in the Checklist tab are the recurring instrument.\n\n## Authoritative References\n\n- Matthew Skelton & Manuel Pais, *Team Topologies: Organizing Business and Technology Teams for Fast Flow* (IT Revolution Press, 2019) — the org-chart-problems material this record's checklist distills.\n- The authors maintain ongoing materials, training, and case studies at [teamtopologies.com](https://teamtopologies.com).\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "3 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*\n\n## Team Design Foundations\n\n- [ ] Apply **Conway's Law** when designing software systems.\n- [ ] Design **software architecture and team interactions together**.\n- [ ] Clarify each team's **purpose and responsibilities**.\n- [ ] Use a **humanistic approach** that treats teams as central to software delivery.\n- [ ] Align team structures with long-term organizational adaptability.\n\n## Org Charts and Communication Flow\n\n- [ ] Recognize that organizations tend to produce designs that reflect their **communication paths**.\n- [ ] Do not rely only on the formal org chart to understand how work really happens.\n- [ ] Identify the organization's:\n  - [ ] Formal structure\n  - [ ] Informal structure\n  - [ ] Value creation structure\n- [ ] Look for gaps between the org chart and actual communication patterns.\n- [ ] Avoid excessive matrix management and unclear reporting lines.\n- [ ] Reduce unnecessary communication paths.\n- [ ] Define clear, intentional team interactions.\n- [ ] Choose software architectures that support **team-scoped flow**.\n- [ ] Optimize for the whole system, not just local team efficiency.\n- [ ] Use team structures that encourage modular, decoupled systems.\n- [ ] Design the organization only when there is a compelling reason.\n- [ ] Develop multiple design options before choosing one.\n- [ ] Choose the right time to redesign.\n- [ ] Watch for signs that teams, responsibilities, or communication paths are out of alignment.\n- [ ] Stay alert to future business, technology, and regulatory changes.\n\n## Cognitive Load and Team Boundaries\n\n- [ ] Treat the **team**, not the individual, as the primary unit of delivery.\n- [ ] Keep team size within effective collaboration limits.\n- [ ] Limit multi-team groupings based on **Dunbar's number**.\n- [ ] Match team responsibilities to the team's cognitive capacity.\n- [ ] Avoid assigning too many domains, services, or responsibilities to one team.\n- [ ] Establish clear team boundaries.\n- [ ] Protect teams from excessive context switching.\n- [ ] Ensure teams have enough autonomy.\n- [ ] Give teams space to build mastery.\n- [ ] Connect team work to a clear purpose.\n- [ ] Change the team working environment when teams are struggling.\n- [ ] Optimize for flow of change and fast feedback from running systems.\n- [ ] Review whether current team responsibilities are causing delivery bottlenecks.\n\n## Overall Review Checklist\n\n- [ ] Are team responsibilities clear?\n- [ ] Are communication paths intentional and limited?\n- [ ] Does the architecture match the team structure?\n- [ ] Are teams empowered to make decisions?\n- [ ] Is cognitive load actively managed?\n- [ ] Are teams organized around value delivery rather than functions?\n- [ ] Are dependencies between teams visible and manageable?\n- [ ] Is the organization designed for speed and stability?\n- [ ] Are teams able to adapt as technology and business needs change?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "The chart is not the organization — why real work ignores the boxes, in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. LEO: an eager young engineering manager, curly hair, round glasses, laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Leo proudly presents a large, perfectly symmetrical org chart while Vera looks on with a skeptical smile.](assets/images/org-chart-problems/comic-01-beautiful-chart.jpeg)\n**Panel 1:** *The hook: the reorg is 'done' because the chart looks clean.*\n\n![Vera peels back the org chart to reveal a tangled web of real communication lines behind it, surprising Leo.](assets/images/org-chart-problems/comic-02-hidden-web.jpeg)\n**Panel 2:** *The problem: beneath the chart, work flows through a web of communication the boxes never show.*\n\n![Vera sketches three stacked layers — hierarchy, social network, and work flow — while Leo takes notes.](assets/images/org-chart-problems/comic-03-three-layers.jpeg)\n**Panel 3:** *The model: formal, informal, and value-creation structures — the chart draws only the first.*\n\n![A mirror reflects four tangled team communication lines as an equally tangled software architecture diagram.](assets/images/org-chart-problems/comic-04-conways-mirror.jpeg)\n**Panel 4:** *The principle: systems mirror communication paths — design architecture and team interactions together.*\n\n![Leo draws a horizontal flow from idea through a small team to a running system with a feedback loop, as Vera nods.](assets/images/org-chart-problems/comic-05-design-for-flow.jpeg)\n**Panel 5:** *The shift: design for the flow of change and fast feedback — not for tidy boxes.*\n\n![A decision paper passed up a ladder of managers loses sticky notes of context at every rung, arriving blank at the top.](assets/images/org-chart-problems/comic-06-escalation-ladder.jpeg)\n**Panel 6:** *The failure mode: decisions decay as they climb — the top has authority but no context.*\n\n![Vera hands a decision back to a small team at their screens, telling them they have the context to decide.](assets/images/org-chart-problems/comic-07-decide-in-context.jpeg)\n**Panel 7:** *The practice: push decisions to the people with the context, with the trust made explicit.*\n\n![Vera files the printed org chart into a drawer while a board behind her shows teams linked by clean flow lines.](assets/images/org-chart-problems/comic-08-chart-in-drawer.jpeg)\n**Panel 8:** *The closer: the chart is a filing system — the organization runs on flow.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

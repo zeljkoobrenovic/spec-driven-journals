@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Team-First Boundaries</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="four-fundamental-team-topologies.html" title="The Four Fundamental Team Topologies">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="team-interaction-modes.html" title="Team Interaction Modes">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Appendix: Team Topologies</p>
+        <h1>Team-First Boundaries</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-26  ·  8 min · <a class="spec-link" href="team-first-boundaries.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/team-first-boundaries/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/team-first-boundaries/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="four-fundamental-team-topologies.html" title="The Four Fundamental Team Topologies">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="team-interaction-modes.html" title="Team Interaction Modes">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EXEC-TEAM-FIRST-BOUNDARIES", "status": "draft:gray", "title": "Team-First Boundaries", "date": "2026-07-26", "author": "Željko Obrenović", "permalink": "team-first-boundaries", "timetoread": "8 min", "excerpt": "I size software boundaries to team cognitive load, not to architectural fashion or the org chart of the moment. Before approving any boundary I hunt the hidden monoliths — the shared database, build, and release train that couple teams invisibly — and I split systems along natural fracture planes, business domain first. A boundary is approved only when one team can test, deploy, and operate it independently.", "tags": "engineering executive, team topologies, boundaries, fracture planes, monoliths, cognitive load", "icon": "assets/icons/team-first-boundaries.png", "logo": "assets/images/team-first-boundaries/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering executive", "team topologies", "boundaries", "fracture planes", "monoliths", "cognitive load"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I size software boundaries to team cognitive load, hunt the hidden monoliths that couple teams invisibly — the joined database, the shared build, the coordinated release, the one-size-fits-all standard — and split systems along natural fracture planes, business domain first, rather than along technology layers or the org chart of the moment. A boundary earns approval only when one team can understand it, change it, test it, deploy it, and operate it without waiting on everyone else.\n\n## Statement\n\nMy operating model for drawing software boundaries has four parts:\n\n- **Start with the team, not the architecture.** A boundary is right-sized when one team can understand, own, and evolve it, has the skills to build, test, deploy, and operate it, and finds its cognitive load reduced — not added to. Teams are accountable for outcomes, not components.\n- **Hunt the hidden monoliths.** Microservices on the org chart mean nothing if teams still share a database schema, need one large build to release, ship in a single coordinated release train, force one domain model across every context, or are strangled by one-size-fits-all standards. Those are monoliths wearing a disguise.\n- **Split along fracture planes.** Systems have natural seams: business domain first, then regulatory compliance, change cadence, team location, risk profile, performance isolation, technology, and user personas. I cut along seams, not across them.\n- **Validate before approving.** A boundary passes only if the subsystem can be tested, deployed, observed, and supported independently, with explicit contracts between teams — and if the split improves flow instead of quietly creating a distributed monolith.\n\n![Two containers representing team cognitive-load budgets: one holds its software blocks comfortably, the other overflows with too many blocks.](assets/images/team-first-boundaries/cognitive-load-budget.jpeg)\n**Figure 1:** *The sizing unit is the team's cognitive-load budget: when the software overflows it, the boundary is wrong — not the team.*\n\n## How to Read This\n\nThis is an **appendix record**: unlike the core records in this journal, grounded in Will Larson's *The Engineering Executive's Primer*, this one is grounded in Matthew Skelton and Manuel Pais's *Team Topologies* — read here through an executive lens, complementing the Primer-grounded records. The book speaks to anyone organizing teams and software for fast flow; I read it as the executive who ultimately approves the boundaries and pays for the ones drawn badly. If you work in my organization, this record explains why I ask \"which team can own this end to end?\" before I ask \"is this the right architecture?\", and why a beautiful decomposition diagram does not survive contact with a shared database. The working checklist — all six sections, every fracture plane — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Cognitive load is the real sizing unit.** Architecture debates usually argue about the software: too big, too small, too coupled? The team-first move inverts the question: is the boundary small enough for one team to understand, own, and evolve — and can that team change it without waiting on many others? A technically elegant boundary that exceeds its team's cognitive-load budget will be owned in name only; corners get cut exactly where nobody has capacity to look. When boundary and team disagree, the boundary moves, not the team's working hours.\n\n**The dangerous monoliths are the hidden ones.** Nobody defends the big-ball-of-mud application anymore; the couplings that actually slow my organization are quieter. Multiple services tied to one database schema. A single large shared build. Components bundled into one coordinated release. One domain model forced across contexts that speak different languages. Standards so uniform they remove useful autonomy. And \"microservices\" that still cannot ship without a full end-to-end test pass. Each makes teams that look independent on the org chart wait on each other in practice — an unpaid coordination tax I hunt explicitly.\n\n![Seemingly independent teams above ground connected by hidden underground chains to five buried anchors: application, database, build, release train, and standards stamp.](assets/images/team-first-boundaries/hidden-monolith-chains.jpeg)\n**Figure 2:** *The hidden monoliths: teams that look independent on the org chart, chained together by a shared application, joined database, shared build, coordinated release, and one-size-fits-all standards.*\n\n**Fracture planes make splits cheap; arbitrary cuts make them expensive.** A rock splits cleanly along its natural seams and shatters everywhere else. Software is the same. The best seam is almost always the **business domain**: a bounded context with its own language, model, and rules, legible to business and technical people alike. When domain lines are not enough, the other planes earn their keep — isolating regulated functionality to shrink audit blast radius; separating fast-changing areas so the system stops moving at the speed of its slowest part; matching boundaries to how distributed teams actually communicate; isolating high-risk from low-risk change; carving out genuinely different load and availability profiles; splitting on technology only when real constraints justify it; and splitting by user persona when user groups truly need different things. Technology sits deliberately near the bottom: layer-shaped teams — frontend, backend, database — own layers instead of outcomes, and every user-visible change crosses all of them.\n\n**A boundary is a claim that must be tested.** Every proposed split predicts that the team will move faster afterward. I make the prediction falsifiable before approving: can the subsystem be provided as a service, tested, deployed, observed, and supported independently? Are the contracts — APIs, events — explicit, and the remaining dependencies minimal and intentional? If most changes still touch several services, if a database change still fans out across many teams, if end-to-end testing is still the only source of confidence, the split has manufactured a distributed monolith: all the coordination cost of the old system plus network latency. That is worse than not splitting at all.\n\n![A stone block split cleanly along a natural seam into neat pieces, next to a block struck against the grain shattering into jagged fragments.](assets/images/team-first-boundaries/fracture-planes-seams.jpeg)\n**Figure 3:** *Split along fracture planes — business domain first — and the system separates cleanly; cut against the grain and it shatters.*\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Size boundaries to team cognitive load. | Smaller is always better — maximal fragmentation is its own monolith. |\n| Business domain is the default fracture plane. | The other planes never apply — compliance, cadence, location, risk, performance, technology, and personas all earn splits. |\n| Hunt hidden monoliths: database, build, release, standards. | Shared platforms are forbidden — deliberate, well-bounded sharing is fine; invisible coupling is not. |\n| A boundary must pass the independent test/deploy/operate gate. | A passing gate today is forever — boundaries are revisited as the system and teams evolve. |\n| Teams own business outcomes. | Teams own technical layers and hand work across them. |\n| Standards serve teams. | Uniformity is a goal in itself — standards that remove useful autonomy are a hidden monolith. |\n\nConcretely: boundary proposals reach me framed as \"this team will own this outcome,\" not as component diagrams. Before any split I ask for the hidden-monolith scan — database schemas, build coupling, release trains, forced shared models, standards. The final decision test is the checklist's: I approve only when most of these hold — a meaningful business or operational concern, one team owning it sustainably with minimal external coordination, reduced cognitive load, improved flow, no unnecessary coupling, and a team that can build, run, observe, and evolve it over time.\n\n## Anti-Patterns\n\n- **Architecture-first decomposition.** Drawing the \"right\" service boundaries on a whiteboard, then discovering no team can hold any of them in its head.\n- **The distributed monolith.** Fifty services, one database schema, one release train — every cost of microservices, none of the benefits.\n- **The end-to-end safety blanket.** \"Independent\" services no one dares release without a full regression pass; the test suite is the monolith now.\n- **Layer-shaped teams.** Frontend, backend, and database teams each owning a layer, so every user-visible change needs three teams and two handoffs.\n- **Standardization as coupling.** One-size-fits-all mandates forcing every team through the same tools and pace regardless of context.\n- **Splitting by convenience.** Cutting on technology or team availability because it is easy today, across a domain seam that will bleed forever.\n- **The unfalsifiable split.** Approving a boundary with no independent-deploy test, so nobody ever learns whether it worked.\n\n## Related Records\n\n- [Organizational Design](organizational-design.html) — sizes and staffs the teams; this record sizes the software each of those teams owns.\n- [Engineering Strategy](engineering-strategy.html) — boundary choices are strategy made physical; the strategy names the domains worth owning cleanly.\n- [Conway's Law](conways-law.html) — appendix sibling on the mirroring force between organization and architecture; this record chooses where to cut given that force.\n- [The Four Fundamental Team Topologies](four-fundamental-team-topologies.html) — appendix sibling; the boundaries drawn here are what stream-aligned teams own end to end.\n- [Team-First Thinking](team-first-thinking.html) — appendix sibling; cognitive load as the sizing unit comes from putting the team first everywhere.\n\n## Scope and Revisiting\n\nThis principle governs how software boundaries are proposed, evaluated, and approved in my organization — new systems, monolith splits, and platform carve-outs alike. I revisit it whenever a boundary fails its validation gate in production, whenever team cognitive load visibly outgrows what a boundary assumed, and at any reorganization, because moving teams without re-examining boundaries just relocates the hidden monoliths.\n\n## Authoritative References\n\n- Matthew Skelton & Manuel Pais, *Team Topologies: Organizing Business and Technology Teams for Fast Flow* (IT Revolution Press, 2019) — the team-first boundaries chapter this record's checklist distills.\n- The authors maintain further material, patterns, and training resources at [teamtopologies.com](https://teamtopologies.com/).\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*\n\n## Start with the Team, Not the Architecture\n\n- [ ] Is this boundary small enough for one team to understand, own, and evolve?\n- [ ] Can the team make changes without waiting on many other teams?\n- [ ] Does the team have the skills needed to build, test, deploy, and operate this area?\n- [ ] Does the boundary reduce the team's cognitive load?\n- [ ] Is ownership clear to everyone inside and outside the team?\n- [ ] Can the team be accountable for outcomes, not just components?\n\n## Check for Hidden Monoliths\n\n- [ ] Are multiple services still tied to the same database schema?\n- [ ] Do teams need one large shared build to release changes?\n- [ ] Are components bundled into a single coordinated release?\n- [ ] Is there one shared domain model forced across many contexts?\n- [ ] Are teams constrained by \"one-size-fits-all\" technology standards?\n- [ ] Are teams colocated or arranged in ways that actually support collaboration?\n- [ ] Are microservices still dependent on end-to-end testing before release?\n\n## Look for Good Fracture Planes\n\n- Use these as possible ways to split the system.\n\n### Business domain / bounded context\n\n- [ ] Does this boundary map to a clear business capability?\n- [ ] Does it have its own language, model, and rules?\n- [ ] Can business and technical people understand the boundary the same way?\n- [ ] Would splitting here reduce confusion or \"lost in translation\" problems?\n\n### Regulatory compliance\n\n- [ ] Does this part of the system have special compliance, audit, or security rules?\n- [ ] Can regulated functionality be isolated from less-regulated areas?\n- [ ] Would the split reduce the blast radius of compliance oversight?\n- [ ] Would it make auditing, traceability, or access control simpler?\n\n### Change cadence\n\n- [ ] Does this part of the system need to change more often than others?\n- [ ] Is the whole system currently moving at the speed of the slowest part?\n- [ ] Would splitting here let fast-changing areas move independently?\n- [ ] Would slower-changing areas become more stable?\n\n### Team location\n\n- [ ] Are teams separated by geography, time zones, floors, or communication patterns?\n- [ ] Does the architecture match how people actually collaborate?\n- [ ] Would this split reduce handoffs across time zones?\n- [ ] Can teams communicate effectively within their own boundary?\n\n### Risk profile\n\n- [ ] Do different parts of the system have different levels of business or technical risk?\n- [ ] Can high-risk changes be isolated from low-risk areas?\n- [ ] Would this reduce the blast radius of failure?\n- [ ] Can each subsystem evolve its own release and operational practices?\n\n### Performance isolation\n\n- [ ] Does this area experience different load, scale, or availability needs?\n- [ ] Are there peaks of demand that do not affect the whole system?\n- [ ] Would isolation allow more targeted scaling or failover?\n- [ ] Would this reduce cost or operational complexity elsewhere?\n\n### Technology\n\n- [ ] Is this technology significantly different from the rest of the system?\n- [ ] Does it require specialized knowledge or manual processes?\n- [ ] Would a technology-based split reduce cognitive load?\n- [ ] Is this split justified by real constraints, not just technical convenience?\n\n### User personas\n\n- [ ] Do different user groups rely on different feature sets?\n- [ ] Do some users require advanced controls while others need simplicity?\n- [ ] Would this split improve customer experience or support?\n- [ ] Can the team focus more sharply on a specific user group's needs?\n\n## Validate the Boundary\n\n- [ ] Can the team provide or consume this subsystem as a service?\n- [ ] Can the subsystem be tested independently?\n- [ ] Can it be deployed independently?\n- [ ] Can it be observed and supported independently?\n- [ ] Are contracts, APIs, or events clear between teams?\n- [ ] Are dependencies minimal and intentional?\n- [ ] Does the split improve flow of change?\n- [ ] Does the split reduce coordination overhead?\n- [ ] Does the split avoid creating a distributed monolith?\n\n## Watch for Boundary Red Flags\n\n- [ ] Teams still need frequent synchronous coordination to release.\n- [ ] A database change requires many teams to change code.\n- [ ] Most work requires updates across several services.\n- [ ] End-to-end testing is the only way to gain confidence.\n- [ ] Teams own technical layers instead of business outcomes.\n- [ ] A team owns too many unrelated responsibilities.\n- [ ] Standards remove useful team autonomy.\n- [ ] The boundary increases handoffs instead of reducing them.\n\n## Final Decision Test\n\n- Approve the boundary only if most of these are true:\n\n- [ ] The boundary is aligned to a meaningful business or operational concern.\n- [ ] One team can own it sustainably.\n- [ ] The team can change and release it with minimal external coordination.\n- [ ] The split reduces cognitive load.\n- [ ] The split improves flow.\n- [ ] The split avoids unnecessary coupling.\n- [ ] The team can build, run, observe, and evolve the subsystem over time.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Small teams, hidden chains — why boundaries must fit the team, not the org chart, in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. LEO: an eager young engineering manager, curly hair, round glasses, laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Leo shows Vera an org chart of many small teams while a crowd of engineers queues at a single release door behind him.](assets/images/team-first-boundaries/comic-01-small-teams-big-wait.jpeg)\n**Panel 1:** *The hook: the org chart says small teams — the release calendar says one big one.*\n\n![Vera lifts a floor panel to reveal chains linking every team desk to a shared database and a release train underneath.](assets/images/team-first-boundaries/comic-02-hidden-chains.jpeg)\n**Panel 2:** *The problem: hidden monoliths — the shared database and the joined release train under the floor.*\n\n![Leo edits one part of a giant shared database while alarm lines radiate to four different upset teams.](assets/images/team-first-boundaries/comic-03-one-schema-many-teams.jpeg)\n**Panel 3:** *One schema change, four broken teams — the coupling is invisible until you touch it.*\n\n![Vera fills a measuring container marked with a brain icon with software blocks while extra blocks remain on the table.](assets/images/team-first-boundaries/comic-04-cognitive-load-budget.jpeg)\n**Panel 4:** *The principle: boundaries are sized to the team's cognitive-load budget.*\n\n![Vera holds a chisel to a natural seam in a large stone block whose seams carry small tags for domain, cadence, and risk.](assets/images/team-first-boundaries/comic-05-fracture-planes.jpeg)\n**Panel 5:** *Find the fracture planes — the system's natural seams — and start with the business domain.*\n\n![A stone block cleanly split into three pieces, with a small happy team standing beside each piece.](assets/images/team-first-boundaries/comic-06-clean-split.jpeg)\n**Panel 6:** *A clean split: one team, one whole piece, owned end to end.*\n\n![Three small team rockets launch independently from separate pads while an old shared release train rusts nearby.](assets/images/team-first-boundaries/comic-07-independent-releases.jpeg)\n**Panel 7:** *The payoff: independent releases — the validation gate is test, deploy, and operate alone.*\n\n![Close-up of Vera closing her notebook and smiling, with a faint stone-seam pattern behind her.](assets/images/team-first-boundaries/comic-08-boundary-question.jpeg)\n**Panel 8:** *The closer: start with the team, not the architecture.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

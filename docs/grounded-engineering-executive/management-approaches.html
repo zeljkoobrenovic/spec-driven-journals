@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Management Approaches</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="systems-and-tools.html" title="Management Systems and Tools">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="engineering-culture.html" title="Engineering Culture">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Appendix: An Elegant Puzzle</p>
+        <h1>Management Approaches</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-26  ·  9 min · <a class="spec-link" href="management-approaches.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/management-approaches/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/management-approaches/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Executive</a><span class="nav-right"><a class="nav-prev" href="systems-and-tools.html" title="Management Systems and Tools">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="engineering-culture.html" title="Engineering Culture">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EXEC-MANAGEMENT-APPROACHES", "status": "draft:gray", "title": "Management Approaches", "date": "2026-07-26", "author": "Željko Obrenović", "permalink": "management-approaches", "timetoread": "9 min", "excerpt": "The management approaches I carry from the manager years into the executive role: I work the policy rather than the exceptions, say no with data rather than apology, and treat management as an ethical profession whose decisions land on people. For every recurring problem I choose deliberately — close out, solve, or delegate — because an executive who keeps solving everything personally is the bottleneck, not the fix.", "tags": "engineering executive, management philosophy, policy, delegation, saying no, scope", "icon": "assets/icons/management-approaches.png", "logo": "assets/images/management-approaches/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering executive", "management philosophy", "policy", "delegation", "saying no", "scope"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I work the policy, not the exceptions: exceptions are batched into periodic policy refreshes, not granted one by one. I say no with data rather than apology — showing whether the real constraint is velocity, prioritization, or relationships. I treat management as an ethical profession: decisions land on people, not just on business outcomes, and I decide in the order company, team, myself. And for every recurring problem I choose deliberately — close it out, solve the class of problem, or delegate it — because solving everything personally does not scale past a single team.\n\n## Statement\n\nThis record collects the durable management approaches I formed as a manager and still run as an executive:\n\n- **Work the policy, not the exceptions.** A policy that constrains nothing is not a policy. Exception requests get collected, not granted on demand; on a cadence, I refresh the policy against the collected batch — without churning it so often that policy and exception become the same thing.\n- **Say no effectively.** \"No\" is a data presentation, not a mood. I show the team's constraints, separate velocity problems from prioritization problems, use a delivery-process view to show where work is actually stuck, and translate vague complaints like \"technical debt\" into concrete, measurable examples.\n- **Hold a management philosophy.** Management is an ethical profession: my decisions change people's lives, not just quarterly numbers. Relationships come before hard problems, people come before failing process, the hard thing gets done now, and decisions are made in the order company, team, myself.\n- **Close out, solve, or delegate.** Every recurring problem gets exactly one of three treatments: a clear communicated decision, a system that prevents the class of problem, or a redirect to whoever is better positioned — never me quietly re-solving it every week.\n\n![Split illustration contrasting handling exceptions one by one with batching them into a periodic policy refresh loop.](assets/images/management-approaches/policy-refresh-loop.jpeg)\n**Figure 1:** *Work the policy: exceptions are signals to batch into the next refresh, not one-off tickets to whack.*\n\n## How to Read This\n\nThis is an **appendix record**. The main journal is grounded in Will Larson's *The Engineering Executive's Primer*; this record reaches back to his earlier, manager-focused book, *An Elegant Puzzle: Systems of Engineering Management*, and reads its material through an executive lens — the approaches were formed managing teams, and they mostly sharpen at organizational scale. Where a theme has grown into a full Primer-grounded record of its own, this record links to it instead of repeating it. The working checklist — all nine sections of the book's approaches checklist — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Exceptions are cheaper individually and ruinous in aggregate.** Granting each exception as it arrives feels responsive, but every grant erodes the policy's meaning and trains the organization that persistence beats process. Batching keeps the policy credible between refreshes — and the collected exceptions *are* the data about where the policy binds wrongly. The failure on the other side is just as real: refresh too often and the policy stops constraining anything, which is the same as having none.\n\n**A \"no\" without data reads as a preference; a \"no\" with data reads as a constraint.** When I decline work, the useful question is *why* the team cannot absorb it — is the constraint capacity, prioritization, or relationships? A kanban-style view of the delivery process shows where work actually gets stuck, separating velocity problems (\"we are slow\") from prioritization problems (\"we are busy with other things you also asked for\"). When engineering pushes back with \"technical debt,\" I insist we make it concrete and measurable — vague debt justifies nothing; named debt justifies a plan. Documented asks, explicit selection principles, and priorities tested with stakeholders turn \"no\" from a negotiation into a shared reading of the same board.\n\n![Executive and stakeholder examining a kanban board together, with one overloaded column revealing where work is stuck.](assets/images/management-approaches/saying-no-kanban.jpeg)\n**Figure 2:** *Saying no with data: the board shows where work is stuck, turning a refusal into a shared reading of the same constraint.*\n\n**Management decisions land on people, which makes the profession ethical, not just operational.** A reorganization is a spreadsheet exercise until you remember each cell is someone's mortgage, visa, or confidence. That is why relationships come before hard problems — you cannot navigate a painful decision with someone you have never invested in — and why people beat process when the process is failing. Deciding in the order company, team, myself is what makes the harder calls legible and defensible. And I think independently rather than copying inherited practices; an approach adopted without examination is an ethical stance taken by accident.\n\n**Context decides the style; the style is not a personality.** In growth plates — areas under severe demand — I prioritize execution over endless ideation, work down the backlog of obvious ideas before adding clever ones, and accept that some work will be mediocre because the constraint is real. Outside the growth plates, the job inverts: fundamentals, steady improvement, relationships, developing the team, and preparing for the next change. Most manager failure modes I have seen — including my own — come from running the growth-plate style in a stable area, or vice versa.\n\n**Scope is impact, not headcount — and stuckness is usually self-inflicted.** The traps are well mapped: managing only down or only up, optimizing locally at the company's expense, treating hiring as the cure for everything, disappearing instead of delegating, losing touch with ground truth, and confusing team size or title with impact. The counter-moves are equally concrete: define the role broadly enough to fill gaps, pursue hard cross-cutting problems, build reusable systems that empower others, partner deliberately with my own manager — sharing problems, progress, capacity, and goals, and learning their pressures well enough to help — and celebrate what works, not only what is broken. At senior levels feedback goes scarce, so setting direction becomes my job: mine broadly for ideas, separate discovery from judgment, and distill the result into a few memorable points.\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Exceptions are batched into periodic policy refreshes. | Exceptions are never granted — a refreshed policy absorbs the legitimate ones. |\n| \"No\" comes with constraints, a board, and data. | \"No\" is the default answer, or a way to avoid stakeholders. |\n| People over process when process is failing. | Process does not matter — good process is how people are protected at scale. |\n| Decisions ordered company, team, myself. | The team's interests are expendable — the ordering resolves conflicts, it does not invite them. |\n| Accept mediocre work in severe growth plates. | Mediocre work is fine everywhere — outside the plates, fundamentals rule. |\n| Scope grows through cross-cutting problems and reusable systems. | Scope grows through headcount — team size is not the gateway to growth. |\n| Every recurring problem gets closed out, solved, or delegated. | I personally solve whatever crosses my desk. |\n\n![A recurring problem at a three-way fork labeled close out, solve, and delegate, with the loop back to one's own desk crossed out.](assets/images/management-approaches/close-out-solve-delegate.jpeg)\n**Figure 3:** *The triage fork: every recurring problem gets exactly one of three treatments — and never the silent loop back to my own desk.*\n\n## Anti-Patterns\n\n- **Exception whack-a-mole.** Granting each exception on arrival — responsive in the moment, and the end of the policy within a quarter.\n- **Policy churn.** Rewriting the policy after every complaint, until policy and exception are the same thing with different letterhead.\n- **The apologetic no.** Declining work with regret instead of data, which invites escalation rather than re-prioritization.\n- **Vague debt.** Accepting — or offering — \"technical debt\" as an argument without concrete, measurable examples.\n- **Hiring as analgesic.** Treating headcount as the answer to problems that are actually prioritization, process, or relationships.\n- **Disappearing instead of delegating.** Withdrawing entirely and calling it empowerment — delegation keeps a line to ground truth; disappearance cuts it.\n- **The heroic solver.** Personally fixing every recurring problem — which feels indispensable and guarantees the problems recur.\n- **Growth-plate style everywhere.** Running execute-execute-execute in stable areas that need fundamentals — or polishing fundamentals inside a growth plate that needs shipping.\n\n## Related Records\n\n- [Managing Priorities and Energy](managing-energy.html) — shares the company → team → myself hierarchy; that record covers its sustainability side.\n- [Working with Your CEO, Peers, and Engineering](working-with-your-ceo-peers-and-engineering.html) — the Primer-grounded record for managing upward and sideways; \"partner with your manager\" is its manager-era ancestor.\n- [Calibrating Your Standards](calibrating-your-standards.html) — accepting mediocre work in growth plates is a calibrated exception, not a lowered standard.\n- [Inspected Trust](inspected-trust.html) — staying connected to ground truth is the same instinct as inspection; delegating without disappearing enables both.\n- [Organizational Design](organizational-design.html) — appendix sibling: team sizing, growth plates as structure, and where scope lives.\n- [Management Systems and Tools](systems-and-tools.html) — appendix sibling: the systems-thinking models behind \"solve\" in close-out/solve/delegate.\n\n## Scope and Revisiting\n\nThis record governs my default management moves — policy handling, saying no, triage of recurring problems, and the ethical frame — wherever I operate. I revisit it when the exception batch stops shrinking after refreshes (the policy is misaligned with reality), when my calendar shows me repeatedly solving the same class of problem (the triage is not being run), and whenever I catch myself deciding in the reverse order: myself, team, company.\n\n## Authoritative References\n\n- Will Larson, *An Elegant Puzzle: Systems of Engineering Management* (Stripe Press, 2019) — the \"Approaches\" material this record's checklist distills.\n- Many of the book's chapters began as freely available essays on [lethain.com](https://lethain.com/), where the underlying arguments can still be read in their original form.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle — the full \"Engineering Management Approaches\" checklist from* An Elegant Puzzle. *The Article tab carries the rationale, implications, and anti-patterns.*\n\n### 1. Work the Policy, Not the Exceptions\n\n- [ ] Define the goal the policy is meant to serve.\n- [ ] Identify constraints that actually limit behavior.\n- [ ] Avoid writing policies that do not constrain choices.\n- [ ] Treat exception requests as signals, not one-off problems.\n- [ ] Batch exception requests rather than handling each one immediately.\n- [ ] Periodically refresh the policy based on collected exceptions.\n- [ ] Avoid changing policy so often that policy becomes indistinguishable from exceptions.\n\n### 2. Say No Effectively\n\n- [ ] Explain your team's constraints clearly.\n- [ ] Separate velocity problems from prioritization problems.\n- [ ] Use a delivery process view, such as a kanban board, to show where work gets stuck.\n- [ ] Translate vague problems like \"technical debt\" into concrete, measurable examples.\n- [ ] Identify whether the real constraint is capacity, prioritization, or relationships.\n- [ ] When prioritizing, document incoming asks.\n- [ ] Define guiding principles for selecting work.\n- [ ] Test priorities with stakeholders.\n\n### 3. Build Your Management Philosophy\n\n- [ ] Treat management as an ethical profession.\n- [ ] Consider the impact of decisions on people, not just business outcomes.\n- [ ] Build strong relationships before trying to solve hard problems.\n- [ ] Prefer people over process when process is failing.\n- [ ] Do the hard thing now rather than postponing it.\n- [ ] Make decisions in this order: company, team, yourself.\n- [ ] Think independently instead of blindly copying inherited practices.\n- [ ] Revisit and evolve your philosophy over time.\n\n### 4. Manage In and Outside the Growth Plates\n\n- [ ] Identify whether you are operating in a growth area or a stable area.\n- [ ] In growth areas, prioritize execution over endless ideation.\n- [ ] Reduce the backlog of obvious ideas before adding more.\n- [ ] Accept that some work will be mediocre when constraints are severe.\n- [ ] Outside growth areas, focus on fundamentals and steady improvement.\n- [ ] Build relationships, develop your team, and prepare for future change.\n- [ ] Match your leadership style to the current context.\n\n### 5. Avoid Common Ways Managers Get Stuck\n\n- [ ] Do not only manage down.\n- [ ] Do not only manage up.\n- [ ] Manage your relationship with your management chain.\n- [ ] Avoid optimizing locally at the expense of the company.\n- [ ] Do not assume hiring solves every problem.\n- [ ] Spend deliberate time building relationships.\n- [ ] Define your role broadly enough to fill gaps.\n- [ ] Give your manager room to make mistakes.\n- [ ] Pause before \"fixing\" everything when joining a new company.\n- [ ] Delegate rather than disappearing from the work.\n- [ ] Stay connected to ground truth.\n- [ ] Do not confuse team size, title, or authority with real impact.\n- [ ] Trust the team enough to delegate.\n- [ ] Let others manage their own time.\n- [ ] Celebrate what is working, not only what is broken.\n\n### 6. Partner with Your Manager\n\n- [ ] Tell your manager what problems you are solving.\n- [ ] Share how you are solving them.\n- [ ] Communicate progress and where you are stuck.\n- [ ] Explain what you prefer to work on and what you can staff.\n- [ ] Share your workload and capacity.\n- [ ] Discuss your professional goals and areas for growth.\n- [ ] Clarify how you believe you are being measured.\n- [ ] Learn your manager's priorities and pressures.\n- [ ] Ask how stressed or busy they are.\n- [ ] Look for ways to help them.\n- [ ] Understand what their manager expects from them.\n- [ ] Periodically write a self-reflection or career narrative and share it.\n\n### 7. Find Managerial Scope\n\n- [ ] Do not equate career growth only with managing more people.\n- [ ] Identify key gaps in the organization.\n- [ ] Take responsibility for increasingly complex work.\n- [ ] Pursue hard, cross-cutting problems.\n- [ ] Measure scope by impact and responsibility, not title.\n- [ ] Build reusable systems that empower others.\n- [ ] Stop using team size as the gateway to career growth.\n\n### 8. Set Organizational Direction\n\n- [ ] Recognize when feedback becomes scarce or vague.\n- [ ] Accept that senior roles require setting direction with limited input.\n- [ ] Mine broadly for ideas across teams, peers, companies, and papers.\n- [ ] Separate idea discovery from judgment.\n- [ ] Turn a large pile of ideas into a strategy.\n- [ ] Identify the key pivots or tradeoffs in the strategy.\n- [ ] Write down decisions clearly.\n- [ ] Test the strategy with others.\n- [ ] Refine confusing parts into smaller, clearer questions.\n- [ ] Distill the final direction into a few memorable points.\n\n### 9. Close Out, Solve, or Delegate\n\n- For every recurring or unresolved problem, choose one:\n- [ ] **Close out:** Make a clear decision and communicate it to resolve the specific issue.\n- [ ] **Solve:** Design a system, norm, or process so this kind of issue does not recur soon.\n- [ ] **Delegate:** Redirect the work to someone better positioned or responsible for it.\n- [ ] Do not keep solving every problem yourself.\n- [ ] Use this method for a week and review whether it improves your effectiveness.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Work the policy, say no with data, and triage what recurs — a management philosophy in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. LEO: an eager young engineering manager, curly hair, round glasses, laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Leo buried under a pile of exception request slips, happily approving one while more people queue up.](assets/images/management-approaches/comic-01-buried-in-exceptions.jpeg)\n**Panel 1:** *The hook: every exception approved on arrival, and the queue keeps growing.*\n\n![Comic panel: an exhausted Leo, laptop buried under slips, staring at a clock with no time left for real work.](assets/images/management-approaches/comic-02-no-time-left.jpeg)\n**Panel 2:** *The problem: one-off exceptions eat the calendar — and quietly erase the policy.*\n\n![Comic panel: Vera collecting exception slips into a tray that feeds a policy document marked with a refresh loop.](assets/images/management-approaches/comic-03-work-the-policy.jpeg)\n**Panel 3:** *The principle: exceptions are signals — batch them and let the batch redesign the policy.*\n\n![Comic panel: Vera pointing at an overloaded kanban column while a stakeholder looks on, showing where work is stuck.](assets/images/management-approaches/comic-04-no-with-data.jpeg)\n**Panel 4:** *Saying no with data: the board shows whether the problem is velocity or priorities.*\n\n![Comic panel: Vera drawing a three-way triage fork on a whiteboard, with the loop back to one's own desk crossed out.](assets/images/management-approaches/comic-05-triage-fork.jpeg)\n**Panel 5:** *The triage: close out, solve, or delegate — the crossed-out path is doing it all yourself.*\n\n![Comic panel: Vera setting aside a tangled process flowchart to talk directly with a worried engineer.](assets/images/management-approaches/comic-06-people-over-process.jpeg)\n**Panel 6:** *The ethics: when process is failing, choose the person — decisions land on lives, not just numbers.*\n\n![Comic panel: Leo stacking three blocks labeled company, team, and self in order while Vera nods.](assets/images/management-approaches/comic-07-company-team-self.jpeg)\n**Panel 7:** *The hierarchy: decide in the order company, team, yourself — it is what keeps hard calls defensible.*\n\n![Comic panel: Vera handing Leo her notebook full of revised principles, both smiling.](assets/images/management-approaches/comic-08-evolving-profession.jpeg)\n**Panel 8:** *The closer: management is a profession — the philosophy is yours, and it keeps evolving.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>
