@@ -36,9 +36,9 @@ timetoread: "11 min read"
 
 | Stage | Length | Competencies owned |
 | --- | --- | --- |
-| Recruiter screen | 30 min | Functional expertise, conscientiousness, intrinsic motivation |
+| Recruiter screen | 30 min | Conscientiousness, intrinsic motivation (+ functional expertise, a role-specific dimension outside the seven) |
 | Team screen (run in tandem with written project) | 45 min | Accountability, structured thinking |
-| Written project (run in tandem with team screen) | Scored async, 2–3 days to submit | Written communication skills |
+| Written project (run in tandem with team screen) | Scored async, 2–3 days to submit | Written communication (role-specific dimension outside the seven) |
 | Onsite 1 — Collaboration and conscientiousness | 45 min | Collaboration, conscientiousness |
 | Onsite 2 — Willingness to be wrong and intrinsic motivation | 45 min | Willingness to be wrong, intrinsic motivation |
 | Onsite 3 — Structured thinking (hiring-manager roleplay) | 45 min | Structured thinking |

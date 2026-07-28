@@ -17,7 +17,7 @@ timetoread: "14 min read"
 
 - [ ] **Focus on results** — show, with metrics, how execution is progressing, rather than holding a winding discussion of potential plans
 - [ ] **Be candid** — write a candid assessment of what the team accomplished, what it needs to do better at, and what it plans to do; this is not a summary of successes
-- [ ] **Be concise** — six-page narrative maximum, plus an appendix with tables and/or charts
+- [ ] **Be concise** — six-page document maximum (the narrative section itself at most two pages), plus an appendix with tables and/or charts
 - [ ] **Prepare in advance** — share the memo at least 24 hours before the meeting; reserve reading time inside the meeting itself
 - [ ] **Be present** — attendees minimize work distractions during the discussion (snooze notifications, close other windows); consume materials digitally without linking out to supplementary materials
 
@@ -119,7 +119,7 @@ Focus areas the company has defined as requiring engagement from business leader
 - [ ] Focus-area scores filled in for the current quarter (QX) and prior comparison period (QY)
 - [ ] Each score has a comment describing what's being done to improve it
 
-### Progress on goals — top 5–10 goals, one page maximum
+### Progress on goals — top 5–10 goals, one page maximum (extend the template rows up to 10 as needed)
 
 | Team objective | Shipped | On track | Off track | At risk | Total |
 | --- | --- | --- | --- | --- | --- |

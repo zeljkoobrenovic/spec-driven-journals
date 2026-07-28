@@ -40,10 +40,11 @@ Every record follows the same shape, so you always know where to look:
 | **Status / Principle** blockquote | The operating principle behind the tool in one quotable paragraph. |
 | **Statement → Rationale → Anti-Patterns** | The ADR-shaped body: what I commit to, why the tool works, what it does *not* say, and the failure modes it guards against. |
 | **Checklist** tab | The tool itself — the runnable checklist, template, rubric, or process, adapted and condensed from the source workbook. |
+| **Comic** tab | An eight-panel explainer with a recurring cast — the two-minute version, built to be shared. |
 | **View spec** link | The authoring contract behind the post — intent, success criteria, and a decision log, versioned like everything else. |
 
 ![Exploded diagram of a record: a quote block, an argued body block, and two tabs at the bottom with the Checklist tab emphasized.](assets/images/introduction/record-anatomy-exploded.jpeg)
-**Figure 2:** *Every record's anatomy: principle, argument, and the runnable tool sitting one tab away.*
+**Figure 2:** *Every record's anatomy: principle, argument, the runnable tool one tab away, and the comic for the two-minute version.*
 
 Every record carries `status: draft`, deliberately: these tools are adopted from a source I trust and adapted ahead of being fully worn in at my current scope, and each record names its own revisiting conditions.
 

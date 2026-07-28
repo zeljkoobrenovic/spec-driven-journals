@@ -48,7 +48,8 @@ declarative.
       first post-college choice and why, favorite and least favorite jobs
       and how each role was chosen, then the five-years-out projection by
       type of work (management, research, execution, leadership,
-      communication, analytics, problem-solving) rather than by title.
+      communication, analytics, problem-solving, consulting) rather than by
+      title.
 - [x] **The "why" discipline is explicit** — ask why a lot, take notes,
       surface patterns together rather than diagnose alone.
 - [x] **The wrap-up survives** — recap, share notes, jointly write two or

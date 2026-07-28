@@ -5,9 +5,9 @@ timetoread: "6 min read"
 
 ## 1. Setup
 
-- [ ] Schedule a one-off 1:1 with each report: 60 minutes (30–45 minutes for someone early in their career)
+- [ ] Schedule a one-off 1:1 with each report: 60 minutes (30–45 minutes for someone fresh out of school)
 - [ ] Announce the plan before the invite lands — at a team meeting, or by email / in a 1:1 for a single new person
-- [ ] Frame it as a get-to-know-you conversation: their past career moves and a start on future development goals
+- [ ] Frame it as a get-to-know-you conversation — say plainly that these are among your favorite conversations: their past career moves and a start on future development goals
 - [ ] State explicitly: no preparation required beyond being ready to talk through their history; a résumé is optional
 
 ## 2. Reminder — exactly one day before

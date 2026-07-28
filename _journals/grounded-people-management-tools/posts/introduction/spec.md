@@ -86,5 +86,5 @@ First-person, essay-shaped.
 
 - **2026-07-28** — Comics modality staged (comics.md, Comic tab, shared VERA/NOA cast) with pending panel blocks; 3 inline illustration placeholders staged in the article. *(Željko, AI-mediated session)*
 - **2026-07-28** — Initial spec and introduction written together with the
-  journal's 19 tool records. Status `accepted`. *(Željko, AI-mediated
+  journal's 20 tool records. Status `accepted`. *(Željko, AI-mediated
   session)*
