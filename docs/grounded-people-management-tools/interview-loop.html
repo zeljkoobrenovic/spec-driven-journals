@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Interview Loop</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded People Management Tools</a><span class="nav-right"><a class="nav-prev" href="quarterly-business-reviews.html" title="Quarterly Business Reviews">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="interview-question-bank.html" title="Interview Question Bank">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Hiring and Onboarding</p>
+        <h1>The Interview Loop</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  9 min · <a class="spec-link" href="interview-loop.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/interview-loop/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/interview-loop/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded People Management Tools</a><span class="nav-right"><a class="nav-prev" href="quarterly-business-reviews.html" title="Quarterly Business Reviews">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="interview-question-bank.html" title="Interview Question Bank">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PPL-INTERVIEW-LOOP", "status": "draft:gray", "title": "The Interview Loop", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "interview-loop", "timetoread": "9 min", "excerpt": "I design the interview loop before I schedule the first interview: every named competency maps to a stage, every stage to a question, every question to follow-ups and a written rubric. The recruiter-role loop in Scaling People's workbooks — seven competencies across a recruiter screen, a team screen paired with a written project, and four onsites — is the pattern I copy for every role I hire.", "tags": "people management, hiring, interview design, rubrics, recruiting, structured interviewing", "icon": "assets/icons/interview-loop.png", "logo": "assets/images/interview-loop/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["people management", "hiring", "interview design", "rubrics", "recruiting", "structured interviewing"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I design the interview loop before I schedule a single interview: I name the competencies the role requires, map each one to a stage, write the questions each stage will ask, write the follow-ups that will deepen a thin answer, and write the Poor/Good/Strong rubric before any candidate walks in. The worked recruiter-role loop in *Scaling People*'s companion workbooks — seven competencies spread across a recruiter screen, a team screen run alongside a written project, and four 45-minute onsites — is not a template for recruiting roles only; it is the pattern I copy every time I open a role, whatever the role is.\n\n## Statement\n\nMy operating model for designing an interview loop has five parts:\n\n- **Design the whole loop before the first interview.** Competencies, stages, questions, follow-ups, and rubrics are all written down before a candidate is scheduled. Nothing about the loop is improvised in the room.\n- **Name the competencies first, and map each one to exactly one primary stage.** A loop that assesses seven things needs to say, in writing, which stage owns each of the seven — otherwise every interviewer probes whatever they feel like and half the competencies go unchecked while others get asked four times.\n- **Every question ships with follow-ups written in advance.** A candidate's first answer is rarely enough signal; a Situation/Action/Result follow-up set is prepared before the interview so a thin first answer gets a fair chance to deepen, and so every interviewer probes the same way.\n- **Every question ships with a rubric before anyone answers it.** Poor/Good/Strong (or Poor/Weak/Good/Strong) anchors are written in advance, in the interviewer's own language, so scoring is a comparison to a standard rather than a comparison to the previous candidate.\n- **The written exercise gets the same rigor as a live interview.** Where the loop includes writing samples, the scoring bands (numeric per-area scores, a pass threshold, a second-reviewer band, a fail threshold) are fixed before the first sample is read.\n\n![Diagram of a five-stage pipeline: competency, stage, question, follow-ups, rubric, connected in fixed order before scheduling.](assets/images/interview-loop/design-chain-pipeline.jpeg)\n**Figure 1:** *The design chain is fixed and finished before the first interview is scheduled: competency to stage to question to follow-ups to rubric.*\n\n## How to Read This\n\nThis journal is my people-management toolkit — first-person operating records, each grounded in a named tool from the companion workbooks to Claire Hughes Johnson's *Scaling People: Tactics for Management and Company Building*. This record is built on the **Interview Framework and Rubric: Recruiting for Recruiters (L2+)** tool from Chapter 3 of the workbooks — a complete worked example of a competency-mapped loop, read through a practitioner-executive lens: the workbook builds one loop, for one role, in full; I read it as the pattern every role's loop should follow, not as recruiting-specific content. The runnable tool — a blank design chain for any role, rubric-quality tests, and the worked recruiter loop condensed to reference tables — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**A loop designed in advance is a different instrument than one improvised live.** The workbook's recruiter loop opens with two lists before a single question is written: seven competencies (collaboration, conscientiousness, willingness to be wrong, intrinsic motivation, structured thinking, resilience, accountability) and a stage map assigning each competency to a specific interview. That ordering is the whole discipline. An interviewer walking into a room without knowing which competency they own will ask whatever feels natural — usually whatever the previous interviewer already asked, or nothing that maps to any competency at all. A loop designed first closes both gaps: every competency has an owner, and no stage duplicates another's job.\n\n**The competency-to-stage map is what prevents redundant coverage and silent gaps.** In the recruiter example, the 30-minute recruiter screen owns functional expertise, conscientiousness, and intrinsic motivation; the 45-minute team screen (paired with the written project) owns accountability and structured thinking; and four 45-minute onsites split the remaining ground — collaboration plus conscientiousness, willingness to be wrong plus intrinsic motivation, structured thinking alone (as a roleplay), and resilience plus accountability. Notice conscientiousness and structured thinking each appear twice, at different depths — a screen-level check and an onsite-level deep dive — and that is a deliberate design choice, not an oversight. When I design a loop, I make that same choice explicit: which competencies get one pass and which earn two, and why.\n\n**Follow-ups are where the signal actually lives, and they have to be written before the interview, not invented during it.** Every onsite question in the workbook ships with a Situation/Action/Result scaffold: what was the situation, what did the candidate actually do, what was the result and what did they learn. A candidate's cold answer to \"tell me about a time you were persistent\" is rarely differentiating; the follow-ups — what were the obstacles, who did you work with, were you successful, what did you learn — are what separates a rehearsed anecdote from real judgment. If the follow-ups are improvised in the room, different interviewers probe different depths and the resulting scores are not comparable across candidates.\n\n**A rubric written before the candidate answers is the only rubric that is not contaminated by the answer.** Every question in the workbook ships with a Poor/Good/Strong or Poor/Weak/Good/Strong table, written into the tool itself, not into the interviewer's head afterward. The rubrics are concrete enough to score against: for the diversity-sourcing question, \"Strong\" is defined as being able to name what \"diversity\" means at role, team, and company level and to create inclusive job descriptions and interview criteria — not a vague sense that the candidate \"seemed thoughtful about DEI.\" A rubric this specific is what keeps five different interviewers scoring the same answer the same way, and what keeps a strong candidate from being downgraded because an interviewer disliked their delivery.\n\n![Split diagram contrasting a rubric locked before the candidate answers with a rubric contaminated by writing it after the answer.](assets/images/interview-loop/rubric-before-after-gate.jpeg)\n**Figure 2:** *A rubric written before the candidate answers is the only rubric the answer cannot contaminate.*\n\n**The written project earns its own scoring discipline because writing is graded differently than talk.** The workbook's written project — two writing samples, one internal and one external communication, submitted within two to three days — is scored numerically across three named areas (structure, grammar and syntax, tone), each on a 1–3 scale, for a total out of 9. A total of 7–9 passes outright; 5–6 requires a second reviewer; 3–4 fails. That is a real decision procedure, not a vibe check, and it exists because writing samples reward a different kind of rigor than a live conversation does: a recruiter or hiring manager can read them slowly, compare them against a fixed standard, and this record's checklist keeps that scoring band intact rather than letting \"second set of eyes\" quietly become \"pass anyway.\"\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| The loop is designed — competencies, stages, questions, follow-ups, rubrics — before scheduling starts. | Every loop must be built from scratch each time — the recruiter pattern is a template to instantiate, not a rule to reinvent. |\n| Each competency maps to a named stage that owns it. | One stage per competency only — a competency can recur at a screen depth and an onsite depth if the design says so, as conscientiousness and structured thinking do here. |\n| Every question ships with SAR-style follow-ups written in advance. | Interviewers may never adapt — follow-ups are a floor for probing depth, not a script that forbids a genuinely useful improvised question. |\n| Every question ships with a Poor/Good/Strong rubric before any candidate answers. | Rubrics remove judgment — they anchor judgment to a shared standard instead of removing it. |\n| The written project is scored on fixed numeric bands (pass 7–9, second reviewer 5–6, fail 3–4). | A 5–6 score is a soft pass — it is a mandatory second read, not a rounding-up. |\n| The recruiter loop is the reference pattern for designing any role's loop. | Recruiting-specific content (sourcing volume, the pitch-vs-competition question) transfers to other roles — only the design chain does. |\n\nConcretely: no interview loop in my organization goes live without a written competency list, a stage map naming which stage owns which competency, and a rubric for every question. If a hiring manager cannot produce those four artifacts, the loop is not ready, whatever the calendar says.\n\n![Flow map showing a recruiter screen, a team screen paired with a written project, and four onsite stages connected in sequence.](assets/images/interview-loop/stage-map-flow.jpeg)\n**Figure 3:** *Coverage is distributed by design: a screen, a team screen paired with a written project, and four onsites, each owning named ground.*\n\n## Anti-Patterns\n\n- **The improvised loop.** Interviewers picking questions on the fly, in the room, with no shared plan for who covers what. Coverage becomes accidental and unequal across candidates.\n- **The rubric written after the answer.** Scoring criteria invented once the candidate has already spoken, unconsciously shaped by whether the interviewer liked them. A rubric written in advance is the only rubric immune to this.\n- **Redundant stages, silent gaps.** Two interviewers independently probing the same competency while another competency never gets asked about at all, because no one wrote the stage map down.\n- **Follow-up questions invented on the spot.** Some candidates get gently prompted to a deeper answer; others get a flat no-follow-up pass. The workbook's SAR scaffolds exist precisely so this does not depend on interviewer mood.\n- **Treating the written project as a formality.** Skimming the writing samples instead of scoring them against the structure/grammar/tone rubric, so a candidate who cannot write clearly slides through on a strong verbal impression.\n- **Copying the recruiter content instead of the recruiter pattern.** Reusing sourcing-specific or recruiting-specific questions for an unrelated role because the loop was copied wholesale rather than redesigned competency-first for the role actually being filled.\n\n## Related Records\n\n- [Interview Question Bank](interview-question-bank.html) — the reusable question library; this record is the loop architecture the questions from that bank slot into, stage by stage.\n- [Written Exercises](hiring-written-exercises.html) — the deeper record on written exercises; this one only places the written project inside the loop and preserves its scoring bands.\n- [Candidate Review](candidate-review.html) — what happens after the interviews run: the debrief and hire/no-hire decision this loop feeds.\n- [Hiring](../grounded-engineering-executive/hiring.html) — the engineering-executive journal's record on the overall hiring system this loop is one component of.\n- [Staffing](../grounded-product-management/staffing.html) — the product-management journal's record on how people arrive on a team; this record is the mechanism by which the right person is identified before arrival.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs how I design an interview loop for any role in my organization: naming competencies, mapping them to stages, writing questions, writing follow-ups, and writing rubrics before scheduling begins. I will revise it when a loop I design this way misses a competency in practice, when a rubric proves too vague to produce consistent scores across interviewers, or when I find a role whose shape genuinely does not fit the recruiter-loop pattern.\n\n## Authoritative References\n\n- Claire Hughes Johnson, *Scaling People: Tactics for Management and Company Building* (Stripe Press, 2023) — the companion workbooks: the \"Interview Framework and Rubric: Recruiting for Recruiters (L2+)\" tool (Chapter 3) this record is built on.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "11 min read"}, "blocks": [{"type": "markdown", "content": "*The working tool behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Design your loop (the reusable pattern)\n\n- [ ] List every competency the role requires — name them, don't leave any implicit\n- [ ] Write the stage map: which interview stage owns which competency\n- [ ] Decide which competencies deserve two passes (a screen-level check plus an onsite-level deep dive) and which deserve one\n- [ ] Assign an interview length to every stage (screens run shorter; onsites typically 45 minutes)\n- [ ] For every stage, name who is qualified to run it, including a backup\n- [ ] For every question, write the follow-up questions in advance — use a Situation/Action/Result scaffold for behavioral questions\n- [ ] For every question, write a Poor/Good/Strong (or Poor/Weak/Good/Strong) rubric before any candidate answers it\n- [ ] If the loop includes a written exercise, fix the scoring bands and pass/fail thresholds before the first sample is read\n- [ ] Confirm the full set of artifacts exists before scheduling: competency list, stage map, questions, follow-ups, rubrics\n- [ ] Copy the design chain (competency → stage → question → follow-ups → rubric) for every new role — do not copy role-specific question content across unrelated roles\n\n## 2. Rubric-quality tests\n\n- [ ] Is every rubric level anchored in observable candidate behavior, not in a vague impression (\"seemed sharp\")?\n- [ ] Could two different interviewers read this rubric and land on the same score for the same answer?\n- [ ] Does \"Strong\" describe something meaningfully harder than \"Good\" — not just \"Good, but more confident\"?\n- [ ] Does the rubric name concrete numbers or examples where the workbook itself does (e.g., \"4–6 unique searches, ~7 hires per quarter\" rather than \"good volume\")?\n- [ ] Was the rubric written before any candidate was interviewed against it?\n- [ ] Does the rubric avoid rewarding polish or likability where the competency being tested is something else (judgment, accountability, resilience)?\n- [ ] For any question missing a rubric, is that a deliberate choice (e.g., a bonus question) or a gap to fill before go-live?\n\n## 3. Reference: the worked example — recruiter (L2+) loop\n\n*Claire Hughes Johnson's Scaling People workbook loop, condensed as the pattern's reference instance — not the pattern to copy verbatim into other roles.*\n\n**Competencies assessed:** collaboration, conscientiousness, willingness to be wrong, intrinsic motivation, structured thinking, resilience, accountability.\n\n**Stage map**\n\n| Stage | Length | Competencies owned |\n| --- | --- | --- |\n| Recruiter screen | 30 min | Functional expertise, conscientiousness, intrinsic motivation |\n| Team screen (run in tandem with written project) | 45 min | Accountability, structured thinking |\n| Written project (run in tandem with team screen) | Scored async, 2–3 days to submit | Written communication skills |\n| Onsite 1 — Collaboration and conscientiousness | 45 min | Collaboration, conscientiousness |\n| Onsite 2 — Willingness to be wrong and intrinsic motivation | 45 min | Willingness to be wrong, intrinsic motivation |\n| Onsite 3 — Structured thinking (hiring-manager roleplay) | 45 min | Structured thinking |\n| Onsite 4 — Resilience and accountability | 45 min | Resilience, accountability |\n\n- [ ] Recruiter screen covers: recruiting life-cycle breadth, current volume and prioritization, business/hiring-manager partnership, how success is measured, optional fit and process-improvement questions\n- [ ] Recruiter-screen rubric anchors \"Strong\" on: full life-cycle recent experience, 4–6 unique searches and ~7 hires per quarter as the volume norm, a consultative/ownership stance toward the business, and specific examples of influencing outcomes with data\n- [ ] Team screen runs 35–45 minutes of questions plus 5–10 minutes for candidate questions; probe further whenever the first answer lacks depth — a satisfactory second-pass answer still counts as passing\n- [ ] Team-screen Q1 (toughest recent search) rubric anchors \"Strong\" on a sophisticated, structured process with independent influence on decision-makers and demonstrated results\n- [ ] Team-screen Q3 (diverse candidate representation) rubric anchors \"Strong\" on defining \"diversity\" at role/team/company level and creating inclusive job descriptions and interview criteria\n- [ ] Written project: request one internal writing sample (e.g., a stakeholder or hiring-manager update, redacted of confidential details) and one external sample (e.g., candidate-facing interview prep material, not a rejection template)\n- [ ] Written project scoring: rate structure, grammar/syntax, and tone each 1–3, sum the three; **7–9 passes**, **5–6 needs a second reviewer** (recruiter or hiring manager), **3–4 fails**\n- [ ] Onsite 1 rubric anchors \"Strong\" on driving process-improvement work with the other team, prioritizing within org-wide goals, and quoting metrics used to measure success\n- [ ] Onsite 2, Q1 (using feedback to inform a decision) rubric anchors \"Strong\" on clear reasoning about how feedback was weighed and prioritized for impact\n- [ ] Onsite 2, Q2 (what a successful career looks like) rubric anchors \"Strong\" on describing a well-rounded career vision that goes beyond title, and self-driven accountability for getting there\n- [ ] Onsite 3 is a roleplay/intake meeting, not a Q&A: the interviewer opens a role and the candidate leads a three-part conversation — (1) defining the scenario and role, (2) formulating a solution, (3) measuring success — while the interviewer probes and challenges\n- [ ] Onsite 3 rubric anchors \"Strong\" on driving the conversation, adjusting the approach when new complexity is introduced, asking questions that go beyond tactical specifics, using both qualitative and quantitative data with clear reasoning, and stating an intent to iterate (\"we'll check in after X onsites and adjust if needed\")\n- [ ] Onsite 4, Q1 (persistence toward a goal) rubric anchors \"Strong\" on unwavering dedication regardless of obstacle size, with clear articulation of actions, impact, and what would be repeated\n- [ ] Onsite 4, Q2 (a difficult team-priorities decision) probes: what the options were, how they were weighed, who was consulted, what data was used, what company values were considered, and how the decision was communicated and defended\n\n## 4. Follow-up scaffold (Situation / Action / Result)\n\nUse this scaffold whenever an onsite question asks for a past example. Adapt the specific prompts to the competency; keep the three-part shape fixed.\n\n- [ ] **Situation** — What was the actual situation? What were the constraints or obstacles, and what caused them?\n- [ ] **Action** — What did the candidate specifically do? What was their first step? Who did they involve, and what did they own versus delegate?\n- [ ] **Result** — What was the outcome? Were they successful? What did they learn, and would they do it the same way again?\n\n## 5. Go-live check\n\n- [ ] Every stage has an assigned interviewer and a named backup\n- [ ] Every question in every stage has written follow-ups\n- [ ] Every question in every stage has a written rubric\n- [ ] If a written exercise is included, the scoring bands and thresholds are fixed and shared with all scorers in advance\n- [ ] The full loop has been reviewed end to end for redundant coverage and silent gaps against the competency list\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "The loop is designed before the first interview is scheduled — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NOA: an earnest first-time people manager, short wavy hair, rolled-up shirt sleeves, carries a clipboard with a long checklist.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Noa stands outside an interview room holding a nearly blank clipboard, unsure what to ask.](assets/images/interview-loop/comic-01-walking-in-blind.jpeg)\n**Panel 1:** *The hook: no interviewer should be improvising the questions in the room.*\n\n![Comic panel: two interviewers ask the same question in overlapping bubbles while a resilience checkbox stays empty.](assets/images/interview-loop/comic-02-gaps-and-overlap.jpeg)\n**Panel 2:** *The problem: without a stage map, two interviewers cover the same ground and one competency goes unchecked.*\n\n![Comic panel: Noa writes a rubric on a notepad only after the candidate has left, with erased scores nearby.](assets/images/interview-loop/comic-03-rubric-after-the-fact.jpeg)\n**Panel 3:** *The wrong way: a rubric written after the answer is not a rubric, it is a feeling.*\n\n![Comic panel: Vera draws a five-link chain on a whiteboard — competency, stage, question, follow-ups, rubric.](assets/images/interview-loop/comic-04-the-design-chain.jpeg)\n**Panel 4:** *The principle: competency to stage to question to follow-ups to rubric, all written down before scheduling starts.*\n\n![Comic panel: a wall timeline shows a recruiter screen, a team screen with a written project, and four onsite boxes.](assets/images/interview-loop/comic-05-the-stage-map.jpeg)\n**Panel 5:** *How it runs: a screen, a team screen paired with a written project, and four onsites, each owning named competencies.*\n\n![Comic panel: a scorecard shows structure, grammar, and tone scored 1 to 3 with pass, second-reviewer, and fail bands.](assets/images/interview-loop/comic-06-the-scoring-band.jpeg)\n**Panel 6:** *The mechanic: 1–3 per area, three areas, and the band decides — 7–9 passes, 5–6 gets a second reviewer, 3–4 fails.*\n\n![Comic panel: Noa writes a tall stack of Situation, Action, Result follow-up questions late at night.](assets/images/interview-loop/comic-07-the-cost-of-rigor.jpeg)\n**Panel 7:** *The cost: writing every follow-up and rubric in advance is real work — the price of comparable scores across candidates.*\n\n![Comic panel: Noa confidently holds up four papers — competency list, stage map, questions, rubrics — at the interview door.](assets/images/interview-loop/comic-08-four-artifacts-go-live.jpeg)\n**Panel 8:** *The closer: no loop goes live without a competency list, a stage map, questions, and rubrics, whatever the calendar says.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

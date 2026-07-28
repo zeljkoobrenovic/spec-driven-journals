@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interview Question Bank</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded People Management Tools</a><span class="nav-right"><a class="nav-prev" href="interview-loop.html" title="The Interview Loop">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="hiring-written-exercises.html" title="Written Exercises">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Hiring and Onboarding</p>
+        <h1>Interview Question Bank</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  7 min · <a class="spec-link" href="interview-question-bank.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/interview-question-bank/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/interview-question-bank/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded People Management Tools</a><span class="nav-right"><a class="nav-prev" href="interview-loop.html" title="The Interview Loop">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="hiring-written-exercises.html" title="Written Exercises">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PPL-INTERVIEW-QUESTION-BANK", "status": "draft:gray", "title": "Interview Question Bank", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "interview-question-bank", "timetoread": "7 min", "excerpt": "I run interviews from a shared, curated question bank, not from each interviewer's improvisation. Every question in the bank carries its follow-ups and an explicit note on what I am actually seeking, so two interviewers reading the same answer reach the same read. The bank spans four groups — working with others, getting work done, personal motivation, leadership — plus a decision-making question scored on a Poor/Good/Strong rubric.", "tags": "people management, hiring, interviewing, interview questions, behavioral interviewing, candidate assessment", "icon": "assets/icons/interview-question-bank.png", "logo": "assets/images/interview-question-bank/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["people management", "hiring", "interviewing", "interview questions", "behavioral interviewing", "candidate assessment"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I run interviews from a shared, curated question bank, not from whatever each interviewer improvises on the spot: the same core questions get asked of every candidate, drawn from a deliberate mix of situational, behavioral, and strict competency questions, and every question ships with an explicit \"seeking\" note that tells the interviewer what a strong answer actually sounds like. Consistency across candidates is what makes signal comparable — an interview loop that asks something different of every candidate is not evaluating candidates, it is evaluating interviewers.\n\n## Statement\n\nMy operating model for the interview question bank has five parts:\n\n- **One shared bank, not individual improvisation.** Interviewers draw from a maintained bank of questions rather than inventing their own on the spot. Consistency across candidates is the point — it is what makes one candidate's answer comparable to another's.\n- **Mix the question types deliberately.** Every loop combines situational questions (\"how would you handle this scenario?\"), behavioral questions (\"tell me about a challenge you overcame\"), and strict competency questions (\"describe the last model you built and how\"). One type alone tests one thing; the mix tests the candidate.\n- **Every question ships with a \"seeking.\"** A question without a stated target is just conversation. Each question in the bank names, in advance, the trait or pattern the interviewer is listening for, so the interviewer scores the answer against a standard rather than against likability.\n- **Follow-ups do the real digging.** The headline question opens the door; the follow-up (\"what would you do differently?\", \"what were that leader's weaknesses?\") is where the candidate's actual judgment shows up. I treat the follow-up as mandatory, not optional color.\n- **Fold in a scored question for the hardest signal.** For decision-making — the trait hardest to fake and hardest to assess informally — I use a structured Situation/Action/Result question and score the answer against an explicit Poor/Good/Strong rubric, not against gut feel.\n\n![Diagram showing one shared question bank feeding four labeled groups, each with a follow-up and seeking note, and the leadership group also feeding a scoring rubric.](assets/images/interview-question-bank/question-bank-four-groups.jpeg)\n**Figure 1:** *One bank, four groups, each question carrying its follow-up and its seeking note.*\n\n## How to Read This\n\nThis journal is my people-management toolkit — first-person operating records, each grounded in a named tool from the companion workbooks to Claire Hughes Johnson's *Scaling People: Tactics for Management and Company Building*. This record is built on the Chapter 3 \"Sample Interview Questions\" tool, with the preceding decision-making interview question and its Poor/Good/Strong rubric folded in as the bank's leadership deep dive, read through a practitioner-executive lens. Many of the questions are credited by the workbook to Stripe's CTO, David Singleton; I carry that credit forward rather than presenting the bank as my own invention. The runnable tool — every question, its follow-ups, and its \"seeking\" guidance — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Consistency is what makes signal comparable.** The workbook is blunt about this: there are countless interview questions available online, and the key is not finding the perfect ones — it is being consistent in what you ask. If interviewer A asks about teamwork and interviewer B asks about a coding puzzle, I cannot compare candidate A to candidate B; I can only compare interviewer A's read to interviewer B's read. A shared bank turns a set of individual impressions into one coherent evaluation.\n\n**The three question types test different failure modes.** A situational question tests judgment about a hypothetical; a behavioral question tests what the candidate actually did under real pressure; a strict competency question tests whether the skill is real rather than described. A loop built from only one type has a blind spot: all-behavioral misses raw skill, all-competency misses judgment and self-awareness, all-situational lets a well-rehearsed candidate answer in the abstract and never ground it in something that happened. Mixing all three is not stylistic variety — it closes the gaps each type leaves open.\n\n![Diagram contrasting a single question-type lens that leaves a blind spot with three overlapping lenses that cover it fully.](assets/images/interview-question-bank/three-lenses-blind-spots.jpeg)\n**Figure 2:** *One question type leaves a gap; situational, behavioral, and competency together close it.*\n\n**\"Seeking\" is what turns a question into an assessment.** Every question in the bank names, in advance, what a strong answer looks like: for \"tell me about the lowest-morale team you've been part of,\" I am seeking whether the candidate brought levity, tried to fix the situation, or ran away. Without that stated target, two interviewers can hear the same answer and reach opposite conclusions — one charmed by confidence, one unmoved. The \"seeking\" note is the rubric hiding inside an ordinary-sounding question.\n\n**Red flags are signal, not noise.** The personal-motivation question about balancing competing demands has an explicit \"avoid\" case: reliance primarily on colleagues to get through hard periods, or \"nothing ever bothers me\" as a stated coping style — a claim of invulnerability rather than an account of a real coping mechanism. The job-dislike question separates fixers from complainers by whether the candidate tried to fix the thing they described, not merely named it. I score for these red flags on purpose; they are cheaper to catch at the interview stage than after the hire.\n\n**A rubric turns judgment into a shared standard.** The decision-making question — describe a difficult decision about your team's priorities or strategy — is the one question in the chapter that ships with a full Poor/Good/Strong rubric across four dimensions: whether decisions are data-informed rather than rash, whether the candidate consulted widely rather than unilaterally, whether they can articulate how company values shaped the decision rather than treating values as decoration, and whether they can reflect honestly on the outcome, including its gaps. I fold this question into the bank as leadership material because decision-making under real stakes is exactly what the leadership questions are probing for, and because a rubric this explicit deserves to travel with the rest of the structured tool rather than sit orphaned earlier in the chapter.\n\n![Matrix diagram showing four rubric dimensions — data, consultation, values, reflection — each scored across poor, good, and strong.](assets/images/interview-question-bank/rubric-four-dimensions-matrix.jpeg)\n**Figure 3:** *The decision-making rubric: four dimensions, each scored Poor, Good, or Strong.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Ask from a shared, maintained question bank. | Every interviewer asks identical words — follow-ups and phrasing adapt; the core questions and their targets do not. |\n| Mix situational, behavioral, and strict competency questions. | Any one question type is sufficient on its own — each type alone leaves a blind spot the others cover. |\n| Every question carries an explicit \"seeking.\" | The \"seeking\" note is disclosed to the candidate — it is the interviewer's scoring key, not talking points. |\n| Score decision-making against the Poor/Good/Strong rubric. | The rubric replaces judgment — it structures judgment so two interviewers land on the same read. |\n| Treat \"nothing ever bothers me\" and complaining-without-fixing as red flags. | One red flag disqualifies a candidate — it is one data point weighed with the rest of the loop. |\n| Ask \"who was the best hire you ever made?\" for a specific, named individual. | A vague or hypothetical answer is acceptable — the follow-ups exist to force specificity. |\n\nConcretely: no interviewer in my organization freelances a set of questions for a loop; they draw from the bank, ask the follow-ups, and write feedback against the stated \"seeking,\" not against a general impression. Any interviewer asking a decision-making question scores it against the Poor/Good/Strong rubric explicitly in the written debrief.\n\n## Anti-Patterns\n\n- **Interviewer improvisation.** Each interviewer bringing their own favorite questions produces incomparable signal across candidates — a loop that evaluates interviewers more than it evaluates the candidate.\n- **Single-type loops.** All-behavioral or all-competency loops that never test judgment on a hypothetical, or never verify a skill was actually applied under pressure.\n- **The stated question with no target.** Asking \"tell me about a challenge you overcame\" without an internal answer to \"what am I listening for\" turns the interview into a performance review of storytelling.\n- **Skipping the follow-up.** Taking the headline answer at face value and never asking what the candidate would do differently, or what the admired leader's weaknesses were — the follow-up is where the real signal lives.\n- **Missing the red flags.** Hearing \"nothing ever bothers me\" or a string of complaints with no attempted fix and coding it as confidence or bluntness rather than the warning it is.\n- **Scoring decisions on vibes.** Judging a decision-making answer as \"sounded confident\" instead of walking it against the rubric's four dimensions: data, consultation, values, reflection.\n\n## Related Records\n\n- [The Interview Loop](interview-loop.html) — designs the loop itself (stages, interviewer assignments, focus areas); this record supplies the questions the loop asks.\n- [Written Exercises](hiring-written-exercises.html) — the written-exercise signal is a separate tool from live questioning; this bank covers what happens in the room.\n- [Candidate Review](candidate-review.html) — where the answers scored against this bank's \"seeking\" guidance get debriefed and decided on.\n- [Hiring](../grounded-engineering-executive/hiring.html) — the engineering-journal record on the overall hiring system this question bank plugs into as one component.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs the question bank every interviewer in my organization draws from, including the decision-making question and its rubric. I will revise it when a question stops discriminating between strong and weak candidates in practice, when a new competency needs its own bank entry, or when the rubric proves too coarse for the decisions I most need signal on.\n\n## Authoritative References\n\n- Claire Hughes Johnson, *Scaling People: Tactics for Management and Company Building* (Stripe Press, 2023) — the companion workbooks: the Chapter 3 \"Sample Interview Questions\" tool and the preceding decision-making interview question with its Poor/Good/Strong rubric.\n- Many of the bank's questions are credited by the workbook to Stripe's CTO, David Singleton, whose credit the workbook carries and this record preserves.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "7 min read"}, "blocks": [{"type": "markdown", "content": "*The working tool behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Before the loop\n\n- [ ] Confirm every interviewer is drawing from this shared bank, not improvising their own questions\n- [ ] Confirm the loop mixes all three question types: situational, behavioral, and strict competency\n- [ ] Assign the decision-making rubric question to at least one interviewer, typically for a leadership-focused slot\n- [ ] Remind interviewers that each question's \"seeking\" note is the scoring key, not disclosed to the candidate\n\n## 2. Working with others\n\n**Q: Tell me about a time you worked on something that you knew you wouldn't enjoy but which was necessary for the success of your team or company.**\n- [ ] Follow-up: How did you end up working on it? What did you accomplish? What would you do differently if you had another chance?\n- [ ] Seeking: An eager attitude and an ability to get up to speed and execute regardless of feelings toward the work. Bonus if they actively volunteered to take it on.\n\n**Q: Tell me about the lowest-morale team you've been part of.**\n- [ ] Seeking: Did they bring levity to the group? Did they try to fix the situation? Did they run away?\n\n**Q: When have you felt most connected to your coworkers? Tell me about a time when that connection was tested and how you adapted.**\n- [ ] Seeking: Good humor and a positive, productive attitude while in the trenches with others. Support and collaboration in difficult situations. Valuing results-oriented team achievement and learning from coworkers.\n\n## 3. Getting work done\n\n**Q: What project are you most proud of? What was your contribution?**\n- [ ] Seeking: Do they seek out challenging work? Do they value navigating an unfamiliar experience? Did this project have a strong impact?\n\n**Q: Tell me about a project where you've had to pull out all the stops to get it done.**\n- [ ] Seeking: Can they discuss the specifics of the obstacles they had to overcome and how they influenced others to do excellent work?\n\n**Q: Tell me about a project you've led that failed. What role did you play in the project's failure? What did you learn? What would you do differently if given the chance to do it over?**\n- [ ] Seeking: Accountability, a growth mindset, an ability to self-reflect and be self-critical, resilience, learning from mistakes, and not blaming others or circumstances.\n\n## 4. Personal motivation\n\n**Q: Work can be challenging, and it's not the only thing on your mind. How do you approach balancing competing demands for your attention?**\n- [ ] Seeking: Resilience. Can they do what's necessary to maintain focus? Do they have self-awareness about how to maintain focus (e.g., exercise, therapy, a flexible work schedule)? How do they seek meaning from work? When necessary, do they work with people to plan for coverage if things are getting really tough?\n- [ ] Bonus: Do they help those around them do the same? Do they derive purpose from how their work helps others?\n- [ ] Avoid / red flag: Reliance primarily on colleagues to carry them through tough situations. A lack of coping mechanisms or self-awareness — e.g., \"Nothing ever bothers me.\"\n\n**Q: What's the best example of something in your current job that you don't like?**\n- [ ] Follow-up: How did you fix it, or have you already tried to fix it?\n- [ ] Seeking: Are they focused primarily on fixing things instead of complaining about them? (Fixers vs. complainers.)\n- [ ] Tip: Let them explain the example, then assess its magnitude and whether it's meaningful and substantive.\n\n**Q: What are you really excited about?**\n- [ ] Seeking: Are they passionate about anything? Are they energetic and optimistic? Would they \"set the room on fire\" (in a good way)?\n\n## 5. Leadership\n\n**Q: Tell me about the best leader you've worked for.**\n- [ ] Seeking: Were they selfless, results-oriented, kind? Did they give indications of effectiveness or deliver feedback? What kind of feedback did they give?\n- [ ] Follow-up: What made them a great leader?\n- [ ] Tip: Dig into the *why* behind the answer — it's not important who the person specifically is, as long as the candidate can speak cogently about why this leader is the best they've worked with.\n- [ ] Follow-up: What are that leader's weaknesses?\n- [ ] Tip: This is important — it reveals what the candidate values in a leader (e.g., extrinsic impact vs. creating a safe environment).\n\n**Q: Tell me about a time when you personally worked super hard to get something important done quickly.**\n- [ ] Follow-up (engineering-specific): Tell me about the worst incident you handled and how you approached it.\n- [ ] Seeking: Are they willing to pull out all the stops and burn the midnight oil when needed? Are they willing to still \"hold a pager\" and do the work? Are they calm under pressure? Can they act as a prescriptive leader when needed?\n\n**Q: Who was the best hire you ever made?**\n- [ ] Tip: This should be a specific individual — dig into the role and the hiring process.\n- [ ] Follow-up: Why exactly? What made them good for the role? What were their weaknesses? How did you convince yourself they would be a strong performer given those qualities? How did they work out in the role? Why? What was different from what you expected?\n- [ ] Seeking: Is the person comfortable attracting and deciding on talent? Are they effective at hiring and building teams? Are they able to develop a good hiring process and learn from mistakes?\n\n## 6. Decision-making (leadership deep dive, scored)\n\n**Q: Describe a time when you had to make a difficult decision regarding your team's priorities or strategy.**\n\n- [ ] **Situation** — What was it? What were the options, and how did you weigh them? How did you consult with others on your decision? How did you get data or other perspectives on your decision? What company values did you consider in your decision-making?\n- [ ] **Action** — How did you communicate your decision? How did you respond to skepticism or questions? How did you defend your decision?\n- [ ] **Result** — What was the end result of the decision you made? What data would you have wanted to help with your decision-making?\n\n**Scoring rubric:**\n\n| Dimension | Poor | Good | Strong |\n| --- | --- | --- | --- |\n| Data | Makes uninformed or rash decisions lacking substantial support. | Takes a considered approach but could have leveraged more robust data sources. | Well-rounded, informed approach; uses examples of how they anchored the decision with data. |\n| Consultation | Meets opposing opinions with obstinacy or arrogance; decides unilaterally with little to no consultation. | Accepts others' opinions but dismisses them when explaining how the ultimate decision was reached; only consults a select group with existing relationships. | Demonstrates ownership when faced with skepticism, doubt, or questions; open to adjusting; consults a wide range of people with varying opinions, including those most affected. |\n| Values alignment | Cannot identify any company values considered, or dismisses values as non-factors. | Expresses admiration for company values but cannot articulate how they were specifically considered. | Clearly outlines how the decision-making aligns with company values and priorities, not only personal priorities. |\n| Reflection | Cannot give a clear explanation of the final decision; leaves the situation unclear; cannot identify missing data. | Gives a concise explanation of the decision reached; can identify gaps in the data but not how to close them. | Reflects thoughtfully on the outcome, naming benefits and drawbacks for all stakeholders; identifies what data was missing, how to get it, and how it would change future decisions. |\n\n## 7. After the loop\n\n- [ ] Write feedback against each question's stated \"seeking,\" not against a general impression\n- [ ] For the decision-making question, record the Poor/Good/Strong dimension scores explicitly in the debrief\n- [ ] Flag red-flag answers (\"nothing ever bothers me,\" complaining without a fix attempt) explicitly for the debrief discussion\n- [ ] Hand scored feedback into the candidate review process\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Every interviewer draws from the same bank instead of improvising their own questions — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NOA: an earnest first-time people manager, short wavy hair, rolled-up shirt sleeves, carries a clipboard with a long checklist.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Noa improvises an interview question on the spot, clipboard on her lap.](assets/images/interview-question-bank/comic-01-improvised-questions.jpeg)\n**Panel 1:** *Every interviewer improvising their own questions — the hook.*\n\n![Comic panel: Noa and another interviewer compare two feedback notes that do not match.](assets/images/interview-question-bank/comic-02-incomparable-notes.jpeg)\n**Panel 2:** *The problem: mismatched notes because no two interviewers asked the same thing.*\n\n![Comic panel: Noa stacks five identical question cards into a lopsided, toppling tower.](assets/images/interview-question-bank/comic-03-single-type-loop.jpeg)\n**Panel 3:** *The wrong way: one question type, over and over, leaves a blind spot.*\n\n![Comic panel: Vera hands Noa a binder labeled QUESTION BANK with a SEEKING sticky note on the cover.](assets/images/interview-question-bank/comic-04-shared-bank.jpeg)\n**Panel 4:** *The tool: one shared bank, and every question names what it is seeking.*\n\n![Comic panel: Noa checks off three cards on her clipboard labeled situational, behavioral, and competency.](assets/images/interview-question-bank/comic-05-mix-of-three.jpeg)\n**Panel 5:** *How it runs: mix situational, behavioral, and competency questions on purpose.*\n\n![Comic panel: Vera points to a three-column scoreboard labeled Poor, Good, Strong on the wall.](assets/images/interview-question-bank/comic-06-poor-good-strong.jpeg)\n**Panel 6:** *The mechanic: decision-making is scored against a Poor/Good/Strong rubric.*\n\n![Comic panel: Noa circles a red-flag line on her clipboard next to a warning triangle icon.](assets/images/interview-question-bank/comic-07-red-flag-cost.jpeg)\n**Panel 7:** *The cost: catching red flags and chasing follow-ups takes real discipline.*\n\n![Comic panel: Vera and Noa look at a wall of aligned candidate scorecards built from the same bank.](assets/images/interview-question-bank/comic-08-comparable-signal.jpeg)\n**Panel 8:** *The closer: one shared bank, and every candidate's signal finally compares.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

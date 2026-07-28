@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Compensation Conversations</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded People Management Tools</a><span class="nav-right"><a class="nav-prev" href="performance-reviews.html" title="Performance Reviews">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-underperformance.html" title="Managing Underperformance">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Feedback and Performance</p>
+        <h1>Compensation Conversations</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  7 min · <a class="spec-link" href="compensation-conversations.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/compensation-conversations/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/compensation-conversations/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded People Management Tools</a><span class="nav-right"><a class="nav-prev" href="performance-reviews.html" title="Performance Reviews">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-underperformance.html" title="Managing Underperformance">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PPL-COMPENSATION-CONVERSATIONS", "status": "draft:gray", "title": "Compensation Conversations", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "compensation-conversations", "timetoread": "7 min", "excerpt": "I never let compensation land as something 'the system decided.' Every comp conversation is mine to prepare and mine to own — I know each person's story before I open my mouth, I deliver the outcome as a message rather than a memo, and when expectations and reality don't match, I stay in the room instead of hiding behind a process.", "tags": "people management, compensation, performance, trust, feedback, manager ownership", "icon": "assets/icons/compensation-conversations.png", "logo": "assets/images/compensation-conversations/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["people management", "compensation", "performance", "trust", "feedback", "manager ownership"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I treat every compensation conversation as mine to own, never as something \"the system decided.\" Pay is one of the clearest signals my organization sends about performance, trust, and fairness, and I refuse to let that signal arrive as an unexplained number on a pay stub. I prepare at the individual level — career stage, time since last uplevel, size of last increase, and what the person is likely expecting — before I say a word, and I stay present through the reaction, whatever it is.\n\n## Statement\n\nMy operating model for compensation conversations has five parts:\n\n- **I own the message, not the tool.** Compensation systems, bands, and calibration processes exist to make the numbers fair; they do not exist to make the conversation happen for me. I deliver the outcome myself, in person, in my own words.\n- **I prepare at the individual level.** Before any conversation I know the company's comp timeline and the resources I can point someone to, and for each person I think through their career stage, the date of their last uplevel, the size of their last increase, and what they are likely expecting.\n- **I anticipate the gap between expectation and outcome.** Preparation is not complete until I have gauged how the number I'm about to share will land against what the person has been quietly expecting. That gap is where the real conversation happens.\n- **I follow the same three-phase outline every time.** Check for understanding of the comp philosophy, describe the outcome plainly, then open the conversation up — in that order, regardless of whether the news is good, flat, or disappointing.\n- **I stay in the room when it's hard.** If expectations and outcome don't align, I expect emotion, I own the result, and I empathize without apologizing for it or promising a future I can't guarantee.\n\n![Diagram of a five-stage loop: own the message, prepare individually, anticipate the gap, run the outline, stay present, looping back to the start.](assets/images/compensation-conversations/compensation-conversation-loop.jpeg)\n**Figure 1:** *The operating model is a loop, not a one-time script — it runs again every compensation cycle.*\n\n## How to Read This\n\nThis journal is my people-management toolkit — the concrete tools I run people management with, not just the principles behind them. This record is grounded in the \"Compensation Conversations Preparation and Guide\" from the companion workbooks to Claire Hughes Johnson's *Scaling People: Tactics for Management and Company Building*, read through a practitioner-executive lens. The workbook page is a preparation aid and a conversation outline; I read it as a standing obligation on every manager who delivers a compensation outcome, starting with myself. The runnable version of this tool — the per-person prep template and the conversation outline as a working checklist — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Compensation is a trust signal, not a transaction.** A number moving or not moving on a pay stub is never just administrative — it is one of the clearest statements an organization makes about what it values and whether it's fair. I don't get to outsource that statement to payroll, HR systems, or a calibration spreadsheet. If I want my people to trust that pay reflects performance, I have to be the one who says so, in a conversation, where they can ask me anything.\n\n![Split diagram: on the left a number flows from an anonymous system box straight to a confused person; on the right the same number flows through a manager speaking directly to a trusting person.](assets/images/compensation-conversations/outsourced-versus-owned-message.jpeg)\n**Figure 2:** *The same number lands differently depending on whether a system delivers it or a person does.*\n\n**Preparation happens person by person, not cohort by cohort.** A comp cycle that runs at the population level — bands, budgets, distributions — is necessary but insufficient. Before I sit down with anyone, I think through their individual story: what career stage they're at, when they were last leveled up, how large their last increase was. That history is what sets their expectation, so it's what I have to understand before I can gauge whether my number will land as recognition or as a disappointment. Skipping this step means walking into the room guessing.\n\n**Owning the message means flexing with the moment, not scripting it.** I come in ready to teach, to listen, to congratulate, or to work through a hard message — because I usually don't know which one I'll need until the conversation starts. When someone got a promotion or a strong increase, I celebrate it and reinforce the specific impact and behaviors that earned it — without implying the same increase repeats every cycle. That distinction matters: recognition is for what happened, not a forecast of what will happen again.\n\n**When expectations don't align, my job is to stay, not to soften.** Money is personal, so a misaligned outcome can be an emotional moment, and I prepare for that rather than being surprised by it. I own the result even when it's difficult, I empathize and listen, and I do not apologize for the outcome or promise an outcome I can't guarantee. Where it helps, I tie the result back to performance or to how the compensation program itself is designed — but I don't use that as a way to distance myself from the decision.\n\n**Silence is itself a message, so I don't send it.** Even when nothing about someone's compensation is changing, I say so directly rather than letting the absence of a conversation speak for me. And when I don't know the answer to a question, I say \"I don't know\" and commit to circling back — I don't improvise an answer I'm not sure of, because a wrong guess about someone's pay is worse than an honest pause.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| I personally deliver every compensation outcome I'm responsible for. | Comp bands, calibration, and payroll systems are unnecessary — they set the number; I deliver it. |\n| I prepare each person's individual story before the conversation. | One prep template fits everyone — career stage and history change what \"fair\" sounds like to each person. |\n| I celebrate increases and name the impact behind them. | A strong increase implies the same increase is guaranteed next cycle. |\n| I stay present and own the result when expectations don't align. | Owning the result means apologizing for it or promising a different future outcome. |\n| I communicate even when compensation doesn't change. | No news is acceptable news — silence reads as avoidance, not neutrality. |\n| I say \"I don't know\" and circle back when I lack an answer. | Improvising an answer under pressure is an acceptable substitute for a follow-up. |\n\nConcretely: before every comp cycle, I can name each of my people's career stage, date of last uplevel, and size of last increase from memory or from notes I've kept. I never send a compensation outcome by email as the first communication. And I keep a private note of any question I couldn't answer in the room, until I've closed the loop.\n\n![Flow diagram showing three ordered steps — check understanding, describe the outcome, open for discussion — followed by a smaller follow-up step.](assets/images/compensation-conversations/three-phase-conversation-flow.jpeg)\n**Figure 3:** *The same three-phase order every time, closed out by a follow-up step that keeps the loop honest.*\n\n## Anti-Patterns\n\n- **\"The system decided.\"** Attributing the number to a process rather than owning it myself. The process sets the number; I deliver the message.\n- **Walking in unprepared.** Learning someone's career stage or last increase in the room, from their reaction, instead of before the conversation.\n- **Over-promising to soften bad news.** Implying next year will be different, or that a strong increase repeats automatically, to manage the moment rather than the relationship.\n- **Apologizing for the outcome.** Treating empathy as interchangeable with an apology — one builds trust, the other undermines the decision I'm supposed to be standing behind.\n- **Going silent when nothing changes.** Skipping the conversation because there's no news to deliver, and letting people conclude they were forgotten or that their work went unnoticed.\n- **Guessing instead of following up.** Answering a comp question I'm not sure about rather than saying \"I don't know\" and coming back with a real answer.\n\n## Related Records\n\n- [Performance Reviews](performance-reviews.html) — the written performance record that a compensation outcome should trace back to; this record is the conversation that delivers what that review implies.\n- [Managing Underperformance](managing-underperformance.html) — when a comp conversation surfaces a performance gap rather than resolving one, it hands off to this record's documented path.\n- [Careers, Hiring, and Performance](../grounded-engineering-executive/careers-and-performance.html) — the engineering-journal record on career ladders and calibration; that's the system that produces a fair number, this record is how I deliver it.\n- [Career Conversations](career-conversations.html) — the broader conversation about motivation and growth this journal covers; compensation is one specific, high-stakes instance of it.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs how I and every manager reporting to me prepare for and deliver compensation outcomes — not how those outcomes are calculated. I revisit it whenever my company's compensation philosophy or timeline changes materially, whenever a comp cycle surfaces conversations that went badly for preventable reasons, or whenever I notice managers treating the outcome as something to communicate rather than something to own.\n\n## Authoritative References\n\n- Claire Hughes Johnson, *Scaling People: Tactics for Management and Company Building* (Stripe Press, 2023) — the companion workbooks, \"Compensation Conversations Preparation and Guide\" (Chapter 5 exercises and templates).\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "6 min read"}, "blocks": [{"type": "markdown", "content": "*The working tool behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Timeline and resources\n\n- [ ] Outline the company's compensation timeline (cycle dates, decision dates, communication dates)\n- [ ] Link to fact pages or reference material about the compensation program\n- [ ] Link to manager education guides on compensation\n- [ ] Confirm I understand and can explain the compensation philosophy myself before I try to explain it to anyone else\n\n## 2. Prepare at the individual level (per person)\n\n| Field | Notes |\n| --- | --- |\n| Career stage | |\n| Date of last uplevel | |\n| Size of last increase | |\n| Likely expectation this cycle | |\n| How the outcome will land against that expectation | |\n\n- [ ] Think through each person's story: career stage, date of last uplevel, size of last increase\n- [ ] Gauge what the person may be expecting based on that history\n- [ ] Anticipate whether this cycle's outcome will align with, exceed, or disappoint that expectation\n\n## 3. Be prepared to own the message\n\n- [ ] Come ready to move flexibly — teaching, active listening, congratulating, or working through a tough message\n- [ ] If there's a promotion or increase: celebrate it, and name the specific impact and behaviors that earned it\n- [ ] Do not set the expectation that the same increase repeats every cycle\n- [ ] If expectations are misaligned: expect an emotional reaction — money is personal\n- [ ] Own the result, even when the message is difficult or disappointing\n- [ ] Empathize and listen — but do not apologize for the outcome\n- [ ] Do not promise a future outcome I can't guarantee\n- [ ] Where useful, tie the outcome to performance or to how the program itself is designed\n- [ ] Communicate even when there is no change in compensation\n- [ ] If I don't know the answer to a question: say so, and commit to circling back with more information\n\n## 4. Run the conversation — Phase 1: Check for understanding\n\n- [ ] Ask whether the person has reviewed and understands the compensation philosophy\n- [ ] If the answer is no, take a moment to explain it and point them to resources\n- [ ] Answer any questions they raise\n- [ ] If unsure of an answer, commit to coming back with one at a later date\n\n## 5. Run the conversation — Phase 2: Describe the outcome\n\n- [ ] Remind them of their current compensation\n- [ ] Share or affirm their base salary for the coming year\n- [ ] If there's an increase: celebrate it and point to the critical work and positive trajectory behind it\n- [ ] If there's no change: refer back to the program design and, if appropriate, tie the outcome to performance and the development areas you're working on together\n- [ ] Share their target bonus for the coming year\n- [ ] If there's a change to the bonus target, highlight it\n\n## 6. Run the conversation — Phase 3: Open it up for discussion\n\n- [ ] Create space for questions\n- [ ] Move with the conversation — congratulations, or working through concerns, as needed\n- [ ] Reinforce that I value their contributions to the company and the team\n\n## 7. After the conversation\n\n- [ ] Note any open question I owe a follow-up on, and close the loop by the date I committed to\n- [ ] Record what was discussed for my own continuity into the next cycle\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Compensation is never \"the system decided\" — it is mine to prepare and mine to own, in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NOA: an earnest first-time people manager, short wavy hair, rolled-up shirt sleeves, carries a clipboard with a long checklist.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Noa stares at a pay stub with an unexplained number while a faceless system icon looms behind her.](assets/images/compensation-conversations/comic-01-unexplained-number.jpeg)\n**Panel 1:** *The hook: a number on a pay stub with no one behind it is not a compensation conversation.*\n\n![Comic panel: a manager points at a large box labeled THE SYSTEM instead of speaking to Noa directly.](assets/images/compensation-conversations/comic-02-the-system-decided.jpeg)\n**Panel 2:** *The problem: a manager who hides behind the process never really delivers the message.*\n\n![Comic panel: Vera winces as Noa learns someone's career history from their reaction, with no notes in hand.](assets/images/compensation-conversations/comic-03-guessing-in-the-room.jpeg)\n**Panel 3:** *The wrong way: learning a person's story from their face instead of before you sit down.*\n\n![Comic panel: Vera taps four prep fields on Noa's clipboard — career stage, last uplevel, last increase, likely expectation.](assets/images/compensation-conversations/comic-04-individual-prep-fields.jpeg)\n**Panel 4:** *The tool: career stage, last uplevel, last increase, likely expectation — prepared person by person.*\n\n![Comic panel: Noa walks through three doorways labeled UNDERSTAND, OUTCOME, DISCUSS in order.](assets/images/compensation-conversations/comic-05-three-phase-outline.jpeg)\n**Panel 5:** *How it runs: understanding, then the outcome, then the discussion — the same order every time.*\n\n![Comic panel: Vera holds a sticky note reading I DON'T KNOW YET and circles a follow-up date on a calendar.](assets/images/compensation-conversations/comic-06-say-i-dont-know.jpeg)\n**Panel 6:** *The mechanic: 'I don't know' plus a real date beats a confident guess about someone's pay.*\n\n![Comic panel: Vera sits steadily with a disappointed Noa, maintaining eye contact, not apologizing.](assets/images/compensation-conversations/comic-07-own-it-dont-soften-it.jpeg)\n**Panel 7:** *The cost: staying in the room through disappointment, without apologizing or over-promising.*\n\n![Comic panel: Noa delivers a comp outcome to a colleague in person, with the system box small and off to the side.](assets/images/compensation-conversations/comic-08-trust-earned-in-person.jpeg)\n**Panel 8:** *The closer: trust is built one conversation at a time, delivered in person, never outsourced.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

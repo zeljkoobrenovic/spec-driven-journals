@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Self-Awareness</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded People Management Tools</a><span class="nav-right"><a class="nav-prev" href="management-prerequisites.html" title="Management Prerequisites">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="operating-principles.html" title="Operating Principles">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Management Foundations</p>
+        <h1>Self-Awareness</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  7 min · <a class="spec-link" href="self-awareness.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/self-awareness/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/self-awareness/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded People Management Tools</a><span class="nav-right"><a class="nav-prev" href="management-prerequisites.html" title="Management Prerequisites">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="operating-principles.html" title="Operating Principles">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PPL-SELF-AWARENESS", "status": "draft:gray", "title": "Self-Awareness", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "self-awareness", "timetoread": "7 min", "excerpt": "Management quality is downstream of self-awareness, so this toolkit starts with me. Before I ask anyone to accept my management, I do the work in writing: my three core values with their trade-offs, not just their virtues; my work style placed honestly on the introvert–extrovert and task–people axes; my strengths broken into what is innate and what I acquired. A manager who has not written this down is asking people to work for a stranger.", "tags": "people management, self-awareness, values, work style, strengths, management tools", "icon": "assets/icons/self-awareness.png", "logo": "assets/images/self-awareness/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["people management", "self-awareness", "values", "work style", "strengths", "management tools"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Management quality is downstream of self-awareness, so I do this work on myself first, in writing, before I ask anyone to accept my management. I know my three core values — narrowed from ten, not picked to flatter — and I have written down not only the good work they produce but the trade-offs they cost the people around me. I know where I sit on the introvert–extrovert and task–people axes, at home and at work, and which strengths of mine are innate versus acquired. Only after that written self-audit do I earn the right to manage anyone else's.\n\n## Statement\n\nMy operating model for self-awareness has five parts:\n\n- **I do the work on myself first.** Every tool in this journal — charters, reviews, feedback, hiring — assumes a manager who knows what they value, how they work, and where they are strong. I run these exercises on myself before I point any instrument at my team, and I redo them when my role changes.\n- **I narrow my values until they hurt.** Using the six-step exercise the workbook adapts from Stan Slap, I imagine myself at 80 reflecting on my career, list the ten values represented in that fulfilled life, cut to five, then to three. Ten values is a mood board; three is an identity.\n- **I write the trade-offs, not just the virtues.** For each core value I record the work activities it drives, the positive outcomes it produces, *and* what it costs — valuing excellence means high-quality work, and it also means missed deadlines and trouble sacrificing quality when the situation warrants it. A values list without the trade-offs column is self-marketing.\n- **I place my work style honestly on the 2×2.** Introvert–extrovert on one axis, task-oriented–people-oriented on the other: Analyzer, Director, Collaborator, Promoter. I place myself twice — at-home preferences and at-work behavior — because the gap between the two placements is itself information about the energy my job costs me.\n- **I split my strengths into innate and acquired.** For each strength I separate the skills and capabilities I was born with from the ones I built. What is innate I can lean on anywhere; what is acquired tells me — and the people I coach — that the rest can be built too.\n\n![Diagram showing a pipeline: values narrowing from ten to five to three, feeding into a work-style grid and a strengths split, ending in a written notebook.](assets/images/self-awareness/self-awareness-pipeline.jpeg)\n**Figure 1:** *The self-awareness tool has one shape: narrow the values, place the work style, split the strengths — and write all of it down.*\n\n## How to Read This\n\nThis journal is my people-management toolkit: first-person records, each one grounded in a named tool from the companion workbooks to Claire Hughes Johnson's *Scaling People* (Stripe Press, 2023), read through a practitioner-executive lens. This record covers the Chapter 1 self-awareness exercises — \"Understand Your Values\" (adapted from an exercise by Stan Slap), the values worksheet, the articulate-your-values template, the work-style grid, and \"Identify your strengths.\" The workbook offers them to any reader; I read them as the entry ticket to managing people in my organization, starting with me. The runnable tool lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Everything I do as a manager is filtered through who I am, so the filter must be documented.** My values decide what I praise and what I quietly deprioritize; my work style decides which meetings energize me and which people I unconsciously avoid; my strengths decide what I model well and what I model badly. If I have not examined the filter, my team experiences my unexamined preferences as policy. The workbook's move is to make the filter explicit and written — and writing is the operative word, because a value I cannot put in a worksheet row is a value I do not actually hold.\n\n**The narrowing is the exercise.** The six steps are deliberate: imagine myself at 80 asking what in my work life gave me fulfillment and meaning, write down the ten core values represented in that life, narrow to five, then to three. Anyone can hold ten values; the list only becomes true when I am forced to cut seven of them. The 80-year-old framing matters too — it asks what gave my life meaning, not what looks good on a slide this quarter. The three values that survive that cut are the ones my team is already living with, whether I have named them or not.\n\n**The trade-offs column is where self-awareness starts.** The workbook's sixth step is the one most managers skip: after recording each value's activities and positive outcomes, reflect on the trade-offs. Excellence delivers high-quality work — and often misses deadlines, and struggles to sacrifice quality even when a specific situation warrants it. Every value I hold taxes someone on my team. Writing the tax down is the difference between self-awareness and self-congratulation, and it is what makes the later conversation — \"here is what working with me costs, and here is what you get for it\" — honest rather than performative.\n\n![Side-by-side comparison of a three-column values worksheet flagged as incomplete versus a four-column worksheet with a trade-offs column filled in.](assets/images/self-awareness/trade-offs-column-contrast.jpeg)\n**Figure 2:** *A values worksheet with only activities and outcomes is self-marketing. The fourth column, trade-offs, is what makes it self-awareness.*\n\n**Values become usable when they carry a story.** The articulate-your-values template forces three columns per value: the value, why it matters to me, and an example story of it appearing in my life — the workbook's own example is a person who valued impact and skipped law school after realizing business leaders had more influence on economic well-being and policy. The why makes the value mine rather than borrowed; the story makes it verifiable. A value I can name but not narrate is an aspiration, not a value — and stories are what a team can actually remember and test me against.\n\n**Work style and strengths tell me what my management will feel like to others.** The 2×2 — Analyzer (introvert, task-oriented), Director (extrovert, task-oriented), Collaborator (introvert, people-oriented), Promoter (extrovert, people-oriented) — is not a personality verdict; it is a prediction of my defaults under load, and the at-home versus at-work placement shows me where I am spending energy to act against type. The strengths exercise completes the picture: for each strength, which skills and capabilities are innate and which are acquired. Communication as a strength decomposes into innate skills like listening well and acquired ones like public speaking and memo writing. That decomposition keeps me humble about what was given and precise about what can be taught.\n\n![A 2x2 work-style grid with quadrants Analyzer, Director, Collaborator, Promoter, showing two markers, home and work, placed apart with a dashed line between them.](assets/images/self-awareness/work-style-quadrant-map.jpeg)\n**Figure 3:** *The same person, placed twice. The gap between the home marker and the work marker is itself information.*\n\n**A team that shares this work finds its mission.** The workbook notes the values worksheet also runs as a group exercise: each person shares their three key values and the stories behind them in small groups, and the team homes in on the three values it shares — which can become the team's mission. Self-awareness scales: the same instrument that keeps me honest as an individual gives a leadership team a vocabulary for what it collectively refuses to trade away.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| I narrow my values to three and can defend each cut. | Three values are permanent — I redo the exercise when life or role changes the answer at 80. |\n| Every value gets a trade-offs entry, written down. | My trade-offs are excuses — naming a cost is the start of managing it, not a license to bill it to my team. |\n| I place my work style on the 2×2, at home and at work. | The quadrant is my ceiling — Analyzer, Director, Collaborator, Promoter are defaults to manage, not boxes to live in. |\n| I split strengths into innate and acquired. | Innate means untouchable — the acquired column is proof that most of the job can be learned. |\n| The exercises can run as a team to find shared values. | I impose my three values on the team — shared values are discovered in the group exercise, not decreed. |\n| This written self-work precedes managing anyone. | The write-up is public in full — what I publish is the digest ([Working with Me](working-with-me.html)); the raw worksheets are mine. |\n\n## Anti-Patterns\n\n- **The aspirational values list.** Ten flattering words chosen for how they sound in a town hall, none of which survive the cut to three or come with a story. Values selected for the audience are branding, not self-awareness.\n- **The missing trade-offs column.** Positive outcomes lovingly documented, costs omitted. The manager who cannot name what their excellence or drive costs the team has done half the exercise and kept the flattering half.\n- **The unexamined filter.** Managing for years on undocumented preferences and calling the result \"my style.\" The team pays the tuition for every insight the manager never wrote down.\n- **The quadrant as identity.** \"I'm a Director, deal with it\" — using the 2×2 as a permission slip instead of a map of defaults to compensate for. The grid predicts my failure modes precisely so I can manage them.\n- **Skipping the at-home placement.** Only mapping the work self and missing the gap between the two placements — the clearest written signal of where the role is draining energy and where burnout will come from.\n- **Doing it once, at promotion.** Treating self-awareness as an onboarding form rather than a living record. The answers at 80 change as I do; a five-year-old worksheet describes a manager who no longer exists.\n\n## Related Records\n\n- [Management Prerequisites](management-prerequisites.html) — the gate this record feeds: the self-work here is part of what qualifies anyone, including me, to manage.\n- [Working with Me](working-with-me.html) — the published digest of this private work; colleagues get the user guide, this record is the source material.\n- [Operating Principles](operating-principles.html) — my management principles; they are only honest because the values and trade-offs here were written first.\n- [Career Conversations](career-conversations.html) — the same 80-year-old, values-first lens turned toward the people I manage.\n- [Organizational Values](../grounded-engineering-executive/organizational-values.html) — the engineering-executive record on values for an organization; the team version of this worksheet is where the two meet.\n- [Leadership Styles](../grounded-engineering-executive/leadership-styles.html) — the engineering-executive record on flexing between styles; the 2×2 here tells me which flexes cost me energy.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs the written self-awareness work I maintain on myself — values with trade-offs, work-style placement, strengths breakdown — and the group form of the values exercise I run with leadership teams. I will revise it when I redo the exercises after a significant role change and the outputs shift, when running the team version surfaces a mechanic the record misses, or when a report's feedback shows my written self-assessment and my observed behavior have drifted apart.\n\n## Authoritative References\n\n- Claire Hughes Johnson, *Scaling People: Tactics for Management and Company Building* (Stripe Press, 2023) — the companion workbooks, Chapter 1 exercises and templates this record is grounded in.\n- Stan Slap, *Bury My Heart at Conference Room B* — the values exercise the workbook adapts, and the full list of 50 example values the workbook samples.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "7 min read"}, "blocks": [{"type": "markdown", "content": "*The working tool behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Understand your values (adapted from an exercise by Stan Slap)\n\n- [ ] Imagine yourself at 80 years old, reflecting on your career\n- [ ] Ask: what in my work life gave me a sense of fulfillment and meaning?\n- [ ] Write down the 10 core values represented in that imagined, fulfilled life\n- [ ] Narrow the list to 5 values\n- [ ] Narrow the list to 3 values\n- [ ] If working with a group, discuss your 3 values and why you chose them\n- [ ] For each of the 3 values, write the activities that give you a sense you're living it\n- [ ] For each value, reflect on the positive outcomes it produces\n- [ ] For each value, reflect on the trade-offs it costs — not just the upside\n- [ ] Redo the exercise when a role or life change would shift the answer at 80\n\n## 2. Example values (a sample from Stan Slap's *Bury My Heart at Conference Room B*)\n\nUse this table for inspiration when naming your own 10 — the book lists 50 in full.\n\n| My Value | One Definition |\n| --- | --- |\n| Accomplishment | Succeeding in reaching your goals |\n| Advancement | Progress, promotion, improvement |\n| Adventure | Taking risks, new experiences |\n| Affection | Love, deep friendship |\n| Altruism | Helping those who cannot help themselves |\n| Balance | Calm, moderation, perspective |\n| Commitment | Dedication to cause, satisfaction in obligation |\n| Compassion | Empathy, tolerance, and understanding of others |\n\n- [ ] Skim the full 50-value list in *Bury My Heart at Conference Room B* before finalizing your 10\n- [ ] Prefer a precise value name over a vague one — check it against a one-line definition\n\n## 3. Values worksheet — value, activities, outcomes, trade-offs\n\nComplete one row per core value (3–10 rows, narrowing toward the final 3).\n\n| # | Value | Work Activities | Positive Outcomes | Trade-Offs |\n| --- | --- | --- | --- | --- |\n| 1 | | | | |\n| 2 | | | | |\n| 3 | | | | |\n| 4 | | | | |\n| 5 | | | | |\n| 6 | | | | |\n| 7 | | | | |\n| 8 | | | | |\n| 9 | | | | |\n| 10 | | | | |\n\n- [ ] Fill Work Activities: what you actually do because you hold this value\n- [ ] Fill Positive Outcomes: what the value produces when it's working\n- [ ] Fill Trade-Offs: what the value costs — even when it's working as intended\n- [ ] Do not leave the Trade-Offs column blank for any row — a value without a cost is unexamined, not perfect\n\n### Running this as a team\n\n- [ ] Have each person complete their own worksheet and narrow to their top 3\n- [ ] Share the 3 values and stories in small groups\n- [ ] Have individuals share their stories with the larger group\n- [ ] Look for the values the team shares in common\n- [ ] Home in on 3 shared values as a team\n- [ ] Consider whether those 3 shared values can become the team's mission\n\n## 4. Articulate your values — personal value, why, example story\n\n| Personal Value | Why | Example Story |\n| --- | --- | --- |\n| *Example: Impact* | *Example: I am not motivated unless I believe my work matters, both immediately and in the big picture. My parents raised me to care about the world around me.* | *Example: I decided not to attend law school when I realized the business leaders I met had more impact and influence on economic well-being and policy.* |\n| 1. | | |\n| 2. | | |\n| 3. | | |\n\n- [ ] Name each value in one or two words\n- [ ] Write why it matters to you — not why it should matter to others\n- [ ] Write one concrete story where the value visibly shaped a real decision\n- [ ] Check that the story is specific enough that someone else could retell it\n- [ ] Confirm the 3 values here match the 3 that survived the narrowing in section 1\n\n## 5. Consider your work style preferences\n\n- [ ] Place yourself on the grid below, thinking about your actual behavior, not your ideal self\n- [ ] Axis 1 — introvert (left) to extrovert (right)\n- [ ] Axis 2 — people-oriented (bottom) to task-oriented (top)\n- [ ] Identify your quadrant: **Analyzer** (introvert, task-oriented), **Director** (extrovert, task-oriented), **Collaborator** (introvert, people-oriented), or **Promoter** (extrovert, people-oriented)\n- [ ] Place yourself once for your \"at-home\" preferences\n- [ ] Place yourself again for your \"at-work\" preferences\n- [ ] Compare the two placements — note any gap between them\n- [ ] Treat a gap as a signal of where the role is costing you energy, not an error to correct\n\n| | Introvert | Extrovert |\n| --- | --- | --- |\n| **Task-oriented** | Analyzer | Director |\n| **People-oriented** | Collaborator | Promoter |\n\n## 6. Identify your strengths\n\n- [ ] List your strengths — the things you're best at (example: *Communication*)\n- [ ] For each strength, break down the underlying skills and capabilities into innate vs. acquired\n\n| Strength | | |\n| --- | --- | --- |\n| *Example: Communication* | | |\n\n| Skills | Innate | Acquired |\n| --- | --- | --- |\n| *Example* | Listening well and speaking clearly; fast writer | Public speaking; speech and memo writing |\n| Your strength | | |\n\n| Capabilities | Innate | Acquired |\n| --- | --- | --- |\n| *Example* | Rapid information processing and analytical abilities | Ability to synthesize and summarize complex information in a simple way for broad distribution (e.g., marketing) |\n| Your strength | | |\n\n- [ ] Repeat the skills/capabilities breakdown for each strength you listed\n- [ ] Note which acquired skills you could teach or coach — proof they can be built, not just born\n\n## 7. Keep the record current\n\n- [ ] Store the completed values worksheet, articulate-your-values template, work-style placement, and strengths breakdown somewhere you'll actually revisit\n- [ ] Redo the full exercise set after any significant role change\n- [ ] Compare a new pass against the previous one — note what moved and what didn't\n- [ ] Before publishing a \"working with me\" style digest for colleagues, check it against this raw self-work for consistency\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Management quality is downstream of self-awareness — the first tool I run on myself, in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NOA: an earnest first-time people manager, short wavy hair, rolled-up shirt sleeves, carries a clipboard with a long checklist.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Noa looks uneasily at a closed office door labeled MANAGER, holding her clipboard.](assets/images/self-awareness/comic-01-a-stranger-manages-me.jpeg)\n**Panel 1:** *A manager who has not written down who they are is asking people to work for a stranger.*\n\n![Comic panel: Noa studies a wall of mood-labeled sticky notes with no explanations, looking puzzled.](assets/images/self-awareness/comic-02-undocumented-preferences.jpeg)\n**Panel 2:** *An unexamined filter isn't neutral — the team experiences it as policy.*\n\n![Comic panel: Vera holds up a shiny poster of ten glowing value words while shaking her head.](assets/images/self-awareness/comic-03-the-flattering-list.jpeg)\n**Panel 3:** *Ten flattering words is a mood board, not self-awareness.*\n\n![Comic panel: Vera writes a shrinking sequence 10 to 5 to 3 on a whiteboard beside a small rocking-chair sketch labeled AGE 80.](assets/images/self-awareness/comic-04-narrow-until-it-hurts.jpeg)\n**Panel 4:** *Imagine yourself at 80, list ten values that gave that life meaning, narrow to five, then three.*\n\n![Comic panel: Noa fills in a four-column worksheet labeled Value, Activities, Outcomes, Trade-Offs on her clipboard.](assets/images/self-awareness/comic-05-noa-runs-the-worksheet.jpeg)\n**Panel 5:** *The worksheet has four columns: value, activities, positive outcomes, and trade-offs.*\n\n![Comic panel: a 2x2 grid labeled Analyzer, Director, Collaborator, Promoter with two marker dots, HOME and WORK, placed apart.](assets/images/self-awareness/comic-06-quadrant-twice.jpeg)\n**Panel 6:** *Analyzer, Director, Collaborator, Promoter — placed once at home, once at work. The gap is the signal.*\n\n![Comic panel: Noa winces while writing in the trade-offs column under the value Excellence, a missed-deadline calendar in a thought bubble.](assets/images/self-awareness/comic-07-the-cost-of-excellence.jpeg)\n**Panel 7:** *Every value taxes someone. Writing the tax down is the cost — and the point.*\n\n![Comic panel: Noa confidently walks through the office door from panel one, holding her completed worksheet, as Vera nods beside her.](assets/images/self-awareness/comic-08-i-earn-the-right.jpeg)\n**Panel 8:** *Only after the written self-audit do I earn the right to manage anyone else's.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Unblocking Process</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded People Management Tools</a><span class="nav-right"><a class="nav-prev" href="leadership-team-updates.html" title="Leadership Team Updates">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="performance-reviews.html" title="Performance Reviews">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Team Development</p>
+        <h1>The Unblocking Process</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  8 min · <a class="spec-link" href="unblocking-process.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/unblocking-process/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/unblocking-process/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded People Management Tools</a><span class="nav-right"><a class="nav-prev" href="leadership-team-updates.html" title="Leadership Team Updates">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="performance-reviews.html" title="Performance Reviews">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PPL-UNBLOCKING-PROCESS", "status": "draft:gray", "title": "The Unblocking Process", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "unblocking-process", "timetoread": "8 min", "excerpt": "I do not let a stuck disagreement rot in silence or get settled by whoever outlasts whoever. When two people or teams have genuinely tried to agree and can't, I treat instigating a resolution as their duty, not their failure. Most decisions are reversible and should be made fast and iterated on; the rare important, hard-to-reverse ones that stall get a short co-written disagreement document and a five-business-day escalation path, bilateral by default and fair even when it goes unilateral.", "tags": "people management, decision making, escalation, conflict resolution, unblocking, organizational design", "icon": "assets/icons/unblocking-process.png", "logo": "assets/images/unblocking-process/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["people management", "decision making", "escalation", "conflict resolution", "unblocking", "organizational design"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: A stuck disagreement is not a personal failure to hide — it is my duty to instigate its resolution the moment I notice it. Most decisions are reversible, so I optimize for speed and iterate rather than debate to a standstill. For the rare decision that is genuinely important, hard to reverse, and stalled after real effort, I run a fixed mechanism: a short, co-written disagreement document, escalated by email to both managers within five business days, bilateral by default and unilateral only after I have invited my counterpart twice. Slow, unclear, or unilateral decisions are the actual failure this process exists to prevent.\n\n## Statement\n\nMy operating model for unblocking has five parts:\n\n- **Solve locally first.** The overwhelming majority of decisions are reversible or tunable. For those, I optimize for speed: decide, ship, iterate. I ask myself two questions before escalating anything — does this really matter, and can the people doing the bulk of the work move forward on a path the dissenters can commit to, even if it isn't their first choice?\n- **Escalation is a duty, not a defeat.** When a decision is genuinely important, hard to reverse, and a real disagreement has stalled after both parties tried in good faith, instigating the unblocking process is my obligation — not an admission that I failed to resolve it myself. Unblocking is not bad; slow, unclear, or bad decisions are bad.\n- **Write the disagreement down, together.** The two parties co-author a short document — half a page — that frames the problem as their shared goal in the user's voice, lists the options considered, and states the trade-offs both sides agree are accurately described, flagging the ones neither side can resolve alone.\n- **Escalate fast, with a clock on it.** The document goes by email to both managers (or one, if the parties share a manager), who either decide together or recursively raise it to their own managers with the doc attached — \"until the stack overflows.\" The commitment is resolution within five business days of kicking the process off.\n- **Bilateral by default; unilateral only after two invitations, and never heard unchecked.** The person who wants to escalate must invite their counterpart to co-author twice before going it alone. Any manager who receives a unilateral argument must refuse to hear it until the requester can answer yes to three questions — and even then, must invite the missing colleague back in.\n\n![Diagram of the five-stage unblocking loop: solve locally, recognize duty, co-write the document, escalate on a clock, and the bilateral-then-unilateral branch.](assets/images/unblocking-process/unblocking-five-part-loop.jpeg)\n**Figure 1:** *The operating model is a loop, not a ladder: solve locally, and only the rare stuck case moves through the remaining four stages.*\n\n## How to Read This\n\nThis journal is my people-management toolkit, grounded in the companion workbooks to Claire Hughes Johnson's *Scaling People: Tactics for Management and Company Building*. This record is grounded in Stripe's Unblocking Process, a tool created by David Singleton, Stripe's CTO, read through a practitioner-executive lens: the workbook presents it as Stripe's internal mechanism for resolving decisions that individuals, groups, or teams cannot agree on despite genuinely trying; I read it as the standard I hold my organization to whenever a decision stalls, and the standard I hold myself to as the manager who eventually receives the email. The runnable tool — the escalation steps, the disagreement-document template, and the manager gate — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Most decisions should never reach this process, because most decisions should be made fast.** An organization makes thousands of decisions a day, and the vast majority are reversible or tunable. Treating every one of them as a debate to be won is how organizations grind to a halt. So the first move, always, is to ask whether a reversible decision really matters enough to fight over, and whether the people who will do the bulk of the work can move forward on a path the dissenters could still commit to, even if it isn't the path they'd have chosen. If the honest answer to either question opens a path forward, there is no need for anything more formal than that conversation. The unblocking process exists for what's left over after that filter — genuinely important, genuinely hard-to-reverse decisions where reasonable, well-intentioned people have already tried to align and still can't.\n\n![Funnel diagram showing many everyday decisions filtered by two gate questions, with most diverted to decide-and-iterate and only a few reaching the escalation process.](assets/images/unblocking-process/local-first-filter-gate.jpeg)\n**Figure 2:** *Two questions filter the flood of ordinary decisions down to the rare ones worth escalating.*\n\n**Treating escalation as a duty, not a failure, is the reframe that makes the whole thing work.** Most organizations quietly punish the person who escalates — it reads as an inability to work things out, a manager-magnet, a sign someone couldn't handle it themselves. That instinct is exactly backward: the real cost of a stuck decision is not the discomfort of asking for help, it's the ongoing cost of not deciding — lost productivity, diminished trust between the people and teams involved, and diminished happiness on both sides while the ambiguity festers. If you're blocked by a decision that isn't getting resolved, instigating the unblocking process is your duty. Naming it a duty — not a fallback, not a failure — is what gets people to use it while the disagreement is still small enough to write on half a page.\n\n**The document does its work through constraint, not length.** Half a page is the target, and that constraint is deliberate: it forces both parties to compress the disagreement down to what actually matters — the problem, stated as their joint goal in the voice of the person the decision serves; the options genuinely on the table; and the trade-offs both sides agree are fairly described, with the unresolved ones flagged rather than glossed over. Co-authoring it is what makes it trustworthy — a document written by one side and handed to the other reads as advocacy; a document both sides signed off on reads as a fair record a manager can actually decide from without re-litigating the whole history.\n\n**The five-business-day clock and the recursive escalation path are what keep this from becoming its own bureaucracy.** Once the document exists, it goes to both managers by email — a single artifact both can read in minutes, not a meeting that has to be scheduled around four calendars. If a single manager owns the call, they're expected to make it. If two managers share it, they're expected to decide together; if they can't, they escalate the same document to their own managers, adding context as needed, recursively, \"until the stack overflows.\" The clock — a decision within five business days of kicking off the process (or, when the block is a lack of data, an agreement on how to get an answer within five days of the data becoming available) — is what turns \"we'll get back to you\" into an actual commitment.\n\n**The bilateral-first design, and the manager gate behind it, is what keeps unilateral escalation rare and legitimate rather than a weapon.** The process is bilateral by default: both parties are expected to co-write the document. It can become unilateral, but only after the reluctant party has been invited to join twice and still declines — at which point the other person may proceed alone, with the reluctant party copied throughout. The mirror image of that rule is the manager gate: any manager who receives a unilateral argument must refuse to engage with it until the person answers yes to three questions — did you try constructive negotiation first, did you try co-writing the doc, and did you tell your colleague you'd bring it alone if they wouldn't join you — and even after three yeses, the manager still messages the missing colleague and invites them in. That last step is what sets the cultural norm: it is never acceptable to simply refuse to unblock jointly, and a manager who skips it is quietly endorsing that refusal.\n\n![Flow map showing the default bilateral path looping back on itself, and a thin unilateral side path gated behind two invitations and a three-question checklist before a manager will hear it.](assets/images/unblocking-process/bilateral-unilateral-manager-gate-map.jpeg)\n**Figure 3:** *Bilateral is the default loop; the unilateral path only opens after two invitations and a three-question gate — and still loops back to invite the missing colleague.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Solve locally first — most decisions are reversible; optimize for speed and iterate. | Every disagreement deserves the formal process — most never should reach it. |\n| Instigating unblocking, when warranted, is a duty. | Escalating is an admission that you or your team failed. |\n| The disagreement document is co-written, half a page, three fields. | A longer document, or one written by one side and handed to the other, is more persuasive — it is less trustworthy, not more. |\n| Escalation carries a five-business-day resolution clock. | The clock is a suggestion — it is the commitment both managers are held to. |\n| Unblocking is bilateral by default; unilateral only after two invitations. | Going straight to your manager alone, uninvited, is a normal first move. |\n| Managers must run the three-question gate before hearing a unilateral case, and still invite the missing colleague. | A manager who hears a one-sided argument without checking these boxes is just doing their job. |\n\nConcretely: nobody on my teams should be sitting on a stalled, important, hard-to-reverse decision for more than a few days without either resolving it locally or having a disagreement document in an inbox. Any manager who receives a unilateral escalation runs the three-question gate before engaging, and messages the missing colleague regardless of the answers. My own standard is that \"we couldn't agree, so nothing happened\" is never an acceptable end state on my watch.\n\n## Anti-Patterns\n\n- **Escalation as shame.** Treating the person who raises an unresolved disagreement as the one who \"couldn't handle it,\" which teaches everyone to let stuck decisions rot instead of surfacing them.\n- **Debating reversible decisions to a standstill.** Spending days arguing over a call that could have been made, shipped, and iterated on in an afternoon.\n- **The one-sided memo.** A document written by one party alone and presented to a manager as though it were a shared account — it reads as advocacy, not evidence, and forces the manager to relitigate what actually happened.\n- **The open-ended escalation.** Raising an issue to a manager with no clock and no expectation of resolution, so it joins a backlog of ambiguity that never clears.\n- **Going unilateral on the first try.** Skipping the two invitations to co-author and taking a stuck decision straight to a manager alone, unannounced.\n- **The manager who skips the gate.** Hearing a unilateral argument without asking whether constructive negotiation and the joint document were actually tried — and rewarding whoever escalates first rather than whoever engaged in good faith.\n- **The manager who gates but doesn't invite.** Getting three honest yeses and still failing to loop the missing colleague back in — quietly normalizing \"unblock jointly\" as optional.\n\n## Related Records\n\n- [Leadership Team Updates](leadership-team-updates.html) — the update cadence that surfaces a stuck decision before it festers long enough to need this process.\n- [Operating Principles](operating-principles.html) — the written culture this process is one concrete mechanism for; \"disagree and commit\" only means something if there's a fair, fast path to the commit.\n- [Internal Communication](../grounded-engineering-executive/internal-communication.html) — the engineering-journal record on how information and disagreement should move across a team; unblocking is the mechanism for when that flow genuinely stalls.\n- [Team Charter](team-charter.html) — a team's mission and decision rights; disputes about who owns a call are exactly the kind of thing the disagreement document should surface early.\n- [Managing Underperformance](managing-underperformance.html) — a different escalation path entirely; that record concerns a person's performance, this one a stuck decision between good-faith parties.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs how I expect stuck, important, hard-to-reverse decisions to get resolved across my organization — the local-first filter, the disagreement document, the escalation clock, and the bilateral/unilateral rules and manager gate that keep escalation fair. I will revise it if the five-business-day clock proves wrong for my organization's scale, if managers start treating the gate as a formality rather than a real check, or if I see the process being reached for on decisions that were actually reversible and should have been solved locally.\n\n## Authoritative References\n\n- Claire Hughes Johnson, *Scaling People: Tactics for Management and Company Building* (Stripe Press, 2023) — the companion workbooks' \"Stripe's Unblocking Process\" exercise (Chapter 4), crediting the process to David Singleton, Stripe's CTO.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "6 min read"}, "blocks": [{"type": "markdown", "content": "*The working tool behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. First, try to solve locally\n\n- [ ] Confirm the decision is reversible or tunable — most are\n- [ ] For reversible decisions, optimize for speed: decide and iterate\n- [ ] Ask: does this really matter? Will time and iteration get to a good endpoint either way?\n- [ ] Ask: can the people doing the bulk of the work move forward on a path the dissenters could commit to, even if it isn't their first choice?\n- [ ] If yes to either, resolve locally — do not escalate\n- [ ] Recognize when a decision is a multi-constituency call that is important and not easily reversed — some debate time is warranted here\n- [ ] If debate does not quickly produce a decision, kick off the unblocking process\n\n## 2. Know when instigating is your duty\n\n- [ ] Remember: unblocking is not bad — slow, unclear, or bad decisions are bad\n- [ ] For meaningful, irreversible decisions, involve people responsible from \"both sides\" rather than let the decision hinder forward progress or move in the wrong direction\n- [ ] Recognize the real cost of staying blocked: lost productivity and diminished happiness on both sides\n- [ ] If you are blocked by an unresolved decision, treat instigating this process as your duty\n- [ ] Commit to resolving the issue within five business days of kicking off the process\n- [ ] If the block is a lack of data, commit instead to agreeing how to answer within five days of the data becoming available\n\n## 3. Document the disagreement together\n\n- [ ] Co-write one short document with the other party — half a page is enough\n- [ ] Field: the problem to be solved, described as the goal of the joint enterprise, in the voice of the user\n- [ ] Field: the options considered\n- [ ] Field: the trade-offs both parties see between the options\n- [ ] Within the trade-offs, highlight the ones that could not be resolved without further help\n- [ ] If writing the document produces agreement on its own, stop here — no escalation needed\n\n## 4. Escalate the document\n\n- [ ] If the document does not resolve the disagreement, email it to your managers\n- [ ] If the two authors report to different managers, send it to both managers\n- [ ] Expect the managers to decide together, or to call a meeting if needed\n- [ ] If escalating to a single manager, expect them to make the decision\n- [ ] If escalating to multiple managers, expect them to decide together\n- [ ] If the managers cannot agree, expect them to raise the issue with their own respective managers recursively — adding context to the doc as needed — until a decision is reached (or the stack overflows)\n\n## 5. Keep it bilateral by default\n\n- [ ] Default to co-authoring and co-escalating the document together\n- [ ] If one party declines to unblock jointly, inform them you will do it alone\n- [ ] Invite the other party once again to bring the matter up together before going alone\n- [ ] Only after the reluctant party continues to refuse, unblock unilaterally, copying the other party throughout\n\n## 6. Recognize a unilateral request when you see one\n\n- [ ] Check: are you raising an issue with a manager that you know or suspect the other party disagrees with?\n- [ ] Check: might their feedback be presented as a decision to that person or group without them present?\n- [ ] If yes to both, treat it as a request to unblock unilaterally\n- [ ] The other party should be present for the discussion whenever possible\n\n## 7. Manager gate: the three questions before hearing a unilateral case\n\n- [ ] Question 1 — Have you and your colleague tried to resolve this using constructive negotiation? If no, send them back to try that first.\n- [ ] Question 2 — Have you tried the unblocking process and written the disagreement document with your colleague? If no, send them back to do that first.\n- [ ] Question 3 — Did you tell your colleague that if they didn't use the unblocking process, you would bring the problem to the manager alone? If no, send them back to tell the colleague first.\n- [ ] Only proceed once all three answers are yes\n- [ ] Even with three yeses, message the missing colleague and ask them to attend\n- [ ] Hold the line: it is not acceptable to refuse to unblock jointly — this is the cultural norm the gate exists to protect\n\n## 8. Worked example fields (fictional Charlie/Alice case)\n\n- [ ] Situation: Charlie (widget team) and Alice (storage team) report to different managers (Chun and Aiden), who share a manager (Bharath)\n- [ ] Trigger: Charlie needs encryption at rest for new PII storage; Alice's team has it on their roadmap but not yet built; the two disagree on whether the widget team should build its own storage layer to hit a two-month launch deadline\n- [ ] Step 1 — Charlie raises the disagreement with his manager, Chun, who asks whether constructive negotiation was tried; Charlie confirms it was, so Chun points him to the escalation process\n- [ ] Step 2 — Charlie and Alice co-write the disagreement document, framing it around the shared question \"what are we really trying to do?\"\n\n**Escalation document template (adapt per disagreement):**\n\n| Field | Content |\n| --- | --- |\n| Title | Name the alignment decision, e.g. \"\\<Team\\> alignment model\" |\n| Authors | Each author, with their team |\n| Date | Date the document was written |\n| Goal | The shared objective, stated in the user's voice, e.g. \"Deploy a system that meets \\<requirement\\> in a timely fashion.\" |\n| Decision sought | The precise question to be resolved, with the relevant deadline |\n| Options considered | Each option, labeled A, B, C… |\n| Trade-offs | Per option: the case for it and who contributed which points; flag where the authors could not agree |\n\n- [ ] Step 3 — Charlie and Alice jointly email the document to both managers (Chun and Aiden)\n- [ ] Step 4 — the managers meet, review the document, ask clarifying questions, and edit it for completeness\n- [ ] Step 5 — if the managers still can't agree, they escalate the same document to their shared manager (Bharath), with both original authors copied — treat this as the exception, not the norm\n- [ ] Step 6 — the deciding manager reviews the document, makes the call, and documents the rationale in reply to the escalation email\n- [ ] Step 7 — everyone involved commits to following the resulting course\n\n## 9. Close the loop\n\n- [ ] Confirm the decision and rationale are written down, not just spoken\n- [ ] Confirm both original parties have committed to the resulting course\n- [ ] Confirm the resolution happened within the five-business-day window (or the data-driven equivalent)\n- [ ] Note anything about the process itself worth improving before the next disagreement\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "A stuck disagreement is not a personal failure to hide — it's a duty to unblock, in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NOA: an earnest first-time people manager, short wavy hair, rolled-up shirt sleeves, carries a clipboard with a long checklist.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Noa sits beside a cobwebbed locked door labeled DECISION, clipboard on her lap.](assets/images/unblocking-process/comic-01-stuck-in-silence.jpeg)\n**Panel 1:** *The hook: a stuck disagreement doesn't disappear — it just goes quiet.*\n\n![Comic panel: Noa hides her clipboard behind her back near a manager's door marked with a red X.](assets/images/unblocking-process/comic-02-escalation-as-shame.jpeg)\n**Panel 2:** *The problem: most teams treat escalating as an admission of failure.*\n\n![Comic panel: Vera and Noa stand exhausted on either side of a whiteboard full of crossed-out arguments, a fast-spinning clock behind them.](assets/images/unblocking-process/comic-03-debate-to-a-standstill.jpeg)\n**Panel 3:** *The wrong way: arguing a reversible call to a standstill instead of shipping and iterating.*\n\n![Comic panel: Vera holds up a notebook page reading UNBLOCKING = DUTY as Noa stands up straighter.](assets/images/unblocking-process/comic-04-duty-not-defeat.jpeg)\n**Panel 4:** *The principle: instigating the unblocking process is a duty, not a defeat.*\n\n![Comic panel: Noa and a colleague from another team co-write a half-page document with three short fields.](assets/images/unblocking-process/comic-05-half-page-together.jpeg)\n**Panel 5:** *How it runs: both parties co-write one half-page document — goal, options, trade-offs.*\n\n![Comic panel: Vera sends the document to two managers by email under a wall clock counting down five marked days.](assets/images/unblocking-process/comic-06-five-day-clock.jpeg)\n**Panel 6:** *The mechanic: one email to both managers, a five-business-day clock starts ticking.*\n\n![Comic panel: Noa holds up two fingers knocking on a door while Vera stands arms crossed behind a gate with three checkboxes.](assets/images/unblocking-process/comic-07-invite-twice-then-gate.jpeg)\n**Panel 7:** *The cost: unilateral only after two invitations — and managers must run the gate before listening.*\n\n![Comic panel: Vera and Noa shake hands over a document stamped DECIDED, with the once-locked door now open behind them.](assets/images/unblocking-process/comic-08-decided-and-documented.jpeg)\n**Panel 8:** *The closer: a decision, written down and committed to, beats a disagreement left to rot.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>
