@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Managing Remote Teams</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="managing-downturn.html" title="Managing a Downturn">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="competent-software-engineer.html" title="The Competent Software Engineer">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">The Making of a Manager</p>
+        <h1>Managing Remote Teams</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  6 min · <a class="spec-link" href="managing-remote-teams.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/managing-remote-teams/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/managing-remote-teams/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="managing-downturn.html" title="Managing a Downturn">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="competent-software-engineer.html" title="The Competent Software Engineer">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EM-MANAGING-REMOTE-TEAMS", "status": "draft:gray", "title": "Managing Remote Teams", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "managing-remote-teams", "timetoread": "6 min", "excerpt": "On a distributed team I replace the hallway with explicit structure: written norms for roles, response times, and decision-sharing; async as the default; a searchable decision log; and deliberate rhythms for stand-ups, all-hands, and office hours. Trust and connection get engineered too — regular 1:1s, no negative assumptions about silence or tone, rituals for bonding, and in-person time spent on relationships rather than packed agendas.", "tags": "engineering management, remote teams, distributed teams, async communication, team norms, connection", "icon": "assets/icons/managing-remote-teams.png", "logo": "assets/images/managing-remote-teams/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering management", "remote teams", "distributed teams", "async communication", "team norms", "connection"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: A remote team runs on what is written down and repeated, because nothing travels by hallway anymore. So I make everything the office used to carry implicitly explicit: weekly priorities, roles and expectations, response-time norms, where decisions and knowledge live — with async as the default and a searchable decision log as the memory. And because distance quietly erodes trust and connection, I engineer those too: regular 1:1s with open-ended questions, no negative assumptions about silence or tone, rituals that bond the team, and in-person time spent on relationships rather than packed agendas. On a remote team, overcommunicating is the correct calibration.\n\n## Statement\n\nMy operating model for managing a remote team has six parts:\n\n- **Make the implicit explicit.** Team priorities are clarified weekly; roles, responsibilities, and expectations are written down; response-time norms for messages are defined; and how decisions, updates, and knowledge get shared is documented — with asynchronous communication as the default wherever possible.\n- **Engineer trust deliberately.** Regular 1:1 check-ins with open-ended questions about workload, morale, and concerns; space for honest feedback; my own uncertainty shared when appropriate; and a standing rule — no negative assumptions about silence or tone.\n- **Write decisions down where they can be found.** Decisions, owners, and next steps are summarized in writing; project communication lives in dedicated threads; and a searchable decision log or knowledge base is the team's memory.\n- **Run deliberate rhythms.** Stand-ups covering done / next / blockers, regular all-hands with key updates recorded for absentees, office hours or open Q&A — and the rhythms themselves reviewed and refined regularly.\n- **Foster connection on purpose.** Rituals for bonding, small wins celebrated publicly, peer recognition encouraged, casual spaces for non-work conversation — time made for connection, not just task updates.\n- **Spend in-person time on relationships.** When the team does meet, relationship-building beats packed agendas: shared meals, low-pressure activities, and unstructured time for natural connection.\n\n## How to Read This\n\nThis journal is my engineering-management operating model, each record grounded in one source. This record sits in the *Making of a Manager* section but is honest about its provenance: the source is a supplementary checklist that extends the themes of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019) — her clarity-and-trust fundamentals applied to distributed teams — rather than a chapter of the book itself. The runnable version — the foundations, the rhythms, the manager habits, the quick self-review — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Distance removes the ambient channel, so structure has to replace it.** In an office, priorities, expectations, and decisions propagate through overheard conversations and hallway corrections. Remote, that channel is gone, and whatever is not written down explicitly simply does not exist for part of the team. That is why the foundations are all acts of writing: weekly priorities, explicit roles and expectations, response-time norms, documented decision-sharing. This is not bureaucracy — it is replacing infrastructure the office used to provide for free.\n\n![Comparison of an office hallway where context drifts ambiently between people versus a distributed team connected through shared written artifacts.](assets/images/managing-remote-teams/structure-replaces-the-hallway.jpeg)\n**Figure 1:** *The hallway is gone: what the office carried ambiently, a remote team must carry in writing.*\n\n**Async by default is a respect for time zones and focus, not a communication downgrade.** A distributed team that runs on synchronous meetings taxes someone's evening in every time zone and shreds everyone's focus. Defaulting to async — with clear response-time norms so async does not mean \"whenever\" — lets the team work on its own schedule while the written record keeps everyone aligned. Synchronous time then gets reserved for what actually needs it: decisions under real disagreement, and human connection.\n\n![Two-lane diagram routing most communication through a wide async lane and reserving a narrow synchronous lane for disagreement and connection.](assets/images/managing-remote-teams/async-default-sync-reserved.jpeg)\n**Figure 2:** *Async is the wide default lane; synchronous time is reserved for what actually needs it — real disagreement and human connection.*\n\n**A searchable decision log is the team's shared memory.** Remote decisions made in a call or a thread evaporate unless summarized — with owners and next steps — somewhere searchable. Without that log, the team re-litigates settled questions, absent members are silently excluded from context, and \"I never heard about that\" becomes a recurring failure mode. Repeating important information in multiple places is not redundancy; on a remote team it is the delivery mechanism.\n\n![Diagram of calls and threads funneling into a searchable decision log that radiates decisions, owners, and next steps to every team member.](assets/images/managing-remote-teams/decision-log-shared-memory.jpeg)\n**Figure 3:** *The searchable decision log is the team's memory: calls and threads flow in, and the same context flows out to everyone — including whoever was asleep.*\n\n**Silence and tone are the two great misreaders of remote work.** In text, a terse message reads as anger and a quiet teammate reads as disengaged — and both readings are usually wrong. So I hold a double discipline: I do not make negative assumptions about silence or tone, and I actively watch for the real signals of disengagement and isolation in 1:1s, where open-ended questions about workload, morale, and concerns can surface what text hides. I also notice who is participating and who is fading into the background, because remote meetings make fading easy and invisible.\n\n**Connection does not happen by accident anymore, so I schedule what used to be spontaneous.** The office produced bonding as a byproduct; remote work produces isolation as a byproduct. Rituals, public celebration of small wins, peer recognition, casual non-work spaces — these are the deliberate substitutes. And scarce in-person time is too valuable to fill with status meetings: when the team gathers, the agenda is relationships — shared meals, low-pressure activities, unstructured time — because that is the one thing distance cannot deliver.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Norms for roles, response times, and decision-sharing are written and explicit. | Everyone must be online at the same hours — norms define response windows, not presence. |\n| Async is the default for communication. | Meetings are banned — synchronous time is reserved for disagreement and connection. |\n| Decisions are summarized in writing in a searchable log. | Every conversation becomes a document — the log records decisions, owners, and next steps. |\n| I overcommunicate and repeat key information in multiple places. | Noise is fine — repetition targets what matters most, through deliberate channels. |\n| I make no negative assumptions about silence or tone. | I ignore disengagement — I watch for it actively and check in directly. |\n| In-person time prioritizes relationship-building. | Offsites are packed with the meetings we saved up — packed agendas waste the scarcest resource. |\n| Rhythms are reviewed and refined regularly. | The rhythm set once is the rhythm forever. |\n\nConcretely: anyone on my remote team can answer the quick self-review at any time — they know what matters most right now, they know where to ask questions and find updates, they are comfortable being honest about problems, wins get noticed, and the quieter members are still connected and supported. If any of those answers is no, the system — not the person — gets fixed.\n\n## Anti-Patterns\n\n- **Office habits over a video link.** Running a distributed team on implicit norms and synchronous meetings, then blaming remoteness when alignment and focus collapse.\n- **Async without norms.** Declaring async-first without response-time expectations, so urgent things rot and everyone monitors every channel constantly out of anxiety.\n- **The evaporating decision.** Deciding in a call, summarizing nowhere — then re-litigating with whoever was not in the room.\n- **Reading malice into silence.** Treating a terse message or a quiet week as a problem with the person instead of an artifact of the medium.\n- **Task-only management.** Every touchpoint a status update, no casual spaces, no rituals — until people are colleagues in name and strangers in practice.\n- **The packed-agenda offsite.** Spending rare in-person days on back-to-back meetings that could have been async documents, and none of it on the connection that was the point.\n- **The invisible fade.** Not noticing who has stopped participating, because remote meetings make fading easy and nobody's job was to watch.\n\n## Related Records\n\n- [Leading a Small Team](leading-a-small-team.html) — the trust and clarity fundamentals this record ports to a distributed setting.\n- [Amazing Meetings](amazing-meetings.html) — the meeting discipline that decides what deserves synchronous time on a remote team.\n- [Nurturing Culture](nurturing-culture.html) — the rituals and repeated messages that carry culture matter double when there is no shared room to carry it.\n- [Internal Communication](../grounded-engineering-executive/internal-communication.html) (executive journal) — the organization-level communication architecture this team-level operating model plugs into.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs how I run any team that is remote or substantially distributed: the explicit norms, the async default, the decision log, the rhythms, and the connection work. I revisit it when the quick self-review returns a \"no\" that persists across two checks, when the communication rhythms have not been reviewed in six months, or when in-person time keeps getting filled with status agendas instead of relationship-building.\n\n## Authoritative References\n\n- Julie Zhuo, *The Making of a Manager: What to Do When Everyone Looks to You* (Portfolio/Penguin, 2019) — the management approach this record extends; the source checklist is supplementary material applying the book's clarity-and-trust fundamentals to remote teams, not a chapter of the book.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Foundations\n\n- [ ] Clarify team priorities for the week\n- [ ] Make roles, responsibilities, and expectations explicit\n- [ ] Define response-time norms for messages and updates\n- [ ] Document how decisions, updates, and knowledge should be shared\n- [ ] Default to asynchronous communication when possible\n\n## 2. Build trust\n\n- [ ] Hold regular 1:1 check-ins\n- [ ] Ask open-ended questions about workload, morale, and concerns\n- [ ] Create space for honest feedback\n- [ ] Share uncertainty or humanity as a leader when appropriate\n- [ ] Watch for signs of disengagement or isolation\n- [ ] Avoid making negative assumptions about silence or tone\n\n## 3. Strengthen communication\n\n- [ ] Repeat important information in multiple places when needed\n- [ ] Summarize decisions, owners, and next steps in writing\n- [ ] Use dedicated threads/channels for project-specific communication\n- [ ] Keep a searchable decision log or knowledge base\n- [ ] Set clear meeting norms: purpose, format, and follow-up\n\n## 4. Create communication rhythms\n\n- [ ] Run daily or weekly stand-ups\n- [ ] Include what was done, what's next, and blockers\n- [ ] Schedule regular all-hands or team updates\n- [ ] Record key updates for people who cannot attend\n- [ ] Offer office hours or open Q&A time\n- [ ] Review and refine communication rhythms regularly\n\n## 5. Foster connection\n\n- [ ] Build rituals for team bonding\n- [ ] Celebrate small wins publicly\n- [ ] Encourage peer recognition\n- [ ] Create casual spaces for non-work conversation\n- [ ] Experiment with fun remote traditions or activities\n- [ ] Make time for connection, not just task updates\n\n## 6. Use in-person time well\n\n- [ ] Prioritize relationship-building over packed agendas\n- [ ] Plan shared meals or informal conversations\n- [ ] Include low-pressure group activities\n- [ ] Leave unstructured time for natural connection\n\n## 7. Manager habits\n\n- [ ] Check for clarity before assuming alignment\n- [ ] Overcommunicate rather than undercommunicate\n- [ ] Notice who is participating and who is fading into the background\n- [ ] Address misunderstandings quickly\n- [ ] Reinforce trust, connection, and consistency every week\n\n## 8. Quick self-review\n\n- [ ] Does everyone know what matters most right now?\n- [ ] Does everyone know where to ask questions and find updates?\n- [ ] Are people comfortable being honest about problems?\n- [ ] Are wins being noticed?\n- [ ] Are quieter team members still connected and supported?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why a remote team runs on what is written down and repeated — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Arlo alone in an empty office hallway, his team reduced to small video tiles on a laptop.](assets/images/managing-remote-teams/comic-01-the-empty-hallway.jpeg)\n**Panel 1:** *The hook: the hallway that used to carry priorities, context, and corrections is simply gone.*\n\n![Comic panel: three video tiles nod at a decision while a fourth teammate from another time zone looks confused.](assets/images/managing-remote-teams/comic-02-never-heard-about-that.jpeg)\n**Panel 2:** *The problem: whatever is not written down explicitly does not exist for part of the team.*\n\n![Comic panel: Arlo calls yet another sync meeting while a teammate attends at midnight, exhausted.](assets/images/managing-remote-teams/comic-03-office-habits-over-video.jpeg)\n**Panel 3:** *The wrong way: office habits over a video link — synchronous everything, someone's midnight in every meeting.*\n\n![Comic panel: Vera taps a wall of written cards for priorities, norms, and the decision log while Arlo takes notes.](assets/images/managing-remote-teams/comic-04-write-it-down-repeat-it.jpeg)\n**Panel 4:** *The principle: a remote team runs on what is written down and repeated — structure replaces the hallway.*\n\n![Comic panel: Arlo routes most messages into a wide async chute, keeping a narrow lane with two chairs for sync.](assets/images/managing-remote-teams/comic-05-async-by-default.jpeg)\n**Panel 5:** *How it runs: async by default with response-time norms — synchronous time reserved for disagreement and connection.*\n\n![Comic panel: Arlo imagines anger behind a terse message while Vera points him to a 1:1 instead.](assets/images/managing-remote-teams/comic-06-dont-read-malice.jpeg)\n**Panel 6:** *The mechanic: no negative assumptions about silence or tone — open-ended 1:1 questions surface what text hides.*\n\n![Comic panel: a weary Arlo posts the same priority message into three different channels.](assets/images/managing-remote-teams/comic-07-again-yes-again.jpeg)\n**Panel 7:** *The cost: repeating what matters in multiple places feels redundant — on a remote team it is the delivery mechanism.*\n\n![Comic panel: the team shares a relaxed meal together with a crossed-out agenda discarded on a chair.](assets/images/managing-remote-teams/comic-08-the-offsite-that-connects.jpeg)\n**Panel 8:** *The closer: when a remote team finally meets, spend it on the one thing distance cannot deliver — connection.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

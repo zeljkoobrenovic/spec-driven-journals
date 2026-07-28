@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Managing a Team</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="managing-people.html" title="Managing People">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-multiple-teams.html" title="Managing Multiple Teams">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">The Manager's Path</p>
+        <h1>Managing a Team</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  7 min · <a class="spec-link" href="managing-a-team.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/managing-a-team/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/managing-a-team/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="managing-people.html" title="Managing People">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-multiple-teams.html" title="Managing Multiple Teams">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EM-MANAGING-A-TEAM", "status": "draft:gray", "title": "Managing a Team", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "managing-a-team", "timetoread": "7 min", "excerpt": "When I manage a team, the unit of accountability changes: I own the team's output as a whole, not a collection of individual performances. I stay technical enough to feel real bottlenecks, I watch for the four dysfunctions — not shipping, people drama, overwork, collaboration problems — and I act on them early. I shield the team from noise without becoming a wall, I own hard decisions instead of hiding behind consensus, and I refuse to trade team cohesion for a brilliant jerk.", "tags": "engineering management, team leadership, team health, conflict, psychological safety, project management, the manager's path", "icon": "assets/icons/managing-a-team.png", "logo": "assets/images/managing-a-team/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering management", "team leadership", "team health", "conflict", "psychological safety", "project management", "the manager's path"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Managing a team is a different job, not \"more people management.\" The unit of accountability shifts from individuals to the team's collective output — and everything on that team is mine to notice: whether it ships, whether one person's negativity is poisoning the room, whether crunch has quietly become normal, whether partner teams still want to work with us. I stay technical enough to feel the bottlenecks firsthand, I shield the team without becoming a wall, I own the hard decisions instead of outsourcing them to consensus, and I never trade team cohesion for the output of a brilliant jerk.\n\n## Statement\n\nWhen I run a team — and for every manager I hold accountable at this rung — the commitments are:\n\n- **I treat team management as a new job.** I stop enough of my old work to make room for it: keeping the team on the highest-value projects, clearing roadblocks, partnering with product on scope and priorities, planning ahead for hiring, and communicating timelines, risks, and tradeoffs upward.\n- **I stay technical.** I spend less time coding, but I keep enough hands-on exposure — code, debugging, reviews — to stay credible, feel real bottlenecks firsthand, and evaluate feasibility and estimates with my own judgment rather than secondhand reports.\n- **I watch for the four dysfunctions and act early.** Not shipping, people drama, overwork, and collaboration problems each have observable signals; my job is to spot them before they calcify, not to hope they resolve themselves.\n- **I manage former peers with transparency, not authority.** I acknowledge the awkwardness directly, ask for their help making the transition work, and never use managerial power to casually override technical decisions or micromanage people who were my equals last month.\n- **I am a shield, not a wall.** I protect the team from unnecessary distraction and politics, but I share important realities calmly and give enough context that people understand why the goals matter. I treat the team like adults.\n- **I drive decisions and own the outcomes.** I build a data-driven culture, run retrospectives on projects and process, check whether assumptions proved true, and take responsibility for unpopular calls instead of hiding behind consensus or votes.\n- **I protect cohesion.** I build psychological safety, address information-hiding and disrespect quickly, and remove persistent toxic behavior — including from \"brilliant jerks\" — when it cannot be corrected.\n\n## How to Read This\n\nThis journal is my engineering-management operating model, each record grounded in one source. This record distills the \"Managing a Team\" chapter of Camille Fournier's *The Manager's Path* (O'Reilly, 2017) — the rung where a manager stops managing a set of individuals and starts owning a team's collective health and output. I write it two-sided: what I commit to when I occupy this role, and what I hold every team manager in my organization accountable for. The runnable version — dysfunction signals, self-onboarding steps, and the self-audit — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**The team's output is a different object than the sum of individual performances.** I can have six individually strong engineers and a team that does not ship — because releases are painful, features are oversized, testing is manual, or nobody knows why the current project matters. Managing individuals well does not automatically produce a healthy team; the team-level concerns — shipping cadence, decision-making process, cross-team relationships, project selection — need an owner, and at this rung that owner is me. Fournier's checklist is blunt about the shift: it is a different job, not \"more people management.\"\n\n![Comparison of six separate gears beside a stalled conveyor versus the same gears meshed together driving a conveyor that ships a box.](assets/images/managing-a-team/team-as-the-unit.jpeg)\n**Figure 1:** *Six strong engineers are not yet a team: the collective output is a different object, and at this rung it is the manager's object.*\n\n\n**Staying technical is what makes the rest of the job possible.** If I cannot feel the friction of coding, deploying, and supporting the system firsthand, I cannot tell a real bottleneck from a complaint, a padded estimate from an honest one, or a necessary hack from an expensive one. Technical credibility is also the currency I spend when guiding decisions I no longer implement myself. The failure mode is drifting into meetings-only management and becoming technically obsolete years earlier than necessary — at which point I am managing rumors about the system instead of the system.\n\n**Dysfunction announces itself in small signals long before it becomes a crisis.** A team that has not shipped in weeks, one or two people driving most of the negativity, a repeated crunch that everyone has stopped remarking on, a partner team that quietly routes around us — each of these is visible early to a manager who is looking. The source's discipline is to check deliberately: is the team shipping consistently? Is drama being addressed with direct, timely conversations or with hope? Are we protecting time for stability work, and learning from crunch instead of normalizing it? Are product, design, and peer teams actually happy working with us? Waiting for dysfunction to become undeniable means paying for it at its most expensive.\n\n![Quadrant of four early-warning scenes: a stalled release calendar, a storm cloud between teammates, late-night overwork, and a partner team routing around the team.](assets/images/managing-a-team/four-dysfunctions-signals.jpeg)\n**Figure 2:** *The four dysfunctions announce themselves in small signals long before they become crises — the job is to be looking.*\n\n\n**Shielding the team is a service; walling them off is a disservice.** The team should not absorb every reorganization rumor and political skirmish — that is distraction I am paid to absorb. But a manager who hides everything produces a team that cannot understand why its goals matter, and during uncertainty the information vacuum fills with gossip, which is worse than the truth. The line I hold: filter noise, never facts that people need to do their jobs or understand their situation. Calm, low-drama honesty treats the team like adults; theatrical protection treats them like children.\n\n![Split panel contrasting a manager as a filter passing facts and deflecting noise versus a solid wall behind which the team trades gossip under question marks.](assets/images/managing-a-team/shield-not-wall.jpeg)\n**Figure 3:** *A shield filters noise but passes facts; a wall blocks both — and the information vacuum fills with gossip.*\n\n\n**Conflict avoidance is a management failure dressed up as niceness.** Relying on consensus or voting for hard decisions outsources responsibility to a process that cannot carry it — the decisions that matter are exactly the ones where consensus fails. Being \"kind\" sometimes means saying the uncomfortable true thing; being merely \"nice\" means letting a simmering issue rot because the conversation would be awkward. The same logic makes the brilliant-jerk rule non-negotiable: tolerating someone who makes teammates feel unsafe or ineffective, because their individual output is high, is choosing one person's productivity over the team's — the exact inversion of what this rung is accountable for.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| I stay technical enough to feel bottlenecks and judge estimates. | I keep my old IC workload — I explicitly stop enough old work to make room for management. |\n| I watch for the four dysfunctions and act early. | I wait for review cycles or escalations to tell me the team is unhealthy. |\n| I shield the team from distraction and politics. | I hide realities — important truths are shared calmly, before gossip fills the gap. |\n| I own hard and unpopular decisions. | Every decision is mine — most technical decisions belong to the team; I set the process and take responsibility for outcomes. |\n| I remove persistent toxic behavior, including brilliant jerks. | I fire people for a first offense — direct conversations and correction come first; removal is for behavior that cannot be corrected. |\n| I plan projects at the team level with realistic time budgets. | The team's agile process is mine to run day-to-day — I plan above it, not inside it. |\n| I budget roughly 20% for sustaining engineering work. | Sustaining work is what happens if there is time left over. |\n\nConcretely: I assume less than a full quarter of uninterrupted engineering time per quarter, reserve roughly 20% for sustaining work, cut scope as deadlines approach rather than slipping silently, and shield engineers from constant random estimation requests. Joining a new team, I onboard myself technically: an architecture and release-flow walkthrough, a couple of real features early, watching code reviews, and taking part in support work — credibility comes from engagement with the team's actual work, not from the org chart.\n\n## Anti-Patterns\n\n- **\"More people management.\"** Treating the team rung as a bigger version of the previous job and never picking up the team-level concerns: project selection, shipping health, upward communication, hiring ahead.\n- **The technically absent manager.** Managing only through meetings and status reports until the system is an abstraction — and every estimate, feasibility call, and bottleneck claim has to be taken on faith.\n- **Hoping drama resolves itself.** Letting one or two persistently negative people set the team's emotional weather because a direct, timely conversation feels confrontational.\n- **Normalizing crunch.** Treating repeated crunch periods as the cost of doing business instead of a signal to fix — and never protecting time for stability and sustainability work.\n- **The wall.** Over-shielding until the team has no idea why its goals matter, then watching gossip fill every information gap during uncertainty.\n- **Consensus as a hiding place.** Putting every hard call to a vote so that no one — least of all me — is responsible for the outcome.\n- **The brilliant jerk exemption.** Excusing destructive behavior because the individual's output is high, and quietly paying for it with everyone else's safety and effectiveness.\n- **Overriding former peers by rank.** Using new managerial authority to win technical arguments I used to have to win on merit — spending long-term trust on short-term convenience.\n\n## Related Records\n\n- [Managing People](managing-people.html) — the previous rung: the craft of managing individuals (1:1s, feedback, delegation); this record starts where the unit of accountability becomes the team.\n- [Managing Multiple Teams](managing-multiple-teams.html) — the next rung: production code is gone, and the job becomes time, priorities, delegation, and building leaders across teams.\n- [Tech Lead](tech-lead.html) — the adjacent technical-leadership role; a team manager partners with (or grows) a tech lead rather than absorbing that role.\n- [Leading a Small Team](leading-a-small-team.html) — Julie Zhuo's first-line view of the same territory, from the *Making of a Manager* side of this journal.\n- [The Art of Feedback](feedback.html) — frequent feedback outside review cycles is one of this rung's core commitments; that record carries the craft.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs how I run a single team when I am its direct manager, and what I hold every team-level manager in my organization accountable for: team health, shipping cadence, decision ownership, and cohesion. I revisit it if I fail the self-audit twice in a row on the same question (in particular: when did I last touch the code, and is the team completing work regularly), if a team dysfunction reaches me through escalation before I noticed it myself, or if I catch myself tolerating a cohesion-destroying performer because of their output.\n\n## Authoritative References\n\n- Camille Fournier, *The Manager's Path: A Guide for Tech Leaders Navigating Growth and Change* (O'Reilly, 2017) — the \"Managing a Team\" chapter this record distills; the checklist in the Checklist tab is adapted from its chapter checklist.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "5 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Shift from managing individuals to leading a team\n\n- [ ] Treat team management as a different job, not just \"more people management\"\n- [ ] Spend less time coding, but stay close enough to the work to spot bottlenecks\n- [ ] Keep the team focused on the highest-value projects\n- [ ] Clear roadblocks that slow the team down\n- [ ] Partner closely with product on scope, priorities, and delivery\n- [ ] Plan ahead for hiring, headcount, and team needs\n- [ ] Set clear expectations for each team member\n- [ ] Give frequent feedback, not just during review cycles\n- [ ] Communicate timelines, risks, and tradeoffs upward\n\n## 2. Stay technical\n\n- [ ] Maintain enough hands-on involvement to stay technically credible\n- [ ] Guide technical decisions even when others own implementation details\n- [ ] Keep enough coding/debugging exposure to feel real bottlenecks firsthand\n- [ ] Use my technical judgment to evaluate feasibility and estimates\n- [ ] Avoid becoming technically obsolete too early\n- [ ] Make time to understand the system, not just the meetings around it\n\n## 3. Watch for dysfunction on the team\n\n**Shipping problems**\n\n- [ ] Check whether the team is shipping consistently\n- [ ] Look for slow releases, painful deploys, oversized features, or manual testing bottlenecks\n- [ ] Push to remove process and tooling bottlenecks\n- [ ] Make work small enough to move regularly\n\n**People drama**\n\n- [ ] Address toxic behavior early\n- [ ] Do not let persistent negativity linger\n- [ ] Use direct, timely conversations instead of hoping issues resolve themselves\n- [ ] Ask for help from my own manager when needed\n\n**Overwork**\n\n- [ ] Look for burnout, instability, or repeated crunch periods\n- [ ] Protect time for system stability and sustainability work\n- [ ] Support the team visibly during stressful periods\n- [ ] Learn from crunch instead of normalizing it\n\n**Collaboration problems**\n\n- [ ] Check whether product, design, and partner teams are working well with my team\n- [ ] Create regular touchpoints with peers\n- [ ] Gather specific feedback about cross-team friction\n- [ ] Stay supportive of peers in public\n\n## 4. Manage former peers carefully\n\n- [ ] Acknowledge the awkwardness of the transition directly\n- [ ] Be transparent and ask for their help making the transition work\n- [ ] Avoid using managerial power to override technical decisions casually\n- [ ] Resist micromanaging people who used to be my peers\n- [ ] Pick my battles and protect long-term trust\n\n## 5. Be a shield, but not a wall\n\n- [ ] Protect the team from unnecessary distraction and politics\n- [ ] Give enough context so people understand why goals matter\n- [ ] Do not hide everything; share important realities in a calm, low-drama way\n- [ ] Communicate clearly during uncertainty so gossip does not fill the gap\n- [ ] Treat the team like adults, not children\n\n## 6. Drive good decisions\n\n- [ ] Accept responsibility for outcomes, even when others own parts of the process\n- [ ] Build a data-driven culture for product and technical decisions\n- [ ] Track delivery, quality, outages, bugs, and other useful team metrics\n- [ ] Develop customer empathy, not just engineering intuition\n- [ ] Think ahead about the future roadmap and technical direction\n- [ ] Review whether project assumptions actually proved true\n- [ ] Run retrospectives on both projects and the team process\n\n## 7. Handle conflict like a manager\n\n- [ ] Do not rely only on consensus or voting for hard decisions\n- [ ] Take responsibility for unpopular decisions when needed\n- [ ] Set clear decision-making processes and roles\n- [ ] Address simmering issues early\n- [ ] Separate problem-solving from gossip and drama\n- [ ] Avoid blaming other teams when things go wrong\n- [ ] Be kind, not merely \"nice\"\n- [ ] Notice when fear is making me avoid necessary conversations\n- [ ] Get curious about my own conflict-avoidance patterns\n\n## 8. Protect team cohesion\n\n- [ ] Build psychological safety so people can take risks and make mistakes openly\n- [ ] Encourage friendliness and trust across the team\n- [ ] Watch for people who make others feel unsafe or ineffective\n- [ ] Refuse to tolerate destructive behavior from \"brilliant jerks\"\n- [ ] Address information-hiding and noncommunication quickly\n- [ ] Confront lack of respect toward me or teammates directly\n- [ ] Remove persistent toxic behavior if it cannot be corrected\n\n## 9. Manage projects at the team level\n\n- [ ] Decide which projects to take on and when to push back\n- [ ] Plan at a higher level than the team's day-to-day agile execution\n- [ ] Assume less than a full quarter of uninterrupted engineering time\n- [ ] Budget roughly 20% for sustaining engineering work\n- [ ] Cut scope as deadlines approach\n- [ ] Know when to accept a hack and when to insist on the right implementation\n- [ ] Use rough estimates carefully; plan more deeply for larger work\n- [ ] Shield engineers from constant random estimation requests\n\n## 10. Onboard myself into a new team\n\n- [ ] Get a walkthrough of the architecture, systems, release flow, and testing process\n- [ ] Learn the codebase enough to talk about real work, not abstractions\n- [ ] Plan to work on a couple of features early\n- [ ] Watch code reviews and pull requests\n- [ ] Participate in support/release work if that is part of the team's responsibilities\n- [ ] Build technical credibility through real engagement with the team's work\n\n## 11. Self-audit questions\n\n- [ ] Have I stopped doing enough old work to make room for management responsibilities?\n- [ ] Do I understand the team's day-to-day friction in coding, deploying, and support?\n- [ ] Is the team completing work regularly?\n- [ ] When was the last time I personally touched the code or paired with someone?\n- [ ] Are one or two people driving most of the negativity?\n- [ ] Does the team seem engaged with one another?\n- [ ] Do we have a clear decision-making process?\n- [ ] When did we last review whether a finished project achieved its goals?\n- [ ] Does the team understand why it is working on its current projects?\n- [ ] When was the last time I cut scope effectively?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why running a team is a different job — not \"more people management\" — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Arlo proudly faces his new team while Vera corrects his assumption.](assets/images/managing-a-team/comic-01-same-job-more-people.jpeg)\n**Panel 1:** *The hook: managing a team looks like 'more people management' — it is a different job.*\n\n![Comic panel: Arlo stares at a release board with an empty, cobwebbed SHIPPED column while engineers work separately.](assets/images/managing-a-team/comic-02-strong-engineers-nothing-ships.jpeg)\n**Panel 2:** *The problem: six strong individual performances do not add up to a team that ships.*\n\n![Comic panel: Arlo codes with headphones on while a storm cloud brews between engineers behind him.](assets/images/managing-a-team/comic-03-heads-down-hoping.jpeg)\n**Panel 3:** *The wrong way: keep the old job, manage by hope, and let small dysfunctions calcify.*\n\n![Comic panel: Vera taps a whiteboard sketch of meshed gears driving a conveyor while Arlo listens.](assets/images/managing-a-team/comic-04-you-own-the-output.jpeg)\n**Panel 4:** *The principle: the unit of accountability shifts — everything on the team is the manager's to notice.*\n\n![Comic panel: Vera points at four warning tiles while Arlo studies them with a checklist.](assets/images/managing-a-team/comic-05-the-four-checks.jpeg)\n**Panel 5:** *How it runs: the four dysfunctions have early signals — the job is to check for them deliberately, not wait.*\n\n![Comic panel: Arlo deflects noisy arrows with a shield while passing a clean envelope through to his team.](assets/images/managing-a-team/comic-06-shield-not-wall.jpeg)\n**Panel 6:** *The mechanic: a shield filters distraction but passes the facts people need — a wall blocks both.*\n\n![Comic panel: an engineer on a pedestal juggles gold stars while deflated teammates shrink away and Vera warns Arlo.](assets/images/managing-a-team/comic-07-the-brilliant-jerk.jpeg)\n**Panel 7:** *The cost: owning the hard calls — no consensus hiding, and no cohesion traded for a brilliant jerk.*\n\n![Comic panel: the team celebrates a steady line of shipped boxes while a partner gives a thumbs up and Arlo holds his laptop.](assets/images/managing-a-team/comic-08-shipping-and-wanted.jpeg)\n**Panel 8:** *The closer: the team ships, partners want to work with it, and the manager stayed close enough to feel the bottlenecks.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

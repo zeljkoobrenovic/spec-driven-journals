@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hiring Well</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="amazing-meetings.html" title="Amazing Meetings">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="getting-things-done.html" title="Getting Things Done">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">The Making of a Manager</p>
+        <h1>Hiring Well</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  7 min · <a class="spec-link" href="hiring-well.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/hiring-well/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/hiring-well/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="amazing-meetings.html" title="Amazing Meetings">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="getting-things-done.html" title="Getting Things Done">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EM-HIRING-WELL", "status": "draft:gray", "title": "Hiring Well", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "hiring-well", "timetoread": "7 min", "excerpt": "I treat hiring as deliberate team-building, not hole-filling: I plan the team I want by year-end, write the job description myself, run consistent interviews with independent debriefs, and refuse weak-hire compromises. I hire for diversity of perspective, close candidates fast and warmly, build systems when hiring at scale, and slow down for leadership hires — because every hire is a bet on the team's long-term capability.", "tags": "engineering management, hiring, interviewing, recruiting, team building, diversity, leadership hiring", "icon": "assets/icons/hiring-well.png", "logo": "assets/images/hiring-well/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering management", "hiring", "interviewing", "recruiting", "team building", "diversity", "leadership hiring"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Hiring is one of the highest-leverage things I do, and I treat it as building the future of the team — never as filling holes. I plan the team I want before I open a role, own the process personally even when recruiters are involved, run consistent interviews that are decided on evidence rather than gut feel, and hold out for candidates with at least one passionate advocate who raise the team's long-term capability. A weak hire is a decision I refuse to make; a strong hire compounds for years.\n\n## Statement\n\nMy hiring commitments:\n\n- **Plan the team, then open the role.** Before I hire, I map where I want the team to be by year-end, identify the skill, strength, and experience gaps, decide what kinds of people would strengthen the team's diversity, and define the level and scope of each open role. I do not hire reactively.\n- **Own the process personally.** Even with recruiting partners, hiring is my responsibility: I write the job description myself, I am specific about the skills and experiences I want, and I partner closely with recruiting on sourcing, interviewing, and closing — including outreach that feels personal and relevant.\n- **Build the pipeline deliberately.** I create a sourcing strategy before interviewing starts — target backgrounds, companies, titles, keywords — look beyond standard patterns, ask trusted people for recommendations, and treat references as a meaningful signal rather than a box-checking step.\n- **Run consistent interviews and decide on evidence.** Questions are prepared ahead of time; every candidate gets the same core set; interviewers cover different dimensions and debrief independently before any group discussion. Interviews are noisy, so I do not decide on gut feel from a short conversation.\n- **No weak hires; look for an advocate.** I hold out for at least one strong, passionate advocate, reject candidates who show toxic behavior regardless of skill, and favor people who can grow beyond the current role and raise the team's long-term capability.\n- **Close like I mean it.** Once I decide, I move fast, stay personally involved, explain why the role matters and why this person is a strong fit, and keep communication warm, clear, and frequent until the candidate has decided.\n- **Scale with systems, and slow down for leaders.** At volume, I work the funnel metrics, train interviewers, and break the process into parts I can improve — systems, not one-off heroics. For manager and senior-leadership hires I do extra research, involve people who understand the function deeply, and assess values alignment, not just competence.\n\n## How to Read This\n\nThis journal is my engineering-management operating model, each record grounded in one source checklist. This record distills the hiring chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): hiring as deliberate team-building — planning ahead, owning the process, building the pipeline, interviewing consistently, deciding well, closing warmly, and scaling the machine. The runnable version lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Hiring is team-building, and team-building starts before the job posting.** A role opened reactively — someone quit, a project is late — gets filled with whoever is available, and the team drifts into whatever shape its attrition dictates. Planning the year-end team first turns every opening into a design decision: which gaps in skill, strength, and experience this hire should close, and what perspective the team is currently missing. That is why I define level and scope per role rather than posting a generic req.\n\n![Split diagram contrasting reactive hole-filling of a vacancy with a planned team blueprint where dashed outlines mark deliberate future roles closing named gaps.](assets/images/hiring-well/hole-filling-vs-team-design.jpeg)\n**Figure 1:** *A role opened reactively gets filled with whoever is available; a role opened against a year-end team map closes a named gap on purpose.*\n\n**Delegating hiring to recruiters delegates the future of my team.** Recruiters are essential partners, but they cannot know what the team needs the way I do. When I write the job description myself and shape the outreach personally, the pipeline reflects the team I am building rather than a keyword match — and candidates can tell the difference between a manager who wants *them* and a process that wants *a body*.\n\n**Interviews are noisy instruments, so the process must supply the signal.** A short conversation is an imperfect read on years of future work, which is why gut feel fails and bias creeps in. Consistent core questions make candidates comparable; multiple interviewers covering different dimensions widen the read; independent debriefs before group discussion keep the loudest voice from becoming the verdict. Better questions help too: real past work and owned contributions, not hypotheticals — show me the apps, the writing, the pitches, and tell me which part of the teamwork was yours.\n\n![Diagram of a noisy interview signal passing through three filters — same core questions, distinct dimensions, independent debriefs — and emerging as clean evidence, while a gut-feel bypass ends in static.](assets/images/hiring-well/noisy-interview-signal-pipeline.jpeg)\n**Figure 2:** *Interviews are noisy instruments: the process supplies the signal — consistent questions, distinct interviewer dimensions, and independent debriefs — where gut feel only amplifies the noise.*\n\n**A \"weak hire\" is the most expensive decision available, because it compounds.** The marginal candidate absorbs onboarding, coaching, and eventually a hard conversation — cost that lands on the whole team. The tests I use come straight from the source: is there at least one strong, passionate advocate? Can this person grow beyond the current role? Do they raise the team's long-term capability? Toxic behavior is a rejection regardless of talent, and a team of people who all look, think, and work alike makes worse decisions than a diverse one — so diversity of background and viewpoint is a hiring goal, not a compliance afterthought.\n\n**Hiring is a long game played by the whole team.** Great candidates say no, and careers are long — so I keep in touch, build relationships before roles open, and invest in the team's reputation. When growth is the priority, hiring becomes a system: funnel metrics, trained interviewers, a process broken into improvable parts, and a high bar that every leader on the team can articulate — because team-building is everyone's job, not a manager's side quest.\n\n![Flow diagram of the hiring arc — plan, pipeline, interview, decide, close — with an amber feedback loop labeled system carrying funnel and gauge icons back to the start.](assets/images/hiring-well/hiring-arc-plan-to-scale.jpeg)\n**Figure 3:** *The arc runs from team plan to warm close — and at volume it becomes a system: funnel metrics, trained interviewers, and a process improved part by part.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| I plan the year-end team before opening a role. | Headcount planning replaces judgment — the plan tells me what to look for, not whom to pick. |\n| I own the process personally, even with recruiters. | I do everything myself — recruiting is a close partnership, with the accountability staying with me. |\n| Every candidate gets a consistent core set of questions. | The interview is a rigid script — tailored questions probe the role's actual needs on top of the core. |\n| No hire without a strong, passionate advocate. | Consensus is required — one advocate plus no serious concerns beats lukewarm unanimity. |\n| I move fast and stay involved once I decide to make an offer. | Speed excuses sloppiness — the speed comes after a disciplined decision, not instead of one. |\n| Leadership hires get extra research and values assessment. | Senior candidates are exempt from process — they get more scrutiny, not less. |\n| References are a meaningful signal. | Old negative feedback is disqualifying — people change; dated signals get weighed, not obeyed. |\n\nConcretely: every open role on my team traces to a written gap in the year-end team plan, has a job description I wrote, and runs through a loop with prepared questions, distinct interviewer dimensions, and independent written debriefs. My offer decisions name the advocate; my rejections of \"maybe\" candidates are fast; and my calendar shows real closing time on every offer that matters.\n\n## Anti-Patterns\n\n- **Hole-filling.** Opening a req the day someone resigns and hiring the first plausible candidate — the team's shape becomes an accident of attrition.\n- **Outsourced ownership.** Handing recruiting a generic job description and waiting for finalists, then blaming the pipeline for the team you built.\n- **The gut-feel verdict.** Deciding from chemistry in a thirty-minute conversation, with every interviewer probing the same dimension and the debrief anchored by whoever speaks first.\n- **The weak hire.** Talking yourself into a marginal candidate because the role has been open too long — no advocate, no growth headroom, hired anyway.\n- **Cloning the team.** Sourcing only from the backgrounds, companies, and profiles already on the team, then wondering why every discussion reaches the same conclusion.\n- **The slow, cold close.** Deciding to hire and then going quiet — leaving a wanted candidate to infer from silence that they are not wanted.\n- **Heroic scaling.** Meeting a growth target through one-off effort spikes instead of funnel metrics, trained interviewers, and a process that improves part by part.\n\n## Related Records\n\n- [Hiring](../grounded-engineering-executive/hiring.html) — the executive journal's view of hiring as a governed system: loops, leveling, compensation, and metrics; this record is the hiring-manager's craft that runs inside that machine.\n- [The Interview Loop](../grounded-people-management-tools/interview-loop.html) — the people journal's structured interview loop; the consistent-questions and independent-debrief discipline here is what that loop operationalizes.\n- [Managing a Growing Team](managing-a-growing-team.html) — hiring strong leaders and building self-reliant teams is how a growing team scales past its manager.\n- [Nurturing Culture](nurturing-culture.html) — every hire either reinforces or dilutes the culture; the hiring bar is where culture is actually enforced.\n- [Leading a Small Team](leading-a-small-team.html) — the team the hiring plan is building; strengths, gaps, and trust at the individual level.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs how I hire onto teams I manage: planning, pipeline, interviewing, decisions, closing, and leadership hires. I revisit it if I catch myself opening roles with no written team plan behind them, if a hire made without a passionate advocate recurs, or if the team's composition after a year of hiring looks like a copy of the team a year ago.\n\n## Authoritative References\n\n- Julie Zhuo, *The Making of a Manager: What to Do When Everyone Looks to You* (Portfolio/Penguin, 2019) — the hiring chapter this record distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "5 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Set up before I hire\n\n- [ ] Treat hiring as one of the highest-leverage things I do\n- [ ] View hiring as building the future of the team, not just filling holes\n- [ ] Plan ahead instead of hiring reactively\n- [ ] Map where I want the team to be by year-end\n- [ ] Identify skill, strength, and experience gaps on the team\n- [ ] Decide what kinds of people would strengthen team diversity\n- [ ] Define the level and scope for each open role\n\n## 2. Own the hiring process\n\n- [ ] Take personal responsibility for hiring, even with recruiters involved\n- [ ] Write the job description myself\n- [ ] Be specific about the skills and experiences I want\n- [ ] Partner closely with recruiting on sourcing, interviewing, and closing\n- [ ] Help craft outreach that feels personal and relevant\n\n## 3. Build the candidate pipeline\n\n- [ ] Create a sourcing strategy before interviewing starts\n- [ ] List target backgrounds, companies, titles, and keywords\n- [ ] Look beyond standard patterns when searching for talent\n- [ ] Ask trusted people for recommendations\n- [ ] Use references as a meaningful signal, not a box-checking step\n- [ ] Keep in mind that old negative feedback may be outdated\n\n## 4. Run a strong interview process\n\n- [ ] Make the interview experience attentive, focused, and fast\n- [ ] Coordinate tightly with recruiters and interviewers\n- [ ] Prepare interview questions ahead of time\n- [ ] Ask every candidate a consistent core set of questions\n- [ ] Tailor additional questions to the role's actual needs\n- [ ] Include multiple interviewers with different perspectives\n- [ ] Ensure interviewers assess different dimensions, not the same one repeatedly\n- [ ] Debrief independently before group discussion to avoid groupthink\n\n## 5. Ask better questions\n\n- [ ] Probe for examples of similar past work\n- [ ] Ask candidates to show real output: apps, writing, pitches, portfolios\n- [ ] Clarify what part of teamwork they personally owned\n- [ ] Ask what kinds of challenges excite them\n- [ ] Ask about strengths, areas for growth, and self-awareness\n- [ ] Ask where they want to be in five years\n- [ ] Ask about a hard conflict and what they learned\n- [ ] Ask what has inspired them lately\n\n## 6. Make better decisions\n\n- [ ] Remember that interviews are imperfect and often noisy\n- [ ] Don't rely only on gut feel from a short interview\n- [ ] Watch for personal bias in evaluation\n- [ ] Avoid \"weak hire\" decisions\n- [ ] Look for at least one strong, passionate advocate\n- [ ] Reject candidates who show toxic behavior\n- [ ] Favor candidates who can grow beyond the current role\n- [ ] Prioritize people who raise the team's long-term capability\n\n## 7. Prioritize diversity and perspective\n\n- [ ] Intentionally seek candidates with different backgrounds and viewpoints\n- [ ] Avoid hiring only people who look, think, and work like the current team\n- [ ] Recognize that diverse teams make better decisions and produce better ideas\n\n## 8. Close candidates well\n\n- [ ] Make candidates feel genuinely wanted\n- [ ] Move quickly once I decide to make an offer\n- [ ] Stay involved during the closing process\n- [ ] Explain why the role matters and why they are a strong fit\n- [ ] Paint a compelling picture of the impact they could have\n- [ ] Keep communication warm, clear, and frequent\n\n## 9. Hire at scale\n\n- [ ] Understand the funnel metrics from outreach to offer acceptance\n- [ ] Expect hiring to require volume and repetition\n- [ ] Break the process into manageable parts and improve each one\n- [ ] Train interviewers to assess candidates consistently\n- [ ] Build systems, not one-off heroic efforts\n- [ ] Spend substantial time on hiring when team growth is a priority\n\n## 10. Hire leaders carefully\n\n- [ ] Do extra research before hiring managers or senior leaders\n- [ ] Learn what great candidates for that leadership role look like\n- [ ] Involve people who understand the function deeply\n- [ ] Assess values alignment, not just competence\n- [ ] Treat leadership hiring as a long-term investment\n\n## 11. Play the long game\n\n- [ ] Build relationships with great people before roles open\n- [ ] Keep in touch with strong candidates who say no\n- [ ] Invest in my network and team reputation over time\n- [ ] Remember that careers are long and timing changes\n\n## 12. Build a hiring culture\n\n- [ ] Share responsibility for hiring across leaders as the team grows\n- [ ] Coach others on what great talent looks like\n- [ ] Set a high bar and repeat it often\n- [ ] Make team-building everyone's job\n- [ ] Create a culture that consistently prioritizes hiring well\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why hiring is building the future of the team — never filling holes — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Arlo holds a resignation letter and stares at an empty desk chair in a panic.](assets/images/hiring-well/comic-01-the-empty-chair.jpeg)\n**Panel 1:** *The hook: a resignation lands, and the reflex is to fill the hole — fast.*\n\n![Comic panel: Arlo and Vera look at a lopsided patchwork team chart on the wall.](assets/images/hiring-well/comic-02-shape-by-attrition.jpeg)\n**Panel 2:** *The problem: hire reactively for long enough and the team's shape becomes an accident of attrition.*\n\n![Comic panel: Arlo enthusiastically hires a candidate after a thirty-minute chat, clock on the wall.](assets/images/hiring-well/comic-03-the-gut-feel-hire.jpeg)\n**Panel 3:** *The wrong way: a gut-feel verdict from one short conversation — interviews are far too noisy for that.*\n\n![Comic panel: Vera at a whiteboard with a year-end team blueprint showing dashed outlines for planned roles, Arlo taking notes.](assets/images/hiring-well/comic-04-build-the-future-team.jpeg)\n**Panel 4:** *The principle: hiring is building the future of the team — plan the year-end team and its gaps before the req opens.*\n\n![Comic panel: Arlo writes the job description at his laptop while a recruiter shows a sourcing list beside him.](assets/images/hiring-well/comic-05-own-the-process.jpeg)\n**Panel 5:** *How it runs: own it personally — write the job description yourself and shape a pipeline that feels personal, not generic.*\n\n![Comic panel: interviewers hold sealed independent scorecards while one raises a hand as the passionate advocate, Arlo chairing.](assets/images/hiring-well/comic-06-the-advocate-test.jpeg)\n**Panel 6:** *The mechanic: same core questions, distinct dimensions, independent debriefs — and no offer without at least one passionate advocate.*\n\n![Comic panel: Arlo declines a marginal candidate while the empty chair waits behind him, Vera reassuring him.](assets/images/hiring-well/comic-07-the-open-chair-holds.jpeg)\n**Panel 7:** *The cost: the bar means saying no to a 'maybe' while the chair stays empty — because a weak hire compounds on the whole team.*\n\n![Comic panel: a diverse thriving team a year later, the new hire high-fiving Arlo while Vera looks on.](assets/images/hiring-well/comic-08-the-hire-compounds.jpeg)\n**Panel 8:** *The closer: every hire is a bet on the team's long-term capability — the strong ones compound for years.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nurturing Culture</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="managing-a-growing-team.html" title="Managing a Growing Team">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-downturn.html" title="Managing a Downturn">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">The Making of a Manager</p>
+        <h1>Nurturing Culture</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  6 min · <a class="spec-link" href="nurturing-culture.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/nurturing-culture/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/nurturing-culture/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="managing-a-growing-team.html" title="Managing a Growing Team">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-downturn.html" title="Managing a Downturn">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EM-NURTURING-CULTURE", "status": "draft:gray", "title": "Nurturing Culture", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "nurturing-culture", "timetoread": "6 min", "excerpt": "I treat team culture as something I diagnose, choose, and reinforce — not something that happens to me. I write down what the culture actually is today in plain adjectives, name the five I want with the tradeoff each one carries, and then close the gap the only way that works: repeating what matters, modeling it visibly, auditing what actually gets rewarded, and building rituals that make the values part of everyday life.", "tags": "engineering management, team culture, values, incentives, rituals, leadership", "icon": "assets/icons/nurturing-culture.png", "logo": "assets/images/nurturing-culture/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering management", "team culture", "values", "incentives", "rituals", "leadership"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: My team's culture is what I repeat, what I model, what I reward, and what I ritualize — not what I write on a slide. So I work on culture deliberately: I diagnose the current culture honestly in plain adjectives, I choose the aspirational adjectives while naming the tradeoff each one carries when taken too far, and I close the gap through repetition across channels, visible modeled behavior, an audit of what actually gets rewarded, and traditions specific to this team. When my daily behavior and my stated values tell different stories, the team believes the behavior.\n\n## Statement\n\nMy operating model for nurturing culture has six parts:\n\n- **Diagnose before aspiring.** I write down the first three adjectives that describe my team's personality today, the moments that made me proud, what we do better than most teams, and the top three complaints about how things work. If random team members were asked \"what does our team value?\", I check whether their answers would be consistent.\n- **Choose values with their tradeoffs attached.** I pick the top five adjectives I want others to use about my team — and for each one I name the downside of taking it too far. I list cultural traits I admire in other teams, why, and what tradeoffs those teams accept — and the traits I deliberately do not want to copy.\n- **Name the gap.** I rate how close the team is to the ideal culture, list the strengths that already align, the biggest gaps, the main obstacles, and describe how I want the team to work one year from now.\n- **Repeat what matters, in many forms.** I assume important messages need to be heard many times through multiple channels, and I talk openly not just about values but about mistakes and lessons learned.\n- **Walk the walk and audit the incentives.** I check that my own behavior matches the values I claim, eliminate visible contradictions, and review what behaviors are actually rewarded — changing structural incentives when they push people away from the stated values.\n- **Build traditions that make values visible.** I create rituals specific to this team — not generic ones — that celebrate learning, openness, creativity, or support, and I pay attention to the small repeated actions that signal what matters.\n\n![Flow diagram of culture work: diagnose the current culture, choose values with shadows attached, measure the gap, and close it by repeating, modeling, rewarding, and ritualizing.](assets/images/nurturing-culture/culture-work-pipeline.jpeg)\n**Figure 1:** *The operating model in one flow: diagnose honestly, choose values with tradeoffs named, measure the gap — then close it with the four mechanisms that actually transmit culture.*\n\n## How to Read This\n\nThis journal is my engineering-management operating model, each record grounded in one source. This record distills the \"Nurturing Culture\" chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019) — the closing argument of the book: that a manager shapes culture whether or not they mean to, so they had better do it on purpose. The runnable version — the diagnosis prompts, the aspiration exercise, the incentive-trap watchlist — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Culture exists whether I nurture it or not — the only choice is whether it is deliberate.** Every team already has a personality: how it handles disagreement, what it celebrates, what it quietly punishes. If I never diagnose it, I am still shaping it — through what I tolerate, what I reward, and what I model — just without knowing what I am building. Writing down three honest adjectives and the top three complaints is the cheapest possible way to see the culture I actually have rather than the one I assume I have.\n\n**Every value taken too far becomes a liability, so I choose values with the tradeoff named.** \"Fast\" taken too far is sloppy; \"rigorous\" taken too far is slow; \"harmonious\" taken too far avoids every hard conversation. Zhuo's exercise forces the honesty: for each aspirational adjective, name the downside. The same discipline applies to admiring other teams — the cultures I envy accepted tradeoffs to get there, and copying the trait without accepting the tradeoff produces cargo-cult culture.\n\n![Three value tokens — fast, rigorous, harmonious — each casting a shadow shaped like its failure mode: sloppy, slow, avoidant.](assets/images/nurturing-culture/values-with-shadows.jpeg)\n**Figure 2:** *Every value taken too far becomes a liability — so each aspirational adjective is chosen with its shadow named.*\n\n**Repetition is the mechanism, not a failure of communication.** A value said once at an offsite is decoration. Important messages need to be heard many times, in many forms, through multiple channels — including the uncomfortable forms: open discussion of tension and disagreement, and honest talk about my own mistakes and what they taught me. When I feel like I am repeating myself, that is usually the first moment the message is starting to land.\n\n**People believe the incentives, not the poster.** If I say \"team success matters most\" but reward individual heroics; if I say \"invest long-term\" but celebrate only short-term wins; if I say \"be honest\" but promote conflict-avoiders and reward the loudest complainers — the team learns the real values in weeks. So I audit: what behaviors actually get rewarded here, and why are people making the choices they are making? When the structural incentives push against the stated values, I change the incentives, hold people accountable when behavior violates the values, and publicly recognize the ones who do the hard right thing.\n\n![Crossroads diagram: a stated-values poster points one way while rewards point the other, and the whole team walks the rewarded path.](assets/images/nurturing-culture/incentive-audit.jpeg)\n**Figure 3:** *People believe the incentives, not the poster: when rewards pull against stated values, the team follows the rewards — so the audit targets what actually gets rewarded.*\n\n**Trust is fragile, and consistency is how I protect it.** The fastest way to destroy a culture is a visible contradiction between what I say and what I do — asking for feedback I do not act on, demanding candor I do not offer. Modeling the exact behavior I want the team to adopt, and asking for feedback the same way I expect others to, is not a nice-to-have; it is the load-bearing wall.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| I diagnose the current culture honestly, complaints included. | Culture work starts with writing aspirational values on a wall. |\n| I choose five aspirational adjectives with the tradeoff of each named. | More values are better — an unbounded list means nothing is a value. |\n| I repeat what matters across many channels, many times. | Saying it once at an all-hands counts as communicating it. |\n| I audit what is actually rewarded and fix misaligned incentives. | Restating the values harder will overcome incentives that contradict them. |\n| I build rituals specific to this team that make values visible. | Generic borrowed rituals will bond a team around its own values. |\n| I hold people accountable when behavior violates the values. | Culture is only celebration — violations handled quietly teach the team the values are optional. |\n\nConcretely: I can show a written current-culture diagnosis and a five-adjective aspiration with tradeoffs, I can point to the last time I changed an incentive because it fought the values, and the team has at least one ritual that is unmistakably ours. The final test I run on myself: what are my actions, rewards, and rituals teaching the team — and does daily behavior tell the same story as the stated values?\n\n## Anti-Patterns\n\n- **Values by decree.** Announcing aspirational values without ever diagnosing the current culture, so the gap — and the team's cynicism about it — stays invisible.\n- **Adjectives without tradeoffs.** Choosing values like \"fast\" or \"excellent\" without naming what taking them too far costs, which makes the values unfalsifiable and unusable in real decisions.\n- **The single announcement.** Communicating a value once and assuming it stuck, instead of repeating it across channels until it shows up in decisions I did not make.\n- **The visible contradiction.** Preaching candor while dodging feedback, or work-life balance while sending midnight messages — the team believes the behavior every time.\n- **The incentive traps.** Rewarding individual performance over team success, short-term gains over long-term investment, conflict avoidance over honest discussion, or the loudest complainers over the quiet contributors.\n- **Cargo-cult rituals.** Copying another company's traditions instead of building ones specific to this team, so the ritual signals nothing.\n- **Quiet tolerance of violations.** Recognizing value-aligned behavior publicly but handling violations invisibly or not at all — which teaches the team the values apply only when convenient.\n\n## Related Records\n\n- [Leading a Small Team](leading-a-small-team.html) — culture at team scale starts with the trust and honesty basics that record commits to.\n- [Managing a Growing Team](managing-a-growing-team.html) — growth is when culture stops propagating by osmosis and starts needing the deliberate repetition and rituals this record describes.\n- [The Art of Feedback](feedback.html) — holding people accountable to values, and modeling how feedback is asked for and received, run on that record's feedback machinery.\n- [Engineering Culture](../grounded-engineering-executive/engineering-culture.html) (executive journal) — the organization-level view of the same commitment; this record is the team-scale instrument.\n- [Organizational Values](../grounded-engineering-executive/organizational-values.html) (executive journal) — the company-level values this team culture must nest inside rather than contradict.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs how I diagnose, choose, and reinforce culture on any team I run or hold a manager accountable for. I revisit it when random team members give inconsistent answers to \"what does our team value?\", when I catch an incentive rewarding behavior the stated values condemn and I have not fixed it within a quarter, or when a year-out description of how the team should work has gone stale without being rewritten.\n\n## Authoritative References\n\n- Julie Zhuo, *The Making of a Manager: What to Do When Everyone Looks to You* (Portfolio/Penguin, 2019) — the \"Nurturing Culture\" chapter this record distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Understand your current team\n\n- [ ] Write down the first 3 adjectives that describe the team's personality\n- [ ] Identify the moments that made me most proud to be part of the team\n- [ ] Note what the team does better than most other teams\n- [ ] Ask: if random team members were asked \"what does our team value?\", would their answers be consistent?\n- [ ] Compare the team's culture with the broader organization's culture\n- [ ] Imagine an outside observer scrutinizing the team — what would they say we do well or poorly?\n- [ ] List the top 3 complaints people have about how things work\n\n## 2. Clarify your aspirations\n\n- [ ] Choose the top 5 adjectives I want others to use to describe the team\n- [ ] For each adjective, identify the downside or tradeoff of taking it too far\n- [ ] List cultural traits I admire in other teams or organizations\n- [ ] Note why I admire them and what tradeoffs those teams accept\n- [ ] List the cultural traits I do not want to copy from other teams or companies\n\n## 3. Understand the gap\n\n- [ ] Rate the team from 1–9 on how close it is to the ideal culture\n- [ ] Identify the strengths the team already has that align with the desired culture\n- [ ] List the biggest gaps between the current culture and the desired culture\n- [ ] Identify the main obstacles that could block progress\n- [ ] Describe how I want the team to work one year from now\n\n## 4. Keep talking about what matters\n\n- [ ] Repeatedly communicate the values and behaviors that matter most\n- [ ] Use multiple channels to reinforce the same message\n- [ ] Encourage open discussion of tension, disagreement, and hard conversations\n- [ ] Assume important messages need to be heard many times in many forms\n- [ ] Talk openly not just about values, but also about mistakes and lessons learned\n\n## 5. Walk the walk\n\n- [ ] Check whether my behavior matches the values I say matter\n- [ ] Eliminate visible contradictions between what I say and what I do\n- [ ] Model the exact behavior I want the team to adopt\n- [ ] Ask for feedback in the same way I expect others to\n- [ ] Treat trust as fragile and protect it through consistency\n\n## 6. Create the right incentives\n\n- [ ] Review what behaviors are actually rewarded on the team\n- [ ] Compare stated values with the decisions people are incentivized to make\n- [ ] Watch for the incentive traps: rewarding individual performance over team success\n- [ ] Watch for: rewarding short-term gains over long-term investments\n- [ ] Watch for: rewarding avoidance of conflict over honest discussion\n- [ ] Watch for: rewarding the loudest complainers\n- [ ] Ask why people are making the choices they are making\n- [ ] Change structural incentives when they push people away from team values\n- [ ] Hold people accountable when their behavior violates team values\n- [ ] Publicly recognize people who do the hard right thing\n\n## 7. Build traditions that reinforce values\n\n- [ ] Create rituals that help team members bond around shared values\n- [ ] Make those rituals specific to this team rather than generic\n- [ ] Add recurring moments that celebrate learning, openness, creativity, or support\n- [ ] Use traditions to make values visible in everyday team life\n- [ ] Pay attention to the small repeated actions that signal what matters\n\n## 8. Final reflection\n\n- [ ] Review what my actions, rewards, and rituals are teaching the team\n- [ ] Make sure daily behavior tells the same story as my stated values\n- [ ] Adjust until the culture reflects what I genuinely want the team to become\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why culture is what you repeat, model, reward, and ritualize — not what you write on a slide — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Arlo dramatically unveils a glossy values poster to a politely watching team.](assets/images/nurturing-culture/comic-01-the-values-poster.jpeg)\n**Panel 1:** *The hook: culture work begins — with a poster.*\n\n![Comic panel: three team members give three different answers to what the team values while the poster hangs ignored.](assets/images/nurturing-culture/comic-02-three-different-answers.jpeg)\n**Panel 2:** *The problem: ask random team members what the team values — and get three different answers.*\n\n![Comic panel: Arlo preaches balance by day and sends midnight messages by night, a teammate's phone buzzing in bed.](assets/images/nurturing-culture/comic-03-the-midnight-contradiction.jpeg)\n**Panel 3:** *The wrong way: preach balance, send midnight messages — when behavior and values conflict, the team believes the behavior.*\n\n![Comic panel: Vera presents four icons — megaphone, mirror, medal, pennant — while the poster leans on the floor.](assets/images/nurturing-culture/comic-04-repeat-model-reward-ritualize.jpeg)\n**Panel 4:** *The principle: culture is what you repeat, what you model, what you reward, and what you ritualize — not what you frame on a wall.*\n\n![Comic panel: Arlo and the team lay out honest diagnosis cards, with five value badges each carrying a small shadow.](assets/images/nurturing-culture/comic-05-diagnose-then-choose.jpeg)\n**Panel 5:** *How it runs: diagnose the culture you actually have — adjectives, proud moments, complaints — then choose five values with each one's shadow named.*\n\n![Comic panel: Arlo swings a reward signpost away from a lone hero on a pedestal toward a group lifting a beam together.](assets/images/nurturing-culture/comic-06-fix-the-incentives.jpeg)\n**Panel 6:** *The mechanic: audit what actually gets rewarded — and when the incentive fights the values, change the incentive, not the poster.*\n\n![Comic panel: montage of Arlo repeating the same value in a meeting, a one-on-one, a chat, and over his own admitted mistake.](assets/images/nurturing-culture/comic-07-repeating-yourself.jpeg)\n**Panel 7:** *The cost: repeating the message across every channel — mistakes included — long past the point it feels redundant; that is when it starts to land.*\n\n![Comic panel: the team ceremonially passes a golden rubber duck trophy under pennant flags while Vera and Arlo watch.](assets/images/nurturing-culture/comic-08-a-ritual-of-our-own.jpeg)\n**Panel 8:** *The closer: a ritual that is unmistakably this team's — daily behavior finally telling the same story as the stated values.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

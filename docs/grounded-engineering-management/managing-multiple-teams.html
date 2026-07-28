@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Managing Multiple Teams</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="managing-a-team.html" title="Managing a Team">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-managers.html" title="Managing Managers">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">The Manager's Path</p>
+        <h1>Managing Multiple Teams</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  7 min · <a class="spec-link" href="managing-multiple-teams.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/managing-multiple-teams/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/managing-multiple-teams/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="managing-a-team.html" title="Managing a Team">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-managers.html" title="Managing Managers">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EM-MANAGING-MULTIPLE-TEAMS", "status": "draft:gray", "title": "Managing Multiple Teams", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "managing-multiple-teams", "timetoread": "7 min", "excerpt": "Managing multiple teams means accepting that writing production code is no longer my job — my output is leaders, priorities, and a system of work that improves without me. I separate important work from merely urgent work, delegate on purpose using the frequency-and-complexity grid, say no like a leader, and measure team health beyond output. The bar is the week-away test: my teams keep operating well when I step away.", "tags": "engineering management, delegation, prioritization, time management, team health, sustainable pace, the manager's path", "icon": "assets/icons/managing-multiple-teams.png", "logo": "assets/images/managing-multiple-teams/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering management", "delegation", "prioritization", "time management", "team health", "sustainable pace", "the manager's path"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: At the multi-team rung, my job is no longer to write production code — and pretending otherwise steals time from the job I actually have. My output is leaders, priorities, and a system of work that improves without me in the middle of it. I separate important work from merely urgent work and reserve weekly time for the former; I delegate on purpose, using complexity and frequency to decide what to hand off, what to keep, and what to turn into coaching; I say no clearly and quickly; and I measure team health by release frequency, code flow, incident load, and focus time — not just output. The bar is simple: my teams keep operating well if I step away for a week.\n\n## Statement\n\nWhen I manage multiple teams — and for every manager I hold accountable at this rung — the commitments are:\n\n- **I own the role as it is, not as it was.** I accept that writing production code is no longer my primary job. I stay technically credible through reviews, debugging, incidents, and design conversations, and I keep at least one protected block each week for creative or technical work — but my measurable output is managers, tech leads, and future leaders.\n- **I prioritize by importance, not urgency.** I separate important work from merely urgent work, reserve time every week for important-but-not-urgent work, prune low-value meetings from my calendar, and refuse to treat email, chat, and scheduled meetings as automatically important.\n- **I delegate on purpose, using the grid.** Simple and frequent: delegate. Simple and infrequent: do it myself when explaining would take longer. Complex and infrequent: use as coaching opportunities for rising leaders. Complex and frequent: delegate deliberately to develop team ownership. I identify the tasks only I can do — and teach the rest.\n- **I build leaders, not helpers.** Tech leads and emerging managers get real responsibility — planning, coordination, follow-through — not helper tasks. Delegation exists to grow capability, not just to reduce my workload.\n- **I say no like a leader.** \"Yes, and\" instead of reflexive rejection; explicit tradeoffs — what slips if we say yes; policies where I keep saying no to the same thing; honest time and budget constraints; and quick, clear no's instead of vague \"not right now.\"\n- **I measure team health beyond output.** Release frequency, frequency of code check-ins, incident frequency and operational load, process friction, whether engineers have what they need, and whether people have focus time to build rather than just react.\n- **I model sustainable pace.** Efficiency, automation, and simplification instead of longer hours; no after-hours signals that normalize overwork; protection of myself and my teams from burnout.\n\n## How to Read This\n\nThis journal is my engineering-management operating model, each record grounded in one source. This record distills the \"Managing Multiple Teams\" chapter of Camille Fournier's *The Manager's Path* (O'Reilly, 2017) — the rung where the manager's calendar, delegation choices, and system-of-work improvements become the job itself. I write it two-sided: what I commit to when I occupy this role, and what I hold every multi-team manager in my organization accountable for. The runnable version — including the weekly manager reset and the monthly leadership check — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Clinging to production code at this rung is comfort spending, not contribution.** With multiple teams, the highest-leverage work is exactly the work nobody demands by deadline: hiring plans, team health, roadmaps, growing leaders, fixing the system of work. Every hour I spend as an extra engineer is an hour taken from work only I can do — while displacing an engineer who would have done the coding better because they live in the codebase daily. Staying technically credible matters, which is why I protect one weekly block for technical work and stay close to reviews, incidents, and design conversations — but credibility is a maintenance activity now, not the job.\n\n**Urgent work volunteers itself; important work has to be defended.** Email, chat, and a full calendar all feel like work and arrive with built-in urgency, but almost none of it is important. The important work — the kind that determines whether my organization is better in six months — never shows up as a meeting invite. So the discipline is structural, not motivational: reserved weekly time for important-but-not-urgent work, a recurring calendar review that removes low-value meetings, and a purpose test for every recurring group meeting. If I regularly find the week consumed by urgent-but-low-value work, that is a system failure of mine, not bad luck.\n\n![Weekly calendar flooded by urgent arrows and notification icons, with one fenced deep blue block guarded by a manager figure.](assets/images/managing-multiple-teams/important-work-defended.jpeg)\n**Figure 1:** *Urgent work invades the calendar on its own; important work survives only where it is structurally defended.*\n\n\n**The delegation grid turns a guilt-ridden judgment call into a routine decision.** Most managers delegate by mood — offloading when overwhelmed, hoarding when anxious. Fournier's grid replaces mood with two questions: how frequent is this task, and how complex? Simple-frequent tasks are training wheels for ownership; simple-infrequent tasks are cheaper to just do; complex-infrequent tasks are the best coaching opportunities I have, worth doing slower with a rising leader in the room; complex-frequent work is precisely what must be delegated, because it is what develops real team ownership — and what buries me if I keep it. The residue after the grid is the short list of things only I can do. Everything else, I teach.\n\n![Two-by-two delegation matrix of task frequency versus complexity: delegate, do it yourself, coach through it, delegate deliberately.](assets/images/managing-multiple-teams/delegation-grid.jpeg)\n**Figure 2:** *The grid replaces mood with two questions — how frequent, how complex — and complex-frequent work is exactly what must be handed off.*\n\n\n**Team health is legible in flow metrics before it is legible in output.** Output figures lag; by the time a team's results visibly sag, the causes are months old. Release frequency, check-in frequency, incident load, and focus time move first — and so do the soft signals: a tech lead who reports \"everything is fine\" but skips 1:1s, meetings that feel lifeless or one-sided, priorities that churn with no stable goals, teams that turn inward and stop learning from outside. Watching these signals — and then actually improving the system of work behind them: smaller releases, fewer manual steps and handoffs, better tooling, incident load kept in bounds — is what managing multiple teams means when I can no longer be inside each team's daily work.\n\n![Four small gauges for releases, check-ins, incidents, and focus time tipping into amber while a large output gauge still reads healthy.](assets/images/managing-multiple-teams/flow-signals-before-output.jpeg)\n**Figure 3:** *Flow signals move first: by the time output visibly sags, the causes are months old.*\n\n\n**The culture I build must outlast me — and must not define itself against others.** \"Us vs. them\" identity-building feels like team spirit and costs the organization dearly: teams aligned to their own superiority rather than company purpose, closed to outside ideas, hostile at the boundaries where all real delivery happens. I align teams to company purpose, treat my peer leaders as my first team, and build teams that survive leadership changes and reorganizations. The same logic applies to pace: the signals I send — after-hours messages, celebrated heroics — become culture faster than anything I say, so I queue the non-urgent messages and push for smarter, not merely harder.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Production code is no longer my primary job. | I go technically dark — reviews, incidents, design conversations, and one protected technical block keep me credible. |\n| I reserve weekly time for important-but-not-urgent work. | Urgent work is ignored — it is handled, but it does not get to crowd out the important by default. |\n| I delegate complex, frequent work to develop ownership. | I dump whatever I dislike — the grid decides, and complex-infrequent work is coached, not dropped on someone. |\n| I say no quickly and clearly when the answer is no. | I reflexively reject — \"yes, and\" with explicit tradeoffs comes first; policies replace repeated one-off no's. |\n| I track release frequency, code flow, and incident load. | Output metrics are enough — flow and health signals move first, and they are what I inspect. |\n| The week-away test is the bar for my teams. | I make myself unnecessary tomorrow — building leaders who can run planning and follow-through takes deliberate, sustained coaching. |\n\nConcretely: my week includes a manager reset — review team health, risks, and staffing; prune the calendar; pick one thing to delegate; move one important-but-not-urgent item forward; check in with tech leads and future leaders; remove one friction point from a team's workflow. Monthly, I step back and ask whether the teams are getting more independent, whether the culture is drifting into silos, whether operating metrics are improving, and whether I am building an organization that can scale without me in the middle of everything.\n\n## Anti-Patterns\n\n- **The manager who still ships.** Spending prime hours writing production code while hiring plans, team health, and leader development quietly starve — leverage traded for comfort.\n- **The calendar as boss.** Treating every meeting, email, and chat ping as automatically important, and discovering at month's end that nothing important-but-not-urgent moved at all.\n- **Delegation as dumping.** Handing off work only when overwhelmed, with no intent to grow anyone — reducing my workload without building any capability.\n- **Helper-task \"development.\"** Giving tech leads and emerging managers errands instead of real responsibility, then concluding they are not ready for more.\n- **The vague not-right-now.** Deflecting requests with soft non-answers I never intend to revisit, teaching the organization that my no's are negotiable and my yes's are meaningless.\n- **Output-only dashboards.** Watching delivery numbers while release frequency slows, incident load climbs, and focus time evaporates — then being surprised by the collapse.\n- **\"Us vs. them\" team spirit.** Building team identity against other teams, and paying for the morale boost with silo behavior at every boundary.\n- **After-hours heroics as culture.** Sending weekend messages, praising crunch, and calling it commitment — normalizing overwork one signal at a time.\n\n## Related Records\n\n- [Managing a Team](managing-a-team.html) — the previous rung: owning one team's health and output while still sharing its technical day-to-day.\n- [Managing Managers](managing-managers.html) — the next rung: the directs are themselves managers, and skip-levels become the ground-truth channel.\n- [Tech Lead](tech-lead.html) — the role I am deliberately growing when I use complex-infrequent work as coaching opportunities.\n- [Getting Things Done](getting-things-done.html) — the prioritization craft from the *Making of a Manager* side of this journal; this record applies it at multi-team scope.\n- [Managing a Growing Team](managing-a-growing-team.html) — Julie Zhuo's view of the same transition, from a growing-team perspective.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs how I operate when managing multiple teams and what I hold multi-team managers accountable for: prioritization, deliberate delegation, leader-building, team-health measurement, and sustainable pace. I revisit it if the week-away test fails for any of my teams, if two consecutive monthly checks show teams becoming less independent or operating metrics degrading, or if my own weekly review keeps showing important work postponed for urgent-but-low-value work.\n\n## Authoritative References\n\n- Camille Fournier, *The Manager's Path: A Guide for Tech Leaders Navigating Growth and Change* (O'Reilly, 2017) — the \"Managing Multiple Teams\" chapter this record distills; the checklist in the Checklist tab is adapted from its chapter checklist.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "5 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Own the role\n\n- [ ] Accept that my job is no longer primarily to write production code\n- [ ] Stay technically credible through reviews, debugging, incidents, and design conversations\n- [ ] Keep at least one protected block of time each week for creative or technical work\n- [ ] Make sure I am building managers, tech leads, and future leaders, not just shipping work\n\n## 2. Prioritize what matters\n\n- [ ] Separate **important** work from merely **urgent** work\n- [ ] Reserve time every week for important but not urgent work\n- [ ] Review my calendar and remove low-value meetings\n- [ ] Avoid treating email, chat, and scheduled meetings as automatically important\n- [ ] Make sure every recurring group meeting has a clear purpose and expected outcomes\n\n## 3. Manage time deliberately\n\n- [ ] Protect uninterrupted time for strategic thinking\n- [ ] Follow up on key deliverables without becoming a bottleneck\n- [ ] Regularly ask: \"Am I spending too much time on urgent but low-value work?\"\n- [ ] Make room for hiring plans, team health, roadmaps, and organizational development\n\n## 4. Delegate on purpose\n\n- [ ] Delegate **simple + frequent** tasks\n- [ ] Handle **simple + infrequent** tasks myself when explaining them would take longer\n- [ ] Use **complex + infrequent** tasks as coaching opportunities for rising leaders\n- [ ] Delegate **complex + frequent** work to develop stronger team ownership\n- [ ] Identify tasks only I can do, and teach the rest\n\n## 5. Build leaders under me\n\n- [ ] Give tech leads and emerging managers real responsibility, not just helper tasks\n- [ ] Coach people to handle planning, coordination, and follow-through themselves\n- [ ] Use delegation to grow capability, not just reduce my workload\n- [ ] Check whether my teams could keep operating well if I stepped away for a week\n\n## 6. Watch for warning signs\n\n- [ ] Notice disengagement, sudden withdrawal, or unusual silence from team members\n- [ ] Watch for tech leads who report \"everything is fine\" but skip 1:1s or provide vague updates\n- [ ] Pay attention when meetings feel lifeless or one-sided\n- [ ] Notice teams whose priorities change constantly with no stable goals\n- [ ] Look for teams that are overly narrow, fragmented, or resistant to learning outside their area\n\n## 7. Say no like a leader\n\n- [ ] Use \"yes, and\" instead of reflexive rejection\n- [ ] Clarify tradeoffs: what slips if we say yes?\n- [ ] Create policies when I find myself saying \"no\" repeatedly\n- [ ] Ask \"help me say yes\" questions to test weak proposals\n- [ ] Use time and budget constraints honestly\n- [ ] Avoid vague \"not right now\" answers unless I truly intend to revisit later\n- [ ] Deliver clear no's quickly when needed\n\n## 8. Measure team health beyond output\n\n- [ ] Track **release frequency**\n- [ ] Track **frequency of code check-ins / small-batch progress**\n- [ ] Track **incident frequency** and operational load\n- [ ] Look for process friction that slows delivery\n- [ ] Check whether engineers have what they need to do good work\n- [ ] Check whether people have enough focus time to build rather than just react\n\n## 9. Improve the system of work\n\n- [ ] Push for smaller releases and faster feedback loops\n- [ ] Reduce manual steps, handoffs, and slow approvals\n- [ ] Improve tooling, automation, and developer experience\n- [ ] Prevent incident work from consuming all engineering time\n- [ ] Balance risk reduction with speed; do not let \"safety\" become a permanent drag\n\n## 10. Build the right team culture\n\n- [ ] Avoid \"us vs. them\" identity-building\n- [ ] Align teams to company purpose, not team superiority\n- [ ] Encourage openness to ideas from outside the team\n- [ ] Focus on being a strong partner across product, design, and peer teams\n- [ ] Treat my peer leaders as my \"first team,\" not just my direct reports\n- [ ] Build teams that survive leadership changes and reorganizations\n\n## 11. Model sustainable leadership\n\n- [ ] Push for efficiency, automation, and simplification instead of longer hours\n- [ ] Avoid sending after-hours signals that normalize overwork\n- [ ] Queue non-urgent weekend/night messages for later when possible\n- [ ] Ask whether faster means smarter, not just more exhausting\n- [ ] Protect myself and my teams from burnout\n\n## 12. Review myself regularly\n\n- [ ] What did I spend time on this week that created little value?\n- [ ] What important work did I postpone because urgent work crowded it out?\n- [ ] What did I delegate recently, and did it help someone grow?\n- [ ] Who are my rising leaders, and what am I doing to prepare them?\n- [ ] Are releases, code flow, and incident handling improving?\n- [ ] Did I send signals this week that reward focus and sustainability, or chaos and overwork?\n\n## 13. Weekly manager reset\n\n- [ ] Review team health, risks, and staffing needs\n- [ ] Review the calendar for low-value meetings\n- [ ] Identify one thing to delegate\n- [ ] Identify one important-but-not-urgent item to move forward\n- [ ] Check in with tech leads and future leaders\n- [ ] Remove one friction point from the team's workflow\n\n## 14. Monthly leadership check\n\n- [ ] Are my teams getting more independent?\n- [ ] Are my leads and I spending time on the right level of work?\n- [ ] Is our culture collaborative, or is it drifting into silo behavior?\n- [ ] Are our operating metrics improving?\n- [ ] Am I building an organization that can scale without me in the middle of everything?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "What changes when writing production code stops being the job — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Arlo reaches for a sprint ticket in front of three team boards while Vera raises an eyebrow.](assets/images/managing-multiple-teams/comic-01-still-taking-tickets.jpeg)\n**Panel 1:** *The hook: three teams now — and the strongest pull is back toward the comfortable old job.*\n\n![Comic panel: Arlo buried under envelopes and notifications while dusty folders sit untouched on a shelf.](assets/images/managing-multiple-teams/comic-02-everything-urgent.jpeg)\n**Panel 2:** *The problem: urgent work invades on its own; the important work — hiring, health, leaders — never sends an invite.*\n\n![Comic panel: a frazzled Arlo shoves an armful of loose papers at a startled tech lead.](assets/images/managing-multiple-teams/comic-03-delegation-by-drowning.jpeg)\n**Panel 3:** *The wrong way: delegation by mood — offloading when overwhelmed reduces workload but builds no capability.*\n\n![Comic panel: Vera shows a diagram of three leaders growing out of Arlo's role while he watches thoughtfully.](assets/images/managing-multiple-teams/comic-04-your-output-is-leaders.jpeg)\n**Panel 4:** *The principle: the job's output is no longer code — it is leaders, priorities, and a system of work that runs without you.*\n\n![Comic panel: Vera taps the highlighted top-right cell of a two-by-two whiteboard grid as Arlo places a task tile.](assets/images/managing-multiple-teams/comic-05-the-delegation-grid.jpeg)\n**Panel 5:** *How it runs: two questions — how frequent, how complex — decide what to hand off, keep, or turn into coaching.*\n\n![Comic panel: Arlo fences off a blue calendar block against bouncing urgent arrows while tearing off a meeting card.](assets/images/managing-multiple-teams/comic-06-the-defended-hour.jpeg)\n**Panel 6:** *The mechanic: important work survives only when it is structurally defended — reserved time, pruned meetings, quick clear no's.*\n\n![Comic panel: Arlo wistfully stores his laptop in a drawer near a wall of team health gauges as Vera reassures him.](assets/images/managing-multiple-teams/comic-07-letting-go-of-shipping.jpeg)\n**Panel 7:** *The cost: giving up the comfort of shipping yourself — credibility becomes maintenance, and health gauges replace the editor.*\n\n![Comic panel: Arlo returns with a travel bag to find three teams running smoothly with green status lights.](assets/images/managing-multiple-teams/comic-08-the-week-away-test.jpeg)\n**Panel 8:** *The closer: the bar is the week-away test — the teams keep operating well when the manager steps away.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

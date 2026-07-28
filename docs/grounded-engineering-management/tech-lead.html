@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tech Lead</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="mentoring.html" title="Mentoring">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-people.html" title="Managing People">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">The Manager's Path</p>
+        <h1>Tech Lead</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-28  ·  7 min · <a class="spec-link" href="tech-lead.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/tech-lead/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/tech-lead/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Engineering Management</a><span class="nav-right"><a class="nav-prev" href="mentoring.html" title="Mentoring">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-people.html" title="Managing People">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "EM-TECH-LEAD", "status": "draft:gray", "title": "Tech Lead", "date": "2026-07-28", "author": "Željko Obrenović", "permalink": "tech-lead", "timetoread": "7 min", "excerpt": "The tech lead is the first role where the job stops being 'write code' and becomes 'help the team deliver' — held without formal authority. I expect tech leads to sort technical decisions into make, delegate, or escalate; to push projects through ambiguity with real planning, premortems, and rollback plans; to protect the team's focus time; and to be measured by team outcomes, not personal output. The two failure modes I watch for are the bottleneck who owns every decision and the hands-off figurehead who owns none.", "tags": "engineering management, tech lead, project management, technical leadership, delegation, influence without authority", "icon": "assets/icons/tech-lead.png", "logo": "assets/images/tech-lead/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["engineering management", "tech lead", "project management", "technical leadership", "delegation", "influence without authority"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: The tech lead is the first role where the job stops being \"write code\" and becomes \"help the team deliver\" — and it is held without formal authority, on influence alone. I expect a tech lead to balance technical work with leadership, communication, and planning; to sort every technical decision into make, delegate, or escalate; to push projects through ambiguity with real plans, premortems, and rollback plans rather than waiting for certainty; and to protect the team's focus while representing it clearly outward. A tech lead is measured by team outcomes, not personal output — and the two ways to fail are symmetric: becoming the bottleneck every decision waits on, or becoming so hands-off that nobody is leading at all.\n\n## Statement\n\nMy operating model for the tech lead role has six parts:\n\n- **The job is team delivery, not personal output.** A tech lead balances technical work with leadership, communication, and project planning, focuses on team outcomes, influences without formal authority, and knows when to step in directly and when to delegate.\n- **Technical decisions are sorted, not hoarded.** The tech lead understands the architecture well enough to confidently lead changes, knows the critical systems, dependencies, and risks, gathers input from the team before major decisions, and explicitly sorts each decision into make, delegate, or escalate — sitting neither at the bottleneck extreme nor the hands-off one.\n- **Planning is pushed through ambiguity, not avoided.** Large projects get broken into deliverables and tasks; parallel work is separated from sequential; critical items from optional ones. The plan reduces uncertainty rather than pretending it away, gets revisited as new information appears, and delivery is prepared with a premortem, a launch plan, and a rollback plan. Status, risks, and tradeoffs are communicated early.\n- **The team is grown, not mined.** The tech lead helps teammates unblock themselves instead of hoarding the interesting work, delegates in ways that grow people, mentors without being anyone's manager, keeps the team focused on what matters most, and avoids heroics that hide problems instead of solving them.\n- **The team's attention is defended and represented.** Focus time is protected from unnecessary meetings and interruptions; stakeholders are helped to respect deep work; obstacles are removed; sustainable productivity beats constant urgency. Outward, the tech lead represents the team clearly, translates technical issues into language others understand, and raises concerns early instead of waiting for a crisis.\n- **Process is a tool, never a substitute for judgment.** There is no one perfect process; the tech lead adapts process to the team and the work, optimizes for people and interactions over rules and tools, and looks for self-regulating systems instead of policing people.\n\n## How to Read This\n\nThis journal is my engineering-management operating model, one record per source checklist. This record is grounded in the \"Tech Lead\" chapter of Camille Fournier's *The Manager's Path* (O'Reilly, 2017) — the rung where an engineer first trades some coding time for the responsibility of getting a whole project delivered. I write it as the executive who appoints tech leads and holds them to these expectations; the engineer-side view of the same role, from Gergely Orosz's *Software Engineer's Guidebook*, lives in [The Pragmatic Tech Lead](pragmatic-tech-lead.html). The runnable version — role and mindset, technical leadership, planning, project management, team duties, communication, process judgment, and the reflection questions — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**The mindset shift is the hard part, and it is non-negotiable.** Every failing tech lead I have seen was failing at the same thing: still optimizing for their own output while the project drifted. Fournier's chapter opens with exactly this — the job is not to write the most code, it is to help the team deliver. Accepting that means accepting slower personal technical progress in exchange for team leverage, and accepting that planning, communication, and coordination are now first-class work, not interruptions to the real work.\n\n![Before-and-after diagram of a lone engineer's tall output stack versus a tech lead multiplying a whole team's combined delivery.](assets/images/tech-lead/output-to-team-leverage.jpeg)\n**Figure 1:** *The rung's one non-negotiable shift: the job stops being maximizing your own output and becomes multiplying the team's.*\n\n**Make, delegate, or escalate is the discipline that prevents both failure modes.** The bottleneck tech lead makes every decision and becomes the queue the whole team waits in; the hands-off tech lead makes none and leaves the team leaderless while holding the title. Explicitly sorting decisions breaks both patterns: the tech lead personally makes the decisions where their architectural knowledge is genuinely load-bearing, delegates the ones that grow teammates, and escalates the ones above the project's pay grade — and gathers team input before the major ones, because influence without authority runs on being trusted, and trust runs on being consulted.\n\n![Diagram of a tech lead sorting decision cards into make, delegate, and escalate channels, with insets showing the bottleneck queue and the untouched pile.](assets/images/tech-lead/make-delegate-escalate-triage.jpeg)\n**Figure 2:** *Every technical decision gets sorted — make, delegate, or escalate — which is exactly what the bottleneck and the absentee both fail to do.*\n\n**Planning is the work of converting ambiguity into sequence, and avoiding it is abdication.** Engineers promoted for technical excellence often treat project planning as beneath them or as someone else's job. Fournier's counter is that the tech lead is precisely the person who can see which tasks are critical versus optional, which can run in parallel versus in sequence — and that this structure is what estimates, prioritization, and honest status all hang from. The plan is not a pretense of certainty; it is the tool for shrinking uncertainty, revised as reality reports in. And delivery is planned like part of the project, because it is: premortem before, launch plan during, rollback plan in case.\n\n![Diagram of a tangled cloud of work passing through a tech lead's sorting gate into parallel and sequential tracks with critical items marked and premortem, launch, and rollback guards before the finish line.](assets/images/tech-lead/ambiguity-into-sequence.jpeg)\n**Figure 3:** *The plan is not a pretense of certainty — it is the machine that turns ambiguity into sequence, with delivery planned as part of the project.*\n\n**Heroics are a debt instrument, and the tech lead is positioned to refuse them.** The all-nighter that saves the launch hides the planning failure that caused it, sets an unsustainable bar for the team, and guarantees the same crisis next quarter. I expect tech leads to prioritize sustainable productivity over constant urgency, to raise concerns early — when they are cheap to address — rather than performing rescues later, and to protect the team's focus time so that deep work does not have to happen at midnight.\n\n**Process is judgment's tool, and self-regulating beats policed.** A tech lead reaching for a heavier process to fix a leadership gap is treating the symptom. There is no perfect process; there is a team, its work, and whatever structure genuinely helps them coordinate. The best structures are self-regulating — visible boards, working agreements, automated checks — because a process that requires the tech lead to police it consumes the exact leadership attention it was meant to save.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| The tech lead is measured by team outcomes. | Personal technical output stops mattering — the role still writes code, just not at the old volume. |\n| Decisions are sorted into make, delegate, or escalate. | The tech lead decides everything — that is the bottleneck failure, not leadership. |\n| The tech lead plans, estimates, and sequences the project. | The tech lead becomes a full-time project manager who no longer touches the system. |\n| Influence runs without formal authority. | The tech lead is the team's boss — performance management stays with the manager. |\n| Focus time is protected and meeting load is watched. | The tech lead shields the team from all context — outward representation is half the job. |\n| Process is adapted to the team and the work. | Some process framework, applied hard enough, will substitute for judgment. |\n\nConcretely: every project with a tech lead in my organization has a visible plan with critical-path items marked, a premortem and rollback plan before launch, and a tech lead who can tell me — without preparation — which decisions they are making, which they have delegated, and which they are escalating. And both the tech lead and their manager can state what each expects from the role, because misaligned expectations are the quietest way this rung fails.\n\n## Anti-Patterns\n\n- **The bottleneck.** Every technical decision routes through one person; the team's throughput becomes one person's review queue.\n- **The absentee architect.** Fully hands-off \"empowerment\" — no decisions made, no plan owned, a title with nobody behind it.\n- **The code-hoarding lead.** Keeping the interesting work and delegating the drudgery, which burns trust and stunts the team in one move.\n- **Planning avoidance.** Treating ambiguity as a reason not to plan, rather than the reason planning exists — then discovering the critical path in the last month.\n- **The heroic save.** All-nighters and personal rescues that hide systemic problems, set unsustainable norms, and schedule the next crisis.\n- **Process as leadership substitute.** Adopting a heavier framework to avoid making judgment calls, then policing compliance instead of leading.\n- **Status silence.** Sitting on risks and slippage until they become a crisis, instead of communicating tradeoffs while options still exist.\n\n## Related Records\n\n- [The Pragmatic Tech Lead](pragmatic-tech-lead.html) — the engineer-side view of the same role from Gergely Orosz's *Software Engineer's Guidebook*; this record defines the rung, that one is the practitioner's playbook on it.\n- [Mentoring](mentoring.html) — the previous rung; the tech lead keeps mentoring, now for a whole team rather than one person.\n- [Management 101](management-101.html) — the manager–report contract the tech lead operates alongside but does not own: guidance yes, performance management no.\n- [Managing a Team](managing-a-team.html) — the next rung, where formal authority and people responsibility arrive and this role's influence-only constraint lifts.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs what I expect of anyone holding a tech lead role in my organization, how managers set expectations with their tech leads, and the honest conversation about whether a person wants to grow on the technical track, as a tech lead, or into management. I revisit it if projects with named tech leads keep missing because nobody owned the plan (the role is decorative), if tech leads keep burning out or reverting to pure coding (the balance is miscalibrated), or if tech leads and their managers give conflicting answers about what the role requires.\n\n## Authoritative References\n\n- Camille Fournier, *The Manager's Path: A Guide for Tech Leaders Navigating Growth and Change* (O'Reilly, 2017) — Chapter 3, \"Tech Lead\", whose checklist this record distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Role and mindset\n\n- [ ] I understand that my job is not just to write code, but to help the team deliver\n- [ ] I balance technical work with leadership, communication, and project planning\n- [ ] I focus on team outcomes, not just my own individual output\n- [ ] I am willing to influence without formal authority\n- [ ] I know when to step in directly and when to delegate\n\n## 2. Technical leadership\n\n- [ ] I understand the architecture well enough to confidently lead changes\n- [ ] I know the project's critical systems, dependencies, and risks\n- [ ] I identify which technical decisions I should make, delegate, or escalate\n- [ ] I gather input from the team before making major technical decisions\n- [ ] I avoid becoming either a bottleneck or totally hands-off\n\n## 3. Planning and execution\n\n- [ ] I can break large projects into smaller deliverables and tasks\n- [ ] I can identify what can happen in parallel versus what must happen in sequence\n- [ ] I know which items are critical and which are optional\n- [ ] I keep the project moving, not just the codebase evolving\n- [ ] I revisit the plan as new information appears\n\n## 4. Project management\n\n- [ ] I create enough structure for estimates, sequencing, and prioritization\n- [ ] I push through ambiguity rather than avoid planning work\n- [ ] I communicate project status, risks, and tradeoffs early\n- [ ] I use planning to reduce uncertainty, not to pretend uncertainty does not exist\n- [ ] I prepare for delivery with a premortem, launch plan, and rollback plan\n\n## 5. Team leadership\n\n- [ ] I help teammates unblock themselves instead of hoarding the most interesting work\n- [ ] I delegate work in ways that help the team grow\n- [ ] I provide mentorship and guidance, even when I am not their manager\n- [ ] I help the team focus on what matters most\n- [ ] I avoid heroics that hide problems rather than solve them\n\n## 6. Communication\n\n- [ ] I represent the team clearly to management and partner teams\n- [ ] I explain technical issues in language others can understand\n- [ ] I listen carefully and repeat back key points to confirm understanding\n- [ ] I write clearly, speak clearly, and communicate often\n- [ ] I raise concerns early instead of waiting for a crisis\n\n## 7. Team effectiveness\n\n- [ ] I protect the team's focus time from unnecessary meetings and interruptions\n- [ ] I help stakeholders respect the team's need for deep work\n- [ ] I make sure meeting load does not overwhelm individual contributors\n- [ ] I remove obstacles that slow the team down\n- [ ] I prioritize sustainable productivity over constant urgency\n\n## 8. Process and judgment\n\n- [ ] I use process as a tool, not as a substitute for leadership\n- [ ] I do not assume there is one perfect process that fixes everything\n- [ ] I optimize for people and interactions, not just rules and tools\n- [ ] I adapt the process to the team and the work\n- [ ] I look for self-regulating systems instead of policing people\n\n## 9. Personal growth\n\n- [ ] I accept that being a tech lead requires learning new skills beyond coding\n- [ ] I am building skills in planning, prioritization, and coordination\n- [ ] I am getting better at handling ambiguity and responsibility\n- [ ] I regularly ask the team what they need from me most right now\n- [ ] I assess honestly whether I want to stay on the technical track, grow as a tech lead, or move into management\n\n## 10. Reflection questions\n\n- [ ] Do I know what my manager expects from a tech lead?\n- [ ] Do I know what my team expects from a tech lead?\n- [ ] Am I spending too much time coding, or not enough?\n- [ ] Am I making the team more effective, or just staying busy?\n- [ ] Am I leading in a way that others trust and want to follow?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why the tech lead is measured by team outcomes, not personal output — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Arlo celebrates his tech lead badge while turning straight back to his laptop, as Vera watches knowingly.](assets/images/tech-lead/comic-01-now-i-can-code-more.jpeg)\n**Panel 1:** *The hook: the title arrives — and the first instinct is to keep doing the old job, harder.*\n\n![Comic panel: Arlo codes intensely while teammates stand blocked and the project board drifts off the table behind him.](assets/images/tech-lead/comic-02-project-drifts.jpeg)\n**Panel 2:** *The problem: his output has never been higher — and the project has never been more adrift.*\n\n![Comic panel: a split scene of Arlo as a bottleneck with a queue versus a ghostly absent figurehead at an empty desk.](assets/images/tech-lead/comic-03-bottleneck-or-ghost.jpeg)\n**Panel 3:** *The wrong way, twice: own every decision and become the queue — or own none and leave the team leaderless.*\n\n![Comic panel: Vera's whiteboard contrasts one person lifting alone with a lead guiding four teammates carrying one block, a crown crossed out in the corner.](assets/images/tech-lead/comic-04-team-outcomes-no-authority.jpeg)\n**Panel 4:** *The principle: the job stops being 'write code' and becomes 'help the team deliver' — held on influence, not authority.*\n\n![Comic panel: Arlo sorts decision sticky notes into make, delegate, and escalate columns as a teammate takes one.](assets/images/tech-lead/comic-05-make-delegate-escalate.jpeg)\n**Panel 5:** *How it runs: every technical decision gets sorted — made where his knowledge is load-bearing, delegated to grow people, escalated when above the project.*\n\n![Comic panel: Arlo runs a premortem over a sequenced plan with parallel lanes, starred critical tasks, and launch and rollback flags.](assets/images/tech-lead/comic-06-plan-premortem-rollback.jpeg)\n**Panel 6:** *The mechanic: convert ambiguity into sequence — critical path marked, premortem before, launch plan during, rollback plan in case.*\n\n![Comic panel: Arlo accepts a smaller personal code stack while the team's delivery arrow grows, with a crossed-out hero cape on the wall.](assets/images/tech-lead/comic-07-slower-for-me.jpeg)\n**Panel 7:** *The cost: slower personal technical progress and no heroic saves — sustainable team leverage is the trade.*\n\n![Comic panel: the team celebrates a shipped release while Vera shows her notebook of sorted decisions to a relaxed Arlo.](assets/images/tech-lead/comic-08-that-is-leading.jpeg)\n**Panel 8:** *The closer: the team ships, and the tech lead can say without preparation which decisions they made, delegated, and escalated — that is leading.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>
