@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product Strategy</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="customer-journey-vision.html" title="Customer Journey Vision">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="outcomes.html" title="Outcomes">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Build What Matters</p>
+        <h1>Product Strategy</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-27  ·  8 min · <a class="spec-link" href="product-strategy.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/product-strategy/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/product-strategy/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="customer-journey-vision.html" title="Customer Journey Vision">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="outcomes.html" title="Outcomes">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PM-PRODUCT-STRATEGY", "status": "draft:gray", "title": "Product Strategy", "date": "2026-07-27", "author": "Željko Obrenović", "permalink": "product-strategy", "timetoread": "8 min", "excerpt": "I treat product strategy as the bridge between the vision and the work. I define Point A and Point B, work backward from the end-state customer journey, run a gap analysis, and sequence the work under real financial, competitive, and technical constraints. Every milestone proves something and carries both business and customer KPIs — and the roadmap derives from the strategy, never the other way around.", "tags": "product management, product strategy, vision-led, phasing, trade-offs", "icon": "assets/icons/product-strategy.png", "logo": "assets/images/product-strategy/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["product management", "product strategy", "vision-led", "phasing", "trade-offs"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I treat product strategy as the bridge between the vision and the work. The vision says where we are going; the roadmap says what we do next; the strategy is the load-bearing span that connects them. I build it by working backward from Point B — the end-state customer journey — to Point A, today's product: gap analysis between the two, deliberate sequencing under real financial, competitive, and technical constraints, and milestones that each prove something. Feedback improves the vision; it does not replace it.\n\n## Statement\n\nMy operating model for product strategy has six parts:\n\n- **Define the destination.** Point A is today's product and customer experience; Point B is the end-state customer journey vision, with the desired customer outcome stated clearly. The strategy serves the journey, not the current product.\n- **Work backward from the vision.** From Point B back to today: the major steps, what must be true before each one, and where the dead ends are — before resources are committed. Nothing moves forward just because it is easy to build.\n- **Run a gap analysis.** Compare the ideal journey with the current one, name the gaps — capabilities, data, infrastructure, distribution, partnerships, operations, funding — and prioritize the ones that most block the customer from the outcome.\n- **Sequence deliberately.** First, second, third, later — accounting for runway, for the proof stakeholders need, and for technical, competitive, financial, and operational dependencies. Favor work that advances the vision *and* supports the business.\n- **Mark the path with milestones.** Each milestone proves something specific and carries both business and customer KPIs; each is a natural point to reassess.\n- **Adapt on evidence, not on noise.** The strategy changes when the evidence demands it — not on every piece of feedback. Feedback improves the vision; it does not replace it.\n\n![A bridge labeled strategy connecting a near road labeled roadmap to a distant lighthouse labeled vision.](assets/images/product-strategy/vision-strategy-roadmap-bridge.jpeg)\n**Figure 1:** *Strategy is the load-bearing span: the vision says where, the roadmap says what's next, and the strategy is what connects them.*\n\n## How to Read This\n\nThis journal is the product-management counterpart to my engineering-executive journal: the same first-person operating-principle format, applied to how I believe product management should work. This record is grounded in Ben Foster and Rajesh Nerlikar's *Build What Matters*, read through a practitioner-executive lens — as an executive making phasing and investment decisions legible, not just a PM building a plan. It has a deliberate boundary with [EMPOWERED Product Strategy](empowered-product-strategy.html): that sibling covers Marty Cagan's insight-driven strategy — focus, insights, bets; this one covers the vision-to-roadmap bridge — how the vision gets phased into work. Read them together, not as substitutes. The working checklist — all eight sections — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Without a strategy, every roadmap is defensible and none of them add up.** A team with only a vision and a backlog can justify almost any quarter: everything in the backlog plausibly helps. What is missing is the connective reasoning — *why this, before that, for whom, now*. Working backward from Point B supplies it: asking \"what must be true before this step can happen?\" turns the sequence from a matter of taste into a chain of dependencies, and surfaces the dead ends before resources are spent on them. \"Easy to build\" is not a strategic argument; it is the absence of one.\n\n**The gap analysis turns the vision from inspiration into a work list.** Comparing the ideal journey with the current one produces a concrete inventory of what is missing — and not all of it is product. Some gaps are capabilities; others are data, infrastructure, distribution, brand, partnerships, operations, or funding. A strategy that only lists features has quietly assumed the rest away. I prioritize the gaps that most block the customer from the outcome — the ordering the vision itself implies.\n\n![Stepping stones crossing from Point A to Point B with flag markers on each stone and arrows reasoning backward from B.](assets/images/product-strategy/phasing-the-vision.jpeg)\n**Figure 2:** *Phasing the vision: work backward from Point B to find the steps, then cross them forward — one proving milestone at a time.*\n\n**Sequencing is where the strategy meets reality.** The right order is not only a dependency question; it is a survival question. I sequence with the runway in view, with an eye on what proof investors and executives will need next, and with a preference for work that advances the vision and supports the business at once. A strategically pure sequence that runs out of money in phase two was never a strategy.\n\n**Trade-offs are choices, and I make them out loud.** Foster and Nerlikar's strategy factors are the forks in the road, and each deserves a deliberate answer. *Financials*: can we fund the next milestone, or do we need traction first? *Competitive advantage*: does the MVP combine the must-haves that earn the right to play, the performance features that earn the right to win, and the delighters that drive loyalty? *Market segments*: do we start with one segment — a geography, a vertical, a use case — and let its learnings fund the next? *Outcome delivery*: phases, single product before platform, each phase building trust with the same customer? *Technology and data*: which foundational assets must exist before future features can? *Strategic leverage*: which non-product assets — partnerships, patents, brand, data — should shape the strategy? Unexamined, these questions still get answered — implicitly, by whoever ships first.\n\n![A path forking three ways with one fork deliberately chosen and flagged while the others are roped off.](assets/images/product-strategy/deliberate-trade-off-fork.jpeg)\n**Figure 3:** *Strategy factors are forks: one path deliberately taken, the others consciously declined — never answered by default.*\n\n**Milestones make the strategy falsifiable.** A milestone is not a date; it is a claim — *by this point, we will have proven this*. Each carries business and customer KPIs, defines what must complete before the next phase, and doubles as a scheduled reassessment. That keeps adaptation honest: at each milestone I track accomplishments, summarize learnings, document adjustments — and change the strategy when the evidence says so, not when the loudest feedback does. The moment feedback starts replacing the vision instead of improving it, I no longer have a strategy — I have a suggestion box.\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| The strategy derives from the vision; the roadmap derives from the strategy. | The roadmap is frozen — it adjusts as new information appears, without losing direction. |\n| Work backward from Point B to find the sequence. | Never ship anything until the whole path is mapped. |\n| Prioritize the gaps that most block the customer outcome. | Every gap is a product gap — data, distribution, and funding gaps count too. |\n| Trade-offs (segments, phasing, MVP mix) are explicit choices. | Trade-offs are permanent — milestones exist to revisit them. |\n| Milestones prove something and carry business *and* customer KPIs. | Milestones are dates on a timeline. |\n| Change the strategy when evidence demands it. | React to every piece of customer feedback literally. |\n\nConcretely: no roadmap review without the strategy on the table, no strategy review without the vision. Sequencing proposals state their dependency reasoning, not just their ordering; milestone proposals name what they prove and which KPIs will show it. And at each milestone I run the final strategy check: does the plan still connect today's product to the vision, does the sequence still explain itself, are the biggest risks visible, and are the teams aligned around the same plan?\n\n## Anti-Patterns\n\n- **The poster and the job queue.** A vision on the wall, a backlog in the tool, nothing connecting them — every quarter plausible, no quarter cumulative.\n- **Forward-only planning.** Sequencing by what is adjacent or easy instead of working backward from Point B — and finding the dead end after the resources are spent.\n- **The feature-only gap list.** Naming missing capabilities but not the missing data, distribution, partnerships, or funding that actually block the outcome.\n- **Trade-offs by default.** Segment, phasing, and MVP-mix questions answered implicitly by whoever ships first, rather than deliberately by the strategy.\n- **Milestones as dates.** Phases that end on the calendar instead of on proof, with no business or customer KPI attached.\n- **The suggestion-box pivot.** Rewriting the strategy after every loud piece of feedback — feedback replacing the vision instead of improving it.\n- **The immovable plan.** The opposite failure: refusing to change the strategy when the evidence at a milestone says it is necessary.\n\n## Related Records\n\n- [Customer Journey Vision](customer-journey-vision.html) — the Point B this strategy works backward from.\n- [Balanced Roadmap](balanced-roadmap.html) — the artifact this strategy feeds; the roadmap derives from the strategy, never the other way around.\n- [EMPOWERED Product Strategy](empowered-product-strategy.html) — the EMPOWERED-grounded sibling: Cagan's insight-driven strategy (focus, insights, bets), complementary to this record's vision-to-roadmap bridge.\n- [Engineering Strategy](../grounded-engineering-executive/engineering-strategy.html) — the engineering-executive counterpart; this record's technology and data dependencies are where the two strategies meet.\n\n## Scope and Revisiting\n\nThis principle governs how I connect a product vision to the work that teams actually do — phasing, sequencing, trade-off choices, and milestone design. I revisit it at every milestone (that is what milestones are for), whenever the vision itself is revised, and whenever I catch a roadmap being defended without a strategy underneath it.\n\n## Authoritative References\n\n- Ben Foster & Rajesh Nerlikar, *Build What Matters: Delivering Key Outcomes with Vision-Led Product Management* (Lioncrest Publishing, 2020) — the product-strategy chapter this record's checklist distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*\n\n## Define the Destination\n\n- [ ] Identify your **Point A**: where the product/customer experience is today.\n- [ ] Define your **Point B**: the end-state customer journey vision.\n- [ ] State the desired customer outcome clearly.\n- [ ] Confirm the vision is compelling, specific, and aligned with the company's larger mission.\n- [ ] Make sure the strategy serves the customer journey, not just the current product.\n\n## Work Backward from the Vision\n\n- [ ] Start with the end-state vision and work backward to today.\n- [ ] Identify the major steps required to reach the vision.\n- [ ] Map the dependencies between those steps.\n- [ ] Ask: \"What must be true before this next step can happen?\"\n- [ ] Identify possible dead ends before committing resources.\n- [ ] Avoid moving forward just because something is easy to build.\n\n## Conduct a Gap Analysis\n\n- [ ] Compare the ideal customer journey with the current customer journey.\n- [ ] Identify gaps in product capabilities.\n- [ ] Identify gaps in data, infrastructure, or technology.\n- [ ] Identify gaps in user volume, awareness, distribution, or brand.\n- [ ] Identify gaps in partnerships, operations, or funding.\n- [ ] Prioritize the gaps that most block the customer from achieving the desired outcome.\n\n## Sequence the Work\n\n- [ ] Decide what must happen first, second, third, and later.\n- [ ] Consider financial constraints and runway.\n- [ ] Identify what proof investors, executives, or stakeholders will need.\n- [ ] Prioritize work that both advances the vision and supports the business.\n- [ ] Make sure the sequence accounts for technical, competitive, financial, and operational dependencies.\n- [ ] Leave room to adjust the plan as new information appears.\n\n## Evaluate Strategy Factors\n\n### Financial situation and fundraising\n\n- [ ] Can you fund the development required to reach the next milestone?\n- [ ] Do you need traction before raising more capital?\n- [ ] Are milestones designed to prove enough value before money runs out?\n\n### Competitive advantage\n\n- [ ] Have you included the must-haves required to earn the right to play?\n- [ ] Have you identified performance features that help you earn the right to win?\n- [ ] Have you included delighters that drive loyalty and retention?\n- [ ] Does the MVP include a thoughtful combination of must-haves, performance features, and delighters?\n\n### Market segments\n\n- [ ] Should you start with one customer segment before expanding?\n- [ ] Is there a specific geography, vertical, customer size, or use case that gives you a better foothold?\n- [ ] Can learnings from the first segment help later segments?\n\n### Outcome delivery\n\n- [ ] Can you deliver the larger customer outcome in phases?\n- [ ] Are you starting with a single product before expanding into a platform?\n- [ ] Does each phase build trust and increase value for the same customer?\n\n### Technology and data dependencies\n\n- [ ] What technical or data assets are required for the future vision?\n- [ ] Do you need to build foundational capabilities before launching future features?\n- [ ] Are you investing early enough in assets that will become strategic later?\n\n### Strategic leverage\n\n- [ ] Can relationships, partnerships, patents, brand, data, or thought leadership create an advantage?\n- [ ] Are there non-product assets that should influence the product strategy?\n- [ ] Are you using early traction to strengthen your position before competitors arrive?\n\n## Establish Milestones\n\n- [ ] Break the strategy into clear milestones.\n- [ ] Define what each milestone proves.\n- [ ] Assign business KPIs to each milestone.\n- [ ] Assign customer KPIs to each milestone.\n- [ ] Identify what work must be completed before moving to the next phase.\n- [ ] Use milestones as natural points to reassess the strategy.\n\n## Review Progress and Adapt\n\n- [ ] Track development accomplishments to date.\n- [ ] Summarize results and learnings so far.\n- [ ] Identify next steps in the original strategic plan.\n- [ ] Document any adjustments you are making or considering.\n- [ ] Change the strategy when evidence shows it is necessary.\n- [ ] Avoid reacting too literally to every piece of customer feedback.\n- [ ] Make sure customer feedback improves the vision rather than replacing it.\n\n## Final Strategy Check\n\n- [ ] Does the plan clearly connect today's product to the long-term vision?\n- [ ] Does the strategy explain why this sequence makes sense?\n- [ ] Are customer outcomes and business outcomes both represented?\n- [ ] Are the biggest risks, dependencies, and constraints visible?\n- [ ] Are teams aligned around the same strategic plan?\n- [ ] Is the plan flexible enough to evolve without losing direction?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "The vision says where, the roadmap says what's next, and strategy is the bridge between them — vision-led product strategy in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned product-minded executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. MILA: an energetic young product manager, dark hair in a ponytail, denim jacket over a striped shirt, carries a tablet covered in sticky notes.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Mila proudly shows a vision poster and a huge backlog screen while Vera eyes the empty wall between them.](assets/images/product-strategy/comic-01-poster-and-backlog.jpeg)\n**Panel 1:** *The hook: a vision on the wall, a backlog in the tool — and nothing in between.*\n\n![A whiteboard of four quarters with arrows pointing in scattered directions, none toward the lighthouse icon.](assets/images/product-strategy/comic-02-plausible-quarters.jpeg)\n**Panel 2:** *The problem: every roadmap is defensible, and none of them add up.*\n\n![Vera draws a bridge labeled strategy connecting a road labeled roadmap to a lighthouse labeled vision.](assets/images/product-strategy/comic-03-strategy-is-the-bridge.jpeg)\n**Panel 3:** *The principle: strategy bridges the vision to the work.*\n\n![A wall map with a path from A to B, arrows drawn backward from B, and a dead-end side path marked with an X.](assets/images/product-strategy/comic-04-work-backward.jpeg)\n**Panel 4:** *Phasing the vision: work backward from Point B — and find the dead ends before paying for them.*\n\n![Mila steps onto the first of four flagged stepping stones leading across water to a lighthouse island.](assets/images/product-strategy/comic-05-phases-stepping-stones.jpeg)\n**Panel 5:** *Milestones are claims, not dates: each phase proves something, with business and customer KPIs.*\n\n![Mila plants a flag on one fork of a three-way path while the other two forks are roped off.](assets/images/product-strategy/comic-06-deliberate-fork.jpeg)\n**Panel 6:** *Trade-offs are forks: one path deliberately taken, the others consciously declined.*\n\n![The wall now shows vision, bridge diagram, and an ordered backlog connected by flowing arrows, Mila beaming.](assets/images/product-strategy/comic-07-roadmap-derives.jpeg)\n**Panel 7:** *The payoff: the roadmap derives from the strategy, and the strategy derives from the vision.*\n\n![Vera and Mila look toward a distant lighthouse, Vera annotating a small sketch of it in her notebook.](assets/images/product-strategy/comic-08-improve-not-replace.jpeg)\n**Panel 8:** *The closer: change the strategy on evidence — feedback improves the vision, it does not replace it.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

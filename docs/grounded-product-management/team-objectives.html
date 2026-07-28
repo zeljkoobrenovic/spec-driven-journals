@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Team Objectives</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="team-topology.html" title="Team Topology">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="business-collaboration.html" title="Business Collaboration">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">EMPOWERED</p>
+        <h1>Team Objectives</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-27  ·  8 min · <a class="spec-link" href="team-objectives.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/team-objectives/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/team-objectives/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="team-topology.html" title="Team Topology">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="business-collaboration.html" title="Business Collaboration">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PM-TEAM-OBJECTIVES", "status": "draft:gray", "title": "Team Objectives", "date": "2026-07-27", "author": "Željko Obrenović", "permalink": "team-objectives", "timetoread": "8 min", "excerpt": "I assign teams problems to solve, not features to ship. Objectives flow from strategy with the context to act on them; key results are proposed by the team that has to deliver them; ambition is set explicitly, roof shot or moon shot. And the few high-integrity commitments we make are investigated first, tracked separately, and kept — because OKRs without empowerment are theater.", "tags": "product management, team objectives, OKRs, empowerment, commitments", "icon": "assets/icons/team-objectives.png", "logo": "assets/images/team-objectives/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["product management", "team objectives", "OKRs", "empowerment", "commitments"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I assign teams problems to solve, not features to ship. Objectives flow from strategy — with the mission, vision, and context a team needs to act on them — and key results flow back up, proposed by the team that has to deliver them. Ambition is explicit: I say whether an objective is a roof shot or a moon shot, and I hold teams accountable in proportion to the ambition I set. The few high-integrity commitments we make are investigated before they are promised, tracked separately, and kept — because OKRs without empowerment are theater.\n\n## Statement\n\nMy operating model for team objectives has five parts:\n\n- **Assign problems, not features.** Objectives are customer or business problems to solve — qualitative, outcome-oriented, few in number, and important enough to matter strategically. Never a deliverable dressed up as a goal.\n- **Context flows down, key results flow up.** Leadership provides strategic context — mission, product vision, principles, strategy — and explicitly decides which teams work on which problems, based on strategy and team topology. The team studies the problem and proposes 2 to 4 key results per objective: one primary success measure, plus guardrails so progress in one area does not damage another.\n- **Set the ambition dial explicitly.** Every objective is declared a roof shot or a moon shot. Ambition is portfolio risk management, not a mood — and it is not the same thing as effort or urgency.\n- **Keep commitments rare and high-integrity.** When a date or deliverable truly matters, we investigate feasibility, usability, value, and viability before promising, track the commitment separately from normal key results, raise risks early, and keep our word. Commitments are the exception, not the rule.\n- **Manage actively, hold to account proportionally.** Weekly check-ins, coaching, early escalation, dependencies watched all quarter. When an ambitious bet misses, we run a constructive postmortem — what the team could have surfaced earlier, what leadership missed — and improve the system, not just the team.\n\n![Two-way flow between leadership and a product team: problem and strategic context flow down, proposed key results flow back up, forming a loop.](assets/images/team-objectives/two-way-objective-flow.jpeg)\n**Figure 1:** *The two-way flow: leaders assign the problem and the context down; the team proposes the key results up.*\n\n## How to Read This\n\nThis journal is the product-management counterpart to my engineering-executive journal: the same first-person operating-principle format, applied to how product work is directed rather than how engineering organizations are run. This record is grounded in Marty Cagan and Chris Jones's *EMPOWERED* — its team-objectives chapters — read through a practitioner-executive lens: I keep what I have seen work and state it as my own commitments.\n\nThe boundary with [Outcomes](outcomes.html) matters: that record establishes *what* outcomes are and why they beat output as a measure of success. This one starts where that argument ends — *how* teams are handed problems, propose results, set ambition, and make the rare commitment that must hold. The working checklist — all thirteen sections plus the final quality check — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Features assigned top-down produce output; problems assigned with context produce outcomes.** When I hand a team a feature list with target dates, I have already made the most important decisions myself — with the least information about the problem. When I hand the same team a customer or business problem, plus the strategic context to make good decisions independently, the people closest to the technology and the users get to find the best solution — and to think through several before locking into one. This is the whole difference between empowered product teams and feature teams; objectives are simply where that difference becomes operational.\n\n**Key results proposed by the team are the price of real accountability.** If I dictate the targets, a miss is my miss — the team was just following orders. When the team studies the problem and proposes its own key results — outcomes, not activities; meaningful, not merely easy to measure — the numbers carry their judgment and their name. I still negotiate: if the proposed scope or results do not match the business need, the assignment gets revisited. But the proposal direction is up, not down. That back-and-forth is not overhead; it is the mechanism.\n\n**An unspoken ambition level makes every result unreadable.** If the team thought it was a moon shot and I thought it was a roof shot, we will disagree about whether 70% attainment is a success or a failure — after the fact, when it is too late. So I say it in advance, treat the mix of roof shots and moon shots as portfolio risk management, and am explicit when multiple teams should attack the same problem at different risk levels. And because the level was explicit, accountability can be proportional: ambitious bets that miss owe us learning; a constructive postmortem asks what the team could have surfaced earlier *and* what leadership missed, then improves the system.\n\n![A dial with two settings, roof shot and moon shot, being set explicitly by hand, with a portfolio of dials at mixed settings behind it.](assets/images/team-objectives/ambition-dial.jpeg)\n**Figure 2:** *The ambition dial: every objective is declared a roof shot or a moon shot — and the mix across teams is portfolio risk management.*\n\n**A commitment that was never investigated is a guess with a deadline.** Some dates genuinely matter — a partner launch, a regulatory deadline, a contract. For those, and only those, we make a high-integrity commitment: the team investigates feasibility, usability, value, and viability first, the commitment is tracked separately from aspirational key results, and risks are raised the moment they appear. Keeping commitments rare is what keeps them credible — a quarter full of \"commitments\" is just a roadmap with extra ceremony, and it destroys the stretch that makes normal objectives useful.\n\n**Objectives die of neglect, not of bad wording.** The failure mode I have seen most is not badly phrased OKRs; it is OKRs written in January and rediscovered in March. So objectives get active management: weekly check-ins on where the team is, what is next, and where help is needed; coaching for less experienced teams; dependencies monitored continuously; cross-team and platform alignment confirmed early. And the plan respects reality: keep-the-lights-on work — support, bugs, technical debt — is estimated up front, and objective progress is protected from being silently consumed by it.\n\n![A single sealed handshake with a date tag set apart from a cluster of aspirational objective cards.](assets/images/team-objectives/high-integrity-commitment.jpeg)\n**Figure 3:** *The high-integrity commitment: sealed, dated, tracked separately — and rare enough to stay credible.*\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Objectives are problems to solve, assigned with strategic context. | Teams pick their own objectives with no direction — leadership explicitly assigns problems across the portfolio. |\n| Key results are proposed by the team. | Every proposal is accepted — assignments are revisited when results don't match the business need. |\n| Ambition is declared: roof shot or moon shot. | Moon shots excuse missing everything — accountability is proportional, not absent. |\n| High-integrity commitments are investigated, tracked separately, and kept. | Every objective is a commitment — commitments stay the exception. |\n| Weekly check-ins and coaching all quarter. | Leaders \"set and forget\" and audit in the last week. |\n| Keep-the-lights-on work is priced into capacity. | Operational load is an excuse to attempt nothing. |\n\nConcretely: objective-setting each quarter starts from product strategy and team topology, mixes top-down and bottom-up input, and lets teams volunteer for problems they are motivated to pursue — while I optimize across the whole portfolio and make sure the full set of company priorities is covered. Shared objectives (teams pursuing one objective together) and common objectives (teams attacking one problem in different ways) are allowed and made explicit. Mid-quarter changes happen only when necessary.\n\n## Anti-Patterns\n\n- **The feature list in OKR costume.** \"Objectives\" that are deliverables with dates — output renamed, empowerment untouched.\n- **Dictated key results.** Targets handed down with the objective, so the team executes someone else's guess and owns none of it.\n- **Ambition by vibes.** No declared roof-shot/moon-shot level, so success and failure are litigated after the results are in.\n- **Commitment inflation.** Everything labeled a commitment, so nothing is — and stretch disappears from the whole portfolio.\n- **Set-and-forget OKRs.** Objectives written in week one, ignored by week three, rediscovered at review time.\n- **Capacity denial.** Plans that assume zero support, bugs, or debt — then quietly fail on operational load that was always predictable.\n- **Blame theater.** Treating a missed moon shot as a performance problem instead of running the postmortem on the system — including what leadership missed.\n\n## Related Records\n\n- [EMPOWERED Product Strategy](empowered-product-strategy.html) — where the problems come from; this record starts where strategy hands a problem to a team.\n- [Outcomes](outcomes.html) — the Build-What-Matters sibling on what outcomes are and why they beat output; this record covers how teams commit to them.\n- [Measuring Engineering Organizations](../grounded-engineering-executive/measuring-engineering-organizations.html) — the engineering-executive counterpart on measurement; guardrail key results echo its \"pair every metric\" instinct.\n- [Planning](../grounded-engineering-executive/planning.html) — the engineering-executive view of planning cadences; team objectives are the product-side contract inside that rhythm.\n\n## Scope and Revisiting\n\nThis principle governs how objectives are assigned, how key results are proposed and negotiated, how ambition and commitments are set, and how progress is managed within the quarter. I revisit it every quarterly refresh, whenever I catch an objective that is secretly a feature list, and whenever the count of high-integrity commitments in a quarter starts to climb — that number drifting up is the earliest signal that empowerment is eroding.\n\n## Authoritative References\n\n- Marty Cagan with Chris Jones, *EMPOWERED: Ordinary People, Extraordinary Products* (Wiley, 2020) — the team-objectives chapters this record's checklist distills.\n- Much of the book's thinking began as essays by the authors at [svpg.com](https://www.svpg.com/), where the underlying material can still be read.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*\n\n## Start with the Right Foundation\n\n- [ ] Confirm the company is using or moving toward **empowered product teams**, not just feature teams.\n- [ ] Ensure teams are being given **problems to solve**, not only features to build.\n- [ ] Make sure leadership provides **strategic context**: mission, objectives, product vision, product principles, and product strategy.\n- [ ] Verify team topology is clear so the right teams are matched to the right problems.\n\n## Define Good Objectives\n\n- [ ] Write objectives as **customer or business problems to solve**.\n- [ ] Keep objectives **qualitative and outcome-oriented**.\n- [ ] Avoid phrasing objectives as deliverables, projects, or roadmap items.\n- [ ] Focus on a **small number of meaningful objectives**.\n- [ ] Check that objectives are important enough to matter strategically.\n- [ ] Allow room to refine wording after the team studies the problem.\n\n## Define Strong Key Results\n\n- [ ] Define success using **business results/outcomes**, not activities or output.\n- [ ] Set **2 to 4 key results per objective**.\n- [ ] Include one primary success measure.\n- [ ] Add guardrail/backstop measures so progress in one area does not damage another.\n- [ ] Make sure key results are meaningful, not just easy to measure.\n- [ ] Let the team help determine the actual KPI targets and timing when appropriate.\n\n## Give Teams the Context They Need\n\n- [ ] Explain the **ultimate goal** and why the problem matters.\n- [ ] Share enough context for teams to make good decisions independently.\n- [ ] Help teams understand implications, dependencies, and constraints.\n- [ ] Encourage teams to think through possible solutions before locking into one.\n- [ ] Invite teams to show interest in problems they are motivated to pursue.\n\n## Assign Objectives Well\n\n- [ ] Leadership explicitly decides **which teams work on which problems**.\n- [ ] Base assignments on both **product strategy** and **team topology**.\n- [ ] Use a mix of **top-down and bottom-up** input.\n- [ ] Let teams volunteer where possible, but optimize across the whole portfolio.\n- [ ] Ensure assignments cover the full set of company priorities.\n- [ ] Revisit assignments if the proposed scope or results do not match the business need.\n\n## Set the Right Ambition Level\n\n- [ ] Tell teams how ambitious you want them to be.\n- [ ] Decide whether the objective is more like a **roof shot** or a **moon shot**.\n- [ ] Treat ambition as part of **portfolio risk management**.\n- [ ] Do not confuse ambition with effort or urgency.\n- [ ] Be explicit when multiple teams should attack the same problem at different risk levels.\n\n## Handle Commitments Carefully\n\n- [ ] Separate normal objectives from **high-integrity commitments**.\n- [ ] Use high-integrity commitments only when a date or deliverable truly matters.\n- [ ] Investigate commitments enough to judge feasibility, usability, value, and viability.\n- [ ] Track commitments independently from normal key results.\n- [ ] Raise risks early if a commitment is in danger.\n- [ ] Keep commitments the **exception**, not the rule.\n\n## Enable Collaboration Where Needed\n\n- [ ] Allow **shared team objectives** when multiple teams should pursue the same objective together.\n- [ ] Allow **common objectives** when multiple teams should attack the same problem in different ways.\n- [ ] Make collaboration expectations explicit.\n- [ ] Ensure teams communicate to avoid conflicts and duplication.\n- [ ] Use collaboration, especially for large, difficult, cross-team problems.\n\n## Align the Broader Organization\n\n- [ ] Confirm that platform, marketing, sales, and other dependent teams are aligned.\n- [ ] Identify cross-team dependencies early.\n- [ ] Make sure supporting teams understand how their work contributes to the objective.\n- [ ] Check that leadership is managing the organization as a whole, not silo by silo.\n\n## Account for Real-World Capacity\n\n- [ ] Recognize that teams also have **keep-the-lights-on** work.\n- [ ] Estimate how much ongoing support, bugs, customer issues, and technical debt will consume capacity.\n- [ ] Adjust expectations if overhead is high.\n- [ ] Protect objective progress from being overwhelmed by operational work.\n\n## Manage Progress Actively\n\n- [ ] Hold weekly objective check-ins.\n- [ ] Review where the team is, what is next, and where help is needed.\n- [ ] Coach teams, especially less experienced ones.\n- [ ] Escalate important issues early.\n- [ ] Monitor dependencies continuously.\n- [ ] Ensure active management continues throughout the quarter.\n\n## Build Accountability the Right Way\n\n- [ ] Hold teams accountable in proportion to the ambition level set.\n- [ ] Expect learning when ambitious bets fail.\n- [ ] Treat major misses like a constructive postmortem, not blame theater.\n- [ ] Review what the team could have surfaced earlier.\n- [ ] Review what leadership or management missed.\n- [ ] Improve the system, not just the team.\n\n## Keep the Overall Process Healthy\n\n- [ ] Revisit or refresh objectives quarterly.\n- [ ] Change objectives mid-quarter only when necessary.\n- [ ] Maintain a back-and-forth between leaders and teams.\n- [ ] Keep leaders visibly involved; do not \"set and forget.\"\n- [ ] Preserve both **empowerment and accountability**.\n\n## Quick Quality Check\n\n- Before finalizing team objectives, ask:\n\n- [ ] Are we assigning a **problem** rather than a feature?\n- [ ] Does the team have the **context** to solve it well?\n- [ ] Are the key results **outcome-based**?\n- [ ] Is the **ambition level** explicit?\n- [ ] Are dependencies and alignment covered?\n- [ ] Have we allowed for operational load?\n- [ ] Do we have a cadence for tracking and coaching?\n- [ ] Is this empowering the team while keeping them accountable?\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Problems to solve, not features to ship — team objectives without the theater, in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned product-minded executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. MILA: an energetic young product manager, dark hair in a ponytail, denim jacket over a striped shirt, carries a tablet covered in sticky notes.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a ceiling conveyor lowers identical framed OKR certificates listing features onto bored teams' desks as Mila sighs.](assets/images/team-objectives/comic-01-okr-season.jpeg)\n**Panel 1:** *The hook: objectives handed down like framed feature lists.*\n\n![Comic panel: a dusty crooked OKR frame with a cobweb hangs above a team working from a pile of urgent tickets in week three.](assets/images/team-objectives/comic-02-week-three.jpeg)\n**Panel 2:** *The problem: by week three the objectives are wall decoration.*\n\n![Comic panel: Vera replaces the dusty OKR frame with a card showing a mountain and flag but no route drawn.](assets/images/team-objectives/comic-03-problems-to-solve.jpeg)\n**Panel 3:** *The principle: assign the mountain, not the route.*\n\n![Comic panel: Vera shows a strategy map connecting a glowing insight gem to the chosen mountain among grayed-out ones.](assets/images/team-objectives/comic-04-context-down.jpeg)\n**Panel 4:** *Context flows down: the objective arrives with its why.*\n\n![Comic panel: Mila presents a hand-drawn card with three measurable dials to Vera, who reads it pen in hand.](assets/images/team-objectives/comic-05-key-results-up.jpeg)\n**Panel 5:** *Key results flow up: the team proposes what the needles should do.*\n\n![Comic panel: Vera sets a large ambition dial between a rooftop zone and a moon zone for two objective cards.](assets/images/team-objectives/comic-06-ambition-dial.jpeg)\n**Panel 6:** *Ambition is explicit: roof shot or moon shot, named before the quarter starts.*\n\n![Comic panel: Mila and a business peer jointly press a wax seal onto one card while Vera witnesses and other cards stay unsealed.](assets/images/team-objectives/comic-07-high-integrity-commitment.jpeg)\n**Panel 7:** *The exception: a high-integrity commitment — rare, sealed, and kept.*\n\n![Comic panel: close-up of the mountain objective card on a desk in active use with a sketched route, moved dial, and progress sticky notes.](assets/images/team-objectives/comic-08-steering-the-quarter.jpeg)\n**Panel 8:** *The closer: an objective the team owns is one the quarter actually follows.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

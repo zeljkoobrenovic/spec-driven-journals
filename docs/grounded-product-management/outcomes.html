@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Outcomes</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="product-strategy.html" title="Product Strategy">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="balanced-roadmap.html" title="Balanced Roadmap">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Build What Matters</p>
+        <h1>Outcomes</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-27  ·  8 min · <a class="spec-link" href="outcomes.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/outcomes/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/outcomes/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="product-strategy.html" title="Product Strategy">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="balanced-roadmap.html" title="Balanced Roadmap">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PM-OUTCOMES", "status": "draft:gray", "title": "Outcomes", "date": "2026-07-27", "author": "Željko Obrenović", "permalink": "outcomes", "timetoread": "8 min", "excerpt": "I judge product work by key outcomes — measurable changes in customer and business reality — never by shipped output. Every initiative names the outcome it moves before it starts, in the customer's language, with a metric that survives a product redesign. Features shipped is a cost line; the outcome dial is the scoreboard.", "tags": "product management, outcomes, outputs, metrics, key results", "icon": "assets/icons/outcomes.png", "logo": "assets/images/outcomes/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["product management", "outcomes", "outputs", "metrics", "key results"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I judge product work by key outcomes — measurable changes in customer and business reality — never by shipped output. Every initiative names, before it starts, the customer outcome and the business outcome it moves, in the customer's own language, with a metric that would still matter if the product changed completely. An initiative that moves no outcome is a cost, however impressive the demo, and I kill it without apology.\n\n## Statement\n\nMy operating model for outcomes has five parts:\n\n- **Define the key customer outcome first.** Not the feature customers use, but the result they want — in their language, validated with real customers, durable enough to guide decisions for 2–3 years, specific enough to prioritize with.\n- **Pair it with a key business outcome.** Leadership agrees on the one business result we optimize for — revenue growth, retention, margin, expansion — and on where that growth comes from.\n- **Choose strong metrics, not vanity metrics.** An outcome metric measures customer value, not company activity. Clicks, views, and raw usage do not count unless they clearly connect to value.\n- **Build two outcome pyramids.** Each key outcome sits on top of a pyramid of drivers, leading indicators, and lagging indicators — simple enough that teams use it to decide what to improve next.\n- **Judge initiatives by the needle, not the ship date.** Every roadmap item ties to an outcome driver; initiatives that move nothing get stopped.\n\n![Split illustration contrasting a conveyor belt full of shipped feature boxes with an unmoved outcome gauge watched by a skeptical observer.](assets/images/outcomes/outputs-conveyor-vs-outcomes-dial.jpeg)\n**Figure 1:** *Outputs are the conveyor; outcomes are the dial. A busy conveyor with an unmoved dial is a cost, not progress.*\n\n## How to Read This\n\nThis journal is the **product-management counterpart** to my engineering-executive journal: the same first-person operating-principle format, applied to product management. This record is grounded in Ben Foster and Rajesh Nerlikar's *Build What Matters*, read through a practitioner-executive lens rather than summarized as a book report. If you run a product area in my organization, it explains why the first question I ask about any initiative is \"which outcome does this move, and how will we know?\" The working checklist — all twelve sections — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Features are the how; outcomes are the why.** Customers do not want the feature — they want the result it produces in their life or work. When I can describe that result in the customer's own language, and customers confirm they would switch, pay, renew, or expand to get it, I have something worth building toward. When I can only describe the feature, I have an activity, not a strategy.\n\n**Vanity metrics are the most expensive lie in product management.** Clicks, views, and raw usage rise for reasons unrelated to customer success — and teams optimizing them will happily harm customers to keep the graph rising. A strong outcome metric measures whether customers are actually more successful, and would still matter even if the product changed completely. If a redesign would invalidate the metric, it was measuring the product, not the customer.\n\n**Customer value and business value are a sequence, not a trade-off.** Customer value creates the *opportunity* for business value; capturing more than we deliver is over-monetization, and it announces itself as churn, complaints, and declining trust. So I invest in customer value before capturing revenue, tie pricing to customer ROI, and insist that leadership agree on one primary business outcome — because when every function carries its own definition of success, the roadmap becomes a treaty negotiation instead of a strategy.\n\n![Chain diagram from a vision icon through customer and business outcome pyramids down to initiative cards, with one disconnected card floating aside.](assets/images/outcomes/vision-outcomes-initiatives-chain.jpeg)\n**Figure 2:** *Vision → outcome pyramids → initiatives. An initiative that hangs off no outcome is the dotted card: visible, busy, and connected to nothing.*\n\n**Pyramids turn outcomes from posters into decisions.** A key outcome on a slide changes nothing. Broken into major drivers, leading indicators that influence it, and lagging indicators that confirm it, the same outcome tells a team what to improve next — and lets me trace every roadmap item to the metric it claims to move. I build one pyramid per outcome — customer and business — connect them where they reinforce each other, and mark honestly which business metrics product influences directly and which belong to sales, marketing, or customer success. A pyramid nobody can recite is an org chart of numbers.\n\n**Time horizons are where outcome thinking gets tested.** Sales closes this quarter's pipeline; customer success defends this year's renewals; product creates value that shows up in business outcomes over quarters or years. Judging product by short-term revenue movement buys feature trading and no compounding value. Aligning teams around their natural horizons is not letting product off the hook — the outcomes are still measured — it is refusing to grade a long instrument on a short scale.\n\n**Ambition is part of the definition.** I aim for a 10x outcome — a result dramatically better for customers, not a small usability improvement dressed up as strategy — and the team can say in practical terms what \"10x better\" means and why it creates business value too.\n\n![Scorecard on an easel dominated by a moved outcome gauge, with a tiny shipped-date stamp in the corner and a reviewer pointing at the gauge.](assets/images/outcomes/initiative-scorecard-needle.jpeg)\n**Figure 3:** *The initiative review: the needle is the headline, the ship date is a footnote.*\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Every initiative names its outcome before it starts. | No initiative starts until the metrics are perfect. |\n| Outcomes are validated with customers, not assumed. | Customers dictate the roadmap item by item. |\n| Vanity metrics don't count as outcomes. | Usage data is useless — it can be a driver when it connects to value. |\n| Product is judged over quarters and years. | Product is never accountable — the lagging indicators still arrive. |\n| Initiatives that move no outcome get stopped. | Every experiment must succeed — a test that disproves a driver moved the pyramid too. |\n| Customer value comes before value capture. | Revenue doesn't matter — the business outcome tops its own pyramid. |\n\nConcretely: initiative proposals open with the outcome and the pyramid driver they target, not the feature description. Reviews ask what the needle did, not what the team shipped. Pricing starts from customer ROI. And when the metric shows we are optimizing the wrong thing, changing the priority is the system working, not the plan failing.\n\n## Anti-Patterns\n\n- **The feature factory.** Velocity is high, the release notes are long, and nobody can name the outcome any of it moved.\n- **Vanity dashboards.** Clicks, views, and raw usage presented as success while churn quietly climbs — engagement confused with customer value.\n- **The internal-assumption outcome.** Chosen in a conference room, never validated with customers, defended because we already built toward it.\n- **Metric-product coupling.** A metric that would die with a redesign — proof it measured the product's mechanics, not the customer's success.\n- **Over-monetization.** Extracting more value than we deliver, then treating the resulting churn as a marketing problem.\n- **Grading product on the sales clock.** Judging product work by this quarter's revenue movement, guaranteeing feature trades and no compounding value.\n- **Zombie initiatives.** Work that moves no outcome but survives review after review because it ships on time and demos well.\n\n## Related Records\n\n- [Balanced Roadmap](balanced-roadmap.html) — how outcomes, vision, and customer requests share one roadmap; this record supplies the outcomes it balances against.\n- [Team Objectives](team-objectives.html) — how teams commit to outcome movement; the pyramid drivers become their key results.\n- [Product Dysfunctions](dysfunctions.html) — the failure modes of product organizations; most trace back to judging work by output.\n- [Measuring Engineering Organizations](../grounded-engineering-executive/measuring-engineering-organizations.html) — the engineering-side counterpart: measuring the organization by what it changes, not what it produces.\n\n## Scope and Revisiting\n\nThis principle governs how I define, validate, and use outcomes to judge product work — roadmap, pricing, and prioritization all trace back to it. I revisit it whenever the key outcomes are re-validated (the 2–3 year durability window is the natural cadence), whenever leadership's definition of success shifts, and whenever I catch an initiative defended by its ship date. The final readiness check in the Checklist tab is the standing test: if any line fails, the framework — not the roadmap — is the first thing to fix.\n\n## Authoritative References\n\n- Ben Foster & Rajesh Nerlikar, *Build What Matters: Delivering Key Outcomes with Vision-Led Product Management* (Lioncrest Publishing, 2020) — the key-outcomes chapters this record's checklist distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*\n\n## Define the Key Customer Outcome\n\n- [ ] We can clearly describe the **outcome customers want**, not just the feature they use.\n- [ ] The outcome explains **why customers use the product**, not merely how they use it.\n- [ ] The outcome is something customers genuinely care about and are willing to spend money, time, or effort on.\n- [ ] We have validated the outcome through customer interviews, surveys, usage data, or sales conversations.\n- [ ] We can describe the outcome in the customer's language.\n- [ ] The outcome is durable enough to guide product decisions for the next 2–3 years.\n- [ ] The outcome is specific enough to help us prioritize what to build.\n\n## Test Whether the Outcome Matters\n\n- [ ] Customers would recognize this as a meaningful improvement in their lives or work.\n- [ ] Customers would be willing to switch, pay, renew, or expand as a result of this outcome.\n- [ ] We understand what customers currently do instead.\n- [ ] We know what \"better\" looks like from the customer's perspective.\n- [ ] We have identified the emotional, financial, or practical value customers receive.\n- [ ] We are not confusing internal engagement metrics with real customer value.\n\n## Choose a Strong Customer Outcome Metric\n\n- [ ] The metric measures customer value, not just company activity.\n- [ ] The metric is tied to the customer's desired result.\n- [ ] It can be measured directly or through a reliable proxy.\n- [ ] It avoids vanity metrics such as clicks, views, or raw usage unless those clearly connect to value.\n- [ ] It helps us know whether the product is making customers more successful.\n- [ ] It would still matter even if our current product changed significantly.\n\n## Aim for a 10x Outcome\n\n- [ ] The chosen outcome is ambitious enough to create meaningful differentiation.\n- [ ] We are not settling for a small usability improvement when customers need a much bigger result.\n- [ ] We have identified what would make the product dramatically better for customers.\n- [ ] We can explain why achieving this outcome would also create business value.\n- [ ] The team understands what \"10x better\" would mean in practical terms for customers.\n\n## Define the Key Business Outcome\n\n- [ ] Leadership agrees on the primary business outcome we are optimizing for.\n- [ ] We know whether success means revenue growth, retention, margin improvement, expansion, valuation growth, or another outcome.\n- [ ] We have clarified whether growth should come from new customers, existing customers, upsell, retention, pricing, or efficiency.\n- [ ] We have resolved competing definitions of success across sales, marketing, product, customer success, and engineering.\n- [ ] Product priorities are evaluated against both customer outcome and business outcome.\n\n## Balance Customer Value and Company Value\n\n- [ ] We understand how customer value creates the opportunity for business value.\n- [ ] We are not extracting more value from customers than we are delivering.\n- [ ] Pricing, monetization, and packaging decisions are tied to customer ROI.\n- [ ] We are watching for signs of over-monetization, such as churn, complaints, declining trust, or competitor switching.\n- [ ] We are investing in customer value before trying to capture more revenue.\n- [ ] We know which product improvements would increase both customer value and business results.\n\n## Build a Customer Outcome Pyramid\n\n- [ ] We have placed the key customer outcome at the top of the pyramid.\n- [ ] We have broken that outcome into major drivers.\n- [ ] We have identified leading indicators that influence the outcome.\n- [ ] We have identified lagging indicators that confirm the outcome was achieved.\n- [ ] Each metric in the pyramid has a clear relationship to the metric above it.\n- [ ] The pyramid is simple enough for the team to understand and use.\n- [ ] The pyramid helps product teams decide what to improve next.\n\n## Build a Business Outcome Pyramid\n\n- [ ] We have placed the key business outcome at the top of the pyramid.\n- [ ] We have broken it into the business drivers that create that outcome.\n- [ ] We have connected business drivers to customer value where possible.\n- [ ] We can see where customer outcomes and business outcomes reinforce each other.\n- [ ] We have identified which business metrics product can influence directly.\n- [ ] We have identified which business metrics belong primarily to sales, marketing, or customer success.\n\n## Align Teams Around Time Horizons\n\n- [ ] Customer success and account management are focused on renewals, retention, and account growth.\n- [ ] Sales is focused on near-term pipeline and closing deals.\n- [ ] Marketing is focused on shaping demand and building future pipeline.\n- [ ] Product is focused on creating future customer value.\n- [ ] The organization understands that product work may affect business outcomes over multiple quarters or years.\n- [ ] Product is not judged only by short-term revenue movement.\n\n## Validate with Customers and the Market\n\n- [ ] We have asked customers what result they are trying to achieve.\n- [ ] We have asked prospects what metric would make them expand, renew, or switch.\n- [ ] We have looked for differences across customer segments or stakeholders.\n- [ ] We have identified whether different users, buyers, or customers need different outcome pyramids.\n- [ ] We have confirmed that the chosen outcome is not just an internal assumption.\n- [ ] We have reviewed competitors to understand whether they deliver the outcome better than we do.\n\n## Use Outcomes to Guide Product Decisions\n\n- [ ] Roadmap items are tied to customer outcome drivers.\n- [ ] We can explain how each major product investment improves the outcome pyramid.\n- [ ] We avoid optimizing metrics that harm customer trust or value.\n- [ ] We prioritize work that increases the ceiling of customer value, not only work that captures more of existing value.\n- [ ] We use metrics to learn, not just to prove success.\n- [ ] We revisit priorities when metrics show we are optimizing the wrong thing.\n\n## Final Readiness Check\n\n- [ ] We know the key customer outcome.\n- [ ] We know the key business outcome.\n- [ ] We know how customer value leads to business value.\n- [ ] We have outcome pyramids for both customer and business outcomes.\n- [ ] We have leading and lagging indicators.\n- [ ] We have validated the outcomes with customers.\n- [ ] We have aligned the product, sales, marketing, customer success, and leadership teams.\n- [ ] We can use this framework to make decisions about roadmap, pricing, and prioritization.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Outcomes over outputs — why the dial matters more than the conveyor, in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned product-minded executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. MILA: an energetic young product manager, dark hair in a ponytail, denim jacket over a striped shirt, carries a tablet covered in sticky notes.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Mila celebrates a list of thirty shipped features under falling confetti while Vera watches calmly with her notebook.](assets/images/outcomes/comic-01-thirty-features.jpeg)\n**Panel 1:** *The hook: a record quarter — measured in features shipped.*\n\n![Comic panel: Vera and Mila look at a dashboard of flat customer charts while confetti lies on the floor.](assets/images/outcomes/comic-02-flat-dashboard.jpeg)\n**Panel 2:** *The problem: the customer dashboard hasn't moved an inch.*\n\n![Comic panel: Vera gestures at a large unmoved gauge beside a conveyor of feature boxes while Mila listens.](assets/images/outcomes/comic-03-conveyor-vs-dial.jpeg)\n**Panel 3:** *The principle: outcomes over outputs.*\n\n![Comic panel: Vera points at an empty outcome slot on Mila's new initiative card pinned to a planning board.](assets/images/outcomes/comic-04-name-outcome-first.jpeg)\n**Panel 4:** *The rule: no initiative starts without naming its outcome.*\n\n![Comic panel: Mila interviews a customer whose thought bubble shows a goal icon rather than a feature.](assets/images/outcomes/comic-05-customer-language.jpeg)\n**Panel 5:** *Validation: the outcome is written in the customer's language.*\n\n![Comic panel: Vera taps a scorecard gauge with a moved needle while a tiny ship-date stamp sits in the corner.](assets/images/outcomes/comic-06-needle-not-shipdate.jpeg)\n**Panel 6:** *The review: measure the needle, not the ship date.*\n\n![Comic panel: Mila retires a flat-line initiative card into a bin while Vera nods and a fresh card waits on the board.](assets/images/outcomes/comic-07-zombie-initiative.jpeg)\n**Panel 7:** *The hard part: killing the zombie initiative that moves nothing.*\n\n![Comic panel: Vera and Mila stand before the gauge with its needle high, Mila's tablet showing only three roadmap items.](assets/images/outcomes/comic-08-moved-dial.jpeg)\n**Panel 8:** *The closer: fewer ships, more arrivals.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

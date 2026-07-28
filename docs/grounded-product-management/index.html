@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grounded Product Management</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            margin-bottom: 0;
+            border: 1px solid var(--rule);
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        
+        <div style="padding: 4px;">
+            <h1>Grounded Product Management</h1>
+            <p>Željko Obrenović's vision of how product management should work — durable operating principles for vision-led, outcome-driven product work, each grounded in a concrete working checklist. Informed by practice, by Ben Foster and Rajesh Nerlikar's &quot;Build What Matters&quot;, and by Marty Cagan's &quot;EMPOWERED&quot;.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Start Here", "description": "What this journal is, why an engineering executive writes down a product operating model, and how to read it.", "posts": [{"id": "PM-INTRODUCTION", "status": "draft:gray", "title": "Introduction", "excerpt": "This journal is my product-management operating model, written down: 14 records describing how I believe product decisions should be made — vision-led, outcome-driven, and executed by empowered teams. Each record is grounded in a chapter checklist from Foster and Nerlikar's Build What Matters or Cagan and Jones's EMPOWERED, and each states a commitment I am prepared to be held to. Start here for the map.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "tags": ["product management", "operating principles", "introduction", "vision-led", "empowered teams"]}]}, {"title": "Build What Matters", "description": "Vision-led product management, from Foster and Nerlikar's \\\"Build What Matters\\\": the dysfunctions that make product work drift, a customer-journey vision, a strategy that connects vision to work, key outcomes over outputs, a balanced roadmap, and the team and processes that deliver it.", "posts": [{"id": "PM-DYSFUNCTIONS", "status": "draft:gray", "title": "Product Dysfunctions", "excerpt": "I treat recurring product dysfunctions as diagnosable patterns, not personality problems. When the roadmap is driven by the loudest customer, the boldest opinion, or the fullest backlog, I name the dysfunction first — sales-led, visionary-led, consensus-driven, spreadsheet-led, or feature factory — and then I fix the operating system, not the people. The cure is always the same chain: target customer, key outcome, journey vision, strategy, roadmap.", "url": "dysfunctions.html", "icon": "assets/icons/dysfunctions.png", "tags": ["product management", "dysfunctions", "feature factory", "vision-led", "diagnosis"]}, {"id": "PM-CUSTOMER-JOURNEY-VISION", "status": "draft:gray", "title": "Customer Journey Vision", "excerpt": "I anchor product direction in a customer journey vision: a written story of how a specific customer's life works roughly three years from now. The vision describes their journey — from the trigger that starts their search through discovery, evaluation, trial, engagement, and retention — not our feature list. Every roadmap conversation starts from that story, and I validate it by asking whether an outsider can understand it, whether it inspires, and whether it is believable.", "url": "customer-journey-vision.html", "icon": "assets/icons/customer-journey-vision.png", "tags": ["product management", "product vision", "customer journey", "vision-led", "direction"]}, {"id": "PM-PRODUCT-STRATEGY", "status": "draft:gray", "title": "Product Strategy", "excerpt": "I treat product strategy as the bridge between the vision and the work. I define Point A and Point B, work backward from the end-state customer journey, run a gap analysis, and sequence the work under real financial, competitive, and technical constraints. Every milestone proves something and carries both business and customer KPIs — and the roadmap derives from the strategy, never the other way around.", "url": "product-strategy.html", "icon": "assets/icons/product-strategy.png", "tags": ["product management", "product strategy", "vision-led", "phasing", "trade-offs"]}, {"id": "PM-OUTCOMES", "status": "draft:gray", "title": "Outcomes", "excerpt": "I judge product work by key outcomes — measurable changes in customer and business reality — never by shipped output. Every initiative names the outcome it moves before it starts, in the customer's language, with a metric that survives a product redesign. Features shipped is a cost line; the outcome dial is the scoreboard.", "url": "outcomes.html", "icon": "assets/icons/outcomes.png", "tags": ["product management", "outcomes", "outputs", "metrics", "key results"]}, {"id": "PM-BALANCED-ROADMAP", "status": "draft:gray", "title": "Balanced Roadmap", "excerpt": "I treat the roadmap as an allocation decision before it is a ranking decision. Every item is classified as innovation, iteration, or operation, and I set the split between the three categories top-down — before any individual project is ranked. That allocation is what protects the vision from being eaten by escalations, and operations from being eaten by the vision.", "url": "balanced-roadmap.html", "icon": "assets/icons/balanced-roadmap.png", "tags": ["product management", "roadmap", "allocation", "vision progress", "balance"]}, {"id": "PM-RIGHT-TEAM", "status": "draft:gray", "title": "The Right Team", "excerpt": "I build the product team deliberately: the first product hire is a senior PM brought in at the right moment, not a premature VP. I evaluate candidates on product mindset with a real homework assignment, keep design a peer function rather than a PM subordinate, plan around explicit scaling ratios, and refuse to split product accountability into a telephone game. Then I give PMs the conditions to succeed — customer contact, delegated decisions, and a genuinely diverse team.", "url": "right-team.html", "icon": "assets/icons/right-team.png", "tags": ["product management", "product team", "PM role", "hiring", "triad"]}, {"id": "PM-RIGHT-PROCESSES", "status": "draft:gray", "title": "The Right Processes", "excerpt": "I run product management on a small set of processes that exist to serve outcomes, never as ceremony. Discovery and validation run continuously, prioritization derives from strategy rather than from the loudest voice, and every cadence is sized to the horizon it governs. When a process stops moving the outcome, I cut it.", "url": "right-processes.html", "icon": "assets/icons/right-processes.png", "tags": ["product management", "process", "discovery", "prioritization", "cadence"]}]}, {"title": "EMPOWERED", "description": "Empowered product teams and product leadership, from Cagan and Jones's \\\"EMPOWERED\\\": coaching as the first job of leaders, deliberate staffing, product vision and principles, team topology, product strategy, team objectives, and collaborating with the business.", "posts": [{"id": "PM-COACHING", "status": "draft:gray", "title": "Coaching", "excerpt": "I treat coaching as the first job of every product leader, including me. Ordinary people become extraordinary teams when someone develops them deliberately — with an honest skills assessment, a written coaching plan, and a weekly 1:1 spent on development rather than status. I coach for ownership of outcomes, not dependency on me, and I judge my own success by the growth of my people.", "url": "coaching.html", "icon": "assets/icons/coaching.png", "tags": ["product management", "coaching", "product leadership", "development", "one-on-ones"]}, {"id": "PM-STAFFING", "status": "draft:gray", "title": "Staffing", "excerpt": "I own staffing personally — recruiting, interviewing, onboarding, development, and promotion are my job as the hiring manager, not a req I file with HR. I hire competent people of character rather than waiting for unicorns, I close strong candidates within 24–48 hours, and I treat the first 90 days as a deliberate ramp toward earned autonomy. Extraordinary teams are built from ordinary people, staffed and coached seriously.", "url": "staffing.html", "icon": "assets/icons/staffing.png", "tags": ["product management", "staffing", "recruiting", "onboarding", "empowered teams"]}, {"id": "PM-PRODUCT-VISION-AND-PRINCIPLES", "status": "draft:gray", "title": "Product Vision and Principles", "excerpt": "I maintain one shared product vision — a customer-centric picture of the future, 3–10 years out — and I use it as the north star that product strategy, architecture, and team topology all steer by. I pair it with explicit product principles that decide the countless small trade-offs without escalation, including the ethical ones. And I treat the vision as a recruiting and leadership tool: inspiring enough to sell, honest enough to admit it is a reasoned leap of faith.", "url": "product-vision-and-principles.html", "icon": "assets/icons/product-vision-and-principles.png", "tags": ["product management", "product vision", "product principles", "north star", "empowered teams"]}, {"id": "PM-EMPOWERED-PRODUCT-STRATEGY", "status": "draft:gray", "title": "EMPOWERED Product Strategy", "excerpt": "I run product strategy as a loop of focus, insight, and action. I choose the few problems that truly matter — and say out loud what will not be prioritized — then do the hard work of generating real insights from data, customers, technology, and the market. I convert those insights into team objectives, not task lists, and I manage progress actively without ever telling an empowered team how to solve its problem.", "url": "empowered-product-strategy.html", "icon": "assets/icons/empowered-product-strategy.png", "tags": ["product management", "product strategy", "focus", "insights", "empowered teams"]}, {"id": "PM-TEAM-TOPOLOGY", "status": "draft:gray", "title": "Team Topology", "excerpt": "I treat team topology as an empowerment decision, not an org-chart by-product. I draw team boundaries so that every team owns something meaningful end to end, I split the work between platform teams that provide leverage and experience teams that own customer outcomes, and I align the boundaries with customers, business, and architecture. Then I keep the topology stable — and when it must change, I move responsibilities between intact teams, not people between teams.", "url": "team-topology.html", "icon": "assets/icons/team-topology.png", "tags": ["product management", "team topology", "empowerment", "ownership", "platform teams"]}, {"id": "PM-TEAM-OBJECTIVES", "status": "draft:gray", "title": "Team Objectives", "excerpt": "I assign teams problems to solve, not features to ship. Objectives flow from strategy with the context to act on them; key results are proposed by the team that has to deliver them; ambition is set explicitly, roof shot or moon shot. And the few high-integrity commitments we make are investigated first, tracked separately, and kept — because OKRs without empowerment are theater.", "url": "team-objectives.html", "icon": "assets/icons/team-objectives.png", "tags": ["product management", "team objectives", "OKRs", "empowerment", "commitments"]}, {"id": "PM-BUSINESS-COLLABORATION", "status": "draft:gray", "title": "Business Collaboration", "excerpt": "I run product's relationship with the business as a partnership of equals — not a ticket-taking service to stakeholders, and not an ivory tower above them. Strong product leaders and empowered teams are necessary but not sufficient: product succeeds inside a company context where the CEO, executives, and peers matter. Partnership is earned — by understanding the business's constraints, sharing context openly, evangelizing the vision, and keeping the commitments we make.", "url": "business-collaboration.html", "icon": "assets/icons/business-collaboration.png", "tags": ["product management", "stakeholders", "collaboration", "trust", "evangelism"]}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    let matchStatus = true;
+                    if (activeStatuses.size) {
+                        const liStatus = li.dataset.status || '';
+                        // any-match: post status must equal one of the selected statuses
+                        matchStatus = false;
+                        for (const s of activeStatuses) {
+                            if (liStatus === s.toLowerCase()) {
+                                matchStatus = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag && matchStatus;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Right Team</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="balanced-roadmap.html" title="Balanced Roadmap">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="right-processes.html" title="The Right Processes">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Build What Matters</p>
+        <h1>The Right Team</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-27  ·  8 min · <a class="spec-link" href="right-team.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/right-team/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/right-team/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="balanced-roadmap.html" title="Balanced Roadmap">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="right-processes.html" title="The Right Processes">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PM-RIGHT-TEAM", "status": "draft:gray", "title": "The Right Team", "date": "2026-07-27", "author": "Željko Obrenović", "permalink": "right-team", "timetoread": "8 min", "excerpt": "I build the product team deliberately: the first product hire is a senior PM brought in at the right moment, not a premature VP. I evaluate candidates on product mindset with a real homework assignment, keep design a peer function rather than a PM subordinate, plan around explicit scaling ratios, and refuse to split product accountability into a telephone game. Then I give PMs the conditions to succeed — customer contact, delegated decisions, and a genuinely diverse team.", "tags": "product management, product team, PM role, hiring, triad", "icon": "assets/icons/right-team.png", "logo": "assets/images/right-team/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["product management", "product team", "PM role", "hiring", "triad"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I build the product team deliberately, not by accretion. The first product hire comes when the founder runs out of time and engineering runs out of clarity — and it is a senior product manager, not a premature VP. I evaluate candidates on product mindset, tested with a real homework assignment. I keep design a peer function, plan staffing around explicit ratios, and insist that one person holds real accountability for product outcomes — no telephone games. And I give PMs the conditions to succeed: direct customer contact, delegated decisions, and a genuinely diverse team.\n\n## Statement\n\nMy operating model for building the product team has five parts:\n\n- **Time the first hire, and size it right.** The signals are concrete: the founder no longer has time for product work, engineering works on wrong or unclear priorities, the team has around five or more engineers, or a second product is coming. The first hire is a **senior product manager** with clearly defined scope and decision rights — not a VP or CPO before there is anything to be a VP of.\n- **Hire for product mindset, tested on real work.** Customer empathy, curiosity, humility, adaptability, data-driven decision-making, scrappiness, accountability for outcomes, persistence — tested with a homework assignment built from a real business challenge, sized at roughly 2–3 hours, and discussed in depth in the interview.\n- **Build a real triad.** Design separates from product management as soon as the company can afford it, with clear UX and UI responsibilities, and works with product as a peer — designers do not report into individual PMs once the design team grows.\n- **Scale by ratios, ahead of demand.** Per product team: roughly 5–7 developers, 1 product manager, 0.5 UX designer, 0.3 UI/visual designer, 1–2 QA engineers — and PMs hired ahead of expected engineering growth, with ownership lines over-communicated.\n- **Give PMs the conditions to succeed.** Direct customer contact, simple 360 feedback, decisions pushed down with clear KPIs and context, and deliberate diversity. A great PM in a bad system produces bad product.\n\n![Three interlocking pieces labeled Product, Design, and Engineering forming a ring around a single product icon, connected by peer arrows.](assets/images/right-team/triad-around-product.jpeg)\n**Figure 1:** *The triad: product, design, and engineering as interlocking peers around one product — not a reporting chain.*\n\n## How to Read This\n\nThis journal is the product-management counterpart to my engineering-executive journal: the same first-person operating principles, applied to product work. This record is grounded in Ben Foster and Rajesh Nerlikar's *Build What Matters*, read through a practitioner-executive lens: the book advises founders building a product function from zero; I read it as the executive accountable for that function at any scale. The working checklist — all fourteen sections, with the numbers — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**The first product hire is a timing decision, not a status decision.** The temptation is to hire a VP of Product as a signal of seriousness. But before there is an MVP, paying customers, and multiple PMs to lead, a product executive has nothing to run and everything to invent — usually badly. When the operational signals fire, what is needed is a senior PM who does the work. The executive comes later, when the founder is genuinely ready to delegate product strategy.\n\n**Mindset predicts PM success; résumés predict interviews.** Product management has no license and no canonical career path, so I hire for the traits that do the work — and the only reliable way to observe them is to watch the candidate do product work. A homework assignment drawn from a real challenge of ours, bounded at 2–3 hours, then interrogated in the interview: why these decisions, what data would you collect, what would you cut from the MVP under pressure? The discussion also answers the question titles never do: does this person *want* the actual work our company needs done?\n\n![Contrast of three figures: a crowned mini-CEO on a pedestal, a clerk buried in tickets, and a grounded product manager connecting customer, strategy, and outcomes.](assets/images/right-team/pm-myths-vs-work.jpeg)\n**Figure 2:** *Neither mini-CEO nor backlog clerk: the real PM owns customer needs, strategy, and outcomes.*\n\n**Split accountability is a telephone game.** Some organizations pair a \"strategic\" product manager with a \"tactical\" product owner. I accept the pairing only with a careful boundary: the PM owns market opportunity, customer needs, competitive landscape, success metrics, strategy, and prioritization; a product owner, if used at all, helps engineering with requirements, acceptance criteria, backlog, and standups. What I refuse is any split that relays customer truth through intermediaries or leaves the PM far from customers — then nobody holds real accountability for outcomes.\n\n**Design is a peer, not a PM's pencil.** Early on, PMs do everything; that is scrappiness, not design strategy. As soon as the company can afford it, design becomes its own function — UX owning usability, research, workflows, and mental models; UI owning look, feel, brand, and interaction patterns — collaborating with product as a peer. Designers reporting into individual PMs produces design that serves the roadmap instead of the user.\n\n**Ratios make staffing an argument instead of a fight.** The defaults shift the burden of proof, and they force the move most companies skip: hiring PMs *ahead* of engineering growth, so new teams start with clarity rather than inherit confusion. When the organization matures, product operations earns its place by centralizing repeatable processes, tooling, dashboards, and PM onboarding — so PMs spend their time on strategy and customers, not logistics.\n\n**Conditions beat talent.** A strong PM without customer contact, decision authority, or honest feedback fails in ways that look like personal failure but are system failure. So I make customer discovery structural — usability studies, sales calls, QBRs, site visits, lost-deal interviews, an advisory board — and never let sales or customer success stand in as a proxy for customers. I run simple 360 feedback for PMs, push decisions down with clear KPIs and context, and build the team deliberately diverse, asking of every candidate: what does this person add that the team does not already have?\n\n![Radar chart of product-mindset traits with a rounded profile, next to a magnifying glass and a homework assignment icon.](assets/images/right-team/pm-skills-radar.jpeg)\n**Figure 3:** *Hiring for the real skills: a rounded product-mindset profile, observed through a real homework assignment.*\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| The first product hire is a senior PM, timed by operational signals. | Every startup needs a PM on day one — or a VP as a credibility badge. |\n| Every serious PM candidate does a real, 2–3 hour homework assignment. | Hiring is an unbounded free-consulting exercise. |\n| Design is a peer function with its own reporting line. | PMs stop caring about design, or designers stop talking to PMs. |\n| The scaling ratios (5–7 dev, 1 PM, 0.5 UX, 0.3 UI, 1–2 QA) are the default. | The ratios are laws — they shift the burden of proof, nothing more. |\n| One person holds real accountability for product outcomes. | The PM decides alone — the triad still builds the product together. |\n| PMs get direct customer contact, delegated decisions, and honest feedback. | PMs are unmanaged — 360 feedback and clear KPIs are part of the deal. |\n\nConcretely: no product-executive requisition before there is an MVP, paying customers, multiple PMs, and a founder ready to delegate strategy. Every PM loop includes the homework discussion. New product teams start with a PM already in place. And when the design team grows, its reporting line moves out of product — deliberately, with the peer relationship stated out loud.\n\n## Anti-Patterns\n\n- **The premature VP.** Hiring a product executive as a status symbol before there is a product organization to lead.\n- **The mini-CEO myth.** Selling the PM role as \"CEO of the product\" and hiring for command presence instead of empathy, curiosity, and scrappiness.\n- **The backlog clerk.** Treating the PM as a ticket-writing service for engineering — the opposite failure, and the more common one.\n- **The telephone game.** Splitting PM and product owner so customer truth passes through relays and outcome accountability belongs to no one.\n- **Designers as PM subordinates.** Keeping designers reporting into individual PMs long after design should have become a peer function.\n- **Proxy-only discovery.** Letting sales and customer success stand between PMs and customers until the roadmap is a list of secondhand feature requests.\n- **Cloning for \"culture fit.\"** Hiring people who resemble the existing team instead of asking what each candidate adds that the team lacks.\n\n## Related Records\n\n- [The Right Processes](right-processes.html) — the processes this team runs; the team comes first, the process second.\n- [Staffing](staffing.html) — the EMPOWERED-grounded sibling on staffing product teams; this record covers the founder-to-scale arc of building the function itself.\n- [Coaching](coaching.html) — developing PMs once hired; this record covers whom to hire and what conditions to give them.\n- [Hiring](../grounded-engineering-executive/hiring.html) — the cross-journal engineering-executive record on how I hire; the homework-assignment stance rhymes with it deliberately.\n\n## Scope and Revisiting\n\nThis principle governs when I create product roles, how I evaluate and hire into them, how product relates to design and engineering, and what conditions I owe every PM. I revisit it whenever the company approaches a product-hiring inflection — the first PM, the second, the first product executive, the separation of design — and whenever I catch a PM operating far from customers or an outcome that no single person is accountable for.\n\n## Authoritative References\n\n- Ben Foster & Rajesh Nerlikar, *Build What Matters: Delivering Key Outcomes with Vision-Led Product Management* (Lioncrest Publishing, 2020) — the \"Right Team\" chapter this record's checklist distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "5 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*\n\n## First Product Hire: Readiness\n\n- [ ] Founder no longer has enough time for product management work.\n- [ ] Engineering may be working on the wrong priorities or unclear priorities.\n- [ ] Team has around 5+ engineers.\n- [ ] Company is launching or planning a second product.\n- [ ] First hire is likely a **senior product manager**, not a VP/CPO too early.\n- [ ] Role scope, decision rights, and boundaries are clearly defined.\n\n## First Product Hire: Evaluation\n\n- Look for a strong **product mindset**, including:\n\n- [ ] Customer empathy\n- [ ] Curiosity\n- [ ] Humility\n- [ ] Adaptability\n- [ ] Intelligence\n- [ ] Data-driven decision-making\n- [ ] Continuous improvement\n- [ ] Scrappiness\n- [ ] Self-directed learning\n- [ ] Accountability for outcomes\n- [ ] Persistence and refusal to quit\n\n## Hiring Process\n\n- [ ] Give every serious PM candidate a homework assignment.\n- [ ] Use a real business/product challenge, not a generic puzzle.\n- [ ] Keep the assignment reasonable: roughly 2–3 hours.\n- [ ] Use the assignment to test thinking, tradeoffs, data needs, and product judgment.\n- [ ] Discuss the assignment in the interview.\n- [ ] Ask why they made specific decisions.\n- [ ] Ask what data they would collect.\n- [ ] Ask what they would cut from an MVP under time pressure.\n- [ ] Check whether they want to do the actual work your company needs.\n\n## Second Product Hire\n\n- [ ] Hire a second PM when launching a new product or when one PM cannot cover the full scope.\n- [ ] Consider a junior PM or APM if the first PM is senior.\n- [ ] Balance the team with different experience levels, communication styles, and strengths.\n- [ ] Do not add a product executive too early.\n- [ ] Consider VP/Head of Product only when there is an MVP, paying customers, multiple PMs, and the founder is ready to delegate product strategy.\n\n## Design Function\n\n- [ ] Separate design from product management as soon as the company can afford it.\n- [ ] Clarify UX responsibilities: usability, user research, workflows, mental models, task completion.\n- [ ] Clarify UI/visual design responsibilities: look and feel, brand consistency, style systems, interaction patterns.\n- [ ] Avoid having designers report into individual PMs once the design team grows.\n- [ ] Ensure product and design have a peer relationship and collaborate closely.\n\n## Team Scaling Ratios\n\n- For each product team, roughly plan for:\n\n- [ ] 5–7 developers\n- [ ] 1 product manager\n- [ ] 0.5 UX designer\n- [ ] 0.3 UI/visual designer\n- [ ] 1–2 QA engineers\n\n- Also:\n\n- [ ] Hire PMs ahead of expected engineering growth.\n- [ ] Make ownership and responsibility lines explicit.\n- [ ] Over-communicate who owns roadmap decisions, technical debt prioritization, bugs, performance issues, and customer-facing outcomes.\n\n## Product Manager vs. Product Owner\n\n- [ ] Product manager owns market opportunity, customer needs, competitive landscape, success metrics, strategy, and prioritization.\n- [ ] Product owner, if used, helps engineering with requirements, acceptance criteria, backlog management, standups, and development issues.\n- [ ] Avoid splitting responsibility in a way that creates telephone games.\n- [ ] Avoid removing PMs too far from customers.\n- [ ] Ensure one person has real accountability for product outcomes.\n\n## Product Operations\n\n- Consider product ops when the org is larger or more mature.\n\n- [ ] Centralize repeatable product processes.\n- [ ] Maintain product documentation.\n- [ ] Organize roadmap input from stakeholders.\n- [ ] Manage product tools and systems.\n- [ ] Track product management efficiency metrics.\n- [ ] Maintain dashboards.\n- [ ] Train new PMs.\n- [ ] Create knowledge-sharing systems.\n- [ ] Enforce release, stakeholder, and launch policies.\n- [ ] Help PMs focus on strategy and customer outcomes.\n\n## Org Structure Choice\n\n- Choose how to organize product teams based on your company's needs:\n\n- [ ] By product\n- [ ] By feature\n- [ ] By technical layer\n- [ ] By customer segment/persona\n- [ ] By customer journey stage\n- [ ] By performance metric\n\n- Before choosing, ask:\n\n- [ ] Does this maximize team autonomy?\n- [ ] Does it minimize dependencies?\n- [ ] Does it reduce negative effects of Conway's Law?\n- [ ] Does each PM have clear jurisdiction?\n- [ ] Does the structure match the product's life cycle stage?\n- [ ] Will the structure improve customer outcomes and business results?\n\n## Healthy Product Culture\n\n- Create a culture where teams can do excellent product work.\n\n- [ ] Dedicate time to customer discovery.\n- [ ] Focus on collaboration.\n- [ ] Delegate decision-making.\n- [ ] Emphasize diversity.\n- [ ] Define culture as everyday employee behavior, not slogans.\n\n## Customer Discovery\n\n- Make sure PMs have direct contact with customers.\n\n- [ ] Attend or conduct usability studies.\n- [ ] Join sales calls.\n- [ ] Join customer check-ins or QBRs.\n- [ ] Conduct site visits.\n- [ ] Interview lost or missed opportunities.\n- [ ] Build a product advisory board.\n- [ ] Avoid relying solely on sales or customer success as proxies for customers.\n- [ ] Ask follow-up questions to understand motivations, not just feature requests.\n\n## Collaboration and Feedback\n\n- [ ] Run simple 360-degree feedback for PMs.\n- [ ] Ask: \"On a scale of 1–5, how am I doing as a PM?\"\n- [ ] Ask: \"What am I doing well?\"\n- [ ] Ask: \"What could I be doing better?\"\n- [ ] Build trust through clear reasoning and alignment to vision and strategy.\n- [ ] Optimize for effectiveness, not merely for being liked.\n\n## Delegated Decision-Making\n\n- [ ] Push decisions down to individual contributors where possible.\n- [ ] Give PMs clear KPIs and context.\n- [ ] Remove roadblocks.\n- [ ] Give people space, time, tools, and resources to understand problems deeply.\n- [ ] Avoid a command-and-control culture.\n- [ ] Encourage thoughtful innovation.\n\n## Diversity and Team Composition\n\n- [ ] Actively invest in diversity across gender, race, age, socioeconomic background, religion, sexual orientation, experience, personality, and perspective.\n- [ ] Build a mix of business, design, and technical backgrounds.\n- [ ] Avoid hiring only for narrow \"culture fit.\"\n- [ ] Ask: \"Which candidate adds something our team does not already have?\"\n- [ ] Ask: \"Who best increases our collective ability to achieve outcomes for customers?\"\n- [ ] Treat culture fit as extending the team's ability to live its values, not social similarity.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Real PMs, in a real triad, with real conditions to succeed — building the right product team in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned product-minded executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. MILA: an energetic young product manager, dark hair in a ponytail, denim jacket over a striped shirt, carries a tablet covered in sticky notes.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Mila buried behind a tray of tickets as hands push request notes at her, while Vera watches skeptically from the doorway.](assets/images/right-team/comic-01-ticket-service.jpeg)\n**Panel 1:** *The hook: product management as a ticket-writing service.*\n\n![Vera and Mila look at a chart of shipped features above a sagging outcomes line, while small figures point at each other.](assets/images/right-team/comic-02-nobody-owns-outcome.jpeg)\n**Panel 2:** *The problem: everything ships, nothing improves, and everyone points elsewhere.*\n\n![Vera draws three interlocking pieces labeled Product, Design, and Engineering around a product icon while Mila watches.](assets/images/right-team/comic-03-real-triad.jpeg)\n**Panel 3:** *The principle: real PMs in a real triad — three peers around one product.*\n\n![Mila connects cards labeled customers, strategy, and metrics, with a crossed-out crown and ticket stamp behind her.](assets/images/right-team/comic-04-what-pm-does.jpeg)\n**Panel 4:** *What the PM actually does: customer needs, strategy, metrics — and accountability for the outcome.*\n\n![Vera and Mila interview a candidate who presents a homework sheet, with a clock marked 3H on the wall and a résumé pushed aside.](assets/images/right-team/comic-05-homework-hire.jpeg)\n**Panel 5:** *Hiring for the real skills: a real homework assignment, discussed in depth.*\n\n![Vera between an ornate roped-off door labeled VP of Product and a plain open door labeled Senior PM, which Mila points to.](assets/images/right-team/comic-06-senior-pm-not-vp.jpeg)\n**Panel 6:** *Timing the first hire: a senior PM who does the work — the executive comes later.*\n\n![Mila interviews two customers at a table while Vera rolls a roadblock rock off the path behind her, next to a KPI signpost.](assets/images/right-team/comic-07-conditions-to-succeed.jpeg)\n**Panel 7:** *The conditions PMs need: customer contact, clear KPIs, delegated decisions — and a cleared road.*\n\n![Portrait of Vera and Mila in front of a board with a rising outcomes curve and three interlocking triad pieces.](assets/images/right-team/comic-08-team-that-matters.jpeg)\n**Panel 8:** *The closer: build the right team, and it builds what matters.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

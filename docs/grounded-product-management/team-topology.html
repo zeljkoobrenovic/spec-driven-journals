@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Team Topology</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="empowered-product-strategy.html" title="EMPOWERED Product Strategy">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="team-objectives.html" title="Team Objectives">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">EMPOWERED</p>
+        <h1>Team Topology</h1>
+        <p class="byline">Željko Obrenović  ·  2026-07-27  ·  8 min · <a class="spec-link" href="team-topology.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/team-topology/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/team-topology/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="empowered-product-strategy.html" title="EMPOWERED Product Strategy">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="team-objectives.html" title="Team Objectives">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PM-TEAM-TOPOLOGY", "status": "draft:gray", "title": "Team Topology", "date": "2026-07-27", "author": "Željko Obrenović", "permalink": "team-topology", "timetoread": "8 min", "excerpt": "I treat team topology as an empowerment decision, not an org-chart by-product. I draw team boundaries so that every team owns something meaningful end to end, I split the work between platform teams that provide leverage and experience teams that own customer outcomes, and I align the boundaries with customers, business, and architecture. Then I keep the topology stable — and when it must change, I move responsibilities between intact teams, not people between teams.", "tags": "product management, team topology, empowerment, ownership, platform teams", "icon": "assets/icons/team-topology.png", "logo": "assets/images/team-topology/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["product management", "team topology", "empowerment", "ownership", "platform teams"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: I treat team topology as an empowerment decision. The way I split product work across teams determines whether any team *can* be empowered at all, so I design the topology intentionally — anchored to strategy, optimized for ownership, autonomy, and alignment — rather than inheriting it from reporting lines. Every team owns something meaningful end to end: platform teams provide leverage and reduce cognitive load; experience teams own customer outcomes. Boundaries align with customers, business, and architecture. And I keep the topology stable, evolving it deliberately by moving responsibilities between intact teams, not by shuffling people.\n\n## Statement\n\nMy operating model for team topology has five parts:\n\n- **Start from strategic context.** Team design is anchored to the company's mission, objectives, and scorecard, and reflects the product vision and strategy — not org-chart convenience.\n- **Optimize for empowerment.** The topology is intentionally designed to maximize **ownership**, **autonomy**, and **alignment**, so teams can do great work with minimal unnecessary coordination.\n- **Give every team meaningful ownership.** Each team owns something meaningful end to end — functionality, experience, quality, performance, and technical health where appropriate. Broad enough to motivate, not so broad it overwhelms, and clear enough that teams know what is theirs.\n- **Use the right team types.** Platform teams provide leverage through shared services, tooling, and abstraction, and reduce cognitive load for the rest; experience teams own user- and customer-facing outcomes, aligned by the most natural customer dimension.\n- **Keep the topology stable, but evolving.** I review the topology as strategy, architecture, and scale change; when it must change, I move responsibilities between intact teams rather than moving people between teams.\n\n![Two team boundaries compared: one enclosing a complete end-to-end slice of product work, the other enclosing scattered fragments with many outgoing dependency lines.](assets/images/team-topology/empowerment-test.jpeg)\n**Figure 1:** *The empowerment test: a boundary that encloses something meaningful end to end versus a boundary around fragments that dependencies immediately leak out of.*\n\n## How to Read This\n\nThis journal is the product-management counterpart to my engineering-executive journal: the same first-person, spec-driven record style, applied to how I believe product management should work. This record is grounded in Marty Cagan and Chris Jones's *EMPOWERED: Ordinary People, Extraordinary Products*, read through a practitioner-executive lens — I keep what survives contact with real organizations and state it as my own operating principle.\n\nThe engineering journal carries its own team-topology records, grounded in Skelton and Pais's *Team Topologies* — most directly [The Four Fundamental Team Topologies](../grounded-engineering-executive/four-fundamental-team-topologies.html). The two models answer different questions about the same org chart: Skelton and Pais optimize for **flow** (team types, interaction modes, cognitive load); Cagan optimizes for **empowerment** (ownership, autonomy, alignment). I hold both, and they agree far more than they differ — this record is the empowerment-oriented cut, cross-linked rather than merged.\n\nThe working checklist — all thirteen sections plus the quick scorecard — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Topology decides whether empowerment is even possible.** I can give a team a problem to solve, control over the solution, and room for discovery — and none of it matters if the team's boundary encloses half a feature and three integrations. A team cannot be empowered over a fragment. So before I talk about coaching, strategy, or objectives, I look at the map: does each team own something meaningful, end to end? If not, no downstream fix will hold. That is why topology is the first structural decision, and why it is anchored to mission, vision, and strategy rather than to whoever happens to report to whom.\n\n**Ownership must be meaningful, bounded, and clear.** The three failure modes are symmetric: ownership too narrow to motivate anyone, ownership so broad it drowns the team in complexity, and ownership so vague that two teams both think the same thing is theirs — or worse, neither does. I draw boundaries that reduce ambiguity and overlap, and I make dependencies between teams explicit and deliberately acceptable, not accidental. Autonomy follows from this: teams that own a real slice can perform discovery as well as delivery, choose their own solutions, and ship small changes without convening a coordination meeting.\n\n**Platform teams and experience teams do different jobs, and both need real ownership.** Experience teams own user- and customer-facing outcomes, organized around the most natural customer dimension — persona, market segment, journey stage, sales channel, business KPI, or geography — with as much end-to-end ownership as possible, never fragmented into tiny feature areas. Platform teams exist to enable them: shared services, tooling, and abstraction that provide leverage and absorb cognitive load. Platform teams are not a dumping ground — they have clear objectives, collaborate with experience teams through shared objectives when needed, and where appropriate their internal platform is managed like a product, with the experience teams as its customers.\n\n![Experience teams each owning a full lane to the customer, resting on a shared platform layer drawn as foundation blocks that lift them.](assets/images/team-topology/platform-and-experience-teams.jpeg)\n**Figure 2:** *Platform teams provide leverage and absorb cognitive load; experience teams ride on them and own customer outcomes end to end.*\n\n**Alignment is a three-lens exercise.** I check every proposed boundary against three overlapping lenses: does it align with customers and business outcomes, with the product vision, and — where useful — with the architecture? When the lenses agree, handoffs drop and decisions speed up. When they disagree, I want to know which one I am sacrificing and why. Architecture is a lens, not a cage: teams trapped by legacy architecture or excessive technical debt are a topology smell, and sometimes the answer is to fix the architecture rather than contort the teams around it.\n\n![Three overlapping lenses labeled with customer, vision, and architecture motifs, with a highlighted team boundary in the central overlap.](assets/images/team-topology/three-alignment-lenses.jpeg)\n**Figure 3:** *Three lenses on every boundary: customers and business outcomes, product vision, and architecture — the best boundaries sit where they overlap.*\n\n**The structural traps are all versions of the same mistake: letting something other than empowerment draw the map.** Reporting lines draw the map, and you ship the org chart. Engineering skill silos draw it, and every customer outcome needs four teams. Design gets treated as an internal service instead of being embedded in teams, and discovery starves. The countermeasure is procedural: product, design, and engineering leaders shape the topology *together*, and we optimize for the product team first — including where people sit, so product managers, designers, and engineers are co-located or closely connected, with explicit communication support when the team is distributed.\n\n**Stability is a feature; evolution is a duty.** Teams take time to gel, and constant re-drawing destroys the ownership the topology exists to create. So the topology is stable by default — but reviewed as strategy, architecture, and scale change, and revisited when dependencies become painful, when teams cannot make decisions or ship simple things, or when ownership is too narrow or complexity too high. When change comes, I keep intact teams together and move *responsibilities* between them. The warning signs are concrete: developers frequently moved between teams, leaders constantly resolving dependency conflicts, teams struggling to ship simple changes, or major topology changes happening too often — each one tells me the map, not the people, is the problem.\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Topology is designed intentionally for empowerment. | Topology falls out of the reporting structure. |\n| Every team owns something meaningful end to end. | Every team owns everything it touches — boundaries still exist. |\n| Platform teams provide leverage with clear objectives. | Platform teams are a catch-all for work nobody wants. |\n| Boundaries align with customers, business, and architecture. | Architecture dictates the topology — it is one lens of three. |\n| The topology is stable by default. | The topology is permanent — it evolves with strategy and scale. |\n| When topology changes, responsibilities move between intact teams. | People are reshuffled individually to wherever the map needs them. |\n\nConcretely: topology proposals start from the product strategy, not from a spreadsheet of names. Every proposed team must pass the empowerment test — name the meaningful thing it owns end to end. Platform teams get objectives and, where appropriate, a product manager. Boundary disputes are settled by the three lenses, jointly by product, design, and engineering leaders. And topology reviews are scheduled, not triggered by crisis — with the explicit rule that responsibilities move, teams stay intact.\n\n## Anti-Patterns\n\n- **Shipping the org chart.** The product's seams mirror the reporting lines, and every customer journey crosses four teams because four managers exist.\n- **Fragment ownership.** Teams sliced into tiny feature areas — nobody owns an outcome, so nobody can be empowered over one.\n- **The skill-silo topology.** Frontend team, backend team, API team: every meaningful change needs all of them, and coordination replaces ownership.\n- **The platform dumping ground.** A \"platform team\" defined by what nobody else wanted, with no objectives and no notion of its internal customers.\n- **Design as a service desk.** Designers pooled outside the teams, ticketed in per request — discovery cannot happen on a ticket.\n- **The permanent topology.** A map drawn three strategies ago, defended because change is disruptive — while dependencies quietly strangle every team.\n- **The perpetual reorg.** Major topology changes every quarter, people moved individually, no team ever gels — motion mistaken for adaptation.\n\n## Related Records\n\n- [EMPOWERED Product Strategy](empowered-product-strategy.html) — the strategy this topology exists to execute; topology decides who can own which problems.\n- [Product Vision and Principles](product-vision-and-principles.html) — the vision that team boundaries must reflect; one of the three alignment lenses.\n- [Organizational Design](../grounded-engineering-executive/organizational-design.html) — the engineering-executive counterpart on sizing and staffing the teams this record draws boundaries around.\n- [The Four Fundamental Team Topologies](../grounded-engineering-executive/four-fundamental-team-topologies.html) — Skelton & Pais's flow-oriented model; this record is the empowerment-oriented cut of the same decision.\n- [Team-First Boundaries](../grounded-engineering-executive/team-first-boundaries.html) — the engineering journal's team-first cognitive-load lens; the same instinct approached from the flow side.\n\n## Scope and Revisiting\n\nThis principle governs how I split product work across teams: how many teams, what each owns, which are platform and which are experience teams, and how the map changes over time. I revisit it at every strategy shift, at every significant scale or architecture change, and whenever the warning signs accumulate — painful dependencies, teams unable to ship simple things, ownership too narrow to matter. The record itself I revisit if my reading of the empowerment model diverges from what I practice.\n\n## Authoritative References\n\n- Marty Cagan with Chris Jones, *EMPOWERED: Ordinary People, Extraordinary Products* (Wiley, 2020) — the team-topology chapters this record's checklist distills.\n- Much of the book's material began as freely available essays by the authors at [svpg.com](https://www.svpg.com/), where the underlying thinking can still be read.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*\n\n## Start with Strategic Context\n\n- [ ] Team design is anchored to the company's mission, objectives, and scorecard.\n- [ ] Team design reflects product vision and principles.\n- [ ] Team topology supports product strategy, not just org chart convenience.\n\n## Optimize for Empowerment\n\n- [ ] Team topology is intentionally designed, not inherited by default.\n- [ ] We are optimizing for **ownership**, **autonomy**, and **alignment**.\n- [ ] Teams are structured to do great work with minimal unnecessary coordination.\n\n## Define the Right Number and Scope of Teams\n\n- [ ] We know how many product teams we need.\n- [ ] Each team has a clear scope of responsibility.\n- [ ] Each team has the right mix of skills.\n- [ ] Team boundaries reduce ambiguity and overlap.\n- [ ] Dependencies between teams are understood and acceptable.\n\n## Strengthen Ownership\n\n- [ ] Each team owns something meaningful.\n- [ ] Team ownership includes functionality, experience, quality, performance, and technical health, where appropriate.\n- [ ] Ownership is broad enough to motivate the team.\n- [ ] Ownership is not so broad that it overwhelms the team.\n- [ ] Ownership is clear enough that teams know what is theirs and what is not.\n\n## Protect Team Autonomy\n\n- [ ] Teams are given problems to solve, not just tasks to execute.\n- [ ] Teams have enough control to choose the best solution.\n- [ ] Teams can perform discovery as well as delivery.\n- [ ] The topology minimizes blocking dependencies.\n- [ ] Teams are not forced into constant coordination for small changes.\n\n## Improve Alignment\n\n- [ ] Team boundaries align with business outcomes.\n- [ ] Team boundaries align with the product vision.\n- [ ] Team boundaries align with the architecture, where useful.\n- [ ] Teams are not trapped by legacy architecture or excessive technical debt.\n- [ ] Alignment reduces handoffs and speeds decision-making.\n\n## Use the Right Team Types\n\n- [ ] We distinguish between **platform teams** and **experience teams**.\n- [ ] Platform teams provide leverage through shared services, tooling, or abstraction.\n- [ ] Experience teams own user/customer-facing outcomes.\n- [ ] Platform teams reduce cognitive load for experience teams.\n- [ ] Experience teams have as much end-to-end ownership as possible.\n\n## Design Effective Platform Teams\n\n- [ ] Platform teams exist to enable other teams.\n- [ ] Platform work is separated from pure \"keep the lights on\" work where possible.\n- [ ] Platform teams have clear objectives.\n- [ ] Platform teams collaborate with experience teams through shared objectives when needed.\n- [ ] Internal platforms are managed like products when appropriate.\n\n## Design Effective Experience Teams\n\n- [ ] Experience teams are organized around customer/user outcomes.\n- [ ] Teams are aligned by the most natural customer dimension, such as:\n  - [ ] user type/persona\n  - [ ] market segment\n  - [ ] customer journey stage\n  - [ ] sales channel\n  - [ ] KPI/business outcome\n  - [ ] geography\n- [ ] Teams own meaningful end-to-end slices of the experience.\n- [ ] Teams are not fragmented into tiny feature areas.\n\n## Avoid Common Structural Traps\n\n- [ ] Team topology is not dictated by reporting lines.\n- [ ] Team topology is not dictated by engineering skill silos alone.\n- [ ] We are not \"shipping the org chart.\"\n- [ ] Design is embedded in teams, not treated only as an internal service.\n- [ ] Product, design, and engineering leaders shape topology together.\n\n## Consider Proximity and Collaboration\n\n- [ ] We have intentionally considered where teams are located.\n- [ ] We optimize for the product team first.\n- [ ] Product managers, designers, and engineers are co-located or closely connected when possible.\n- [ ] We account for proximity to customers, business partners, and other teams.\n- [ ] Remote/distributed arrangements have explicit communication support.\n\n## Keep Topology Evolving\n\n- [ ] We review topology as strategy, architecture, and scale change.\n- [ ] We revisit topology when dependencies become painful.\n- [ ] We revisit topology when teams cannot make decisions or ship simple things.\n- [ ] We revisit topology when ownership is too narrow or complexity is too high.\n- [ ] We try to keep intact teams together when changing responsibilities.\n\n## Watch for Warning Signs\n\n- [ ] Developers are frequently moved between teams.\n- [ ] Leaders often step in to resolve dependency conflicts.\n- [ ] Teams complain about too many dependencies.\n- [ ] Teams struggle to ship simple changes.\n- [ ] Teams have very limited ownership.\n- [ ] Teams face too much complexity across too many areas.\n- [ ] Major topology changes are happening too often.\n\n## Quick Scorecard\n\n- [ ] Our teams have clear ownership.\n- [ ] Our teams can act autonomously.\n- [ ] Our teams are aligned with business and architecture.\n- [ ] Our platform helps experience teams move faster.\n- [ ] Our experience teams own meaningful customer outcomes.\n- [ ] Our topology minimizes unnecessary dependencies.\n- [ ] Our topology is reviewed and improved over time.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Draw the map for empowerment, not the org chart — team topology in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned product-minded executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. MILA: an energetic young product manager, dark hair in a ponytail, denim jacket over a striped shirt, carries a tablet covered in sticky notes.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Mila shows Vera a tablet with one tiny puzzle piece tied by dotted lines to pieces owned by others, looking frustrated.](assets/images/team-topology/comic-01-half-a-feature.jpeg)\n**Panel 1:** *The hook: half a feature and three integrations is not ownership.*\n\n![An org chart casting its shadow onto a product map, slicing it into awkward fragments, as Vera points and Mila looks on.](assets/images/team-topology/comic-02-org-chart-accident.jpeg)\n**Panel 2:** *The problem: topology by org-chart accident — no one can be empowered over a fragment.*\n\n![Vera draws bold new team boundaries on a whiteboard map with small icons for ownership, autonomy, and alignment.](assets/images/team-topology/comic-03-empowerment-decision.jpeg)\n**Panel 3:** *The principle: the map is designed for empowerment, never inherited.*\n\n![Mila holds a plate with one complete top-to-bottom slice of a layered product, Vera nodding beside her.](assets/images/team-topology/comic-04-meaningful-slice.jpeg)\n**Panel 4:** *Ownership that works: a meaningful slice, end to end.*\n\n![Experience teams as fast boats on an elevated canal supported by platform pillars maintained by a platform crew.](assets/images/team-topology/comic-05-platform-lift.jpeg)\n**Panel 5:** *Two team types, one system: platforms provide leverage, experience teams own outcomes.*\n\n![Vera moves a responsibility tile between two intact team huddles on a map, with a crossed-out inset of people being scattered between teams.](assets/images/team-topology/comic-06-stable-but-evolving.jpeg)\n**Panel 6:** *Evolution without churn: responsibilities move, intact teams stay together.*\n\n![Mila points at a dashboard of amber warning lamps with icons for dependencies, stuck changes, and constant moves, Vera checking her notebook.](assets/images/team-topology/comic-07-warning-signs.jpeg)\n**Panel 7:** *Read the warning signs: when simple things get hard, blame the map, not the people.*\n\n![Close-up of Vera and Mila in front of the finished topology map, one complete highlighted slice on Mila's tablet.](assets/images/team-topology/comic-08-own-something-meaningful.jpeg)\n**Panel 8:** *The closer: every team owns something meaningful — that is the test.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>
