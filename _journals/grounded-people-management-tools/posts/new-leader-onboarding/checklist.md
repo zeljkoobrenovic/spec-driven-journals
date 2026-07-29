@@ -5,7 +5,8 @@ timetoread: "6 min read"
 
 ## 1. Before you start: assign the cast
 
-- [ ] Assign a hiring manager (already in place from the hire)
+*The hiring manager is already in place from the hire — no action needed here.*
+
 - [ ] Assign a people partner
 - [ ] Assign an onboarding point person to coordinate the mechanics
 - [ ] Assign a spin-up buddy — a manager or team member who answers day-to-day questions
@@ -66,9 +67,9 @@ timetoread: "6 min read"
 | --- | --- |
 | People partner | Conduct 360° review interviews, synthesize findings, discuss and identify goals for coaching |
 | Org dev | Complete the coach-matching process |
-| Coach | Schedule the first coaching session |
+| Coach | Run a six-month coaching engagement, starting with the first session |
 
 - [ ] 360° review interviews conducted
 - [ ] Findings synthesized into a written set of coaching goals
 - [ ] Coach matched by org dev
-- [ ] First coaching session scheduled
+- [ ] First session of the six-month coaching engagement scheduled

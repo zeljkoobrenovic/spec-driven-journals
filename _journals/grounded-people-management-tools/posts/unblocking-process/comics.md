@@ -26,7 +26,7 @@ A stuck disagreement is not a personal failure to hide — it's a duty to unbloc
 **Panel 6:** *The mechanic: one email to both managers, a five-business-day clock starts ticking.*
 
 ![Comic panel: Noa holds up two fingers knocking on a door while Vera stands arms crossed behind a gate with three checkboxes.](assets/images/unblocking-process/comic-07-invite-twice-then-gate.jpeg)
-**Panel 7:** *The cost: unilateral only after two invitations — and managers must run the gate before listening.*
+**Panel 7:** *The cost: unilateral only after two invitations — and managers must run the gate before listening. Even three yeses don't end it: the manager still messages the missing colleague and invites them in.*
 
 ![Comic panel: Vera and Noa shake hands over a document stamped DECIDED, with the once-locked door now open behind them.](assets/images/unblocking-process/comic-08-decided-and-documented.jpeg)
 **Panel 8:** *The closer: a decision, written down and committed to, beats a disagreement left to rot.*

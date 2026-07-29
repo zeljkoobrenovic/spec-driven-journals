@@ -47,12 +47,12 @@ timetoread: "6 min read"
 - [ ] Invite the other party once again to bring the matter up together before going alone
 - [ ] Only after the reluctant party continues to refuse, unblock unilaterally, copying the other party throughout
 
-## 6. Recognize a unilateral request when you see one
+## 6. For managers: recognize a unilateral request when you see one
 
 - [ ] Check: are you raising an issue with a manager that you know or suspect the other party disagrees with?
 - [ ] Check: might their feedback be presented as a decision to that person or group without them present?
 - [ ] If yes to both, treat it as a request to unblock unilaterally
-- [ ] The other party should be present for the discussion whenever possible
+- [ ] Manager: whenever possible, have the other party present for the discussion
 
 ## 7. Manager gate: the three questions before hearing a unilateral case
 

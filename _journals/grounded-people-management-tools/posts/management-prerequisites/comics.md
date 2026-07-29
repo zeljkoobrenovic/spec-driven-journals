@@ -22,7 +22,7 @@ Before any advanced tool, the basics have to be in place — in eight panels.
 ![Comic panel: a manager and report both writing items onto a shared two-sided 1:1 agenda with notes and action items.](assets/images/management-prerequisites/comic-05-two-sided-agenda.jpeg)
 **Panel 5:** *Agendas both sides fill, notes taken, actions agreed — the mechanics are what make it management.*
 
-![Comic panel: an executive holds a two-column scorecard labeled RESULTS and HOW in front of a calendar marked every three to six months.](assets/images/management-prerequisites/comic-06-results-and-how.jpeg)
+![Comic panel: an executive holds a two-column scorecard labeled RESULTS and HOW in front of a calendar marked with a recurring review date.](assets/images/management-prerequisites/comic-06-results-and-how.jpeg)
 **Panel 6:** *Results without the how rewards toxic wins; how without results rewards pleasant drift.*
 
 ![Comic panel: a manager stacks binders labeled job descriptions, rubrics, ladders, and compensation philosophy onto a shelf.](assets/images/management-prerequisites/comic-07-unglamorous-infrastructure.jpeg)

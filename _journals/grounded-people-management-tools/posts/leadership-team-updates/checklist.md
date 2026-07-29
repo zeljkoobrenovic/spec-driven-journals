@@ -8,13 +8,9 @@ timetoread: "6 min read"
 - [ ] Snippet and update pre-read is due by 10 p.m. the Sunday night before the meeting
 - [ ] No exceptions for a slipped deadline — a late snippet still gets sent, flagged as late
 - [ ] Facilitator confirms all snippets are in before the meeting starts
+- [ ] Date of the meeting is recorded on the pre-read
 
-## 2. Header fields
-
-- [ ] Date of the meeting
-- [ ] Actions status: link to the shared action-tracking spreadsheet
-
-## 3. Actions
+## 2. Actions
 
 | Name | Action | Due date |
 | --- | --- | --- |
@@ -24,7 +20,7 @@ timetoread: "6 min read"
 - [ ] Every open action has a due date
 - [ ] Actions list is kept in the linked spreadsheet, not re-typed each week
 
-## 4. Discussion topics (timed agenda)
+## 3. Discussion topics (timed agenda)
 
 | Topic | Time |
 | --- | --- |
@@ -41,19 +37,19 @@ timetoread: "6 min read"
 - [ ] Internal audit update runs quarterly, not every meeting
 - [ ] Top goals and strategic priorities gets the largest block on the agenda
 
-## 5. Standing questions (ask every meeting)
+## 4. Standing questions (ask every meeting)
 
 - [ ] What are the QBR reflections from the past week?
 - [ ] Are there any snippets to share with the wider leadership team or company-wide?
 - [ ] Are there any topics discussed that anyone objects to being passed down in staff meetings?
 - [ ] What decisions were made, and what must be clearly communicated to the wider leadership team?
 
-## 6. Customer issues and wins
+## 5. Customer issues and wins
 
 - [ ] Short summary of each key customer issue, the action taken, and the owner
 - [ ] Short summary of key customer wins and the contributors behind them
 
-## 7. Per-executive snippet
+## 6. Per-executive snippet
 
 For each leadership team member:
 
@@ -66,6 +62,6 @@ For each leadership team member:
 - [ ] Launch, event, or PR plans currently in flight
 - [ ] Information on top talent
 
-## 8. Notes
+## 7. Notes
 
 - [ ] Space reserved for free-form meeting notes captured live

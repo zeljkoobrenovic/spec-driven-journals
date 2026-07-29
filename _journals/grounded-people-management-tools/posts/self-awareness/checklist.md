@@ -101,10 +101,6 @@ Complete one row per core value (3–10 rows, narrowing toward the final 3).
 - [ ] List your strengths — the things you're best at (example: *Communication*)
 - [ ] For each strength, break down the underlying skills and capabilities into innate vs. acquired
 
-| Strength | | |
-| --- | --- | --- |
-| *Example: Communication* | | |
-
 | Skills | Innate | Acquired |
 | --- | --- | --- |
 | *Example* | Listening well and speaking clearly; fast writer | Public speaking; speech and memo writing |

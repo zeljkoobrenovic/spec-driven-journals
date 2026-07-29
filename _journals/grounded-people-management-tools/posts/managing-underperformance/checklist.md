@@ -76,9 +76,9 @@ timetoread: "10 min read"
 
 ## 9. PIP: goals, deliverables, and milestones
 
-- [ ] For each improvement area, set a goal and time frame: what must be accomplished, by when, what success looks like
-- [ ] For each improvement area, define the deliverable: what demonstrates the goal was met
-- [ ] List concrete milestones (e.g. specific projects) with hard deadlines
+- [ ] **Goal and time frame** — for each improvement area, what must be accomplished, by when, what success looks like
+- [ ] **Deliverable** — for each improvement area, what demonstrates the goal was met
+- [ ] **Milestones** — list concrete milestones (e.g. specific projects) with their own hard deadlines
 
 ## 10. PIP: resources and support
 

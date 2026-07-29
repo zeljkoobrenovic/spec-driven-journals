@@ -25,7 +25,7 @@ Compensation is never "the system decided" — it is mine to prepare and mine to
 ![Comic panel: Vera holds a sticky note reading I DON'T KNOW YET and circles a follow-up date on a calendar.](assets/images/compensation-conversations/comic-06-say-i-dont-know.jpeg)
 **Panel 6:** *The mechanic: 'I don't know' plus a real date beats a confident guess about someone's pay.*
 
-![Comic panel: Vera sits steadily with a disappointed Noa, maintaining eye contact, not apologizing.](assets/images/compensation-conversations/comic-07-own-it-dont-soften-it.jpeg)
+![Comic panel: Vera sits steadily with a disappointed Noa, maintaining eye contact, not apologizing or over-promising.](assets/images/compensation-conversations/comic-07-own-it-dont-soften-it.jpeg)
 **Panel 7:** *The cost: staying in the room through disappointment, without apologizing or over-promising.*
 
 ![Comic panel: Noa delivers a comp outcome to a colleague in person, with the system box small and off to the side.](assets/images/compensation-conversations/comic-08-trust-earned-in-person.jpeg)

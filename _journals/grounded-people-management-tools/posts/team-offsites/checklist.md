@@ -3,26 +3,20 @@ timetoread: "6 min read"
 ---
 *The working tool behind this record. The Article tab carries the rationale and anti-patterns.*
 
-## 1. Set the date and the goal
+## 1. Planning timeline — 1+ month before
 
-- [ ] Write the offsite's goal in one sentence before doing anything else
-- [ ] Set the date, time, and length
-- [ ] Record the date of offsite: __________________
-
-## 2. Planning timeline — 1+ month before
-
-- [ ] Set goals and objectives
+- [ ] Set goals and objectives — write the offsite's goal in one sentence before doing anything else
 - [ ] Schedule date, time, and length
 - [ ] Start brainstorming the agenda with your team
 - [ ] Book space
 
-## 3. Planning timeline — 1 month before
+## 2. Planning timeline — 1 month before
 
 - [ ] Order food and beverages
 - [ ] Finalize the agenda and assign each section to a DRI
-- [ ] Share rough pre-work templates with DRIs
+- [ ] Share rough pre-work templates with DRIs (a session template per planned session, an icebreaker template per planned icebreaker — one-page prep sheets the DRI fills in ahead of time)
 
-## 4. Planning timeline — 1 week before
+## 3. Planning timeline — 1 week before
 
 - [ ] Finalize materials
 - [ ] Run through the agenda and content with DRIs
@@ -33,32 +27,24 @@ timetoread: "6 min read"
 - [ ] Duplicate the session template for each planned session
 - [ ] Duplicate the icebreaker template for each planned icebreaker
 
-## 5. Planning timeline — 1 day before
+## 4. Planning timeline — 1 day before
 
 - [ ] Send a welcome email to the team (venue location, how to get there, how to enter the space, reminder about pre-reads and pre-work)
 - [ ] Confirm details with vendors
 - [ ] Collect supplies from the office (pens, markers, sticky notes, flip charts, chargers, AV equipment)
 
-## 6. Day of offsite
+## 5. Day of offsite
 
 - [ ] Have your team check in
-- [ ] Follow the agenda for the rest of the day
+- [ ] Follow the fixed day structure for the rest of the day: 1. offsite welcome, 2. check-in exercise, 3. icebreaker, 4. session(s), 5. check-out exercise
 
-## 7. After the offsite
+## 6. After the offsite
 
 - [ ] Send notes and action items to assigned DRIs
 - [ ] Send a feedback form to all participants and ask them to rate the offsite
 - [ ] Track all action items until complete
 
-## 8. Day-of-offsite structure
-
-- [ ] 1. Offsite welcome
-- [ ] 2. Check-in exercise
-- [ ] 3. Icebreaker
-- [ ] 4. Session(s)
-- [ ] 5. Check-out exercise
-
-## 9. Offsite welcome-email template
+## 7. Offsite welcome-email template
 
 **Opening line**
 
@@ -78,7 +64,7 @@ timetoread: "6 min read"
 - [ ] On the day, share where the group will be eating lunch
 - [ ] Leave space for notes on anything else logistics-specific
 
-## 10. Worked agenda example
+## 8. Worked agenda example
 
 | Session | What we'll be doing | Time | Length | Facilitator |
 | --- | --- | --- | --- | --- |
@@ -94,7 +80,7 @@ timetoread: "6 min read"
 | Wrap-up and check-out | How did we do? | 4 p.m. | 1 hour | Cheryl Davis |
 | Social | Social time and team-building activity | 5 p.m. | — | Felix Marlin |
 
-## 11. Before you book the room — the one-sentence test
+## 9. Before you book the room — the one-sentence test
 
 - [ ] Can you state the offsite's goal in one sentence?
 - [ ] If not, do not schedule the date yet — resolve the goal first

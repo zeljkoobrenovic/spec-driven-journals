@@ -42,5 +42,5 @@ timetoread: "5 min read"
 
 - [ ] Follow up on any action items that came out of the transition meeting
 - [ ] Take ownership of the relationship going forward
-- [ ] Confirm access to the employee's information and past reviews once the HR-system date passes
+- [ ] Verify that access to the employee's information and past reviews (promised in the preview conversation) is actually in place once the HR-system date passes
 - [ ] Reconnect the employee's development plan to their stated ambitions from the transition meeting

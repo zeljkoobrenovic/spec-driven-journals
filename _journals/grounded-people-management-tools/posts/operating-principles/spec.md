@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-28
+revised: 2026-07-29
 ---
 
 # Spec: Operating Principles
@@ -32,10 +32,13 @@ handbook. First-person declarative.
 - [x] **Principle is quotable** — highlight states that culture must be
       written down in three sections (how we work, who we are, what we
       expect of leaders) and that the model is studied, not copied.
-- [x] **The form survives** — three named sections, roughly five principles
-      each (six for leaders), name-plus-short-body shape, the "as of
-      December 2021" date stamp, and the seven classic slogans as a
-      secondary layer.
+- [x] **The form survives** — three named sections, name-plus-short-body
+      shape, and the "as of" date stamp. The studied example (index.md)
+      reproduces Stripe's exact counts as of December 2021 — five principles
+      each on how we work and who we are, six on leaders, seven classic
+      slogans. The write-your-own kit (checklist.md) deliberately loosens
+      these to ranges (4–6 / 4–6 / 5–7, plus 5–10 slogans) by design, per
+      the Decision log below — it is not meant to reproduce Stripe's counts.
 - [x] **The leaders' section is load-bearing** — leader expectations are
       demands (talent bar, 1/4/10-year ambition horizon, pace, decision
       accountability, clarity and context, problem-solving), not aspirations.
@@ -102,6 +105,10 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Reworded "The form survives" success criterion to
+  distinguish the studied example's exact Stripe counts (index.md) from the
+  checklist's deliberate ranges (checklist.md), per review finding.
+  *(Željko, AI-mediated session)*
 - **2026-07-28** — Comics modality staged (comics.md, Comic tab, shared VERA/NOA cast) with pending panel blocks; 3 inline illustration placeholders staged in the article. *(Željko, AI-mediated session)*
 - **2026-07-28** — Initial spec, article, and checklist written; spec and
   post agree. Status `accepted`. *(Željko, AI-mediated session)*

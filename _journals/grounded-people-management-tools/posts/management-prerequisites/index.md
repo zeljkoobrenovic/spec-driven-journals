@@ -47,13 +47,15 @@ This journal is my people-management toolkit — first-person operating records 
 
 **A meeting that doesn't earn its time is a tax on everyone in it.** Team meetings are in the prerequisites for the same reason 1:1s are — they are where alignment actually happens — but the bar is not merely holding them. I show up on time, I do not casually reschedule, and the test is whether the group *benefits from the time together*: aligning on plans, making decisions, or workshopping challenges so people can help each other get the work done. A standing meeting that fails that test is not a prerequisite met; it is a prerequisite faked.
 
-**Division-level infrastructure is what makes individual management fair.** Job descriptions and interview rubrics for open roles, ladders and levels people have actually been told about, a compensation philosophy employees understand — none of this is bureaucracy. It is the difference between decisions and favors. Without a rubric, hiring is taste. Without communicated levels, promotion is politics. Without a compensation framework, pay is negotiation skill. And underneath all of it sits the least glamorous line on the checklist: knowing my legal responsibilities as a manager in the jurisdiction I operate in — because the floor under everything else is the law, not my goodwill.
+**Division-level infrastructure is what makes individual management fair.** Job descriptions and interview rubrics for open roles, ladders and levels people have actually been told about, a compensation philosophy employees understand — none of this is bureaucracy. It is the difference between decisions and favors. Without a rubric, hiring is taste. Without communicated levels, promotion is politics. Without a compensation framework, pay is negotiation skill.
+
+**Legal responsibilities are their own layer, not a footnote.** Knowing my obligations as a manager in every jurisdiction I operate in — the notice periods, the protected activities, the documentation a difficult situation will later demand — is not something I fold into the upward bar or the division's paperwork. It is the floor under everything else on this list: the law, not my goodwill, and I owe every report the assurance that I know where that floor is before I do anything more advanced with them.
 
 ## What This Means in Practice
 
 | What this record says | What it does **not** say |
 | --- | --- |
-| Every report gets a weekly or biweekly 1:1 that is rarely rescheduled. | Never rescheduled — life happens; a pattern of rescheduling is the failure, not one exception. |
+| Every report gets a weekly or biweekly 1:1 that is rarely rescheduled. | A pattern of rescheduling — one exception is life happening; a habit of it is the failure. |
 | Agendas are two-sided, with notes and agreed actions. | The manager owns the agenda — the report's items carry equal weight. |
 | Quarterly goals exist and are tracked together. | Goals are set once and filed — tracking together is the requirement, not the paperwork. |
 | Formal performance conversations happen every 3, 6, or 12 months and cover results **and** how. | The annual review is enough everywhere — the faster the company changes, the shorter the cycle. |

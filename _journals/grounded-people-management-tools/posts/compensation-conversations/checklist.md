@@ -63,3 +63,4 @@ timetoread: "6 min read"
 
 - [ ] Note any open question I owe a follow-up on, and close the loop by the date I committed to
 - [ ] Record what was discussed for my own continuity into the next cycle
+- [ ] Keep notes I can reuse next cycle: how the outcome landed, and anything I'd prepare differently

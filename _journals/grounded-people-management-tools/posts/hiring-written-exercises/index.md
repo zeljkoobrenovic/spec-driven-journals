@@ -24,7 +24,7 @@ My operating model for the written exercise has five parts:
 - **I bound the exercise tightly.** Roughly three hours of the candidate's time, an output capped at a few pages, and an explicit framing: treat the deliverable as a pre-read I would send before a meeting. An unbounded exercise tests free time, not skill.
 - **I give a real prompt with reasonable assumptions allowed.** The candidate gets an example dataset and a scenario — analyze churn, explain what's driving it, propose a prioritized retention roadmap — with all data definitions provided up front so the exercise tests thinking, not archaeology.
 - **I score against a fixed rubric before I trust my gut.** Every response gets 3 points each on written communication, data analysis, customer sense, and product sense — 12 points total — scored against poor/good/excellent anchors I wrote down before I read the first submission.
-- **The score, not the read, drives the call.** 11–12 is a strong yes, 8–10 is a yes, 7 is a judgment call I make deliberately, and 6 or below is a no. I let the number constrain me even when a response reads well.
+- **The score, not the read, drives the call.** The 12-point total maps to a fixed decision band, set before I read a single submission, and I let the number constrain me even when a response reads well.
 
 ![Diagram showing a five-step pipeline: real skill, bounded scope, real prompt, fixed rubric, score decides.](assets/images/hiring-written-exercises/written-exercise-operating-loop.jpeg)
 **Figure 1:** *The operating model runs as one pipeline: skill, scope, prompt, rubric, decision.*
@@ -59,7 +59,7 @@ This journal is my people-management toolkit — the concrete tools I run manage
 | Let the 12-point rubric drive the decision. | The rubric replaces judgment — 7 is deliberately left as a judgment call. |
 | Give clear instructions and provided data definitions. | Ambiguity in the prompt itself is a valid test of the candidate. |
 
-Concretely: before I open any candidate's submission, the rubric anchors are already written down, the prompt already states the scope in hours and pages, and the interviewer scoring the exercise has not yet seen the candidate's resume open next to it.
+In practice, this table is what I hand a new interviewer before their first exercise to score — resume closed, rubric anchors already fixed.
 
 ![Diagram of four 3-point skill boxes funneling into a 12-point scale divided into strong yes, yes, judgment call, and no bands.](assets/images/hiring-written-exercises/twelve-point-rubric-to-decision.jpeg)
 **Figure 3:** *Four skills at three points each feed a twelve-point scale with decision bands fixed before scoring begins.*

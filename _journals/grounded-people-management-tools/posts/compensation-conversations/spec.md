@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-28
+revised: 2026-07-29
 ---
 
 # Spec: Compensation Conversations
@@ -61,6 +61,9 @@ peer executives comparing operating models. First-person declarative.
 - Not [[careers-and-performance]] — the engineering-journal record on career
   ladders and calibration; that record is how the number gets set, this
   record is how it gets delivered.
+- Not [[career-conversations]] — that record covers the broader ongoing
+  conversation about motivation and growth; this one covers compensation as
+  one specific, high-stakes instance of it, not the general pattern.
 - No claim that this record defines the compensation philosophy, bands, or
   calibration process itself — only how I prepare for and run the
   conversation once the outcome is set.
@@ -101,6 +104,9 @@ peer executives comparing operating models. First-person declarative.
 
 ## Changelog
 
+- **2026-07-29** — Added a Non-goals line for [[career-conversations]] to
+  match the post's Related Records link (review finding). *(Fixer pass,
+  AI-mediated session)*
 - **2026-07-28** — Comics modality staged (comics.md, Comic tab, shared
   VERA/NOA cast) with pending panel blocks; 3 inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

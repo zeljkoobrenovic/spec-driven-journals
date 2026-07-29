@@ -62,6 +62,11 @@ models. First-person declarative.
   this one covers how a team declares what it is.
 - Not a team-design or topology exercise — the charter documents a team that
   exists (or is being founded); it does not decide how to slice teams.
+- Two intentional cross-journal ties in Related Records: [[organizational-values]]
+  (`grounded-engineering-executive` — a charter's mission/vision must not
+  contradict company-wide values) and [[measuring-engineering-organizations]]
+  (`grounded-engineering-executive` — the charter's metrics section is where
+  that discipline starts at team scope).
 
 ## Modalities
 

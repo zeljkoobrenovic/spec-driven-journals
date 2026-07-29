@@ -62,7 +62,7 @@ This journal is my people-management toolkit, grounded in the companion workbook
 | "Yes for company, no for my team" is a legitimate, rare outcome with a clear rationale. | It is a routine escape hatch for a team that does not want to make a hard no-hire call. |
 | Every outcome closes the loop with feedback to interviewers, recruiters, and hiring managers. | Feedback is optional or only given when the outcome is a hire. |
 
-Concretely: no CR agenda item goes forward without a hiring-committee scorecard attached. Every rationale written by a hiring manager either says "clear hire" / "clear no hire" or explains the divergence and the FUD that was resolved. Every CR outcome is one of five: hire at suggested level, hire at a higher level, hire at a lower level, no hire (trope outcome overturned or confirmed), or sent back for more information. And every candidate, hired or not, generates feedback that closes back to the people who ran the process.
+Concretely: no CR agenda item goes forward without a hiring-committee scorecard attached. Every rationale written by a hiring manager either says "clear hire" / "clear no hire" or explains the divergence and the FUD that was resolved. Every CR outcome is one of six: hire at suggested level, hire at a higher level, hire at a lower level, no hire with the committee outcome overturned, no hire with the committee outcome confirmed, or sent back for more information. And every candidate, hired or not, generates feedback that closes back to the people who ran the process.
 
 ## Anti-Patterns
 

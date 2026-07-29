@@ -26,7 +26,7 @@ A written charter is the price of running a team, not optional paperwork — in 
 **Panel 6:** *The mechanic: interfaces declared both ways turn hidden coupling into visible risk.*
 
 ![Comic panel: Vera pauses over a blank cell in a three-column table, imagining Noa equally stuck.](assets/images/team-charter/comic-07-hard-to-fill-in.jpeg)
-**Panel 7:** *The cost: my own trouble filling in the table means the operating system isn't documented at all.*
+**Panel 7:** *The cost: trouble filling in the table means the operating system isn't documented at all.*
 
 ![Comic panel: Vera and Noa pin the finished charter to the team's homepage board as others read it.](assets/images/team-charter/comic-08-published-and-findable.jpeg)
 **Panel 8:** *The closer: a charter is only real once it is documented and findable, not remembered.*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-28
+revised: 2026-07-29
 ---
 
 # Spec: Working with Me
@@ -51,10 +51,13 @@ onboarding practices. First-person declarative.
       required."
 - [x] **The feedback redirect rule is named** — venting about a colleague
       gets turned into help telling them directly, not held.
-- [x] **The checklist operationalizes the actual template** — My role /
+- [x] **The checklist reproduces the actual template** — My role /
       About me / Operating approach / Management style / Supporting you
-      and your team, plus the cadence and communication mechanics from
-      "Working with Claire," reproduced as a fillable, runnable tool.
+      and your team, reproduced as a fillable, runnable tool.
+- [x] **The checklist operationalizes the cadence and communication
+      mechanics** — the numbered commitments from "Working with Claire"
+      (cadence table, communication contract, feedback redirect) turned
+      into concrete, checkable items, not just the section headings.
 
 ## Non-goals
 
@@ -116,6 +119,11 @@ rendered as the Checklist tab).
 
 ## Changelog
 
+- **2026-07-29** — Split the sixth Success criterion ("the checklist
+  operationalizes the actual template") into two independently falsifiable
+  criteria — template reproduction and cadence/communication
+  operationalization — per post-review finding. *(Željko, AI-mediated
+  session)*
 - **2026-07-28** — Comics modality staged (comics.md, Comic tab, shared
   VERA/NOA cast) with pending panel blocks; 3 inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

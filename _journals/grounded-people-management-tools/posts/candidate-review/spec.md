@@ -40,10 +40,10 @@ First-person declarative.
 - [x] **The numbers and mechanics survive** — the four suggested outcomes
       (yes-for-company-no-for-my-team as rare with clear rationale, company
       hire, team hire, no hire), the four scorecard scores (strong no, no,
-      neutral, yes, strong yes as symbols), the five final CR outcomes (hire
-      at suggested/higher/lower level, no hire overturned/confirmed, sent
-      back for more information), and the "no completed scorecard, no review"
-      rule.
+      neutral, yes, strong yes as symbols), the six final CR outcomes (hire
+      at suggested/higher/lower level, no hire with committee outcome
+      overturned, no hire with committee outcome confirmed, sent back for
+      more information), and the "no completed scorecard, no review" rule.
 - [x] **The objective-first move is explicit** — scorecard scores mapped to
       the rubric are read before the hiring-manager rationale, and the
       rationale exists specifically to explain divergence and resolved FUD.

@@ -91,9 +91,9 @@ timetoread: "8 min read"
 - Verificator (interface for SMS 2FA)
 - User email system and team
 
-## 9. Organizational Foundations self-test
+## 9. Organizational foundations self-test
 
-Fill in the same five rows for an individual report, for one team, and for the division. If you're having trouble filling out this template, imagine how your teams and reports must feel.
+Fill in the same five rows for an individual report, for one team, and for the division. For each cell, ask: is this information documented anywhere in your division, and is it easy to find? If you're having trouble filling out this template, imagine how your teams and reports must feel.
 
 | | Individual | Team | Division |
 | --- | --- | --- | --- |
