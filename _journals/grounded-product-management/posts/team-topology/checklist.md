@@ -102,6 +102,8 @@ timetoread: "4 min read"
 
 ## Watch for Warning Signs
 
+*Polarity flips in this section: a checked box here is a warning, not a win.*
+
 - [ ] Developers are frequently moved between teams.
 - [ ] Leaders often step in to resolve dependency conflicts.
 - [ ] Teams complain about too many dependencies.

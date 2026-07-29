@@ -30,25 +30,25 @@ The operational bar I hold software teams to:
 
 ## How to Read This
 
-This journal is my engineering-management operating model, each record grounded in one source. This record is the exception in an otherwise book-grounded section: it distills Kate Matsudaira's article "Software Managers' Guide to Operational Excellence" — the source checklist names her article explicitly — into the operational bar I hold software teams to. The seven areas above map one-to-one onto her checklist; the runnable version lives in the **Checklist** tab.
+This journal is **my engineering-management operating model**, each record grounded in one source. This record is the exception in an otherwise book-grounded section: it distills Kate Matsudaira's article "Software Managers' Guide to Operational Excellence" — the source checklist names her article explicitly — into the operational bar I hold software teams to. The seven areas above map one-to-one onto her checklist; the runnable version lives in the **Checklist** tab.
 
 ## Rationale
 
-**Operational excellence is a management responsibility because nobody else has the incentive to enforce it.** Engineers under delivery pressure will rationally defer runbooks, DR tests, and alert cleanup — every one of those is invisible until the night it isn't. Matsudaira's framing puts the accountability where the leverage is: the manager does not have to operate the systems, but the manager owns asking the questions and refusing to accept "we'll get to it" as a permanent answer. That is why the bar is written as checkable conditions, not aspirations.
+**Operational excellence is a management responsibility because nobody else has the incentive to enforce it.** Engineers under delivery pressure will rationally defer runbooks, DR tests, and alert cleanup — every one of those is **invisible until the night it isn't**. Matsudaira's framing puts the accountability where the leverage is: the manager does not have to operate the systems, but the manager owns asking the questions and refusing to accept "we'll get to it" as a permanent answer. That is why the bar is written as **checkable conditions, not aspirations**.
 
-**The five keys are one loop, not five projects.** Invest in quality assurance, automate repetitive and manual tasks, standardize and improve engineering processes, measure and track performance data, foster a culture of continuous improvement. Each feeds the next: measurement exposes the repetitive pain, automation removes it, standardization keeps it removed, and the improvement culture is what makes the loop run again next quarter instead of decaying into a one-time cleanup.
+**The five keys are one loop, not five projects.** Invest in quality assurance, automate repetitive and manual tasks, standardize and improve engineering processes, measure and track performance data, foster a culture of continuous improvement. **Each feeds the next**: measurement exposes the repetitive pain, automation removes it, standardization keeps it removed, and the improvement culture is what makes the loop run again next quarter instead of decaying into a one-time cleanup.
 
 ![Circular loop diagram of five stations: measure, automate, standardize, quality, improve, feeding back into each other.](assets/images/operational-excellence/five-keys-loop.jpeg)
 **Figure 1:** *The five keys are one loop, not five projects: measurement exposes the pain, automation removes it, standardization keeps it removed, and the improvement culture reruns the loop.*
 
-**Launch readiness is cheaper than launch archaeology.** Every item on the launch list — working dashboards, runbooks a stranger can follow, tracked SLOs, tested backups, understood dependency failures, load testing, compliance — costs a fraction before launch of what it costs during the first serious incident, when the team is simultaneously discovering how the system fails and how to observe it. A launch review against this list is the single highest-leverage operational meeting a manager runs.
+**Launch readiness is cheaper than launch archaeology.** Every item on the launch list — working dashboards, runbooks a stranger can follow, tracked SLOs, tested backups, understood dependency failures, load testing, compliance — costs a fraction before launch of what it costs during the first serious incident, when the team is simultaneously discovering how the system fails and how to observe it. A launch review against this list is **the single highest-leverage operational meeting** a manager runs.
 
 ![Two scenes contrasting a cheap pre-launch readiness check with an expensive night-time dig through an incident.](assets/images/operational-excellence/readiness-vs-archaeology.jpeg)
 **Figure 2:** *Every readiness item costs a fraction before launch of what it costs during the first serious incident, when the team is discovering how the system fails and how to observe it at the same time.*
 
-**On-call quality is an operational metric, not a personnel perk.** A rotation with unmeasured paging pain, no backup plan, unclear feature-work expectations, or engineers missing the permissions to act burns people *and* lengthens incidents — the same neglect shows up in attrition and in time-to-recovery. Measuring alert volume and on-call pain, and treating high numbers as defects to fix, is how the incident load gets driven down instead of merely endured.
+**On-call quality is an operational metric, not a personnel perk.** A rotation with unmeasured paging pain, no backup plan, unclear feature-work expectations, or engineers missing the permissions to act **burns people *and* lengthens incidents** — the same neglect shows up in attrition and in time-to-recovery. Measuring alert volume and on-call pain, and treating high numbers as defects to fix, is how the incident load gets **driven down instead of merely endured**.
 
-**Recovery ability, not incident absence, is the real reliability measure.** Incidents are inevitable; unrecoverable ones are a choice. That is why the bar insists on documented *and tested* recovery plans, graceful degradation, a measured and optimized time to full recovery, and — always — a rollback or failover path to a known good instance. A deployment pipeline with canaries, feature flags, and real-user monitoring is part of the same stance: it turns every release into a small, observable, reversible experiment instead of a bet.
+**Recovery ability, not incident absence, is the real reliability measure.** **Incidents are inevitable; unrecoverable ones are a choice.** That is why the bar insists on documented *and tested* recovery plans, graceful degradation, a measured and optimized time to full recovery, and — always — a rollback or failover path to a known good instance. A deployment pipeline with canaries, feature flags, and real-user monitoring is part of the same stance: it turns every release into a **small, observable, reversible experiment** instead of a bet.
 
 ![Pipeline diagram of a release passing canary, feature flags, and full rollout, with a rollback arrow returning to a known good instance from every stage.](assets/images/operational-excellence/reversible-release-path.jpeg)
 **Figure 3:** *A deployment pipeline with canaries, flags, and monitoring turns every release into a small, observable, reversible experiment — with a path back to a known good instance from every stage.*
@@ -57,15 +57,15 @@ This journal is my engineering-management operating model, each record grounded 
 
 | What this record says | What it does **not** say |
 | --- | --- |
-| The manager owns the operational bar and asks the questions. | The manager personally operates the systems — the craft of meeting the bar lives with the team. |
+| The manager owns the operational bar and asks the questions. | The manager personally operates the systems — the craft of meeting the bar **lives with the team**. |
 | Nothing launches without the readiness list holding. | Launches are slow — the list is short, known in advance, and cheapest before launch. |
 | Incident follow-ups are tracked weekly to completion. | Retrospectives are enough — a review whose action items die in a backlog is theater. |
 | On-call pain is measured and minimized. | On-call is eliminated — someone carries the pager; the job is making that humane and effective. |
 | Dashboards cover system health *and* business health. | Observability is an infra concern — feature flags, campaigns, and sales events are operational context too. |
-| Rollback or failover to a known good instance is always possible. | Incidents are preventable — recovery ability, not incident absence, is what I hold teams to. |
+| Rollback or failover to a known good instance is always possible. | Incidents are preventable — **recovery ability, not incident absence**, is what I hold teams to. |
 | Quality is weighed when new features are considered. | Features stop for quality — the trade-off is made explicitly, with customer-issue trends on the table. |
 
-Concretely: every service my teams run can pass the Checklist tab today or has a dated plan for each gap; launch reviews use the readiness section; open incident action items are reviewed weekly; and I can see alert volume, on-call pain, customer-issue trends, and time to recovery for any team without asking anyone to compile them.
+Concretely: every service my teams run can **pass the Checklist tab today** or has a dated plan for each gap; launch reviews use the readiness section; open incident action items are reviewed weekly; and I can see alert volume, on-call pain, customer-issue trends, and time to recovery for any team **without asking anyone to compile them**.
 
 ## Anti-Patterns
 
@@ -86,7 +86,7 @@ Concretely: every service my teams run can pass the Checklist tab today or has a
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs the operational bar for every software team and service I am accountable for — what must be true at launch and in steady state, and what I check when I review a team's operations. I revisit it when an incident exposes a failure mode the seven areas do not cover, when a team consistently passes the checklist while operational outcomes still degrade (a sign the bar has drifted from reality), or when platform changes (new runtime, new compliance regime) add conditions the list must absorb.
+This record is `draft`. It governs the operational bar for every software team and service I am accountable for — what must be true at launch and in steady state, and what I check when I review a team's operations. I revisit it when an incident exposes a failure mode the seven areas do not cover, when a team consistently passes the checklist while operational outcomes still degrade (a sign **the bar has drifted from reality**), or when platform changes (new runtime, new compliance regime) add conditions the list must absorb.
 
 ## Authoritative References
 

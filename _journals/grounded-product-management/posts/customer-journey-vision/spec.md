@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: Customer Journey Vision
@@ -13,15 +13,11 @@ revised: 2026-07-27
 State how I anchor product direction: in a **customer journey vision** — a
 concrete, written story of how a specific customer's life works roughly three
 years from now, not a slogan about our product. The post turns the *Build What
-Matters* "Customer Journey Vision" checklist into an operating principle:
-defining the foundation (the 10x customer outcome, a bold-but-achievable
-vision, a written single source of truth, a ~three-year horizon), building the
-full journey from trigger through discovery, evaluation, trial, engagement,
-and retention, ensuring competitive differentiation, applying the Kano model
-(must-haves / performance features / delighters), communicating the vision
-through artifacts people can absorb (comic strips, vision mock-ups, customer
-diary entries), adding supporting components (personas, product principles),
-and validating that the vision is understandable, inspiring, and believable.
+Matters* "Customer Journey Vision" checklist into an operating principle,
+covering the foundation, the full trigger-to-retention journey, competitive
+differentiation and the Kano model, communication artifacts, supporting
+components, and final validation. The Success criteria below carry the
+specifics.
 
 ## Audience
 
@@ -91,9 +87,9 @@ journal policy.
 ## Sources
 
 - **Internal**
-  - `sources/build-what-matters/Checklist_ Build What Matters _ Customer
-    Journey Vision.pdf` — the operating checklist; reproduced in the
-    Checklist tab (`checklist.md`).
+  - `sources/build-what-matters/Checklist_ Build What Matters _ Customer Journey Vision.pdf`
+    — the operating checklist; reproduced in the Checklist tab
+    (`checklist.md`).
 - **External**
   - Ben Foster & Rajesh Nerlikar, *Build What Matters: Delivering Key
     Outcomes with Vision-Led Product Management* (Lioncrest Publishing,
@@ -101,6 +97,9 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — All visuals final: eight comic panel images and the three
+  article figures generated and referenced; no pending panel blocks or
+  illustration placeholders remain. *(Željko, AI-mediated session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/MILA cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

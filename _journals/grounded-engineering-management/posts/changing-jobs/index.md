@@ -29,7 +29,7 @@ What I expect from engineers navigating a job change, and how I coach each stage
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record is grounded in the Changing Jobs material of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side of the table: the book tells engineers how to run the move; this record states how I coach engineers through it — including honestly toward the door when that is the right answer. The runnable version — the checklist I hand an engineer weighing or making a move — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record is grounded in the Changing Jobs material of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side of the table: the book tells engineers how to run the move; this record states how I coach engineers through it — including **honestly toward the door** when that is the right answer. The runnable version — the checklist I hand an engineer weighing or making a move — lives in the **Checklist** tab of this post.
 
 ![A winding path with milestones for explore, decide, interview, offer, onboard, and leave well, continuing toward a horizon marked five to ten years.](assets/images/changing-jobs/job-change-arc.jpeg)
 **Figure 1:** *The move is one arc, not one event: it starts before the recruiter mail and keeps counting years after the offer is signed.*
@@ -38,20 +38,20 @@ This journal is my engineering-management operating model. This record is ground
 
 ## Rationale
 
-**A manager who can't discuss leaving can't coach a career.** If the only career conversations I can hold are the ones where the answer is "stay," my coaching is advertising. Engineers know when their promotion path is blocked or their growth has flattened, and pretending otherwise costs me credibility on everything else. Coaching the job-change arc openly means the engineers who stay are staying deliberately — and the ones who leave, leave as allies who recommend the team, refer candidates, and sometimes come back senior.
+**A manager who can't discuss leaving can't coach a career.** If the only career conversations I can hold are the ones where the answer is "stay," **my coaching is advertising**. Engineers know when their promotion path is blocked or their growth has flattened, and pretending otherwise costs me credibility on everything else. Coaching the job-change arc openly means the engineers who stay are staying deliberately — and the ones who leave, **leave as allies** who recommend the team, refer candidates, and sometimes come back senior.
 
-**Optimizing for title or compensation alone is the classic mispriced trade.** The source is blunt about this: think about the 5–10 year career impact, not the next offer letter. A move that pays 15% more but lands in a stagnant team, a weak manager, or work with no growth is expensive at that horizon. So I push engineers to compare opportunities on the full set — role, growth, team, mission, flexibility, long-term upside — and to treat the offer number as one input, not the verdict.
+**Optimizing for title or compensation alone is the classic mispriced trade.** The source is blunt about this: think about the **5–10 year career impact**, not the next offer letter. A move that pays 15% more but lands in a stagnant team, a weak manager, or work with no growth is expensive at that horizon. So I push engineers to compare opportunities on the full set — role, growth, team, mission, flexibility, long-term upside — and to treat the offer number as **one input, not the verdict**.
 
-**A switch resets more than most engineers price in.** Trust, context, and influence do not transfer; they are rebuilt from zero at the new company. For an engineer early in their career that reset is cheap. For a senior engineer whose effectiveness rests on years of relationships and system knowledge, it is a real cost that an external offer's shine hides — which is why I put "what does the switch reset?" next to "what does the switch pay?" in every such conversation.
+**A switch resets more than most engineers price in.** Trust, context, and influence do not transfer; they are **rebuilt from zero** at the new company. For an engineer early in their career that reset is cheap. For a senior engineer whose effectiveness rests on years of relationships and system knowledge, it is a real cost that an external offer's shine hides — which is why I put "**what does the switch reset?**" next to "what does the switch pay?" in every such conversation.
 
 ![A balance scale weighing an envelope labeled offer against blocks labeled trust, context, and influence, with gauges beside them reset to zero.](assets/images/changing-jobs/what-a-switch-resets.jpeg)
 **Figure 2:** *What the switch pays is printed on the offer; what it resets — trust, context, influence — is rebuilt from zero, and costs most at senior levels.*
 
 
 
-**Leveling at the offer stage sets the slope of the next several years.** A down-level is not automatically an insult — some companies genuinely hold higher bars, and pay can exceed the old title's — but it must be examined: what does the offered level mean, what does the next one require, can the committee reconsider? And it is legitimate to walk away if the level is badly misaligned with the career. An up-level is not automatically a win either: it is higher expectations from day one, and taking it without clear success criteria and support is how strong engineers get set up to fail.
+**Leveling at the offer stage sets the slope of the next several years.** A down-level is not automatically an insult — some companies genuinely hold higher bars, and pay can exceed the old title's — but it must be examined: what does the offered level mean, what does the next one require, can the committee reconsider? And it is **legitimate to walk away** if the level is badly misaligned with the career. An up-level is not automatically a win either: it is higher expectations from day one, and taking it without clear success criteria and support is how strong engineers get **set up to fail**.
 
-**Onboarding is where the move is actually won or lost.** The interview gets you the job; the first months determine what the job becomes. The engineers who land well do it deliberately — goals clarified for one, three, and six months; a work log and a weekly journal from the start; a cheat sheet for acronyms, systems, and people; a buddy; early meetings with key stakeholders. At senior and staff levels the bar rises: understand the business context, meet peer staff engineers, spend time with product and cross-functional partners. I hold my own new joiners to this, and I tell departing engineers to hold themselves to it wherever they land.
+**Onboarding is where the move is actually won or lost.** The interview gets you the job; **the first months determine what the job becomes**. The engineers who land well do it deliberately — goals clarified for one, three, and six months; a work log and a weekly journal from the start; a cheat sheet for acronyms, systems, and people; a buddy; early meetings with key stakeholders. At senior and staff levels the bar rises: understand the business context, meet peer staff engineers, spend time with product and cross-functional partners. I hold my own new joiners to this, and I tell departing engineers to hold themselves to it wherever they land.
 
 ![A rising timeline from day one through one, three, and six month checkpoints, fed by icons for a work log, cheat sheet, buddy, and stakeholder meetings.](assets/images/changing-jobs/deliberate-landing-timeline.jpeg)
 **Figure 3:** *The interview gets the job; the landing decides what it becomes — goals at one, three, and six months, with the work log and the map of people started on day one.*
@@ -62,14 +62,14 @@ This journal is my engineering-management operating model. This record is ground
 
 | What this record says | What it does **not** say |
 | --- | --- |
-| I coach job-change decisions honestly, including toward the door. | I encourage attrition — most honest conversations end with a better reason to stay. |
+| I coach job-change decisions honestly, including toward the door. | I encourage attrition — most honest conversations end with **a better reason to stay**. |
 | Compare promotion odds with external offers when the path is slow. | Jump at the first stall — the switch's reset costs are real. |
 | Weigh offers across role, growth, team, mission, and upside. | Compensation doesn't matter — it is one axis among several, and market value is worth knowing. |
 | A down-leveled offer can be questioned, negotiated, or declined. | A down-level is always wrong — some companies' bars and pay make it a fair trade. |
 | An up-level is accepted with clear expectations and support. | An up-level is free — it is higher expectations from day one. |
-| Onboarding is prepared as seriously as the interview. | The move ends at the signed offer — the first six months decide what the move was worth. |
+| Onboarding is prepared as seriously as the interview. | The move ends at the signed offer — **the first six months decide** what the move was worth. |
 
-Concretely: an engineer on my team weighing a move can bring it to me without fear; they leave that conversation with an honest read on their internal odds, a clear-eyed comparison of what a switch buys and resets, and — if they go — a proper handover, a warm goodbye, and the onboarding checklist for their first ninety days somewhere else.
+Concretely: an engineer on my team weighing a move can bring it to me without fear; they leave that conversation with an honest read on their internal odds, a clear-eyed comparison of **what a switch buys and resets**, and — if they go — a proper handover, a warm goodbye, and the onboarding checklist for their first ninety days somewhere else.
 
 ## Anti-Patterns
 
@@ -92,7 +92,7 @@ Concretely: an engineer on my team weighing a move can bring it to me without fe
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how I coach engineers on my teams through exploring, deciding, interviewing, negotiating level, and onboarding — whether the move is internal or out the door. I revisit it if departures start surprising me — which means the honest-conversation loop has failed — if departing engineers' exit decisions repeatedly cite the same fixable internal blocker, or if the hiring market shifts enough that the leveling and preparation guidance no longer matches what engineers actually face.
+This record is `draft`. It governs how I coach engineers on my teams through exploring, deciding, interviewing, negotiating level, and onboarding — whether the move is internal or out the door. I revisit it if departures start surprising me — which means **the honest-conversation loop has failed** — if departing engineers' exit decisions repeatedly cite **the same fixable internal blocker**, or if the hiring market shifts enough that the leveling and preparation guidance no longer matches what engineers actually face.
 
 ## Authoritative References
 

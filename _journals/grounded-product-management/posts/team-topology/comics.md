@@ -14,7 +14,7 @@ Draw the map for empowerment, not the org chart — team topology in eight panel
 **Panel 2:** *The problem: topology by org-chart accident — no one can be empowered over a fragment.*
 
 ![Vera draws bold new team boundaries on a whiteboard map with small icons for ownership, autonomy, and alignment.](assets/images/team-topology/comic-03-empowerment-decision.jpeg)
-**Panel 3:** *The principle: the map is designed for empowerment, never inherited.*
+**Panel 3:** *The principle: the map is designed for empowerment — ownership, autonomy, and alignment — never inherited.*
 
 ![Mila holds a plate with one complete top-to-bottom slice of a layered product, Vera nodding beside her.](assets/images/team-topology/comic-04-meaningful-slice.jpeg)
 **Panel 4:** *Ownership that works: a meaningful slice, end to end.*

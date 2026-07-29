@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-26
+revised: 2026-07-29
 ---
 
 # Spec: The Next-Generation Operating Model
@@ -105,6 +105,10 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fix: comic Panel 6 caption now covers steps
+  four and five, closing the visible step-numbering gap. Changelog
+  reconciled: all comic and illustration images are generated and in
+  place. *(Željko, AI-mediated session)*
 - **2026-07-26** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/LEO cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

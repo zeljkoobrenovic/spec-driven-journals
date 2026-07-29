@@ -17,10 +17,10 @@ The vision is the customer's future journey, told as a story — how a journey b
 **Panel 3:** *The principle: the vision describes their journey, not our features.*
 
 ![Comic panel: Vera and Mila trace a jagged path of a frustrated customer over obstacles on a whiteboard, a storm cloud sketched overhead.](assets/images/customer-journey-vision/comic-04-walk-todays-journey.jpeg)
-**Panel 4:** *Step one: map today's journey honestly, from the trigger onward.*
+**Panel 4:** *First, see today's journey honestly — the frustration the vision has to answer.*
 
 ![Comic panel: Mila draws a smooth amber journey with six milestone dots toward a star while Vera plants a small flag labeled 3 YRS.](assets/images/customer-journey-vision/comic-05-write-the-future-journey.jpeg)
-**Panel 5:** *Step two: write the future journey — bold, believable, about three years out.*
+**Panel 5:** *Then write the future journey — bold, believable, about three years out.*
 
 ![Comic panel: Mila pins a comic strip, a mock-up sketch, and a diary page to a corkboard while Vera and colleagues nod.](assets/images/customer-journey-vision/comic-06-tell-it-as-a-story.jpeg)
 **Panel 6:** *Ship the vision as artifacts people can absorb — and retell.*

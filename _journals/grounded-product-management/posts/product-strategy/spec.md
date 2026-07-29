@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: Product Strategy
@@ -30,25 +30,25 @@ see what their strategy has to connect to. First-person declarative.
 
 ## Success criteria
 
-- [ ] **Principle is quotable** — highlight states that strategy is the
+- [x] **Principle is quotable** — highlight states that strategy is the
       bridge between the vision and the roadmap, built by working backward
       from Point B, in one paragraph.
-- [ ] **Point A / Point B survive** — the destination framing (current
+- [x] **Point A / Point B survive** — the destination framing (current
       experience vs end-state customer journey) is explicit.
-- [ ] **Working backward is argued** — dependencies, "what must be true
+- [x] **Working backward is argued** — dependencies, "what must be true
       before this step", and dead-end detection appear as method, not
       slogan.
-- [ ] **The strategy factors are enumerated** — financial situation,
+- [x] **The strategy factors are enumerated** — financial situation,
       competitive advantage (must-haves / performance features /
       delighters), market segments, outcome delivery, technology and data
       dependencies, strategic leverage all appear.
-- [ ] **Milestones carry KPIs** — each milestone proves something and
+- [x] **Milestones carry KPIs** — each milestone proves something and
       carries both business and customer KPIs.
-- [ ] **Adaptation is bounded** — feedback improves the vision rather than
+- [x] **Adaptation is bounded** — feedback improves the vision rather than
       replacing it; the strategy changes on evidence, not on every signal.
-- [ ] **The checklist survives intact** — all eight PDF sections reproduced
+- [x] **The checklist survives intact** — all eight PDF sections reproduced
       in the Checklist tab (`checklist.md`), sub-groups preserved.
-- [ ] **Credit is explicit** — References name Foster & Nerlikar's *Build
+- [x] **Credit is explicit** — References name Foster & Nerlikar's *Build
       What Matters*.
 
 ## Non-goals
@@ -58,9 +58,9 @@ see what their strategy has to connect to. First-person declarative.
 - Not [[balanced-roadmap]] — that record covers the roadmap artifact this
   strategy feeds; this one covers the strategic reasoning above it.
 - Not [[empowered-product-strategy]] — that sibling record is grounded in
-  Marty Cagan's *EMPOWERED* and covers insight-driven strategy (focus,
-  insights, bets); this record covers the vision-to-roadmap bridge per
-  Foster & Nerlikar. The two are deliberately complementary, not
+  Marty Cagan's *EMPOWERED* and covers insight-driven strategy (the
+  focus–insight–action frame ending in team objectives); this record
+  covers the vision-to-roadmap bridge per Foster & Nerlikar. The two are deliberately complementary, not
   duplicates.
 - Not a fundraising or business-model playbook — financials appear only as
   strategy constraints.
@@ -91,7 +91,7 @@ journal policy.
   [[empowered-product-strategy]]: this record covers the vision-to-roadmap
   bridge per Foster & Nerlikar (Point A → Point B, working backward, gap
   analysis, sequencing, milestones); that record covers Cagan's
-  insight-driven strategy (focus, insights, bets). Cross-linked, not
+  insight-driven strategy (focus–insight–action). Cross-linked, not
   merged.
 - **2026-07-27** — Framed the record around "the bridge" — the strategy is
   the load-bearing span between the vision (which says where) and the
@@ -111,6 +111,13 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied: adaptation-beat repetition
+  reduced in the article, trade-offs paragraph converted to a list,
+  gap-analysis beat folded into comic Panel 4's caption, "Foster &
+  Nerlikar" normalized, and the EMPOWERED sibling's frame corrected to
+  "focus–insight–action" here and in the article. Success-criteria boxes
+  ticked (all eight verified met by review). *(Željko, AI-mediated
+  session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/MILA cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

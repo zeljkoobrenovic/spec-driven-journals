@@ -30,25 +30,25 @@ My hiring commitments:
 
 ## How to Read This
 
-This journal is my engineering-management operating model, each record grounded in one source checklist. This record distills the hiring chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): hiring as deliberate team-building — planning ahead, owning the process, building the pipeline, interviewing consistently, deciding well, closing warmly, and scaling the machine. The runnable version lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model, each record grounded in one source checklist. This record distills the hiring chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): **hiring as deliberate team-building** — planning ahead, owning the process, building the pipeline, interviewing consistently, deciding well, closing warmly, and scaling the machine. The runnable version lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**Hiring is team-building, and team-building starts before the job posting.** A role opened reactively — someone quit, a project is late — gets filled with whoever is available, and the team drifts into whatever shape its attrition dictates. Planning the year-end team first turns every opening into a design decision: which gaps in skill, strength, and experience this hire should close, and what perspective the team is currently missing. That is why I define level and scope per role rather than posting a generic req.
+**Hiring is team-building, and team-building starts before the job posting.** A role opened reactively — someone quit, a project is late — gets filled with whoever is available, and the team drifts into whatever shape its attrition dictates. Planning the year-end team first turns **every opening into a design decision**: which gaps in skill, strength, and experience this hire should close, and what perspective the team is currently missing. That is why I define level and scope per role rather than posting a generic req.
 
 ![Split diagram contrasting reactive hole-filling of a vacancy with a planned team blueprint where dashed outlines mark deliberate future roles closing named gaps.](assets/images/hiring-well/hole-filling-vs-team-design.jpeg)
 **Figure 1:** *A role opened reactively gets filled with whoever is available; a role opened against a year-end team map closes a named gap on purpose.*
 
-**Delegating hiring to recruiters delegates the future of my team.** Recruiters are essential partners, but they cannot know what the team needs the way I do. When I write the job description myself and shape the outreach personally, the pipeline reflects the team I am building rather than a keyword match — and candidates can tell the difference between a manager who wants *them* and a process that wants *a body*.
+**Delegating hiring to recruiters delegates the future of my team.** Recruiters are essential partners, but they cannot know what the team needs the way I do. When I write the job description myself and shape the outreach personally, the pipeline reflects **the team I am building** rather than a keyword match — and candidates can tell the difference between a manager who wants *them* and a process that wants *a body*.
 
-**Interviews are noisy instruments, so the process must supply the signal.** A short conversation is an imperfect read on years of future work, which is why gut feel fails and bias creeps in. Consistent core questions make candidates comparable; multiple interviewers covering different dimensions widen the read; independent debriefs before group discussion keep the loudest voice from becoming the verdict. Better questions help too: real past work and owned contributions, not hypotheticals — show me the apps, the writing, the pitches, and tell me which part of the teamwork was yours — plus probes for self-awareness and growth (strengths, where they want to be in five years) and for a hard conflict and what it taught them.
+**Interviews are noisy instruments, so the process must supply the signal.** A short conversation is an imperfect read on years of future work, which is why gut feel fails and bias creeps in. Consistent core questions make candidates comparable; multiple interviewers covering different dimensions widen the read; independent debriefs before group discussion keep **the loudest voice from becoming the verdict**. Better questions help too: **real past work and owned contributions**, not hypotheticals — show me the apps, the writing, the pitches, and tell me which part of the teamwork was yours — plus probes for self-awareness and growth (strengths, where they want to be in five years) and for a hard conflict and what it taught them.
 
 ![Diagram of a noisy interview signal passing through three filters — same core questions, distinct dimensions, independent debriefs — and emerging as clean evidence, while a gut-feel bypass ends in static.](assets/images/hiring-well/noisy-interview-signal-pipeline.jpeg)
 **Figure 2:** *Interviews are noisy instruments: the process supplies the signal — consistent questions, distinct interviewer dimensions, and independent debriefs — where gut feel only amplifies the noise.*
 
-**A "weak hire" is the most expensive decision available, because it compounds.** The marginal candidate absorbs onboarding, coaching, and eventually a hard conversation — cost that lands on the whole team. The tests I use come straight from the source: is there at least one strong, passionate advocate? Can this person grow beyond the current role? Do they raise the team's long-term capability? Toxic behavior is a rejection regardless of talent, and a team of people who all look, think, and work alike makes worse decisions than a diverse one — so diversity of background and viewpoint is a hiring goal, not a compliance afterthought.
+**A "weak hire" is the most expensive decision available, because it compounds.** The marginal candidate absorbs onboarding, coaching, and eventually a hard conversation — cost that lands on the whole team. The tests I use come straight from the source: is there **at least one strong, passionate advocate**? Can this person grow beyond the current role? Do they raise the team's long-term capability? Toxic behavior is a rejection regardless of talent, and a team of people who all look, think, and work alike makes worse decisions than a diverse one — so diversity of background and viewpoint is **a hiring goal, not a compliance afterthought**.
 
-**Hiring is a long game played by the whole team.** Great candidates say no, and careers are long — so I keep in touch, build relationships before roles open, and invest in the team's reputation. When growth is the priority, hiring becomes a system: funnel metrics, trained interviewers, a process broken into improvable parts, and a high bar that every leader on the team can articulate — because team-building is everyone's job, not a manager's side quest.
+**Hiring is a long game played by the whole team.** Great candidates say no, and careers are long — so I keep in touch, build relationships before roles open, and invest in the team's reputation. When growth is the priority, **hiring becomes a system**: funnel metrics, trained interviewers, a process broken into improvable parts, and a high bar that every leader on the team can articulate — because **team-building is everyone's job**, not a manager's side quest.
 
 ![Flow diagram of the hiring arc — plan, pipeline, interview, decide, close — with an amber feedback loop labeled system carrying funnel and gauge icons back to the start.](assets/images/hiring-well/hiring-arc-plan-to-scale.jpeg)
 **Figure 3:** *The arc runs from team plan to warm close — and at volume it becomes a system: funnel metrics, trained interviewers, and a process improved part by part.*
@@ -60,12 +60,12 @@ This journal is my engineering-management operating model, each record grounded 
 | I plan the year-end team before opening a role. | Headcount planning replaces judgment — the plan tells me what to look for, not whom to pick. |
 | I own the process personally, even with recruiters. | I do everything myself — recruiting is a close partnership, with the accountability staying with me. |
 | Every candidate gets a consistent core set of questions. | The interview is a rigid script — tailored questions probe the role's actual needs on top of the core. |
-| No hire without a strong, passionate advocate. | Consensus is required — one advocate plus no serious concerns beats lukewarm unanimity. |
+| No hire without a strong, passionate advocate. | Consensus is required — one advocate plus no serious concerns **beats lukewarm unanimity**. |
 | I move fast and stay involved once I decide to make an offer. | Speed excuses sloppiness — the speed comes after a disciplined decision, not instead of one. |
-| Leadership hires get extra research and values assessment. | Senior candidates are exempt from process — they get more scrutiny, not less. |
+| Leadership hires get extra research and values assessment. | Senior candidates are exempt from process — they get **more scrutiny, not less**. |
 | References are a meaningful signal. | Old negative feedback is disqualifying — people change; dated signals get weighed, not obeyed. |
 
-Concretely: every open role on my team traces to a written gap in the year-end team plan, has a job description I wrote, and runs through a loop with prepared questions, distinct interviewer dimensions, and independent written debriefs. My offer decisions name the advocate; my rejections of "maybe" candidates are fast; and my calendar shows real closing time on every offer that matters.
+Concretely: every open role on my team **traces to a written gap** in the year-end team plan, has a job description I wrote, and runs through a loop with prepared questions, distinct interviewer dimensions, and independent written debriefs. My offer decisions **name the advocate**; my rejections of "maybe" candidates are fast; and my calendar shows real closing time on every offer that matters.
 
 ## Anti-Patterns
 
@@ -87,7 +87,7 @@ Concretely: every open role on my team traces to a written gap in the year-end t
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how I hire onto teams I manage: planning, pipeline, interviewing, decisions, closing, and leadership hires. I revisit it if I catch myself opening roles with no written team plan behind them, if a hire made without a passionate advocate recurs, or if the team's composition after a year of hiring looks like a copy of the team a year ago.
+This record is `draft`. It governs how I hire onto teams I manage: planning, pipeline, interviewing, decisions, closing, and leadership hires. I revisit it if I catch myself opening roles with **no written team plan** behind them, if a hire made without a passionate advocate recurs, or if the team's composition after a year of hiring looks like **a copy of the team a year ago**.
 
 ## Authoritative References
 

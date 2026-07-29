@@ -24,10 +24,10 @@ If you work with me — as my CEO, as a product leader, or on a product team —
 
 ## Why an Engineering Executive Writes a Product Journal
 
-Because product and engineering are not two functions that hand work to each other — they are one delivery system with two specializations. Every consequential engineering decision I make leans on a product assumption: what we staff, what we platform, what we make fast, what we let stay slow. An engineering executive who cannot articulate how product decisions *should* be made cannot do three parts of the job: partner with a head of product as a peer rather than a supplier, staff the product–engineering boundary deliberately, or arbitrate a roadmap conflict on anything better than volume.
+Because product and engineering are not two functions that hand work to each other — they are one delivery system with two specializations. Every consequential engineering decision I make leans on a product assumption: what we staff, what we platform, what we make fast, what we let stay slow. An engineering executive who cannot articulate how product decisions *should* be made cannot do three parts of the job well: partner with a head of product as a peer rather than a supplier, staff the product–engineering boundary deliberately, or arbitrate a roadmap conflict on anything better than volume.
 
 ![Two interlocking gears representing product and engineering drive one delivery conveyor, with a shared written document connected to both.](assets/images/introduction/one-delivery-system.jpeg)
-**Figure 1:** *Figure 1: One delivery system, two specializations — and the journal as the written contract both halves can inspect.*
+**Figure 1:** *One delivery system, two specializations — and the journal as the written contract both halves can inspect.*
 
 There is a second reason, inherited from this journal's sibling. My [engineering-executive journal](../grounded-engineering-executive/introduction.html) is built on the idea that a written operating model is inspectable — [[inspected-trust]] commits me to verifying my organization's work and making my own work inspectable in return. This journal extends that commitment across the boundary. What I expect from product management is no longer something to reverse-engineer from my questions in roadmap reviews; it is public, argued, and concrete enough to check me against. When my behavior and these pages disagree, one of them is wrong, and finding out which is a conversation I want.
 
@@ -47,22 +47,22 @@ Every record carries `status: draft`, deliberately. These principles are written
 
 ## Where the Material Comes From
 
-The vision is mine; the grounding is borrowed openly, and credited per record. Seven records start from chapter checklists of Ben Foster and Rajesh Nerlikar's *Build What Matters* (Lioncrest, 2020) — the vision-led operating loop: name the dysfunctions, envision the customer journey, derive strategy, define outcomes, balance the roadmap, and build the team and processes to run it. The other seven start from Marty Cagan and Chris Jones's *EMPOWERED* (Wiley, 2020) — what product leadership owes empowered teams: coaching, staffing, vision and principles, strategy as focus and insight, topology, objectives, and collaboration with the business. The books describe what strong product organizations do; these records state what *I* will do, in first person, with the trade-offs I accept. Where my practice disagrees with either book, the record says so.
+The vision is mine; the grounding is borrowed openly, and credited per record. Seven records start from chapter checklists of Ben Foster and Rajesh Nerlikar's *Build What Matters* (Lioncrest Publishing, 2020) — the vision-led operating loop: name the dysfunctions, envision the customer journey, derive strategy, define outcomes, balance the roadmap, and build the team and processes to run it. The other seven start from Marty Cagan and Chris Jones's *EMPOWERED* (Wiley, 2020) — what product leadership owes empowered teams: coaching, staffing, vision and principles, strategy as focus and insight, topology, objectives, and collaboration with the business. The books describe what strong product organizations do; these records state what *I* will do, in first person, with the trade-offs I accept. Where my practice disagrees with either book, the record says so.
 
-![Streams from two open books merge through a funnel into a single signed volume held by a figure.](assets/images/introduction/two-books-one-model.jpeg)
-**Figure 2:** *Figure 2: Two books, one operating model — Foster & Nerlikar for the vision-led loop, Cagan & Jones for empowered teams, the signature mine.*
+![Streams from two open books merge through a funnel into a single signed volume held by a person.](assets/images/introduction/two-books-one-model.jpeg)
+**Figure 2:** *Two books, one operating model — Foster & Nerlikar for the vision-led loop, Cagan & Jones for empowered teams, the signature mine.*
 
 ## The Map
 
 The two sections mirror the two books:
 
-- **Build What Matters** — the vision-led operating loop, from diagnosis to machinery: [[dysfunctions]], [[customer-journey-vision]], [[product-strategy]], [[outcomes]], [[balanced-roadmap]], [[right-team]], [[right-processes]].
-- **EMPOWERED** — what product leadership owes its teams: [[coaching]], [[staffing]], [[product-vision-and-principles]], [[empowered-product-strategy]], [[team-topology]], [[team-objectives]], [[business-collaboration]].
+- **Build What Matters** — from diagnosis to machinery: [[dysfunctions]], [[customer-journey-vision]], [[product-strategy]], [[outcomes]], [[balanced-roadmap]], [[right-team]], [[right-processes]].
+- **EMPOWERED** — leadership's side of the bargain: [[coaching]], [[staffing]], [[product-vision-and-principles]], [[empowered-product-strategy]], [[team-topology]], [[team-objectives]], [[business-collaboration]].
 
 The sections cross-link constantly, because the books describe the same system from two altitudes: the vision that [[customer-journey-vision]] builds is the one [[product-vision-and-principles]] asks leaders to evangelize; the outcomes in [[outcomes]] are what [[team-objectives]] hands to teams. Follow the links rather than the section order if a thread pulls you.
 
 ![Two shelves of seven tiles each, connected by many curved threads into a single web.](assets/images/introduction/journal-map.jpeg)
-**Figure 3:** *Figure 3: The map — two sections of seven records, cross-linked into one model rather than two reading lists.*
+**Figure 3:** *The map — two sections of seven records, cross-linked into one model rather than two reading lists.*
 
 ## How to Read This Journal
 

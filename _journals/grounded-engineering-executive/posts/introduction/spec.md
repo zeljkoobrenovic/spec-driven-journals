@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-26
+revised: 2026-07-29
 ---
 
 # Spec: Introduction
@@ -17,8 +17,9 @@ inspectable — including by the people it affects), what a record looks like
 (quotable principle, argued rationale, runnable Checklist tab, Comic tab),
 where the material comes from (Will Larson's *The Engineering Executive's
 Primer* and its per-chapter checklists, with explicit credit), and how
-different readers should navigate the six sections. The intro is the front
-door — it orients, it does not summarize all 21 records.
+different readers should navigate the six core sections and two appendices.
+The intro is the front door — it orients, it does not summarize all 35
+records.
 
 ## Audience
 
@@ -33,9 +34,9 @@ team looking for the "why written down?" explanation.
 - [ ] **The vision claim is explicit** — the principles are personal
       operating commitments, not neutral book summaries; Larson is credited
       as the grounding, not the author of the vision.
-- [ ] **The map is navigable** — all six sections appear with their posts
-      cross-linked via `[[slug]]`, so the intro doubles as a table of
-      contents.
+- [ ] **The map is navigable** — all six core sections and both appendices
+      appear with their posts cross-linked via `[[slug]]`, so the intro
+      doubles as a table of contents.
 - [ ] **Record anatomy is explained** — highlight blockquote, ADR-shaped
       body, Checklist tab, Comic tab, draft status.
 - [ ] **Short** — an essay of roughly 900–1,100 words (about 5 minutes),
@@ -43,7 +44,7 @@ team looking for the "why written down?" explanation.
 
 ## Non-goals
 
-- Not a summary of the 21 records — each record's highlight blockquote does
+- Not a summary of the 35 records — each record's highlight blockquote does
   that job on its own page.
 - Not an ADR — this is the one essay-shaped post in the journal; it opens
   with KEY POINTS, not Status/Principle.
@@ -84,7 +85,7 @@ tab (shared VERA/LEO cast) telling the why-write-it-down story.
 ## Sources
 
 - **Internal**
-  - The 21 sibling records and their specs — the corpus this post
+  - The 35 sibling records and their specs — the corpus this post
     introduces.
 - **External**
   - Will Larson, *The Engineering Executive's Primer* (O'Reilly, 2024) —
@@ -94,6 +95,10 @@ tab (shared VERA/LEO cast) telling the why-write-it-down story.
 
 ## Changelog
 
+- **2026-07-29** — Spec reconciled with appendix growth: Intent, map
+  criterion, Non-goals, and Sources now say six core sections plus two
+  appendices and 35 records; article map line and Figure 3 caption updated
+  to match. *(Željko, AI-mediated session)*
 - **2026-07-26** — Map, lead, and sources updated again for the second
   appendix, "Appendix: Team Topologies" (nine records grounded in Skelton &
   Pais). *(Željko, AI-mediated session)*

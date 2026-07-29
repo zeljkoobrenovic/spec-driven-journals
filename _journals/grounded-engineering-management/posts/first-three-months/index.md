@@ -30,41 +30,41 @@ My operating model for entering a management role:
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record distills the new-manager transition chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): the four entry paths, the listen-first ramp-up, and the questions that build the manager–report relationship from day one. It is the first-line counterpart to [[first-90-days]] in my executive journal — same arc, different altitude. The runnable version, including the path-specific checklists, lives in the **Checklist** tab of this post.
+This journal is **my engineering-management operating model**. This record distills the new-manager transition chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): the four entry paths, the listen-first ramp-up, and the questions that build the manager–report relationship from day one. It is the first-line counterpart to [[first-90-days]] in my executive journal — **same arc, different altitude**. The runnable version, including the path-specific checklists, lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**Naming the entry path matters because each path fails differently.** The Apprentice has context and ramps fast, but inherits awkwardness with former peers, people who share less with them than before, and IC work that quietly becomes unsustainable. The Pioneer has total freedom and no inheritance, but must write down how decisions get made, define what good work means, and design a team's values from scratch — while resisting the pull to keep doing all the IC work alone. The New Boss gets a "new person" window to ask basic questions and reset their identity, but knows nothing about what is normal here versus what is a real issue. The Successor inherits a working team and increased responsibility, and the trap is trying to be a copy of the previous manager instead of leading differently. A generic ramp-up plan misses the trap that is actually pointed at me.
+**Naming the entry path matters because each path fails differently.** The Apprentice has context and ramps fast, but inherits awkwardness with former peers, people who share less with them than before, and IC work that quietly becomes unsustainable. The Pioneer has total freedom and no inheritance, but must write down how decisions get made, define what good work means, and design a team's values from scratch — while resisting the pull to keep doing all the IC work alone. The New Boss gets a "new person" window to ask basic questions and reset their identity, but knows nothing about what is normal here versus what is a real issue. The Successor inherits a working team and increased responsibility, and the trap is trying to be a copy of the previous manager instead of leading differently. A generic ramp-up plan misses **the trap that is actually pointed at me**.
 
 ![Four doors labeled Apprentice, Pioneer, New Boss, and Successor, each path showing its own distinct trap on the way to the same team.](assets/images/first-three-months/four-entry-paths.jpeg)
 **Figure 1:** *Four entry paths, four different traps: the diagnosis comes before the plan, because a generic ramp misses the trap actually pointed at you.*
 
-**Questions build more credibility in month one than answers do.** The instinct in a new role is to prove myself quickly — to demonstrate that the promotion or hire was justified. But early strong opinions delivered without context read as arrogance, and early changes made without understanding break things the team silently depended on. Asking lots of questions, being open about my learning curve, and giving people the benefit of the doubt is not weakness; it is calibration. The window in which basic questions are free closes fast — I use it.
+**Questions build more credibility in month one than answers do.** The instinct in a new role is to prove myself quickly — to demonstrate that the promotion or hire was justified. But early strong opinions delivered without context read as arrogance, and early changes made without understanding break things the team silently depended on. Asking lots of questions, being open about my learning curve, and giving people the benefit of the doubt is not weakness; **it is calibration**. The window in which basic questions are free **closes fast** — I use it.
 
-**The relationship questions are the highest-leverage minutes of the whole quarter.** Asking each report how they like to be supported, what feedback helps them, how they want to be recognized, and what worked with their previous manager does two things at once: it gives me an operating manual for each person, and it signals that this manager relationship will be built around them, not around me. Trust compounds from consistency after that — showing up to the 1:1s, doing what I said, and being willing to have the direct, awkward conversation when it is needed.
+**The relationship questions are the highest-leverage minutes of the whole quarter.** Asking each report how they like to be supported, what feedback helps them, how they want to be recognized, and what worked with their previous manager does two things at once: it gives me **an operating manual for each person**, and it signals that this manager relationship will be built around them, not around me. **Trust compounds from consistency** after that — showing up to the 1:1s, doing what I said, and being willing to have the direct, awkward conversation when it is needed.
 
 ![Flow diagram from a 1:1 with question cards, to a per-person operating manual, to a staircase of consistent weeks building a trust bridge.](assets/images/first-three-months/relationship-questions-trust-loop.jpeg)
 **Figure 2:** *The relationship questions produce an operating manual for each person — and trust compounds from consistency afterward: showing up, doing what you said.*
 
-**Changing nothing is a decision too — the arc ends in targeted change.** Listen-first is not change-never. The point of the first sixty days of learning is to earn the right, and gather the evidence, to make a few targeted changes in days 61–90 — and to know which existing processes to explicitly preserve. The failure modes are symmetric: the new manager who reorganizes everything in week two to leave a mark, and the new manager still "just listening" in month five. The 30-60-90 arc exists to prevent both, and the review with my manager and team at day 90 is where I check which failure I drifted toward.
+**Changing nothing is a decision too — the arc ends in targeted change.** **Listen-first is not change-never.** The point of the first sixty days of learning is to earn the right, and gather the evidence, to make a few targeted changes in days 61–90 — and to know which existing processes to explicitly preserve. **The failure modes are symmetric**: the new manager who reorganizes everything in week two to leave a mark, and the new manager still "just listening" in month five. The 30-60-90 arc exists to prevent both, and the review with my manager and team at day 90 is where I check which failure I drifted toward.
 
 ![Three-stage 30-60-90 path from listening to clarifying to targeted change, flanked by two failure ditches: changing everything too fast and listening forever.](assets/images/first-three-months/thirty-sixty-ninety-arc.jpeg)
 **Figure 3:** *The arc — listen, then clarify and strengthen, then targeted change reviewed at day 90 — exists to prevent both symmetric failures: the week-two mark-leaver and the month-five listener.*
 
-**Comfort lags competence, and pretending otherwise corrodes trust.** Feeling fully comfortable in the role may take much longer than three months. Saying that openly — to my manager, and in honest form to my team — costs little and buys the permission to keep asking questions. The Successor variant is the sharpest: acknowledge the increased responsibility openly, warn the team there may be bumps, and be honest about the ramp while still showing ownership.
+**Comfort lags competence, and pretending otherwise corrodes trust.** Feeling fully comfortable in the role may take much longer than three months. Saying that openly — to my manager, and in honest form to my team — costs little and **buys the permission to keep asking questions**. The Successor variant is the sharpest: acknowledge the increased responsibility openly, warn the team there may be bumps, and be honest about the ramp while still showing ownership.
 
 ## What This Means in Practice
 
 | What this record says | What it does **not** say |
 | --- | --- |
-| Name the entry path and use its specific checklist. | The paths need different values — the core discipline (listen, trust, learn) is the same on all four. |
+| Name the entry path and use its specific checklist. | The paths need different values — the core discipline (listen, trust, learn) is **the same on all four**. |
 | Ask lots of questions before trying to prove myself. | Have no opinions — I keep a running list of observations, questions, and risks from day one. |
 | Learn how the team works before changing too much. | Change nothing — days 61–90 exist precisely to make targeted changes on evidence. |
-| Build trust through 1:1s and consistency. | Trust arrives with the title — for former peers and inherited teams it must be deliberately re-earned. |
+| Build trust through 1:1s and consistency. | Trust arrives with the title — for former peers and inherited teams it must be **deliberately re-earned**. |
 | Define success for the first 3 and 6 months with my manager. | The ramp is finished at day 90 — feeling fully comfortable may take much longer, and that is normal. |
 | Be open about my learning curve. | Perform uncertainty — the Successor stance is honesty about the ramp *with* visible ownership. |
 
-Concretely: within the first week I can name my path and its top two traps; within the first month I have met every report and key stakeholder, asked each report the five relationship questions, and written the 3- and 6-month success definition with my manager; by day 90 I have made a small number of evidence-based changes, explicitly preserved what works, and reviewed the ramp with my manager and my team.
+Concretely: within the first week I can **name my path and its top two traps**; within the first month I have met every report and key stakeholder, asked each report the five relationship questions, and written the 3- and 6-month success definition with my manager; by day 90 I have made a small number of evidence-based changes, **explicitly preserved what works**, and reviewed the ramp with my manager and my team.
 
 ## Anti-Patterns
 
@@ -86,7 +86,7 @@ Concretely: within the first week I can name my path and its top two traps; with
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how I enter any new management role and how I coach every new manager reporting to me through their first three months. I revisit it if a new-manager transition I ran or supervised reaches day 90 without a written success definition and review, if I catch a new manager (or myself) making structural changes in the first month without evidence, or if a path shows up in practice that the four-path model fits badly.
+This record is `draft`. It governs how I enter any new management role and how I coach every new manager reporting to me through their first three months. I revisit it if a new-manager transition I ran or supervised reaches day 90 **without a written success definition and review**, if I catch a new manager (or myself) making structural changes in the first month without evidence, or if a path shows up in practice that the four-path model fits badly.
 
 ## Authoritative References
 

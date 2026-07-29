@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-26
+revised: 2026-07-29
 ---
 
 # Spec: Operating Principle: Gelling Your Engineering Leadership Team
@@ -61,8 +61,9 @@ register — a vision statement, not a how-to tutorial.
 ## Modalities
 
 The working checklist ships as the checklist modality (`checklist.md`,
-rendered as the Checklist tab). Summary/dialog/comics may be added later
-per journal policy.
+rendered as the Checklist tab) and the explainer comic as the comics
+modality (`comics.md`, Comic tab). Summary/dialog may be added later per
+journal policy.
 
 - [x] `checklist.md` — operational checklist
 - [ ] `summary.md` — management summary
@@ -99,6 +100,8 @@ per journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Modalities note updated: the comic has shipped, so only
+  summary/dialog remain optional additions. *(Željko, AI-mediated session)*
 - **2026-07-26** — Comics modality added (`comics.md`, Comic tab, shared VERA/LEO cast) and inline explainer illustrations added to the article; images generated with Gemini. *(Željko, AI-mediated session)*
 - **2026-07-25** — Article and checklist modality written from this spec; spec
   and post agree. Status `draft` → `accepted`. *(Željko, AI-mediated session)*

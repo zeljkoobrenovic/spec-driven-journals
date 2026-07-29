@@ -3,7 +3,9 @@ timetoread: "12 min read"
 ---
 *The working checklist behind this principle. The Article tab carries the rationale, implications, and anti-patterns.*
 
-## 1. Coaching mindset
+## Coaching foundations
+
+### 1. Coaching mindset
 
 - [ ] Treat developing people as job #1
 - [ ] Judge your success by the growth of your people
@@ -17,7 +19,7 @@ timetoread: "12 min read"
 - [ ] Address mistakes directly and promptly
 - [ ] Ensure every person has an explicit coach
 
-## 2. Skills assessment
+### 2. Skills assessment
 
 - [ ] Assess each person's current capability vs. role expectations
 - [ ] Rate both expectations and current capability by skill area
@@ -26,7 +28,7 @@ timetoread: "12 min read"
 - [ ] Reassess periodically
 - [ ] Use assessment to guide development, not replace coaching
 
-## 3. Product knowledge coaching
+### 3. Product knowledge coaching
 
 - [ ] Build user and customer knowledge
 - [ ] Build data fluency
@@ -35,7 +37,7 @@ timetoread: "12 min read"
 - [ ] Build product operational knowledge
 - [ ] Expect the person to become deeply credible in the product
 
-## 4. Process and execution coaching
+### 4. Process and execution coaching
 
 - [ ] Teach discovery methods
 - [ ] Teach optimization methods
@@ -44,7 +46,7 @@ timetoread: "12 min read"
 - [ ] Teach risk framing: value, usability, feasibility, viability
 - [ ] Ensure they understand their role in discovery and delivery
 
-## 5. People skills coaching
+### 5. People skills coaching
 
 - [ ] Coach team collaboration
 - [ ] Coach stakeholder collaboration
@@ -53,7 +55,7 @@ timetoread: "12 min read"
 - [ ] Observe real interactions and coach from them
 - [ ] Reinforce trust, respect, and mutual accountability
 
-## 6. Coaching plan
+### 6. Coaching plan
 
 - [ ] Create a written coaching plan for priority gaps
 - [ ] Define learning actions: reading, coaching, training, exercises, exposure
@@ -62,7 +64,7 @@ timetoread: "12 min read"
 - [ ] Connect development to future growth and promotion
 - [ ] Review progress weekly
 
-## 7. Run strong 1:1s
+### 7. Run strong 1:1s
 
 - [ ] Hold 1:1s at least weekly
 - [ ] Protect the meeting from casual cancellation
@@ -75,7 +77,7 @@ timetoread: "12 min read"
 - [ ] Help the person think and act like a strong product leader
 - [ ] Use the 1:1 to connect dots across teams and issues
 
-## 8. Use stronger coaching tools
+### 8. Use stronger coaching tools
 
 - [ ] Use written narratives for major decisions
 - [ ] Require clear thinking before presentations
@@ -97,8 +99,7 @@ timetoread: "12 min read"
 - [ ] Company mission
 - [ ] Company scorecard/health metrics / KPIs
 - [ ] Company objectives
-- [ ] Product vision
-- [ ] Product principles
+- [ ] Product vision and principles
 - [ ] Team topology
 - [ ] Product strategy
 
@@ -138,7 +139,7 @@ timetoread: "12 min read"
 
 ## Ownership mindset
 
-### 16. Coach's sense of ownership
+### 16. Coach a sense of ownership
 
 - [ ] Coach thinking like an owner, not an employee
 - [ ] Emphasize responsibility for outcomes, not just activity
@@ -258,7 +259,7 @@ timetoread: "12 min read"
 
 ### 28. Define customer-centricity clearly
 
-- [ ] Protect the meaning of "customer."
+- [ ] Protect the meaning of "customer"
 - [ ] Distinguish real customers from stakeholders and internal partners
 - [ ] Reinforce that the role is to innovate on behalf of customers
 - [ ] Teach that product changes, outages, and support moments reveal true customer care
@@ -303,7 +304,7 @@ timetoread: "12 min read"
 - [ ] Watch for local optimization for only their team
 - [ ] Encourage helping other teams when it benefits the company
 - [ ] Recognize visible acts of company-first behavior
-- [ ] Coach's decisions that may not maximize convenience for the team but are better for the business
+- [ ] Support decisions that may not maximize convenience for the team but are better for the business
 
 ### 34. Accountability
 
@@ -392,6 +393,8 @@ timetoread: "12 min read"
 - [ ] PM resists disagreement but fails to commit
 
 ## Manager self-audit
+
+*Section 43 is the audit itself; the source checklist files the meeting practices it audits (sections 44–47) under this same heading, and that grouping is kept here.*
 
 ### 43. Weekly manager check
 

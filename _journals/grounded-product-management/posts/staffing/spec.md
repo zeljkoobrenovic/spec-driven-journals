@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: Staffing
@@ -13,18 +13,18 @@ revised: 2026-07-27
 State how I staff empowered product teams: I own staffing personally as the
 hiring manager, and I build extraordinary teams from ordinary, competent
 people of character — not from unicorns, mercenaries, or brand-name résumés.
-The post turns the *EMPOWERED* "Staffing" checklist into an operating
-principle: defining the hiring standard (competence and character, not vague
-"cultural fit"), owning recruiting as a continuous manager responsibility
-rather than an HR funnel, recruiting actively before openings exist,
-preparing the interview process deliberately, closing strong candidates fast
-(offer within 24–48 hours, personal reference checks), setting a realistic
-management span for coaching-heavy roles, supporting remote people
-deliberately, onboarding intentionally through the first 90 days with
-milestone check-ins and a real bootcamp, using weekly 1:1s (not annual
-reviews) as the feedback mechanism, addressing performance and toxic-behavior
-problems responsibly, promoting deliberately, retaining strong people, and
-developing future talent.
+The article turns the load-bearing practices of the *EMPOWERED* "Staffing"
+checklist into an operating principle: the hiring standard (competence and
+character, not vague "cultural fit"), recruiting owned as a continuous
+manager responsibility rather than an HR funnel and started before openings
+exist, a deliberately prepared interview process, fast closing (offer within
+24–48 hours, personal reference checks), intentional onboarding through the
+first 90 days with milestone check-ins and a real bootcamp, weekly 1:1s (not
+annual reviews) as the feedback mechanism, responsible handling of
+performance and toxic-behavior problems, deliberate promotion, and
+retention. The remaining practices — management span, remote support, and
+future-talent development — are Checklist-tab territory: the Checklist tab
+reproduces all sixteen sections.
 
 ## Audience
 
@@ -112,6 +112,12 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Post-review pass: all eight comic panels and all three
+  article figures are final generated images (the "pending/staged" state
+  below is resolved). Intent trimmed to the practices the article argues and
+  split into readable sentences; management span, remote support, and
+  future-talent development recorded as Checklist-tab territory, with a
+  matching one-line nod added to the article. *(Željko, AI-mediated session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/MILA cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

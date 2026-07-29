@@ -29,29 +29,29 @@ What I expect engineers to read, and how I expect them to adapt:
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record is grounded in the Thriving in Different Environments chapter of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side of the table: the book tells engineers how to read and adapt to their environment; this record states why I treat that reading as a coachable, expected skill — and how I use it to explain why expectations differ across teams and company phases. The runnable version — the checklist I hand an engineer landing in a new team, or watching their company change around them — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record is grounded in the Thriving in Different Environments chapter of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side of the table: the book tells engineers how to read and adapt to their environment; this record states why I treat that reading as **a coachable, expected skill** — and how I use it to explain why expectations differ across teams and company phases. The runnable version — the checklist I hand an engineer landing in a new team, or watching their company change around them — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**Most "underperformance" I've seen was a context mismatch, not a skill gap.** The careful engineer who polishes in wartime reads as slow; the fast-shipping pragmatist in peacetime reads as sloppy; the platform engineer who goes heads-down for a quarter without talking to customers reads as absent. In each case the skills were fine — the behavior was tuned to a different environment. That is why I coach environment-reading explicitly instead of letting engineers discover the local rules through failed review cycles.
+**Most "underperformance" I've seen was a context mismatch, not a skill gap.** The careful engineer who polishes in wartime reads as slow; the fast-shipping pragmatist in peacetime reads as sloppy; the platform engineer who goes heads-down for a quarter without talking to customers reads as absent. In each case the skills were fine — the behavior was **tuned to a different environment**. That is why I coach environment-reading explicitly instead of letting engineers discover the local rules **through failed review cycles**.
 
-**Product and platform teams reward different instincts, and engineers switch between them blind.** A product engineer's standout move is judgment about users: suggesting improvements, thinking through edge cases, validating outcomes after launch. A platform engineer's standout move is customer empathy pointed inward: knowing who builds on the platform, making feedback easy, understanding downstream impact. An engineer moving between the two while keeping the same habits will do honest work that lands as mediocre — so the first question I ask anyone joining a team is which type of team they think they've joined.
+**Product and platform teams reward different instincts, and engineers switch between them blind.** A product engineer's standout move is **judgment about users**: suggesting improvements, thinking through edge cases, validating outcomes after launch. A platform engineer's standout move is **customer empathy pointed inward**: knowing who builds on the platform, making feedback easy, understanding downstream impact. An engineer moving between the two while keeping the same habits will do honest work that lands as mediocre — so the first question I ask anyone joining a team is which type of team they think they've joined.
 
 ![Split diagram of the same engineer: on a product team the arrow points to end users and outcomes, on a platform team it points to internal engineer customers.](assets/images/thriving-in-different-environments/product-vs-platform-instincts.jpeg)
 **Figure 1:** *Same engineer, different instincts: product teams reward judgment about users; platform teams reward customer empathy pointed inward.*
 
 
 
-**Wartime and peacetime invert the scoreboard, and the transition is silent.** In wartime, bypassed process and blunt conflict are features; in peacetime the same behavior is a liability. The danger is the transition: companies rarely announce the mode change, and engineers keep optimizing for the previous game — polishing during a fight for survival, or bulldozing through process long after peace returned. The source's recognition signs (deadlines, meetings, conflict tolerance, work-life posture) are precisely the instruments I point engineers at — and in wartime I add its warning explicitly: manage stress and burnout actively, and treat job stability as uncertain.
+**Wartime and peacetime invert the scoreboard, and the transition is silent.** In wartime, bypassed process and blunt conflict are features; in peacetime **the same behavior is a liability**. The danger is the transition: **companies rarely announce the mode change**, and engineers keep optimizing for the previous game — polishing during a fight for survival, or bulldozing through process long after peace returned. The source's recognition signs (deadlines, meetings, conflict tolerance, work-life posture) are precisely the instruments I point engineers at — and in wartime I add its warning explicitly: manage stress and burnout actively, and treat job stability as uncertain.
 
 ![An instrument panel with a central dial between wartime and peacetime and smaller gauges for deadlines, meetings, conflict, and work-life posture.](assets/images/thriving-in-different-environments/mode-instrument-panel.jpeg)
 **Figure 2:** *The mode is read off instruments, not announcements: deadlines, meetings, conflict tolerance, and work-life posture tell you which game the company is playing.*
 
 
 
-**Company type sets who must see your work.** In Big Tech, the system sees you: reviews and promotion committees run on tracked evidence and relationships across a big organization. At a scaleup, your accumulated knowledge is the asset — tenure pays only when it's converted into impact and shared through onboarding and documentation. At a startup, only outcomes matter, and it is on you to find the high-impact work by talking to founders and customers — and to make sure the people steering the company know what landed. Same engineer, three different visibility games; I coach whichever one my company is currently playing.
+**Company type sets who must see your work.** In Big Tech, **the system sees you**: reviews and promotion committees run on tracked evidence and relationships across a big organization. At a scaleup, your accumulated knowledge is the asset — tenure pays only when it's converted into impact and shared through onboarding and documentation. At a startup, only outcomes matter, and it is on you to find the high-impact work by talking to founders and customers — and to make sure the people steering the company know what landed. Same engineer, **three different visibility games**; I coach whichever one my company is currently playing.
 
-**The universal set is what survives every environment — and it's mostly about other people.** Under all the contingency, the source ends on invariants that hold in every environment. Careers are long and environments are temporary; the colleagues you helped and the bridges you kept follow you across every team type, mode, and company. That is the part I hold engineers to unconditionally.
+**The universal set is what survives every environment — and it's mostly about other people.** Under all the contingency, the source ends on invariants that hold in every environment. **Careers are long and environments are temporary**; the colleagues you helped and the bridges you kept follow you across every team type, mode, and company. That is the part I **hold engineers to unconditionally**.
 
 ![The same small core of icons — helping others, relationships, standout work, an intact bridge — carried unchanged across four different environment scenes.](assets/images/thriving-in-different-environments/universal-set-core.jpeg)
 **Figure 3:** *Environments are temporary; the universal set travels: standout work by local standards, helping others, kept relationships, and no burned bridges.*
@@ -65,11 +65,11 @@ This journal is my engineering-management operating model. This record is ground
 | Read the environment — team type, mode, company type — before optimizing behavior. | Environments excuse everything — the universal set holds everywhere, in every mode. |
 | In wartime, ship fast, accept good-enough, and don't take bluntness personally. | Wartime is permanent or free — it burns people, so stress is managed and options stay open. |
 | In peacetime, invest in quality, alliances, and longer-term initiatives. | Peacetime means coasting — comfort and boredom are named failure modes. |
-| Adapt your working style when the company shifts modes or phases. | Chameleon opportunism — adapting style is not abandoning standards or integrity. |
+| Adapt your working style when the company shifts modes or phases. | Chameleon opportunism — **adapting style is not abandoning standards** or integrity. |
 | Different company types reward different visibility games — play the one you're in. | Visibility replaces substance — the work must be standout by the company's own standards. |
-| Help others succeed and keep every bridge intact. | Nice-to-have — it is the invariant that pays across every environment for decades. |
+| Help others succeed and keep every bridge intact. | Nice-to-have — it is **the invariant that pays** across every environment for decades. |
 
-Concretely: an engineer joining one of my teams hears, in their first weeks, what type of team this is, what mode the company is in, and what standout work looks like here specifically — and when the environment shifts, we name the shift in 1:1s and adjust expectations explicitly, instead of letting people fail against rules that changed silently.
+Concretely: an engineer joining one of my teams hears, in their first weeks, what type of team this is, what mode the company is in, and **what standout work looks like here** specifically — and when the environment shifts, we **name the shift in 1:1s** and adjust expectations explicitly, instead of letting people fail against rules that changed silently.
 
 ## Anti-Patterns
 
@@ -92,7 +92,7 @@ Concretely: an engineer joining one of my teams hears, in their first weeks, wha
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how I set expectations across different teams and company phases, and how I coach engineers to read team type, company mode, and company type — while holding the universal set everywhere. I revisit it when the company visibly changes mode or growth phase (the expectations conversation must be rerun, not assumed), when a strong engineer's work stops landing after a team change — the signal of a context mismatch, not a skill loss — or if I catch myself judging behavior without first naming the environment it was tuned for.
+This record is `draft`. It governs how I set expectations across different teams and company phases, and how I coach engineers to read team type, company mode, and company type — while holding the universal set everywhere. I revisit it when the company visibly changes mode or growth phase (the expectations conversation must be **rerun, not assumed**), when a strong engineer's work stops landing after a team change — the signal of **a context mismatch, not a skill loss** — or if I catch myself judging behavior without first naming the environment it was tuned for.
 
 ## Authoritative References
 

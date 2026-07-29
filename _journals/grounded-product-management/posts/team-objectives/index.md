@@ -48,17 +48,17 @@ The boundary with [[outcomes]] matters: that record establishes *what* outcomes 
 
 **A commitment that was never investigated is a guess with a deadline.** Some dates genuinely matter — a partner launch, a regulatory deadline, a contract. For those, and only those, we make a high-integrity commitment: the team investigates feasibility, usability, value, and viability first, the commitment is tracked separately from aspirational key results, and risks are raised the moment they appear. Keeping commitments rare is what keeps them credible — a quarter full of "commitments" is just a roadmap with extra ceremony, and it destroys the stretch that makes normal objectives useful.
 
-**Objectives die of neglect, not of bad wording.** The failure mode I have seen most is not badly phrased OKRs; it is OKRs written in January and rediscovered in March. So objectives get active management: weekly check-ins on where the team is, what is next, and where help is needed; coaching for less experienced teams; dependencies monitored continuously; cross-team and platform alignment confirmed early. And the plan respects reality: keep-the-lights-on work — support, bugs, technical debt — is estimated up front, and objective progress is protected from being silently consumed by it.
-
 ![A single sealed handshake with a date tag set apart from a cluster of aspirational objective cards.](assets/images/team-objectives/high-integrity-commitment.jpeg)
 **Figure 3:** *The high-integrity commitment: sealed, dated, tracked separately — and rare enough to stay credible.*
+
+**Objectives die of neglect, not of bad wording.** The failure mode I have seen most is not badly phrased OKRs; it is OKRs written in January and rediscovered in March. So objectives get active management: weekly check-ins on where the team is, what is next, and where help is needed; coaching for less experienced teams; dependencies monitored continuously; cross-team and platform alignment confirmed early. And the plan respects reality: keep-the-lights-on work — support, bugs, technical debt — is estimated up front, and objective progress is protected from being silently consumed by it.
 
 ## What This Means in Practice
 
 | What this principle says | What it does **not** say |
 | --- | --- |
 | Objectives are problems to solve, assigned with strategic context. | Teams pick their own objectives with no direction — leadership explicitly assigns problems across the portfolio. |
-| Key results are proposed by the team. | Every proposal is accepted — assignments are revisited when results don't match the business need. |
+| Key results are proposed by the team. | Every proposal is accepted — assignments are revisited when results do not match the business need. |
 | Ambition is declared: roof shot or moon shot. | Moon shots excuse missing everything — accountability is proportional, not absent. |
 | High-integrity commitments are investigated, tracked separately, and kept. | Every objective is a commitment — commitments stay the exception. |
 | Weekly check-ins and coaching all quarter. | Leaders "set and forget" and audit in the last week. |

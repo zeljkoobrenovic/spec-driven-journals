@@ -5,7 +5,7 @@ timetoread: "4 min read"
 
 ## Dysfunction Self-Assessment
 
-- Check any that apply.
+Check any that apply.
 
 - [ ] We focus more on **shipping features** than achieving customer or business outcomes.
 - [ ] Success is judged mainly by **internal metrics** rather than customer value.
@@ -18,11 +18,11 @@ timetoread: "4 min read"
 - [ ] Product meetings become **negotiations** to keep every stakeholder happy.
 - [ ] The founder, CEO, or senior leader frequently **overrides** product direction without a clear framework.
 
-- **Score:**
-- 0 checked = strong product habits
-- 1–2 checked = some warning signs
-- 3–4 checked = meaningful product dysfunction
-- 5+ checked = urgent product leadership problem
+**Score:**<br>
+0 checked = strong product habits<br>
+1–2 checked = some warning signs<br>
+3–4 checked = meaningful product dysfunction<br>
+5+ checked = urgent product leadership problem
 
 ## Product-Driven Company Checklist
 
@@ -39,7 +39,7 @@ timetoread: "4 min read"
 
 ## Customer Feedback Checklist
 
-- For each major feedback item, ask:
+For each major feedback item, ask:
 
 - [ ] Is this feedback from our target market?
 - [ ] Is this customer using the product for the purpose we designed it for?

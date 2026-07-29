@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: Team Objectives
@@ -103,6 +103,10 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Comic panel images and article figures generated (the
+  2026-07-27 "pending panel blocks" entry is superseded); post-review
+  fixes applied across article, checklist, and comic. *(Željko,
+  AI-mediated session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/MILA cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

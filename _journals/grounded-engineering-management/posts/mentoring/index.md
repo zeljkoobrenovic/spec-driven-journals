@@ -31,35 +31,35 @@ My operating model for mentoring has five parts:
 
 ## How to Read This
 
-This journal is my engineering-management operating model, one record per source checklist. This record is grounded in the "Mentoring" chapter of Camille Fournier's *The Manager's Path* (O'Reilly, 2017) — the first rung of the management ladder, where an engineer first becomes responsible for another person's progress. I write it as the executive who assigns and resources mentoring, and who holds mentors to the conduct below. The runnable version — pre-start preparation, first days, ongoing conduct, the intern and new-hire variants, mindset, pitfalls, and the close — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model, one record per source checklist. This record is grounded in the "Mentoring" chapter of Camille Fournier's *The Manager's Path* (O'Reilly, 2017) — the first rung of the management ladder, where an engineer first becomes responsible for another person's progress. I write it as the executive who **assigns and resources mentoring**, and who holds mentors to the conduct below. The runnable version — pre-start preparation, first days, ongoing conduct, the intern and new-hire variants, mindset, pitfalls, and the close — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**Mentoring fails in the setup far more often than in the relationship.** A mentee who arrives to no working accounts, no docs, and no defined project loses their most impressionable weeks to logistics — and concludes that this is how the organization treats people. Every item in the pre-day-one list is cheap: confirming access, collecting docs, picking a project, slicing milestones. The reason the checklist front-loads them is that they cannot be recovered later; a botched first week is permanent data in the mentee's model of the company.
+**Mentoring fails in the setup far more often than in the relationship.** A mentee who arrives to no working accounts, no docs, and no defined project loses their most impressionable weeks to logistics — and concludes that this is how the organization treats people. Every item in the pre-day-one list is cheap: confirming access, collecting docs, picking a project, slicing milestones. The reason the checklist front-loads them is that they cannot be recovered later; **a botched first week is permanent data** in the mentee's model of the company.
 
-**A clear, level-appropriate project is the actual curriculum.** Orientation tours and coffee chats do not teach anyone how the team works; a real project does. Fournier's requirements are precise: clear enough that the mentee can make progress without constant hand-holding, useful enough that finishing it matters, and sized to the person's level. Broken into small milestones, the project generates its own feedback loop — each milestone is a natural check-in, a natural place for a course correction, and a natural unit of visible progress.
+**A clear, level-appropriate project is the actual curriculum.** Orientation tours and coffee chats do not teach anyone how the team works; a real project does. Fournier's requirements are precise: clear enough that the mentee can make progress without constant hand-holding, useful enough that finishing it matters, and sized to the person's level. Broken into small milestones, the project **generates its own feedback loop** — each milestone is a natural check-in, a natural place for a course correction, and a natural unit of visible progress.
 
 ![Diagram of a project sliced into milestones, each generating a loop of check-in, course correction, and visible progress toward the goal.](assets/images/mentoring/milestone-feedback-loop.jpeg)
 **Figure 2:** *The milestone-sliced project is the curriculum: every milestone is a built-in check-in, an early course correction, and a visible unit of progress.*
 
-**The mentor's craft is calibrated withdrawal.** Early on, the mentor walks through everything; by the end, the mentee should be finding answers on their own. The failure modes sit at both extremes — answering every question forever (the mentee never becomes independent) and "just figure it out" abandonment (the mentee flounders and hides it). The middle path is deliberate: listen before jumping in, watch for the signals of confusion and overload, point at docs first, and adjust support based on actual progress rather than a fixed schedule.
+**The mentor's craft is calibrated withdrawal.** Early on, the mentor walks through everything; by the end, the mentee should be finding answers on their own. **The failure modes sit at both extremes** — answering every question forever (the mentee never becomes independent) and "just figure it out" abandonment (the mentee flounders and hides it). The middle path is deliberate: listen before jumping in, watch for the signals of confusion and overload, point at docs first, and adjust support based on actual progress rather than a fixed schedule.
 
-**Mentoring is leadership practice, and I treat it with that seriousness.** It is where an engineer first practices patience, empathy, clear communication, and responsibility for someone else's outcomes — the exact skills the later rungs of the ladder require. That is also why the mentee's questions are valuable to the mentor: they expose blind spots in the mentor's own understanding of systems everyone else has stopped questioning. Treating this as side work — unmatched, unresourced, uncounted — wastes the best low-stakes leadership training the organization has.
+**Mentoring is leadership practice, and I treat it with that seriousness.** It is where an engineer first practices patience, empathy, clear communication, and responsibility for someone else's outcomes — the exact skills the later rungs of the ladder require. That is also why the mentee's questions are valuable to the mentor: they expose blind spots in the mentor's own understanding of systems everyone else has stopped questioning. Treating this as side work — unmatched, unresourced, uncounted — wastes **the best low-stakes leadership training** the organization has.
 
-**A bad mentor is worse than no mentor, so refusal is an allowed answer.** A mentor who intimidates, shows off, hoards knowledge, or lets the relationship drift into vagueness teaches the mentee that this is what senior engineers are like. I would rather delay a mentoring assignment than staff it with someone who lacks the time or inclination — which is why "say no to mentoring if you cannot do it well" is part of the model, not a loophole in it.
+**A bad mentor is worse than no mentor, so refusal is an allowed answer.** A mentor who intimidates, shows off, hoards knowledge, or lets the relationship drift into vagueness teaches the mentee that this is what senior engineers are like. I would rather **delay a mentoring assignment** than staff it with someone who lacks the time or inclination — which is why "say no to mentoring if you cannot do it well" is part of the model, not a loophole in it.
 
 ## What This Means in Practice
 
 | What this record says | What it does **not** say |
 | --- | --- |
 | Mentoring starts before day one, with environment, docs, and a project prepared. | Mentoring starts when the mentee shows up and asks something. |
-| The mentee gets a clear, useful, level-appropriate project with milestones. | Any spare task will do — vague or throwaway work teaches nothing. |
+| The mentee gets a clear, useful, level-appropriate project with milestones. | Any spare task will do — **vague or throwaway work teaches nothing**. |
 | The mentor tapers support toward independence. | The mentor either answers everything forever or lets the mentee "just figure it out." |
 | Interns get a real, specific, non-urgent project sized to the internship. | Interns are staffed on the critical path — or given busywork nobody needs. |
 | New hires actively improve the onboarding docs they trip over. | Onboarding docs are read-only artifacts that decay untouched. |
-| Mentoring is meaningful, matched, bounded work — and refusable. | Mentoring is a free side duty anyone can be assigned regardless of fit or load. |
+| Mentoring is **meaningful, matched, bounded work** — and refusable. | Mentoring is a free side duty anyone can be assigned regardless of fit or load. |
 
-Concretely: no mentee in my organization starts without a named mentor, working access, and a milestone-sliced project chosen before their first day. Mentors can state the purpose and the success definition of their assignment, and every completed mentoring round leaves a trace — improved docs, a closed retrospective, and a mentee with connections and next steps.
+Concretely: no mentee in my organization starts without a named mentor, working access, and **a milestone-sliced project chosen before their first day**. Mentors can state the purpose and the success definition of their assignment, and every completed mentoring round **leaves a trace** — improved docs, a closed retrospective, and a mentee with connections and next steps.
 
 ![Quadrant chart placing the right intern project in the useful-but-not-urgent quadrant, away from critical-path urgency and throwaway busywork.](assets/images/mentoring/intern-project-quadrant.jpeg)
 **Figure 3:** *An intern project lives in one quadrant: real and useful, but off the critical path — sized to finish within the internship.*
@@ -83,7 +83,7 @@ Concretely: no mentee in my organization starts without a named mentor, working 
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how mentoring assignments are prepared, matched, conducted, and closed in my organization — for interns, new hires, and any engineer taking on their first mentee. I revisit it if mentees keep reporting lost first weeks (the preparation is failing), if onboarding docs stop improving between mentoring rounds (the feedback loop is broken), or if mentoring assignments keep landing on people who did not want them (the matching and the right to say no are being ignored).
+This record is `draft`. It governs how mentoring assignments are prepared, matched, conducted, and closed in my organization — for interns, new hires, and any engineer taking on their first mentee. I revisit it if mentees keep reporting **lost first weeks** (the preparation is failing), if onboarding docs stop improving between mentoring rounds (the feedback loop is broken), or if mentoring assignments keep landing on people who did not want them (the matching and the right to say no are being ignored).
 
 ## Authoritative References
 

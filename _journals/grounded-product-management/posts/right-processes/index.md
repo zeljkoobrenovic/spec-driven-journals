@@ -22,7 +22,7 @@ My operating model for product processes has seven parts:
 
 - **Start from the outcome.** Executives answer one question together — *"How do customers know this product is delivering value?"* — and every answer stays a hypothesis until customer research and the 5 Whys confirm it. The result is a pair of outcome pyramids — customer and company — with usage metrics as leading indicators.
 - **Validate the vision outside the building.** The customer journey vision — trigger through retention — is tested with forward-thinking customers before I trust internal consensus, with input from every customer-facing team and from engineering.
-- **Keep discovery running.** Customer research happens *before* deciding what to build — at least four hours a week, multiple methods, even when there is no immediate project.
+- **Keep discovery running.** Customer research informs what gets built, not just how it landed — at least four hours a week, multiple methods, even when there is no immediate project.
 - **Derive prioritization from strategy.** Inbound requests land in an idea bank and get scored with a consistent framework such as RICE; stakeholders name their top 1–2 priorities — with reasons — not a wish list. The roadmap balances innovation, iteration, and operation against explicit allocation targets.
 - **Size cadences to horizons.** The roadmap and vision are reassessed at the one-third or one-quarter mark of their horizon: quarterly for a one-year roadmap, at least yearly for a three-year vision. Outcome reviews happen at least quarterly.
 - **Match process to work.** Innovation sprints for bold, future-facing work; Scrum for build-measure-learn iteration; Kanban for bugs and urgent operational work. One method is never forced on everything.
@@ -33,13 +33,13 @@ My operating model for product processes has seven parts:
 
 ## How to Read This
 
-This journal is the **product-management counterpart** to my engineering-executive journal: the same record shape, applied to how product management should work. This record is grounded in Ben Foster and Rajesh Nerlikar's *Build What Matters*, read through a practitioner-executive lens. One boundary matters: the engineering-side process machinery lives in the engineering journal's [[run-engineering-processes]]; this record covers the product side — discovery, validation, prioritization, roadmap cadences, and the communication around them. The working checklist — all seventeen sections, with the numbers — lives in the **Checklist** tab of this post.
+This journal is the **product-management counterpart** to my engineering-executive journal: the same record shape, applied to how product management should work. This record is grounded in Ben Foster and Rajesh Nerlikar's *Build What Matters*, read through a practitioner-executive lens. One boundary matters: the engineering-side process machinery lives in the engineering journal's [[run-engineering-processes]]; this record covers the product side — discovery, validation, prioritization, roadmap cadences, and the communication around them. The working checklist — all seventeen sections, with the numbers — lives in the **Checklist** tab of this post. Two of those sections — crafting the product strategy and communicating the outcome, vision, and strategy — overlap territory owned by the sibling records [[product-strategy]] and [[outcomes]]; they are reproduced in the checklist for completeness rather than restated here.
 
 ## Rationale
 
 **Process is a means; the outcome is the point.** Product organizations accumulate ceremonies the way codebases accumulate dependencies: each arrived for a reason, and nobody remembers to remove it. So I apply one test to every recurring meeting, review, and ritual: does it move a customer or company outcome? A standup that surfaces no decisions or a roadmap review that changes no allocation is not process — it is ceremony wearing its costume.
 
-**Research before commitment beats validation after launch.** The cheapest moment to learn you are wrong is before the work is prioritized. So discovery is a standing habit — four hours a week, multiple methods, conversations even when no project demands them — and every element of the vision stays a hypothesis until customers outside the building confirm it. Internal-only validation produces weak consensus and groupthink; forward-thinking customers are the antidote.
+**Research before commitment beats validation after launch.** The cheapest moment to learn you are wrong is before the work is prioritized. So discovery is a standing habit — the weekly hours are protected, the methods varied, the conversations ongoing whether or not a project demands them — and every element of the vision stays a hypothesis until customers outside the building confirm it. Internal-only validation produces weak consensus and groupthink; forward-thinking customers are the antidote.
 
 **Prioritization without a framework is a volume contest.** Without a transparent process, the roadmap goes to whoever escalates loudest. The idea bank plus consistent scoring turns requests into comparable objects; asking stakeholders for their top 1–2 priorities — and *why* — turns lobbying into signal. The refusal matters just as much: I am transparent about what is *not* on the roadmap and why, because a silent no breeds shadow roadmaps.
 
@@ -61,7 +61,7 @@ This journal is the **product-management counterpart** to my engineering-executi
 
 | What this principle says | What it does **not** say |
 | --- | --- |
-| Every process must serve a customer or company outcome. | Process is bad — no process is just prioritization by loudness. |
+| Every process must serve a customer or company outcome. | Process is bad — the absence of process just means prioritization by loudness. |
 | Research comes before deciding what to build. | Every decision waits for a study — the cadence keeps moving. |
 | Prioritization runs through a transparent framework. | The framework decides — it informs; an empowered leader decides. |
 | Reassess the roadmap at one-third to one-quarter of its horizon. | Rewrite the roadmap whenever anyone is nervous. |

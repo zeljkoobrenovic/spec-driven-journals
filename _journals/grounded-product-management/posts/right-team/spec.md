@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: The Right Team
@@ -10,17 +10,18 @@ revised: 2026-07-27
 
 ## Intent
 
-State how I build the product team itself: when a company needs its first
-product hire and what that hire should be (a senior PM, not a premature
-VP/CPO), how I evaluate PM candidates for a product mindset using a real
-homework assignment, when to add a second PM and a product executive, how I
-separate design from product and keep them peers, the scaling ratios I plan
-around (5–7 developers, 1 PM, 0.5 UX designer, 0.3 UI designer, 1–2 QA per
-team), why I refuse the PM/product-owner telephone game, when product
-operations earns its place, how I choose an org structure, and the culture —
-customer discovery, collaboration, delegated decisions, diversity — that
-lets the team do excellent product work. The post turns the *Build What
-Matters* "Right Team" checklist into an operating principle.
+State how I build the product team itself. The hiring arc: when a company
+needs its first product hire and what that hire should be (a senior PM, not
+a premature VP/CPO), how I evaluate PM candidates for a product mindset
+using a real homework assignment, and when to add a second PM and a product
+executive. The structure around the team: how I separate design from
+product and keep them peers, the scaling ratios I plan around (5–7
+developers, 1 PM, 0.5 UX designer, 0.3 UI designer, 1–2 QA per team), why I
+refuse the PM/product-owner telephone game, when product operations earns
+its place, and how I choose an org structure. And the culture — customer
+discovery, collaboration, delegated decisions, diversity — that lets the
+team do excellent product work. The post turns the *Build What Matters*
+"Right Team" checklist into an operating principle.
 
 ## Audience
 
@@ -109,6 +110,12 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes: second-PM timing and org-structure
+  choice added to the article (Statement bullet 1, new Rationale paragraph);
+  all eleven mindset traits now listed in the article; "real triad" worked
+  into the opening highlight; duplicated product-executive gate compressed
+  in Rationale; this Intent split into readable sentences. *(Željko,
+  AI-mediated session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/MILA cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

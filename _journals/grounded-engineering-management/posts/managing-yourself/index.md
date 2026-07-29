@@ -29,25 +29,25 @@ My operating model for managing myself has six parts:
 
 ## How to Read This
 
-This journal is my engineering-management operating model, each record grounded in one source. This record distills the self-management chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019) — her argument that the first half of the management journey is learning to manage yourself: your self-image, your fears, your energy, and your growth. The runnable version — the full self-inventory, calibration questions, and routines — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model, each record grounded in one source. This record distills the self-management chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019) — her argument that the first half of the management journey is **learning to manage yourself**: your self-image, your fears, your energy, and your growth. The runnable version — the full self-inventory, calibration questions, and routines — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**Uncalibrated self-knowledge is just my inner critic with better vocabulary.** Everyone carries a self-image; the question is whether it matches what other people actually experience. Zhuo's move is to force the calibration: write the self-assessment down, then check it against my manager's view of my growth opportunities and against honest feedback from a handful of trusted coworkers. Where the pictures disagree, reality wins. This is also why I ask for specific, task-anchored feedback rather than general praise — "that went well" calibrates nothing.
+**Uncalibrated self-knowledge is just my inner critic with better vocabulary.** Everyone carries a self-image; the question is whether it matches what other people actually experience. Zhuo's move is to force the calibration: write the self-assessment down, then check it against my manager's view of my growth opportunities and against honest feedback from a handful of trusted coworkers. **Where the pictures disagree, reality wins.** This is also why I ask for specific, task-anchored feedback rather than general praise — "that went well" **calibrates nothing**.
 
 ![Diagram of a written self-inventory receiving feedback arrows from a manager and three coworkers, with some lines corrected and others confirmed.](assets/images/managing-yourself/self-inventory-calibration.jpeg)
 **Figure 1:** *The written inventory is only half the tool; the calibration against manager and coworker feedback is what makes it real.*
 
-**Imposter syndrome is a story, and stories can be cross-examined.** The worst-case narrative — I'm failing, they've noticed, it was a mistake to give me this job — presents itself as perception but is actually an interpretation. So I treat it like any other unverified claim: what evidence do I actually have, and what alternative explanations fit the same facts? Zhuo's reassurance matters here because it is factual, not motivational: early confusion in management is the normal state, so treating discomfort as proof of failure misreads the data.
+**Imposter syndrome is a story, and stories can be cross-examined.** The worst-case narrative — I'm failing, they've noticed, it was a mistake to give me this job — presents itself as perception but is **actually an interpretation**. So I treat it like any other unverified claim: what evidence do I actually have, and what alternative explanations fit the same facts? Zhuo's reassurance matters here because it is **factual, not motivational**: early confusion in management is the normal state, so treating discomfort as proof of failure misreads the data.
 
 ![Diagram of a storm-cloud thought bubble weighed on a scale against solid evidence blocks, with alternative-explanation bubbles branching to the side.](assets/images/managing-yourself/imposter-story-cross-examined.jpeg)
 **Figure 2:** *The worst-case story presents itself as perception; weighed against actual evidence and alternative explanations, it usually loses.*
 
-**My output tracks my conditions more than my willpower.** I do measurably better work under some conditions — certain kinds of blocks on the calendar, protected thinking time, enough sleep, routines that support focus and recovery — and measurably worse under others. Engineering those conditions is higher-leverage than trying to out-discipline bad ones. The same logic applies to triggers: I cannot prevent certain people and situations from setting me off, but knowing my triggers in advance turns a reflex into a pause — and decisions made after cooling down are consistently better than replies fired while hot.
+**My output tracks my conditions more than my willpower.** I do measurably better work under some conditions — certain kinds of blocks on the calendar, protected thinking time, enough sleep, routines that support focus and recovery — and measurably worse under others. **Engineering those conditions is higher-leverage** than trying to out-discipline bad ones. The same logic applies to triggers: I cannot prevent certain people and situations from setting me off, but knowing my triggers in advance **turns a reflex into a pause** — and decisions made after cooling down are consistently better than replies fired while hot.
 
-**Wellbeing is what keeps my judgment available when it matters.** Boundaries, breaks, exercise, and time with family and friends are not rewards for finishing the work; they are what preserves the mental space the work draws on. A manager running on empty starts making their worst decisions precisely in the hard weeks that demand their best ones. When I am struggling, the recovery moves are equally concrete: stop punishing myself for feeling bad, name the worry directly, question my interpretation, recall challenges I have handled before, ask trusted people for help, and keep a record of small wins so progress is visible even when outcomes are not.
+**Wellbeing is what keeps my judgment available when it matters.** Boundaries, breaks, exercise, and time with family and friends are **not rewards for finishing the work**; they are what preserves the mental space the work draws on. A manager running on empty starts making their **worst decisions precisely in the hard weeks** that demand their best ones. When I am struggling, the recovery moves are equally concrete: stop punishing myself for feeling bad, name the worry directly, question my interpretation, recall challenges I have handled before, ask trusted people for help, and keep a record of small wins so progress is visible even when outcomes are not.
 
-**Learning speed is a system, and my manager is part of it.** The job gets harder every year; the only sustainable response is getting better faster. That does not happen by accident — it happens through a loop: frequent feedback requests, my manager used as a coach with hard problems brought early rather than confessed late, 1:1s treated as learning time, peers asked directly how they do what they do well, a weekly written review, and six-month goals that actually get revisited. The loop's aim is calibrated too: better, not perfect — good management is personal, and the goal is a sharper version of my own style, not an imitation of someone else's.
+**Learning speed is a system, and my manager is part of it.** The job gets harder every year; the only sustainable response is **getting better faster**. That does not happen by accident — it happens through a loop: frequent feedback requests, my manager used as a coach with hard problems brought early rather than confessed late, 1:1s treated as learning time, peers asked directly how they do what they do well, a weekly written review, and six-month goals that actually get revisited. The loop's aim is calibrated too: better, not perfect — good management is personal, and the goal is **a sharper version of my own style**, not an imitation of someone else's.
 
 ![Circular loop of four nodes — asking for feedback, bringing hard problems early, weekly written review, six-month goals — with an upward arrow labeled better at the center.](assets/images/managing-yourself/deliberate-learning-loop.jpeg)
 **Figure 3:** *Learning speed is a system: a loop of feedback, early hard problems, written review, and revisited goals — aimed at better, not perfect.*
@@ -57,14 +57,14 @@ This journal is my engineering-management operating model, each record grounded 
 | What this record says | What it does **not** say |
 | --- | --- |
 | My strengths, weaknesses, and triggers are written down. | I navigate by an unexamined gut feel of who I am. |
-| The self-image is checked against manager and peer feedback. | Self-reflection alone is a reliable source of self-knowledge. |
+| The self-image is **checked against manager and peer feedback**. | Self-reflection alone is a reliable source of self-knowledge. |
 | Worst-case stories are tested against evidence. | Feeling like an imposter is proof of being one — or something to suppress. |
 | Discomfort and early confusion are part of learning. | Struggling in a new management role means I am failing at it. |
-| I engineer conditions, calendar, and routines for my best work. | Willpower should compensate for a hostile calendar and no sleep. |
+| I engineer conditions, calendar, and routines for my best work. | **Willpower should compensate** for a hostile calendar and no sleep. |
 | Wellbeing boundaries are part of the operating model. | Boundaries are a luxury for after the hard quarter ends. |
 | I bring hard problems to my manager early, as coaching material. | My manager is an evaluator to whom I present only finished wins. |
 
-Concretely: I can show a written self-inventory and name the last time it was corrected by someone else's feedback. My calendar visibly reflects the conditions I work best in. When a trigger fires, there is a pause before the reply. And at any moment I can state my current six-month goals and what last week taught me — because the review actually happened, in writing.
+Concretely: I can show a written self-inventory and name the last time it was **corrected by someone else's feedback**. My calendar visibly reflects the conditions I work best in. When a trigger fires, there is **a pause before the reply**. And at any moment I can state my current six-month goals and what last week taught me — because the review actually happened, in writing.
 
 ## Anti-Patterns
 
@@ -85,7 +85,7 @@ Concretely: I can show a written self-inventory and name the last time it was co
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how I manage myself as a manager: the written self-inventory and its calibration against real feedback, the handling of imposter-syndrome stories and triggers, the conditions and wellbeing boundaries I maintain, and the learning loop I run. I revisit it if a self-assessment goes six months without being checked against anyone else's view, if I notice work consuming boundaries I had committed to protecting, or if I catch myself hiding hard problems from my manager rather than bringing them early.
+This record is `draft`. It governs how I manage myself as a manager: the written self-inventory and its calibration against real feedback, the handling of imposter-syndrome stories and triggers, the conditions and wellbeing boundaries I maintain, and the learning loop I run. I revisit it if a self-assessment goes **six months without being checked** against anyone else's view, if I notice work consuming boundaries I had committed to protecting, or if I catch myself **hiding hard problems from my manager** rather than bringing them early.
 
 ## Authoritative References
 

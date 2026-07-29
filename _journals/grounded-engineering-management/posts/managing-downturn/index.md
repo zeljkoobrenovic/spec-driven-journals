@@ -32,25 +32,25 @@ My operating model for leading through a downturn has six parts:
 
 ## How to Read This
 
-This journal is my engineering-management operating model, each record grounded in one source. This record sits in the *Making of a Manager* section but is honest about its provenance: the source is a supplementary checklist that extends the themes of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019) — her trust-first, human-first management approach applied to downturns — rather than a chapter of the book itself. The runnable version — the self-check, the emotional-signals watchlist, the hard-news scripts, the weekly rhythm — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model, each record grounded in one source. This record sits in the *Making of a Manager* section but is honest about its provenance: the source is a supplementary checklist that extends the themes of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019) — her trust-first, human-first management approach applied to downturns — **rather than a chapter of the book itself**. The runnable version — the self-check, the emotional-signals watchlist, the hard-news scripts, the weekly rhythm — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**A manager who has not processed their own state transmits it.** Downturns hit managers with a specific cocktail — guilt about decisions, anxiety about the future, isolation from holding information the team does not have. Unprocessed, that leaks into every interaction as either false cheer or visible dread. The two stories to drop are precise: "this is all happening to me" surrenders agency, and "I should have been perfect" rewrites the past instead of navigating the present. The replacement — "I can influence how we navigate this" — is not positive thinking; it is a scoping exercise that points at what is actually in my control.
+**A manager who has not processed their own state transmits it.** Downturns hit managers with a specific cocktail — guilt about decisions, anxiety about the future, isolation from holding information the team does not have. Unprocessed, that **leaks into every interaction** as either false cheer or visible dread. The two stories to drop are precise: "this is all happening to me" surrenders agency, and "I should have been perfect" rewrites the past instead of navigating the present. The replacement — "I can influence how we navigate this" — is not positive thinking; it is **a scoping exercise** that points at what is actually in my control.
 
-**Emotional undercurrents are operating risks because they change how the team performs.** Fear produces withdrawal, reduced creativity, and silence in exactly the meetings where I need honest signals. Grief produces low energy that looks like a performance problem but is not one. Guilt produces overwork and burnout in the people I most need to last. Reading these signals is not soft-skills garnish — it is diagnostics on the machine that has to execute the recovery. And most morale problems underneath are trust and purpose problems, which is why cheerleading does not fix them.
+**Emotional undercurrents are operating risks because they change how the team performs.** Fear produces withdrawal, reduced creativity, and silence in exactly the meetings where I need honest signals. Grief produces low energy that looks like a performance problem but is not one. Guilt produces overwork and burnout in the people I most need to last. Reading these signals is not soft-skills garnish — it is **diagnostics on the machine** that has to execute the recovery. And most morale problems underneath are **trust and purpose problems**, which is why cheerleading does not fix them.
 
-**"What I know, what I don't, when you'll hear more" beats both silence and spin.** In uncertainty, people fill information gaps with rumors, and rumors are always worse than reality — or worse, unevenly distributed. Fake optimism and false certainty burn credibility exactly when I need it most; silence reads as concealment. The steady cadence is the fix: a predictable rhythm of honest updates, including explicit "I don't know yet" and a date for the next update, keeps the rumor gap closed without pretending to certainty I do not have.
+**"What I know, what I don't, when you'll hear more" beats both silence and spin.** In uncertainty, people fill information gaps with rumors, and rumors are **always worse than reality** — or worse, unevenly distributed. Fake optimism and false certainty burn credibility exactly when I need it most; silence reads as concealment. The steady cadence is the fix: a predictable rhythm of honest updates, including explicit "I don't know yet" and a date for the next update, **keeps the rumor gap closed** without pretending to certainty I do not have.
 
 ![Two timelines contrasting sparse updates with rumor clouds growing in the gaps against a steady cadence of know / don't know / next-update messages.](assets/images/managing-downturn/cadence-closes-rumor-gap.jpeg)
 **Figure 2:** *Rumors grow in the gaps between updates; a steady cadence of "know / don't know / when you'll hear more" leaves them no room.*
 
-**Scarcity is a forcing function, and it only works if the stop-doing list is explicit.** A downturn means fewer people and less money chasing the same ambitions; pretending otherwise burns the team on work that no longer matters. One top goal with a concrete definition of success is half the discipline; the other half is the explicit non-goals list and the permission structure around it — people need my language for saying no to low-priority work, explicit quick decision paths, and escalation as a normal move rather than a failure. Speed in a downturn comes from clarity, not pressure.
+**Scarcity is a forcing function, and it only works if the stop-doing list is explicit.** A downturn means fewer people and less money chasing the same ambitions; pretending otherwise burns the team on work that no longer matters. One top goal with a concrete definition of success is half the discipline; the other half is the explicit non-goals list and the permission structure around it — people need my language for saying no to low-priority work, explicit quick decision paths, and escalation as a normal move rather than a failure. Speed in a downturn **comes from clarity, not pressure**.
 
 ![Comparison of shaving effort evenly off every workstream versus one funded top goal with an explicit stopped list and paused work.](assets/images/managing-downturn/scarcity-mode-vs-peanut-butter.jpeg)
 **Figure 3:** *Scarcity mode is not less of everything — it is one top goal, an explicit stop-doing list, and paused work that stays paused.*
 
-**Each kind of hard news has its own honest shape, and delivering it fast beats delivering it perfectly.** Cut bonuses need acknowledged disappointment plus the business rationale, not spin. Pay cuts need transparency about why and what recovery looks like, plus reaffirming the person's value. Stalled promotions need honesty about timelines and growth reframed beyond titles. Layoffs need the most discipline of all: decisions based on future company needs rather than comfort or recency, speed once decided, equipped managers, precisely defined support — and just as much intention for the people who remain, because they are watching how the departed were treated to learn what this company is.
+**Each kind of hard news has its own honest shape, and delivering it fast beats delivering it perfectly.** Cut bonuses need acknowledged disappointment plus the business rationale, not spin. Pay cuts need transparency about why and what recovery looks like, plus reaffirming the person's value. Stalled promotions need honesty about timelines and growth reframed beyond titles. Layoffs need the most discipline of all: decisions **based on future company needs** rather than comfort or recency, speed once decided, equipped managers, precisely defined support — and just as much intention for the people who remain, because they are **watching how the departed were treated** to learn what this company is.
 
 ## What This Means in Practice
 
@@ -58,12 +58,12 @@ This journal is my engineering-management operating model, each record grounded 
 | --- | --- |
 | I process my own guilt and anxiety before addressing the team. | I share every private fear with the team — honesty is filtered by judgment about audience and detail. |
 | I tell people what I do not know and when updates will come. | I promise outcomes I cannot guarantee to make the room feel better. |
-| One top goal, an explicit stop-doing list, paused non-laddering work. | Everything gets a little less effort — peanut-buttering the cut across all work. |
+| One top goal, an explicit stop-doing list, paused non-laddering work. | Everything gets a little less effort — **peanut-buttering the cut** across all work. |
 | Layoff decisions follow future company needs, executed quickly. | Layoffs by recency or comfort, or slow-rolled to soften the discomfort of deciding. |
 | Morale is protected trust and purpose, grounded in reality. | Morale is cheerleading — sugarcoating until the team stops believing anything I say. |
-| Trust deepens when I show up honestly in hard times. | Discomfort means I am failing — hard periods feel bad even when led well. |
+| Trust deepens when I show up honestly in hard times. | Discomfort means I am failing — **hard periods feel bad even when led well**. |
 
-Concretely: in a downturn my team can name the single top priority and what was explicitly stopped, everyone knows when the next update comes, no rumor survives a week unaddressed, every piece of hard news arrived with its rationale attached, and the weekly rhythm runs without fail.
+Concretely: in a downturn my team can **name the single top priority** and what was explicitly stopped, everyone knows when the next update comes, **no rumor survives a week unaddressed**, every piece of hard news arrived with its rationale attached, and the weekly rhythm runs without fail.
 
 ## Anti-Patterns
 
@@ -84,7 +84,7 @@ Concretely: in a downturn my team can name the single top priority and what was 
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how I lead a team through cost cuts, layoffs, hiring freezes, and stalled growth — my own state, the communication cadence, scarcity-mode prioritization, hard-news delivery, and the weekly rhythm. I revisit it after each real downturn episode with a blameless retrospective, when the weekly rhythm has quietly lapsed for more than two weeks, or when I catch myself delivering hard news without its rationale attached.
+This record is `draft`. It governs how I lead a team through cost cuts, layoffs, hiring freezes, and stalled growth — my own state, the communication cadence, scarcity-mode prioritization, hard-news delivery, and the weekly rhythm. I revisit it after each real downturn episode with **a blameless retrospective**, when the weekly rhythm has quietly lapsed for more than two weeks, or when I catch myself delivering hard news **without its rationale attached**.
 
 ## Authoritative References
 

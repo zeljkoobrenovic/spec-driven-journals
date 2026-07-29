@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: Business Collaboration
@@ -13,14 +13,15 @@ revised: 2026-07-27
 State how I run product's relationship with the wider business: as a
 partnership of equals — not a ticket-taking service to stakeholders, and not
 an ivory tower above them. The post turns the *EMPOWERED* "Business
-Collaboration" checklist into an operating principle: empowered teams are
+Collaboration" checklist into an operating principle. Empowered teams are
 necessary but not sufficient, because product work happens inside the broader
-company context where the CEO, executives, and other stakeholders matter;
-build genuine cross-business relationships (and retire the term "stakeholder
-management"); shift the team model from feature teams to empowered product
-teams; move the working model from subservient to collaborative; help
-executives change how they see product teams; and lead the whole thing as a
-company-wide transformation, reinforced over time. Partnership is earned —
+company context where the CEO, executives, and other stakeholders matter.
+So: build genuine cross-business relationships (and retire the term
+"stakeholder management"), shift the team model from feature teams to
+empowered product teams, and move the working model from subservient to
+collaborative. Then help executives change how they see product teams, and
+lead the whole thing as a company-wide transformation, reinforced over
+time. Partnership is earned —
 by understanding the business's constraints, sharing context openly,
 evangelizing the vision, and keeping the commitments we make.
 
@@ -115,6 +116,11 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied: comic deposit numbering aligned
+  with the article's four-move formula, "executives change last" heading
+  reworded to match its paragraph's argument, third full recital of the four
+  moves compressed, Intent's semicolon chain split into sentences, tense fixed
+  in Rationale ¶1. *(Željko, AI-mediated session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/MILA cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

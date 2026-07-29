@@ -17,7 +17,7 @@ The vision says where, the roadmap says what's next, and strategy is the bridge 
 **Panel 3:** *The principle: strategy bridges the vision to the work.*
 
 ![A wall map with a path from A to B, arrows drawn backward from B, and a dead-end side path marked with an X.](assets/images/product-strategy/comic-04-work-backward.jpeg)
-**Panel 4:** *Phasing the vision: work backward from Point B — and find the dead ends before paying for them.*
+**Panel 4:** *Phasing the vision: work backward from Point B, name the gaps between today's journey and the ideal one — and find the dead ends before paying for them.*
 
 ![Mila steps onto the first of four flagged stepping stones leading across water to a lighthouse island.](assets/images/product-strategy/comic-05-phases-stepping-stones.jpeg)
 **Panel 5:** *Milestones are claims, not dates: each phase proves something, with business and customer KPIs.*

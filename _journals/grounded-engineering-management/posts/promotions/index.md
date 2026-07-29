@@ -30,34 +30,34 @@ What I expect from engineers pursuing promotion, and what I commit to in return:
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record is grounded in the Promotions chapter of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side of the table: the book tells engineers how to earn a promotion; this record states what I expect engineers to bring to a promotion case and how I coach them through it. The runnable version — the checklist I hand an engineer who wants the next level — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record is grounded in the Promotions chapter of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from **the manager's side of the table**: the book tells engineers how to earn a promotion; this record states what I expect engineers to bring to a promotion case and how I coach them through it. The runnable version — the checklist I hand an engineer who wants the next level — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**The promotion decision is made before the cycle opens.** By the time a packet reaches a committee or a calibration meeting, the evidence either exists or it doesn't. An engineer who starts assembling their case when the cycle is announced is writing fiction under deadline; an engineer who has tracked achievements and kept artifacts all along is writing a summary. That is why I push evidence-keeping as a continuous habit, not a cycle-time scramble — and why preparation "well before the promotion cycle begins" is a checklist item, not a nice-to-have.
+**The promotion decision is made before the cycle opens.** By the time a packet reaches a committee or a calibration meeting, the evidence either exists or it doesn't. An engineer who starts assembling their case when the cycle is announced is **writing fiction under deadline**; an engineer who has tracked achievements and kept artifacts all along is **writing a summary**. That is why I push evidence-keeping as a continuous habit, not a cycle-time scramble — and why preparation "well before the promotion cycle begins" is a checklist item, not a nice-to-have.
 
 ![Two timelines ending at a promotion cycle: one accumulates evidence steadily all year, the other crams a chaotic scramble into the final stretch.](assets/images/promotions/evidence-before-the-cycle.jpeg)
 **Figure 1:** *By the time the cycle opens, the evidence either exists or it doesn't — continuous tracking writes a summary; the scramble writes fiction.*
 
 
 
-**Demonstrated next-level work is the only argument that survives scrutiny.** Every credible promotion system asks the same question: is this person already operating at the next level? Potential, loyalty, and tenure do not survive a committee's skepticism; a record of next-level work does. So I coach engineers to close the gap in the work first — visible impact beyond their own tasks, a clear line from their work to business or organizational value — and treat the title as the system catching up with reality.
+**Demonstrated next-level work is the only argument that survives scrutiny.** Every credible promotion system asks the same question: is this person **already operating at the next level**? Potential, loyalty, and tenure do not survive a committee's skepticism; a record of next-level work does. So I coach engineers to close the gap in the work first — visible impact beyond their own tasks, a clear line from their work to business or organizational value — and treat the title as **the system catching up with reality**.
 
-**Visibility is the engineer's job, and "publish" is the neglected verb.** The source splits impact into produce, organize, and publish, and in my experience the third is where strong engineers stall. Managers change, forget, and summarize badly; a manager is a lossy channel for someone else's impact. An engineer who shares outcomes and learnings through docs, demos, and internal posts gives every decision-maker direct evidence — and gives me, at packet-writing time, material instead of memories.
+**Visibility is the engineer's job, and "publish" is the neglected verb.** The source splits impact into produce, organize, and publish, and in my experience the third is where strong engineers stall. Managers change, forget, and summarize badly; a manager is **a lossy channel for someone else's impact**. An engineer who shares outcomes and learnings through docs, demos, and internal posts gives every decision-maker direct evidence — and gives me, at packet-writing time, **material instead of memories**.
 
 ![Three pillars labeled produce, organize, and publish holding up a beam labeled impact; the publish pillar is half-built and the beam tilts.](assets/images/promotions/produce-organize-publish.jpeg)
 **Figure 2:** *Impact stands on three pillars — produce, organize, publish — and publish is the pillar most strong engineers leave half-built.*
 
 
 
-**A promotion case needs more supporters than one manager.** Whoever approves the promotion — a skip-level, a director, a committee — will weigh voices other than mine. Peer endorsements, senior engineers who have seen the work, skip-levels who recognize the name: that support is built over quarters, largely by helping others succeed and contributing to work that benefits the whole team. I tell engineers plainly: if I am the only person who can explain your impact, your case is fragile.
+**A promotion case needs more supporters than one manager.** Whoever approves the promotion — a skip-level, a director, a committee — will weigh voices other than mine. Peer endorsements, senior engineers who have seen the work, skip-levels who recognize the name: that support is built over quarters, largely by helping others succeed and contributing to work that benefits the whole team. I tell engineers plainly: if I am the only person who can explain your impact, **your case is fragile**.
 
 ![Split diagram: an engineer connected to only one manager by a fraying line, versus an engineer at the center of a sturdy support network of peers, seniors, and skip-levels.](assets/images/promotions/support-beyond-the-manager.jpeg)
 **Figure 3:** *If one manager is the only person who can explain the impact, the case is fragile — support is a network built over quarters, not a single channel.*
 
 
 
-**Honesty about the odds protects the career, not just the cycle.** Headcount, budget, and business need gate promotions regardless of merit, and approval rates fall at senior levels. Pretending otherwise sets people up to read a "no" as betrayal. So I keep two things true at once: an actionable plan with milestones, and an explicit understanding that promotion is not the only measure of success. The engineers who last are the ones investing in breadth, depth, and judgment that pay off regardless of when the title lands — without letting level define their self-worth or burning relationships to advance faster.
+**Honesty about the odds protects the career, not just the cycle.** Headcount, budget, and business need gate promotions regardless of merit, and approval rates fall at senior levels. Pretending otherwise sets people up to read a "no" as betrayal. So I **keep two things true at once**: an actionable plan with milestones, and an explicit understanding that promotion is not the only measure of success. The engineers who last are the ones investing in breadth, depth, and judgment that pay off **regardless of when the title lands** — without letting level define their self-worth or burning relationships to advance faster.
 
 ## What This Means in Practice
 
@@ -65,12 +65,12 @@ This journal is my engineering-management operating model. This record is ground
 | --- | --- |
 | The engineer owns building the evidence and the visibility. | The engineer is on their own — I co-own the plan, the honesty, and the advocacy. |
 | Next-level work must be demonstrated before the promotion. | The bar is perfection — it is consistent next-level performance, visible beyond one's own tasks. |
-| Publish your work; don't rely only on your manager. | Self-promotion theater — publishing means sharing real outcomes and learnings, not noise. |
+| Publish your work; don't rely only on your manager. | Self-promotion theater — publishing means sharing **real outcomes and learnings, not noise**. |
 | Build support from peers, seniors, and skip-levels. | Politics over substance — support is earned by helping others succeed and doing team-level work. |
-| Headcount, budget, and approval rates are real constraints. | A "no" means the work was wasted — the skills and evidence carry into the next cycle or the next role. |
+| Headcount, budget, and approval rates are real constraints. | A "no" means the work was wasted — the skills and evidence **carry into the next cycle** or the next role. |
 | Have a plan for not being promoted this cycle. | Accept a stalled path indefinitely — a system that never promotes ready people is a signal too. |
 
-Concretely: every engineer on my team who wants the next level has had the straight conversation about where they stand, has a written plan with milestones, keeps a running record of achievements and artifacts, and can name people beyond me who would speak for their work. When a cycle ends in a no, we both already know why, and the plan for the next cycle exists before the disappointment fades.
+Concretely: every engineer on my team who wants the next level has had the straight conversation about where they stand, has **a written plan with milestones**, keeps a running record of achievements and artifacts, and can name people beyond me who would speak for their work. When a cycle ends in a no, we both already know why, and the plan for the next cycle exists **before the disappointment fades**.
 
 ## Anti-Patterns
 
@@ -92,7 +92,7 @@ Concretely: every engineer on my team who wants the next level has had the strai
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how promotion cases are built and coached on my teams: the evidence expectations, the produce-organize-publish discipline, the support structure, and the honesty about constraints. I revisit it if the company's promotion process changes shape (informal to committee-based, or the reverse), if an engineer on my team is surprised by a promotion outcome — which means the honesty loop failed — or if I notice ready engineers stalling for multiple cycles on headcount alone, which is a signal about the organization rather than the candidates.
+This record is `draft`. It governs how promotion cases are built and coached on my teams: the evidence expectations, the produce-organize-publish discipline, the support structure, and the honesty about constraints. I revisit it if the company's promotion process changes shape (informal to committee-based, or the reverse), if an engineer on my team is surprised by a promotion outcome — which means **the honesty loop failed** — or if I notice ready engineers stalling for multiple cycles on headcount alone, which is **a signal about the organization** rather than the candidates.
 
 ## Authoritative References
 

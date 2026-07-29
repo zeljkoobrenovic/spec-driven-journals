@@ -33,25 +33,25 @@ My operating model for leading a small team:
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record distills the small-team leadership chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): trust as the precondition for everything else, the shape of a useful 1:1, performance clarity, the skill–motivation–fit diagnosis, strengths-based investment, and respectful exits. The runnable version lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record distills the small-team leadership chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): **trust as the precondition for everything else**, the shape of a useful 1:1, performance clarity, the skill–motivation–fit diagnosis, strengths-based investment, and respectful exits. The runnable version lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**Without trust, I am managing blind.** Everything a manager does on a small team — coaching, feedback, delegation, performance judgment — depends on knowing what is actually going on, and reports only surrender that information voluntarily. If people don't feel safe telling me what they really think or bringing me their biggest challenges, I learn about problems when they explode instead of when they start. That is why trust is not a soft nicety before the real work; it is the channel the real work travels through. The "would they work for me again" question keeps the test honest, because it is scored by them, not by me.
+**Without trust, I am managing blind.** Everything a manager does on a small team — coaching, feedback, delegation, performance judgment — depends on knowing what is actually going on, and reports only surrender that information voluntarily. If people don't feel safe telling me what they really think or bringing me their biggest challenges, I learn about problems when they explode instead of when they start. That is why trust is not a soft nicety before the real work; it is **the channel the real work travels through**. The "would they work for me again" question keeps the test honest, because it is **scored by them, not by me**.
 
-**A 1:1 spent on status is a wasted 1:1.** Status has cheaper channels. The scarce thing a weekly 1:1 provides is dedicated attention on the report's priorities, growth, and obstacles — the conversation nobody schedules otherwise. Asking questions before giving advice matters for the same reason: the moment I jump to advice, the meeting becomes about my thinking instead of theirs, and I stop learning what I most need to know. The three closing questions — top of mind, how can I help, what was most useful — keep the meeting pointed at them and give me a running signal of whether the 1:1s are actually worth their time.
+**A 1:1 spent on status is a wasted 1:1.** **Status has cheaper channels.** The scarce thing a weekly 1:1 provides is dedicated attention on the report's priorities, growth, and obstacles — the conversation nobody schedules otherwise. Asking questions before giving advice matters for the same reason: the moment I jump to advice, the meeting becomes about **my thinking instead of theirs**, and I stop learning what I most need to know. The three closing questions — top of mind, how can I help, what was most useful — keep the meeting pointed at them and give me a running signal of whether the 1:1s are actually worth their time.
 
-**Ambiguity about performance is a manager's failure, not a report's.** Nobody should discover in a review that they have been falling short for months. Each report deserves to know what I expect and how I currently think they are doing, while there is still time to change the trajectory. And before I act on a problem, I diagnose it: a skill gap calls for coaching and opportunity; a motivation gap calls for understanding what changed; a fit gap calls for honesty about the role. Treating a fit problem with training, or a motivation problem with pressure, wastes months and erodes the trust everything else depends on.
+**Ambiguity about performance is a manager's failure, not a report's.** Nobody should discover in a review that they have been falling short for months. Each report deserves to know what I expect and how I currently think they are doing, while there is **still time to change the trajectory**. And before I act on a problem, I diagnose it: a skill gap calls for coaching and opportunity; a motivation gap calls for understanding what changed; a fit gap calls for honesty about the role. Treating a fit problem with training, or a motivation problem with pressure, **wastes months and erodes the trust** everything else depends on.
 
 ![Decision tree showing a performance problem branching into skill, motivation, and fit, each leading to a different response icon.](assets/images/leading-a-small-team/skill-motivation-fit-diagnosis.jpeg)
 **Figure 2:** *Diagnosis before treatment: a skill gap gets coaching, a motivation gap gets a conversation, a fit gap gets honesty about the role.*
 
-**Strengths compound; firefighting doesn't.** The instinctive allocation of a manager's attention is toward the weakest performer, because that is where the discomfort is. But the team's outcomes are driven mostly by what its strongest people do, and helping a strong person get even better usually returns more than dragging a struggling person to adequate. I keep deliberate time on my strongest people — noticing and naming strengths specifically, and building their work around them — precisely because nothing about the week will do it by default.
+**Strengths compound; firefighting doesn't.** The instinctive allocation of a manager's attention is toward the weakest performer, because that is **where the discomfort is**. But the team's outcomes are driven mostly by **what its strongest people do**, and helping a strong person get even better usually returns more than dragging a struggling person to adequate. I keep deliberate time on my strongest people — noticing and naming strengths specifically, and building their work around them — precisely because nothing about the week will do it by default.
 
 ![Before-and-after comparison of manager attention: all arrows on the weakest performer versus the strongest people receiving deliberate investment.](assets/images/leading-a-small-team/attention-allocation-before-after.jpeg)
 **Figure 3:** *The instinctive allocation follows the discomfort; the deliberate one follows the outcomes — strong people made even better.*
 
-**One divider costs more than their output, every time.** A brilliant jerk sets the real bar for the team, whatever the stated values say — every day they are tolerated teaches the team that collaboration and kindness are optional for the sufficiently talented. And when fit is genuinely wrong, endless "making it work" is not kindness: it exhausts the manager, blocks the team, and holds the person in a role where they cannot succeed. A quick, respectful move — into a better-fit role where one exists, out where one doesn't — is better for all three.
+**One divider costs more than their output, every time.** A brilliant jerk **sets the real bar for the team**, whatever the stated values say — every day they are tolerated teaches the team that collaboration and kindness are optional for the sufficiently talented. And when fit is genuinely wrong, endless "making it work" is not kindness: it exhausts the manager, blocks the team, and holds the person in a role where they cannot succeed. A quick, respectful move — into a better-fit role where one exists, out where one doesn't — is **better for all three**.
 
 ## What This Means in Practice
 
@@ -59,12 +59,12 @@ This journal is my engineering-management operating model. This record distills 
 | --- | --- |
 | Build an environment where people say what they really think. | Manufacture comfort — trust is allowed to include awkward, meaningful conversations. |
 | Hold at least one weekly 1:1 with every direct report. | Use the 1:1 for status — priorities, growth, and obstacles are the agenda; status has cheaper channels. |
-| Be transparent about expectations and my current read. | Save the honest assessment for review season — concerns are raised early, while trajectory can change. |
-| Diagnose skill vs. motivation vs. fit before acting. | Every problem gets the same treatment — the diagnosis chooses between coaching, motivation work, and honesty about the role. |
+| Be transparent about expectations and my current read. | Save the honest assessment for review season — **concerns are raised early**, while trajectory can change. |
+| Diagnose skill vs. motivation vs. fit before acting. | Every problem gets the same treatment — **the diagnosis chooses** between coaching, motivation work, and honesty about the role. |
 | Spend disproportionate time on the strongest people. | Ignore struggling reports — but low performance may not consume all my attention. |
 | Move people out quickly and respectfully when fit is wrong. | Fire at the first sign of trouble — exploring a better-fit role comes first, and "quickly" applies after the evidence is in. |
 
-Concretely: every report on my team has a weekly 1:1 that they would call useful, can state what I expect of them and how I think they're doing, and has heard me name their strengths specifically. When a performance concern exists, it has a diagnosis — skill, motivation, or fit — and a plan matched to it. And I can answer the "would they work for me again" question without flinching.
+Concretely: every report on my team has a weekly 1:1 that they would call useful, can state what I expect of them and how I think they're doing, and has heard me name their strengths specifically. When a performance concern exists, it has a diagnosis — skill, motivation, or fit — and **a plan matched to it**. And I can answer the "would they work for me again" question **without flinching**.
 
 ## Anti-Patterns
 
@@ -86,7 +86,7 @@ Concretely: every report on my team has a weekly 1:1 that they would call useful
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how I run any team where I directly manage every member, and what I hold first-line managers reporting to me accountable for. I revisit it if 1:1s on my team drift into status meetings for more than a few weeks, if a performance concern reaches a formal review without the person having heard it from me first, or if I catch a fit problem that has been "being made to work" for more than a quarter without a decision.
+This record is `draft`. It governs how I run any team where I directly manage every member, and what I hold first-line managers reporting to me accountable for. I revisit it if 1:1s on my team **drift into status meetings** for more than a few weeks, if a performance concern reaches a formal review without the person having **heard it from me first**, or if I catch a fit problem that has been "being made to work" for more than a quarter without a decision.
 
 ## Authoritative References
 

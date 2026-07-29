@@ -10,7 +10,7 @@ timetoread: "4 min read"
 - [ ] Make sure teams are aligned around the same vision, not just the same metric.
 - [ ] Write the vision down so there is a single source of truth.
 - [ ] Make the vision bold enough to inspire a meaningful leap, not just a minor improvement.
-- [ ] Set a realistic time horizon, usually around **three years**, unless your market or business model requires shorter or longer.
+- [ ] Set a realistic time horizon, usually around **three years**, unless your market or business model requires a shorter or longer one.
 - [ ] Confirm that the vision is ambitious yet achievable with your resources.
 
 ## Build the Full Customer Journey

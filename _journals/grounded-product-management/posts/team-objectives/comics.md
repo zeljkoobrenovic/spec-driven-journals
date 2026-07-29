@@ -29,4 +29,4 @@ Problems to solve, not features to ship — team objectives without the theater,
 **Panel 7:** *The exception: a high-integrity commitment — rare, sealed, and kept.*
 
 ![Comic panel: close-up of the mountain objective card on a desk in active use with a sketched route, moved dial, and progress sticky notes.](assets/images/team-objectives/comic-08-steering-the-quarter.jpeg)
-**Panel 8:** *The closer: an objective the team owns is one the quarter actually follows.*
+**Panel 8:** *The closer: an objective the team owns is one the quarter actually follows — and if an ambitious bet misses, the postmortem improves the system, not just the team.*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: The Right Processes
@@ -12,18 +12,27 @@ revised: 2026-07-27
 
 State how I run the processes of vision-led product management: process
 exists to serve outcomes, never as ceremony. The post turns the *Build What
-Matters* "Right Processes" checklist into an operating principle: grounding
-everything in a validated key customer outcome (hypotheses, customer
-research, 5 Whys, outcome pyramids), validating the customer journey vision
-outside the building, keeping discovery running continuously (at least four
-hours a week, research before deciding what to build), deriving
-prioritization from strategy through a transparent framework (idea bank,
-RICE, innovation/iteration/operation allocation), sizing reassessment
-cadences to the horizon they govern (quarterly for a one-year roadmap,
-yearly for a three-year vision), matching the development process to the
-type of work (innovation sprints, Scrum, Kanban), communicating the roadmap
-deliberately inside and cautiously outside, and measuring success by
-whether shipped work moved the outcome, not by how much shipped.
+Matters* "Right Processes" checklist into an operating principle. It
+grounds everything in a validated key customer outcome (hypotheses,
+customer research, 5 Whys, outcome pyramids), validates the customer
+journey vision outside the building, and keeps discovery running
+continuously (at least four hours a week, research before deciding what to
+build). From there it derives prioritization from strategy through a
+transparent framework (idea bank, RICE, innovation/iteration/operation
+allocation), sizes reassessment cadences to the horizon they govern
+(quarterly for a one-year roadmap, yearly for a three-year vision), matches
+the development process to the type of work (innovation sprints, Scrum,
+Kanban), communicates the roadmap deliberately inside and cautiously
+outside, and measures success by whether shipped work moved the outcome,
+not by how much shipped.
+
+The source checklist's strategy-session and vision-communication sections
+("Craft the Product Strategy", "Communicate the Outcome, Vision, and
+Strategy") overlap territory owned by the sibling records
+[[product-strategy]] and [[outcomes]]; the article points at those records
+rather than restating them, and the sections are reproduced in the
+Checklist tab only so the seventeen-section source survives intact (see
+the "checklist survives intact" success criterion).
 
 ## Audience
 
@@ -100,9 +109,9 @@ journal policy.
 ## Sources
 
 - **Internal**
-  - `sources/build-what-matters/Checklist_ Build What Matters _ Right
-    Processes.pdf` — the operating checklist; reproduced in the Checklist
-    tab (`checklist.md`).
+  - `sources/build-what-matters/Checklist_ Build What Matters _ Right Processes.pdf`
+    — the operating checklist; reproduced in the Checklist tab
+    (`checklist.md`).
 - **External**
   - Ben Foster and Rajesh Nerlikar, *Build What Matters: Delivering Key
     Outcomes with Vision-Led Product Management* (Lioncrest Publishing,
@@ -110,6 +119,14 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes: Intent split into readable sentences
+  and extended with a note that the checklist's strategy-session and
+  vision-communication sections overlap [[product-strategy]] /
+  [[outcomes]] and are reproduced for checklist completeness (the article
+  now says the same); Sources PDF path unwrapped. Also closing the loop on
+  the 2026-07-27 staging entry: the comic panel images and inline article
+  figures have since been generated and are in place. *(Željko,
+  AI-mediated session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/MILA cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

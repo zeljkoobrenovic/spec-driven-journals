@@ -20,7 +20,7 @@ Focus, insight, action — product strategy the EMPOWERED way, in eight panels.
 **Panel 4:** *Insights before solutions: dug from data, users, technology, and the market.*
 
 ![Comic panel: Vera pins a glowing gem to a shared board of connected learnings as team members link threads.](assets/images/empowered-product-strategy/comic-05-share-the-map.jpeg)
-**Panel 5:** *Share the insight, connect the learnings — strategy is a team sport.*
+**Panel 5:** *Share the insight, connect the learnings — insights that stay local die local.*
 
 ![Comic panel: Vera hands a team a mountain-and-dial objective card while a shredder eats an old feature instruction scroll.](assets/images/empowered-product-strategy/comic-06-problems-not-features.jpeg)
 **Panel 6:** *Insight into action: problems to solve, not features to ship.*

@@ -30,28 +30,28 @@ My operating model for the management job itself:
 
 ## How to Read This
 
-This journal is my engineering-management operating model, each record grounded in one source and written as a commitment I hold myself — and the managers who work for me — to. This record distills the opening of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): her definition of the management job, the purpose–people–process frame, how to judge a manager, and the self-check on whether you should want the role at all. The runnable version lives in the **Checklist** tab of this post.
+This journal is **my engineering-management operating model**, each record grounded in one source and written as a commitment I hold myself — and the managers who work for me — to. This record distills the opening of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): her definition of the management job, the purpose–people–process frame, how to judge a manager, and the self-check on whether you should want the role at all. The runnable version lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**A team can achieve more than one person alone — that is the entire reason the role exists.** If a manager's presence doesn't make the group's outcome better than the sum of individual efforts, the role is overhead. This is why I refuse to measure management by personal output: a manager still acting mainly as an individual contributor is doing a different job and leaving the actual one vacant. My time shifts from doing the work myself to enabling others to do it, and I accept that much of that enabling work is unglamorous but necessary.
+**A team can achieve more than one person alone — that is the entire reason the role exists.** If a manager's presence doesn't make the group's outcome better than the sum of individual efforts, **the role is overhead**. This is why I refuse to measure management by personal output: a manager still acting mainly as an individual contributor is doing a different job and leaving the actual one vacant. My time shifts from doing the work myself to enabling others to do it, and I accept that much of that enabling work is **unglamorous but necessary**.
 
 ![Two scenes contrasting a manager adding one block of personal output with a manager multiplying a team's shared outcome.](assets/images/what-is-management/adder-vs-multiplier.jpeg)
 **Figure 1:** *The value of the role is the multiplier effect: a manager still measuring themselves by personal output is doing a different job while the real one sits vacant.*
 
-**Purpose, people, and process are a complete decomposition of the job — and most managers over-invest in one.** Zhuo's frame is useful precisely because it is exhaustive: any improvement I can make to a team lands in one of the three. Engineers promoted into management tend to gravitate to process, because it feels like engineering; purpose and people feel softer and get deferred. But a team with crisp processes and no shared sense of why the work matters ships efficiently in the wrong direction, and a team whose members lack skills or motivation can't be processed into performing. I audit myself against all three levers, and I put deliberate effort into the ones I would naturally skip.
+**Purpose, people, and process are a complete decomposition of the job — and most managers over-invest in one.** Zhuo's frame is useful precisely because it is exhaustive: any improvement I can make to a team lands in one of the three. Engineers promoted into management tend to gravitate to process, because it feels like engineering; purpose and people feel softer and get deferred. But a team with crisp processes and no shared sense of why the work matters **ships efficiently in the wrong direction**, and a team whose members lack skills or motivation can't be processed into performing. I audit myself against all three levers, and I put deliberate effort into **the ones I would naturally skip**.
 
 ![Illustration of three levers labeled purpose, people, and process lifting a tilting block of team outcomes, with only the process lever being pulled.](assets/images/what-is-management/three-levers.jpeg)
 **Figure 2:** *The three levers are a complete decomposition of the job — and a team lifted by only the comfortable lever ships efficiently in the wrong direction.*
 
-**Results are the only honest scorecard — and results have a time dimension.** Activity is easy to generate and easy to mistake for management. The two questions I actually ask are about outcomes: is this team producing valuable, easy-to-use, well-crafted work now, and is it set up for great future outcomes? The second half matters as much as the first — a manager can strip-mine a team for a great quarter and leave it hollow. Building a strong, satisfied team is not a nice-to-have alongside delivery; it is what makes future delivery possible.
+**Results are the only honest scorecard — and results have a time dimension.** Activity is easy to generate and easy to mistake for management. The two questions I actually ask are about outcomes: is this team producing valuable, easy-to-use, well-crafted work now, and is it set up for great future outcomes? The second half matters as much as the first — a manager can **strip-mine a team for a great quarter** and leave it hollow. Building a strong, satisfied team is not a nice-to-have alongside delivery; it is **what makes future delivery possible**.
 
 ![Balance scale weighing present results against future outcomes, with a crossed-out heap of busy activity excluded on the floor.](assets/images/what-is-management/results-scorecard-two-horizons.jpeg)
 **Figure 3:** *The scorecard has two halves — valuable work now and a team set up for the future — and the manager's own busyness is not on the scale.*
 
-**Trust and inspiration outperform instruction.** People do their best work when they want to follow, not when they are merely told what to do. So I build trust and respect deliberately, inspire people to act rather than just directing them, and adapt to what this team and this organization need — rather than importing a fixed leadership persona and expecting the team to adapt to me.
+**Trust and inspiration outperform instruction.** People do their best work **when they want to follow**, not when they are merely told what to do. So I build trust and respect deliberately, inspire people to act rather than just directing them, and adapt to what this team and this organization need — rather than importing a fixed leadership persona and expecting the team to adapt to me.
 
-**The self-check is not a formality — the wrong person in the role damages everyone under it.** Management is a day-to-day discipline of conversations, emotional stability, and other people's growth. Someone who took the role for status, or because it was the only promotion path, and who does not enjoy that day-to-day, will neglect the levers and the team will feel it long before the org chart does. I ask the self-check questions of myself honestly and recurringly, and I ask them of every engineer considering the move.
+**The self-check is not a formality — the wrong person in the role damages everyone under it.** Management is a day-to-day discipline of conversations, emotional stability, and other people's growth. Someone who took the role for status, or because it was the only promotion path, and who does not enjoy that day-to-day, will neglect the levers and the team will feel it **long before the org chart does**. I ask the self-check questions of myself honestly and recurringly, and I ask them of every engineer considering the move.
 
 ## What This Means in Practice
 
@@ -60,11 +60,11 @@ This journal is my engineering-management operating model, each record grounded 
 | The job is better outcomes from a group working together. | The manager's own technical output stops mattering entirely — it just stops being the measure of the job. |
 | Aim for a multiplier effect on the team. | Multiply by adding headcount or meetings — the multiplier comes from purpose, people, and process. |
 | Work all three levers deliberately. | Give each lever equal time every week — the mix depends on what the team currently lacks. |
-| Judge management by present and future team results. | Judge only by this quarter's delivery — a hollowed-out team is a failed result arriving late. |
-| Inspire people to act; build trust so they want to follow. | Never give direct instruction — clarity is still part of the job; command-and-control as the default is not. |
+| Judge management by present and future team results. | Judge only by this quarter's delivery — a hollowed-out team is **a failed result arriving late**. |
+| Inspire people to act; build trust so they want to follow. | Never give direct instruction — **clarity is still part of the job**; command-and-control as the default is not. |
 | Run the self-check before taking or keeping the role. | One bad week means quitting management — the check is about the day-to-day work over time, not a mood. |
 
-Concretely: for each team I manage, I can say what success looks like and confirm the team can say it too; I know each person's strengths, motivation level, and career direction; the team's decision-making and ownership rules are written down; and my own review of myself starts from team outcomes, not from my calendar.
+Concretely: for each team I manage, I can say what success looks like and **confirm the team can say it too**; I know each person's strengths, motivation level, and career direction; the team's decision-making and ownership rules are written down; and my own review of myself starts from **team outcomes, not from my calendar**.
 
 ## Anti-Patterns
 
@@ -86,7 +86,7 @@ Concretely: for each team I manage, I can say what success looks like and confir
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how I define, do, and evaluate the management job itself, on my own teams and for the managers I hold accountable. I revisit it if I catch myself reporting activity instead of team outcomes for a full review cycle, if a team I manage cannot state what success looks like when asked, or if my honest answer to any self-check question stays "no" for more than a quarter.
+This record is `draft`. It governs how I define, do, and evaluate the management job itself, on my own teams and for the managers I hold accountable. I revisit it if I catch myself **reporting activity instead of team outcomes** for a full review cycle, if a team I manage cannot state what success looks like when asked, or if my honest answer to any self-check question stays "no" for more than a quarter.
 
 ## Authoritative References
 

@@ -28,7 +28,7 @@ timetoread: "3 min read"
 ## Pick an Allocation Based on Product Lifecycle
 
 - [ ] **Pre-alpha / idea**: Mostly innovation.
-- [ ] **Post-alpha/launch**: Further iteration to address early feedback.
+- [ ] **Post-alpha / launch**: Further iteration to address early feedback.
 - [ ] **Beta / approaching product-market fit**: Heavy iteration to find PMF.
 - [ ] **Scaling after PMF**: More operation to support growth.
 - [ ] **Steady state / maintaining**: Balance operation with the next wave of innovation.

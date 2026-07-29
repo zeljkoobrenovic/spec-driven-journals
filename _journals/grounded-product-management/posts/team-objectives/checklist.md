@@ -21,6 +21,8 @@ timetoread: "4 min read"
 
 ## Define Strong Key Results
 
+*This section keeps the source's leader-addressed voice; in my model these key results are proposed by the team — the proposal direction is up, not down (see the Article tab).*
+
 - [ ] Define success using **business results/outcomes**, not activities or output.
 - [ ] Set **2 to 4 key results per objective**.
 - [ ] Include one primary success measure.
@@ -112,7 +114,7 @@ timetoread: "4 min read"
 
 ## Quick Quality Check
 
-- Before finalizing team objectives, ask:
+Before finalizing team objectives, ask:
 
 - [ ] Are we assigning a **problem** rather than a feature?
 - [ ] Does the team have the **context** to solve it well?

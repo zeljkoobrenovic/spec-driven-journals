@@ -70,7 +70,7 @@ Concretely: every product person in my organization knows who their coach is. Ev
 - **The status-meeting 1:1.** Weekly slots faithfully held, entirely consumed by project updates. The calendar shows coaching; the person gets none.
 - **The monologue coach.** The manager talks more than listens, prescribes before diagnosing, and calls it mentorship.
 - **Feedback saved for the review.** Problems noted in March, revealed in December. Delayed feedback is a decision to let someone fail slowly.
-- **Empowerment as absence.** No assessment, no plan, no context — just "I trust you" and a quarterly check on the numbers. Sink-or-swim with better branding.
+- **Empowerment as absence.** No assessment, no plan, no context — just "I trust you" and a quarterly check on the numbers. Sink-or-swim dressed up as trust.
 - **Micromanagement as coaching.** Task control dressed up as development; the opposite failure with the same result — no ownership.
 - **Tolerating weak performance too long.** Avoiding the difficult conversation is not kindness; it steals the time the person needed to improve.
 

@@ -14,7 +14,7 @@ Allocate before you rank — how a roadmap stays balanced between vision, custom
 **Panel 2:** *The problem: the vision is always 'next quarter' — which means never.*
 
 ![Thought bubble of a PM on an ivory tower with a vision scroll while customers and a smoking server are ignored below.](assets/images/balanced-roadmap/comic-03-ivory-tower.jpeg)
-**Panel 3:** *The mirror failure: all vision and no iteration or operations is just as unbalanced.*
+**Panel 3:** *The mirror failure: all vision and no iteration or operation is just as unbalanced.*
 
 ![Vera draws three columns labeled innovation, iteration, and operation while Mila sorts roadmap cards into them.](assets/images/balanced-roadmap/comic-04-three-categories.jpeg)
 **Panel 4:** *The principle: classify everything — vision work, customer improvements, and keep-the-lights-on work each get their own column.*

@@ -60,7 +60,7 @@ timetoread: "4 min read"
 - [ ] Give teams room to discover and deliver the best solution.
 - [ ] Ensure teams have the right skills, people, and access.
 - [ ] Avoid stakeholder-driven feature overload.
-- [ ] Distinguish between serving the business and serving customers in ways that work for the business.
+- [ ] Serve customers in ways that work for the business — not the business by accepting every request.
 
 ## Practice Active Management
 

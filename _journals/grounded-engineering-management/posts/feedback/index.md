@@ -32,39 +32,39 @@ My operating model for feedback has six parts:
 
 ## How to Read This
 
-This journal is my engineering-management operating model, each record grounded in one source. This record distills the feedback chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019) — her argument that great feedback is frequent, specific, actionable, and checked for landing, and her guidance on delivering critical feedback without softening it into fog. The runnable version — the full working checklist from setup through the final test — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model, each record grounded in one source. This record distills the feedback chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019) — her argument that great feedback is **frequent, specific, actionable, and checked for landing**, and her guidance on delivering critical feedback without softening it into fog. The runnable version — the full working checklist from setup through the final test — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**Expectations set up front are the cheapest feedback I will ever give.** Every correction I make after work goes sideways could have been a sentence before it started: here is what a strong result looks like, here is how people usually stumble. Zhuo's insight is that feedback begins before the work does — a manager who only reacts to finished work has forfeited the moment when guidance was cheapest and least personal. Setting expectations early also makes later critical feedback fair: I am comparing work against a bar the person knew about, not one I invented afterward.
+**Expectations set up front are the cheapest feedback I will ever give.** Every correction I make after work goes sideways could have been **a sentence before it started**: here is what a strong result looks like, here is how people usually stumble. Zhuo's insight is that feedback begins before the work does — a manager who only reacts to finished work has forfeited the moment when guidance was cheapest and least personal. Setting expectations early also makes later critical feedback fair: I am comparing work against **a bar the person knew about**, not one I invented afterward.
 
-**Vague feedback transfers a feeling; specific feedback transfers information.** "Great job" and "this needs more polish" produce the same result: the person knows how I felt and nothing about what to repeat or change. Naming the exact behavior, showing a concrete example, and explaining why it worked or didn't turns my reaction into something the person can act on. The same discipline applies doubly to behavioral feedback — observations about habits and working style land as judgments of character unless they are anchored to patterns I can actually point to across multiple situations.
+**Vague feedback transfers a feeling; specific feedback transfers information.** "Great job" and "this needs more polish" produce the same result: the person knows how I felt and **nothing about what to repeat or change**. Naming the exact behavior, showing a concrete example, and explaining why it worked or didn't turns my reaction into something the person can act on. The same discipline applies doubly to behavioral feedback — observations about habits and working style land as **judgments of character** unless they are anchored to patterns I can actually point to across multiple situations.
 
-**I see a fraction of anyone's work, so I borrow other people's eyes.** My reports spend most of their week in rooms I am not in. Asking collaborators what someone should do more of and what they should change gives me a picture no amount of my own observation can, and it protects the person from feedback distorted by my narrow sample. 360-style input is not bureaucracy; it is how behavioral feedback gets the evidence base it needs.
+**I see a fraction of anyone's work, so I borrow other people's eyes.** My reports spend most of their week in **rooms I am not in**. Asking collaborators what someone should do more of and what they should change gives me a picture no amount of my own observation can, and it protects the person from feedback distorted by my narrow sample. 360-style input is not bureaucracy; it is how behavioral feedback gets **the evidence base it needs**.
 
 ![Diagram of a team member at the center of a circle, with the manager's sightline covering one narrow segment and collaborators' sightlines covering the rest.](assets/images/feedback/borrowed-eyes-360.jpeg)
 **Figure 2:** *I see a fraction of anyone's work; collaborators' perspectives give behavioral feedback the evidence base my narrow sample cannot.*
 
-**Feedback that was said but not heard did not happen.** The transaction completes on the receiving end, not the sending end. That is why I ask for the person's perspective, ask them to tell me their takeaways and next steps rather than reciting mine, and put things in writing when clarity would help. It is also why I am explicit about register: an expectation the person treated as a suggestion — or a suggestion they treated as an order — is a failure of my delivery, not their listening.
+**Feedback that was said but not heard did not happen.** The transaction **completes on the receiving end**, not the sending end. That is why I ask for the person's perspective, ask them to tell me their takeaways and next steps rather than reciting mine, and put things in writing when clarity would help. It is also why I am explicit about register: an expectation the person treated as a suggestion — or a suggestion they treated as an order — is a failure of **my delivery, not their listening**.
 
 ![Loop diagram between two figures: a blue arrow labeled said going one way, an amber arrow labeled heard returning with takeaway and next-step icons.](assets/images/feedback/landing-check-loop.jpeg)
 **Figure 3:** *The transaction completes on the receiving end: their takeaways and their next steps, not my recitation.*
 
-**Critical feedback delivered directly and calmly is a form of respect.** The common mistakes all share one root: protecting my own comfort at the person's expense. Waiting for review season, burying the message in a compliment sandwich, softening the conversation until the real issue is unclear, or staging a "discussion" about a decision already made — each spares me an awkward moment and costs the person weeks of not knowing. The respectful version is plainer: state the concern, explain what led me to it, keep the focus on the work or behavior rather than the person's character, never deliver it while upset, and work out the resolution together.
+**Critical feedback delivered directly and calmly is a form of respect.** The common mistakes all share one root: protecting **my own comfort at the person's expense**. Waiting for review season, burying the message in a compliment sandwich, softening the conversation until the real issue is unclear, or staging a "discussion" about a decision already made — each spares me an awkward moment and costs the person **weeks of not knowing**. The respectful version is plainer: state the concern, explain what led me to it, keep the focus on the work or behavior rather than the person's character, never deliver it while upset, and work out the resolution together.
 
 ## What This Means in Practice
 
 | What this record says | What it does **not** say |
 | --- | --- |
 | Expectations about success are set before the work starts. | Feedback is a reaction I compose after seeing the finished result. |
-| Feedback is frequent, and given while the work is fresh. | Feedback is saved up and batch-delivered at review time. |
+| Feedback is frequent, and given while the work is fresh. | Feedback is saved up and **batch-delivered at review time**. |
 | Feedback names exact behaviors with concrete examples. | General impressions ("be more strategic") count as feedback. |
 | Behavioral feedback on habits and working style is in scope. | Task feedback alone is enough to grow a person. |
 | I gather collaborators' perspectives for a fuller picture. | My own observations are a sufficient evidence base. |
-| I check the feedback landed: their takeaways, their next steps. | Saying it clearly is the same as it being heard. |
+| I check the feedback landed: **their takeaways, their next steps**. | Saying it clearly is the same as it being heard. |
 | Critical feedback is direct, calm, and about the work. | Directness licenses accusatory language or feedback delivered angry. |
 
-Concretely: when I hand someone a piece of work, they can repeat back what a strong result looks like. When I give feedback, I can point to the specific example behind it, and the person can tell me — in their words — what they took away and what they will do next. Serious issues never surprise anyone at review time, because they were raised the week I noticed them. And every piece of feedback passes the same final test: it was clear, fair, timely, respectful, and actionable.
+Concretely: when I hand someone a piece of work, they can repeat back what a strong result looks like. When I give feedback, I can point to the specific example behind it, and the person can tell me — in their words — what they took away and what they will do next. Serious issues never surprise anyone at review time, because they were **raised the week I noticed them**. And every piece of feedback passes the same final test: it was **clear, fair, timely, respectful, and actionable**.
 
 ## Anti-Patterns
 
@@ -85,7 +85,7 @@ Concretely: when I hand someone a piece of work, they can repeat back what a str
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how I give feedback to the people I manage: the expectations I set before work starts, the cadence and specificity of ongoing feedback, the use of behavioral and 360-style input, and the delivery of critical feedback. I revisit it if a report is genuinely surprised by anything in a performance review, if I catch myself sitting on a serious issue for more than a week, or if someone acts on a "suggestion" I meant as an expectation — each is evidence the system, not the person, failed.
+This record is `draft`. It governs how I give feedback to the people I manage: the expectations I set before work starts, the cadence and specificity of ongoing feedback, the use of behavioral and 360-style input, and the delivery of critical feedback. I revisit it if a report is genuinely surprised by anything in a performance review, if I catch myself sitting on a serious issue for **more than a week**, or if someone acts on a "suggestion" I meant as an expectation — each is evidence **the system, not the person, failed**.
 
 ## Authoritative References
 

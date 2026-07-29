@@ -29,31 +29,31 @@ What I expect engineers to understand about the terrain, and what I commit to in
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record is grounded in the Engineering Career Paths chapter of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side of the table: the book gives engineers the map; this record states how I use that map in coaching — as the shared, honest terrain every career conversation on my teams runs across. The runnable version — the checklist I hand an engineer thinking about where their career is and where it could go — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record is grounded in the Engineering Career Paths chapter of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side of the table: the book gives engineers the map; this record states how I use that map in coaching — as **the shared, honest terrain** every career conversation on my teams runs across. The runnable version — the checklist I hand an engineer thinking about where their career is and where it could go — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**Context-free career advice is noise.** "Aim for staff" means nothing at a company whose IC ladder tops out at senior; "optimize for equity" is bad advice when the equity is illiquid paper at a company that may never exit; "job security first" reads differently in a profit center than in a cost center one reorg away from a cut. The source's core move is to make advice conditional on terrain — company type, ladder, tier, team position — and that conditionality is what I import into every career conversation I run.
+**Context-free career advice is noise.** "Aim for staff" means nothing at a company whose IC ladder tops out at senior; "optimize for equity" is bad advice when the equity is illiquid paper at a company that may never exit; "job security first" reads differently in a profit center than in a cost center one reorg away from a cut. The source's core move is to make **advice conditional on terrain** — company type, ladder, tier, team position — and that conditionality is what I import into every career conversation I run.
 
 ![A terrain map divided into regions labeled Big Tech, scaleup, startup, public sector, consultancy, and academia, with a dotted path crossing them.](assets/images/engineering-career-paths/career-terrain-map.jpeg)
 **Figure 1:** *Careers run on terrain: each company type is a different region with its own ladders, pay, and stability — advice that ignores the region is noise.*
 
 
 
-**Honest maps beat flattering maps, even for retention.** It costs me something to tell an engineer that our IC ladder realistically ends at a level below their ambition, or that a Tier-3 company would pay them double for double the pressure. I tell them anyway, because engineers discover the terrain eventually — and a manager caught curating the map loses the credibility that makes all other coaching work. Paradoxically, honest terrain-coaching retains better: people stay longer where their eyes were open when they chose.
+**Honest maps beat flattering maps, even for retention.** It costs me something to tell an engineer that our IC ladder realistically ends at a level below their ambition, or that a Tier-3 company would pay them double for double the pressure. I tell them anyway, because **engineers discover the terrain eventually** — and a manager caught curating the map loses the credibility that makes all other coaching work. Paradoxically, **honest terrain-coaching retains better**: people stay longer where their eyes were open when they chose.
 
-**The dual-track ladder is a fact to verify, not an assumption to inherit.** Many engineers assume every company runs a Big Tech-style dual track with parity to director level and beyond. Many companies don't: the track is single, or the IC ladder exists on paper but the highest realistic level is senior, or advancement past staff quietly requires management. I expect engineers to verify the ladder where they are — and I expect myself to answer truthfully what the highest realistic IC level here is, terminal levels included.
+**The dual-track ladder is a fact to verify, not an assumption to inherit.** Many engineers assume every company runs a Big Tech-style dual track with parity to director level and beyond. Many companies don't: the track is single, or the IC ladder exists on paper but the highest realistic level is senior, or advancement past staff **quietly requires management**. I expect engineers to **verify the ladder where they are** — and I expect myself to answer truthfully what the highest realistic IC level here is, terminal levels included.
 
 ![Three ladders: a dual IC and management track, a single track bending into management, and a ladder whose rungs above senior are only dashed outlines.](assets/images/engineering-career-paths/ladder-shapes-to-verify.jpeg)
 **Figure 2:** *Verify the ladder as it actually is: dual tracks are not universal, and some upper IC rungs exist only on paper.*
 
 
 
-**Non-standard paths are the norm stretched over a long career.** Over decades, the "standard" junior-to-staff arc is the exception: people pendulum between specialist and generalist, between engineering and management; they contract, found companies, move into product or developer relations, and come back. Treating these as detours to warn against — rather than patterns to choose deliberately — narrows my coaching to the one path that happens to keep people on my ladder. The source's instruction to review examples of non-linear careers is one I pass on verbatim.
+**Non-standard paths are the norm stretched over a long career.** Over decades, **the "standard" junior-to-staff arc is the exception**: people pendulum between specialist and generalist, between engineering and management; they contract, found companies, move into product or developer relations, and come back. Treating these as detours to warn against — rather than **patterns to choose deliberately** — narrows my coaching to the one path that happens to keep people on my ladder. The source's instruction to review examples of non-linear careers is one I pass on verbatim.
 
-**Tier and team position quietly dominate outcomes engineers attribute to performance.** Two engineers of equal skill diverge enormously based on choices that look secondary: which compensation tier they entered, and whether they sat in a funded, executive-visible profit center or an invisible cost center. Promotions, bonuses, and even survival in a downturn track team position more than individuals like to believe. I make this explicit so engineers place themselves deliberately — and so those in cost centers know the game is different, not unwinnable.
+**Tier and team position quietly dominate outcomes engineers attribute to performance.** Two engineers of equal skill diverge enormously based on **choices that look secondary**: which compensation tier they entered, and whether they sat in a funded, executive-visible profit center or an invisible cost center. Promotions, bonuses, and even survival in a downturn track team position more than individuals like to believe. I make this explicit so engineers place themselves deliberately — and so those in cost centers know the game is **different, not unwinnable**.
 
-**Title, company, and pay are three axes of a dozen.** The source's final move is the one I care most about as a manager: broaden the scoreboard. The colleagues, the manager, the culture, the mission, health, flexibility, stress, life outside work — these determine whether a career is worth having, and their weights shift with life stage. An engineer optimizing the three visible axes while the other nine collapse is not succeeding, and it is part of my job to say so before the collapse, not after.
+**Title, company, and pay are three axes of a dozen.** The source's final move is the one I care most about as a manager: **broaden the scoreboard**. The colleagues, the manager, the culture, the mission, health, flexibility, stress, life outside work — these determine whether a career is worth having, and their weights shift with life stage. An engineer optimizing the three visible axes while the other nine collapse is not succeeding, and it is part of my job to say so **before the collapse, not after**.
 
 ![A radar chart of ten career axes with title, company, and pay maxed out while health, people, flexibility, and other axes collapse toward the center.](assets/images/engineering-career-paths/full-scoreboard-radar.jpeg)
 **Figure 3:** *Three axes of a dozen: maxing title, company, and pay while the other nine collapse is not succeeding — and the right weights shift with life stage.*
@@ -65,13 +65,13 @@ This journal is my engineering-management operating model. This record is ground
 | What this record says | What it does **not** say |
 | --- | --- |
 | Know your company type and what it implies for pay, growth, and stability. | One type is best — each trades something for something; team quality can outweigh category. |
-| Verify the ladder: tracks, highest realistic IC level, terminal levels. | The published ladder is the real one — realism means what actually gets promoted here. |
+| Verify the ladder: tracks, highest realistic IC level, terminal levels. | The published ladder is the real one — realism means **what actually gets promoted here**. |
 | Non-standard paths are legitimate and worth choosing deliberately. | Everyone should leave the standard path — many thrive on it; the point is choice, not churn. |
 | Compare total compensation across tiers, with equity liquidity in view. | Chase the highest tier — the top tier prices in hiring difficulty and performance pressure. |
 | Know whether your team is a profit center or a cost center. | Cost-center work is a dead end — it can be excellent work; the game is different and learnable. |
-| Measure progress on people, health, flexibility, and life — not just title and pay. | Ambition is suspect — the point is a full scoreboard, weighted for your life stage. |
+| Measure progress on people, health, flexibility, and life — not just title and pay. | Ambition is suspect — the point is **a full scoreboard**, weighted for your life stage. |
 
-Concretely: every engineer I coach can tell me what type of company we are, what the highest realistic IC level here is, which tier we pay in, and whether their team is a profit or cost center — and our career conversations use that shared map, including the honest parts about what this company cannot offer them.
+Concretely: every engineer I coach can tell me what type of company we are, what the highest realistic IC level here is, which tier we pay in, and whether their team is a profit or cost center — and our career conversations use that shared map, including the honest parts about **what this company cannot offer them**.
 
 ## Anti-Patterns
 
@@ -93,7 +93,7 @@ Concretely: every engineer I coach can tell me what type of company we are, what
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs the shared map I use in career coaching: company types, ladder realism, non-standard paths, compensation tiers, profit-versus-cost-center position, and the broadened scoreboard. I revisit it if our own ladder or compensation position changes materially — the honest answers about "here" must stay current — if the market re-tiers (compensation structures have shifted before and will again), or if I catch a career conversation running on the flattering map instead of the real one.
+This record is `draft`. It governs the shared map I use in career coaching: company types, ladder realism, non-standard paths, compensation tiers, profit-versus-cost-center position, and the broadened scoreboard. I revisit it if our own ladder or compensation position changes materially — the honest answers about "here" must stay current — if **the market re-tiers** (compensation structures have shifted before and will again), or if I catch a career conversation **running on the flattering map** instead of the real one.
 
 ## Authoritative References
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: Coaching
@@ -12,15 +12,17 @@ revised: 2026-07-27
 
 State how I approach coaching as a product leader: developing people is the
 first responsibility of every product leader, including me. The post turns
-the *EMPOWERED* coaching checklist into an operating principle: the coaching
-mindset (developing people as job #1, judging my success by their growth,
-empowerment over task control), an honest skills assessment (expectations vs.
-current capability by skill area, top 3 gaps first), coaching across product
-knowledge, process, and people skills, a written coaching plan reviewed
-weekly, the weekly 1:1 as protected development time, written narratives as
-the stronger coaching tool, teaching the six strategic-context elements,
-coaching ownership and outcome orientation, and the weekly manager
-self-audit that keeps me honest about all of it.
+the *EMPOWERED* coaching checklist into an operating principle. Its core is
+the coaching mindset — developing people as job #1, judging my success by
+their growth, empowerment over task control — delivered through a fixed
+loop: an honest skills assessment (expectations vs. current capability by
+skill area, top 3 gaps first), coaching across product knowledge, process,
+and people skills, a written coaching plan reviewed weekly, and the weekly
+1:1 as protected development time, with written narratives as the stronger
+coaching tool. Around that loop sit teaching the six strategic-context
+elements, coaching ownership and outcome orientation, the ethics question
+behind the four product risks ("should we build it?"), and the weekly
+manager self-audit that keeps me honest about all of it.
 
 ## Audience
 
@@ -96,6 +98,12 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Post-review pass: Intent split into readable sentences
+  and extended to mention the four-risks-plus-fifth-question thread already
+  named in Success criteria; no change of intent. Review fixes applied to
+  the post (comic panels 4–5 regenerated to show three gaps, checklist §10
+  six-element list corrected, transcription artifacts fixed). *(Željko,
+  AI-mediated session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/MILA cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

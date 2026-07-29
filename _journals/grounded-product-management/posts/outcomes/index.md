@@ -22,7 +22,7 @@ My operating model for outcomes has five parts:
 
 - **Define the key customer outcome first.** Not the feature customers use, but the result they want — in their language, validated with real customers, durable enough to guide decisions for 2–3 years, specific enough to prioritize with.
 - **Pair it with a key business outcome.** Leadership agrees on the one business result we optimize for — revenue growth, retention, margin, expansion — and on where that growth comes from.
-- **Choose strong metrics, not vanity metrics.** An outcome metric measures customer value, not company activity. Clicks, views, and raw usage do not count unless they clearly connect to value.
+- **Choose strong metrics, not vanity metrics.** An outcome metric measures customer value, not company activity — raw usage counts only when it clearly connects to value.
 - **Build two outcome pyramids.** Each key outcome sits on top of a pyramid of drivers, leading indicators, and lagging indicators — simple enough that teams use it to decide what to improve next.
 - **Judge initiatives by the needle, not the ship date.** Every roadmap item ties to an outcome driver; initiatives that move nothing get stopped.
 
@@ -46,7 +46,7 @@ This journal is the **product-management counterpart** to my engineering-executi
 
 **Pyramids turn outcomes from posters into decisions.** A key outcome on a slide changes nothing. Broken into major drivers, leading indicators that influence it, and lagging indicators that confirm it, the same outcome tells a team what to improve next — and lets me trace every roadmap item to the metric it claims to move. I build one pyramid per outcome — customer and business — connect them where they reinforce each other, and mark honestly which business metrics product influences directly and which belong to sales, marketing, or customer success. A pyramid nobody can recite is an org chart of numbers.
 
-**Time horizons are where outcome thinking gets tested.** Sales closes this quarter's pipeline; customer success defends this year's renewals; product creates value that shows up in business outcomes over quarters or years. Judging product by short-term revenue movement buys feature trading and no compounding value. Aligning teams around their natural horizons is not letting product off the hook — the outcomes are still measured — it is refusing to grade a long instrument on a short scale.
+**Time horizons are where outcome thinking gets tested.** Sales closes this quarter's pipeline; customer success defends this year's renewals; product creates value that shows up in business outcomes over quarters or years. Judging product by short-term revenue movement produces feature trading and no compounding value. Aligning teams around their natural horizons is not letting product off the hook — the outcomes are still measured — it is refusing to grade a long instrument on a short scale.
 
 **Ambition is part of the definition.** I aim for a 10x outcome — a result dramatically better for customers, not a small usability improvement dressed up as strategy — and the team can say in practical terms what "10x better" means and why it creates business value too.
 
@@ -58,6 +58,7 @@ This journal is the **product-management counterpart** to my engineering-executi
 | What this principle says | What it does **not** say |
 | --- | --- |
 | Every initiative names its outcome before it starts. | No initiative starts until the metrics are perfect. |
+| Features shipped is a cost line until an outcome moves. | Shipping doesn't matter — shipping is how outcomes move; it is just never the finish line. |
 | Outcomes are validated with customers, not assumed. | Customers dictate the roadmap item by item. |
 | Vanity metrics don't count as outcomes. | Usage data is useless — it can be a driver when it connects to value. |
 | Product is judged over quarters and years. | Product is never accountable — the lagging indicators still arrive. |
@@ -69,11 +70,11 @@ Concretely: initiative proposals open with the outcome and the pyramid driver th
 ## Anti-Patterns
 
 - **The feature factory.** Velocity is high, the release notes are long, and nobody can name the outcome any of it moved.
-- **Vanity dashboards.** Clicks, views, and raw usage presented as success while churn quietly climbs — engagement confused with customer value.
+- **Vanity dashboards.** Engagement graphs presented as success while churn quietly climbs — activity confused with customer value.
 - **The internal-assumption outcome.** Chosen in a conference room, never validated with customers, defended because we already built toward it.
 - **Metric-product coupling.** A metric that would die with a redesign — proof it measured the product's mechanics, not the customer's success.
 - **Over-monetization.** Extracting more value than we deliver, then treating the resulting churn as a marketing problem.
-- **Grading product on the sales clock.** Judging product work by this quarter's revenue movement, guaranteeing feature trades and no compounding value.
+- **Grading product on the sales clock.** This quarter's revenue as the yardstick for work whose value arrives over years.
 - **Zombie initiatives.** Work that moves no outcome but survives review after review because it ships on time and demos well.
 
 ## Related Records

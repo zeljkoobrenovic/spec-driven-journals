@@ -23,10 +23,10 @@ One shared north star, 3–10 years out — why a vision and its principles beat
 **Panel 5:** *The north star: strategy, architecture, and topology all steer by the same vision.*
 
 ![Comic panel: Mila uses a principles card to pick a path at a fork while an escalation ladder stands unused behind her.](assets/images/product-vision-and-principles/comic-06-principles-guardrails.jpeg)
-**Panel 6:** *The guardrails: principles decide hundreds of small trade-offs so nothing needs to escalate.*
+**Panel 6:** *The guardrails: principles decide hundreds of small trade-offs — including the ethical ones — so nothing needs to escalate.*
 
 ![Comic panel: Vera presents the vision with a storyboard while Mila retells the same story to the candidate.](assets/images/product-vision-and-principles/comic-07-retell-it.jpeg)
 **Panel 7:** *The retelling: a vision nobody sells is a document — tell it until the whole organization can.*
 
 ![Comic panel: close-up of Vera and Mila looking up at one bright star, Mila's tablet showing the same star.](assets/images/product-vision-and-principles/comic-08-shared-star.jpeg)
-**Panel 8:** *The closer: one star, one story — and everyone can finally answer 'where is this going?'.*
+**Panel 8:** *The closer: one star, one story — and everyone can finally answer 'where is this going?'*

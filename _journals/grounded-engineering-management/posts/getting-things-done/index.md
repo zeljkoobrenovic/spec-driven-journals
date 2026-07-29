@@ -32,25 +32,25 @@ My execution commitments:
 
 ## How to Read This
 
-This journal is my engineering-management operating model, each record grounded in one source checklist. This record distills the "getting things done" chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): direction, believable plans, organized execution, balanced time horizons, and process that improves itself. The runnable version — including the "signs the team is executing well" self-check — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model, each record grounded in one source checklist. This record distills the "getting things done" chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): direction, believable plans, organized execution, balanced time horizons, and **process that improves itself**. The runnable version — including the "signs the team is executing well" self-check — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**A vision that cannot survive retelling is not a vision.** The test is not whether the goal sounds good when I present it — it is whether three different people, asked separately, describe it the same way. A concrete, measurable outcome that is easy to repeat and hard to misinterpret does coordination work while I am not in the room; a vague aspiration forces every ambiguous call back to me. That is why I test the retelling, not the slide.
+**A vision that cannot survive retelling is not a vision.** The test is not whether the goal sounds good when I present it — it is whether three different people, asked separately, describe it the same way. A concrete, measurable outcome that is easy to repeat and hard to misinterpret does **coordination work while I am not in the room**; a vague aspiration forces every ambiguous call back to me. That is why I test **the retelling, not the slide**.
 
 ![Split diagram: a concrete goal repeated identically by three people versus a vague goal retold as three different shapes.](assets/images/getting-things-done/retelling-test.jpeg)
 **Figure 2:** *The test is not the slide — it is whether three people, asked separately, describe the goal the same way.*
 
-**Plans fail when they are written for the team you wish you had.** A believable plan is grounded in the team's real strengths and constraints — who is actually good at what, what will actually take longer than hoped. It concentrates on the few priorities that matter, defers the rest deliberately, and carries explicit buffer, because delays and surprises are a certainty, not a risk. Milestones exist so believability can be checked along the way rather than discovered at the deadline.
+**Plans fail when they are written for the team you wish you had.** A believable plan is grounded in the team's real strengths and constraints — who is actually good at what, what will actually take longer than hoped. It concentrates on the few priorities that matter, defers the rest deliberately, and carries explicit buffer, because delays and surprises are **a certainty, not a risk**. Milestones exist so believability can be checked along the way rather than discovered at the deadline.
 
-**Ambiguous ownership is where execution quietly dies.** Work with no named owner and no deadline is work that everyone assumes someone else is doing. The unglamorous discipline — who owns each decision, what must be done, by whom, by when — is what makes a plan operational instead of aspirational. The same discipline governs decisions: made quickly when the information is sufficient, committed to once made, and revisited promptly when reality changes. Slow decisions and relitigated decisions are both taxes on the team; commitment after disagreement is what keeps speed from fracturing into churn.
+**Ambiguous ownership is where execution quietly dies.** Work with no named owner and no deadline is work that **everyone assumes someone else is doing**. The unglamorous discipline — who owns each decision, what must be done, by whom, by when — is what makes a plan operational instead of aspirational. The same discipline governs decisions: made quickly when the information is sufficient, committed to once made, and revisited promptly when reality changes. Slow decisions and relitigated decisions are both taxes on the team; **commitment after disagreement** is what keeps speed from fracturing into churn.
 
-**A team that only ships this quarter is quietly borrowing from next year.** Over-optimizing the immediate term feels productive right up until the medium-term projects and long-term bets that should be maturing now were never started. Working backward from the long-term vision, and keeping an explicit portfolio across horizons, forces the trade-off into the open. The symmetric failure is just as real: staying locked into a long-term plan that new information has already invalidated. Both are cured by the same habit — connect short-term work to long-term goals, and reassess fast when the facts change.
+**A team that only ships this quarter is quietly borrowing from next year.** Over-optimizing the immediate term feels productive right up until the medium-term projects and long-term bets that should be maturing now were never started. Working backward from the long-term vision, and keeping an explicit portfolio across horizons, forces **the trade-off into the open**. The symmetric failure is just as real: staying locked into a long-term plan that new information has already invalidated. Both are cured by the same habit — connect short-term work to long-term goals, and **reassess fast when the facts change**.
 
 ![Diagram of a balanced three-lane portfolio of short, medium, and long-term work, flanked by two failure modes: all work short-term, and a padlocked long-term plan.](assets/images/getting-things-done/three-horizon-portfolio.jpeg)
 **Figure 3:** *The portfolio spans horizons, with short-term work connected to long-term goals — and both failure modes in view: over-optimizing the immediate term, and defending a plan the facts have outrun.*
 
-**Blame buries the lesson; debriefs convert it into process.** A debrief focused on who failed produces defensiveness and thinner information next time. A debrief focused on what we learned produces lessons worth capturing — and lessons become durable only when repeated work turns into playbooks and checklists that outlive the people who learned them the hard way. That is the closing of the loop: a team that runs this cycle keeps learning and comes out of mistakes stronger, which is the most reliable sign of good execution I know.
+**Blame buries the lesson; debriefs convert it into process.** A debrief focused on who failed produces defensiveness and thinner information next time. A debrief focused on what we learned produces lessons worth capturing — and lessons become durable only when **repeated work turns into playbooks** and checklists that outlive the people who learned them the hard way. That is the closing of the loop: a team that runs this cycle keeps learning and **comes out of mistakes stronger**, which is the most reliable sign of good execution I know.
 
 ## What This Means in Practice
 
@@ -58,12 +58,12 @@ This journal is my engineering-management operating model, each record grounded 
 | --- | --- |
 | The vision is concrete, measurable, and survives retelling. | The vision is a slogan — if people describe it differently, it has failed the test. |
 | Plans are built on real strengths, few priorities, and buffer. | Plans are exhaustive — cutting and deferring lower-value work is part of planning, not a failure of it. |
-| Every task and decision has an owner and a deadline. | The manager owns everything — ownership is distributed and named, not hoarded. |
+| Every task and decision has an owner and a deadline. | The manager owns everything — ownership is **distributed and named, not hoarded**. |
 | Decide quickly when there is enough information. | Decide recklessly — speed applies most to reversible decisions; irreversible ones earn more care. |
 | Commit after the decision, even if you disagreed. | Disagreement is unwelcome — it belongs before the decision, and reassessment reopens when new information arrives. |
-| Debriefs are regular and blameless, and produce playbooks. | Debriefs are trials — a retrospective that assigns fault produces silence, not learning. |
+| Debriefs are regular and blameless, and produce playbooks. | Debriefs are trials — a retrospective that assigns fault produces **silence, not learning**. |
 
-Concretely: my team's goal can be restated consistently by people who did not write it; the plan document names owners and deadlines and shows what was deliberately cut; the roadmap contains visible short-, medium-, and long-term work; decisions have dates; and our playbooks trace back to specific debriefs.
+Concretely: my team's goal can be **restated consistently** by people who did not write it; the plan document names owners and deadlines and shows what was deliberately cut; the roadmap contains visible short-, medium-, and long-term work; decisions have dates; and our playbooks **trace back to specific debriefs**.
 
 ## Anti-Patterns
 
@@ -85,7 +85,7 @@ Concretely: my team's goal can be restated consistently by people who did not wr
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how teams I manage set direction, plan, decide, and improve their own process. I revisit it if the retelling test starts failing on a goal I thought was clear, if a quarter passes with no playbook or checklist emerging from repeated work, or if I catch the roadmap fully consumed by short-term work with no medium- or long-term bets in flight.
+This record is `draft`. It governs how teams I manage set direction, plan, decide, and improve their own process. I revisit it if the retelling test starts failing on a goal I thought was clear, if a quarter passes with **no playbook or checklist emerging** from repeated work, or if I catch the roadmap **fully consumed by short-term work** with no medium- or long-term bets in flight.
 
 ## Authoritative References
 

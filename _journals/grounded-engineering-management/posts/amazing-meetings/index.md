@@ -29,25 +29,25 @@ My operating model for meetings has six parts:
 
 ## How to Read This
 
-This journal is my engineering-management operating model, each record grounded in one source. This record distills the meetings chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019) — her taxonomy of five meeting purposes and her insistence that a great meeting is designed backward from the outcome its attendees should leave with. The runnable version — the general checklist plus the per-purpose checks for decision, information-sharing, feedback, idea-generation, and relationship-building meetings — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model, each record grounded in one source. This record distills the meetings chapter of Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019) — her taxonomy of five meeting purposes and her insistence that a great meeting is **designed backward from the outcome** its attendees should leave with. The runnable version — the general checklist plus the per-purpose checks for decision, information-sharing, feedback, idea-generation, and relationship-building meetings — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**A meeting without a stated purpose optimizes for nothing.** Zhuo's five purposes are not a filing system — they are a design constraint. A decision meeting needs a designated decision-maker, credible options presented objectively, and fair airtime for dissent; an idea-generation meeting needs quiet thinking time and a format that collects ideas from everyone; a relationship-building meeting needs openness, not an agenda packed with status. These requirements conflict, which is exactly why a meeting trying to decide, inform, and brainstorm at once does all three badly. Naming the primary purpose is what makes every other design choice decidable.
+**A meeting without a stated purpose optimizes for nothing.** Zhuo's five purposes are not a filing system — they are **a design constraint**. A decision meeting needs a designated decision-maker, credible options presented objectively, and fair airtime for dissent; an idea-generation meeting needs quiet thinking time and a format that collects ideas from everyone; a relationship-building meeting needs openness, not an agenda packed with status. These requirements conflict, which is exactly why a meeting trying to decide, inform, and brainstorm at once does all three badly. Naming the primary purpose is what **makes every other design choice decidable**.
 
 ![Diagram of five purpose chips with one selected, feeding an arrow that branches into format, attendees, and pre-reads.](assets/images/amazing-meetings/one-purpose-design-constraint.jpeg)
 **Figure 1:** *One primary purpose is the design constraint: once it is named, format, attendee list, and preparation all become decidable.*
 
-**The attendee list is a design decision, not a courtesy broadcast.** Every missing necessary person turns the meeting into a rehearsal for the real one; every extraneous attendee dilutes the discussion and normalizes passive observation. The tests are symmetric: everyone necessary, no one extraneous, the affected people represented. Inviting someone "to keep them in the loop" is what written summaries are for.
+**The attendee list is a design decision, not a courtesy broadcast.** Every missing necessary person turns the meeting into **a rehearsal for the real one**; every extraneous attendee dilutes the discussion and normalizes passive observation. The tests are symmetric: everyone necessary, no one extraneous, the affected people represented. Inviting someone "to keep them in the loop" is **what written summaries are for**.
 
-**Unprepared attendees spend the meeting becoming prepared.** If the agenda, pre-reads, and context arrive with the meeting instead of before it, the first half of the slot is consumed reconstructing what a document could have delivered. Sending materials in advance is not politeness — it moves the ramp-up out of the room so the shared time is spent on what actually requires being together. Planning in advance how follow-ups will be captured serves the same end: the close of the meeting is designed before it opens.
+**Unprepared attendees spend the meeting becoming prepared.** If the agenda, pre-reads, and context arrive with the meeting instead of before it, the first half of the slot is consumed reconstructing what a document could have delivered. Sending materials in advance is not politeness — it **moves the ramp-up out of the room** so the shared time is spent on what actually requires being together. Planning in advance how follow-ups will be captured serves the same end: the close of the meeting is **designed before it opens**.
 
-**The loudest voices are not a representative sample.** Left alone, a meeting's airtime distributes by confidence and interruption tolerance, not by who has the most useful thing to say. Managing this is the facilitator's job, and it is active work: explicitly inviting dissent, setting norms for respectful discussion, choosing formats that help quieter people contribute, watching for interruptions, directing questions at people who have not spoken, and limiting overtalking — politely, but firmly. A decision that only the talkers shaped will also be a decision only the talkers feel bound by.
+**The loudest voices are not a representative sample.** Left alone, a meeting's airtime distributes by **confidence and interruption tolerance**, not by who has the most useful thing to say. Managing this is the facilitator's job, and it is active work: explicitly inviting dissent, setting norms for respectful discussion, choosing formats that help quieter people contribute, watching for interruptions, directing questions at people who have not spoken, and limiting overtalking — politely, but firmly. A decision that only the talkers shaped will also be a decision **only the talkers feel bound by**.
 
 ![Two meeting-table panels: two dominant speech bubbles crowding out four silent participants, versus equal-sized bubbles with a facilitator inviting a quiet voice.](assets/images/amazing-meetings/airtime-facilitation-before-after.jpeg)
 **Figure 2:** *Left alone, airtime distributes by confidence; facilitated, it distributes by who has something useful to say.*
 
-**A meeting that ends without owners ends without consequences.** The summary before the close — what we decided, what feedback was given, which ideas we are carrying forward — is what converts an hour of talk into a record. Next steps without an owner and a timeline are wishes. And the discipline runs one level higher too: the recurring meeting that no longer passes the gut-check — no longer a good use of time, no longer truly necessary, no longer needing me in the room — gets restructured, delegated, or cancelled rather than ritually attended.
+**A meeting that ends without owners ends without consequences.** The summary before the close — what we decided, what feedback was given, which ideas we are carrying forward — is what converts an hour of talk into a record. **Next steps without an owner and a timeline are wishes.** And the discipline runs one level higher too: the recurring meeting that no longer passes the gut-check — no longer a good use of time, no longer truly necessary, no longer needing me in the room — gets restructured, delegated, or cancelled **rather than ritually attended**.
 
 ![Funnel diagram: recurring meeting cards entering a three-question filter, with one path to a checked calendar and another to cancelled or restructured icons.](assets/images/amazing-meetings/gut-check-filter.jpeg)
 **Figure 3:** *The gut-check runs as a standing filter: a recurring meeting that no longer passes gets cancelled or restructured, not ritually attended.*
@@ -56,15 +56,15 @@ This journal is my engineering-management operating model, each record grounded 
 
 | What this record says | What it does **not** say |
 | --- | --- |
-| Every meeting has one stated primary purpose and a definition of success. | A standing meeting justifies itself by being on the calendar. |
+| Every meeting has one stated primary purpose and a definition of success. | A standing meeting **justifies itself by being on the calendar**. |
 | Format, attendees, and prep are chosen to serve that purpose. | One format — status-round-plus-discussion — fits every meeting. |
 | Everyone necessary is in the room; no one extraneous is. | Inviting broadly is a safe default — observers are free. |
 | Agendas and pre-reads go out in advance. | Context can be delivered live in the first twenty minutes. |
-| I actively manage airtime and invite dissent. | Whoever talks most has the most to say. |
+| I actively manage airtime and invite dissent. | **Whoever talks most has the most to say.** |
 | Meetings close with summarized outcomes, owners, and timelines. | "Great discussion" is an acceptable ending. |
 | Meetings that fail the gut-check are cancelled or restructured. | Cancelling a recurring meeting is an insult to its organizer. |
 
-Concretely: anyone attending my meetings can state the meeting's purpose in one sentence, received the materials in advance, and leaves knowing the decisions made, who owns each next step, and when it is due. And my calendar shows the negative space too — meetings I declined because I was not needed, and recurring meetings I killed when the gut-check said no.
+Concretely: anyone attending my meetings can **state the meeting's purpose in one sentence**, received the materials in advance, and leaves knowing the decisions made, who owns each next step, and when it is due. And my calendar shows **the negative space** too — meetings I declined because I was not needed, and recurring meetings I killed when the gut-check said no.
 
 ## Anti-Patterns
 
@@ -85,7 +85,7 @@ Concretely: anyone attending my meetings can state the meeting's purpose in one 
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs every meeting I organize or run — its purpose, format, attendee list, preparation, facilitation, and close — and the standing gut-check applied to recurring meetings I attend. I revisit it if attendees cannot state a meeting's purpose when asked, if action items from my meetings recur without owners, or if a quarter passes without a single recurring meeting being restructured or cancelled — a sign the gut-check has stopped running.
+This record is `draft`. It governs every meeting I organize or run — its purpose, format, attendee list, preparation, facilitation, and close — and the standing gut-check applied to recurring meetings I attend. I revisit it if attendees cannot state a meeting's purpose when asked, if action items from my meetings **recur without owners**, or if a quarter passes without a single recurring meeting being restructured or cancelled — a sign **the gut-check has stopped running**.
 
 ## Authoritative References
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-26
+revised: 2026-07-29
 ---
 
 # Spec: Team-First Thinking
@@ -102,6 +102,9 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Changelog reconciled: comic panel images and article
+  illustrations are generated and in place; nothing remains staged or
+  pending. *(Željko, AI-mediated session)*
 - **2026-07-26** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/LEO cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

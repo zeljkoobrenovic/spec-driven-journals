@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-26
+revised: 2026-07-29
 ---
 
 # Spec: Evolve Team Structures
@@ -104,6 +104,11 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes: duplicated comic captions removed;
+  third evolution trigger aligned to "many business services rely on many
+  lower-level services" in the highlight, excerpt, Figure 3, and comic
+  Panel 5. Changelog reconciled: all comic and illustration images are
+  generated and in place. *(Željko, AI-mediated session)*
 - **2026-07-26** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/LEO cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

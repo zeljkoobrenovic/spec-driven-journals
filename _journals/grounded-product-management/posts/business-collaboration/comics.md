@@ -20,10 +20,10 @@ Partnership of equals — how product earns its seat beside the business, in eig
 **Panel 4:** *First deposit: understand what each function is actually carrying.*
 
 ![Comic panel: Mila presents an open vision board with a lighthouse motif to business colleagues who lean in and nod.](assets/images/business-collaboration/comic-05-share-and-evangelize.jpeg)
-**Panel 5:** *Second deposit: share the context, evangelize the destination.*
+**Panel 5:** *Second and third deposits: share the context, evangelize the destination.*
 
 ![Comic panel: Mila delivers a finished box to a business peer on the circled calendar date while a wall trust-meter ticks upward.](assets/images/business-collaboration/comic-06-keep-commitments.jpeg)
-**Panel 6:** *Third deposit: rare commitments, always kept.*
+**Panel 6:** *Fourth deposit: rare commitments, always kept.*
 
 ![Comic panel: Vera shows an executive Mila's team at work through glass while the executive drops ticket cards into a wastebasket.](assets/images/business-collaboration/comic-07-executives-shift.jpeg)
 **Panel 7:** *The hard part: executives trading the ticket queue for trust.*

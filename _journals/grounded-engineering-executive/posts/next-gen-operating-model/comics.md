@@ -23,7 +23,7 @@ All the pieces become one model — the operating system everyone can name, in e
 **Panel 5:** *Step three: the thinnest viable platform — it earns its size, it does not start with one.*
 
 ![Vera draws a circular loop around the team diagram, small signal marks rising from the teams, as Leo takes notes.](assets/images/next-gen-operating-model/comic-06-sensing-loop.jpeg)
-**Panel 6:** *Step five: practice sensing — the topology is dynamic, not fixed.*
+**Panel 6:** *Steps four and five: close the capability gaps the model exposes, then practice sensing — the topology is dynamic, not fixed.*
 
 ![Two engineers discuss a small poster of the operating-model diagram while Vera and Leo walk past smiling.](assets/images/next-gen-operating-model/comic-07-model-everyone-names.jpeg)
 **Panel 7:** *The payoff: shared vocabulary turns organizational design into an organizational capability.*

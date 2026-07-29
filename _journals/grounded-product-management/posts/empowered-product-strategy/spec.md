@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: EMPOWERED Product Strategy
@@ -52,7 +52,8 @@ First-person declarative.
       or biweekly progress, blockers surfaced and removed, help without
       command-and-control.
 - [ ] **The checklist survives intact** — all ten PDF sections reproduced
-      in the Checklist tab (`checklist.md`), items and numbering preserved.
+      in the Checklist tab (`checklist.md`), items and section order
+      preserved.
 - [ ] **Credit is explicit** — References name Cagan and Jones's
       *EMPOWERED* and note the svpg.com essay origins.
 
@@ -123,6 +124,10 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Post-review pass: relaxed the checklist success
+  criterion from "items and numbering preserved" to "items and section
+  order preserved" — the Checklist tab uses the journal's house style of
+  unnumbered section headings. *(Željko, AI-mediated session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/MILA cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

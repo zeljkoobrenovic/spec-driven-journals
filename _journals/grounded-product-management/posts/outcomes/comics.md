@@ -28,5 +28,5 @@ Outcomes over outputs — why the dial matters more than the conveyor, in eight 
 ![Comic panel: Mila retires a flat-line initiative card into a bin while Vera nods and a fresh card waits on the board.](assets/images/outcomes/comic-07-zombie-initiative.jpeg)
 **Panel 7:** *The hard part: killing the zombie initiative that moves nothing.*
 
-![Comic panel: Vera and Mila stand before the gauge with its needle high, Mila's tablet showing only three roadmap items.](assets/images/outcomes/comic-08-moved-dial.jpeg)
-**Panel 8:** *The closer: fewer ships, more arrivals.*
+![Comic panel: Vera and Mila stand before the gauge with its needle high, Mila's tablet showing a short roadmap where every remaining item earned its place.](assets/images/outcomes/comic-08-moved-dial.jpeg)
+**Panel 8:** *The closer: a roadmap where every ship moves the dial.*

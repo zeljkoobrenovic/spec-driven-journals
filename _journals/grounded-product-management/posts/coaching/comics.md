@@ -16,14 +16,14 @@ Coaching is the first job — how ordinary people become extraordinary teams, in
 ![Comic panel: Vera writes a whiteboard list with COACH as the large first item while Mila watches surprised.](assets/images/coaching/comic-03-first-job.jpeg)
 **Panel 3:** *The principle: coaching is the first job of product leadership.*
 
-![Comic panel: Vera and Mila review a radar skills chart with two short spokes circled in amber.](assets/images/coaching/comic-04-honest-assessment.jpeg)
+![Comic panel: Vera and Mila review a radar skills chart with three short spokes circled in amber.](assets/images/coaching/comic-04-honest-assessment.jpeg)
 **Panel 4:** *Start honest: a real assessment, specific gaps, no judgment.*
 
-![Comic panel: a written coaching plan pinned above Mila's desk linking her two gaps to concrete actions as she adds a sticky note.](assets/images/coaching/comic-05-coaching-plan.jpeg)
+![Comic panel: a written coaching plan pinned above Mila's desk linking her three gaps to concrete actions as she adds a sticky note.](assets/images/coaching/comic-05-coaching-plan.jpeg)
 **Panel 5:** *The plan: written down, action by action, co-owned.*
 
 ![Comic panel: Vera and Mila hold a warm weekly 1:1 over the coaching plan with the recurring slot circled on the wall calendar.](assets/images/coaching/comic-06-weekly-ritual.jpeg)
-**Panel 6:** *The ritual: a weekly hour that belongs to the person, not the sprint.*
+**Panel 6:** *The ritual: a weekly slot that belongs to the person, not the sprint.*
 
 ![Comic panel: Mila at a fork holding her own map while Vera's lantern lights both branches equally.](assets/images/coaching/comic-07-context-not-answers.jpeg)
 **Panel 7:** *Coach with context: light the field, keep the decision theirs.*

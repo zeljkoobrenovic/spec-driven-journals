@@ -60,7 +60,7 @@ The vision is mine; the grounding is borrowed openly. Each record starts from on
 
 ## The Map
 
-The six sections follow the arc of the job:
+The six core sections follow the arc of the job; two appendices extend it beyond the Primer:
 
 - **Getting the Role** — the search and the landing: [[getting-the-job]], [[first-90-days]].
 - **Setting Direction** — strategy, planning, values, and measurement: [[engineering-strategy]], [[planning]], [[organizational-values]], [[measuring-engineering-organizations]].
@@ -74,7 +74,7 @@ The six sections follow the arc of the job:
 The records cross-link heavily, because the principles are not independent: inspection draws on the trust built in the first 90 days; strategy constrains planning; energy management is what makes all of it survivable. Follow the links rather than the section order if a thread pulls you.
 
 ![Six labeled stations along an arc from getting the role to leading yourself, with faint threads cross-connecting non-adjacent stations.](assets/images/introduction/journal-map.jpeg)
-**Figure 3:** *The map: six sections along the arc of the job — and the cross-links that make it a web, not a sequence.*
+**Figure 3:** *The map: six core sections along the arc of the job — and the cross-links that make it a web, not a sequence.*
 
 
 ## How to Read This Journal

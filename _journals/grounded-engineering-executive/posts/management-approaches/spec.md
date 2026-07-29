@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-26
+revised: 2026-07-29
 ---
 
 # Spec: Management Approaches
@@ -101,6 +101,9 @@ policy.
 
 ## Changelog
 
+- **2026-07-29** — Changelog reconciled: comic panel images and article
+  illustrations are generated and in place; nothing remains staged or
+  pending. *(Željko, AI-mediated session)*
 - **2026-07-26** — Article, checklist modality, and comics modality (pending
   panels) written from this spec; spec and post agree. Status `draft` →
   `accepted`. *(Željko, AI-mediated session)*

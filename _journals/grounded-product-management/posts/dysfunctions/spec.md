@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: Product Dysfunctions
@@ -105,6 +105,10 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Comic panel images generated (all eight panels referenced
+  from `comics.md`) and article illustration figures finalized in `index.md`;
+  post-review fixes applied (see `REVIEW.md`). *(Željko, AI-mediated
+  session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
   VERA/MILA cast) with pending panel blocks; inline illustration
   placeholders staged in the article. *(Željko, AI-mediated session)*

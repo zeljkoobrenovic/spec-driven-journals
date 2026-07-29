@@ -24,7 +24,7 @@ My operating model for product vision has five parts:
 - **Tell the full journey, not the product slice.** The vision starts the moment the customer realizes they may need a better solution and covers every major stage, not just onboarding or usage — capturing thoughts, emotions, objections, and decision points, detailed enough to be plausible without locking teams into one solution too early.
 - **Differentiate deliberately.** I study what competitors do poorly *and* what they are not doing at all, name our unfair advantage, and use the Kano model to separate must-haves, performance features, and delighters — knowing today's delighters become tomorrow's expectations.
 - **Communicate through artifacts, not speeches.** The vision lives in formats people can read, reference, discuss, and update — comic strips, vision mock-ups, customer diary entries — short enough to absorb quickly and covering the whole journey, not just product screens.
-- **Validate before the vision steers anything.** An outsider can understand it quickly; it explains why the customer would start, continue, and stay; it helps teams decide consistently; it is bold enough to inspire and grounded enough to believe.
+- **Validate before the vision steers anything.** I run it through the final-validation questions — spelled out in the Rationale below — before it drives a single roadmap conversation.
 
 ![Two parallel customer journey paths: a jagged, obstacle-filled path labeled today above a smooth milestone path labeled future leading to an outcome star.](assets/images/customer-journey-vision/two-journeys.jpeg)
 **Figure 1:** *The vision is the distance between two journeys: the customer's frustrating path today and their transformed path years from now.*
@@ -85,7 +85,7 @@ Concretely: roadmap conversations open with the journey stage they advance, not 
 
 ## Scope and Revisiting
 
-This principle governs how I set and communicate product direction, and what I accept as a "vision" in any planning conversation. I revisit the vision on its own horizon — roughly every three years, or when the market shifts underneath it — the Kano categories more often, because delighters decay, and this record whenever I catch a roadmap conversation starting from features instead of the journey.
+This principle governs how I set and communicate product direction, and what I accept as a "vision" in any planning conversation. I revisit the vision on its own horizon — roughly every three years, or when the market shifts underneath it — and the Kano categories more often, because delighters decay. I revisit this record whenever I catch a roadmap conversation starting from features instead of the journey.
 
 ## Authoritative References
 

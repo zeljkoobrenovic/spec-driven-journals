@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-07-27
+revised: 2026-07-29
 ---
 
 # Spec: Outcomes
@@ -13,12 +13,14 @@ revised: 2026-07-27
 State how I judge product work: by key outcomes — measurable changes in
 customer and business reality — never by shipped output. The post turns the
 *Build What Matters* "Key Outcomes" checklist into an operating principle:
-defining the key customer outcome in the customer's language, testing that
-it matters, choosing a strong outcome metric (not a vanity metric), aiming
-for a 10x outcome, defining the key business outcome and balancing customer
-value against company value, building customer and business outcome
-pyramids with leading and lagging indicators, aligning teams around time
-horizons, validating outcomes with customers and the market, and using
+every initiative names, before it starts, the customer outcome and the
+business outcome it moves. The checklist scope the post carries: defining
+the key customer outcome in the customer's language and testing that it
+matters; choosing a strong outcome metric (not a vanity metric) and aiming
+for a 10x outcome; defining the key business outcome and balancing customer
+value against company value; building customer and business outcome
+pyramids with leading and lagging indicators; aligning teams around time
+horizons; validating outcomes with customers and the market; and using
 outcomes — not ship dates — to guide roadmap, pricing, and prioritization.
 
 ## Audience
@@ -46,7 +48,8 @@ means. First-person declarative.
       enough to guide decisions for the next 2–3 years and specific enough
       to prioritize with.
 - [ ] **The checklist survives intact** — all twelve PDF sections
-      reproduced in the Checklist tab (`checklist.md`), numbers preserved.
+      reproduced in the Checklist tab (`checklist.md`), item counts and
+      figures preserved.
 - [ ] **Credit is explicit** — References name Foster & Nerlikar's *Build
       What Matters* as the grounding source.
 
@@ -101,9 +104,15 @@ journal policy.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied: vanity-metric and sales-clock
+  repetition compressed in the article, "shipping is how outcomes move"
+  concession added to the practice table, comic Panel 8 closer reworded to
+  the outcome-tied roadmap, Intent split into principle + scope, checklist
+  criterion disambiguated. Comic panels and article figures are generated
+  and final. *(Željko, AI-mediated session)*
 - **2026-07-27** — Comics modality staged (`comics.md`, Comic tab, shared
-  VERA/MILA cast) with pending panel blocks; inline illustration
-  placeholders staged in the article. *(Željko, AI-mediated session)*
+  VERA/MILA cast); panel images and inline article figures generated and
+  final in the same session. *(Željko, AI-mediated session)*
 - **2026-07-27** — Article and checklist written from this spec; spec and
   post agree. Status `draft` → `accepted`. *(Željko, AI-mediated session)*
 - **2026-07-27** — Initial spec for the record. Status `draft`. *(Željko,

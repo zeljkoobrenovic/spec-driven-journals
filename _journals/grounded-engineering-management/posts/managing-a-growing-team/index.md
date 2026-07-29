@@ -29,25 +29,25 @@ My commitments as the team grows:
 
 ## How to Read This
 
-This journal is my engineering-management operating model, each record grounded in one source checklist. This record distills the chapter on managing a growing team from Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): the shift from managing individuals directly to managing at scale — perspective, dissent, delegation, and judging (and replacing) management, including my own role. The runnable version lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model, each record grounded in one source checklist. This record distills the chapter on managing a growing team from Julie Zhuo's *The Making of a Manager* (Portfolio/Penguin, 2019): the shift from managing individuals directly to **managing at scale** — perspective, dissent, delegation, and judging (and replacing) management, including my own role. The runnable version lives in the **Checklist** tab of this post.
 
 ## Rationale
 
-**The management style that got the team here stops working, and pretending otherwise breaks both.** With a handful of reports I can stay deep in every detail; past that point, trying to support everyone through direct involvement makes me the bottleneck and starves the actual work of the role — vision, org design, delegation, communication. The shift is not a loss of rigor; it is a change in where rigor is applied. Diving in remains legitimate, but it becomes a deliberate choice about where my attention matters most, not a default.
+**The management style that got the team here stops working, and pretending otherwise breaks both.** With a handful of reports I can stay deep in every detail; past that point, trying to support everyone through direct involvement **makes me the bottleneck** and starves the actual work of the role — vision, org design, delegation, communication. The shift is not a loss of rigor; it is **a change in where rigor is applied**. Diving in remains legitimate, but it becomes a deliberate choice about where my attention matters most, not a default.
 
 ![Split diagram showing a manager wired into every individual on the left, and elevated to vision, org design, delegation, and communication above self-running clusters on the right, with one deliberate dashed dive-in line.](assets/images/managing-a-growing-team/front-line-to-macro-shift.jpeg)
 **Figure 1:** *The shift is not a loss of rigor but a change in where it is applied: direct involvement becomes one deliberate, rationed line — not the default wiring.*
 
-**Authority silently raises the price of telling me the truth.** The same observation that was casual feedback to a peer becomes a career risk when aimed at the person who writes your performance review — so silence is the default I must assume, not an anomaly. That is why inviting dissent has to be explicit and repeated, why the messenger of an uncomfortable truth gets rewarded visibly, and why owning my mistakes publicly matters: each is a signal that lowers the price of the next hard truth. A growing team where only good news travels upward is a team whose problems I will learn about last.
+**Authority silently raises the price of telling me the truth.** The same observation that was casual feedback to a peer becomes a career risk when aimed at the person who writes your performance review — so **silence is the default I must assume**, not an anomaly. That is why inviting dissent has to be explicit and repeated, why the messenger of an uncomfortable truth gets rewarded visibly, and why owning my mistakes publicly matters: each is a signal that **lowers the price of the next hard truth**. A growing team where only good news travels upward is a team whose problems I will learn about last.
 
 ![Diagram of walls growing taller in front of each step of rising authority, with amber counterweights — invite, reward, own mistakes — pulling the wall down so a speech bubble can pass.](assets/images/managing-a-growing-team/rising-price-of-truth.jpeg)
 **Figure 2:** *Authority silently raises the wall in front of every uncomfortable truth; inviting dissent, rewarding messengers, and owning mistakes publicly are what pull it back down.*
 
-**Delegation is an act of trust, and half-delegation is an act of sabotage.** Giving someone a big problem says "I believe you can solve this" — provided ownership is clarified publicly, so the organization treats them as the owner too, and provided I coach without taking the work back. Delegating the task while retaining the decisions gives me the workload of doing it myself plus a report who has learned that ownership from me is provisional. Self-reliant teams are built from real ownership, repeatedly given.
+**Delegation is an act of trust, and half-delegation is an act of sabotage.** Giving someone a big problem says "I believe you can solve this" — provided **ownership is clarified publicly**, so the organization treats them as the owner too, and provided I coach without taking the work back. Delegating the task while retaining the decisions gives me the workload of doing it myself plus a report who has learned that ownership from me is provisional. Self-reliant teams are built from **real ownership, repeatedly given**.
 
-**A manager is a multiplier or a divider — and effort is not the metric.** A struggling engineer affects their own output; a struggling manager slows projects, degrades decisions, and blocks the growth of everyone under them. That asymmetry is why I judge managers by outcomes rather than effort or intent, and why the clarifying question is Zhuo's blunt one: would I hire this person again for this role? When the honest answer is no, the hard move is kinder than the slow erosion of the team that the avoidance buys.
+**A manager is a multiplier or a divider — and effort is not the metric.** A struggling engineer affects their own output; a struggling manager slows projects, degrades decisions, and blocks the growth of everyone under them. That asymmetry is why I judge managers **by outcomes rather than effort or intent**, and why the clarifying question is Zhuo's blunt one: **would I hire this person again for this role?** When the honest answer is no, the hard move is kinder than the slow erosion of the team that the avoidance buys.
 
-**Putting myself out of a job is the mechanism by which the job grows.** Any responsibility someone else can do as well as I can — or better — is one I should hand over, because my time is the scarcest resource I allocate and unique leverage is the only defensible use of it: cross-organizational communication, top-talent hiring, priority conflicts between teams, escalations where only I hold the full picture. The role that remains after each round of giving work away is the next, larger role — and the measure of success shifts accordingly, from what I can do to how much more the whole team can achieve.
+**Putting myself out of a job is the mechanism by which the job grows.** Any responsibility someone else can do as well as I can — or better — is one I should hand over, because my time is **the scarcest resource I allocate** and unique leverage is the only defensible use of it: cross-organizational communication, top-talent hiring, priority conflicts between teams, escalations where only I hold the full picture. The role that remains after each round of giving work away is the next, larger role — and the measure of success shifts accordingly, from what I can do to **how much more the whole team can achieve**.
 
 ![Upward spiral diagram: hand off responsibility, gain freed time, spend it on unique leverage, and arrive at a larger role — repeating each cycle.](assets/images/managing-a-growing-team/out-of-a-job-growth-loop.jpeg)
 **Figure 3:** *Putting yourself out of the current job is the mechanism: each handoff frees capacity for unique leverage, and the role that remains is the next, larger one.*
@@ -57,13 +57,13 @@ This journal is my engineering-management operating model, each record grounded 
 | What this record says | What it does **not** say |
 | --- | --- |
 | I move to the macro view as the team grows. | I stop going deep — diving in stays available, rationed to where it matters most. |
-| I explicitly invite dissent and reward uncomfortable truths. | Every dissent changes the decision — it changes what I know before I decide. |
+| I explicitly invite dissent and reward uncomfortable truths. | Every dissent changes the decision — it changes **what I know before I decide**. |
 | I delegate big problems and publicly clarify ownership. | I disappear — I stay available to coach, without taking the work back. |
 | I judge managers by outcomes as multipliers. | Effort and intent count for nothing — they matter in coaching, but not as substitutes for outcomes. |
 | "Would I hire this person again?" decides hard cases. | The first bad quarter ends a manager — the question is about the pattern, and it triggers action, starting with honesty. |
-| I keep giving away work others can do as well or better. | My job shrinks — the freed capacity goes to unique leverage, and the role keeps growing. |
+| I keep giving away work others can do as well or better. | My job shrinks — the freed capacity goes to **unique leverage**, and the role keeps growing. |
 
-Concretely: my calendar shows macro work — vision, org design, hiring, cross-team conflicts — rather than a stack of project deep-dives; each of my leaders owns something big with their name on it publicly; my 1:1s produce help for the other person, not status for me; and at least once a year I can name a responsibility I used to hold that someone else now runs as well as I did or better.
+Concretely: my calendar shows macro work — vision, org design, hiring, cross-team conflicts — rather than a stack of project deep-dives; each of my leaders owns something big with their name on it publicly; my 1:1s produce **help for the other person, not status for me**; and at least once a year I can **name a responsibility I used to hold** that someone else now runs as well as I did or better.
 
 ## Anti-Patterns
 
@@ -85,7 +85,7 @@ Concretely: my calendar shows macro work — vision, org design, hiring, cross-t
 
 ## Scope and Revisiting
 
-This record is `draft`. It governs how I manage teams that have grown past direct involvement — my own shift to macro work, the dissent I cultivate, the delegation I practice, and the standard I hold managers to, including myself. I revisit it if my calendar fills with front-line work at the expense of vision and org design, if a quarter passes without anyone telling me something I did not want to hear, or if I cannot name a responsibility I have handed off in the past year.
+This record is `draft`. It governs how I manage teams that have grown past direct involvement — my own shift to macro work, the dissent I cultivate, the delegation I practice, and the standard I hold managers to, including myself. I revisit it if my calendar **fills with front-line work** at the expense of vision and org design, if a quarter passes without anyone telling me **something I did not want to hear**, or if I cannot name a responsibility I have handed off in the past year.
 
 ## Authoritative References
 

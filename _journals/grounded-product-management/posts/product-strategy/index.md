@@ -25,14 +25,14 @@ My operating model for product strategy has six parts:
 - **Run a gap analysis.** Compare the ideal journey with the current one, name the gaps — capabilities, data, infrastructure, distribution, partnerships, operations, funding — and prioritize the ones that most block the customer from the outcome.
 - **Sequence deliberately.** First, second, third, later — accounting for runway, for the proof stakeholders need, and for technical, competitive, financial, and operational dependencies. Favor work that advances the vision *and* supports the business.
 - **Mark the path with milestones.** Each milestone proves something specific and carries both business and customer KPIs; each is a natural point to reassess.
-- **Adapt on evidence, not on noise.** The strategy changes when the evidence demands it — not on every piece of feedback. Feedback improves the vision; it does not replace it.
+- **Adapt on evidence, not on noise.** The strategy changes when the evidence demands it — not on every piece of feedback. Customer input refines the destination; it does not get to choose a new one.
 
 ![A bridge labeled strategy connecting a near road labeled roadmap to a distant lighthouse labeled vision.](assets/images/product-strategy/vision-strategy-roadmap-bridge.jpeg)
 **Figure 1:** *Strategy is the load-bearing span: the vision says where, the roadmap says what's next, and the strategy is what connects them.*
 
 ## How to Read This
 
-This journal is the product-management counterpart to my engineering-executive journal: the same first-person operating-principle format, applied to how I believe product management should work. This record is grounded in Ben Foster and Rajesh Nerlikar's *Build What Matters*, read through a practitioner-executive lens — as an executive making phasing and investment decisions legible, not just a PM building a plan. It has a deliberate boundary with [[empowered-product-strategy]]: that sibling covers Marty Cagan's insight-driven strategy — focus, insights, bets; this one covers the vision-to-roadmap bridge — how the vision gets phased into work. Read them together, not as substitutes. The working checklist — all eight sections — lives in the **Checklist** tab of this post.
+This journal is the product-management counterpart to my engineering-executive journal: the same first-person operating-principle format, applied to how I believe product management should work. This record is grounded in Ben Foster & Rajesh Nerlikar's *Build What Matters*, read through a practitioner-executive lens — as an executive making phasing and investment decisions legible, not just a PM building a plan. It has a deliberate boundary with [[empowered-product-strategy]]: that sibling covers Marty Cagan's insight-driven strategy — the focus–insight–action frame that ends in team objectives; this one covers the vision-to-roadmap bridge — how the vision gets phased into work. Read them together, not as substitutes. The working checklist — all eight sections — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
@@ -45,12 +45,21 @@ This journal is the product-management counterpart to my engineering-executive j
 
 **Sequencing is where the strategy meets reality.** The right order is not only a dependency question; it is a survival question. I sequence with the runway in view, with an eye on what proof investors and executives will need next, and with a preference for work that advances the vision and supports the business at once. A strategically pure sequence that runs out of money in phase two was never a strategy.
 
-**Trade-offs are choices, and I make them out loud.** Foster and Nerlikar's strategy factors are the forks in the road, and each deserves a deliberate answer. *Financials*: can we fund the next milestone, or do we need traction first? *Competitive advantage*: does the MVP combine the must-haves that earn the right to play, the performance features that earn the right to win, and the delighters that drive loyalty? *Market segments*: do we start with one segment — a geography, a vertical, a use case — and let its learnings fund the next? *Outcome delivery*: phases, single product before platform, each phase building trust with the same customer? *Technology and data*: which foundational assets must exist before future features can? *Strategic leverage*: which non-product assets — partnerships, patents, brand, data — should shape the strategy? Unexamined, these questions still get answered — implicitly, by whoever ships first.
+**Trade-offs are choices, and I make them out loud.** Foster & Nerlikar's strategy factors are the forks in the road, and each deserves a deliberate answer:
+
+- *Financials* — can we fund the next milestone, or do we need traction first?
+- *Competitive advantage* — does the MVP combine the must-haves that earn the right to play, the performance features that earn the right to win, and the delighters that drive loyalty?
+- *Market segments* — do we start with one segment — a geography, a vertical, a use case — and let its learnings fund the next?
+- *Outcome delivery* — phases, single product before platform, each phase building trust with the same customer?
+- *Technology and data* — which foundational assets must exist before future features can?
+- *Strategic leverage* — which non-product assets — partnerships, patents, brand, data — should shape the strategy?
+
+Unexamined, these questions still get answered — implicitly, by whoever ships first.
 
 ![A path forking three ways with one fork deliberately chosen and flagged while the others are roped off.](assets/images/product-strategy/deliberate-trade-off-fork.jpeg)
 **Figure 3:** *Strategy factors are forks: one path deliberately taken, the others consciously declined — never answered by default.*
 
-**Milestones make the strategy falsifiable.** A milestone is not a date; it is a claim — *by this point, we will have proven this*. Each carries business and customer KPIs, defines what must complete before the next phase, and doubles as a scheduled reassessment. That keeps adaptation honest: at each milestone I track accomplishments, summarize learnings, document adjustments — and change the strategy when the evidence says so, not when the loudest feedback does. The moment feedback starts replacing the vision instead of improving it, I no longer have a strategy — I have a suggestion box.
+**Milestones make the strategy falsifiable.** A milestone is not a date; it is a claim — *by this point, we will have proven this*. Each carries business and customer KPIs, defines what must complete before the next phase, and doubles as a scheduled reassessment. That keeps adaptation honest: at each milestone I track accomplishments, summarize learnings, document adjustments — and change the strategy when the evidence says so, not when the loudest feedback does. A strategy that bends to every loud signal has stopped being a strategy at all.
 
 ## What This Means in Practice
 
@@ -78,8 +87,8 @@ Concretely: no roadmap review without the strategy on the table, no strategy rev
 ## Related Records
 
 - [[customer-journey-vision]] — the Point B this strategy works backward from.
-- [[balanced-roadmap]] — the artifact this strategy feeds; the roadmap derives from the strategy, never the other way around.
-- [[empowered-product-strategy]] — the EMPOWERED-grounded sibling: Cagan's insight-driven strategy (focus, insights, bets), complementary to this record's vision-to-roadmap bridge.
+- [[balanced-roadmap]] — the artifact this strategy feeds; the strategy tells the roadmap what comes next, not the reverse.
+- [[empowered-product-strategy]] — the EMPOWERED-grounded sibling: Cagan's insight-driven strategy (focus–insight–action), complementary to this record's vision-to-roadmap bridge.
 - [[engineering-strategy]] — the engineering-executive counterpart; this record's technology and data dependencies are where the two strategies meet.
 
 ## Scope and Revisiting
