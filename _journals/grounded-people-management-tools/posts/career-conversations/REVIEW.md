@@ -158,3 +158,9 @@ compounds.
   back for years," panel 8) directly echoes the spec's load-bearing
   sentence and index.md's principle — good coverage of the single most
   important idea in the terminal panel.
+
+## Fixes applied (2026-07-28)
+
+- Type-of-work list: polarity inverted — the source workbook includes "consulting", so it was added to the article and spec (the checklist already had it).
+- Checklist Setup now carries the "among your favorite conversations" framing and matches the article's "fresh out of school" phrasing.
+- Spec-vs-front-matter status (minor): skipped — `spec: accepted` with `post: draft:gray` is the journal-wide convention.

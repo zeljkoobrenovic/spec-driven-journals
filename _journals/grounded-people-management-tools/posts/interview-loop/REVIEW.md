@@ -145,3 +145,10 @@ Drift: none rising to `status: drifted` — the two partial criteria above are n
 - The visual metaphor (Noa as new manager, Vera as the practiced executive) is consistent panel to panel and matches the shared VERA cast convention noted in the spec's Changelog.
 - Coverage is a faithful, appropriately-compressed arc: blind improvisation → gaps/overlap → after-the-fact rubric → the design-chain principle → the stage map → the scoring band → the cost of rigor → the go-live artifacts. This tracks the article's own Statement-to-Anti-Patterns arc well.
 - No factual claims in the captions contradict index.md or checklist.md.
+
+## Fixes applied (2026-07-28)
+
+- Competency-label conflict: article and checklist stage map now mark functional expertise and written communication as role-specific dimensions outside the seven behavioral competencies.
+- Intake-roleplay structure: the article now names the three parts (define the role, build the plan, measure success).
+- Rubric anchors: the 4–6 searches / ~7 hires per quarter norm now appears in the article's rubric paragraph.
+- Checklist heading case (minor): skipped — sentence case is acceptable for the checklist modality.

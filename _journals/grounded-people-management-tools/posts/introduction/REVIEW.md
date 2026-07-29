@@ -73,3 +73,9 @@ Drift: none in intent or structure. The "20 records" figure is a **factual** dri
 - Panel captions are short, each states hook/problem/mechanism/resolution in turn, consistent with the skill's guidance for comic captions.
 - All 8 referenced panel image files exist in `assets/images/introduction/`.
 - Repeats the "20/twenty" figure independently in 3 places (title line, Panel 1, Panel 8) — same fix needed here as in index.md.
+
+## Fixes applied (2026-07-28)
+
+- Record-count finding: inverted — config lists 21 posts = intro + **20** tool records, so the article's "20" was correct; fixed the spec changelog's "19" instead.
+- Anatomy table: added the **Comic** tab row; Figure 2 caption updated to mention the comic.
+- Spec Sources thinness (minor): skipped — contributor credits live in the article's references by design.

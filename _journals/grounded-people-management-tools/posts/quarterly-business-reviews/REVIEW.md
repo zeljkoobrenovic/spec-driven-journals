@@ -161,3 +161,9 @@ intent, so it does not rise to `drifted`.
 ## Previous review
 
 *(No prior REVIEW.md existed for this post — first review.)*
+
+## Fixes applied (2026-07-28)
+
+- "Be concise" item now states the six-page **document** limit with the narrative's own two-page limit.
+- Progress-on-goals heading now notes template rows extend up to 10.
+- "Two years" repetition in the article (minor): skipped — blockquote → statement → rationale escalation is the house pattern; comics panel 2–3 beat overlap skipped (would require regenerating panels).
