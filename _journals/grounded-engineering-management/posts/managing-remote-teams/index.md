@@ -6,7 +6,7 @@ date: 2026-07-28
 author: Željko Obrenović
 permalink: managing-remote-teams
 timetoread: 6 min
-excerpt: "On a distributed team I replace the hallway with explicit structure: written norms for roles, response times, and decision-sharing; async as the default; a searchable decision log; and deliberate rhythms for stand-ups, all-hands, and office hours. Trust and connection get engineered too — regular 1:1s, no negative assumptions about silence or tone, rituals for bonding, and in-person time spent on relationships rather than packed agendas."
+excerpt: "On a distributed team I replace the hallway with explicit structure: written norms for roles, response times, and decision-sharing; async as the default; a searchable decision log; and deliberate rhythms for stand-ups, all-hands, and office hours. Trust and connection get engineered too — regular 1:1s, no negative assumptions about silence or tone, rituals for bonding, and in-person time spent on relationships rather than wall-to-wall meetings."
 tags: engineering management, remote teams, distributed teams, async communication, team norms, connection
 icon: "assets/icons/managing-remote-teams.png"
 logo: "assets/images/managing-remote-teams/logo.jpeg"
@@ -23,7 +23,7 @@ My operating model for managing a remote team has six parts:
 - **Make the implicit explicit.** Team priorities are clarified weekly; roles, responsibilities, and expectations are written down; response-time norms for messages are defined; and how decisions, updates, and knowledge get shared is documented — with asynchronous communication as the default wherever possible.
 - **Engineer trust deliberately.** Regular 1:1 check-ins with open-ended questions about workload, morale, and concerns; space for honest feedback; my own uncertainty shared when appropriate; and a standing rule — no negative assumptions about silence or tone.
 - **Write decisions down where they can be found.** Decisions, owners, and next steps are summarized in writing; project communication lives in dedicated threads; and a searchable decision log or knowledge base is the team's memory.
-- **Run deliberate rhythms.** Stand-ups covering done / next / blockers, regular all-hands with key updates recorded for absentees, office hours or open Q&A — and the rhythms themselves reviewed and refined regularly.
+- **Run deliberate rhythms.** Stand-ups covering done / next / blockers, regular all-hands with key updates recorded for absentees, office hours or open Q&A — each meeting with a clear purpose, format, and follow-up, and the rhythms themselves reviewed and refined regularly.
 - **Foster connection on purpose.** Rituals for bonding, small wins celebrated publicly, peer recognition encouraged, casual spaces for non-work conversation — time made for connection, not just task updates.
 - **Spend in-person time on relationships.** When the team does meet, relationship-building beats packed agendas: shared meals, low-pressure activities, and unstructured time for natural connection.
 
@@ -61,7 +61,7 @@ This journal is my engineering-management operating model, each record grounded 
 | Decisions are summarized in writing in a searchable log. | Every conversation becomes a document — the log records decisions, owners, and next steps. |
 | I overcommunicate and repeat key information in multiple places. | Noise is fine — repetition targets what matters most, through deliberate channels. |
 | I make no negative assumptions about silence or tone. | I ignore disengagement — I watch for it actively and check in directly. |
-| In-person time prioritizes relationship-building. | Offsites are packed with the meetings we saved up — packed agendas waste the scarcest resource. |
+| In-person time prioritizes relationship-building. | Offsites are packed with the meetings we saved up, wasting the scarcest resource. |
 | Rhythms are reviewed and refined regularly. | The rhythm set once is the rhythm forever. |
 
 Concretely: anyone on my remote team can answer the quick self-review at any time — they know what matters most right now, they know where to ask questions and find updates, they are comfortable being honest about problems, wins get noticed, and the quieter members are still connected and supported. If any of those answers is no, the system — not the person — gets fixed.

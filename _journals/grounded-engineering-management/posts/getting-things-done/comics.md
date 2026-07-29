@@ -2,7 +2,7 @@ Why execution is a loop — direction, plan, ownership, decision, learning — i
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -20,13 +20,13 @@ Why execution is a loop — direction, plan, ownership, decision, learning — i
 **Panel 4:** *The principle: execution is a loop — direction, plan, ownership, decision, learning — and the whole loop has to run.*
 
 ![Comic panel: Arlo assigns avatars and dates to task cards, moving lower-value cards into a Later tray.](assets/images/getting-things-done/comic-05-owners-and-deadlines.jpeg)
-**Panel 5:** *How it runs: few priorities with real buffer, lower-value work cut on purpose, and every task carrying a name and a date.*
+**Panel 5:** *How it runs: a portfolio across time horizons, few priorities with real buffer, lower-value work cut on purpose — and every task carrying a name and a date.*
 
 ![Comic panel: Arlo stamps a decision as a disagreeing teammate commits, with a new-information envelope curving back toward the decision.](assets/images/getting-things-done/comic-06-decide-commit-reassess.jpeg)
 **Panel 6:** *The mechanic: decide fast when there is enough information, commit even after disagreeing — and reassess promptly when the facts change.*
 
 ![Comic panel: after a failed launch, Arlo runs a blameless debrief at a flip chart while the team volunteers lessons.](assets/images/getting-things-done/comic-07-the-blameless-debrief.jpeg)
-**Panel 7:** *The cost: after a failure, the discipline is asking what we learned, not who failed — blame would buy silence next time.*
+**Panel 7:** *The cost: failures get dissected in the open — asking what we learned, not who failed, because blame would buy silence next time.*
 
 ![Comic panel: Arlo hands over a playbook booklet in front of a rising spiral version of the execution loop, Vera nodding.](assets/images/getting-things-done/comic-08-stronger-every-cycle.jpeg)
 **Panel 8:** *The closer: lessons become playbooks, playbooks close the loop — and the team comes out of every mistake stronger.*

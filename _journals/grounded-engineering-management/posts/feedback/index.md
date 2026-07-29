@@ -38,7 +38,7 @@ This journal is my engineering-management operating model, each record grounded 
 
 **Expectations set up front are the cheapest feedback I will ever give.** Every correction I make after work goes sideways could have been a sentence before it started: here is what a strong result looks like, here is how people usually stumble. Zhuo's insight is that feedback begins before the work does — a manager who only reacts to finished work has forfeited the moment when guidance was cheapest and least personal. Setting expectations early also makes later critical feedback fair: I am comparing work against a bar the person knew about, not one I invented afterward.
 
-**Vague feedback transfers a feeling; specific feedback transfers information.** "Great job" and "this was confusing" produce the same result: the person knows how I felt and nothing about what to repeat or change. Naming the exact behavior, showing a concrete example, and explaining why it worked or didn't turns my reaction into something the person can act on. The same discipline applies doubly to behavioral feedback — observations about habits and working style land as judgments of character unless they are anchored to patterns I can actually point to across multiple situations.
+**Vague feedback transfers a feeling; specific feedback transfers information.** "Great job" and "this needs more polish" produce the same result: the person knows how I felt and nothing about what to repeat or change. Naming the exact behavior, showing a concrete example, and explaining why it worked or didn't turns my reaction into something the person can act on. The same discipline applies doubly to behavioral feedback — observations about habits and working style land as judgments of character unless they are anchored to patterns I can actually point to across multiple situations.
 
 **I see a fraction of anyone's work, so I borrow other people's eyes.** My reports spend most of their week in rooms I am not in. Asking collaborators what someone should do more of and what they should change gives me a picture no amount of my own observation can, and it protects the person from feedback distorted by my narrow sample. 360-style input is not bureaucracy; it is how behavioral feedback gets the evidence base it needs.
 
@@ -64,7 +64,7 @@ This journal is my engineering-management operating model, each record grounded 
 | I check the feedback landed: their takeaways, their next steps. | Saying it clearly is the same as it being heard. |
 | Critical feedback is direct, calm, and about the work. | Directness licenses accusatory language or feedback delivered angry. |
 
-Concretely: when I hand someone a piece of work, they can repeat back what a strong result looks like. When I give feedback, I can point to the specific example behind it, and the person can tell me — in their words — what they took away and what they will do next. Serious issues never surprise anyone at review time, because they were raised the week I noticed them.
+Concretely: when I hand someone a piece of work, they can repeat back what a strong result looks like. When I give feedback, I can point to the specific example behind it, and the person can tell me — in their words — what they took away and what they will do next. Serious issues never surprise anyone at review time, because they were raised the week I noticed them. And every piece of feedback passes the same final test: it was clear, fair, timely, respectful, and actionable.
 
 ## Anti-Patterns
 

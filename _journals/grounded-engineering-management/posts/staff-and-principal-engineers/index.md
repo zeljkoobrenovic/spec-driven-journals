@@ -6,7 +6,7 @@ date: 2026-07-28
 author: Željko Obrenović
 permalink: staff-and-principal-engineers
 timetoread: 7 min
-excerpt: "Beyond senior, I stop grading craft alone. A staff or principal engineer on my teams is graded on five things together: business understanding, constructive influence, engineering execution across teams, end-to-end reliability ownership, and architecture judgment scaled to blast radius. The role is a partnership with managers and product, not a solo authority — and it only works while the engineer stays hands-on enough to make grounded decisions."
+excerpt: "Beyond senior, I stop grading craft alone: five dimensions graded together — business understanding, influence, execution across teams, reliability ownership, architecture judgment — worked as a partnership with managers and product, and anchored by staying hands-on enough to make grounded decisions."
 tags: engineering management, staff engineers, principal engineers, technical leadership, architecture, reliability, influence
 icon: "assets/icons/staff-and-principal-engineers.png"
 logo: "assets/images/staff-and-principal-engineers/logo.jpeg"
@@ -30,7 +30,7 @@ What I expect from staff and principal engineers, and what I coach senior engine
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record is grounded in the "Role-Model Staff and Principal Engineers" chapter material from Gergely Orosz's *The Software Engineer's Guidebook* (2023), read from the manager's side: the expectations I hold staff+ engineers to, and the shape I coach senior engineers toward. The runnable version — the full checklist I hand the engineer, covering role, business, influence, execution, reliability, and architecture — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record is grounded in the "Role-Model Staff and Principal Engineers" chapter material from Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side: the expectations I hold staff+ engineers to, and the shape I coach senior engineers toward. The runnable version — the full checklist I hand the engineer, covering role, business, influence, execution, reliability, and architecture — lives in the **Checklist** tab of this post.
 
 ## Rationale
 

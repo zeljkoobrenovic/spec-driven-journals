@@ -33,7 +33,7 @@ What I expect engineers to own, and what I coach them into:
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record is grounded in the "Own Your Career" chapter material from Gergely Orosz's *The Software Engineer's Guidebook* (2023), read from the manager's side: the career-ownership habits I coach engineers into, and what I owe in return when they practice them. The engineer's side of the manager–report contract in [[management-101]] is this record in miniature. The runnable version — written in the engineer's first person, as the source has it — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record is grounded in the "Own Your Career" chapter material from Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side: the career-ownership habits I coach engineers into, and what I owe in return when they practice them. The engineer's side of the manager–report contract in [[management-101]] is this record in miniature. The runnable version — written in the engineer's first person, as the source has it — lives in the **Checklist** tab of this post.
 
 ## Rationale
 

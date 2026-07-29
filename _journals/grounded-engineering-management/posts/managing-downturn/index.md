@@ -22,7 +22,7 @@ My operating model for leading through a downturn has six parts:
 
 - **Own my own head first.** I acknowledge what I am feeling — guilt, anxiety, isolation, grief — separate facts from self-blame, drop the stories "this is all happening to me" and "I should have been perfect," and focus on what is in my control right now, committing to one concrete next step.
 - **Read the team's emotional state as an operating risk.** I watch for fear signals (withdrawal, layoff fixation, silence in meetings), grief signals (low energy, mourning lost colleagues or plans), and guilt or stress signals (overwork, inability to disconnect) — and I treat morale problems as trust and purpose problems, not side issues.
-- **Communicate on a cadence, without fake certainty.** I tell people what I know, what I do not know, and when to expect updates; I give the "why" behind priority changes in plain language and do not let rumor gaps stay open.
+- **Communicate on a cadence, without fake certainty.** I tell people what I know, what I do not know, and when to expect updates; I give the "why" behind priority changes in plain language and do not let rumor gaps stay open. And I build trust intentionally: I explain how the team got here, own my part honestly, and ask the team for help explicitly.
 - **Prioritize in scarcity mode.** Fewer things, done better: one most important goal for the period, a definition of what success looks like, an explicit non-goals or stop-doing list, and paused work that does not ladder to the top goal — rechecked whenever conditions change.
 - **Handle layoffs and hard news with clarity and speed.** If layoffs may happen, I am clear on the reason, decide on future company needs rather than comfort or recency, move quickly once decided, equip managers with context and scripts, define support precisely, follow up personally with impacted people — and support those who remain just as intentionally. Each other kind of hard news — cut bonuses, hiring freezes, pay cuts, stalled promotions, shifting strategy, missed goals — gets its own honest script.
 - **Run a weekly rhythm and keep morale grounded in reality.** Every week: restate the top priority, review what was deprioritized, surface risks and rumors early, share new facts, invite questions, check for overload, recognize progress however small. Morale is not cheerleading — it is protected trust and protected purpose.
@@ -63,7 +63,7 @@ This journal is my engineering-management operating model, each record grounded 
 | Morale is protected trust and purpose, grounded in reality. | Morale is cheerleading — sugarcoating until the team stops believing anything I say. |
 | Trust deepens when I show up honestly in hard times. | Discomfort means I am failing — hard periods feel bad even when led well. |
 
-Concretely: in a downturn my team can name the single top priority and what was explicitly stopped, everyone knows when the next update comes, no rumor survives a week unaddressed, every piece of hard news arrived with its rationale attached, and the weekly rhythm — priority, deprioritized, risks, facts, questions, overload check, recognition, next steps — runs without fail.
+Concretely: in a downturn my team can name the single top priority and what was explicitly stopped, everyone knows when the next update comes, no rumor survives a week unaddressed, every piece of hard news arrived with its rationale attached, and the weekly rhythm runs without fail.
 
 ## Anti-Patterns
 

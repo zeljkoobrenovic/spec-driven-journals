@@ -53,7 +53,7 @@ peer executives comparing ladder expectations. First-person declarative.
       architecture shipped via RFCs, prototypes, decision-makers, rollout
       and rollback plans, pre-mortems.
 - [x] **Credit is explicit** — References name Gergely Orosz, *The Software
-      Engineer's Guidebook* (2023), and the chapters distilled.
+      Engineer's Guidebook* (Pragmatic Engineer, 2023), and the chapters distilled.
 
 ## Non-goals
 
@@ -80,7 +80,7 @@ peer executives comparing ladder expectations. First-person declarative.
 ## Decision log
 
 - **2026-07-28** — Grounded in the "Well-Rounded Senior Engineer" checklist
-  distilled from Gergely Orosz's *The Software Engineer's Guidebook* (2023):
+  distilled from Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023):
   engineering mindset, getting things done, collaboration and teamwork,
   software engineering craft, testing, software architecture, and the final
   senior takeaways.
@@ -96,11 +96,12 @@ peer executives comparing ladder expectations. First-person declarative.
   - `sources/software-engineering-guidebook/Checklist_ TSEG _ Well-Rounded Senior Engineer (1).pdf`
     — reproduced, lightly condensed, in the Checklist tab (`checklist.md`).
 - **External**
-  - Gergely Orosz, *The Software Engineer's Guidebook* (self-published,
-    2023) — the Well-Rounded Senior Engineer chapters this record distills.
+  - Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic
+    Engineer, 2023) — the Well-Rounded Senior Engineer chapters this record distills.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied (majors and cross-cutting sweeps); see REVIEW.md. *(Željko, AI-mediated session)*
 - **2026-07-28** — Comics modality added (comics.md, Comic tab, shared
   VERA/ARLO cast); 3 inline figures generated in the article. *(Željko,
   AI-mediated session)*

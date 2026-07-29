@@ -30,7 +30,7 @@ What I expect from engineers pursuing promotion, and what I commit to in return:
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record is grounded in the Promotions chapter of Gergely Orosz's *The Software Engineer's Guidebook* (2023), read from the manager's side of the table: the book tells engineers how to earn a promotion; this record states what I expect engineers to bring to a promotion case and how I coach them through it. The runnable version — the checklist I hand an engineer who wants the next level — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record is grounded in the Promotions chapter of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side of the table: the book tells engineers how to earn a promotion; this record states what I expect engineers to bring to a promotion case and how I coach them through it. The runnable version — the checklist I hand an engineer who wants the next level — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
@@ -46,7 +46,7 @@ This journal is my engineering-management operating model. This record is ground
 **Visibility is the engineer's job, and "publish" is the neglected verb.** The source splits impact into produce, organize, and publish, and in my experience the third is where strong engineers stall. Managers change, forget, and summarize badly; a manager is a lossy channel for someone else's impact. An engineer who shares outcomes and learnings through docs, demos, and internal posts gives every decision-maker direct evidence — and gives me, at packet-writing time, material instead of memories.
 
 ![Three pillars labeled produce, organize, and publish holding up a beam labeled impact; the publish pillar is half-built and the beam tilts.](assets/images/promotions/produce-organize-publish.jpeg)
-**Figure 2:** *Producing is a third of the job: impact stands on produce, organize, and publish — and publish is the pillar most strong engineers leave half-built.*
+**Figure 2:** *Impact stands on three pillars — produce, organize, publish — and publish is the pillar most strong engineers leave half-built.*
 
 
 
@@ -96,4 +96,4 @@ This record is `draft`. It governs how promotion cases are built and coached on 
 
 ## Authoritative References
 
-- Gergely Orosz, *The Software Engineer's Guidebook* (2023) — the Promotions chapter this record distills, via its companion checklist.
+- Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023) — the Promotions chapter this record distills, via its companion checklist.

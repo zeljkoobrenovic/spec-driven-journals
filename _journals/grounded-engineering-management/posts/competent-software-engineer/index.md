@@ -33,7 +33,7 @@ The expectations I hold every engineer to, and coach them along:
 
 ## How to Read This
 
-This journal is my engineering-management operating model; this record is the engineer career ladder seen from the manager's side. It is grounded in the Competent Software Developer chapters of Gergely Orosz's *The Software Engineer's Guidebook* (2023) — getting things done, coding, software development skills, and the tools of the productive developer. The article states the expectations I hold engineers to at this first career stage and how I coach them; the checklist I hand the engineer — written in their voice, ending with the weekly self-review — lives in the **Checklist** tab.
+This journal is my engineering-management operating model; this record is the engineer career ladder seen from the manager's side. It is grounded in the Competent Software Developer chapters of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023) — getting things done, coding, software development skills, and the tools of the productive developer. The article states the expectations I hold engineers to at this first career stage and how I coach them; the checklist I hand the engineer — written in their voice, ending with the weekly self-review — lives in the **Checklist** tab.
 
 ## Rationale
 
@@ -65,7 +65,7 @@ This journal is my engineering-management operating model; this record is the en
 | Initiative is welcome — documenting, investigating, helping out. | Side efforts before the expected work is done — initiative comes after delivery, not instead of it. |
 | Growth runs on mentors, goodwill, and a weekly self-review. | Growth is the manager's job alone — I coach it, but the engineer owns it. |
 
-Concretely: when I coach an engineer at this stage, our 1:1 starts from their top priority and their self-review answers, not from a status list. When one is stuck, my first question is "what have you tried?" — and if the answer is "nothing yet, it's been two days," the coaching topic is the 30–60 minute rule, not the bug.
+Concretely: when I coach an engineer at this stage, our 1:1 starts from their top priority and their self-review answers, not from a status list. When one is stuck, my first question is "what have you tried?" — and if the answer is "nothing yet, it's been two days," the coaching topic is the blocked rule, not the bug.
 
 ## Anti-Patterns
 
@@ -91,4 +91,4 @@ This record is `draft`. It governs the expectations I hold engineers to at the f
 
 ## Authoritative References
 
-- Gergely Orosz, *The Software Engineer's Guidebook* (self-published, 2023) — the Competent Software Developer chapters (getting things done, coding, software development skills, tools of the productive developer) this record distills.
+- Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023) — the Competent Software Developer chapters (getting things done, coding, software development skills, tools of the productive developer) this record distills.

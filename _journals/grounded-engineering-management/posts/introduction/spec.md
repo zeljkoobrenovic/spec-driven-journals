@@ -47,7 +47,7 @@ operating models; my own manager. First-person declarative.
 - Not a book review — the sources are credited and recommended, not
   evaluated.
 - Not the concrete people-management instruments — those live in the
-  [[introduction]] of grounded-people-management-tools and its records.
+  grounded-people-management-tools journal's introduction and its records.
 
 ## Modalities
 
@@ -82,7 +82,7 @@ operating models; my own manager. First-person declarative.
 - **External**
   - Camille Fournier, *The Manager's Path* (O'Reilly, 2017).
   - Julie Zhuo, *The Making of a Manager* (Portfolio/Penguin, 2019).
-  - Gergely Orosz, *The Software Engineer's Guidebook* (2023).
+  - Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023).
   - Kate Matsudaira, "Software Managers' Guide to Operational Excellence".
 
 ## Changelog

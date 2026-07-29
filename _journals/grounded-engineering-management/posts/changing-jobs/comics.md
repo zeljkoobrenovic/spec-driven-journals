@@ -2,7 +2,7 @@ Why a job change is a 5–10 year career decision, not a compensation event — 
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -26,7 +26,7 @@ Why a job change is a 5–10 year career decision, not a compensation event — 
 **Panel 6:** *The mechanic: a down-level is judged on title and pay together — and an up-level is higher expectations from day one.*
 
 ![Comic panel: Arlo at a new desk with a work log, cheat sheet, and a planner flagged at one, three, and six months, greeted by a buddy.](assets/images/changing-jobs/comic-07-landing-is-the-work.jpeg)
-**Panel 7:** *The cost: the move is won in the first months — goals at one, three, and six months, work log from day one.*
+**Panel 7:** *The follow-through: the move is won in the first months — goals at one, three, and six months, work log from day one.*
 
 ![Comic panel: Arlo hands Vera a handover folder at a warm farewell, an intact bridge visible through the window.](assets/images/changing-jobs/comic-08-leave-well.jpeg)
 **Panel 8:** *The closer: lose someone well rather than keep them badly — an engineer who leaves deliberately stays a colleague for decades.*

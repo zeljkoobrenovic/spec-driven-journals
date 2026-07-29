@@ -2,7 +2,7 @@ Why hiring is building the future of the team — never filling holes — in eig
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -26,7 +26,7 @@ Why hiring is building the future of the team — never filling holes — in eig
 **Panel 6:** *The mechanic: same core questions, distinct dimensions, independent debriefs — and no offer without at least one passionate advocate.*
 
 ![Comic panel: Arlo declines a marginal candidate while the empty chair waits behind him, Vera reassuring him.](assets/images/hiring-well/comic-07-the-open-chair-holds.jpeg)
-**Panel 7:** *The cost: the bar means saying no to a 'maybe' while the chair stays empty — because a weak hire compounds on the whole team.*
+**Panel 7:** *The cost: the bar means saying no to a "maybe" while the chair stays empty — because a weak hire compounds on the whole team.*
 
 ![Comic panel: a diverse thriving team a year later, the new hire high-fiving Arlo while Vera looks on.](assets/images/hiring-well/comic-08-the-hire-compounds.jpeg)
-**Panel 8:** *The closer: every hire is a bet on the team's long-term capability — the strong ones compound for years.*
+**Panel 8:** *The closer: every hire is a bet on the team's long-term capability and its diversity of perspective — the strong ones compound for years.*

@@ -50,7 +50,7 @@ Three books and one article, credited openly and per record:
 
 - **Camille Fournier, *The Manager's Path*** (O'Reilly, 2017) — the management ladder, from being managed to senior leadership. The eight records in that section follow the book's chapters.
 - **Julie Zhuo, *The Making of a Manager*** (Portfolio/Penguin, 2019) — first-line management fundamentals. Ten records follow the book's chapters; [[managing-downturn]] and [[managing-remote-teams]] are supplementary checklists extending the book's themes rather than chapter distillations.
-- **Gergely Orosz, *The Software Engineer's Guidebook*** (2023) — the engineer career ladder and its career mechanics, read from the manager's side.
+- **Gergely Orosz, *The Software Engineer's Guidebook*** (Pragmatic Engineer, 2023) — the engineer career ladder and its career mechanics, read from the manager's side.
 - **Kate Matsudaira, "Software Managers' Guide to Operational Excellence"** — the single record in the Operational Excellence section.
 
 The sources are chapter checklists distilled from these books; the records state what *I* will run and hold people to, in first person, with the adaptations I have made.
@@ -87,5 +87,5 @@ This journal is a living document. Records move from `draft` to `accepted` as pr
 
 - Camille Fournier, *The Manager's Path: A Guide for Tech Leaders Navigating Growth and Change* (O'Reilly, 2017).
 - Julie Zhuo, *The Making of a Manager: What to Do When Everyone Looks to You* (Portfolio/Penguin, 2019).
-- Gergely Orosz, *The Software Engineer's Guidebook* (2023).
+- Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023).
 - Kate Matsudaira, "Software Managers' Guide to Operational Excellence".

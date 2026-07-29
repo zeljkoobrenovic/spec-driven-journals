@@ -56,7 +56,7 @@ split; peer executives comparing operating models. First-person declarative.
       canaries, staged rollouts, rollback); conscious pragmatic risk;
       stakeholders identified broadly and never surprised late.
 - [x] **Credit is explicit** — References name Gergely Orosz, *The Software
-      Engineer's Guidebook* (2023), and the chapters distilled.
+      Engineer's Guidebook* (Pragmatic Engineer, 2023), and the chapters distilled.
 
 ## Non-goals
 
@@ -85,7 +85,7 @@ split; peer executives comparing operating models. First-person declarative.
 ## Decision log
 
 - **2026-07-28** — Grounded in the "Pragmatic Tech Lead" checklist distilled
-  from Gergely Orosz's *The Software Engineer's Guidebook* (2023): role
+  from Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023): role
   clarity, project leadership, scope/timeline/people physics, day-to-day
   project management, risks and dependencies, wrapping up, shipping to
   production, stakeholder management, team structure, and team dynamics.
@@ -100,11 +100,12 @@ split; peer executives comparing operating models. First-person declarative.
   - `sources/software-engineering-guidebook/Checklist_ TSEG _ Pragmatic Tech Lead (1).pdf`
     — reproduced, lightly condensed, in the Checklist tab (`checklist.md`).
 - **External**
-  - Gergely Orosz, *The Software Engineer's Guidebook* (self-published,
-    2023) — the Pragmatic Tech Lead chapters this record distills.
+  - Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic
+    Engineer, 2023) — the Pragmatic Tech Lead chapters this record distills.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied (majors and cross-cutting sweeps); see REVIEW.md. *(Željko, AI-mediated session)*
 - **2026-07-28** — Comics modality added (comics.md, Comic tab, shared
   VERA/ARLO cast); 3 inline figures generated in the article. *(Željko,
   AI-mediated session)*

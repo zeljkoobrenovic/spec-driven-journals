@@ -2,7 +2,7 @@ Why everything a senior leader says and does echoes — and why discipline in wo
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -26,7 +26,7 @@ Why everything a senior leader says and does echoes — and why discipline in wo
 **Panel 6:** *The mechanic: a written True North — explicit standards and risk analysis — lets leaders decide fast without escalating everything upward.*
 
 ![Comic panel: a leader steps away from a team gathering to personally deliver a difficult message.](assets/images/senior-leadership/comic-07-the-cost-of-detachment.jpeg)
-**Panel 7:** *The cost: enough detachment to be fair, and bad news delivered personally — never by broadcast, never a message you cannot stand behind.*
+**Panel 7:** *The cost: bad news is delivered personally — never by broadcast, never a message you cannot stand behind.*
 
 ![Comic panel: an engineer freely reports bad news while the leader reacts with curiosity instead of anger.](assets/images/senior-leadership/comic-08-trust-not-fear.jpeg)
 **Panel 8:** *The closer: build trust, not fear — when people can safely tell you the truth, the four tasks finally work.*

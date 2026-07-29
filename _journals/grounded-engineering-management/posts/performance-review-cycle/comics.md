@@ -2,7 +2,7 @@ Why a performance review is written all year — and how to work the cycle from 
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -20,13 +20,13 @@ Why a performance review is written all year — and how to work the cycle from 
 **Panel 4:** *The principle: the review is written all year — the meeting at the end only reads it out. Start at week one.*
 
 ![Comic panel: Vera stamps Arlo's goal card with an endorsement seal while he asks what achieving it will mean.](assets/images/performance-review-cycle/comic-05-goals-i-can-endorse.jpeg)
-**Panel 5:** *How it runs: goals are revised until the manager can endorse them, recorded — and 'would achieving these exceed expectations?' is asked in week one.*
+**Panel 5:** *How it runs: goals are revised until the manager can endorse them, recorded — and 'would achieving these meet or exceed expectations?' is asked in week one.*
 
 ![Comic panel: Arlo files a dated win card into a half-full wins jar next to a smaller jar tracking glue work.](assets/images/performance-review-cycle/comic-06-weekly-wins.jpeg)
 **Panel 6:** *The mechanic: wins recorded weekly with evidence, glue work tracked and bounded — the operating assumption is that the manager does not already know.*
 
 ![Comic panel: Arlo hands Vera an evidence folder at the still-open calibration door as she nods.](assets/images/performance-review-cycle/comic-07-context-before-the-gate.jpeg)
-**Panel 7:** *The cost: a self-review assembled from artifacts, handed over before the gate closes — advocacy material delivered, not improvised.*
+**Panel 7:** *The payoff: a self-review assembled from artifacts, handed over before the gate closes — advocacy material delivered, not improvised.*
 
 ![Comic panel: Vera points at one scored frame in a long career film strip as she and Arlo view it together.](assets/images/performance-review-cycle/comic-08-one-frame-not-the-film.jpeg)
 **Panel 8:** *The closer: read the outcome like an engineer — a snapshot through imperfect lenses, one frame in a long career, examined together from the same side.*

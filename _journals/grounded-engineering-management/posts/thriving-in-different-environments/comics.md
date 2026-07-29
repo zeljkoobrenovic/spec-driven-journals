@@ -2,7 +2,7 @@ Why there is no context-free "great engineer" — and how to read the environmen
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -20,7 +20,7 @@ Why there is no context-free "great engineer" — and how to read the environmen
 **Panel 4:** *The principle: reading the environment — team type, company mode, company type — is a core engineering skill.*
 
 ![Comic panel: Arlo talks with an end user on one side and hands a feedback card to an engineer on a platform slab on the other.](assets/images/thriving-in-different-environments/comic-05-product-vs-platform.jpeg)
-**Panel 5:** *How it runs: on a product team the customer holds a phone; on a platform team the customer is another engineer.*
+**Panel 5:** *How it runs: on a product team the customer is an end user; on a platform team the customer is another engineer.*
 
 ![Comic panel: Arlo and Vera study a wall dial between storm and sun zones with small gauges beside it.](assets/images/thriving-in-different-environments/comic-06-wartime-peacetime-dial.jpeg)
 **Panel 6:** *The mechanic: diagnose the mode from the instruments — deadlines, meetings, conflict tolerance — because the transition is silent.*

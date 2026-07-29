@@ -2,7 +2,7 @@ Why a meeting earns its slot with one primary purpose — and dies by the gut-ch
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -14,7 +14,7 @@ Why a meeting earns its slot with one primary purpose — and dies by the gut-ch
 **Panel 2:** *The problem: the everything meeting — three purposes at once, none of them served.*
 
 ![Comic panel: a huge invite list, then a packed room of passive observers watching two people talk.](assets/images/amazing-meetings/comic-03-the-audience-meeting.jpeg)
-**Panel 3:** *The wrong way: the audience meeting — observers are not free, and the loop has cheaper channels.*
+**Panel 3:** *The wrong way: the audience meeting — observers are not free, and keeping people in the loop is what written summaries are for.*
 
 ![Comic panel: Vera circles one of five purpose chips on a whiteboard while Arlo watches.](assets/images/amazing-meetings/comic-04-one-primary-purpose.jpeg)
 **Panel 4:** *The principle: one primary purpose, stateable as an outcome — the constraint that makes every other choice decidable.*

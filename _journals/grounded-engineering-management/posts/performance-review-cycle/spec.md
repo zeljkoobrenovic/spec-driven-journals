@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-07-28
 ---
 
-# Spec: Performance Reviews
+# Spec: Working the Performance Review Cycle
 
 > Working doc for the post in this folder. The spec drives the post; the post
 > is the artifact.
@@ -84,7 +84,7 @@ engineer directly.
 ## Decision log
 
 - **2026-07-28** — Grounded in the "Performance Reviews" checklist distilled
-  from Gergely Orosz, *The Software Engineer's Guidebook* (2023); the
+  from Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023); the
   article is my manager-side statement of how to work the cycle, the
   Checklist tab is the checklist I hand the engineer.
 - **2026-07-28** — Framed the record around "the review is written all
@@ -96,8 +96,7 @@ engineer directly.
 ## Sources
 
 - **Internal**
-  - `sources/software-engineering-guidebook/Checklist_ TSEG _ Performance
-    Reviews (1).pdf` — reproduced, adapted, in the Checklist tab
+  - `sources/software-engineering-guidebook/Checklist_ TSEG _ Performance Reviews (1).pdf` — reproduced, adapted, in the Checklist tab
     (`checklist.md`).
 - **External**
   - Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer,
@@ -105,6 +104,7 @@ engineer directly.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied (majors and cross-cutting sweeps); see REVIEW.md. *(Željko, AI-mediated session)*
 - **2026-07-28** — Comics modality added (comics.md, Comic tab, shared
   VERA/ARLO cast); 3 inline figures generated in the article. *(Željko,
   AI-mediated session)*

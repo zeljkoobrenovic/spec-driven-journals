@@ -29,7 +29,7 @@ What I expect from engineers navigating a job change, and how I coach each stage
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record is grounded in the Changing Jobs material of Gergely Orosz's *The Software Engineer's Guidebook* (2023), read from the manager's side of the table: the book tells engineers how to run the move; this record states how I coach engineers through it — including honestly toward the door when that is the right answer. The runnable version — the checklist I hand an engineer weighing or making a move — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record is grounded in the Changing Jobs material of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side of the table: the book tells engineers how to run the move; this record states how I coach engineers through it — including honestly toward the door when that is the right answer. The runnable version — the checklist I hand an engineer weighing or making a move — lives in the **Checklist** tab of this post.
 
 ![A winding path with milestones for explore, decide, interview, offer, onboard, and leave well, continuing toward a horizon marked five to ten years.](assets/images/changing-jobs/job-change-arc.jpeg)
 **Figure 1:** *The move is one arc, not one event: it starts before the recruiter mail and keeps counting years after the offer is signed.*
@@ -63,7 +63,7 @@ This journal is my engineering-management operating model. This record is ground
 | What this record says | What it does **not** say |
 | --- | --- |
 | I coach job-change decisions honestly, including toward the door. | I encourage attrition — most honest conversations end with a better reason to stay. |
-| Compare promotion odds with external offers when the path is slow. | Jump at the first stall — a switch resets trust, context, and influence, and that cost is real. |
+| Compare promotion odds with external offers when the path is slow. | Jump at the first stall — the switch's reset costs are real. |
 | Weigh offers across role, growth, team, mission, and upside. | Compensation doesn't matter — it is one axis among several, and market value is worth knowing. |
 | A down-leveled offer can be questioned, negotiated, or declined. | A down-level is always wrong — some companies' bars and pay make it a fair trade. |
 | An up-level is accepted with clear expectations and support. | An up-level is free — it is higher expectations from day one. |
@@ -75,7 +75,7 @@ Concretely: an engineer on my team weighing a move can bring it to me without fe
 
 - **The reactive jump.** Interviewing because a recruiter's number was flattering, without ever deciding what would make a move worth it — the stance drives the search, not the inbox.
 - **Optimizing for the offer letter.** Taking the highest title-and-compensation package while ignoring team, manager, growth, and the 5–10 year trajectory.
-- **Ignoring what the switch resets.** Pricing the new salary but not the lost trust, context, and influence — especially expensive at senior levels, where tenure is much of the value.
+- **Ignoring what the switch resets.** Pricing the new salary but not everything rebuilt from zero — especially expensive at senior levels, where tenure is much of the value.
 - **Winging the interviews.** Treating interview performance as a fixed trait instead of a prepared skill — not even asking the recruiter what the process looks like.
 - **Swallowing a down-level unexamined.** Accepting a lower title without asking what the level means, whether it can be reconsidered, or whether it is misaligned enough to decline.
 - **Taking an up-level without support.** Accepting the bigger title without clear expectations or the backing to meet them — arriving set up to fail.
@@ -96,4 +96,4 @@ This record is `draft`. It governs how I coach engineers on my teams through exp
 
 ## Authoritative References
 
-- Gergely Orosz, *The Software Engineer's Guidebook* (2023) — the Changing Jobs material this record distills, via its companion checklist.
+- Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023) — the Changing Jobs material this record distills, via its companion checklist.

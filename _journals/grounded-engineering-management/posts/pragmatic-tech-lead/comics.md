@@ -2,7 +2,7 @@ Why a tech lead is neither a junior manager nor a superior engineer — and what
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -26,7 +26,7 @@ Why a tech lead is neither a junior manager nor a superior engineer — and what
 **Panel 6:** *The mechanic: when scope grows, timeline, staffing, or quality moves — and the tech lead says so at that moment, out loud.*
 
 ![Comic panel: Arlo brings a rough prototype to another engineer's desk while an unused escalate lever stands behind him.](assets/images/pragmatic-tech-lead/comic-07-the-direct-conversation.jpeg)
-**Panel 7:** *The cost: risks are worked, not hoped away — prototypes for the unknowns, and a direct conversation before any escalation.*
+**Panel 7:** *The discipline: risks are worked, not hoped away — prototypes for the unknowns, and a direct conversation before any escalation.*
 
 ![Comic panel: the team celebrates a finished project by a done board while Arlo watches from the back and Vera takes a note.](assets/images/pragmatic-tech-lead/comic-08-succeeds-without-him.jpeg)
 **Panel 8:** *The closer: the job is to make the team succeed — not to make the team dependent on the lead.*

@@ -103,6 +103,7 @@ rendered as the Checklist tab).
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied (majors and cross-cutting sweeps); see REVIEW.md. *(Željko, AI-mediated session)*
 - **2026-07-28** — Comics modality added (comics.md, Comic tab, shared
   VERA/ARLO cast); 3 inline figures generated in the article. *(Željko,
   AI-mediated session)*

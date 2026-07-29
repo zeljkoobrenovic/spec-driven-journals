@@ -2,7 +2,7 @@ Why the first three months of a new management role are a ramp-up, not a proving
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -20,7 +20,7 @@ Why the first three months of a new management role are a ramp-up, not a proving
 **Panel 4:** *The principle: the first three months are a ramp-up, not a proving period — and acting otherwise is the fastest way to fail them.*
 
 ![Comic panel: a new manager in a friendly 1:1 surrounded by five floating question cards with icons.](assets/images/first-three-months/comic-05-questions-are-free.jpeg)
-**Panel 5:** *How it runs: ask every report the five relationship questions — support, feedback, recognition, past managers, the ideal relationship — while questions are still free.*
+**Panel 5:** *How it runs: ask every report the five relationship questions — support, feedback, recognition, the previous manager, the ideal relationship — while questions are still free.*
 
 ![Comic panel: a manager climbs three landings labeled 30, 60, and 90 with icons for listening, clarifying, and targeted change.](assets/images/first-three-months/comic-06-the-30-60-90-arc.jpeg)
 **Panel 6:** *The mechanic: the 30-60-90 arc — listen and learn, clarify and strengthen, then make a few targeted, evidence-based changes and review them.*

@@ -77,7 +77,7 @@ is the checklist I hand the engineer, in the engineer's first person.
 ## Decision log
 
 - **2026-07-28** — This record is grounded in the Promotions chapter of
-  Gergely Orosz's *The Software Engineer's Guidebook* (2023), via its
+  Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), via its
   companion checklist — read from the manager's side: what I expect
   engineers to bring to a promotion case and how I coach them through it.
 - **2026-07-28** — Framed the record around "evidence and support, not
@@ -93,11 +93,12 @@ is the checklist I hand the engineer, in the engineer's first person.
     (1).pdf` — the chapter checklist; reproduced, adapted, in the Checklist
     tab (`checklist.md`).
 - **External**
-  - Gergely Orosz, *The Software Engineer's Guidebook* (2023) — the
+  - Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023) — the
     Promotions chapter this record distills.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied (majors and cross-cutting sweeps); see REVIEW.md. *(Željko, AI-mediated session)*
 - **2026-07-28** — Comics modality added (comics.md, Comic tab, shared
   VERA/ARLO cast); 3 inline figures generated in the article. *(Željko,
   AI-mediated session)*

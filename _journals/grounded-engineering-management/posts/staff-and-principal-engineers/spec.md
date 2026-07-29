@@ -75,7 +75,7 @@ First-person declarative, manager's voice.
 
 - **2026-07-28** — Grounded in the "Role-Model Staff and Principal
   Engineers" checklist distilled from Gergely Orosz, *The Software
-  Engineer's Guidebook* (2023); the article is my manager-side statement of
+  Engineer's Guidebook* (Pragmatic Engineer, 2023); the article is my manager-side statement of
   that bar, the Checklist tab is the checklist I hand the engineer.
 - **2026-07-28** — Framed the record around the "change of axis" idea: the
   five dimensions are graded together, and hands-on groundedness is the
@@ -85,8 +85,7 @@ First-person declarative, manager's voice.
 ## Sources
 
 - **Internal**
-  - `sources/software-engineering-guidebook/Checklist_ TSEG _ Role-Model
-    Staff _ Principal Engineers (1).pdf` — reproduced, adapted, in the
+  - `sources/software-engineering-guidebook/Checklist_ TSEG _ Role-Model Staff _ Principal Engineers (1).pdf` — reproduced, adapted, in the
     Checklist tab (`checklist.md`).
 - **External**
   - Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer,
@@ -94,6 +93,7 @@ First-person declarative, manager's voice.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied (majors and cross-cutting sweeps); see REVIEW.md. *(Željko, AI-mediated session)*
 - **2026-07-28** — Comics modality added (comics.md, Comic tab, shared
   VERA/ARLO cast); 3 inline figures generated in the article. *(Željko,
   AI-mediated session)*

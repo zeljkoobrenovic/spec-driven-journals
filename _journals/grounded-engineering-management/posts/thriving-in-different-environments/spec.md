@@ -81,7 +81,7 @@ first person.
 
 - **2026-07-28** — This record is grounded in the Thriving in Different
   Environments chapter of Gergely Orosz's *The Software Engineer's
-  Guidebook* (2023), via its companion checklist — read from the manager's
+  Guidebook* (Pragmatic Engineer, 2023), via its companion checklist — read from the manager's
   side: environment-reading as a coachable, expected skill.
 - **2026-07-28** — Framed the record around "no context-free great
   engineer": the same behavior earns promotion in one environment and
@@ -96,11 +96,12 @@ first person.
     Environments (1).pdf` — the chapter checklist; reproduced, adapted, in
     the Checklist tab (`checklist.md`).
 - **External**
-  - Gergely Orosz, *The Software Engineer's Guidebook* (2023) — the
+  - Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023) — the
     Thriving in Different Environments chapter this record distills.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied (majors and cross-cutting sweeps); see REVIEW.md. *(Željko, AI-mediated session)*
 - **2026-07-28** — Comics modality added (comics.md, Comic tab, shared
   VERA/ARLO cast); 3 inline figures generated in the article. *(Željko,
   AI-mediated session)*

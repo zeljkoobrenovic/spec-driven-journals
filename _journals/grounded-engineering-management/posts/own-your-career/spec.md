@@ -78,7 +78,7 @@ engineer's first person, as the source does.
 ## Decision log
 
 - **2026-07-28** — Grounded in the "Own Your Career" checklist distilled
-  from Gergely Orosz, *The Software Engineer's Guidebook* (2023); the
+  from Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023); the
   article is my manager-side statement of the expectation, the Checklist tab
   keeps the source's engineer first-person ("I keep a work log…").
 - **2026-07-28** — Framed the record around "ownership is a habit set, not
@@ -89,8 +89,7 @@ engineer's first person, as the source does.
 ## Sources
 
 - **Internal**
-  - `sources/software-engineering-guidebook/Checklist_ TSEG _ Own Your
-    Career (1).pdf` — reproduced, adapted, in the Checklist tab
+  - `sources/software-engineering-guidebook/Checklist_ TSEG _ Own Your Career (1).pdf` — reproduced, adapted, in the Checklist tab
     (`checklist.md`).
 - **External**
   - Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer,

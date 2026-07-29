@@ -2,7 +2,7 @@ Why a growing team changes the manager's job whether they accept it or not — i
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -14,7 +14,7 @@ Why a growing team changes the manager's job whether they accept it or not — i
 **Panel 2:** *The problem: staying deep in every detail makes the manager the bottleneck — nothing moves faster than his calendar.*
 
 ![Comic panel: exhausted Arlo working alone at night surrounded by only good-news sticky notes.](assets/images/managing-a-growing-team/comic-03-scaling-by-working-harder.jpeg)
-**Panel 3:** *The wrong way: scaling by working harder — longer hours of the old job, while only good news still travels upward.*
+**Panel 3:** *The wrong way: scaling by working harder — longer hours of the old job, while only good news travels upward, because nobody has yet invited dissent, rewarded a messenger, or owned a mistake out loud.*
 
 ![Comic panel: Vera shows Arlo a whiteboard contrasting front-line wiring with the elevated macro view.](assets/images/managing-a-growing-team/comic-04-the-job-changes.jpeg)
 **Panel 4:** *The principle: a growing team changes the job whether you accept it or not — the only choice is whether you change with it.*

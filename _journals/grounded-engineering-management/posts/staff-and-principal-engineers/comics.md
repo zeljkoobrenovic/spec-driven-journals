@@ -2,7 +2,7 @@ Why staff and principal is a change of axis, not a bigger senior role — in eig
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -23,10 +23,10 @@ Why staff and principal is a change of axis, not a bigger senior role — in eig
 **Panel 5:** *How it runs: know the North Star, the customers, and the money — so technical judgment picks problems worth solving.*
 
 ![Comic panel: Arlo walks peers through a proposal with tradeoffs while a listener holds a trust token and a megaphone sits crossed out.](assets/images/staff-and-principal-engineers/comic-06-trust-not-title.jpeg)
-**Panel 6:** *The mechanic: proposals get accepted through trust capital — problem, options, tradeoffs — never bulldozed through a title.*
+**Panel 6:** *The mechanic: influence and execution across teams both run on trust capital — proposals with problem, options, tradeoffs — never bulldozed through a title.*
 
 ![Comic panel: Arlo with a pager and a monitoring dashboard pauses at a one-way vault door, checklist in hand.](assets/images/staff-and-principal-engineers/comic-07-the-pager-and-the-vault-door.jpeg)
-**Panel 7:** *The cost: reliability owned end to end, and homework scaled to blast radius — two-way doors move fast, one-way doors do not.*
+**Panel 7:** *The discipline: reliability owned end to end, and homework scaled to blast radius — two-way doors move fast, one-way doors do not.*
 
 ![Comic panel: Arlo reviews code with a junior engineer, work log open, while Vera notes approvingly from the doorway.](assets/images/staff-and-principal-engineers/comic-08-grounded-at-the-table.jpeg)
 **Panel 8:** *The closer: stay hands-on enough that every decision is grounded in the actual work — the anchor that keeps all five dimensions honest.*

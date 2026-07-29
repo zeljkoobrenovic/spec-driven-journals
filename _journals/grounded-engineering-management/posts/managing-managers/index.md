@@ -54,7 +54,9 @@ This journal is my engineering-management operating model, each record grounded 
 
 ![Circular loop of hypothesis, data, observation, and asking why orbiting a team with a hidden crack, examined through a magnifying glass.](assets/images/managing-managers/team-debugging-loop.jpeg)
 **Figure 3:** *A dysfunctional team is a systems problem: hypothesis, data, observation, and why — repeated until the real issue surfaces.*
- The same grounding requirement applies here as everywhere on the ladder: I stay technically relevant enough — systems, bottlenecks, technical bets, some code and postmortems — to filter requests with my own judgment and explain technical tradeoffs in business terms, instead of acting as a relay between leadership and teams.
+
+
+**The same grounding requirement applies here as everywhere on the ladder.** I stay technically relevant enough — systems, bottlenecks, technical bets, some code and postmortems — to filter requests with my own judgment and explain technical tradeoffs in business terms, instead of acting as a relay between leadership and teams.
 
 ## What This Means in Practice
 

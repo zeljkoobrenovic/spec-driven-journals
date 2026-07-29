@@ -48,7 +48,7 @@ peer executives comparing ladder expectations. First-person declarative.
 - [x] **Voice split holds** — article in the manager's voice; checklist in
       the engineer's first person.
 - [x] **Credit is explicit** — References name Gergely Orosz, *The Software
-      Engineer's Guidebook* (2023), and the chapters distilled.
+      Engineer's Guidebook* (Pragmatic Engineer, 2023), and the chapters distilled.
 
 ## Non-goals
 
@@ -75,7 +75,7 @@ peer executives comparing ladder expectations. First-person declarative.
 ## Decision log
 
 - **2026-07-28** — Grounded in the "Competent Software Developer" checklist
-  distilled from Gergely Orosz's *The Software Engineer's Guidebook* (2023):
+  distilled from Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023):
   getting things done, coding, software development skills, and tools of the
   productive developer, plus the quick weekly self-review.
 - **2026-07-28** — Framed per the journal's Guidebook convention: the
@@ -90,11 +90,12 @@ peer executives comparing ladder expectations. First-person declarative.
     — reproduced, adapted to engineer first person, in the Checklist tab
     (`checklist.md`).
 - **External**
-  - Gergely Orosz, *The Software Engineer's Guidebook* (self-published,
-    2023) — the Competent Software Developer chapters this record distills.
+  - Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic
+    Engineer, 2023) — the Competent Software Developer chapters this record distills.
 
 ## Changelog
 
+- **2026-07-29** — Post-review fixes applied (majors and cross-cutting sweeps); see REVIEW.md. *(Željko, AI-mediated session)*
 - **2026-07-28** — Comics modality added (comics.md, Comic tab, shared
   VERA/ARLO cast); 3 inline figures generated in the article. *(Željko,
   AI-mediated session)*

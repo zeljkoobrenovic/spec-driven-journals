@@ -24,8 +24,8 @@ My operating model for the management job itself:
 - **I work three levers: purpose, people, process.** Everything a manager can improve reduces to these three, and I deliberately invest in all of them rather than defaulting to the one I find most comfortable.
 - **Purpose means the team knows what success looks like and why it matters.** I check that people actually care about the goal, and I reinforce purpose in meetings, goals, and day-to-day communication — not just in kickoff decks.
 - **People means the right skills, real motivation, and trusting relationships.** I hire and develop well, understand each person's strengths and weaknesses, watch team happiness, support career goals, and give individuals what they need to do their best work.
-- **Process means work moves smoothly without me in every loop.** Who does what is clear, how decisions get made is defined, meetings are effective, we learn from past mistakes, and I plan for tomorrow, not just today.
-- **I judge my management by the team's results.** Present outcomes and whether the team is set up for great future outcomes — asking "am I creating valuable, well-crafted work through this team?" and "am I building a strong, satisfied team?" — not by my activity level.
+- **Process means work moves smoothly without me in every loop.** Who does what is clear, how decisions get made is defined, meetings are effective, we learn from past mistakes, the team culture stays healthy, and I plan for tomorrow, not just today.
+- **I judge my management by the team's results.** Present outcomes and whether the team is set up for great future outcomes — asking "am I creating valuable, easy-to-use, well-crafted work through this team?" and "am I building a strong, satisfied team?" — not by my activity level.
 - **I run the self-check before taking or keeping the role.** Do I enjoy the day-to-day work of management, am I motivated by helping a team achieve an outcome, am I comfortable spending much of my time talking with people, can I provide stability in emotionally challenging situations, and am I willing to adapt into the leader my team needs?
 
 ## How to Read This

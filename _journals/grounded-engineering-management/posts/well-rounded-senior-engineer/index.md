@@ -30,7 +30,7 @@ The expectations I hold senior engineers to:
 
 ## How to Read This
 
-This journal is my engineering-management operating model; this record is the second rung of the engineer career ladder seen from the manager's side. It is grounded in the Well-Rounded Senior Engineer chapters of Gergely Orosz's *The Software Engineer's Guidebook* (2023) — the engineering mindset, getting things done, collaboration, craft, testing, and software architecture. The article states what I hold senior engineers to and how I coach the developer-to-engineer shift; the checklist I hand the engineer — in their voice, closing with the book's senior takeaways — lives in the **Checklist** tab.
+This journal is my engineering-management operating model; this record is the second rung of the engineer career ladder seen from the manager's side. It is grounded in the Well-Rounded Senior Engineer chapters of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023) — the engineering mindset, getting things done, collaboration, craft, testing, and software architecture. The article states what I hold senior engineers to and how I coach the developer-to-engineer shift; the checklist I hand the engineer — in their voice, closing with the book's senior takeaways — lives in the **Checklist** tab. The checklist is deliberately broader than the article: it keeps the source's full breadth — including managing one's own work, prioritizing requests, product and business awareness, documentation, and domain-driven design — where the article distills the themes I coach hardest.
 
 ## Rationale
 
@@ -91,4 +91,4 @@ This record is `draft`. It governs the expectations I hold senior engineers to �
 
 ## Authoritative References
 
-- Gergely Orosz, *The Software Engineer's Guidebook* (self-published, 2023) — the Well-Rounded Senior Engineer chapters (engineering mindset, getting things done, collaboration and teamwork, software engineering craft, testing, software architecture) this record distills.
+- Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023) — the Well-Rounded Senior Engineer chapters (engineering mindset, getting things done, collaboration and teamwork, software engineering craft, testing, software architecture) this record distills.

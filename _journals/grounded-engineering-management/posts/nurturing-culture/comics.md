@@ -2,7 +2,7 @@ Why culture is what you repeat, model, reward, and ritualize — not what you wr
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -26,7 +26,7 @@ Why culture is what you repeat, model, reward, and ritualize — not what you wr
 **Panel 6:** *The mechanic: audit what actually gets rewarded — and when the incentive fights the values, change the incentive, not the poster.*
 
 ![Comic panel: montage of Arlo repeating the same value in a meeting, a one-on-one, a chat, and over his own admitted mistake.](assets/images/nurturing-culture/comic-07-repeating-yourself.jpeg)
-**Panel 7:** *The cost: repeating the message across every channel — mistakes included — long past the point it feels redundant; that is when it starts to land.*
+**Panel 7:** *The cost: sounding like a broken record — the message has to cross every channel, mistakes included, long past the point it feels redundant; that is when it starts to land.*
 
 ![Comic panel: the team ceremonially passes a golden rubber duck trophy under pennant flags while Vera and Arlo watch.](assets/images/nurturing-culture/comic-08-a-ritual-of-our-own.jpeg)
 **Panel 8:** *The closer: a ritual that is unmistakably this team's — daily behavior finally telling the same story as the stated values.*

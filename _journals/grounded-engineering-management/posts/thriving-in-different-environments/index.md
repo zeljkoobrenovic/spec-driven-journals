@@ -29,7 +29,7 @@ What I expect engineers to read, and how I expect them to adapt:
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record is grounded in the Thriving in Different Environments chapter of Gergely Orosz's *The Software Engineer's Guidebook* (2023), read from the manager's side of the table: the book tells engineers how to read and adapt to their environment; this record states why I treat that reading as a coachable, expected skill — and how I use it to explain why expectations differ across teams and company phases. The runnable version — the checklist I hand an engineer landing in a new team, or watching their company change around them — lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record is grounded in the Thriving in Different Environments chapter of Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side of the table: the book tells engineers how to read and adapt to their environment; this record states why I treat that reading as a coachable, expected skill — and how I use it to explain why expectations differ across teams and company phases. The runnable version — the checklist I hand an engineer landing in a new team, or watching their company change around them — lives in the **Checklist** tab of this post.
 
 ## Rationale
 
@@ -51,7 +51,7 @@ This journal is my engineering-management operating model. This record is ground
 
 **Company type sets who must see your work.** In Big Tech, the system sees you: reviews and promotion committees run on tracked evidence and relationships across a big organization. At a scaleup, your accumulated knowledge is the asset — tenure pays only when it's converted into impact and shared through onboarding and documentation. At a startup, only outcomes matter, and it is on you to find the high-impact work by talking to founders and customers — and to make sure the people steering the company know what landed. Same engineer, three different visibility games; I coach whichever one my company is currently playing.
 
-**The universal set is what survives every environment — and it's mostly about other people.** Under all the contingency, the source ends on invariants: know what the company values, do standout work by its standards, help others succeed, keep relationships alive, resolve conflict professionally, never burn bridges. Careers are long and environments are temporary; the colleagues you helped and the bridges you kept follow you across every team type, mode, and company. That is the part I hold engineers to unconditionally.
+**The universal set is what survives every environment — and it's mostly about other people.** Under all the contingency, the source ends on invariants that hold in every environment. Careers are long and environments are temporary; the colleagues you helped and the bridges you kept follow you across every team type, mode, and company. That is the part I hold engineers to unconditionally.
 
 ![The same small core of icons — helping others, relationships, standout work, an intact bridge — carried unchanged across four different environment scenes.](assets/images/thriving-in-different-environments/universal-set-core.jpeg)
 **Figure 3:** *Environments are temporary; the universal set travels: standout work by local standards, helping others, kept relationships, and no burned bridges.*
@@ -96,4 +96,4 @@ This record is `draft`. It governs how I set expectations across different teams
 
 ## Authoritative References
 
-- Gergely Orosz, *The Software Engineer's Guidebook* (2023) — the Thriving in Different Environments chapter this record distills, via its companion checklist.
+- Gergely Orosz, *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023) — the Thriving in Different Environments chapter this record distills, via its companion checklist.

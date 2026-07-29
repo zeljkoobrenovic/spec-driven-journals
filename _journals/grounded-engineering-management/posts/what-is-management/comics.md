@@ -2,7 +2,7 @@ Why management is a multiplier on the team's outcomes — not your own output pl
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -23,7 +23,7 @@ Why management is a multiplier on the team's outcomes — not your own output pl
 **Panel 5:** *How it runs: three levers — purpose, people, process — worked deliberately, including the ones an ex-engineer would naturally skip.*
 
 ![Comic panel: a manager reads a two-sided scorecard about present work and future team strength, his calendar in the bin.](assets/images/what-is-management/comic-06-the-two-questions.jpeg)
-**Panel 6:** *The mechanic: the scorecard is two questions — is the team producing valuable, well-crafted work, and is it set up for great future outcomes?*
+**Panel 6:** *The mechanic: the scorecard is two questions — is the team producing valuable, easy-to-use, well-crafted work, and is it set up for great future outcomes?*
 
 ![Comic panel: a manager faces a mirror whose reflection shows him listening to a teammate, with a self-check note on the frame.](assets/images/what-is-management/comic-07-the-self-check.jpeg)
 **Panel 7:** *The cost: an honest, recurring self-check — a manager who does not want the day-to-day work is a tax on the team, not a multiplier.*

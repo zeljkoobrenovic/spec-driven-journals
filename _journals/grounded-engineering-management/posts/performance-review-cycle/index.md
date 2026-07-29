@@ -1,7 +1,7 @@
 ---
 id: "EM-PERFORMANCE-REVIEW-CYCLE"
 status: draft:gray
-title: "Performance Reviews"
+title: "Working the Performance Review Cycle"
 date: 2026-07-28
 author: Željko Obrenović
 permalink: performance-review-cycle
@@ -30,7 +30,7 @@ How I expect engineers to work the review cycle, and what I do to make it workab
 
 ## How to Read This
 
-This journal is my engineering-management operating model. This record is grounded in the "Performance Reviews" chapter material from Gergely Orosz's *The Software Engineer's Guidebook* (2023), read from the manager's side: how I coach engineers to work the review cycle, and what I owe them in return. My own side of the same cycle — how I write and deliver reviews — is [[performance-reviews]] in the people-management journal; this record is the mirror image. The runnable version lives in the **Checklist** tab of this post.
+This journal is my engineering-management operating model. This record is grounded in the "Performance Reviews" chapter material from Gergely Orosz's *The Software Engineer's Guidebook* (Pragmatic Engineer, 2023), read from the manager's side: how I coach engineers to work the review cycle, and what I owe them in return. My own side of the same cycle — how I write and deliver reviews — is [[performance-reviews]] in the people-management journal; this record is the mirror image. The runnable version lives in the **Checklist** tab of this post.
 
 ## Rationale
 

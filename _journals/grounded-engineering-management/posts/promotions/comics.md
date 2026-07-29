@@ -2,7 +2,7 @@ Why a promotion is won long before the cycle opens — in eight panels.
 
 <!-- comic-style
 {
-  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an engineer newly stepping into management, buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
+  "cast": "VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. ARLO: an eager early-career engineer climbing the ladder — in some strips a new lead or manager, in others the engineer being coached — buzz-cut hair, zip-up hoodie with rolled sleeves, sticker-covered laptop under one arm.",
   "style": "Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism."
 }
 -->
@@ -26,7 +26,7 @@ Why a promotion is won long before the cycle opens — in eight panels.
 **Panel 6:** *The mechanic: a case needs supporters beyond one manager — peers, seniors, and skip-levels who have seen the work.*
 
 ![Comic panel: Vera calmly explains a sheet with three closed gates labeled headcount, budget, and need to Arlo across a table.](assets/images/promotions/comic-07-the-honest-no.jpeg)
-**Panel 7:** *The cost: headcount, budget, and approval rates are real — every candidate needs a plan for the cycle where the answer is no.*
+**Panel 7:** *The cost: headcount, budget, and business need are real gates — every candidate needs a plan for the cycle where the answer is no.*
 
 ![Comic panel: Vera shakes Arlo's hand as he holds a promotion letter, colleagues applauding behind them.](assets/images/promotions/comic-08-title-catches-up.jpeg)
 **Panel 8:** *The closer: no promotion case should surprise either side — the title is the system catching up with reality.*
