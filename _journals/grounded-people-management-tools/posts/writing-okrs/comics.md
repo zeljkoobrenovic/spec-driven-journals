@@ -25,8 +25,8 @@ OKRs are a written contract, not a wish list — how to write, scrutinize, and s
 ![Comic panel: two dials, one at 70-80 percent and a smaller amber one pinned at 95 percent labeled must-hit.](assets/images/writing-okrs/comic-06-must-hit-ninety-five.jpeg)
 **Panel 6:** *The mechanic: 70-80 percent is the target zone, but must-hit goals are held to 95 percent or better.*
 
-![Comic panel: Vera stops Noa from erasing a failing key result, pointing to a documented-changes log instead.](assets/images/writing-okrs/comic-07-silent-edit-cost.jpeg)
-**Panel 7:** *The cost: nothing gets quietly erased — every change is documented, and a dropped objective still gets scored.*
+![Comic panel: a mid-quarter board with green, yellow, and red chips per objective; Vera redirects Noa's eraser toward an open changes log.](assets/images/writing-okrs/comic-07-silent-edit-cost.jpeg)
+**Panel 7:** *Mid-quarter, every objective scores green, yellow, or red — and nothing gets quietly erased; a dropped objective still gets scored.*
 
 ![Comic panel: Noa posts an OKR document titled 'On track' to a shared board where other teams' documents nest beneath it.](assets/images/writing-okrs/comic-08-published-on-track.jpeg)
 **Panel 8:** *The closer: publishing turns a private draft into a commitment the whole company can see and plan against.*

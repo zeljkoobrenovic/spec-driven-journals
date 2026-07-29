@@ -13,8 +13,8 @@ The QBR is a written, candid, six-page accountability ritual, not a showcase —
 ![Comic panel: Vera checks her watch as Noa hands out documents just as the meeting begins.](assets/images/quarterly-business-reviews/comic-02-no-memo.jpeg)
 **Panel 2:** *The problem: no pre-read means the room narrates instead of discusses.*
 
-![Comic panel: Vera holds up a hand toward Noa's bullet-point slide, objecting to a live narration.](assets/images/quarterly-business-reviews/comic-03-slides-not-memo.jpeg)
-**Panel 3:** *The wrong way: a slide deck substitutes performance for rigor.*
+![Comic panel: Noa presents a glossy slide of trophies and rising arrows while Vera taps a blank memo section labeled MISSES.](assets/images/quarterly-business-reviews/comic-03-slides-not-memo.jpeg)
+**Panel 3:** *The wrong way: a showcase of successes is not a candid assessment.*
 
 ![Comic panel: Vera holds up a six-page stapled document beside Noa's checklist clipboard.](assets/images/quarterly-business-reviews/comic-04-document-is-artifact.jpeg)
 **Panel 4:** *The principle: a QBR is a written, candid, six-page accountability ritual.*

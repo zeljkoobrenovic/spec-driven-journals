@@ -25,8 +25,8 @@ A performance review has to survive calibration, not just the meeting it was wri
 ![Comic panel: Vera and Noa stand at a signpost with two paths, one labeled Not Yet with a dated milestone, one labeled Yes with a Next-Level Growth flag.](assets/images/performance-reviews/comic-06-not-yet-is-a-plan.jpeg)
 **Panel 6:** *"Not yet" states a date and a bar to clear. "Yes" states the next step, not a blocker.*
 
-![Comic panel: Noa sits late at her desk surrounded by crumpled drafts, still rewriting one sentence, tired but focused.](assets/images/performance-reviews/comic-07-the-cost-of-the-edges.jpeg)
-**Panel 7:** *Honesty at the edges is not free — it costs the rewrite you would rather skip.*
+![Comic panel: Noa concentrates over a review form with two empty boxes labeled WHY NOT HIGHER? and WHY NOT LOWER?, pen hovering, late evening.](assets/images/performance-reviews/comic-07-the-cost-of-the-edges.jpeg)
+**Panel 7:** *The cost: the two edge questions make you defend the designation in both directions.*
 
 ![Comic panel: Noa walks into the calibration room holding an index card with one sentence written on it, meeting Vera's proud gaze.](assets/images/performance-reviews/comic-08-the-sentence-before-the-room.jpeg)
 **Panel 8:** *If I can write that sentence honestly before the meeting, I am ready for the room.*

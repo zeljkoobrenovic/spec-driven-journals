@@ -167,3 +167,4 @@ intent, so it does not rise to `drifted`.
 - "Be concise" item now states the six-page **document** limit with the narrative's own two-page limit.
 - Progress-on-goals heading now notes template rows extend up to 10.
 - "Two years" repetition in the article (minor): skipped — blockquote → statement → rationale escalation is the house pattern; comics panel 2–3 beat overlap skipped (would require regenerating panels).
+- **2026-07-29 (follow-up):** Panel 3 image regenerated with a distinct beat (showcase-of-successes vs candid memo, "Where are the misses?"), resolving the panel 2–3 redundancy; caption and alt updated.

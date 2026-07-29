@@ -152,3 +152,4 @@ Drift: none. Spec `status: accepted` correctly reflects spec↔post agreement.
   noting any leave and whether the period was less than a half-year") is a
   faithful paraphrase of the source question, not a factual drift. No change
   needed.
+- **2026-07-29 (follow-up):** Panel 7 image regenerated — the cost beat is now the two edge questions ("Why not higher? / Why not lower?"), tracing to the article; caption and alt updated.
