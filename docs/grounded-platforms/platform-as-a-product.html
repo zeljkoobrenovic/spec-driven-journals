@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Platform as a Product</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="building-platform-teams.html" title="Building Great Platform Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="operating-platforms.html" title="Operating Platforms">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Platform Engineering</p>
+        <h1>Platform as a Product</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-12  ·  7 min · <a class="spec-link" href="platform-as-a-product.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/platform-as-a-product/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/platform-as-a-product/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="building-platform-teams.html" title="Building Great Platform Teams">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="operating-platforms.html" title="Operating Platforms">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-PLATFORM-AS-A-PRODUCT", "status": "draft:gray", "title": "Platform as a Product", "date": "2026-08-12", "author": "Željko Obrenović", "permalink": "platform-as-a-product", "timetoread": "7 min", "excerpt": "I run internal platforms as products with real customers, not as infrastructure projects with captive users. Mandatory usage is not product success — a platform earns adoption the way any product does: by knowing its customers' actual workflows, solving common problems rather than filling bespoke feature requests, and making migration cheap enough to be worth it. I expect platform teams to validate product–market fit internally before committing serious investment, to measure impact rather than activity, and to treat reliability as part of the product experience.", "tags": "platform engineering, platform as a product, internal customers, product management, adoption, migration, metrics", "icon": "assets/icons/platform-as-a-product.png", "logo": "assets/images/platform-as-a-product/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["platform engineering", "platform as a product", "internal customers", "product management", "adoption", "migration", "metrics"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: An internal platform is a product with customers, and I hold platform teams to a product bar, not an infrastructure bar. Mandatory usage is not success; a captive audience is a risk, not a moat. Platform teams learn how their customers actually work rather than what they say they want, refuse to become a feature shop for the loudest team, and validate product–market fit internally — real commitments, not hypothetical enthusiasm — before committing serious investment. Adoption and migration are part of the product strategy from the beginning, impact metrics rather than activity metrics guide that strategy, and reliability is part of the product experience. A platform that customers would not choose if they had a choice is not done; it is failing slowly.\n\n## Statement\n\nMy operating model for running platforms as products has four commitments.\n\n**Know the customer as a customer:**\n\n- **Internal engineers are customers, not stakeholders.** Platform teams identify who their customers are, observe their real workflows, pain points, and workarounds, and interview them regularly — instead of relying on what customers say they want.\n- **Customer empathy is everyone's job.** Engineers participate in customer support and hear customer research; customer engagement is shared between product managers and engineers, and goals include adoption, satisfaction, and productivity.\n- **The captive audience is a trap.** Mandatory usage proves nothing; internal customers may have no realistic alternative, and dissatisfied teams will eventually build competing solutions. I read metrics with that in mind and design beyond the loudest, largest team.\n\n**Practice product discipline:**\n\n- **No feature shop.** We separate the customer's underlying problem from their proposed solution, look for common needs across teams, and prefer reusable, self-service capabilities over a growing backlog of bespoke requests only the platform team can implement.\n- **Discover, then validate.** Promising platform products often start as tools internal teams already built and love; we generalize from proof, prototype with a partner team, consider buying instead of building, and validate internal product–market fit with real commitments of time, effort, or budget.\n- **Rethink the problem, not just the interface.** The best platform work eliminates a task or operates it centrally rather than making everyone's copy of it slightly easier.\n\n**Plan adoption like a product launch:**\n\n- **Migration cost is part of the build decision.** Onboarding effort, compatibility problems, hidden dependencies, and a clear path off the old product are estimated up front — and no new generation launches without a retirement plan for the old one.\n- **Respect the customer's change budget.** Teams can absorb only so much change per year; we coordinate migrations, prioritize offerings with enough immediate benefit to justify the effort, and never assume adoption just because something is technically better — and the platform is marketed internally, so customers know an offering exists before they build their own.\n\n**Measure and staff it honestly:**\n\n- **Impact metrics guide strategy.** We separate impact, guardrail, and product-health metrics, write down the hypothesis linking platform work to customer outcomes, and adjust when evidence contradicts the theory.\n- **Reliability is product experience.** Instability burns the trust every future launch depends on; no new features on an unreliable foundation.\n- **Product and engineering stay distinct and healthy.** Product managers own customer problems, outcomes, and strategy; engineering managers own execution; engineers keep shaping solutions rather than implementing specifications — features are defined by the customer outcomes they should create, not by prescriptive specs.\n\n![Concept map of four commitments around a central platform-as-product hub: know the customer, product discipline, plan adoption, measure impact.](assets/images/platform-as-a-product/four-commitments-map.jpeg)\n**Figure 1:** *The operating model in one view: a platform run as a product stands on four commitments — customer knowledge, product discipline, adoption planning, and honest measurement.*\n\n## How to Read This\n\nThis journal is my platform operating model, one record per source checklist. This record is grounded in the \"Platform as a Product\" chapter of Camille Fournier and Ian Nowland's *Platform Engineering* (O'Reilly, 2024) — the chapter on what it actually takes to run an internal platform with product discipline, distilled here into **the product bar I hold every platform team to**. The runnable version — the culture practices, the validation gates, the metrics discipline, and the final pre-investment review — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Captive customers make product discipline harder, not optional.** An external product that stops serving its customers loses them and knows it immediately. An internal platform with mandated usage can fail for years while its dashboards look fine — usage stays high because there is no alternative, until suddenly there is one, built in anger by a customer team. Fournier and Nowland's sharpest warning is exactly this: **do not interpret mandatory usage as proof of success**. The discipline of treating internal engineers as customers exists to surface the dissatisfaction that captivity hides.\n\n**What customers say they want and what they need are different products.** Internal customers arrive with proposed solutions — \"add this flag\", \"support this framework\" — and a platform team that builds each one becomes a feature shop: a growing backlog of bespoke work only it can implement, serving whoever asks loudest. The product move is to **separate the problem from the proposed solution**, find the need shared across teams, and build the reusable, self-service capability. Feature requests are signals for product opportunities, not a work queue.\n\n![Funnel diagram distilling many bespoke feature requests into one shared problem and a single reusable self-service capability, with the bespoke-widgets path crossed out.](assets/images/platform-as-a-product/requests-to-capability-funnel.jpeg)\n**Figure 2:** *Product discipline as a funnel: separate the problem from the proposed solution, find the need shared across teams, and ship the reusable self-service capability — not five bespoke widgets.*\n\n**Validation before investment is cheaper than migration after failure.** Internal platforms fail most expensively at adoption: the product works, and nobody moves. So I require product–market fit to be validated internally the way a startup would — named customer segments, alpha customers willing to commit **real time, effort, or budget rather than hypothetical enthusiasm**, and honest estimates of onboarding and migration cost — before serious investment. The chapter's most underrated instruction is to include migration cost in the decision of whether a product is worth building at all.\n\n**The customer's change budget is a real budget.** Every migration a platform team ships spends its customers' capacity to absorb change, and that capacity is finite and shared with everything else the organization is doing. A technically better product that lands in a year already full of migrations will be rationally ignored. Coordinating launches, prioritizing offerings with immediate benefit, and making new things easy to learn is not marketing polish — it is **how a platform stays welcome**.\n\n**Activity metrics flatter; impact metrics steer.** Request counts and adoption curves can all rise while customers get no faster. I expect platform teams to write down the hypothesis — this improvement causes that customer outcome — identify intermediate signals, and check whether reality agrees; when it does not, the strategy changes, not the metric. Guardrails stop one metric being improved at another's expense, and surveys confirm the numbers still mean what we think they mean.\n\n![Diagram of a measurement chain from platform work through intermediate signals to customer outcome, with guardrails above, product health below, and a feedback arrow labeled adjust.](assets/images/platform-as-a-product/impact-metrics-chain.jpeg)\n**Figure 3:** *Impact metrics steer: write down the hypothesis linking work to customer outcomes, watch guardrails and product health alongside it, and change the strategy — not the metric — when evidence disagrees.*\n\n**Trust is the platform's real currency, and reliability is how it is earned.** Customers who were burned by an unstable offering will reject the next valuable one; every launch is priced in the trust earned or lost by the last. That is why reliability work outranks new features on an unreliable foundation, and why the product/engineering split matters: product managers reduced to backlog grooming, or engineers reduced to implementation contractors, both produce platforms nobody would choose.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Internal engineers are customers whose workflows we observe and interview. | Customers spec the product — we solve the underlying problem, not the proposed solution. |\n| Mandatory usage proves nothing; measure voluntary adoption and satisfaction where possible. | Mandates are never legitimate — sometimes they are, but they are not evidence of product success. |\n| Build reusable, self-service capabilities for common needs. | Build every feature requested — a feature shop is a failure mode, not responsiveness. |\n| Validate product–market fit with real commitments before serious investment. | Enthusiasm in a meeting counts as validation — only committed time, effort, or budget does. |\n| Migration cost and a retirement plan are part of the decision to build. | Shipping the new thing is the finish line — multiple live generations without a retirement plan is a debt. |\n| Impact metrics, with guardrails, guide the roadmap. | Activity metrics are impact — request counts rising is not customers succeeding. |\n| Reliability is part of the product experience and outranks new features on a shaky foundation. | Reliability is an ops concern separate from product — instability is a product defect. |\n\nConcretely: every platform team here can name its customer segments, has observed real customer workflows within recent memory, and **can state the impact hypothesis behind its current roadmap**. Before significant new platform investment, the final pre-investment review in the Checklist tab gets answered honestly — and \"we have a captive audience\" is **never accepted as an adoption strategy**.\n\n## Anti-Patterns\n\n- **The captive-audience fallacy.** Reading mandated usage as product success while dissatisfaction accumulates invisibly — until a customer team ships a competing solution.\n- **The feature shop.** Building every request as specified, for whoever asks loudest, until the backlog is bespoke work only the platform team can do and no common capability ever emerges.\n- **Loudest-team design.** Shaping the platform around the largest or most influential customer while everyone else's workflows go unobserved.\n- **Hypothetical validation.** Counting enthusiastic meetings as demand; real validation is customers committing time, effort, or budget.\n- **Big-tech cargo culting.** Copying a large company's internal product without checking whether its assumptions — scale, staffing, culture — fit this organization.\n- **Migration as an afterthought.** Deciding to build on engineering cost alone, then discovering the customer-side migration is more expensive than the product — or never retiring the old generation at all.\n- **Change-budget blindness.** Launching every improvement the moment it is ready, into teams already saturated with migrations, then blaming customers for slow adoption.\n- **PM as backlog admin.** Letting product ownership collapse into grooming and project administration while engineers become implementation contractors — the org chart says product, the behavior says feature shop.\n\n## Related Records\n\n- [The Four Pillars of Platform Engineering](four-pillars.html) — the pillar model where \"taking a curated product approach\" sits; this record is that pillar unpacked into a full operating discipline.\n- [Operating Platforms](operating-platforms.html) — reliability appears here as part of the product experience; that record carries the operational machinery — on-call, support, and operational feedback — behind it.\n- [What Platform Success Looks Like](platform-success.html) — what platform success looks like overall; the impact-metric discipline in this record is the product-side instrument for it.\n- [Managing Platform Stakeholders](managing-stakeholders.html) — the stakeholder side of the same relationships; this record covers customers, that one covers the leaders and partners around the platform.\n- [Growing Platforms](growing-platforms.html) — Hohpe's view on growing adoption; complementary to this record's adoption-and-migration planning.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every internal platform team in my organization that ships capabilities to other engineering teams — infrastructure, developer tooling, data, and shared services alike. I revisit it if a customer team builds a competing solution to a mandated platform (the captive-audience alarm), if **platform backlogs fill with bespoke single-team requests**, or if a significant platform investment reaches build without surviving the final pre-investment review in the Checklist tab.\n\n## Authoritative References\n\n- Camille Fournier and Ian Nowland, *Platform Engineering: A Guide for Technical, Product, and People Leaders* (O'Reilly, 2024) — the \"Platform as a Product\" chapter, whose checklist this record distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "6 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Build a Customer-Focused Product Culture\n\n- [ ] Identify the internal teams and engineers who are your platform's customers.\n- [ ] Treat internal users as **customers**, not merely stakeholders.\n- [ ] Learn how customers actually work instead of relying only on what they say they want.\n- [ ] Observe customer workflows, pain points, constraints, and recurring workarounds.\n- [ ] Regularly interview customers to build empathy and gain insights.\n- [ ] Bring customers into team meetings or all-hands to demonstrate how they use the platform.\n- [ ] Have product managers regularly share customer research and feedback.\n- [ ] Give engineers opportunities to participate in customer support.\n- [ ] Include customer-focused goals such as adoption, satisfaction, productivity, and engagement.\n- [ ] Make customer engagement a shared responsibility between product managers and engineers.\n- [ ] Avoid designing only for the loudest, largest, or most influential internal team.\n\n## 2. Understand the Risks of Internal Customers\n\n- [ ] Account for having a relatively small customer base when interpreting metrics.\n- [ ] Remember that internal users may be a captive audience and may have no realistic alternative.\n- [ ] Do not interpret mandatory usage as proof of the product's success.\n- [ ] Watch for conflicting incentives between platform teams and customer teams.\n- [ ] Expect customer satisfaction to change as expectations and technology evolve.\n- [ ] Assume internal engineering teams may build competing solutions if the platform does not meet their needs.\n- [ ] Look beyond individual requests for patterns that apply to multiple teams.\n\n## 3. Avoid the Feature-Shop Trap\n\n- [ ] Do not build every feature customers request.\n- [ ] Separate the customer's underlying problem from their proposed solution.\n- [ ] Look for common needs across multiple customer groups.\n- [ ] Prefer reusable platform capabilities over one-off custom implementations.\n- [ ] Ask whether customers can extend or customize the platform themselves where appropriate.\n- [ ] Design self-service mechanisms before demand scales.\n- [ ] Consider how increased adoption will affect the platform team's workload.\n- [ ] Avoid creating a growing backlog of bespoke requests that only the platform team can implement.\n- [ ] Use feature requests as signals for broader product opportunities.\n\n## 4. Discover Promising Platform Products\n\n- [ ] Look for successful tools or systems already built by internal teams.\n- [ ] Identify solutions that could be generalized and expanded to a wider customer base.\n- [ ] Partner with a customer team to prototype new platform capabilities.\n- [ ] Start with small experiments or proofs of concept before committing to a complete platform.\n- [ ] Test whether a prototype solves a broader problem rather than a single team's edge case.\n- [ ] Look for products with a realistic path to adoption.\n- [ ] Evaluate whether customers will receive enough benefit to justify switching.\n- [ ] Consider buying or adopting an existing solution instead of building when appropriate.\n- [ ] Avoid copying products from large technology companies without checking whether their assumptions fit your organization.\n\n## 5. Validate Product–Market Fit Internally\n\n- [ ] Confirm that the proposed solution fits your company's technology stack.\n- [ ] Identify required organizational, cultural, or process changes.\n- [ ] Decide which customer segments the product is designed for.\n- [ ] Estimate the number of teams or engineers who would realistically use it.\n- [ ] Find potential alpha or beta customers willing to try the product.\n- [ ] Validate customer demand through conversations and experiments.\n- [ ] Estimate customer onboarding effort.\n- [ ] Estimate migration effort from existing systems.\n- [ ] Determine whether customers have the time and capacity to adopt the product soon.\n- [ ] Check whether the offering is useful only for new applications or also helps existing ones.\n- [ ] Test customer willingness using real commitments of time, effort, or budget rather than hypothetical enthusiasm.\n- [ ] Consider the current company budget and investment climate.\n\n## 6. Rethink the Problem, Not Just the Interface\n\n- [ ] Ask whether the platform can eliminate a task rather than merely make it easier.\n- [ ] Identify repetitive machine or data processes that the platform could operate centrally.\n- [ ] Remove unnecessary human involvement where reliable automation is possible.\n- [ ] Consider whether the platform should own the complete lifecycle of a task.\n- [ ] Use \"smooth the edges\" improvements when coordination between people and systems is unavoidable.\n- [ ] Use \"rethink the problem\" approaches when the task can realistically be abstracted away by a platform.\n- [ ] Avoid forcing every user to maintain the same scripts, playbooks, or operational procedures independently.\n\n## 7. Plan for Adoption and Migration\n\n- [ ] Estimate the engineering cost of migration.\n- [ ] Estimate the customer effort required to migrate.\n- [ ] Identify compatibility problems, hidden dependencies, and legacy behaviors.\n- [ ] Include training and onboarding in the migration plan.\n- [ ] Provide a clear path from the old product to the new one.\n- [ ] Consider whether links, integrations, workflows, and automation depend on the old system.\n- [ ] Budget time for customer support during migration.\n- [ ] Include migration cost when deciding whether a new product is worth building.\n- [ ] Avoid launching multiple generations of the same solution without a retirement plan.\n- [ ] Make adoption and migration part of the product strategy from the beginning.\n\n## 8. Respect the Customer's Change Budget\n\n- [ ] Estimate how much organizational change customers can realistically absorb this year.\n- [ ] Coordinate major migrations and new tools rather than launching everything at once.\n- [ ] Prioritize products that offer enough immediate benefit to justify adoption effort.\n- [ ] Make new offerings as easy as possible to learn and integrate.\n- [ ] Consider whether customers are already occupied with other migrations or major projects.\n- [ ] Avoid assuming users will immediately adopt a new product simply because it is technically better.\n\n## 9. Measure Product Success\n\n- [ ] Define why each metric is needed before collecting it.\n- [ ] Separate **impact metrics**, **guardrail metrics**, and **product health metrics**.\n- [ ] Define the customer behavior or business outcome the product is meant to change.\n- [ ] Track migration overhead or time imposed on users.\n- [ ] Estimate time or money saved for platform customers.\n- [ ] Measure voluntary adoption where possible.\n- [ ] Track customer satisfaction, such as CSAT.\n- [ ] Measure the user action or workflow that matters rather than only low-level system requests.\n- [ ] Capture relevant user or team metadata at the time an event occurs.\n- [ ] Measure outcomes across systems when the customer workflow extends beyond the platform.\n- [ ] Use surveys and interviews to confirm that quantitative metrics reflect what customers value.\n- [ ] Revisit metrics when they stop explaining whether the product is delivering value.\n- [ ] Treat early metrics as prototypes and improve them over time.\n\n## 10. Use Impact Metrics to Guide Strategy\n\n- [ ] Write down your hypothesis about how a platform improvement causes a customer or business outcome.\n- [ ] Identify intermediate signals along that cause-and-effect chain.\n- [ ] Measure both the technical improvement and the resulting user behavior.\n- [ ] Check whether observed results support the original hypothesis.\n- [ ] Investigate alternative bottlenecks when expected outcomes do not appear.\n- [ ] Adjust the strategy when evidence contradicts the impact theory.\n- [ ] Use guardrails to prevent improving one metric at the expense of another.\n\n## 11. Create a Product Roadmap\n\n- [ ] Write a long-term product vision describing the desired future state.\n- [ ] Identify the major obstacles preventing that vision from being achieved.\n- [ ] Develop a medium-term strategy to address the most important obstacles.\n- [ ] Translate the strategy into annual goals and measurable outcomes.\n- [ ] Break annual goals into quarterly milestones.\n- [ ] Sequence work according to impact, technical dependencies, and feasibility.\n- [ ] Deliver value incrementally rather than waiting for a large final release.\n- [ ] Reevaluate the roadmap as customer evidence and metrics change.\n- [ ] Keep the customer-facing roadmap focused primarily on outcomes and visible capabilities rather than detailed internal engineering work.\n\n## 12. Define Features by Outcomes\n\n- [ ] Document why a feature matters to customers.\n- [ ] Define the customer outcome the feature should create.\n- [ ] Explain how the feature supports the larger product vision.\n- [ ] Let product and engineering jointly determine the implementation.\n- [ ] Break work longer than roughly a month into smaller deliverable pieces where possible.\n- [ ] Avoid turning product requirements into highly prescriptive engineering specifications.\n- [ ] Measure whether delivered features produced the expected customer outcome.\n\n## 13. Market the Platform Internally\n\n- [ ] Maintain an easy-to-browse internal page describing available platform products and capabilities.\n- [ ] Announce meaningful launches and new features through appropriate internal channels.\n- [ ] Run demos or roadshows for important platform releases.\n- [ ] Build relationships with customer advocates who can evangelize useful products to their teams.\n- [ ] Make sure potential users know an internal solution exists before they build or buy their own.\n- [ ] Allocate explicit product-management effort to internal product marketing as the organization grows.\n\n## 14. Protect Reliability and Stability\n\n- [ ] Treat platform stability as part of the product experience.\n- [ ] Prioritize reliability work when instability is damaging customer trust.\n- [ ] Avoid adding new features on top of an unreliable foundation.\n- [ ] Include operational quality and support costs in product decisions.\n- [ ] Remember that customers may reject even valuable new products if previous offerings have been unreliable.\n\n## 15. Keep Product and Engineering Responsibilities Healthy\n\n- [ ] Ensure product managers focus on customer problems, outcomes, priorities, and strategy.\n- [ ] Ensure engineering managers own engineering execution and team management.\n- [ ] Do not make product managers responsible for detailed project-management work that engineering managers should own.\n- [ ] Avoid treating engineering teams as implementation contractors for product specifications.\n- [ ] Preserve engineers' ability to contribute ideas and shape solutions.\n- [ ] Maintain enough product-management capacity to support discovery and strategy without overstaffing PMs.\n- [ ] Keep product ownership distinct from backlog grooming and administrative project management.\n\n## Final Pre-Investment Review\n\nBefore committing significant platform investment, confirm:\n\n- [ ] We understand **who the customers are**.\n- [ ] We understand **their actual problems and workflows**.\n- [ ] We have evidence that the problem is worth solving.\n- [ ] The solution fits our company's technical and organizational context.\n- [ ] We know which customer segment we are targeting first.\n- [ ] We have customers willing to test or adopt it.\n- [ ] We have estimated onboarding and migration costs.\n- [ ] The benefits justify the customer's effort to change.\n- [ ] We have clear impact metrics.\n- [ ] We have a realistic adoption strategy.\n- [ ] The product supports a broader platform vision rather than isolated feature requests.\n- [ ] Reliability is sufficient to earn customer trust.\n- [ ] Product and engineering responsibilities are clear.\n- [ ] We can explain the value of the product in terms of customer outcomes, not just technical capabilities.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why mandatory usage is not product success — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Kai celebrates a 100% adoption dashboard while Vera watches glum developers file through a gate labeled ONLY OPTION.](assets/images/platform-as-a-product/comic-01-hundred-percent-adoption.jpeg)\n**Panel 1:** *The hook: the dashboard says 100% adoption — but mandatory usage proves nothing about the product.*\n\n![Comic panel: developers secretly build their own tool labeled OUR OWN while the mandatory platform sits unloved behind them.](assets/images/platform-as-a-product/comic-02-the-shadow-platform.jpeg)\n**Panel 2:** *The problem: captivity hides dissatisfaction until a customer team builds a competing solution in anger.*\n\n![Comic panel: Kai overwhelmed at a counter labeled FEATURES while a figure with a megaphone shouts an order past a long queue.](assets/images/platform-as-a-product/comic-03-the-feature-shop.jpeg)\n**Panel 3:** *The wrong way: the feature shop — building every request as specified, for whoever asks loudest, until no common capability ever emerges.*\n\n![Comic panel: Kai takes notes while watching a developer walk through a tangled workflow on screen, Vera approving behind.](assets/images/platform-as-a-product/comic-04-observe-the-customer.jpeg)\n**Panel 4:** *The principle: internal engineers are customers — observe how they actually work, not what they say they want.*\n\n![Comic panel: a customer lead signs an alpha pledge with an hourglass and coins on the table while a crossed-out applause balloon floats behind.](assets/images/platform-as-a-product/comic-05-real-commitments.jpeg)\n**Panel 5:** *How it plays out: product-market fit is validated with real commitments of time, effort, or budget — enthusiasm in a meeting is not validation.*\n\n![Comic panel: Kai checks a nearly empty jar labeled CHANGE BUDGET before offering a new module, with a migration wagon standing ready.](assets/images/platform-as-a-product/comic-06-the-change-budget.jpeg)\n**Panel 6:** *The constraint: every migration spends the customer's finite change budget — plan adoption, coordinate launches, and never assume the technically better thing wins.*\n\n![Comic panel: Vera taps a flat chart labeled CUSTOMER SPEED next to a rising chart labeled REQUESTS as Kai lowers a party horn.](assets/images/platform-as-a-product/comic-07-impact-not-activity.jpeg)\n**Panel 7:** *The measure: request counts can rise while customers get no faster — write the impact hypothesis down and let evidence steer the strategy.*\n\n![Comic panel: a developer freely chooses a warm doorway labeled PLATFORM over a dim one labeled BUILD OUR OWN while Vera and Kai watch.](assets/images/platform-as-a-product/comic-08-would-they-choose-us.jpeg)\n**Panel 8:** *The closer: the bar is a platform customers would choose if they had a choice — anything less is failing slowly.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

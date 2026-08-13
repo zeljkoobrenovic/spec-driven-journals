@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Strategy for Platforms</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="understanding-platforms.html" title="Understanding Platforms">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="designing-platforms.html" title="Designing Platforms">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Platform Strategy</p>
+        <h1>Strategy for Platforms</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-12  ·  7 min · <a class="spec-link" href="platform-strategy.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/platform-strategy/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/platform-strategy/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="understanding-platforms.html" title="Understanding Platforms">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="designing-platforms.html" title="Designing Platforms">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-PLATFORM-STRATEGY", "status": "draft:gray", "title": "Strategy for Platforms", "date": "2026-08-12", "author": "Željko Obrenović", "permalink": "platform-strategy", "timetoread": "7 min", "excerpt": "A platform strategy in my organization is a real strategy or it does not get approved. It is derived from our business strategy and our unique context — never copied from someone else's success story — and it is told as an explicit chain: context, objectives, mechanisms, design decisions. It aims at increasing our rate of change, not reaching a fixed target state, and it changes how we work, not just what technology we run. Before I sign one, it passes the ACED test: Alignment, Clarity, Evolution, and — above all — actual Decisions.", "tags": "platform strategy, technology strategy, transformation, governance, wardley maps, roadmaps", "icon": "assets/icons/platform-strategy.png", "logo": "assets/images/platform-strategy/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["platform strategy", "technology strategy", "transformation", "governance", "wardley maps", "roadmaps"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: A platform strategy is a real strategy or it is not approved. It starts from why *we* need a platform — our business strategy, our assets, our constraints — never from a copied success story, and it aims at increasing our rate of change, not at reaching a fixed target state. It is told as an explicit chain — context, objectives, mechanisms, design decisions — so that business readers and engineers see the same story and no \"IT hourglass\" hides the reasoning in the middle. It describes transformation (changed ways of working), not optimization (new technology under old habits). And before I sign it, it passes ACED: it Aligns with the business strategy, a broad audience finds it Clear, it can Evolve as constraints change, and it makes actual Decisions — because a strategy without trade-offs is a wish list wearing a strategy's clothes.\n\n## Statement\n\nMy operating model for platform strategy has five parts.\n\nWhat the strategy is grounded in:\n\n- **Our why, not someone else's.** The strategy defines why *this* organization needs a platform, connected to the business strategy, accounting for our unique assets, constraints, and competitive environment. Copying another organization's platform strategy without adapting it is disqualifying.\n- **A two-way relationship.** Business strategy shapes technology strategy, and technology capabilities reshape what the business can attempt. The strategy is written to serve both directions.\n- **Rate of change over target state.** The goal is to increase how fast we can change, not to arrive at a fixed architecture and stop.\n\nHow the strategy is told — four connected layers:\n\n| Layer | Answers |\n| --- | --- |\n| **Context** | Why are we pursuing a platform strategy at all? |\n| **Objectives** | Which business outcomes matter most, in priority order? |\n| **Mechanisms** | How will platform capabilities actually produce those outcomes? |\n| **Design decisions** | Which implementation trade-offs did we make, and why? |\n\nThe connections between layers are explicit; buzzwords (\"DevOps\", \"microservices\") never stand in for mechanisms; and technical decisions are written so both business and technology stakeholders can follow them. The four layers exist specifically to avoid the **IT hourglass** — a document with business goals at the top, technology at the bottom, and nothing connecting them.\n\n![Side-by-side diagram: an IT hourglass with an empty middle versus a fully connected four-layer chain of context, objectives, mechanisms, decisions.](assets/images/platform-strategy/hourglass-vs-four-layer-chain.jpeg)\n**Figure 1:** *The IT hourglass versus the four-layer chain: the layers are there to force the middle of the argument — the mechanisms — to exist.*\n\n\nWhat the strategy must change:\n\n- **Ways of working, not just technology.** The strategy names which existing ways of working must change, and which old constraints the platform removes. Upgrading technology without changing how we work is optimization, not transformation.\n- **\"And\", not \"or\".** The platform pursues speed *and* quality through automation, speed *and* compliance through guardrails — and rejects the assumption that innovation and harmonization are opposites.\n\nHow design and governance appear in the strategy:\n\n- **Commodity separated from differentiator**, clear reusable components, common interfaces where they enable reuse, complexity hidden, onboarding friction low — and enough user freedom to build solutions we did not anticipate. No all-encompassing \"IT pyramid\" that tries to predict every use case.\n- **Centralized expertise, decentralized innovation.** Reusable expertise is centralized where it creates economies of scale; usage and innovation are decentralized to teams; operational control is separated from user control; automation and shared responsibility replace approvals and tickets as the governance mechanism.\n\n![Hub-and-spokes diagram: a central expertise hub connected to many autonomous team nodes by open arrows, with a crossed-out ticket funnel to the side.](assets/images/platform-strategy/centralize-expertise-decentralize-usage.jpeg)\n**Figure 2:** *Centralized expertise, decentralized innovation: automation and shared responsibility do the governing — not approval queues and tickets.*\n\n\nHow the strategy meets reality:\n\n- **A mapped landscape.** User needs anchor the platform; components are mapped and classified (genesis, custom-built, product, commodity); commoditization candidates and componentization opportunities are identified — a Wardley Map or similar model, refreshed as usage data comes in.\n- **Point, path, terrain.** The roadmap states where we are going, how we intend to get there, and what the terrain holds — starting from our *actual* current state, naming decision points and alternative paths, specifying what data future decisions need, and letting tactics change while direction holds.\n- **The ACED gate.** Before approval: **A**lignment with business and IT strategy, **C**larity for a broad audience, ability to **E**volve, and actual **D**ecisions with trade-offs.\n\n![Schematic roadmap diagram from 'now' to a destination flag, with diamond decision points, dashed alternative branches, data tags, and sketched terrain.](assets/images/platform-strategy/point-path-terrain-roadmap.jpeg)\n**Figure 3:** *Point, path, and terrain: the roadmap starts from the actual current state, names its decision points and alternative paths, and states what data each choice will need.*\n\n\n## How to Read This\n\nThis journal is my platform operating model, one record per source checklist. This record is grounded in the \"Strategy for Platforms\" chapter of Gregor Hohpe's *Platform Strategy: Innovation Through Harmonization* (Leanpub, 2024) — the chapter about what makes a platform strategy an actual strategy, distilled here into **the standard every platform strategy I approve has to meet**. It sits directly on [Understanding Platforms](understanding-platforms.html): first we agree what a platform is, then this record governs how we decide why and where to build one. The runnable version — the four layers, the transformation tests, the roadmap questions, and the ACED gate — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Copied strategies fail because the context that made them work does not copy.** The most common platform strategy I see is someone else's: Spotify's, Amazon's, a conference talk's. Hohpe's opening demand — define why *we* need a platform, from *our* assets, constraints, and competitive environment — is the antidote. A strategy is a bet placed from a position, and our position is the one thing no benchmark can supply. This is also why I treat business and technology strategy as a **two-way relationship**: the platform is not an implementation detail of a finished business plan; it changes what business plans are possible.\n\n**The four layers exist because strategy documents fail in the middle.** The classic failure is the IT hourglass: lofty business outcomes at the top, an inventory of technologies at the bottom, and a thin waist where the reasoning should be. Context → objectives → mechanisms → design decisions forces the middle to exist: **mechanisms are the testable claim that the platform capabilities will produce the outcomes**, and design decisions record the trade-offs that claim rests on. The discipline that keeps the waist honest is refusing buzzwords as mechanisms — \"we will do DevOps\" explains nothing; \"automated compliance checks let teams deploy without waiting for review board slots, which shortens cycle time on our regulated products\" is a mechanism.\n\n**Rate of change beats target state because the target will be wrong.** A strategy aimed at a fixed end-state architecture is obsolete the day the environment shifts — and the environment always shifts. Aiming instead at increasing the organization's rate of change means the platform's job is to make the *next* change cheaper, which is also what justifies harmonizing at all. That is why the strategy carries a mapped landscape: classifying components from genesis to commodity shows where commoditization is coming — and therefore where harmonization will pay next — and refreshing the map with usage data keeps those bets current. The same logic drives the roadmap discipline: not a happy path, but **point, path, and terrain** — with named decision points, alternative paths, and the data we will need when we get there. Tactics flex; direction holds.\n\n**Transformation is measured in changed ways of working, not upgraded technology.** Hohpe's line is one I enforce in every strategy review: technology upgrades without changed ways of working are optimization, not transformation. So a platform strategy must name the working habits that will change and the old constraints that disappear — and it must claim the \"and\": speed *and* quality through automation, speed *and* compliance through guardrails. A strategy that still treats innovation and harmonization as opposites has not understood why we are building a platform in the first place.\n\n**Governance earns autonomy or it is just control.** The strategy commits us to centralizing reusable expertise where scale economics are real, while decentralizing usage and innovation to teams — with automation and shared-responsibility models doing the governing, not approval queues and tickets. That includes the uncomfortable half: **being willing to relinquish some central control so users can innovate**. A platform whose governance model is a ticket funnel has centralized the wrong thing.\n\n**ACED keeps me from approving wish lists.** Alignment, Clarity, Evolution, Decisions. The last letter is the sharp one: does the strategy make actual choices and trade-offs, or does it merely list desirable properties? A document everyone agrees with instantly is usually a document that decided nothing. Clarity is its quiet partner — if a broad human audience cannot follow the argument, the strategy will be executed by rumor — and clarity includes saying what the strategy does *not* include.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| The strategy starts from our context and connects to our business strategy. | A proven playbook from another company can be adopted wholesale. |\n| Context, objectives, mechanisms, and design decisions form one explicit chain. | Business goals plus a technology list make a strategy — that is the IT hourglass. |\n| Mechanisms explain *how* capabilities produce outcomes. | \"DevOps\" or \"microservices\" on a slide counts as a mechanism. |\n| The platform changes ways of working and removes old constraints. | Rolling out new technology under old habits is transformation — that is optimization. |\n| Standardize underneath to enable diversity and autonomy on top. | The platform predicts every use case — the all-encompassing IT pyramid is the anti-goal. |\n| The roadmap names decision points, alternative paths, and the data to choose. | Execution will follow the happy path drawn at approval time. |\n| Approval requires passing ACED — including actual decisions and trade-offs. | A strategy can be a list of wishes nobody would ever argue against. |\n\nConcretely: every platform strategy I review arrives as the four-layer chain, and my first read is the waist of the hourglass — **I look for the mechanism sentences and the design trade-offs before I look at anything else**. If I cannot find a decision someone might reasonably have made differently, the document goes back; it has described a destination, not a strategy.\n\n## Anti-Patterns\n\n- **The copied strategy.** Adopting another organization's platform story without adapting it to our assets, constraints, and competitive position.\n- **The IT hourglass.** Business outcomes on top, technology inventory below, and no mechanisms connecting them — the reasoning is missing exactly where it matters.\n- **Buzzword mechanisms.** \"We will adopt DevOps/microservices/GitOps\" presented as the *how* — a label where an explanation should be.\n- **The target-state strategy.** A fixed end architecture with a date, blind to the fact that the environment will move; no attention to rate of change.\n- **Optimization sold as transformation.** New platform, same ways of working, same constraints — a technology refresh wearing transformation language.\n- **The IT pyramid.** An all-encompassing design that tries to anticipate every use case, leaving users no freedom to build what we did not foresee.\n- **Ticket-based guardrails.** Governance implemented as approval queues and tickets instead of automation and shared responsibility — friction dressed up as safety.\n- **The happy-path roadmap.** A linear plan from an idealized current state, with no decision points, no alternative paths, and no idea what data future choices will need.\n\n## Related Records\n\n- [Understanding Platforms](understanding-platforms.html) — the vocabulary this record builds on: what a platform is and where the harmonized/variable line runs, before any strategy is written.\n- [Designing Platforms](designing-platforms.html) — where the design-decision layer of the strategy becomes concrete platform design work.\n- [Organizing for Platforms](organizing-for-platforms.html) — the organizational half of the governance stance taken here: who centralizes expertise, who keeps autonomy.\n- [Implementing Platforms](implementing-platforms.html) — execution of the roadmap this record requires; the decision points named here get exercised there.\n- [Planning and Delivery](planning-and-delivery.html) — the Fournier/Nowland planning discipline that operates inside the strategic direction this record sets.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs every platform strategy written, reviewed, or approved where I am the accountable executive — internal developer platforms and business capability platforms alike. I revisit it if **approved strategies keep failing in execution at unnamed decision points** (the signal that the roadmap discipline is theater), if strategy documents pass review without containing a single contestable decision (ACED's D has stopped biting), or if the business strategy shifts enough that the context layer of our current platform strategies no longer describes the organization we are.\n\n## Authoritative References\n\n- Gregor Hohpe, *Platform Strategy: Innovation Through Harmonization* (Leanpub, 2024) — the \"Strategy for Platforms\" chapter, whose checklist this record distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Strategic Foundation\n\n- [ ] Define why a platform strategy is needed\n- [ ] Connect the platform strategy to the organization's business strategy\n- [ ] Account for the organization's unique assets, constraints, and competitive environment\n- [ ] Avoid copying another organization's platform strategy without adapting it\n- [ ] Treat business strategy and technology strategy as a two-way relationship\n- [ ] Focus on increasing the organization's rate of change, not merely reaching a fixed target state\n\n## 2. Context, Objectives, Mechanisms & Design Decisions\n\n- [ ] Context: explain why the organization is pursuing a platform strategy\n- [ ] Objectives: identify and prioritize the most important business outcomes\n- [ ] Mechanisms: explain how platform capabilities will produce those outcomes\n- [ ] Design decisions: document the important implementation trade-offs\n- [ ] Make the connection between context → objectives → mechanisms → design decisions explicit\n- [ ] Avoid replacing mechanisms with buzzwords such as \"DevOps\" or \"microservices\"\n- [ ] Make technical decisions understandable to business and technology stakeholders\n\n*The source recommends these four connected layers specifically to avoid the \"IT hourglass\" problem in strategy documents.*\n\n## 3. Transformation & Ways of Working\n\n- [ ] Identify which existing ways of working must change\n- [ ] Distinguish transformation from simply upgrading or optimizing technology\n- [ ] Determine which old constraints the platform can remove\n- [ ] Translate new technical capabilities into improved user experiences or business value\n- [ ] Look for opportunities to achieve both speed and quality through automation\n- [ ] Look for opportunities to achieve both speed and compliance\n- [ ] Challenge the assumption that innovation and harmonization must be opposites\n\n*Upgrading technology without changing how the organization works is described as optimization rather than transformation.*\n\n## 4. Platform Design\n\n- [ ] Define clear, reusable components and their relationships\n- [ ] Separate commodity capabilities from true differentiators\n- [ ] Use common interfaces and standards where they enable reuse\n- [ ] Hide unnecessary underlying complexity from platform users\n- [ ] Keep onboarding and consumption friction low\n- [ ] Allow users enough freedom to build solutions you did not anticipate\n- [ ] Avoid designing an all-encompassing \"IT pyramid\" that attempts to predict every use case\n- [ ] Continuously review platform boundaries as technologies and user needs evolve\n- [ ] Treat the way users interact with the platform as seriously as the functionality inside it\n\n*Platforms should not anticipate every use case; standardization underneath should enable diversity and innovation above.*\n\n## 5. Governance & Autonomy\n\n- [ ] Centralize reusable expertise where it creates economies of scale\n- [ ] Decentralize platform usage and innovation to individual teams\n- [ ] Separate operational control from user control\n- [ ] Use automation and shared-responsibility models as governance mechanisms\n- [ ] Provide guardrails without creating excessive approval or ticket-based friction\n- [ ] Be willing to relinquish some central control so users can innovate\n\n*Platforms can combine central governance with decentralized usage and innovation.*\n\n## 6. Map the Platform Landscape\n\n- [ ] Identify the user or customer needs that anchor the platform\n- [ ] Map the components required to meet those needs\n- [ ] Determine which components are genesis, custom-built, product, or commodity\n- [ ] Identify components likely to be commoditized over time\n- [ ] Identify opportunities for componentization and reuse\n- [ ] Use a Wardley Map or similar model to understand platform evolution\n- [ ] Monitor platform usage for signals that certain capabilities should become shared platform services\n\n*Wardley Maps are used in the text to examine component evolution and the effects of commoditization and componentization.*\n\n## 7. Roadmap & Execution\n\n- [ ] Define the point: where the organization wants to go\n- [ ] Define the path: how it intends to get there\n- [ ] Understand the terrain: risks, uncertainty, and environmental changes\n- [ ] Ensure the roadmap begins from the organization's actual current state\n- [ ] Avoid assuming only a \"happy path\"\n- [ ] Identify important future decision points\n- [ ] Identify alternative paths that may be taken\n- [ ] Specify what data will be needed to make future decisions\n- [ ] Allow tactics to change while preserving the overall strategic direction\n\n*A strategic roadmap should anticipate decision points, possible paths, and the information needed to choose between them rather than pretending execution will be linear.*\n\n## 8. Strategy Communication\n\n- [ ] Emphasize the most important ideas rather than attempting to document everything\n- [ ] Explicitly state what is not included in the strategy\n- [ ] Use simple conceptual models where they reduce complexity\n- [ ] Write for a broad human audience, not only technical specialists\n- [ ] Ensure objectives, mechanisms, and technical choices form a coherent story\n- [ ] Keep the document concise enough that decision-makers can understand its central argument\n\n## 9. ACED Quality Check\n\nBefore approving the strategy, confirm that you have ACED it:\n\n- [ ] Alignment — does the platform strategy support the IT and business strategies?\n- [ ] Clarity — can a broad audience easily understand the strategy?\n- [ ] Evolution — can the strategy evolve as opportunities, priorities, and constraints change?\n- [ ] Decisions — does the strategy make actual choices and trade-offs rather than merely listing wishes?\n\n*The source presents Alignment, Clarity, Evolution, and Decisions (ACED) as a simple final checklist for evaluating a strategy document or slide deck.*\n\n## Final Go/No-Go Check\n\n- [ ] We can clearly explain why the platform is needed\n- [ ] We know the measurable business outcomes it should enable\n- [ ] We can explain how the proposed mechanisms lead to those outcomes\n- [ ] Major design trade-offs have been made explicitly\n- [ ] The platform changes ways of working rather than merely introducing new technology\n- [ ] Standardization enables rather than suppresses innovation\n- [ ] Users have sufficient autonomy within appropriate guardrails\n- [ ] The roadmap accounts for uncertainty and alternative paths\n- [ ] Platform evolution will be driven by usage data and feedback\n- [ ] The strategy passes the ACED test\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why a platform strategy must make actual choices — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Kai presents a glossy borrowed strategy binder while Vera holds it at arm's length, unimpressed.](assets/images/platform-strategy/comic-01-the-copied-strategy.jpeg)\n**Panel 1:** *The hook: the most common platform strategy is someone else's — and the context that made it work does not copy.*\n\n![Comic panel: an hourglass-shaped document with business goals on top, technology below, and an empty middle that Vera points at.](assets/images/platform-strategy/comic-02-the-it-hourglass.jpeg)\n**Panel 2:** *The problem: the IT hourglass — business outcomes at the top, a technology inventory at the bottom, and nothing where the reasoning should be.*\n\n![Comic panel: Kai points at a slide reading only DEVOPS while Vera crosses her arms skeptically.](assets/images/platform-strategy/comic-03-buzzword-mechanisms.jpeg)\n**Panel 3:** *The wrong way: buzzword mechanisms — 'we will do DevOps' is a label where an explanation should be.*\n\n![Comic panel: Vera draws four connected chain links labeled context, objectives, mechanisms, decisions on a whiteboard.](assets/images/platform-strategy/comic-04-the-four-layer-chain.jpeg)\n**Panel 4:** *The principle: context, objectives, mechanisms, design decisions — four layers with explicit connections, so no hourglass can form.*\n\n![Comic panel: a shiny new platform machine behind Kai, who still hand-stamps a stack of old paper approval forms.](assets/images/platform-strategy/comic-05-new-engine-old-habits.jpeg)\n**Panel 5:** *How it fails quietly: new technology under old ways of working is optimization sold as transformation.*\n\n![Comic panel: Vera and Kai study an expedition map with a destination flag, a winding path with forks, and drawn terrain.](assets/images/platform-strategy/comic-06-point-path-terrain.jpeg)\n**Panel 6:** *How it plays out: the roadmap is point, path, and terrain — with named decision points, alternative paths, and the data needed to choose.*\n\n![Comic panel: Vera hands keys to small developer figures while Kai tends one central toolbox; red approval tape lies in a wastebasket.](assets/images/platform-strategy/comic-07-relinquish-control.jpeg)\n**Panel 7:** *The cost: governance earns autonomy or it is just control — centralizing expertise means relinquishing some central control so users can innovate.*\n\n![Comic panel: Vera holds a document with four stamps labeled A, C, E, D, pen hovering over the signature line.](assets/images/platform-strategy/comic-08-the-aced-gate.jpeg)\n**Panel 8:** *The closer: the ACED gate — Alignment, Clarity, Evolution, Decisions. A strategy that decides nothing does not get signed.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

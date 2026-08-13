@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grounded Platforms</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            margin-bottom: 0;
+            border: 1px solid var(--rule);
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/journal-logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/journal-logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+        <div style="padding: 4px;">
+            <h1>Grounded Platforms</h1>
+            <p>Željko Obrenović's platform operating model, written as records — what a platform is for, when platform engineering earns its keep, how platform teams are built, run, and judged, and the strategy that keeps a platform growing instead of calcifying. Each record ships its working checklist. Informed by practice, by Camille Fournier and Ian Nowland's &quot;Platform Engineering&quot;, and by Gregor Hohpe's &quot;Platform Strategy&quot;.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Start Here", "description": "What this journal is, why an engineering executive writes the platform operating model down as records, and how to read it.", "posts": [{"id": "PLT-INTRODUCTION", "status": "draft:gray", "title": "Introduction", "excerpt": "This journal is my platform operating model, written down as records: what a platform is actually for, when platform engineering earns its keep, how platform teams are built, run, and judged, and the strategy that keeps a platform growing instead of calcifying. Sixteen records from two books — Fournier and Nowland's Platform Engineering and Hohpe's Platform Strategy — each shipping its working checklist. Start here for the map.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "tags": ["platform engineering", "platform strategy", "internal platforms", "operating model", "introduction"]}]}, {"title": "Platform Engineering", "description": "Building and running internal platforms, from Camille Fournier and Ian Nowland's \\\"Platform Engineering\\\": why platforms exist, the four pillars, when to start, the team, the product mindset, operations, planning and delivery, rearchitecting, stakeholders, and what success looks like.", "posts": [{"id": "PLT-WHAT-IS-PLATFORM-ENGINEERING", "status": "draft:gray", "title": "What Is Platform Engineering", "excerpt": "Platform engineering exists to manage complexity my organization has already accumulated. Every growing engineering organization sinks into an over-general swamp of duplicated technologies and per-application glue, and the way out is a platform treated as an internal product: curated, self-service, with clear boundaries, built and operated by a dedicated team. I hold that investment to one test — a small platform team must make a much larger engineering organization measurably more productive, and adoption must grow because developers find the platform useful, not because I mandated it.", "url": "what-is-platform-engineering.html", "icon": "assets/icons/what-is-platform-engineering.png", "tags": ["platform engineering", "internal platforms", "developer productivity", "complexity management", "self-service", "infrastructure", "leverage"]}, {"id": "PLT-FOUR-PILLARS", "status": "draft:gray", "title": "The Four Pillars of Platform Engineering", "excerpt": "Before I call anything in my organization a platform, it has to stand on four pillars: it is a curated product with paved paths, it is built on software abstractions that genuinely manage complexity, it serves a broad base of application developers through self-service, and it is operated as a reliable foundation for the business. Miss a pillar and what you have is tooling, provisioning, or infrastructure enablement wearing a platform badge. The test I keep running: does this platform actually manage complexity for application developers, or does it merely move that complexity somewhere else?", "url": "four-pillars.html", "icon": "assets/icons/four-pillars.png", "tags": ["platform engineering", "paved paths", "abstractions", "self-service", "developer experience", "operations", "internal platforms"]}, {"id": "PLT-GETTING-STARTED", "status": "draft:gray", "title": "Getting Started with Platform Engineering", "excerpt": "I introduce platform engineering when coordination costs demand it, not before. While a handful of engineers can cooperate informally, platform work stays a shared responsibility and the tooling stays simple and off the shelf. When shared systems start failing because 'everyone owns it' has become 'nobody owns it', I make ownership explicit and form a team — and that team earns trust by fixing today's most painful problems, not by designing an architecture for a scale we do not have.", "url": "getting-started.html", "icon": "assets/icons/getting-started.png", "tags": ["platform engineering", "getting started", "platform teams", "coordination cost", "developer productivity", "engineering strategy"]}, {"id": "PLT-BUILDING-PLATFORM-TEAMS", "status": "draft:gray", "title": "Building Great Platform Teams", "excerpt": "A great platform team is a deliberately mixed team: people who can write substantial production code alongside people with broad systems and operational expertise, treated as equally valuable. I staff against the two cultural failure modes — the 'too much systems' team that automates instead of engineering problems away, and the 'too much development' team that chases new architecture while production burns. Roles beyond that core earn their place when the need is demonstrated, and customer empathy is a hiring bar, not a nice-to-have.", "url": "building-platform-teams.html", "icon": "assets/icons/building-platform-teams.png", "tags": ["platform engineering", "platform teams", "hiring", "team composition", "engineering culture", "career ladders", "customer empathy"]}, {"id": "PLT-PLATFORM-AS-A-PRODUCT", "status": "draft:gray", "title": "Platform as a Product", "excerpt": "I run internal platforms as products with real customers, not as infrastructure projects with captive users. Mandatory usage is not product success — a platform earns adoption the way any product does: by knowing its customers' actual workflows, solving common problems rather than filling bespoke feature requests, and making migration cheap enough to be worth it. I expect platform teams to validate product–market fit internally before committing serious investment, to measure impact rather than activity, and to treat reliability as part of the product experience.", "url": "platform-as-a-product.html", "icon": "assets/icons/platform-as-a-product.png", "tags": ["platform engineering", "platform as a product", "internal customers", "product management", "adoption", "migration", "metrics"]}, {"id": "PLT-OPERATING-PLATFORMS", "status": "draft:gray", "title": "Operating Platforms", "excerpt": "Operational work is a core part of platform engineering, not an interruption to it. Every platform team here owns three practices — on-call, user support, and operational feedback — in a merged DevOps model where the engineers who build the platform operate it. Operational load is a managed quantity with explicit numbers: on-call no more than one week in four, fewer than five meaningful pages per engineer per week, and staffing reassessed when operations consume half of capacity. Noncritical support is separated from critical on-call, and operational signals — SLOs, synthetic monitoring, regular operational reviews — flow back into engineering priorities.", "url": "operating-platforms.html", "icon": "assets/icons/operating-platforms.png", "tags": ["platform engineering", "operations", "on-call", "user support", "slos", "reliability", "operational reviews"]}, {"id": "PLT-PLANNING-AND-DELIVERY", "status": "draft:gray", "title": "Planning and Delivery", "excerpt": "Platform planning is honest capacity accounting, and I hold plans to that standard. No long-running project starts without a written proposal that nails the problem, the options, and what done looks like. The roadmap is built bottom-up from all four consumers of capacity — features, KTLO, mandates, and system improvements — because a plan that only lists features is a plan to disappoint. And launch is not the finish line: adoption is project work, and delivery is narrated in biweekly wins and challenges, not story points.", "url": "planning-and-delivery.html", "icon": "assets/icons/planning-and-delivery.png", "tags": ["platform engineering", "planning", "roadmaps", "delivery", "ktlo", "milestones", "adoption"]}, {"id": "PLT-REARCHITECTING-PLATFORMS", "status": "draft:gray", "title": "Rearchitecting Platforms", "excerpt": "A platform rearchitecture is a business investment, not a technical adventure, and I gate it like one. It happens only when the current architecture genuinely constrains features, reliability, security, or efficiency — and incrementally in preference to a separate v2. It is planned on a 3–5-year horizon but must put something valuable into production every 12 months. Migration costs are counted before commitment, leadership commits to protecting the work through reorganizations, and the effort is stopped or reshaped when evidence no longer supports the hypothesis.", "url": "rearchitecting-platforms.html", "icon": "assets/icons/rearchitecting-platforms.png", "tags": ["platform engineering", "rearchitecture", "migrations", "architecture", "security by design", "paved paths", "technical strategy"]}, {"id": "PLT-MANAGING-STAKEHOLDERS", "status": "draft:gray", "title": "Managing Platform Stakeholders", "excerpt": "A platform's stakeholders decide its budget, its mandate, and its survival in a downturn, so I treat stakeholder management as first-order platform leadership work. I map stakeholders by power and interest and spend relationship time where it matters, build trust before any crisis, and communicate in business impact rather than engineering detail. Every commitment gets captured and closed out, every request gets a structured yes-with-compromises or a no that preserves the relationship, and I arrive at budget season with my own cut proposal rather than waiting for one to be chosen for me.", "url": "managing-stakeholders.html", "icon": "assets/icons/managing-stakeholders.png", "tags": ["platform engineering", "stakeholder management", "communication", "prioritization", "shadow platforms", "budget", "trust"]}, {"id": "PLT-PLATFORM-SUCCESS", "status": "draft:gray", "title": "What Platform Success Looks Like", "excerpt": "I judge a platform organization on four dimensions at once: aligned, trusted, managing complexity, and loved. Adoption numbers and shipped roadmaps prove nothing on their own — a mandated migration inflates adoption while users quietly route around the platform. Success means the organization's technology gets easier to operate and evolve, and users become materially better at their jobs — ideally because the platform makes difficult things feel boring, reliable, and easy. Any platform that cannot answer yes on all four dimensions has work to do, whatever its dashboard says.", "url": "platform-success.html", "icon": "assets/icons/platform-success.png", "tags": ["platform engineering", "success metrics", "alignment", "trust", "complexity", "developer experience", "adoption"]}]}, {"title": "Platform Strategy", "description": "The strategic frame around platforms, from Gregor Hohpe's \\\"Platform Strategy\\\": understanding what platforms really are, setting strategy, designing and implementing them, organizing around them, and growing adoption.", "posts": [{"id": "PLT-UNDERSTANDING-PLATFORMS", "status": "draft:gray", "title": "Understanding Platforms", "excerpt": "Before anything in my organization earns the name platform, it has to pass a test. A platform elevates participants — it lets them build on existing capabilities instead of starting from scratch — and it generates value through interaction, which means a platform without participants is worth little and a product relabeled as a platform is worth nothing extra. The line I hold every platform to comes from the automotive industry: harmonize the expensive, undifferentiated engineering underneath, and use it to increase — not suppress — the diversity built on top.", "url": "understanding-platforms.html", "icon": "assets/icons/understanding-platforms.png", "tags": ["platform strategy", "platforms", "harmonization", "developer platforms", "marketplaces", "business capabilities"]}, {"id": "PLT-PLATFORM-STRATEGY", "status": "draft:gray", "title": "Strategy for Platforms", "excerpt": "A platform strategy in my organization is a real strategy or it does not get approved. It is derived from our business strategy and our unique context — never copied from someone else's success story — and it is told as an explicit chain: context, objectives, mechanisms, design decisions. It aims at increasing our rate of change, not reaching a fixed target state, and it changes how we work, not just what technology we run. Before I sign one, it passes the ACED test: Alignment, Clarity, Evolution, and — above all — actual Decisions.", "url": "platform-strategy.html", "icon": "assets/icons/platform-strategy.png", "tags": ["platform strategy", "technology strategy", "transformation", "governance", "wardley maps", "roadmaps"]}, {"id": "PLT-DESIGNING-PLATFORMS", "status": "draft:gray", "title": "Designing Platforms", "excerpt": "A platform earns its keep through design decisions, not a component list. I design platforms as fruit salads, not fruit baskets: integrated, opinionated, and valuable even when adopted only in part. Every abstraction must speak a higher-level vocabulary without becoming an illusion that hides essential complexity, every wrapper is a last resort, and the platform floats on its base by retiring what gets commoditized underneath it. And because abstractions break down hardest during failure, I design for the unhappy path from day one.", "url": "designing-platforms.html", "icon": "assets/icons/designing-platforms.png", "tags": ["platform strategy", "platform design", "abstractions", "architecture", "developer experience", "cognitive load"]}, {"id": "PLT-ORGANIZING-FOR-PLATFORMS", "status": "draft:gray", "title": "Organizing for Platforms", "excerpt": "A platform team is a small product company inside the organization, and I staff and run it that way: an accountable leader plus named ownership of technology strategy, roadmap, delivery, marketing, and support — even when one person wears several hats. It aligns east–west so infrastructure seams never reach the user, and north–south so adoption is earned continuously rather than announced once. And before any of that, I confirm a platform is actually needed — sometimes enablement and a thinner platform beat building one.", "url": "organizing-for-platforms.html", "icon": "assets/icons/organizing-for-platforms.png", "tags": ["platform strategy", "platform teams", "organization design", "internal product", "adoption", "cognitive load", "enablement"]}, {"id": "PLT-IMPLEMENTING-PLATFORMS", "status": "draft:gray", "title": "Implementing Platforms", "excerpt": "I hold every internal platform implementation to the same anatomy: a self-service management plane developers actually touch, a control plane that continuously reconciles desired and actual state, and a services plane that does the work. Every abstraction the platform introduces must pass two tests — does it genuinely reduce cognitive load, and can a failure be traced back through it. Ownership between platform and application teams is explicit, and the tenancy model is a conscious architecture decision tested at scale, not a default inherited from the first prototype.", "url": "implementing-platforms.html", "icon": "assets/icons/implementing-platforms.png", "tags": ["platform strategy", "internal developer platform", "control plane", "self-service", "abstractions", "tenancy", "platform implementation"]}, {"id": "PLT-GROWING-PLATFORMS", "status": "draft:gray", "title": "Growing Platforms", "excerpt": "I measure platform growth in adoption, not in features. A platform grows along three dimensions — reach, breadth, and depth — and I balance them instead of maxing one; it moves through a product lifecycle of Explore, Expand, and Extract; and its fate is set in a new user's first hour. The roadmap protects cohesion by triaging every request on business impact and strategy fit, and tiers and slices give smaller customers an appropriately sized way in — because an internal platform nobody is forced to use lives or dies on voluntary adoption.", "url": "growing-platforms.html", "icon": "assets/icons/growing-platforms.png", "tags": ["platform strategy", "platform adoption", "product lifecycle", "developer experience", "roadmap", "platform growth", "tiering"]}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            root.querySelectorAll('section.group').forEach(sec => {
+                let secVisible = false;
+                sec.querySelectorAll('li').forEach(li => {
+                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
+                    let matchTag = true;
+                    if (activeTags.size) {
+                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
+                        // any-match: post must carry at least one selected tag
+                        matchTag = false;
+                        for (const t of activeTags) {
+                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
+                                matchTag = true;
+                                break;
+                            }
+                        }
+                    }
+                    let matchStatus = true;
+                    if (activeStatuses.size) {
+                        const liStatus = li.dataset.status || '';
+                        // any-match: post status must equal one of the selected statuses
+                        matchStatus = false;
+                        for (const s of activeStatuses) {
+                            if (liStatus === s.toLowerCase()) {
+                                matchStatus = true;
+                                break;
+                            }
+                        }
+                    }
+                    const match = matchQ && matchTag && matchStatus;
+                    li.classList.toggle('hidden', !match);
+                    if (match) {
+                        secVisible = true;
+                        visibleCount++;
+                    }
+                });
+                sec.classList.toggle('empty', !secVisible);
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

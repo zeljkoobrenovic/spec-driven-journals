@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What Is Platform Engineering</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="introduction.html" title="Introduction">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="four-pillars.html" title="The Four Pillars of Platform Engineering">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Platform Engineering</p>
+        <h1>What Is Platform Engineering</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-12  ·  6 min · <a class="spec-link" href="what-is-platform-engineering.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/what-is-platform-engineering/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/what-is-platform-engineering/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="introduction.html" title="Introduction">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="four-pillars.html" title="The Four Pillars of Platform Engineering">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-WHAT-IS-PLATFORM-ENGINEERING", "status": "draft:gray", "title": "What Is Platform Engineering", "date": "2026-08-12", "author": "Željko Obrenović", "permalink": "what-is-platform-engineering", "timetoread": "6 min", "excerpt": "Platform engineering exists to manage complexity my organization has already accumulated. Every growing engineering organization sinks into an over-general swamp of duplicated technologies and per-application glue, and the way out is a platform treated as an internal product: curated, self-service, with clear boundaries, built and operated by a dedicated team. I hold that investment to one test — a small platform team must make a much larger engineering organization measurably more productive, and adoption must grow because developers find the platform useful, not because I mandated it.", "tags": "platform engineering, internal platforms, developer productivity, complexity management, self-service, infrastructure, leverage", "icon": "assets/icons/what-is-platform-engineering.png", "logo": "assets/images/what-is-platform-engineering/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["platform engineering", "internal platforms", "developer productivity", "complexity management", "self-service", "infrastructure", "leverage"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Platform engineering is how I manage the complexity my organization has already bought. Left alone, a growing engineering organization sinks into an over-general swamp: duplicated OSS and cloud services, per-application integration glue, and systems too expensive to upgrade or leave. The way out is a platform treated as an internal product — a curated, self-service set of capabilities with clear boundaries, built and operated by a dedicated team — that hides implementation complexity from application teams instead of relocating it onto them. I hold platform investment to one test: a small platform team must make a much larger engineering organization measurably more productive, and adoption must grow because developers find the platform useful, not because it was mandated.\n\n## Statement\n\nMy operating model for why and when platform engineering exists:\n\n- **The platform is an internal product, not a collection of tools.** It has identified customers (the application teams), a dedicated team that develops and operates it, self-service APIs, tools, services, knowledge, and support — and clear boundaries: what it supports and what it intentionally does not.\n- **Its job is to drain the over-general swamp.** I inventory the OSS, cloud services, and bespoke systems in use; find the duplication, the per-application glue, and the systems that are expensive to upgrade or maintain; and replace repeated per-application integrations with shared capabilities behind abstractions that hide implementation complexity.\n- **Curation over exhaustiveness.** The platform limits the primitives it officially supports, removes low-value or duplicate choices, and ships opinionated defaults — with exceptions allowed when there is a legitimate business or technical reason. Application teams should not have to become infrastructure experts; specialized expertise is centralized where it can serve many teams.\n- **The product stance is non-negotiable.** Platform teams interview their developers, prioritize user experience over infrastructure-team convenience, deliver incrementally, gather feedback continuously, and track adoption and satisfaction. Standards are not imposed only by mandate — the preferred path has to demonstrate its value so teams choose it.\n- **The platform enables \"you build it, you run it\".** Application teams operate the software they develop, because resilient platform defaults for networking, compute, storage, deployment, and runtime keep infrastructure out of their incident queue. Operational responsibility for shared infrastructure stays with the platform team.\n- **Migrations are a platform responsibility, planned as a normal lifecycle activity.** The platform reduces the number of technologies that may require future migration, encapsulates vendors and OSS behind APIs, tracks which applications depend on what, and builds migration tooling that minimizes application-team work.\n- **The test is leverage.** Application teams ship faster, spend less time on infrastructure, and face cheaper upgrades; glue and directly owned primitives decrease; adoption grows voluntarily — and a small platform team makes a much larger engineering organization more productive.\n\n## How to Read This\n\nThis journal is my platform operating model, one record per source checklist. This record is grounded in the introductory chapter of Camille Fournier and Ian Nowland's *Platform Engineering: A Guide for Technical, Product, and People Leaders* (O'Reilly, 2024) — the chapter that makes the case for the discipline itself, distilled here into **why I fund a platform and what I hold it accountable to**. The runnable version — from platform foundations through the success criteria — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**The swamp is the default, not a failure of discipline.** Every reasonable local decision — this team adopts a queue, that team a workflow engine, a third writes its own Terraform — is individually cheap and collectively ruinous. Nobody chooses the over-general swamp; organizations **accumulate it one sensible choice at a time**, until an ever-growing share of engineering time goes to integration glue, upgrades nobody owns, and expertise spread too thin to be expert at anything. That is why platform engineering is not optional at scale: the complexity is already here, already paid for, and already compounding. The only question is whether it is managed deliberately or endured.\n\n![Before-and-after diagram: tangled direct app-to-infrastructure wiring versus the same apps on one shared platform layer with few clean connections.](assets/images/what-is-platform-engineering/swamp-to-platform.jpeg)\n**Figure 1:** *The move the record commits to: replace per-application glue with one curated platform layer, so complexity is managed once instead of endured everywhere.*\n\n**A platform without boundaries is just the swamp with a logo.** The defining act of a platform is saying what it does *not* support. A platform that tries to expose every possible option merely re-creates the generality it was meant to tame, and a central team that accepts every request becomes a ticket-driven service bureau — the \"Terraform writing service\" failure mode, where headcount scales linearly with demand and no durable product ever emerges. **Curation is the product**; the opinionated default is what application teams are actually buying.\n\n**The product stance is what separates a platform from a mandate.** I have watched top-down standardization fail the same way everywhere: the standard is announced, the teams comply on paper, and the real work routes around it. Fournier and Nowland's alternative is to treat developers as customers — interview them, prioritize their experience over the platform team's convenience, ship incrementally, measure adoption and satisfaction. **Voluntary adoption is the only honest signal that the platform is better than the swamp it replaces.** If teams choose the paved path when they are free not to, the platform is working; if they only use it because they must, I am funding compliance, not leverage.\n\n**Abstractions must hide complexity, not relocate it.** The cheap version of a platform hands application teams a thin wrapper and a longer manual — the complexity is still theirs, now with an extra layer. The real version encapsulates underlying systems behind stable interfaces and resilient defaults, so that \"you build it, you run it\" is a fair ask: teams can own their software in production **because the infrastructure beneath them is not what pages them at night**. Platform reliability is what makes the abstraction trustworthy; an abstraction teams do not trust is one they will tunnel under.\n\n![Comparison diagram: a thin wrapper with machinery poking through versus a solid platform layer with one simple socket interface.](assets/images/what-is-platform-engineering/hide-vs-relocate.jpeg)\n**Figure 2:** *A thin wrapper relocates complexity — teams still face everything underneath, plus the layer. Real encapsulation hides it behind a stable interface and resilient defaults.*\n\n**Migrations are where platform economics are won or lost.** In the swamp, every upgrade is a distributed tax: dozens of teams each rediscovering the same migration. A platform inverts that — fewer underlying technologies to migrate, dependency metadata that says who is affected, and migration tooling owned by the platform team so the work is done once, centrally. **Technology replacement becomes a normal lifecycle activity instead of a multi-year trauma**, and that difference alone can justify the platform team's existence.\n\n**Control that forbids experimentation kills the platform's future.** The platform serves the common cases; it must not become the ceiling on what the organization can try. Teams get room to experiment when platform capabilities genuinely fall short, successful experiments get a path into the supported platform, and shadow platforms are read as **product feedback about unmet needs**, not as insubordination to be stamped out.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| The platform is an internal product with identified customers and a dedicated team. | Every shared library or Terraform repo is \"a platform\" — without curation, operation, and support it is just shared code. |\n| Curate supported primitives and ship opinionated defaults. | No exceptions ever — legitimate business or technical reasons get an explicit exception path. |\n| Replace per-application glue with shared, abstracted capabilities. | Centralize everything — application-specific functionality stays with application teams. |\n| Win adoption by demonstrating value on the paved path. | Adoption by decree — a mandate without a better product produces workarounds, not leverage. |\n| Platform teams own migrations, dependency metadata, and migration tooling. | Application teams are passengers — they still schedule and validate their own moves. |\n| Experiments and shadow platforms are signals to harvest. | Anything goes — experiments need a graduation path into the platform, or a wind-down. |\n| Success is measured as organizational leverage. | The platform team's own delivery metrics are the score — shipping platform features nobody adopts counts for nothing. |\n\nConcretely: I can name the platform's customers, its boundaries, and its adoption trend; application teams can name what the platform took off their plate this year; and when I ask what the platform intentionally does **not** support, the platform lead has a confident answer — because **a platform that supports everything is the swamp wearing a badge**.\n\n![Lever diagram: a small platform-team block lifting a much larger block of application teams, with a rising adoption curve inset.](assets/images/what-is-platform-engineering/leverage-test.jpeg)\n**Figure 3:** *The one test platform investment is held to: a small platform team lifting a much larger organization, with adoption rising because teams choose it.*\n\n## Anti-Patterns\n\n- **The over-general swamp, unmanaged.** Every team picks its own stack; integration glue multiplies; upgrades become archaeology. The complexity bill arrives regardless — it just arrives as attrition and outages instead of a budget line.\n- **The ticket-driven service bureau.** A central infrastructure team that writes bespoke Terraform per request, scaling headcount with demand and never building a product anyone can self-serve.\n- **Adoption by mandate.** Declaring the standard without making it the best option — teams comply on paper and route the real work around it.\n- **The thin-wrapper platform.** Abstractions that relocate complexity instead of removing it: application teams still need to understand everything underneath, plus the wrapper.\n- **Infrastructure-convenience prioritization.** Roadmaps built around what the platform team finds interesting or operationally tidy, rather than what application developers actually need.\n- **The everything platform.** No boundaries, no curation — every request accepted until the platform is so generic it recreates the complexity it was meant to remove.\n- **Migration as someone else's problem.** Shipping technology choices without dependency metadata or migration tooling, then taxing every application team when the reckoning comes.\n- **Shadow-platform whack-a-mole.** Treating teams that build around the platform as offenders to shut down, rather than as the clearest product feedback available.\n\n## Related Records\n\n- [The Four Pillars of Platform Engineering](four-pillars.html) — the structural definition this record motivates: what a real platform is made of, and the test that separates platforms from tooling.\n- [Getting Started with Platform Engineering](getting-started.html) — how and when to actually start platform engineering once the case in this record applies.\n- [Building Great Platform Teams](building-platform-teams.html) — the full staffing model behind the checklist's team-composition section (infrastructure, DevTools, DevOps, and SRE expertise in balance).\n- [Platform as a Product](platform-as-a-product.html) — the full product operating mechanics behind the product stance this record commits to.\n- [Operating Platforms](operating-platforms.html) — the operating discipline that makes \"you build it, you run it\" a fair ask.\n- [Understanding Platforms](understanding-platforms.html) — Hohpe's strategic view of platforms as harmonization; this record is the engineering-side case for the same investment.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs why and where I fund platform engineering everywhere I am the accountable executive — any shared internal capability serving multiple application teams. I revisit it if platform adoption stalls or grows only under mandate (the signal that the product stance has failed), if application teams' infrastructure and migration burden stops shrinking despite platform investment, or if the platform team's headcount starts scaling linearly with the number of teams it serves — the leverage test failing in plain sight.\n\n## Authoritative References\n\n- Camille Fournier and Ian Nowland, *Platform Engineering: A Guide for Technical, Product, and People Leaders* (O'Reilly, 2024) — the introductory chapter, whose checklist this record distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Platform Foundations\n\n- [ ] Define the platform as an internal product, not just a collection of tools\n- [ ] Identify the application teams that will use the platform\n- [ ] Assign a platform team to develop and operate it\n- [ ] Provide self-service APIs, tools, services, knowledge, and support\n- [ ] Establish clear platform boundaries: what the platform supports and what it intentionally does not\n- [ ] Measure whether the platform reduces coordination and operational effort for application teams\n\n## 2. Reduce the \"Over-General Swamp\"\n\n- [ ] Inventory the OSS, cloud services, infrastructure tools, and bespoke systems currently in use\n- [ ] Identify duplicated or overlapping technologies\n- [ ] Locate application-specific integration \"glue\"\n- [ ] Identify systems that are expensive to upgrade, migrate, or maintain\n- [ ] Reduce unnecessary technology choices where they create long-term maintenance costs\n- [ ] Replace repeated per-application integrations with shared platform capabilities\n- [ ] Prefer abstractions that hide implementation complexity from application teams\n\n## 3. Treat the Platform as a Product\n\n- [ ] Interview application developers and understand their actual needs\n- [ ] Prioritize user experience rather than infrastructure-team convenience\n- [ ] Create a curated set of supported capabilities instead of exposing every possible option\n- [ ] Deliver improvements incrementally\n- [ ] Gather feedback continuously\n- [ ] Track platform adoption and developer satisfaction\n- [ ] Avoid imposing standards only through top-down mandates\n- [ ] Demonstrate the value of the preferred platform path so teams choose it voluntarily\n\n## 4. Limit Primitives Without Creating Excessive Overhead\n\n- [ ] Decide which cloud and OSS primitives should be officially supported\n- [ ] Remove low-value or duplicate choices\n- [ ] Create opinionated defaults\n- [ ] Allow exceptions when there is a legitimate business or technical reason\n- [ ] Avoid forcing every application team to become experts in infrastructure technologies\n- [ ] Centralize specialized expertise where it can serve many teams\n\n## 5. Reduce Per-Application Glue\n\n- [ ] Identify infrastructure configuration repeated across applications\n- [ ] Move reusable Terraform/IaC logic into shared platform components\n- [ ] Avoid turning a central infrastructure team into a ticket-driven \"Terraform writing service\"\n- [ ] Build reusable abstractions instead of repeatedly fulfilling individual configuration requests\n- [ ] Give platform engineers enough software-development capability to build durable platform products\n- [ ] Encapsulate underlying systems behind stable interfaces\n\n## 6. Manage Migrations Centrally\n\n- [ ] Reduce the number of underlying technologies that may require future migration\n- [ ] Encapsulate vendor and OSS systems behind APIs where practical\n- [ ] Maintain visibility into which applications depend on each platform component\n- [ ] Collect dependency and usage metadata\n- [ ] Create migration tooling that minimizes work for application teams\n- [ ] Make platform teams responsible for migration automation whenever possible\n- [ ] Plan for technology replacement as a normal lifecycle activity\n\n## 7. Enable \"You Build It, You Run It\"\n\n- [ ] Ensure application teams can operate the software they develop\n- [ ] Hide unnecessary infrastructure complexity behind platform abstractions\n- [ ] Provide resilient defaults for networking, compute, storage, deployment, and runtime concerns\n- [ ] Minimize operational issues caused by infrastructure rather than application code\n- [ ] Make platform reliability high enough that application teams can trust the abstractions\n- [ ] Keep platform operational responsibility with the platform team for shared infrastructure\n\n## 8. Build the Right Platform Team\n\n- [ ] Combine software engineering and systems/infrastructure expertise\n- [ ] Give the team a mission broader than maintaining infrastructure\n- [ ] For infrastructure engineers, balance operational robustness with developer-focused simplicity\n- [ ] For DevTools engineers, balance developer experience with production-support requirements\n- [ ] For DevOps engineers, replace application-specific automation with reusable capabilities\n- [ ] For SRE engineers, balance reliability with agility, security, performance, and cost\n- [ ] Organize teams around platform outcomes rather than traditional organizational silos\n\n## 9. Support Innovation Without Losing Control\n\n- [ ] Make common paths easy and well supported\n- [ ] Allow teams to experiment when platform capabilities do not meet a legitimate need\n- [ ] Avoid forcing every new idea into the existing platform\n- [ ] Establish a path for successful experiments to become supported platform capabilities\n- [ ] Watch for useful \"shadow platforms\" that indicate unmet user needs\n- [ ] Avoid building abstractions so generic that they recreate the complexity they were meant to remove\n\n## 10. Success Criteria\n\n- [ ] Application teams ship faster\n- [ ] Developers spend less time managing infrastructure\n- [ ] Operational support requirements decrease\n- [ ] The amount of application-specific integration glue decreases\n- [ ] Fewer infrastructure and OSS primitives need direct application-team expertise\n- [ ] Upgrades and migrations require less effort from the application team\n- [ ] Platform adoption grows because developers find it useful\n- [ ] Reliability remains strong while developer autonomy improves\n- [ ] The organization gains leverage: a small platform team makes a much larger engineering organization more productive\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why platform engineering exists — draining the over-general swamp — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Kai stands knee-deep in a swamp of tangled cables and duplicated tool crates while Vera watches from dry ground.](assets/images/what-is-platform-engineering/comic-01-the-swamp.jpeg)\n**Panel 1:** *The hook: the over-general swamp — duplicated tools, per-application glue, systems too expensive to upgrade or leave. Nobody chose it.*\n\n![Comic panel: three teams each hold a different tool while a tangle of pipes grows behind them; Vera comments.](assets/images/what-is-platform-engineering/comic-02-one-sensible-choice.jpeg)\n**Panel 2:** *The problem: the swamp accumulates one sensible local choice at a time — until an ever-growing share of engineering time goes to glue and upgrades nobody owns.*\n\n![Comic panel: Kai behind a ticket counter with a huge stack of tickets hands a custom scroll to one of many queued developers.](assets/images/what-is-platform-engineering/comic-03-the-ticket-bureau.jpeg)\n**Panel 3:** *Wrong way one: the ticket-driven service bureau — bespoke work per request, headcount scaling with demand, no self-service product.*\n\n![Comic panel: developers nod at a megaphone proclaiming a standard, then walk a hidden path around the gate; Vera watches.](assets/images/what-is-platform-engineering/comic-04-the-mandate.jpeg)\n**Panel 4:** *Wrong way two: adoption by decree — the standard is announced, teams comply on paper, and the real work routes around it.*\n\n![Comic panel: Kai presents a tidy self-service counter with a few labeled capability boxes and a Not Supported sign; Vera approves.](assets/images/what-is-platform-engineering/comic-05-an-internal-product.jpeg)\n**Panel 5:** *The principle: the platform is an internal product — curated, self-service, clear boundaries — and saying what it does not support is the defining act.*\n\n![Comic panel: Kai lowers a smooth deck over churning machinery while developers build calmly on top.](assets/images/what-is-platform-engineering/comic-06-hide-not-relocate.jpeg)\n**Panel 6:** *How it plays out: abstractions hide complexity instead of relocating it — which is what makes 'you build it, you run it' a fair ask.*\n\n![Comic panel: Kai swaps an engine beneath the deck with a hoist while app houses above stay lit and undisturbed.](assets/images/what-is-platform-engineering/comic-07-migrate-once.jpeg)\n**Panel 7:** *The economics: migrations done once, centrally, with tooling and dependency metadata — instead of dozens of teams rediscovering the same move.*\n\n![Comic panel: Kai lifts a huge block of developer teams with a lever labeled Platform while Vera shows a rising adoption chart.](assets/images/what-is-platform-engineering/comic-08-the-leverage-test.jpeg)\n**Panel 8:** *The closer: the one test — a small platform team makes a much larger organization measurably more productive, and adoption grows because teams choose it.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

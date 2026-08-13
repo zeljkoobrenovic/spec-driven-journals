@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rearchitecting Platforms</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="planning-and-delivery.html" title="Planning and Delivery">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-stakeholders.html" title="Managing Platform Stakeholders">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Platform Engineering</p>
+        <h1>Rearchitecting Platforms</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-12  ·  7 min · <a class="spec-link" href="rearchitecting-platforms.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/rearchitecting-platforms/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/rearchitecting-platforms/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="planning-and-delivery.html" title="Planning and Delivery">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="managing-stakeholders.html" title="Managing Platform Stakeholders">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REARCHITECTING-PLATFORMS", "status": "draft:gray", "title": "Rearchitecting Platforms", "date": "2026-08-12", "author": "Željko Obrenović", "permalink": "rearchitecting-platforms", "timetoread": "7 min", "excerpt": "A platform rearchitecture is a business investment, not a technical adventure, and I gate it like one. It happens only when the current architecture genuinely constrains features, reliability, security, or efficiency — and incrementally in preference to a separate v2. It is planned on a 3–5-year horizon but must put something valuable into production every 12 months. Migration costs are counted before commitment, leadership commits to protecting the work through reorganizations, and the effort is stopped or reshaped when evidence no longer supports the hypothesis.", "tags": "platform engineering, rearchitecture, migrations, architecture, security by design, paved paths, technical strategy", "icon": "assets/icons/rearchitecting-platforms.png", "logo": "assets/images/rearchitecting-platforms/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["platform engineering", "rearchitecture", "migrations", "architecture", "security by design", "paved paths", "technical strategy"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: A platform rearchitecture is a business investment, not a technical adventure, and I gate it like one. It starts only when the current architecture genuinely constrains feature delivery, reliability, security, or efficiency — and incremental rearchitecture is preferred over a separate \"v2\" unless there is a compelling reason otherwise. The target is set on a 3–5-year horizon, but the work must earn its funding continuously: every major phase delivers at least one valuable capability into production within 12 months, serving real load for a real customer. Migration costs are counted honestly before commitment, security is built in by design and by default, leadership commits to protecting the effort through reorganizations and changing priorities — and when the evidence stops supporting the architecture hypothesis, the work is stopped, revised, or delayed without shame.\n\n## Statement\n\nMy operating model for rearchitecting platforms has four gates: a genuine constraint, a full go/no-go review before the work starts, a valuable production deliverable every 12 months, and an annual review with a stop option.\n\nBefore the work starts:\n\n- **A genuine constraint, not an aesthetic itch.** The current architecture must be demonstrably limiting feature delivery, reliability, security, or efficiency — and beyond what incremental improvement can fix.\n- **Incremental over \"v2\".** Rearchitect the platform in place unless there is a compelling reason to build a separate system; never combine a new-product bet with a major redesign if it can be avoided.\n- **Maturity and mindset matched.** Know whether the platform is scrappy, scalable, or robust, and whether the moment calls for pioneers (rapid discovery), settlers (operationalizing), or town planners (long-term robustness) — and staff accordingly.\n- **A full go/no-go review.** Constraint confirmed, migration costs understood, a credible 3–5-year direction, a meaningful 12-month deliverable, at least one committed customer partner, and leadership prepared to fund and protect the effort.\n\n![Decision-flow diagram with constraint and incremental checks exiting early, a go/no-go gate with four commitment icons, then start.](assets/images/rearchitecting-platforms/go-no-go-decision-path.jpeg)\n**Figure 1:** *The decision path: most rewrite urges exit early — only a genuine constraint that incremental work cannot fix reaches the go/no-go gate.*\n\nHow the target is set:\n\n- **A 3–5-year horizon, ambitiously.** Think about the desired end state before filtering for feasibility, with substantial improvements defined across features, efficiency, reliability, and security.\n- **Simplification as a goal.** Absorb overlapping and shadow platforms where possible; replace in-house components that duplicate mature open-source or vendor solutions — and evaluate any major external bet for ecosystem trajectory and 5–10-year viability, never for fashion.\n- **Security by design and by default.** Security is a core platform capability: protections that do not depend on human behavior, hazards eliminated or reduced architecturally, and paved paths that make the safest option the easiest option.\n\nHow the work stays honest:\n\n- **Twelve-month wins, three levels of success.** Every major phase carries an audacious goal, a valuable fallback, and a production proof — components of the new architecture serving real load. If no incremental production value is deliverable within 12 months, the architecture itself is reassessed.\n- **Guardrails on the transition.** Backward compatibility by default, breaking changes run as major-version migrations, strong testing that does not lean on \"we can roll back quickly,\" stable lower environments, and gradual canary-style rollouts.\n- **Honest migration accounting.** Every user group that must move, the effort required from their teams, the cost of running old and new simultaneously, data migration, SDK and tooling changes, and support work — confirmed to be smaller than the expected business value.\n- **Annual review with a stop option.** Goals reassessed yearly, real improvements measured, old architecture retired as customers migrate — and the work stopped, revised, or delayed when evidence no longer supports the hypothesis.\n\n## How to Read This\n\nThis journal is my platform operating model, one record per source checklist. This record is grounded in the \"Rearchitecting Platforms\" chapter of Camille Fournier and Ian Nowland's *Platform Engineering: A Guide for Technical, Product, and People Leaders* (O'Reilly, 2024) — the chapter on when and how to rebuild the foundations of a platform that is already carrying load, distilled here into **the investment gates I hold every rearchitecture to**. The runnable version — the go/no-go review, the architecture-goal worksheets, the guardrails, and the annual review — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Rearchitectures fail organizationally more often than technically.** The graveyard of platform rewrites is not full of bad designs; it is full of good designs that lost their funding in year two, their sponsors in a reorganization, or their customers to an uncounted migration bill. That is why the gates in this record are mostly not technical: committed leadership, a committed customer partner, honest costs, and **a plan that survives the people who approved it changing jobs**.\n\n**The 12-month win is the survival mechanism, not a nice-to-have.** A multi-year rearchitecture that goes dark is a standing invitation to be cancelled — and deserves to be, because it is also epistemically dark: nothing in production means nothing has been learned about whether the new architecture actually works. The three levels of success — audacious goal, valuable fallback, production proof — mean the effort **cannot have a zero year**. Even the worst case leaves new components carrying real load, which is both political capital and engineering evidence.\n\n![Timeline toward a three-to-five-year target with yearly production deliverables, reviews, and a three-level success ladder.](assets/images/rearchitecting-platforms/horizon-with-yearly-proof.jpeg)\n**Figure 2:** *The delivery rhythm: a 3–5-year target that earns its funding every 12 months — a production deliverable and a review at every yearly checkpoint.*\n\n\n**Migration is usually the largest cost, and it is paid by other people.** The platform team builds the new system; the consumer teams pay the migration tax — engineering effort, retraining, dual-running, data movement. A rearchitecture costed only by the building team's headcount is **missing the larger half of the bill**, and the error lands on the teams least consulted. Counting migration honestly before commitment is what separates an investment case from a pitch.\n\n![Iceberg diagram with a small build tip above water and larger submerged migration costs labeled beneath a true-cost bracket.](assets/images/rearchitecting-platforms/true-cost-iceberg.jpeg)\n**Figure 3:** *The true cost: the build effort is the visible tip — the larger half is migration, paid by consumer teams, and it is counted before commitment.*\n\n\n**Incremental rearchitecture beats the seductive \"v2\".** The separate-system rewrite promises freedom from legacy constraints and delivers two platforms to operate, a migration cliff nobody climbs, and a team split between the past and the future. Rebuilding in place is less glamorous and more survivable: every step ships, every step is testable against real load, and **there is never a moment where the business depends on a big bang landing**.\n\n**Security is an architecture property, not a review step.** A rearchitecture is the rare moment when security can be moved from human vigilance into structure: hazards eliminated rather than documented, protections that do not depend on anyone remembering anything, and paved paths where **the safest option is the easiest option**. Bolting security review onto a finished design forfeits exactly the leverage the rewrite existed to create.\n\n**The people who know why the old system is shaped that way are the asset, not the obstacle.** Handing the rewrite to enthusiastic new hires — unburdened by history and unaware of the constraints that history encodes — is how organizations pay twice for the same lessons. New hires challenge assumptions; long-tenured engineers carry the context; **ownership transfers only after the relationship between them is built**. The same discipline applies to pioneer teams: they may run ahead of the platform, but with an explicit integration path, so the experiment never hardens into a permanent shadow platform.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Rearchitect when the architecture genuinely constrains the business. | Rearchitect when the code is old, unfashionable, or unloved — age is not a constraint. |\n| Prefer incremental rearchitecture over a separate \"v2\". | Never build anew — a compelling reason can justify it, but it must be argued, not assumed. |\n| Plan on a 3–5-year horizon, ambitiously. | Wait 3–5 years for value — every 12 months puts something real into production. |\n| Count migration costs, including consumer teams' effort, before committing. | The platform team's estimate is the cost — the larger half is usually paid elsewhere. |\n| Secure leadership commitment that survives reorgs and changing priorities — and be willing to wait if the case is not yet strong. | Approval in one budget meeting is commitment — protection is the test. |\n| Build security in by design and by default, via paved paths. | Add a security review at the end — by then the architectural leverage is spent. |\n| Stop, revise, or delay when evidence no longer supports the hypothesis. | Sunk cost is a reason to continue — the annual review exists to ask the question. |\n\nConcretely: no rearchitecture starts here without a written go/no-go review I can point to; every active rearchitecture can name its current-year audacious goal, fallback, and production proof — and which customer team is running on the new components today; every migration plan shows the consumer-side cost next to the platform-side cost; and once a year we ask, in writing, **whether we would still start this project knowing what we now know**.\n\n## Anti-Patterns\n\n- **The resume-driven rewrite.** A rearchitecture justified by technology fashion — the new stack everyone is hiring for — rather than a constraint anyone can name. The 5–10-year viability test exists precisely for this.\n- **The big bang.** Years of building with nothing in production, followed by a single heroic cutover. No production proof means no evidence, no political capital, and no survivable fallback.\n- **The uncounted migration.** A business case built on the platform team's effort alone, discovered to be half the true cost when consumer teams present their bill — after commitment.\n- **The v2 island.** A separate greenfield system that never absorbs the old one: two platforms to operate, a migration cliff nobody climbs, and a team split against itself.\n- **The shadow platform.** A pioneer experiment that quietly becomes permanent infrastructure — no integration path, no operational ownership, duplicating the platform it was meant to feed.\n- **The new-hire rewrite.** Handing architectural ownership to newcomers before they understand the customers, constraints, and history the current system encodes — and losing the engineers who do.\n- **The unprotected investment.** Starting on enthusiasm without leadership commitment that survives reorganizations — so the first budget squeeze orphans the work mid-migration, leaving the worst of both worlds.\n- **The zombie project.** A rearchitecture whose original hypothesis has been contradicted by evidence, kept alive by sunk cost and the awkwardness of stopping.\n\n## Related Records\n\n- [Planning and Delivery](planning-and-delivery.html) — the general planning and milestone discipline this record builds on; a rearchitecture is a long project with extra gates, not an exemption from planning.\n- [The Four Pillars of Platform Engineering](four-pillars.html) — the definition of the platform being rebuilt; the rearchitecture must strengthen the pillars, not trade them away for novelty.\n- [Operating Platforms](operating-platforms.html) — the operational bar the new architecture must meet from its first production tranche; rollout guardrails here exist to protect that bar.\n- [Building Great Platform Teams](building-platform-teams.html) — the staffing side of this record in full: the mix of tenure and fresh perspective a rearchitecture depends on.\n- [Managing Platform Stakeholders](managing-stakeholders.html) — how leadership commitment and consumer-team participation are actually won and kept through a multi-year effort.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs every major architectural rebuild of a platform where I am the accountable executive — anything with a multi-year horizon, a migration obligation on consumer teams, or a request for protected funding. I revisit it if a gated rearchitecture fails anyway (the signal that the gates test the wrong things), if the 12-month-win rule starts producing theater deliverables that demonstrate nothing about the architecture, or if teams begin routing around the go/no-go review by labeling rewrites as incremental improvements.\n\n## Authoritative References\n\n- Camille Fournier and Ian Nowland, *Platform Engineering: A Guide for Technical, Product, and People Leaders* (O'Reilly, 2024) — the \"Rearchitecting Platforms\" chapter, whose checklist this record distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "7 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Confirm a Rearchitecture Is Actually Needed\n\n- [ ] Identify architectural limitations that incremental improvements can no longer solve\n- [ ] Confirm the current architecture is limiting one or more of these areas:\n  - [ ] Feature delivery\n  - [ ] Reliability\n  - [ ] Security\n  - [ ] Efficiency\n- [ ] Determine whether business growth or increased platform adoption justifies architectural change\n- [ ] Prefer incremental rearchitecture over building a completely separate \"v2\" unless there is a compelling reason not to\n- [ ] Avoid combining a new-product problem with a major architecture redesign if possible\n- [ ] Identify the maturity level of the platform:\n  - [ ] Scrappy\n  - [ ] Scalable\n  - [ ] Robust\n- [ ] Ensure the engineering mindset matches the platform's current needs:\n  - [ ] Pioneer — experimentation and rapid product discovery\n  - [ ] Settler — scaling and operationalizing successful capabilities\n  - [ ] Town planner — reliability, security, efficiency, and long-term robustness\n\n## 2. Define the Final Architecture Goals\n\n- [ ] Use roughly a **3–5-year planning horizon** for the target architecture\n- [ ] Think ambitiously about the desired end state before filtering for feasibility\n- [ ] Define substantial improvements in all four system-capability areas\n\n### Features\n\n- [ ] Identify valuable features the current architecture struggles to support\n- [ ] Determine which new capabilities the rearchitecture should unlock\n\n### Efficiency\n\n- [ ] Estimate whether the new architecture can materially reduce operating costs\n- [ ] Identify opportunities to improve performance as workloads grow\n- [ ] Look for performance improvements that could enable new product capabilities\n\n### Reliability\n\n- [ ] Identify recurring operational problems in the current platform\n- [ ] Define how the new architecture will reduce failures and operational burden at greater scale\n\n### Security\n\n- [ ] Identify significant security or compliance weaknesses\n- [ ] Determine whether the new architecture can reduce the risk of a breach\n- [ ] Determine whether compliance can become easier or less expensive\n\n## 3. Simplify the Overall Architecture\n\n- [ ] Identify adjacent platforms or customer systems with overlapping capabilities\n- [ ] Determine whether the new platform can absorb or replace any of them\n- [ ] Look for shadow platforms or \"similar but different\" systems that could eventually be consolidated\n- [ ] Identify in-house components that duplicate mature open-source or vendor solutions\n- [ ] Evaluate whether replacing an existing component would unlock significantly greater capabilities\n\n## 4. Evaluate Major OSS or Vendor Bets\n\nBefore architecting around a major external technology:\n\n- [ ] Confirm there is a strong adjacent business need that justifies the investment\n- [ ] Verify that the current platform has meaningful capability gaps the new technology would solve\n- [ ] Evaluate the ecosystem's trajectory and likelihood of continued adoption\n- [ ] Determine whether the technology will still be viable over the expected 5–10-year architecture lifespan\n- [ ] Estimate migration and retraining costs\n- [ ] Avoid switching technologies primarily because something new is fashionable\n\n## 5. Build Security Into the Architecture\n\n- [ ] Treat security as a core platform capability rather than a separate activity\n- [ ] Design systems to remain resilient even when attacks or failures occur\n- [ ] Prefer architectural protections that do **not depend on human behavior**\n- [ ] Create a meaningful separation between users and security hazards\n- [ ] Eliminate hazards where possible\n- [ ] Reduce hazards when complete elimination is impractical\n- [ ] Minimize the potential impact of failures or attacks\n- [ ] Minimize manual intervention required to work around hazards\n- [ ] Preserve the ability to change and innovate after security controls are introduced\n\n### Secure-by-Default Platform Capabilities\n\n- [ ] Automated testing\n- [ ] Standardized deployment tooling / infrastructure as code\n- [ ] Configuration-management patterns\n- [ ] Token and secrets management\n- [ ] Standardized observability and distributed tracing\n- [ ] Standard service and web frameworks\n- [ ] Common authentication and authorization middleware\n- [ ] Compute platforms with declarative access controls\n- [ ] Tenant-isolated architecture where appropriate\n\n### Security Opportunities to Evaluate\n\n- [ ] API protection\n- [ ] XSRF/CSRF protection\n- [ ] Security-header validation\n- [ ] Rate limiting, throttling, and tarpitting\n- [ ] IP geofencing where appropriate\n- [ ] DDoS protection\n- [ ] Web application firewall integration\n- [ ] Authentication and authorization\n- [ ] Certificate management\n- [ ] Secure network protocols\n- [ ] Static analysis\n- [ ] Dynamic analysis\n- [ ] Fuzzing\n- [ ] Penetration testing\n- [ ] Resilience/chaos testing\n- [ ] Smoke testing\n\n## 6. Create Paved Paths\n\n- [ ] Identify recurring security or operational work currently pushed onto application teams\n- [ ] Convert safe practices into supported platform defaults\n- [ ] Make the safest option the easiest option\n- [ ] Allow teams to opt out only when necessary\n- [ ] Reduce application teams' cognitive load rather than adding more checklists and manual processes\n- [ ] Ask which security tasks teams repeatedly perform during software delivery\n- [ ] Identify security mechanisms that should become standard platform requirements\n- [ ] Review security incidents and near misses for opportunities to automate protections\n\n## 7. Establish Rearchitecture Guardrails\n\n### Compatibility\n\n- [ ] Avoid backward-incompatible API changes whenever possible\n- [ ] If breaking changes are unavoidable, treat them as a major-version migration\n- [ ] Give users sufficient time to migrate before deprecating the old interface\n- [ ] Decide how many platform versions can realistically be supported simultaneously\n\n### Testing\n\n- [ ] Maintain strong unit and integration testing\n- [ ] Test downstream/customer dependencies where practical\n- [ ] Use modern testing techniques, such as property-based testing and fuzzing, where appropriate\n- [ ] Use synthetic monitoring for production validation\n- [ ] Do not rely on \"we can roll back quickly\" as the primary testing strategy\n- [ ] Use shadow or canary deployments for risky foundational changes\n\n### Lower Environments\n\n- [ ] Maintain a reasonably stable pre-production environment\n- [ ] Complete internal validation before asking customers to test\n- [ ] Use the environment for final integration validation\n- [ ] Avoid repeatedly sending obviously broken releases downstream\n\n### Rollout Strategy\n\n- [ ] Use canary releases where appropriate\n- [ ] Roll changes out gradually across machine/customer tranches\n- [ ] Release to subsets of customers before full deployment\n- [ ] Use beta releases where appropriate\n- [ ] Consider staying slightly behind the newest OSS version when stability and support matter more than novelty\n- [ ] Maintain a deliberate upgrade cadence to avoid falling out of security-support windows\n\n## 8. Calculate Migration Costs\n\n- [ ] Create a realistic migration plan alongside the architecture plan\n- [ ] Identify every major group of existing users that must migrate\n- [ ] Estimate the engineering effort required from customer/application teams\n- [ ] Estimate migration duration\n- [ ] Identify compatibility requirements during the transition\n- [ ] Estimate the operational costs of running old and new architectures simultaneously\n- [ ] Include data migration and transformation costs\n- [ ] Include changes to APIs, SDKs, tooling, and integrations\n- [ ] Include migration support and documentation work\n- [ ] Validate migration assumptions with product and engineering managers\n- [ ] Confirm that the expected business value outweighs the migration cost\n\n## 9. Identify Major 12-Month Wins\n\nFor every major phase of a multi-year rearchitecture:\n\n- [ ] Identify at least one valuable capability deliverable within **12 months**\n- [ ] Ensure the deliverable demonstrates an important property of the new architecture\n- [ ] Find at least one application/customer team willing to use it\n- [ ] Put part of the new architecture into production\n- [ ] Ensure it serves a real customer or production load\n\n### Use Three Levels of Success\n\n- [ ] **Goal 1 — Audacious:** Deliver a major business improvement that meaningfully advances the chosen business area\n- [ ] **Goal 2 — Valuable fallback:** Deliver a smaller but still meaningful improvement that the old architecture could not easily provide\n- [ ] **Goal 3 — Production proof:** Get components of the new architecture running in production with real load\n- [ ] Revisit and reset these goals approximately every year\n- [ ] If no incremental production value can be delivered within 12 months, reassess the architecture and its viability\n\n## 10. Manage Pioneer Work Carefully\n\nWhen rapid experimentation is needed on an otherwise robust platform:\n\n- [ ] Allow a small pioneer team to explore new capabilities quickly\n- [ ] Make it explicit that successful experimental capabilities will eventually integrate into the main platform\n- [ ] Avoid allowing a permanent duplicate \"shadow platform\" to emerge\n- [ ] Involve existing platform engineers early enough to prepare for integration\n- [ ] Give pioneer teams freedom to move quickly without requiring production-grade completeness immediately\n- [ ] Define an expected integration or transition path before the experiment becomes critical\n- [ ] Recognize and preserve useful contributions from both the pioneer and established platform teams\n\n## 11. Build Organizational Support\n\n- [ ] Determine whether the rearchitecture requires additional headcount\n- [ ] Identify internal transfers that may be needed\n- [ ] Identify work required from customer/application teams\n- [ ] Identify migrations or integrations other teams must complete\n- [ ] Estimate whether the work will temporarily slow short-term feature delivery\n- [ ] Assess the reputational risk of failing to meet major commitments\n- [ ] Present both business benefits and costs to leadership\n- [ ] Obtain leadership commitment for a multi-year investment\n- [ ] Make sure leaders understand that the initiative may need protection through reorganizations, layoffs, or changing priorities\n- [ ] Be willing to wait if the business case is not yet strong enough\n\n## 12. Staff the Rearchitecture Appropriately\n\n- [ ] Do not automatically assign newly hired engineers to lead the rearchitecture\n- [ ] Use new hires initially to provide feedback and challenge assumptions\n- [ ] Give them time to understand the existing platform, customers, organization, and constraints\n- [ ] Keep experienced engineers who deeply understand the historical context involved\n- [ ] Build strong relationships between new and long-tenured engineers before transferring major architectural ownership\n\n## 13. Final Go/No-Go Review\n\nBefore committing major resources:\n\n- [ ] Is the current architecture genuinely constraining business value?\n- [ ] Are the long-term benefits substantial across features, reliability, security, or efficiency?\n- [ ] Is incremental rearchitecture preferable to replacing the entire system?\n- [ ] Are migration costs understood?\n- [ ] Is there a credible 3–5-year direction?\n- [ ] Is there a meaningful 12-month deliverable?\n- [ ] Is there at least one committed customer/application partner?\n- [ ] Can changes be rolled out without major disruption?\n- [ ] Are compatibility, testing, and rollout guardrails defined?\n- [ ] Is security improved by design and by default?\n- [ ] Is the organization prepared to fund and protect the effort?\n- [ ] Is leadership prepared to support the work through changing business conditions?\n- [ ] Is the expected benefit clearly greater than the cost and risk?\n\n## 14. Ongoing Rearchitecture Review\n\n- [ ] Reassess architecture goals annually\n- [ ] Reevaluate customer and business priorities\n- [ ] Review migration progress\n- [ ] Measure actual reliability, efficiency, security, and feature-delivery improvements\n- [ ] Verify that new architecture components are carrying real production load\n- [ ] Remove or deprecate old architecture as customers migrate\n- [ ] Consolidate duplicate platforms whenever possible\n- [ ] Stop, revise, or delay work when evidence no longer supports the original architecture hypothesis\n- [ ] Continue delivering incremental business value throughout the rearchitecture rather than waiting for a \"big bang\" completion\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why a platform rearchitecture is a business investment, not a technical adventure — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: an engineer points at a working old platform building while sketching a gleaming new tower on a blueprint.](assets/images/rearchitecting-platforms/comic-01-the-aesthetic-itch.jpeg)\n**Panel 1:** *The hook: the rewrite urge — but age is not a constraint, and a rearchitecture is not a technical adventure.*\n\n![Comic panel: two figures walk through a graveyard of blueprint-shaped tombstones with epitaphs about lost funding and sponsors.](assets/images/rearchitecting-platforms/comic-02-the-rewrite-graveyard.jpeg)\n**Panel 2:** *The problem: the graveyard of platform rewrites is full of good designs that lost their funding, their sponsors, or their customers.*\n\n![Comic panel: an empty new platform on an island linked to the busy old one by a rickety rope bridge nobody crosses.](assets/images/rearchitecting-platforms/comic-03-the-v2-island.jpeg)\n**Panel 3:** *The wrong way: the v2 island and the big bang — years of building with nothing in production, then a migration cliff nobody climbs.*\n\n![Comic panel: Vera at a go/no-go gate holding a checklist of constraint, costs, customer, and leadership while Kai waits.](assets/images/rearchitecting-platforms/comic-04-gate-it-like-an-investment.jpeg)\n**Panel 4:** *The principle: gate it like a business investment — real constraint, honest costs, a committed customer, and leadership that will protect the work.*\n\n![Comic panel: an engineer swaps columns of a working building one at a time while people keep working inside.](assets/images/rearchitecting-platforms/comic-05-rebuild-in-place.jpeg)\n**Panel 5:** *How it plays out: incremental over 'v2' — rebuild in place, every step tested against real load, no big bang to land.*\n\n![Comic panel: a three-tier podium of audacious goal, valuable fallback, and production proof under a twelve-month calendar.](assets/images/rearchitecting-platforms/comic-06-no-zero-years.jpeg)\n**Panel 6:** *How it plays out: twelve-month wins with three levels of success — audacious goal, valuable fallback, production proof. The effort cannot have a zero year.*\n\n![Comic panel: a balance scale where a tall migration coin stack from consumer teams outweighs the platform team's build stack.](assets/images/rearchitecting-platforms/comic-07-the-migration-bill.jpeg)\n**Panel 7:** *How it plays out: honest migration accounting — the larger half of the cost is paid by other people, so it is counted before commitment.*\n\n![Comic panel: an engineer paves a smooth guardrailed path with a shield embedded in it while a rocky detour sits overgrown.](assets/images/rearchitecting-platforms/comic-08-the-paved-safe-path.jpeg)\n**Panel 8:** *How it plays out: security by design and by default — protections that depend on structure, not on human behavior, and paved paths where the safest option is the easiest.*\n\n![Comic panel close-up: Vera holds a notebook showing continue, revise, and stop arrows beside an annual review calendar.](assets/images/rearchitecting-platforms/comic-09-would-we-start-it-today.jpeg)\n**Panel 9:** *The closer: once a year, in writing — would we still start this knowing what we now know? Stop, revise, or delay without shame.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

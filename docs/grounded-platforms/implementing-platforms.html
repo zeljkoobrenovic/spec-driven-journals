@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Implementing Platforms</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="organizing-for-platforms.html" title="Organizing for Platforms">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="growing-platforms.html" title="Growing Platforms">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Platform Strategy</p>
+        <h1>Implementing Platforms</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-12  ·  6 min · <a class="spec-link" href="implementing-platforms.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/implementing-platforms/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/implementing-platforms/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="organizing-for-platforms.html" title="Organizing for Platforms">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="growing-platforms.html" title="Growing Platforms">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-IMPLEMENTING-PLATFORMS", "status": "draft:gray", "title": "Implementing Platforms", "date": "2026-08-12", "author": "Željko Obrenović", "permalink": "implementing-platforms", "timetoread": "6 min", "excerpt": "I hold every internal platform implementation to the same anatomy: a self-service management plane developers actually touch, a control plane that continuously reconciles desired and actual state, and a services plane that does the work. Every abstraction the platform introduces must pass two tests — does it genuinely reduce cognitive load, and can a failure be traced back through it. Ownership between platform and application teams is explicit, and the tenancy model is a conscious architecture decision tested at scale, not a default inherited from the first prototype.", "tags": "platform strategy, internal developer platform, control plane, self-service, abstractions, tenancy, platform implementation", "icon": "assets/icons/implementing-platforms.png", "logo": "assets/images/implementing-platforms/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["platform strategy", "internal developer platform", "control plane", "self-service", "abstractions", "tenancy", "platform implementation"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: An internal platform is implemented as three planes: a self-service **management plane** that developers touch, a **control plane** that continuously reconciles desired state with actual state, and a **services plane** that does the actual work. Every abstraction the platform introduces must pass two tests — it genuinely reduces cognitive load, and a failure can be traced back through it to the specification that produced it. Responsibilities between platform and application teams are explicit, and the tenancy and isolation model is a conscious architecture decision tested for scale and failure, not a default inherited from the first prototype. A platform that hides complexity without a troubleshooting path has not reduced cognitive load; it has deferred it to the worst possible moment.\n\n## Statement\n\nMy operating model for implementing internal platforms:\n\n- **Three planes, each with a job.** The management plane is the visible, self-service face — portal, CLI, management APIs, and possibly an automation language — built around common user journeys rather than CRUD-style resource manipulation. The control plane records desired state and reconciles it with actual state; it also carries identity, ownership, the service catalog, and orchestration. The services plane holds what the platform actually delivers: base infrastructure services, third-party products, custom services behind a defined interface, and governed user-contributed services, plus SDLC capabilities.\n- **Reconciliation is the engine.** The platform runs a continuous control loop — **Observe → Analyze → Act** — that detects drift caused by manual changes and resolves it deliberately. Declarative provisioning, desired-versus-actual diffing, and in-place-update versus replace handling are core machinery, not advanced features.\n- **Abstractions must earn their keep.** Templates and higher-level orchestration exist to reduce cognitive load. I define which values developers may provide, default the rest sensibly, and restrict what they must not touch. If a template exposes a long, confusing parameter list, it has increased cognitive load, and we move to higher-level orchestration instead.\n- **Traceability is non-negotiable.** Every generated resource links back — by reference, tag, or identifier — to the platform construct that created it, and errors are traceable to the relevant specification. An abstraction that hides resources without providing a troubleshooting path does not ship.\n- **Ownership is explicit.** Platform-team and application-team responsibilities are written down. Application teams get enough configuration control to avoid ticket-based friction; the platform retains the restrictions that security and compliance genuinely require, plus control over the resource lifecycle where necessary.\n- **Tenancy is a decision, not an accident.** We name what a tenant is, choose consciously among multi-tenant resources, multi-tenancy in the platform, or independent instances, validate security and performance isolation, protect against noisy neighbors, and test the control plane against reconciliation bursts before adoption makes the test involuntary.\n\n![Layered diagram of an internal platform: management plane on top, control plane with a reconciliation loop in the middle, services plane below.](assets/images/implementing-platforms/three-plane-anatomy.jpeg)\n**Figure 1:** *The three-plane anatomy: developers touch the management plane, the control plane reconciles desired and actual state, and the services plane does the work.*\n\n## How to Read This\n\nThis journal is my platform operating model, one record per source checklist. This record is grounded in the \"Implementing (Internal) Platforms\" chapter of Gregor Hohpe's *Platform Strategy: Innovation Through Harmonization* (Leanpub, 2024) — the chapter that opens up the machinery behind a working internal platform, distilled here into **the anatomy and the two tests I hold every implementation to**. The runnable version — plane by plane, from management-plane self-service through tenancy and the final readiness check — lives in the **Checklist** tab of this post.\n\n## Rationale\n\n**Self-service is what makes it a platform rather than a team with a queue.** If developers cannot provision what they need through a portal, CLI, or API, every request becomes a ticket and every ticket becomes a human — and humans doing \"ClickOps\" do not scale. Hohpe's management-plane checklist is really a test of whether the platform supports **user journeys** — the things developers are actually trying to accomplish — rather than exposing raw resource CRUD and calling it an experience. An inventory of provisioned services, with compliance and reference-architecture status visible, is part of the same promise: self-service includes seeing what you have, not just getting more.\n\n**Reconciliation is what separates a platform from a pile of provisioning scripts.** Scripts create resources; a control plane owns them. Recording desired state and continuously reconciling it against reality is what lets the platform detect drift from manual changes, propagate updates across many tenants, and recover after failures. The control loop — Observe, Analyze, Act, repeated forever — is the heart of the implementation, whether we build it ourselves or delegate it to tools like Kubernetes or cloud automation. **A platform that provisions but does not reconcile is only right on day one.**\n\n![Circular observe-analyze-act control loop comparing desired state with actual state and correcting a drifted block.](assets/images/implementing-platforms/reconciliation-loop.jpeg)\n**Figure 2:** *The engine: an endless Observe → Analyze → Act loop that diffs desired against actual state and resolves drift deliberately.*\n\n**An abstraction that does not reduce cognitive load is just another layer to learn.** Template-based provisioning looks like simplification, but Hohpe's warning is precise: excessive exposure to underlying cloud resource definitions can *increase* cognitive load rather than reduce it. That is why my test for any platform abstraction is behavioral, not architectural — did the developer's world get simpler? Sensible defaults, a short list of values developers are allowed to set, and expansion of simple inputs into complex resource definitions are the mechanics; **\"does this template actually reduce cognitive load?\" is the acceptance criterion**, and when templates cannot pass it, we move up to real orchestration — translation, composition, lookup, and model translation where the platform's metamodel differs from the cloud's.\n\n**Traceability is the price of abstraction.** Every abstraction hides something, and whatever it hides will eventually fail. When it does, a developer staring at a broken generated resource needs a path back to the higher-level construct that produced it — a link, a tag, an identifier, an error message that names the relevant specification. Abstractions that hide resources without providing that path are how platforms lose the trust of their best engineers: **the first unexplainable failure converts an advocate into someone who builds around the platform**.\n\n**Speed comes from moving configuration control to application teams — inside guardrails.** The chapter's ownership argument matches my experience exactly: platform speed is lost less in technology than in tickets. Giving application teams enough configuration control to act without asking, while the platform retains only the restrictions that security and regulatory compliance genuinely require, removes the friction without removing the guardrails. That boundary must be written down — who owns provisioned resources, who gets which access rights, where the platform keeps lifecycle control — because **an implicit ownership boundary is renegotiated in every incident**.\n\n**Tenancy and scale failures arrive together, and they arrive late.** What a tenant is, where isolation lives — shared logical resource, namespace, or fully separate instance — and how fairness is enforced against noisy neighbors are decisions that are cheap on a whiteboard and brutally expensive to retrofit. The same is true of control-plane scale: Hohpe warns that uneven callback bursts — after an outage, during mass updates — can overload a control plane whose normal operating scale is moderate. So we choose the tenancy model consciously, validate isolation, and **test reconciliation at scale before adoption performs the test for us**.\n\n![Three tenancy models side by side - shared logical container, compartmentalized namespaces, and fully separate instances - on an efficiency-to-isolation spectrum.](assets/images/implementing-platforms/tenancy-isolation-spectrum.jpeg)\n**Figure 3:** *Tenancy is a chosen point on a spectrum: shared logical resources, namespace separation, or independent instances — each trading efficiency against isolation.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Developers provision through a self-service management plane built around user journeys. | Every platform needs a lavish portal on day one — an API and CLI that serve real journeys beat a beautiful UI that serves none. |\n| Desired state is recorded and continuously reconciled with actual state. | Reconciliation must be hand-built — delegating to Kubernetes or cloud automation is a legitimate implementation choice. |\n| Abstractions are accepted only if they demonstrably reduce cognitive load. | More abstraction is always better — a leaky template with forty parameters is worse than the raw resource it wraps. |\n| Every generated resource is traceable back to the specification that produced it. | Developers should routinely work at the raw-resource level — traceability is a debugging path, not the daily interface. |\n| Application teams get configuration control; the platform keeps security and compliance guardrails. | Application teams get root on everything — restrictions that compliance genuinely requires stay platform-owned. |\n| The tenancy model is chosen consciously and isolation is validated and tested. | One tenancy model fits all platforms — logical, namespace, and resource-level separation are all legitimate, at different cost and isolation points. |\n| The control plane is tested against reconciliation bursts and adoption-scale load. | Normal-load performance proves scale readiness — the killer load arrives in bursts after outages and mass updates. |\n\nConcretely: for our platform I can point at the three planes and name what implements each; drift detected this quarter was resolved by the control loop, not by a heroic engineer; every abstraction that shipped passed the cognitive-load question in review; and the tenancy model, isolation level, and burst-reconciliation test results are written down where the **Final Readiness Check** in the Checklist tab expects them.\n\n## Anti-Patterns\n\n- **The ticket platform.** A \"platform\" whose management plane is a service desk — every provisioning request lands on a human, and ClickOps does the rest.\n- **Day-one-only correctness.** Provisioning without reconciliation: the platform creates resources, manual changes drift them, and nobody notices until an audit or an outage does.\n- **The forty-parameter template.** An abstraction that exposes most of the underlying resource definition anyway — all the indirection of a platform with none of the cognitive-load reduction.\n- **The trapdoor abstraction.** Hiding resources without a troubleshooting path, so the first production failure strands developers on the wrong side of the abstraction with no way back to the cause.\n- **The CRUD portal.** A portal that renders raw resource operations in nicer colors instead of supporting the journeys developers actually take.\n- **The implicit ownership boundary.** Nobody wrote down what platform and application teams each own, so every incident begins with a negotiation.\n- **Tenancy by accident.** The isolation model is whatever the prototype happened to do; noisy neighbors, cross-tenant exposure risk, and quota limits are discovered in production.\n- **Untested scale optimism.** The control plane handled fifty tenants smoothly, so a thousand will be fine — until the first post-outage callback burst.\n\n## Related Records\n\n- [Designing Platforms](designing-platforms.html) — what to design into the platform and where its boundaries sit; this record is how that design becomes a running system.\n- [Organizing for Platforms](organizing-for-platforms.html) — the team setup behind the machinery; the ownership boundary fixed here is staffed and governed there.\n- [Growing Platforms](growing-platforms.html) — growing adoption of what this record builds; a low on-ramp depends on the abstractions here actually reducing cognitive load.\n- [Operating Platforms](operating-platforms.html) — running the result in production; the traceability and drift-resolution machinery here is what makes that operability real.\n- [The Four Pillars of Platform Engineering](four-pillars.html) — the pillar view of platform engineering; the \"operated as a foundation\" pillar assumes exactly the control-plane discipline this record demands.\n\n## Scope and Revisiting\n\nThis record is `draft`. It governs the implementation of internal developer platforms everywhere I am the accountable executive — new builds and rearchitectures alike — and it is the bar behind the readiness check I expect before a platform declares itself generally available. I revisit it if developers keep escaping the platform's abstractions to work at the raw-resource level (the signal the cognitive-load test is failing in the field), if a production incident cannot be traced back to the platform specification that caused it, or if control-plane load or tenant-isolation incidents show the tenancy model was outgrown rather than chosen.\n\n## Authoritative References\n\n- Gregor Hohpe, *Platform Strategy: Innovation Through Harmonization* (Leanpub, 2024) — the \"Implementing (Internal) Platforms\" chapter, whose checklist this record distills.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "6 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Platform Anatomy\n\n### Management Plane\n\n- [ ] Define how developers will interact with the platform\n- [ ] Provide an appropriate self-service portal/UI\n- [ ] Decide whether a CLI is needed for quick or developer-oriented tasks\n- [ ] Provide management APIs for programmatic access\n- [ ] Determine whether an automation language will be exposed to users\n- [ ] Support common user journeys rather than only CRUD-style resource manipulation\n- [ ] Allow teams to create or obtain base-platform accounts where required\n- [ ] Allow users to provision services using higher-level abstractions or predefined compositions\n- [ ] Provide an inventory of provisioned services and environments\n- [ ] Show whether environments comply with regulatory requirements\n- [ ] Show whether environments use the latest approved reference architecture\n- [ ] Avoid relying heavily on manual \"ClickOps\" for tasks that need to scale\n\n*The management plane is the visible, self-service part of the platform and may include a portal, API, CLI, and automation language.*\n\n## 2. Control Plane\n\n- [ ] Establish a mechanism for translating developer requests into provisioned services\n- [ ] Define how the platform records the desired state of resources\n- [ ] Implement reconciliation between desired state and actual state\n- [ ] Support creation, deletion, and updating of managed resources\n- [ ] Decide whether reconciliation will be implemented directly or delegated to tools such as Kubernetes or cloud automation systems\n- [ ] Determine whether the control plane will be multi-tenant\n- [ ] Calculate and monitor the operational cost per tenant\n- [ ] Implement user and identity management\n- [ ] Track application ownership\n- [ ] Connect identities to billing, monitoring, and other platform capabilities\n- [ ] Maintain a service catalog\n- [ ] Record metadata such as service names, pricing models, and bills of materials\n- [ ] Implement service orchestration\n- [ ] Track services created by the platform through identifiers, tags, or another reliable mechanism\n\n*The control plane connects the management and services planes and continually reconciles declared configuration with actual state.*\n\n## 3. Services Plane\n\n- [ ] Identify the base services provided by the underlying cloud or infrastructure platform\n- [ ] Identify required third-party services\n- [ ] Identify any custom services the platform team must develop\n- [ ] Define a service interface for custom components\n- [ ] Make custom-service metadata available to the service catalog\n- [ ] Ensure custom services can be managed by the control plane\n- [ ] Capture usage information needed for billing or chargeback\n- [ ] Establish a process for accepting and governing user-contributed services\n- [ ] Include relevant SDLC capabilities such as:\n  - [ ] Source Code Management\n  - [ ] Continuous Integration\n  - [ ] Continuous Delivery\n  - [ ] Code analysis\n  - [ ] Test management\n  - [ ] Secret management\n  - [ ] Policy management\n  - [ ] Release management\n  - [ ] Observability\n  - [ ] Infrastructure as Code\n\n*The services plane can contain base-platform services, third-party products, custom services, and community-contributed services.*\n\n## 4. Internal Developer Platform (IDP) Integration\n\n- [ ] Integrate the platform with enterprise Identity and Access Management (IAM)\n- [ ] Provide single sign-on where appropriate\n- [ ] Apply granular access controls\n- [ ] Implement an automation controller for platform workflows\n- [ ] Maintain a catalog containing services and their automation definitions\n- [ ] Implement providers that execute provisioning and configuration tasks\n- [ ] Maintain a repository of service and resource metadata\n- [ ] Integrate developer-facing services into the portal where useful\n- [ ] Ensure the control plane provides a consistent experience across otherwise separate tools\n\n*The IDP example in the source combines portal/CLI/API access with an automation controller, providers, a service catalog, and a state repository.*\n\n## 5. Automation Templates\n\n- [ ] Determine whether simple templates are sufficient for the platform's use cases\n- [ ] Define which values developers are allowed to provide\n- [ ] Provide sensible defaults for unspecified values\n- [ ] Override or restrict values that users should not modify\n- [ ] Expand simple inputs into more complex resource definitions where needed\n- [ ] Ensure generated output is valid for the underlying automation tool\n- [ ] Avoid exposing developers to unnecessarily long or confusing parameter lists\n- [ ] Evaluate whether templates actually reduce cognitive load\n- [ ] Move to higher-level orchestration where templates provide insufficient abstraction\n\n*Template-based platforms can simplify provisioning, but excessive exposure to underlying cloud resource definitions can increase rather than reduce cognitive load.*\n\n## 6. Service Orchestration\n\n### Translate\n\n- [ ] Translate higher-level platform specifications into lower-level resource definitions\n- [ ] Determine the appropriate level of abstraction\n- [ ] Support composition where one platform resource maps to multiple underlying resources\n- [ ] Support lookup where a logical request maps to a context-specific physical resource\n- [ ] Consider model translation when the platform exposes a different metamodel from the underlying cloud\n\n### Deploy\n\n- [ ] Use declarative provisioning where appropriate\n- [ ] Determine the difference between the desired and actual state\n- [ ] Apply the changes required to reconcile the two states\n- [ ] Handle resources that can be updated in place\n- [ ] Handle resources that must be replaced instead of updated\n- [ ] Ensure application artifacts are available when resource changes require code redeployment\n\n*Service orchestration primarily consists of translating high-level requests and deploying the resulting target resource state.*\n\n## 7. Control Loop\n\n- [ ] Observe changes in specifications and the environment\n- [ ] Analyze those changes against platform constraints\n- [ ] Act by applying the required changes\n- [ ] Repeat the control loop continuously\n- [ ] Detect configuration drift caused by manual changes\n- [ ] Define how detected drift will be resolved\n- [ ] Reconcile resources across cloud, SaaS, and installed application services\n- [ ] Manage identities and access relationships needed to interconnect services\n\n*The source describes the platform control loop as Observe → Analyze → Act.*\n\n## 8. Traceability and Troubleshooting\n\n- [ ] Maintain a link between generated resources and the higher-level platform construct that created them\n- [ ] Add tags or identifiers to generated resources when direct links are unavailable\n- [ ] Make errors traceable back to the relevant platform specification\n- [ ] Avoid abstractions that hide resources without providing a troubleshooting path\n- [ ] Ensure developers can identify the source of failures in generated infrastructure\n\n*Traceability is essential because users need to connect runtime failures back to the higher-level abstraction that produced the affected resource.*\n\n## 9. Application Code and Architecture as Code\n\n- [ ] Determine whether platform functionality requires custom application code\n- [ ] Provide build and deployment pipelines for platform-provided code\n- [ ] Integrate application delivery with infrastructure provisioning so the experience appears seamless\n- [ ] Consider modeling application topology, not only infrastructure hierarchy\n- [ ] Represent important data-flow and control-flow relationships\n- [ ] Evaluate whether Architecture as Code (AaC) is appropriate for the platform\n- [ ] Make platform-generated cost or latency implications visible to users\n\n*Architecture as Code models application topology rather than merely representing a hierarchy of infrastructure resources.*\n\n## 10. Ownership and Responsibility\n\n- [ ] Clearly define the responsibilities of the platform team\n- [ ] Clearly define the responsibilities of application teams\n- [ ] Give application teams enough configuration control to minimize unnecessary ticket-based friction\n- [ ] Retain platform-level restrictions required for security or regulatory compliance\n- [ ] Decide who owns provisioned resources\n- [ ] Ensure application teams receive the access rights required for their responsibilities\n- [ ] Preserve platform control over the resource lifecycle where necessary\n- [ ] Check whether platform-owned accounts could encounter resource or quota limits\n\n*The source argues that platform speed comes partly from shifting more configuration responsibility to application teams while retaining necessary platform guardrails.*\n\n## 11. Tenancy Model\n\n- [ ] Identify what constitutes a tenant:\n  - [ ] Development team\n  - [ ] Individual developer\n  - [ ] Business unit\n  - [ ] Other organizational unit\n- [ ] Decide where tenancy should be implemented:\n  - [ ] Multi-Tenant Resource\n  - [ ] Multi-Tenant\n  - [ ] Independent Instances\n- [ ] Evaluate security isolation between tenants\n- [ ] Evaluate performance isolation between tenants\n- [ ] Protect the platform against noisy-neighbor problems\n- [ ] Consider operational overhead for onboarding each additional tenant\n- [ ] Determine whether underlying SaaS or cloud services can manage tenancy on the platform's behalf\n- [ ] Evaluate resource and quota limitations\n- [ ] Plan how updates will be propagated when many tenant-specific instances exist\n\n*The source identifies three primary tenancy approaches: within the managed resource, within the developer platform, or as independent instances on the underlying cloud platform.*\n\n## 12. Data and Resource Isolation\n\n### Logical Separation\n\n- [ ] Decide whether multiple tenants can safely share one logical resource\n- [ ] Ensure every access operation correctly applies the tenant identifier\n- [ ] Evaluate the risk of accidental cross-tenant data exposure\n- [ ] Check resource size and performance limits\n\n### Namespace Separation\n\n- [ ] Determine whether each tenant should receive a separate namespace, table, or similar subdivision\n- [ ] Configure tenant-specific access controls\n- [ ] Evaluate remaining noisy-neighbor risks\n- [ ] Check limits on the number of namespaces or tables\n- [ ] Automate schema or configuration changes across tenants\n\n### Resource-Level Separation\n\n- [ ] Determine whether each tenant requires a completely separate resource instance\n- [ ] Automate resource creation and deletion\n- [ ] Automate changes across all tenant-specific instances\n- [ ] Evaluate the additional operational overhead\n- [ ] Evaluate the cost implications of separate instances\n\n*The database example in the source progresses from logical separation to namespace separation and then resource-level separation, with increasing isolation but also greater management overhead.*\n\n## 13. Shared Resources and Fairness\n\n- [ ] Identify resources vulnerable to noisy-neighbor behavior\n- [ ] Assess whether one tenant can monopolize shared capacity\n- [ ] Add quotas, limits, or isolation where needed\n- [ ] Prefer resource-level separation where fair sharing cannot be reliably enforced\n- [ ] Test behavior under uneven or bursty tenant workloads\n\n## 14. Hierarchy and Scale\n\n- [ ] Determine whether the organization needs multiple levels of tenancy\n- [ ] Model business units, teams, and their resource hierarchies where required\n- [ ] Estimate the maximum number of resources the control plane must manage\n- [ ] Test control-plane behavior under large-scale reconciliation\n- [ ] Test bursts of resource callbacks after outages\n- [ ] Test large-scale version or configuration updates\n- [ ] Ensure the control plane will not become a bottleneck as platform adoption grows\n\n*The source warns that uneven callbacks — for example, after an outage or during mass updates — can overload a control plane even when its normal operating scale is moderate.*\n\n## Final Readiness Check\n\n- [ ] Developers have an effective self-service interface\n- [ ] Platform abstractions genuinely reduce cognitive load\n- [ ] The desired and actual states are continuously reconciled\n- [ ] Services are cataloged, provisioned, and traceable\n- [ ] Generated resources can be traced back to their source abstraction\n- [ ] Application and platform-team responsibilities are explicit\n- [ ] The tenancy model has been consciously selected\n- [ ] Security and performance isolation have been validated\n- [ ] Cost and operational overhead are understood\n- [ ] Drift and failures can be diagnosed\n- [ ] The control plane has been tested for scale and failure scenarios\n- [ ] The platform can evolve without hiding critical implementation details from operators\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why an internal platform is three planes and two tests — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a sleek one-button platform box in front of a curtain barely hiding a tangled leaking mass of pipes.](assets/images/implementing-platforms/comic-01-hidden-complexity-returns.jpeg)\n**Panel 1:** *The hook: a platform that hides complexity without a way back hasn't reduced cognitive load — it has deferred it to the worst moment.*\n\n![Comic panel: a developer presses a self-service kiosk button while a cutaway shows an engineer inside clicking manually among tickets.](assets/images/implementing-platforms/comic-02-the-ticket-platform.jpeg)\n**Panel 2:** *The problem: if every request becomes a ticket and a human, it is not a platform — it is ClickOps with a facade.*\n\n![Comic panel: a developer unrolls an endless scroll of configuration fields while an executive taps it disapprovingly.](assets/images/implementing-platforms/comic-03-forty-parameter-template.jpeg)\n**Panel 3:** *The wrong way: the forty-parameter template — all the indirection of a platform, none of the cognitive-load reduction.*\n\n![Comic panel: a three-story cutaway building with management, control, and services floors, explained by two characters.](assets/images/implementing-platforms/comic-04-three-planes.jpeg)\n**Panel 4:** *The principle: an internal platform is three planes — a self-service management plane, a reconciling control plane, and a services plane that does the work.*\n\n![Comic panel: a circular observe-analyze-act loop mechanism nudging a drifted server block back into alignment.](assets/images/implementing-platforms/comic-05-reconciliation-engine.jpeg)\n**Panel 5:** *How it runs: reconciliation is the engine — a platform that provisions but does not reconcile is only right on day one.*\n\n![Comic panel: a developer beside a broken resource follows a glowing thread up to a specification document held above.](assets/images/implementing-platforms/comic-06-the-thread-back.jpeg)\n**Panel 6:** *How it runs: traceability is the price of abstraction — every generated resource keeps a thread back to the spec that produced it.*\n\n![Comic panel: a noisy tenant shakes a shared building while a burst storm rains arrows on a small control room.](assets/images/implementing-platforms/comic-07-tenancy-and-bursts.jpeg)\n**Panel 7:** *The cost: tenancy is a conscious decision and scale fails in bursts — test the control plane before adoption performs the test for you.*\n\n![Comic panel: an executive shows a notebook with two checked boxes, less load and traceable, beside a tidy platform box.](assets/images/implementing-platforms/comic-08-two-tests.jpeg)\n**Panel 8:** *The closer: every abstraction earns its keep by two tests — it genuinely reduces cognitive load, and a failure can be traced back through it.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>
