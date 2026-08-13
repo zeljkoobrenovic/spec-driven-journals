@@ -437,6 +437,12 @@
                 s = s.replace(/`([^`]+)`/g, function (_, c) {
                     return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
                 });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
                 s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
                 s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
                 s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');

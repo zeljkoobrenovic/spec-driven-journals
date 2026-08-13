@@ -55,8 +55,8 @@ the same sources.
 ## Modalities
 
 - [ ] `checklist.md` — operational checklist *(no checklist by design; the intro is the map, not a record)*
-- [ ] `summary.md` — management summary
-- [ ] `dialog.md` — two-host dialog
+- [x] `summary.md` — management summary
+- [x] `dialog.md` — two-host dialog
 - [x] `comics.md` — explainer comic
 
 ## Open questions
@@ -89,6 +89,7 @@ the same sources.
 
 ## Changelog
 
+- **2026-08-13** — Summary and dialog modalities added (Summary and Conversation tabs, Ana/Ben dialog cast). *(Željko, AI-mediated session)*
 - **2026-08-13** — Post-review fixes applied (see REVIEW.md). *(Željko, AI-mediated session)*
 - **2026-08-12** — Comics modality added (comics.md, Comic tab, shared VERA/KAI cast); 2 inline figures generated in the article. *(Željko, AI-mediated session)*
 - **2026-08-12** — Initial spec and article written; spec and post agree.

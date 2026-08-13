@@ -78,8 +78,8 @@ infrastructure-org transformation beat; the article (Rationale, Figure 3)
 and checklist §7 carry it.
 
 - [x] `checklist.md` — operational checklist
-- [ ] `summary.md` — management summary
-- [ ] `dialog.md` — two-host dialog
+- [x] `summary.md` — management summary
+- [x] `dialog.md` — two-host dialog
 - [x] `comics.md` — explainer comic
 
 ## Open questions
@@ -111,6 +111,7 @@ and checklist §7 carry it.
 
 ## Changelog
 
+- **2026-08-13** — Summary and dialog modalities added (Summary and Conversation tabs, Ana/Ben dialog cast). *(Željko, AI-mediated session)*
 - **2026-08-13** — Post-review fixes applied (see REVIEW.md). *(Željko, AI-mediated session)*
 - **2026-08-12** — Comics modality added (comics.md, Comic tab, shared VERA/KAI cast); 3 inline figures generated in the article. *(Željko, AI-mediated session)*
 - **2026-08-12** — Initial spec, article, and checklist written; spec and

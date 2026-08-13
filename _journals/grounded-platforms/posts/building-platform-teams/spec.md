@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-08-12
+revised: 2026-08-13
 ---
 
 # Spec: Building Great Platform Teams
@@ -77,8 +77,8 @@ The working tool ships as the checklist modality (`checklist.md`, rendered
 as the Checklist tab).
 
 - [x] `checklist.md` — operational checklist
-- [ ] `summary.md` — management summary
-- [ ] `dialog.md` — two-host dialog
+- [x] `summary.md` — management summary
+- [x] `dialog.md` — two-host dialog
 - [x] `comics.md` — explainer comic
 
 ## Open questions
@@ -110,6 +110,7 @@ as the Checklist tab).
 
 ## Changelog
 
+- **2026-08-13** — Summary and dialog modalities added (Summary and Conversation tabs, Ana/Ben dialog cast). *(Željko, AI-mediated session)*
 - **2026-08-12** — Comics modality added (comics.md, Comic tab, shared VERA/KAI cast); 3 inline figures generated in the article. *(Željko, AI-mediated session)*
 - **2026-08-12** — Initial spec, article, and checklist written; spec and
   post agree. Status `accepted`. *(Željko, AI-mediated session)*
