@@ -419,7 +419,7 @@ _MODALITIES = [
     # (key, tab label, sibling filename or None for index.md itself)
     ("index", "Article", None),
     ("checklist", "Checklist", "checklist.md"),
-    ("summary", "Summary", "summary.md"),
+    ("summary", "TL;DR", "summary.md"),
     ("dialog", "Conversation", "dialog.md"),
     ("comics", "Comic", "comics.md"),
 ]
