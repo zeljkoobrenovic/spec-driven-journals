@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Developer Experience Evaluation</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="observability-implementation.html" title="Observability Implementation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="self-service-onboarding.html" title="Self-Service Platform Onboarding">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference Implementation</p>
+        <h1>Developer Experience Evaluation</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-20  ·  8 min · <a class="spec-link" href="devex-evaluation.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/devex-evaluation/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/devex-evaluation/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="observability-implementation.html" title="Observability Implementation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="self-service-onboarding.html" title="Self-Service Platform Onboarding">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REF-DEVEX-EVALUATION", "status": "draft:gray", "title": "Developer Experience Evaluation", "date": "2026-08-20", "author": "Željko Obrenović", "permalink": "devex-evaluation", "timetoread": "8 min", "excerpt": "Once a platform in my organization can run applications, I hold its team to one discipline before anything else: developer experience is measured, not assumed. The evaluation is concrete — deploy a realistic demo application through the entire journey, from code change to a running, monitored, HTTPS-served production application, and record what it actually took: the friction, the DORA metrics, the points where a developer needed Kubernetes knowledge or another team. Then improve, re-measure against the baseline, and repeat. The final examiner is not the platform team — it is a developer who has never seen the platform, shipping to production from an application name and a Git repository.", "tags": "developer experience, devex, dora metrics, self-service, paved paths, platform evaluation, observability, error handling, friction", "icon": "assets/icons/devex-evaluation.png", "logo": "assets/images/devex-evaluation/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["developer experience", "devex", "dora metrics", "self-service", "paved paths", "platform evaluation", "observability", "error handling", "friction"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: When a platform team in my organization claims their platform serves developers, the claim is **measured, not assumed**. The instrument is a realistic demo application deployed through the **entire journey** — code change to running, monitored, HTTPS-served production application — recorded as a baseline: workflow friction, the four DORA metrics, and developer efficiency, satisfaction, and impact. The journey itself must pass the test at every station: a push that triggers the whole pipeline, **genuine self-service with no tickets**, production-ready and secure defaults that are on rather than optional, observability that works without asking, errors a developer can understand and recover from alone. Then the loop closes: improve, re-measure against the baseline, attack the highest remaining friction, repeat as the platform matures. The final examiner is a **developer who has never seen the platform**, shipping to production from minimal inputs — everything else is the platform team grading its own homework.\n\n## Statement\n\nMy operating model holds every platform's developer experience to a four-part evaluation.\n\n**Part 1 — Baseline before improvement:**\n\n- **A realistic application is the instrument.** The evaluation deploys a real demo application through the platform and tests the complete developer journey, from code change to running application — not a slide, not a happy-path demo driven by the platform team.\n- **The current experience is recorded first.** Workflow friction is measured and the high-priority bottlenecks named before any improvement work starts.\n- **Three DevEx measures plus four DORA metrics.** Efficiency, satisfaction, and impact are tracked as the core developer-experience measures; deployment frequency, lead time, mean time to recovery, and change failure rate are captured as the delivery baseline.\n\n**Part 2 — Every station of the journey passes:**\n\n- **The pipeline runs itself.** A push triggers checkout, tests, linting and quality checks, build, container image, registry push, and deployment update — no manual intervention, GitOps keeping desired and actual state aligned, failed deployments can be rolled back, every action leaving an audit trail.\n- **Self-service is genuine.** No tickets, no unnecessary approvals, no manual infrastructure configuration; at least one simple touchpoint (CLI, UI, or API); templates for common application types; resources provisioned from application requirements; configuration validated and manifests generated automatically; organizational policies applied without asking; endpoints and monitoring available the moment the deployment lands.\n- **Minimal inputs, complete result.** A developer deploys from an application name and a Git repository — and the platform fills in namespace, build, replicas, autoscaling, ingress, HTTPS, monitoring, alerts, backups, security scanning, network policies, and secret rotation.\n\n**Part 3 — The defaults — and the paved surroundings — are production-grade:**\n\n- **Containers are production-ready by construction.** Reproducible multi-stage builds, non-root execution, only required runtime files, health checks, resource requests and limits, liveness and readiness probes, no privilege escalation, read-only root filesystems, dropped capabilities.\n- **Security is in the workflow, not after it.** Images scanned for CVEs, committed secrets detected, RBAC validated, policies and network policies applied automatically, overly permissive access and exposed internal services caught, HTTP-only access remediated — all before production.\n- **Observability works without asking.** Vendor-neutral instrumentation captures metrics, logs, and traces automatically; HTTP and database telemetry, custom spans and metrics, recorded exceptions, cross-service propagation — and structured logs carry trace and span IDs so a developer moves from a log line to the trace in one step.\n- **Public access and HTTPS are declarative.** Developers request public access without touching ingress controllers, gateways, DNS, or routing; certificates are provisioned, renewed, stored, and monitored automatically. HTTPS is the path of least resistance, and certificate expiry is never a developer-facing incident.\n- **Environments are part of the experience.** Preview environments with auto-generated PR URLs, full-stack local development that supports debugging, parity between the two — same variable names, same service discovery, sample data that works in both — with documented usage and TTLs that keep preview costs bounded.\n- **Paved paths actually pave.** Service templates ship with CI/CD, health checks, metrics endpoints, and security scanning pre-configured, encoding organizational best practice so no developer recreates common patterns by hand.\n\n**Part 4 — Fresh eyes, then the loop:**\n\n- **Failure is part of the experience.** Realistic failures are triggered deliberately: errors must be understandable without deep Kubernetes knowledge, translated into human language with remediation guidance at the point of failure; rollback is self-service, discoverable, tested, and ticket-free; autoscaling holds under a significant traffic increase.\n- **A stranger runs the gauntlet.** A developer unfamiliar with the platform completes the workflow without handholding, while the team records delight, confusion, and friction — and every step that required infrastructure knowledge, another team, or manual configuration.\n- **The loop closes and reopens.** After improvements, the same deployment is repeated, every measure re-taken and compared with the baseline, the highest-friction steps prioritized, and the evaluation repeated as the platform matures.\n\n![Concept map of the four-part evaluation: baseline, journey, defaults, fresh eyes, with an arrow looping back to baseline.](assets/images/devex-evaluation/four-part-evaluation-map.jpeg)\n**Figure 1:** *The four-part evaluation: record a baseline, pass every station of the journey, hold the defaults to production grade, then let fresh eyes close the loop.*\n\n## The Reference Stack\n\nThis record is grounded in a concrete end-to-end build; the tools below are that build's answers, not mandates. **The commitments hold at the capability level** — swap any tool as long as the property in the third column survives.\n\n| Role | Reference tool | The property that matters |\n| --- | --- | --- |\n| Deployment pipeline | CircleCI | A push triggers test, build, image, registry, and deploy with no manual step |\n| Deployment sync | Flux (GitOps) | Desired and actual state stay aligned; rollback and audit trail come free |\n| Developer touchpoint | Backstage (plus CLI/API) | Deploy and observe without tickets or platform-team hand-holding |\n| Instrumentation | OpenTelemetry | Vendor-neutral traces, metrics, and logs collected automatically |\n| Telemetry backend | Prometheus + Grafana | Exported metrics are verifiably visible, not just emitted |\n| Certificates | cert-manager + ACME CA | HTTPS provisioned, renewed, and monitored without developer action |\n| Ingress and routing | Istio | Public access is declarative; gateway and routing complexity stays hidden |\n| Delivery measures | DORA metrics | Deployment frequency, lead time, MTTR, change failure rate — comparable over time |\n\n## How to Read This\n\nThis record is part of the **Reference Implementation** section of this journal — the how-it-concretely-looks companion to the Platform Engineering records. Where [The Four Pillars of Platform Engineering](four-pillars.html) states the qualification test for a platform, this record makes its third pillar — a broad developer base served through self-service — **falsifiable for one concrete build**, and gives [Platform as a Product](platform-as-a-product.html)'s feedback discipline an executable form. It is grounded in the Developer Experience Evaluation chapter of the *Platform Engineer's Handbook*. The runnable version — all sixteen evaluation stations and the final success criteria — lives in the **Checklist** tab; the **TL;DR** tab carries the management summary, and the **Conversation** tab talks the argument through.\n\n## Rationale\n\n**A baseline turns DevEx from vibes into engineering.** Without a recorded before, every improvement claim is unfalsifiable and every roadmap fight is won by the loudest anecdote. The baseline is deliberately plural — friction points, the four DORA metrics, and efficiency, satisfaction, and impact — because each catches what the others miss: DORA numbers can look healthy while developers drown in toil, and satisfaction can be high on a platform that ships slowly. Measured together, before and after, they make DevEx investment **an engineering activity with a regression suite**.\n\n![Diagram of three lenses — friction, DORA metrics, and experience measures — examining one developer journey above a shared baseline ruler.](assets/images/devex-evaluation/three-lens-baseline.jpeg)\n**Figure 2:** *The baseline is deliberately plural: friction points, the four DORA metrics, and efficiency, satisfaction, and impact each catch what the other lenses miss.*\n\n**The demo application is the honest instrument.** Platforms are evaluated the way software is tested: by running a realistic workload through the whole system, not by inspecting the parts. A capability inventory can be complete while the journey is broken — every feature present, and still three tickets, two Slack asks, and a YAML archaeology session between a code change and production. Testing the **complete journey** is what surfaces the seams between capabilities, and the seams are where developer experience actually lives.\n\n![Pipeline diagram of five checked capability stations whose joints are highlighted as cracked seams with ticket icons.](assets/images/devex-evaluation/journey-seams.jpeg)\n**Figure 3:** *Every capability can pass while the journey fails: friction hides in the seams between stations, and only a realistic application traveling end to end surfaces them.*\n\n**Self-service is a testable claim, not a mission statement.** The test is brutal and simple: an application name and a Git repository in — a running, scaled, monitored, HTTPS-served, policy-compliant application out. Every ticket, approval, or manual configuration step between those two points is a named defect. This is also where velocity and governance stop being a trade-off: policies, scanning, and network rules are **applied by the platform, invisibly**, so the fast path and the compliant path are the same path.\n\n**Defaults decide the real experience.** Whatever the platform makes optional, most applications will not have. If probes, resource limits, security scanning, TLS, and observability are opt-in features, the platform's median application is fragile, dark, and exposed — and the developer finds out during an incident. The record therefore holds the platform to **production-ready defaults that are on**: the developer who does nothing extra still gets a production-grade result, and observability that provides value immediately, not after an instrumentation sprint. Log-trace correlation earns its own line because it is where observability becomes usable: a developer who can move from a log entry to the trace in one step debugs alone; one who cannot files a ticket.\n\n**Errors are documentation at the point of need.** The evaluation deliberately breaks things, because the failure path is the part of the experience the platform team never sees in demos. An error that requires deep Kubernetes knowledge to interpret is a tax the platform charges precisely when the developer is most stressed. Translated errors with remediation guidance at the point of failure — and a rollback that is discoverable and ticket-free — are what let developers **recover from their own mistakes without an operations ticket**, which is the difference between a platform that reduces cognitive load and one that redistributes it.\n\n**Fresh eyes are the only honest reviewers.** The platform team cannot evaluate its own experience; they know the workarounds, so their hands skip the friction. A developer who has never seen the platform, observed without handholding, is the closest thing to an objective instrument the evaluation has — and the recording discipline (delight, confusion, friction; every step needing infrastructure knowledge, another person, or manual work) turns the observation into a work queue.\n\n**The loop is the point.** One evaluation is an audit; the repeated loop — improve, re-deploy the same application, re-measure everything, compare, attack the highest remaining friction — is an operating practice. Platforms drift as they grow, and the loop is what keeps the DevEx claim **continuously true rather than historically true**.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Measure DevEx with a baseline and re-measure after improvements. | Chase metrics for their own sake — the numbers exist to rank friction, not to decorate dashboards. |\n| Test the complete journey with a realistic demo application. | A capability inventory is enough — features can all exist while the journey between them is broken. |\n| Deploy from minimal inputs with no tickets or manual approvals. | Approvals never exist — unnecessary ones are eliminated; the ones policy genuinely requires are automated into the workflow. |\n| Production-ready and secure defaults are on for everyone. | Developers cannot deviate — defaults are the paved path, not a locked gate. |\n| Errors are translated, with remediation at the point of failure. | Developers never need to learn anything — the platform removes *infrastructure-specific* knowledge from the critical path, not engineering judgment. |\n| A developer who has never seen the platform is the final examiner. | The platform team's own testing is worthless — it is necessary, and insufficient. |\n| Repeat the evaluation as the platform matures. | One good evaluation earns a permanent DevEx claim — the loop, not the score, is the commitment. |\n\nConcretely: no platform in my organization graduates to onboarding teams at scale until its team can show a baseline, a re-measurement, and the delta between them — and until one developer outside the platform team has gone from a Git repository to a monitored production application **without a single ticket**.\n\n## Anti-Patterns\n\n- **The vibes-based DevEx.** Improvement priorities set by the loudest recent complaint — no baseline, no re-measurement, no way to know whether last quarter's investment changed anything.\n- **The demo-day platform.** The journey works flawlessly when the platform team drives it, and has never been attempted by a developer who does not know the workarounds.\n- **The ticket behind the curtain.** \"Self-service\" that quietly ends in a Slack ask, a manual approval, or a platform engineer running a script — the ticket still exists; it just changed clothes.\n- **The optional seatbelt.** Probes, limits, scanning, TLS, and monitoring shipped as opt-in features — so the median application runs fragile, dark, and exposed, and the developer discovers it mid-incident.\n- **The kubectl oracle.** Errors surfaced as raw infrastructure output, readable only through deep Kubernetes knowledge — the platform charges its highest cognitive tax at the developer's worst moment.\n- **The environment lottery.** Local, preview, and production drift apart — different variable names, different service discovery, different data — until \"works on my machine\" becomes the platform's most-used feature.\n- **The dashboard graveyard.** Telemetry is exported but never verified visible or useful; observability exists on the architecture diagram and nowhere a developer actually looks.\n- **The single audit.** One thorough evaluation at launch, framed as a certificate — while the platform, its users, and its friction keep moving.\n\n## Related Records\n\n- [The Four Pillars of Platform Engineering](four-pillars.html) — the qualification test this evaluation makes concrete: pillar 3 (a broad, self-served developer base) rendered falsifiable for one build.\n- [Platform as a Product](platform-as-a-product.html) — the product operating mechanics whose feedback loop this evaluation instruments.\n- [What Platform Success Looks Like](platform-success.html) — the organization-level success measures; this record is the hands-on loop that feeds them.\n- [CI/CD as a Platform Service](cicd-as-a-platform-service.html) — the sibling build record for the pipeline this evaluation exercises end to end.\n- [Observability Implementation](observability-implementation.html) — the sibling build record for the telemetry stack; here it appears as what every application gets by default.\n- [End-to-End Platform Security](platform-security.html) — the sibling build record for platform hardening; here security appears as checks the developer never has to notice.\n- [Starter Kit Templates](starter-kits.html) — the sibling build record for the templates this evaluation validates from the developer's seat.\n- [Self-Service Platform Onboarding](self-service-onboarding.html) — the sibling record for the day-zero flow; this record tests the workflow that onboarding hands developers into.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every internal platform my organization runs application workloads on, from the first moment the platform claims to serve developers. I revisit it if re-measurement rounds stop happening (the loop decaying into a launch audit), if DORA numbers improve while satisfaction and friction measures worsen (the metrics being gamed rather than the experience improved), or if the fresh-eyes test repeatedly requires intervention from the platform team — which means the platform's real interface is still its people.\n\n## Authoritative References\n\n- *Platform Engineer's Handbook* — the Developer Experience Evaluation chapter, whose checklist this record distills; part of the end-to-end reference build this journal's Reference Implementation section follows.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "When a platform team claims their platform serves developers, the claim is **measured, not assumed**: a realistic demo application is deployed through the entire journey — code change to running, monitored, HTTPS-served production application — first to set a baseline, then again after every improvement round. The final examiner is a developer who has never seen the platform, shipping to production from an application name and a Git repository; everything else is the platform team grading its own homework.\n\n**What changes**\n\n* **A measured baseline exists before improvement.** Workflow friction, the four DORA metrics (deployment frequency, lead time, MTTR, change failure rate), and developer efficiency, satisfaction, and impact are recorded up front — so every later investment has a before-and-after delta.\n* **The whole journey is the unit under test.** A push triggers checkout, tests, quality checks, build, image, registry, and deployment automatically, with GitOps sync, rollback, and an audit trail — evaluated end to end, because friction lives in the seams between capabilities, not in the feature list.\n* **Self-service becomes falsifiable.** Minimal inputs in — application name, Git repository — a running, scaled, policy-compliant application out, with namespace, autoscaling, ingress, HTTPS, monitoring, alerts, backups, scanning, and network policies filled in by the platform. Every ticket or manual step in between is a named defect.\n* **Production-grade is the default, not a reward.** Hardened containers, security checks before production, observability with log-trace correlation, automated certificates, and local/preview parity are on for everyone — the developer who does nothing extra still gets a production-ready result.\n* **Failure and fresh eyes are tested deliberately.** Realistic failures must yield human-readable errors with remediation at the point of failure and ticket-free rollback; a developer unfamiliar with the platform runs the workflow without handholding while delight, confusion, and friction are recorded. Then the loop repeats: re-measure, compare, attack the highest remaining friction.\n\n**What it costs**\n\n* Measurement discipline is recurring work — the same deployment, re-run and re-measured after every improvement round, not a one-time launch audit.\n* Honest baselines can embarrass: the first evaluation usually reveals that \"self-service\" ends in tickets and that optional safeguards are mostly off.\n* Production-ready defaults and translated errors are real platform engineering effort, spent on paths the platform team rarely sees in demos.\n\n**What we are not doing**\n\n* Not rebuilding the pipeline, observability stack, security hardening, or templates here — those live in [CI/CD as a Platform Service](cicd-as-a-platform-service.html), [Observability Implementation](observability-implementation.html), [End-to-End Platform Security](platform-security.html), and [Starter Kit Templates](starter-kits.html); this record evaluates the developer's experience of them end to end.\n* Not the day-zero onboarding flow — that is [Self-Service Platform Onboarding](self-service-onboarding.html) — and not the organization-level success measures of [What Platform Success Looks Like](platform-success.html).\n* Not mandating the reference tools: CircleCI, Flux, Backstage, OpenTelemetry, cert-manager, and Istio are the worked example; the commitments hold at the capability level.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries all sixteen evaluation stations and the final success criteria. Grounded in the* Platform Engineer's Handbook*'s Developer Experience Evaluation chapter.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "7 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the developer-experience evaluation we run against a platform, before and after every improvement round. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Establish a DevEx Baseline\n\n- [ ] We deploy a realistic demo application through the platform\n- [ ] We test the complete developer journey from code change to running application\n- [ ] We record the current developer experience before making improvements\n- [ ] We measure workflow friction and identify the high-priority bottlenecks\n- [ ] We track efficiency, satisfaction, and impact as the core developer-experience measures\n- [ ] We capture baseline DORA metrics:\n  - [ ] Deployment frequency\n  - [ ] Lead time\n  - [ ] Mean time to recovery (MTTR)\n  - [ ] Change failure rate\n\n## 2. Validate the Deployment Pipeline\n\n- [ ] Pushing code automatically triggers the deployment workflow\n- [ ] Source code is checked out automatically\n- [ ] Automated tests run\n- [ ] Linting and other quality checks run\n- [ ] The application is built automatically\n- [ ] A container image is built automatically\n- [ ] The image is pushed to the container registry automatically\n- [ ] The deployment updates without manual intervention\n- [ ] GitOps synchronization keeps the desired and actual state aligned\n- [ ] Failed deployments can be rolled back\n- [ ] Deployment actions leave an audit trail\n\n## 3. Provide Genuine Self-Service\n\n- [ ] Developers can deploy without submitting tickets\n- [ ] Unnecessary manual approvals are eliminated\n- [ ] Manual infrastructure configuration is eliminated wherever possible\n- [ ] We provide at least one simple developer touchpoint:\n  - [ ] CLI\n  - [ ] UI\n  - [ ] API\n- [ ] We provide pre-configured templates for common application types\n- [ ] Resources are provisioned automatically based on application requirements\n- [ ] Application configuration is validated before deployment\n- [ ] Required deployment manifests are generated automatically\n- [ ] Organizational policies are applied automatically\n- [ ] Developers get immediate access to application endpoints after deployment\n- [ ] Developers get immediate access to monitoring information\n\n## 4. Verify Container Production Readiness\n\n- [ ] The container build process is reproducible\n- [ ] A multi-stage build is used where appropriate\n- [ ] The application runs as a non-root user\n- [ ] Only required runtime files are copied into the production image\n- [ ] A health check is defined\n- [ ] Resource requests are configured\n- [ ] Resource limits are configured\n- [ ] Liveness probes are configured\n- [ ] Readiness probes are configured\n- [ ] Unnecessary privilege escalation is prevented\n- [ ] A read-only root filesystem is used where possible\n- [ ] Unnecessary Linux capabilities are dropped\n\n## 5. Build Security Into the Deployment\n\n- [ ] Container images are scanned for known vulnerabilities/CVEs\n- [ ] Secrets accidentally committed to source code are detected\n- [ ] RBAC permissions are validated\n- [ ] Security policies are applied automatically\n- [ ] Workloads run with secure defaults\n- [ ] Appropriate network policies are configured\n- [ ] Overly permissive access controls are detected\n- [ ] Unintentionally exposed internal services are detected\n- [ ] HTTP-only access is automatically remediated where appropriate\n- [ ] Security checks happen before production deployment\n\n## 6. Test Frictionless Deployment\n\n- [ ] A developer can deploy using minimal inputs, such as:\n  - [ ] Application name\n  - [ ] Git repository\n- [ ] The required namespace is created or configured automatically\n- [ ] The application is built from source automatically\n- [ ] Deployment replicas are configured automatically\n- [ ] Horizontal autoscaling is provided\n- [ ] Ingress is configured automatically\n- [ ] HTTPS/TLS is configured automatically\n- [ ] Monitoring is configured automatically\n- [ ] Alerts are configured automatically\n- [ ] Backups are configured automatically where required\n- [ ] Security scanning is configured automatically\n- [ ] Network policies are configured automatically\n- [ ] Secret rotation is handled automatically where required\n\n## 7. Support Preview and Local Environments\n\n- [ ] Preview environments support production-like debugging\n- [ ] Preview URLs are generated automatically for pull-request reviews\n- [ ] Full-stack local development supports rapid feature iteration\n- [ ] Local development supports debugging and experimentation\n- [ ] Local and preview configurations stay in parity\n- [ ] Environment-variable names are consistent across environments\n- [ ] Service-discovery patterns are consistent\n- [ ] Sample/initial data works in both environments\n- [ ] We document when developers should use each environment\n- [ ] We document how developers should use each environment\n- [ ] Local developer setup is treated as a first-class platform capability\n- [ ] Preview-environment TTLs are configured to control costs\n\n## 8. Instrument Applications for Observability\n\n- [ ] Metrics, logs, and traces are captured\n- [ ] Instrumentation is vendor-neutral (e.g. OpenTelemetry)\n- [ ] Telemetry is collected from applications automatically\n- [ ] Trace exporting is configured\n- [ ] Metric exporting is configured\n- [ ] Metrics are verified as actually exported and visible\n- [ ] HTTP request telemetry is captured\n- [ ] Database-call telemetry is captured\n- [ ] Custom spans exist for application-specific operations\n- [ ] Custom metrics exist for relevant business or application behavior\n- [ ] Useful span attributes are recorded\n- [ ] Exceptions are recorded in traces\n- [ ] Trace propagation across services is verified\n\n## 9. Enable Log-Trace Correlation\n\n- [ ] Logging is structured\n- [ ] Log entries include timestamps\n- [ ] Log entries include log levels\n- [ ] Log entries include meaningful messages\n- [ ] Trace IDs are injected into logs\n- [ ] Span IDs are injected into logs\n- [ ] Developers can move easily from a log entry to the related trace\n\n## 10. Provide Public Application Access\n\n- [ ] Developers can request public access declaratively\n- [ ] Ingress-controller complexity is hidden from developers\n- [ ] Gateway and routing complexity is hidden from developers\n- [ ] Required ingress resources are provisioned automatically\n- [ ] Required DNS records are created automatically\n- [ ] Routing rules are configured automatically\n- [ ] Teams can specify appropriate subdomains\n\n## 11. Make HTTPS the Default\n\n- [ ] TLS certificates are provisioned automatically\n- [ ] Certificate management is automated (e.g. cert-manager)\n- [ ] An ACME-compatible certificate authority is integrated where appropriate\n- [ ] Certificates renew automatically\n- [ ] Certificates are stored securely\n- [ ] Certificate expiration dates are monitored\n- [ ] Certificate expiration never becomes a developer-facing incident\n- [ ] HTTPS is the path of least resistance\n\n## 12. Test Developer-Facing Error Handling\n\n- [ ] We trigger realistic deployment failures\n- [ ] Errors are understandable without deep Kubernetes knowledge\n- [ ] Infrastructure-specific errors are translated into human-readable explanations\n- [ ] Remediation guidance is provided at the point of failure\n- [ ] Developers are not forced to search external documentation for common errors\n- [ ] Error messages are treated as documentation at the point of need\n\n## 13. Validate Recovery and Resilience\n\n- [ ] Rollback is self-service\n- [ ] Rollback is easily discoverable\n- [ ] Restoration of a previous application version is tested\n- [ ] Rollback does not require an operations ticket\n- [ ] Autoscaling is tested under a significant traffic increase\n- [ ] The application scales without manual intervention\n- [ ] Production-ready defaults are enabled rather than hidden as optional features\n\n## 14. Validate Paved Paths and Templates\n\n- [ ] Templates exist for creating new services\n- [ ] Templates include pre-configured CI/CD\n- [ ] Templates include health checks\n- [ ] Templates include metrics endpoints\n- [ ] Templates include security scanning\n- [ ] Templates encode organizational best practices\n- [ ] Developers do not have to recreate common platform patterns manually\n- [ ] Templates are used to accelerate new-developer onboarding\n\n## 15. Evaluate First Impressions\n\n- [ ] A developer unfamiliar with the platform completes the workflow\n- [ ] We observe the experience without providing unnecessary handholding\n- [ ] We record points of delight\n- [ ] We record points of confusion\n- [ ] We record points of friction\n- [ ] We identify steps requiring infrastructure-specific knowledge\n- [ ] We identify steps requiring another team or person\n- [ ] We identify anything requiring manual configuration\n- [ ] We verify secure defaults work automatically\n- [ ] We verify observability provides immediate value\n- [ ] We verify developers can recover safely from mistakes\n\n## 16. Re-Measure and Improve\n\n- [ ] We repeat the same demo deployment after platform improvements\n- [ ] We recalculate workflow friction\n- [ ] We compare results with the original baseline\n- [ ] We re-measure DORA metrics\n- [ ] We re-measure developer efficiency\n- [ ] We re-measure developer satisfaction\n- [ ] We re-measure business impact\n- [ ] We prioritize the highest-friction remaining steps\n- [ ] We make improvements iteratively\n- [ ] We repeat the evaluation as the platform matures\n\n## Final Success Criteria\n\n- [ ] Developers can move from code to production with minimal manual effort\n- [ ] The platform balances developer velocity with governance\n- [ ] Security is built into the workflow rather than added afterward\n- [ ] Observability works by default\n- [ ] HTTPS and safe networking are automatic\n- [ ] Local and preview environments are both well supported\n- [ ] Developers can understand and recover from failures themselves\n- [ ] Platform complexity is hidden behind simple, declarative interfaces\n- [ ] Developer experience is measured rather than assumed\n- [ ] The platform continuously reduces cognitive load and developer friction\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Grading Your Own Homework\n\n**Ben:** Blunt version first. Every platform team I know already says developer experience is their top priority. Why does an operating model need a record telling them to evaluate it?\n\n**Ana:** Because \"top priority\" is a mission statement and this record demands a measurement. The core commitment is one line: developer experience is measured, not assumed. And the instrument is deliberately unglamorous — deploy a realistic demo application through the entire journey, code change to a running, monitored, HTTPS-served production application, and record what it actually took. Friction points. The four DORA metrics — deployment frequency, lead time, MTTR, change failure rate. Plus efficiency, satisfaction, and impact as the developer-experience measures. That's the baseline, taken before any improvement work starts.\n\n**Ben:** Why before? Teams usually want to fix the obvious stuff first and measure once things look respectable.\n\n**Ana:** And then they can never prove anything changed. Without a recorded before, every improvement claim is unfalsifiable and every roadmap fight is won by the loudest anecdote — the record calls that the vibes-based DevEx. The baseline is what turns DevEx investment into an engineering activity with a regression suite: improve, re-run the same deployment, re-measure everything, compare.\n\n**Ben:** Three measure families feels heavy, though. Why not just DORA? Everyone benchmarks on DORA.\n\n**Ana:** Because each family catches what the others miss. DORA numbers can look healthy while developers drown in toil, and satisfaction can be high on a platform that ships slowly. Measured together, they keep each other honest — and that's also one of the record's revisit triggers: if DORA improves while satisfaction and friction worsen, the metrics are being gamed rather than the experience improved.\n\n## The Journey Is the Unit Under Test\n\n**Ben:** Here's my structural objection. A platform is a set of capabilities. Why drag one demo app through everything instead of just auditing the capability list — pipeline, check; observability, check; TLS, check?\n\n**Ana:** Because a capability inventory can be complete while the journey is broken. Every feature present, and still three tickets, two Slack asks, and a YAML archaeology session between a code change and production. Friction lives in the seams between capabilities, and the only way to see the seams is to run a realistic workload through the whole system — the way you test software. So the evaluation walks every station: a push triggers checkout, tests, quality checks, build, container image, registry push, deployment update — no manual intervention, GitOps keeping desired and actual state aligned, rollback available, audit trail on everything.\n\n**Ben:** And self-service? That's the claim I trust least. Every platform says self-service.\n\n**Ana:** Which is why the record makes it falsifiable. The test is brutal: an application name and a Git repository in — a running, scaled, monitored, HTTPS-served, policy-compliant application out. The platform fills in namespace, build, replicas, autoscaling, ingress, TLS, monitoring, alerts, backups, security scanning, network policies, secret rotation. Every ticket, approval, or manual configuration step between those two points is a named defect.\n\n**Ben:** Every approval is a defect? Compliance will love that.\n\n**Ana:** Unnecessary approvals are defects. The ones policy genuinely requires get automated into the workflow — policies, scanning, and network rules applied by the platform, invisibly. That's the point where velocity and governance stop being a trade-off: the fast path and the compliant path become the same path. The anti-pattern is the ticket behind the curtain — \"self-service\" that quietly ends in a Slack ask or a platform engineer running a script. The ticket still exists; it just changed clothes.\n\n## Defaults, Errors, and Breaking Things on Purpose\n\n**Ben:** A big chunk of the checklist is defaults — non-root containers, probes, limits, scanning, cert-manager, OpenTelemetry. Isn't that just the build records restated? You have sibling records for security and observability.\n\n**Ana:** The build records construct those capabilities; this record checks what a developer gets without asking. The principle is that whatever the platform makes optional, most applications will not have. If probes, limits, scanning, TLS, and observability are opt-in, the median application runs fragile, dark, and exposed — the record calls it the optional seatbelt. The bar here is that the developer who does nothing extra still gets a production-grade result: hardened container, security checks before production, telemetry visible immediately, HTTPS as the path of least resistance, certificate expiry never a developer-facing incident.\n\n**Ben:** Observability \"visible immediately\" — as opposed to what?\n\n**Ana:** As opposed to the dashboard graveyard: telemetry exported but never verified visible or useful. The checklist literally requires verifying that metrics are exported *and visible*, and that a developer can move from a log entry to the related trace in one step — structured logs with trace and span IDs injected. That correlation line matters because it's where observability becomes usable: the developer who can jump from log to trace debugs alone; the one who can't files a ticket.\n\n**Ben:** The evaluation also breaks things deliberately. Why spend platform effort on nicer error messages? Engineers are paid to read stack traces.\n\n**Ana:** They're paid to apply engineering judgment, not to do Kubernetes archaeology at their most stressed moment. The failure path is the part of the experience the platform team never sees in demos, so the evaluation triggers realistic failures on purpose. The bar: errors understandable without deep Kubernetes knowledge, infrastructure errors translated into human language, remediation guidance at the point of failure — error messages as documentation at the point of need. And recovery must be self-service: rollback discoverable, tested, ticket-free. That's the difference between a platform that reduces cognitive load and one that redistributes it. The record is careful about what it does *not* say, though — it removes infrastructure-specific knowledge from the critical path, not engineering judgment.\n\n**Ben:** And environments — local and preview are in scope too?\n\n**Ana:** First-class. Preview environments with auto-generated PR URLs, full-stack local development that supports debugging, and parity between them — same variable names, same service discovery, sample data that works in both, TTLs keeping preview costs bounded. Otherwise you get the environment lottery, where \"works on my machine\" becomes the platform's most-used feature.\n\n## Fresh Eyes and the Loop\n\n**Ben:** Now the part I find theatrical: the stranger test. Why is a developer who has never seen the platform the \"final examiner\"? The platform team has tested everything by then.\n\n**Ana:** Necessary and insufficient. The platform team cannot evaluate its own experience — they know the workarounds, so their hands skip the friction. That's the demo-day platform: flawless when the team drives, untested by anyone who doesn't know where the bodies are buried. So a developer unfamiliar with the platform completes the workflow, observed without handholding, while the team records delight, confusion, friction — and every step that required infrastructure-specific knowledge, another team, or manual configuration. That recording discipline turns the observation into a work queue.\n\n**Ben:** Fine, but this whole thing is expensive. Baseline, sixteen stations, a recruited stranger, then do it all again. Teams will run it once at launch, frame the certificate, and move on.\n\n**Ana:** Which is the last named anti-pattern — the single audit. One evaluation is an audit; the loop is the operating practice. After improvements, the same deployment is repeated, every measure re-taken and compared with the baseline, the highest remaining friction attacked, and the evaluation repeated as the platform matures. Platforms drift as they grow. The loop is what keeps the DevEx claim continuously true rather than historically true — and the loop decaying into a launch audit is an explicit revisit trigger. The concrete gate in my organization: no platform graduates to onboarding teams at scale until its team can show a baseline, a re-measurement, and the delta — and until one developer outside the platform team has gone from a Git repository to production without a single ticket.\n\n**Ben:** One more. The record names CircleCI, Flux, Backstage, OpenTelemetry, cert-manager, Istio. Is this a stack mandate wearing a principle costume?\n\n**Ana:** No — that's why the reference-stack table has a third column. Those tools are the worked example the record is grounded in, from the handbook's end-to-end build. The commitments hold at the capability level: a push that deploys with no manual step, desired state synced with rollback and audit for free, HTTPS without developer action. Swap any tool as long as the property survives.\n\n**Ben:** Close it out. What is this record explicitly not doing?\n\n**Ana:** It doesn't build the pipeline — that's [CI/CD as a Platform Service](cicd-as-a-platform-service.html). It doesn't build the telemetry stack — [Observability Implementation](observability-implementation.html) — or the hardening — [End-to-End Platform Security](platform-security.html) — or the templates — [Starter Kit Templates](starter-kits.html). Day-zero onboarding is [Self-Service Platform Onboarding](self-service-onboarding.html), and the organization-level success measures are [What Platform Success Looks Like](platform-success.html). This record does one thing: it makes pillar three of [The Four Pillars of Platform Engineering](four-pillars.html) falsifiable for a concrete build.\n\n**Ben:** So the one-sentence version?\n\n**Ana:** Developer experience is measured, not assumed — and the measurement is a stranger, a Git repository, and a production application, with nothing but the platform in between.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why developer experience is measured, not assumed — and why a stranger is the final examiner — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Kai shows off a poster claiming developers love the platform while Vera asks whether that is measured or assumed.](assets/images/devex-evaluation/comic-01-measured-or-assumed.jpeg)\n**Panel 1:** *The hook: every platform team believes developers love their platform — the question is whether that claim is measured or assumed.*\n\n![Comic panel: a platform engineer demos a flawless pipeline while workaround sticky notes and spare keyboards hide under the desk, and Vera tells the audience their hands know the workarounds.](assets/images/devex-evaluation/comic-02-the-demo-day-platform.jpeg)\n**Panel 2:** *The problem: the demo-day platform — the journey works flawlessly when the platform team drives, because their hands skip the friction.*\n\n![Comic panel: Kai holds a fully ticked feature checklist while a developer is stranded between gapped stepping stones holding a ticket.](assets/images/devex-evaluation/comic-03-the-capability-inventory-v2.jpeg)\n**Panel 3:** *The wrong way: the capability inventory — every feature can be present while the seams between them still cost three tickets and a YAML archaeology session.*\n\n![Comic panel: Vera shows a demo application traveling the full road from code change to production while Kai records a baseline on a clipboard.](assets/images/devex-evaluation/comic-04-the-honest-instrument.jpeg)\n**Panel 4:** *The principle: deploy a realistic demo application through the entire journey — and record the baseline: friction, DORA metrics, efficiency, satisfaction, impact.*\n\n![Comic panel: a developer feeds two cards labeled name and Git repo into a machine that outputs a complete monitored HTTPS application.](assets/images/devex-evaluation/comic-05-minimal-inputs.jpeg)\n**Panel 5:** *How it plays out: an application name and a Git repository in — a running, scaled, monitored, HTTPS-served application out. Every ticket in between is a named defect.*\n\n![Comic panel: a car with safety gear left in the trunk versus a car with everything installed, as Vera points at the second.](assets/images/devex-evaluation/comic-06-the-optional-seatbelt.jpeg)\n**Panel 6:** *The defaults decide: probes, limits, scanning, TLS, observability — if they are opt-in, the median application runs fragile, dark, and exposed.*\n\n![Comic panel: Kai triggers a failure and compares a cryptic error screen with a plain-language error panel that has a rollback button.](assets/images/devex-evaluation/comic-07-break-it-on-purpose.jpeg)\n**Panel 7:** *Break it on purpose: errors must read as human guidance at the point of failure — and rollback must be discoverable, tested, and ticket-free.*\n\n![Comic panel: a new developer works alone behind glass while Kai sweats and resists helping and Vera writes notes, saying no hints, just write down the friction.](assets/images/devex-evaluation/comic-08-fresh-eyes-v2.jpeg)\n**Panel 8:** *The final examiner: a developer who has never seen the platform, observed without handholding — everything else is the platform team grading its own homework.*\n\n![Comic panel: Vera and Kai at a circular deploy-measure-improve-repeat diagram with friction bars shrinking each cycle.](assets/images/devex-evaluation/comic-09-the-loop-reopens.jpeg)\n**Panel 9:** *The closer: one evaluation is an audit; the repeating loop — improve, re-measure, compare, attack the highest friction — is the operating practice.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

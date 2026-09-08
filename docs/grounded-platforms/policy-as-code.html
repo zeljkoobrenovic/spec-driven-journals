@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Policy as Code Implementation</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="starter-kits.html" title="Starter Kit Templates">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="cost-performance-scalability.html" title="Cost, Performance, and Scalability">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference Implementation</p>
+        <h1>Policy as Code Implementation</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-20  ·  7 min · <a class="spec-link" href="policy-as-code.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/policy-as-code/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/policy-as-code/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="starter-kits.html" title="Starter Kit Templates">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="cost-performance-scalability.html" title="Cost, Performance, and Scalability">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REF-POLICY-AS-CODE", "status": "draft:gray", "title": "Policy as Code Implementation", "date": "2026-08-20", "author": "Željko Obrenović", "permalink": "policy-as-code", "timetoread": "7 min", "excerpt": "When a platform team in my organization implements policy as code, this is the build I hold them to: one policy source, evaluated at three gates — the developer's desk, the pipeline, and cluster admission. A core security floor is enforced, every violation explains itself in language a developer can act on, and enforcement is progressive: audit first, educate, then enforce what genuinely matters. Compliance is visible on a dashboard, exceptions are reviewed instead of becoming permanent workarounds, and every policy has a documented reason and a named owner. A policy that cannot explain itself does not get to block a deployment.", "tags": "policy as code, guardrails, admission control, opa gatekeeper, rego, conftest, compliance, shift-left, kubernetes", "icon": "assets/icons/policy-as-code.png", "logo": "assets/images/policy-as-code/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["policy as code", "guardrails", "admission control", "opa gatekeeper", "rego", "conftest", "compliance", "shift-left", "kubernetes"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: In my organization, platform policy is **code** — versioned, tested, and held by machines, with **one policy source evaluated at three gates**: at the developer's desk before commit, in the pipeline on every pull request, and at cluster admission as the final backstop. The core floor is non-negotiable — resource requests and limits, no root, no privileged containers, no dangerous capabilities, images from approved registries — and **every violation explains itself** in language a developer can act on. Enforcement is **progressive**: policies start in audit mode, earn their place through education and feedback, and move to enforce when the risk is genuine. Compliance is visible on a dashboard, exceptions are reviewed instead of becoming permanent workarounds, and every enforced policy has a documented reason and a named owner. A policy that cannot explain itself does not get to block a deployment.\n\n## Statement\n\nWhen a platform team in my organization builds policy as code, the finished capability has this shape.\n\n**One policy source, three gates:**\n\n- **Policies are code.** Every rule lives as versioned policy code in a `policy/` directory — reviewed, tested, and released like any other platform software, never as a document enforced by meetings.\n- **Gate one: the desk.** Developers run the same policies locally against their manifests and in pre-commit hooks, so violations surface in seconds, before anything is committed.\n- **Gate two: the pull request.** A policy-validation job runs on every pull request, fails the pipeline when required policies are violated, and puts the violation feedback directly in the PR — not in a log a developer has to go digging for.\n- **Gate three: admission.** A validating admission webhook is the backstop: critical violations are rejected at the cluster boundary, with system namespaces deliberately and explicitly excluded.\n- **The same source at every gate.** All three gates evaluate the same policy code, so what the pipeline checks and what the cluster enforces can never drift apart.\n\n![Diagram of one policy repository feeding three gates — developer desk, pull request, and cluster admission — with feedback cost rising at each later gate.](assets/images/policy-as-code/one-source-three-gates.jpeg)\n**Figure 1:** *One policy source, three gates: the same policy code answers in seconds at the desk, in minutes at the pull request, and as the unbypassable backstop at admission.*\n\n**A core policy floor:**\n\n- **Resource discipline.** CPU and memory requests and limits are required for all containers.\n- **Workload security.** Containers do not run as root, privileged containers are blocked, root filesystems are read-only where appropriate, and dangerous Linux capabilities such as `SYS_ADMIN` are blocked.\n- **Supply-chain hygiene.** Container images come from approved registries only.\n- **Messages a human can act on.** Every policy carries a clear, human-readable violation message that names the fix, not the rule's internals.\n\n**Progressive enforcement:**\n\n- **Audit before enforce.** New policies start in audit mode where appropriate; developers are told why each policy exists before it starts blocking them.\n- **Feedback shapes the rules.** Exemption requests and developer feedback are reviewed; policies that create unnecessary friction get fixed, not defended.\n- **Risk decides the pace.** Policies covering genuine security risks move to enforcement; lower-risk standards stay monitored until the data supports enforcing them.\n\n**Compliance made visible:**\n\n- **Continuous audit.** The policy engine audits what is already running, not only what is being admitted; metrics are collected by constraint and by namespace.\n- **A compliance dashboard.** Total violations, violations by constraint, violations by namespace, compliance rate, and remediation progress over time — accessible to the stakeholders who need it.\n- **Surfaced where developers look.** Optionally, violation counts, audit recency, and policy status appear in the developer portal, with a service-level compliance scorecard.\n\n**Policy in the wider governance map:**\n\n- **The right layer for each rule.** Kubernetes-level policies are enforced in the cluster; policies better handled by cloud-provider governance tools live there instead — with portability watched where lock-in matters.\n- **Compliance data flows outward.** Where audit or security systems require it, compliance data is exported to them.\n- **Named ownership.** Policy creation, review, and remediation each have a named owner; the reason behind every enforced policy is documented and communicated.\n\n## How to Read This\n\nThis record is part of the **Reference Implementation** section of this journal — the how-it-concretely-looks companion to the conceptual records. It is grounded in the Policy-as-Code Implementation chapter of the *Platform Engineer's Handbook*, which builds this capability end to end on a concrete stack. That stack is the worked example, not the mandate: the commitments above hold whatever engine a team picks. The full working checklist — install, policies, constraints, shift-left, CI/CD, monitoring, dashboard, governance, demo exercise — lives in the **Checklist** tab; the **TL;DR** tab carries the management summary and the **Conversation** tab the podcast-style discussion.\n\n**Reference stack** (the PEH worked example):\n\n| Role | Reference tool | The property that matters |\n| --- | --- | --- |\n| Admission control and audit | OPA Gatekeeper | Policies evaluated in-cluster at admission; continuous audit of what is already running |\n| Policy language | Rego (ConstraintTemplates + Constraints) | One policy source, parameterized and scoped per resource type |\n| Shift-left testing | Conftest | The same policies run on a laptop against manifests, before any commit |\n| Pre-commit and PR gates | pre-commit hooks + CI policy job | Violations fail the pipeline and appear directly in pull-request feedback |\n| Compliance metrics | Prometheus (+ exporter where needed) | Violations by constraint and namespace as time series, production-grade collection |\n| Compliance visibility | Grafana | Dashboard: totals, by constraint, by namespace, compliance rate, remediation trend |\n| Developer portal (optional) | Backstage | Violation count, audit recency, policy status, and a service-level scorecard where developers already look |\n\n## Rationale\n\n**Guardrails are only real when machines hold them.** [The Four Pillars of Platform Engineering](four-pillars.html) demands guardrails with safe defaults as part of serving a broad developer base; this record is that demand made executable. A policy that lives in a document and a review meeting is not a guardrail — it is a hope with a signature line. Policy as code is what turns the standard into something that holds at three in the morning, on the hundredth deployment, for the team that never read the wiki.\n\n**Three gates, because the cost of feedback rises at every stage.** A violation caught at the desk costs seconds; caught in the pull request, minutes; caught at admission, a broken deployment and an interrupted afternoon. The admission webhook must exist — it is the only gate that cannot be bypassed — but it is the backstop, not the interface. A platform whose developers first learn about a policy when the cluster rejects their release has built a tollbooth, not a guardrail. And the three gates must evaluate the **same policy source**: the moment CI checks one rule set and the cluster enforces another, developers get pipelines that pass and deployments that bounce, and trust in both gates dies together.\n\n**A violation message is a user interface.** The difference between a guardrail and an obstacle is usually one sentence: the one that tells the developer what to change. `Container web-app has no memory limit; add resources.limits.memory` teaches; a raw policy-engine trace punishes. The source checklist makes human-readable messages a core-policy requirement, and the final validation makes understandable remediation feedback a condition of being done — I hold the build to both.\n\n**Progressive enforcement is what keeps policy from becoming the enemy.** Switching every rule to enforce on day one breaks running teams, floods the platform team with exemption requests, and teaches the organization that policy is something to route around. Audit mode first gives the team data — which workloads would fail, how loudly — and gives developers the why before the wall. Then risk sets the pace: genuine security exposures move to enforcement; style-level standards wait until the audit data and the education have done their work. The discipline cuts both ways, though — audit mode is a phase, not a destination, and every audit-mode policy carries an implicit decision date: enforce it, or retire it.\n\n![Lifecycle loop diagram showing a policy moving through audit, education, and friction-fixing to a risk-based decision to enforce or retire.](assets/images/policy-as-code/progressive-enforcement-loop.jpeg)\n**Figure 2:** *Progressive enforcement as a lifecycle: audit collects the data, education carries the why, feedback fixes friction — and every policy exits the loop to enforce or retire.*\n\n**Compliance you cannot see is compliance you do not have.** Admission control tells you what was stopped; only continuous audit tells you what is already running in violation — the workloads deployed before the policy existed. That is why the build includes scraping the policy engine's metrics, breaking violations down by constraint and by namespace, and a dashboard that tracks remediation over time and is readable by the stakeholders who answer for compliance. The same visibility is what makes exceptions governable: an exemption on a dashboard gets reviewed; an exemption in a YAML annotation becomes permanent by default.\n\n**The cluster is one layer of governance, not the whole map.** An admission controller is the right home for workload-level policy; it is the wrong hammer for account-level, network-perimeter, or data-residency rules that cloud-provider governance tools handle natively. The build therefore includes an explicit decision about which policies live where, an eye on lock-in where portability matters, export paths into audit and security systems, and — least glamorous, most important — named ownership for policy creation, review, and remediation. A rule nobody owns is a rule nobody can change, explain, or safely delete.\n\n![Layered diagram placing cluster admission policy within a wider governance map with cloud-provider governance, audit export, and named ownership.](assets/images/policy-as-code/governance-layer-map.jpeg)\n**Figure 3:** *The right layer for each rule: workload policy in the cluster, account- and perimeter-level rules in cloud governance, compliance data exported outward — and a named owner on every rule.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Policy is code, enforced by machines at three gates. | Every rule blocks immediately — new policies start in audit mode where appropriate. |\n| A core security floor is enforced at admission. | Every convention becomes a hard deny — lower-risk standards are monitored before they are enforced. |\n| The same policy runs at the desk, in the PR, and at admission. | Developers need a cluster to find out whether they comply — the desk gate answers in seconds. |\n| Exceptions are reviewed. | Exceptions never happen — system-namespace exclusions are explicit and deliberate. |\n| Compliance is visible on a dashboard, tracked over time. | The dashboard replaces enforcement — visibility complements the gates, it does not substitute for them. |\n| The cluster enforces Kubernetes-level policy. | Everything belongs in the cluster — some policies are better handled by cloud-provider governance tools. |\n| Every enforced policy has a documented reason and a named owner. | Policy count is a success metric — a rule that only creates friction gets fixed or retired. |\n\nConcretely: a platform team building this capability is **done** when the source's final validation holds — non-compliant resources are detected before production, critical violations are blocked at admission, developers receive understandable remediation feedback, compliance posture is visible on dashboards, enforcement is progressive rather than indiscriminate, exceptions are reviewed instead of becoming permanent workarounds, and the reason behind every enforced policy is documented and communicated. The proof is operational, not on paper: a deliberately non-compliant workload is rejected with a message its author can act on.\n\n## Anti-Patterns\n\n- **The compliance PDF.** Policies living in documents and review boards — complexity relocated and annotated, never enforced. If no machine holds the rule, there is no rule.\n- **The big-bang deny.** Flipping every policy to enforce on day one. Deployments break, exemption requests flood in, and the organization learns that policy is an outage with a committee attached.\n- **The cryptic rejection.** Admission denials that quote the policy engine's internals instead of naming the fix. Every rejection without remediation guidance converts a guardrail into a grievance.\n- **The last-gate discovery.** Policies that exist only at admission, so developers first meet them when a release bounces. The backstop became the interface; the desk and PR gates were never built.\n- **The split brain.** CI validates one rule set while the cluster enforces another. Green pipelines, red deployments, and no gate anyone trusts.\n- **The permanent exemption.** Exceptions granted once and never revisited — the unofficial paved path around policy, growing quietly until the floor is decorative.\n- **The eternal audit.** Policies parked in audit mode indefinitely, feeding a dashboard of violations nobody remediates. Audit is a phase with an exit decision, not a parking lot.\n- **The Kubernetes hammer.** Forcing account-level and provider-level governance through the admission controller because that is where the tooling lives — the right engine at the wrong layer.\n- **The orphan policy.** Rules with no named owner for creation, review, or remediation — impossible to change, explain, or safely delete, and therefore obeyed resentfully or ignored entirely.\n\n## Related Records\n\n- [The Four Pillars of Platform Engineering](four-pillars.html) — guardrails with safe defaults are part of pillar 3; this record is that guardrail bar made executable.\n- [End-to-End Platform Security](platform-security.html) — the end-to-end security build this policy engine enforces workload standards for; identity, network, secrets, and supply chain live there.\n- [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) — the cluster, GitOps, and mesh baseline these policies protect; that record's pipeline-level provisioning checks are the sibling of the admission-time enforcement here.\n- [CI/CD as a Platform Service](cicd-as-a-platform-service.html) — the pipeline architecture the policy-validation gate rides in.\n- [Observability Implementation](observability-implementation.html) — the metrics and dashboard stack the compliance panels extend.\n- [Self-Service Platform Onboarding](self-service-onboarding.html) — the developer portal where per-service policy status and the compliance scorecard surface.\n- [Operating Platforms](operating-platforms.html) — the operating discipline that compliance reporting and exception review feed into.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every Kubernetes-based platform build in my organization where the platform team enforces workload policy — whatever policy engine they choose. I revisit it if the exemption list grows without a review cadence (the permanent-exemption pattern surfacing), if violations are predominantly discovered at admission rather than at the desk or in the PR (the shift-left gates failing), if audit-mode policies persist for quarters without an enforce-or-retire decision, or if the compliance dashboard shows the same violations recurring without remediation — which means visibility exists but the loop back into enforcement and education is broken.\n\n## Authoritative References\n\n- *Platform Engineer's Handbook* — the Policy-as-Code Implementation chapter, whose checklist this record distills: OPA Gatekeeper setup, core policies, progressive enforcement, Conftest shift-left testing, CI/CD integration, compliance monitoring and dashboards, and governance integration.\n- Open Policy Agent / Gatekeeper documentation — the reference implementation's admission-control and audit machinery.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "When a platform team in my organization implements policy as code, the build I hold them to is **one policy source evaluated at three gates**: at the developer's desk before commit, in the pipeline on every pull request, and at cluster admission as the backstop. Policies are versioned code held by machines, enforcement is progressive rather than indiscriminate, and a policy that cannot explain itself does not get to block a deployment.\n\n**What changes**\n\n* **Three gates, one source.** The same policy code runs locally and in pre-commit hooks, fails the pull-request pipeline on required violations with feedback in the PR itself, and is enforced by a validating admission webhook — so what CI checks and what the cluster enforces can never drift apart.\n* **A core security floor.** Resource requests and limits required for all containers; no root, no privileged containers, no dangerous capabilities, read-only root filesystems where appropriate; images from approved registries only — each with a clear, human-readable violation message that names the fix.\n* **Progressive enforcement.** New policies start in audit mode where appropriate; developers are told why each policy exists; feedback and exemption requests are reviewed and friction gets fixed. Genuine security risks move to enforcement; lower-risk standards stay monitored until the data supports enforcing them.\n* **Visible compliance.** Continuous audit of what is already running, metrics by constraint and by namespace, and a dashboard — total violations, by constraint, by namespace, compliance rate, remediation over time — accessible to stakeholders, optionally surfaced per service in the developer portal.\n* **A deliberate governance map.** Kubernetes-level rules enforced in the cluster, provider-level rules left to cloud governance tools, compliance data exported where audit requires it — and named ownership for policy creation, review, and remediation.\n\n**What it costs**\n\n* Policy authoring is engineering work: rules, remediation messages, exemption review, and the enforce-or-retire decision on every audit-mode policy are an owned lifecycle, not a one-time setup.\n* Progressive enforcement is slower than a big-bang deny — deliberately: turning everything on at once breaks teams and teaches the organization to route around policy.\n* Visibility carries obligations: metrics, dashboards, and a review cadence that keeps exceptions from quietly becoming permanent.\n\n**What we are not doing**\n\n* Not the end-to-end security build — identity, network, secrets, and supply chain live in [End-to-End Platform Security](platform-security.html).\n* Not pipeline architecture or the observability stack — this record adds a policy gate to [CI/CD as a Platform Service](cicd-as-a-platform-service.html) and compliance panels to [Observability Implementation](observability-implementation.html).\n* Not mandating OPA — Gatekeeper, Rego, and Conftest are the reference stack; the commitments hold whatever engine a team picks.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full build, from admission controller to compliance dashboard. Grounded in the* Platform Engineer's Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "5 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the policy-as-code build, gate by gate, from admission controller to compliance dashboard. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Set Up OPA Gatekeeper\n\n- [ ] Install OPA Gatekeeper in the Kubernetes cluster\n- [ ] Verify Gatekeeper is running correctly\n- [ ] Confirm the validating admission webhook is active\n- [ ] Identify namespaces that should be excluded from enforcement, such as system namespaces\n\n## 2. Define Core Policies\n\n- [ ] Create a ConstraintTemplate requiring CPU/memory resource requests\n- [ ] Require resource limits for all containers\n- [ ] Create a policy preventing containers from running as root\n- [ ] Prevent privileged containers\n- [ ] Require a read-only root filesystem where appropriate\n- [ ] Block dangerous Linux capabilities such as `SYS_ADMIN`\n- [ ] Restrict container images to approved registries\n- [ ] Add clear, human-readable violation messages to every policy\n\n## 3. Create and Apply Constraints\n\n- [ ] Create Constraints from each ConstraintTemplate\n- [ ] Define which Kubernetes resources each Constraint applies to\n- [ ] Exclude the required system namespaces\n- [ ] Apply the ConstraintTemplates\n- [ ] Apply the Constraints\n- [ ] Test deployment of a deliberately non-compliant workload\n- [ ] Confirm Gatekeeper rejects workloads that violate enforced policies\n\n## 4. Adopt Progressive Enforcement\n\n- [ ] Begin new policies in audit mode when appropriate\n- [ ] Educate developers about why each policy exists\n- [ ] Review developer feedback and exemption requests\n- [ ] Fix policies that create unnecessary friction\n- [ ] Move high-risk policies from audit to enforcement\n- [ ] Enforce policies involving genuine security risks\n- [ ] Continue monitoring lower-risk standards before enforcing them\n\n## 5. Add Shift-Left Testing with Conftest\n\n- [ ] Install Conftest\n- [ ] Create a `policy/` directory\n- [ ] Add the Rego policies to the policy directory\n- [ ] Run Conftest locally against Kubernetes manifests\n- [ ] Verify violations are detected before deployment\n- [ ] Add Conftest to developer pre-commit hooks\n- [ ] Test the pre-commit validation workflow\n\n## 6. Integrate Policy Checks into CI/CD\n\n- [ ] Add a policy-validation job to pull-request workflows\n- [ ] Install Conftest in the CI environment\n- [ ] Run policies against manifests on every pull request\n- [ ] Fail the pipeline when required policies are violated\n- [ ] Enable GitHub-native output where applicable\n- [ ] Confirm violations appear directly in pull-request feedback\n\n## 7. Configure Compliance Monitoring\n\n- [ ] Enable or verify Gatekeeper auditing\n- [ ] Configure Prometheus to scrape Gatekeeper metrics\n- [ ] Collect policy-violation data by constraint\n- [ ] Collect violation data by namespace\n- [ ] Track audit activity\n- [ ] Deploy an exporter if additional event-to-metric conversion is required\n- [ ] Add error handling and reconnection behavior for production monitoring\n\n## 8. Build a Grafana Compliance Dashboard\n\n- [ ] Create a Gatekeeper compliance dashboard\n- [ ] Add a Total Violations panel\n- [ ] Add a Violations by Constraint panel\n- [ ] Add a Violations by Namespace panel\n- [ ] Add a Compliance Rate panel\n- [ ] Track remediation progress over time\n- [ ] Make the dashboard accessible to relevant stakeholders\n\n## 9. Integrate with Broader Governance\n\n- [ ] Decide where Gatekeeper should enforce Kubernetes-level policies\n- [ ] Identify policies better handled by AWS, Azure, or GCP governance tools\n- [ ] Avoid unnecessary cloud-provider lock-in where portability matters\n- [ ] Export compliance data to audit or security systems where required\n- [ ] Define ownership for policy creation, review, and remediation\n\n## 10. Complete the Demo Application Exercise\n\n- [ ] Create ConstraintTemplates for resource requests and limits\n- [ ] Create security-context policies\n- [ ] Create an approved-image-registry policy\n- [ ] Copy the Rego policies into a Conftest policy directory\n- [ ] Test the demo application's deployment manifest\n- [ ] Deploy Gatekeeper to the test cluster\n- [ ] Deploy the required Constraints\n- [ ] Update the demo application until it passes all policies\n- [ ] Create a Python compliance-report script using Gatekeeper/Prometheus metrics\n- [ ] Verify the report accurately reflects current compliance status\n\n## 11. Optional Developer Portal Integration\n\n- [ ] Surface Gatekeeper metrics in Backstage\n- [ ] Display the current violation count\n- [ ] Display the most recent audit time\n- [ ] Display policy status\n- [ ] Create a service-level compliance scorecard\n\n## 12. Final Validation\n\n- [ ] Non-compliant resources are detected before production\n- [ ] Critical violations are blocked at admission time\n- [ ] Developers receive understandable remediation feedback\n- [ ] Compliance posture is visible through dashboards\n- [ ] Policies are enforced progressively rather than indiscriminately\n- [ ] Exceptions are reviewed instead of becoming permanent workarounds\n- [ ] The reason behind every enforced policy is documented and communicated\n\nThe test running through the build is: **does every gate evaluate the same policy source, and does every rejection tell its developer what to change?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Rules That Machines Hold\n\n**Ben:** Blunt version first. We already have security standards, a review board, and a wiki page everyone signed. Why does policy need to become code?\n\n**Ana:** Because a policy that lives in a document and a review meeting is not a guardrail — it's a hope with a signature line. [The Four Pillars of Platform Engineering](four-pillars.html) demands guardrails with safe defaults as part of serving a broad developer base; this record is that demand made executable. The record's opening anti-pattern is the compliance PDF: complexity relocated and annotated, never enforced. Policy as code is what makes the standard hold at three in the morning, on the hundredth deployment, for the team that never read the wiki. If no machine holds the rule, there is no rule.\n\n**Ben:** And this is a Reference Implementation record, so there's a concrete stack behind it?\n\n**Ana:** The *Platform Engineer's Handbook* builds it end to end: OPA Gatekeeper for admission control and audit, Rego as the policy language, Conftest for shift-left testing, Prometheus and Grafana for compliance visibility, optionally Backstage to surface it per service. But the stack is the worked example, not the mandate. The commitments are capability-level: one policy source, three gates, a core floor, progressive enforcement, visible compliance.\n\n## Three Gates, One Source\n\n**Ben:** Unpack \"three gates.\" Isn't an admission controller enough? It's the only gate nobody can bypass.\n\n**Ana:** It must exist for exactly that reason — and it's the worst place for a developer to discover a policy. The cost of feedback rises at every stage: a violation caught at the desk costs seconds, in the pull request minutes, at admission a broken deployment and an interrupted afternoon. So the same policies run locally with Conftest and in pre-commit hooks, then as a policy-validation job on every pull request that fails the pipeline on required violations and puts the feedback directly in the PR, and only then at the admission webhook as the backstop. A platform whose developers first meet a policy when the cluster bounces their release has built a tollbooth, not a guardrail. The record calls that the last-gate discovery.\n\n**Ben:** Practitioner objection: I've seen exactly that architecture rot. CI checks one rule set, the cluster enforces a slightly different one, and now I have a green pipeline and a red deployment.\n\n**Ana:** The split brain — it's on the anti-pattern list because it kills trust in both gates at once. That's why \"one source\" is in the principle, not just \"three gates.\" The same Rego that Gatekeeper evaluates at admission sits in the `policy/` directory that Conftest runs at the desk and in CI. Versioned, reviewed, released like any other platform software. The gates can't drift because there's nothing to drift between.\n\n**Ben:** What's actually in the floor — the policies that always enforce?\n\n**Ana:** The chapter's core set: CPU and memory requests and limits for every container; no containers running as root; no privileged containers; read-only root filesystems where appropriate; dangerous Linux capabilities like SYS_ADMIN blocked; and images restricted to approved registries. Plus one requirement that isn't a rule but a property of every rule: a clear, human-readable violation message.\n\n**Ben:** That last one sounds like politeness, not policy.\n\n**Ana:** It's a user interface. The difference between a guardrail and an obstacle is usually one sentence — the one that tells the developer what to change. \"Your container has no memory limit; add one\" teaches. A raw policy-engine trace punishes. The record is blunt about it: a policy that cannot explain itself does not get to block a deployment. The source's final validation makes understandable remediation feedback a condition of being done, right next to blocking critical violations.\n\n## Audit Before Enforce\n\n**Ben:** Here's where I push hardest. Every policy rollout I've lived through went the same way: security flips everything to enforce on a Tuesday, half the org's deployments break, and by Friday there's an exemption process with a six-week queue.\n\n**Ana:** The big-bang deny — and the record rejects it structurally, not just tonally. Enforcement is progressive: new policies start in audit mode where appropriate, developers are educated about why each policy exists before it starts blocking them, feedback and exemption requests get reviewed, and policies that create unnecessary friction get fixed rather than defended. Then risk sets the pace. Genuine security exposures — privileged containers, dangerous capabilities — move to enforcement. Lower-risk standards stay monitored until the audit data and the education have done their work.\n\n**Ben:** Doesn't audit mode become the parking lot? A dashboard of violations nobody remediates, forever?\n\n**Ana:** The eternal audit — also named. Audit is a phase with an exit decision, not a destination. Every audit-mode policy carries an implicit decision date: enforce it or retire it. That's one of the record's revisit triggers — audit-mode policies persisting for quarters without a decision means the mechanism has stalled.\n\n**Ben:** And exemptions? Someone always genuinely needs to run privileged.\n\n**Ana:** Exceptions are reviewed instead of becoming permanent workarounds — that's straight from the final validation. System namespaces are excluded explicitly and deliberately; everything else that gets an exemption goes on a review cadence. The permanent exemption is the quiet failure mode: granted once, never revisited, growing until the floor is decorative.\n\n## Watching Compliance\n\n**Ben:** Why does the build include a whole monitoring leg? Enforcement either works or it doesn't.\n\n**Ana:** Because admission control only tells you what was stopped. Continuous audit tells you what's already running in violation — the workloads deployed before the policy existed. So the build enables Gatekeeper auditing, scrapes its metrics into Prometheus, breaks violations down by constraint and by namespace, and puts a dashboard in front of stakeholders: total violations, violations by constraint, by namespace, compliance rate, and remediation progress over time. Compliance you cannot see is compliance you do not have.\n\n**Ben:** A dashboard of violations by namespace sounds like a leaderboard of shame.\n\n**Ana:** It's a remediation instrument, and it's also what makes exceptions governable — an exemption on a dashboard gets reviewed; an exemption buried in a YAML annotation becomes permanent by default. And the visibility goes where developers already look: optionally, Backstage shows each service its violation count, the most recent audit time, policy status, and a service-level compliance scorecard. The revisit trigger on this leg is telling: if the dashboard shows the same violations recurring without remediation, visibility exists but the loop back into enforcement and education is broken.\n\n## The Wider Map\n\n**Ben:** Last structural question. Once you have a working admission controller, the temptation is to shove everything through it — cost rules, account rules, data residency.\n\n**Ana:** The Kubernetes hammer. The cluster is one layer of governance, not the whole map. The build includes an explicit decision about which policies Gatekeeper enforces at the Kubernetes level and which are better handled by AWS, Azure, or GCP governance tools — with an eye on lock-in where portability matters — plus export paths so compliance data reaches audit and security systems that need it. And the least glamorous commitment: named ownership for policy creation, review, and remediation. A rule nobody owns is a rule nobody can change, explain, or safely delete.\n\n**Ben:** Close it out. What is this record explicitly not doing?\n\n**Ana:** It's the policy engine and its lifecycle, nothing more. The end-to-end security build — identity, network, secrets, supply chain — is [End-to-End Platform Security](platform-security.html). Pipeline architecture is [CI/CD as a Platform Service](cicd-as-a-platform-service.html); this record just adds the policy gate to it. The metrics and dashboard stack is [Observability Implementation](observability-implementation.html); this adds compliance panels on top. The cluster and GitOps baseline these policies protect is [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html). And it's not an OPA mandate — the stack is the reference implementation, the commitments hold whatever engine a team picks.\n\n**Ben:** And the one-line test, for the team that builds it?\n\n**Ana:** Deploy a deliberately non-compliant workload. If it gets in, the gates aren't real. If it gets rejected with a message its author can't act on — the gates are real and the platform just made an enemy. Done is both: blocked at admission, and explained in a sentence a developer can fix before lunch.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "How policy becomes code — one source, three gates, and a message a developer can act on — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: an engineer holds a thick policy binder while cluster monitors behind him show violations, and an executive asks which machine enforces it.](assets/images/policy-as-code/comic-01-the-compliance-pdf.jpeg)\n**Panel 1:** *The hook: 'we have guardrails' — but a policy that lives in a document and a review meeting is a hope with a signature line.*\n\n![Comic panel: a developer's release bounces off a closed admission gate stamped DENIED at 5 PM on Friday while the developer asks what policy.](assets/images/policy-as-code/comic-02-the-friday-bounce.jpeg)\n**Panel 2:** *The problem: when developers first meet a policy at admission, you built a tollbooth, not a guardrail — the most expensive place to learn.*\n\n![Comic panel: an engineer flips a lever to ENFORCE ALL and is buried under a flood of paper exemption requests as alarms flash.](assets/images/policy-as-code/comic-03-the-big-bang-deny.jpeg)\n**Panel 3:** *The wrong way: the big-bang deny — every rule enforced on day one, and the organization learns that policy is an outage with a committee attached.*\n\n![Comic panel: an executive presents a diagram of one policy folder feeding three gates labeled desk, PR, and admission.](assets/images/policy-as-code/comic-04-one-source-three-gates-v2.jpeg)\n**Panel 4:** *The principle: one policy source, evaluated at three gates — the desk in seconds, the PR in minutes, admission as the backstop that cannot be bypassed.*\n\n![Comic panel: split scene contrasting a cryptic policy-engine error with a clear message telling the developer to add a memory limit.](assets/images/policy-as-code/comic-05-the-message-is-the-interface.jpeg)\n**Panel 5:** *How it plays out: a violation message is a user interface — one sentence naming the fix is the difference between a guardrail and a grievance.*\n\n![Comic panel: an engineer walks a developer past signposts labeled watch, explain, and enforce, handing over a card labeled why.](assets/images/policy-as-code/comic-06-audit-before-enforce.jpeg)\n**Panel 6:** *Enforcement is progressive: audit first, educate on the why, then enforce what genuinely matters — risk sets the pace, not the rollout plan.*\n\n![Comic panel: an executive and an engineer review a wall dashboard of compliance charts, circling one bar to ask who is fixing it.](assets/images/policy-as-code/comic-07-the-dashboard.jpeg)\n**Panel 7:** *Compliance you cannot see is compliance you do not have: continuous audit, violations by constraint and namespace, remediation tracked over time.*\n\n![Comic panel: an engineer lifts a floorboard revealing a crowd of exemption tags growing underneath while an executive holds a review calendar.](assets/images/policy-as-code/comic-08-the-permanent-exemption.jpeg)\n**Panel 8:** *What it costs: exceptions granted once and never revisited become the unofficial paved path around policy — review them, or the floor turns decorative.*\n\n![Comic panel: an executive interviews an anthropomorphic policy scroll at a cluster gate, telling it to explain itself or step aside.](assets/images/policy-as-code/comic-09-the-explain-test.jpeg)\n**Panel 9:** *The closer: every enforced policy has a documented reason and a named owner — a policy that cannot explain itself does not get to block a deployment.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

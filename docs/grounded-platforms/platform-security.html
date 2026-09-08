@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>End-to-End Platform Security</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="platform-creation.html" title="Platform Creation: Environments, GitOps, and the Mesh">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="observability-implementation.html" title="Observability Implementation">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference Implementation</p>
+        <h1>End-to-End Platform Security</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-20  ·  8 min · <a class="spec-link" href="platform-security.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/platform-security/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/platform-security/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="platform-creation.html" title="Platform Creation: Environments, GitOps, and the Mesh">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="observability-implementation.html" title="Observability Implementation">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REF-PLATFORM-SECURITY", "status": "draft:gray", "title": "End-to-End Platform Security", "date": "2026-08-20", "author": "Željko Obrenović", "permalink": "platform-security", "timetoread": "8 min", "excerpt": "When a platform team in my organization secures a Kubernetes platform, I hold them to a chain, not a list: human identity through OIDC with short-lived tokens, least-privilege RBAC scoped to namespaces, per-pipeline machine identities, admission policies that reject noncompliant workloads, network and transport encryption by default, and an audit trail that can reconstruct any action from login to API call. Every control in the chain is proven by deliberately trying to break it, and the whole build ends with a rehearsed credential-compromise drill. A control that has never rejected anything is a hope, not a control.", "tags": "platform security, identity, oidc, rbac, least privilege, admission control, mtls, audit logging, incident response", "icon": "assets/icons/platform-security.png", "logo": "assets/images/platform-security/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["platform security", "identity", "oidc", "rbac", "least privilege", "admission control", "mtls", "audit logging", "incident response"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: When my organization secures an internal Kubernetes platform, security is built as **one chain, end to end**: human identity through central OIDC with short-lived tokens; **least-privilege authorization** scoped to team namespaces; **machine identity** as narrowly scoped, per-pipeline service accounts with projected tokens; **admission control** that rejects noncompliant workloads before they run; **network and transport protection** — deny-unnecessary network paths, strict mTLS inside, automated TLS outside; and **evidence** — tamper-protected audit logs that correlate identity with cluster activity. Two tests run through the whole build: every control is proven by deliberately trying to violate it, and any user action can be traced from login through token to Kubernetes API call. No human and no pipeline holds cluster-admin without a reason its owner can defend. **A control that has never rejected anything is a hope, not a control.**\n\n## Statement\n\nMy operating model holds every platform security build to six links, in order.\n\n![Diagram of a six-link chain labeled human identity, authorization, machine identity, admission, network and TLS, and evidence, running from login to audit log.](assets/images/platform-security/six-link-security-chain.jpeg)\n**Figure 1:** *The six links of the platform security chain, built in order — from human identity through to the audit evidence that reconstructs any action.*\n\n**Link 1 — Human identity:**\n\n- **One identity provider, one realm.** The platform authenticates people through a central OIDC provider with a dedicated realm for the platform; the Kubernetes API server trusts it directly (issuer URL, client ID, username claim, groups claim).\n- **Groups carry authorization.** Platform admins and platform users are identity-provider groups, mapped to Kubernetes RBAC groups — membership changes in one place.\n- **Tokens expire fast.** Access tokens are short-lived — on the order of fifteen minutes — so a leaked token is a small problem, not a standing credential.\n- **Proven, not assumed.** Login is tested through the provider, and group membership is confirmed in the issued JWT before anyone relies on it.\n\n**Link 2 — Least-privilege authorization:**\n\n- **Namespaces are the boundary.** Each team or application gets a namespace carrying governance labels — team, environment, cost center — and developers get a namespace-scoped Role bound to their identity group.\n- **Admins get troubleshooting, not omnipotence.** Platform administrators hold the cluster-level permissions troubleshooting requires; nobody holds cluster-admin as a convenience.\n- **Boundaries are verified.** Developers cannot view or modify system namespaces, and every claim about who can do what is checked with `kubectl auth can-i`, not assumed from the manifest.\n\n**Link 3 — Machine identity:**\n\n- **One service account per pipeline.** Each application or pipeline gets its own service account, scoped to a single namespace, granted only what the pipeline actually does.\n- **No permanent credentials.** Pipelines use short-lived projected tokens; credentials never appear in build logs.\n- **Verified both ways.** The account demonstrably can perform its permitted deployments — and demonstrably cannot reach other namespaces or perform create/delete operations it was never granted.\n\n**Link 4 — Admission control:**\n\n- **Policy runs at admission.** An admission controller (OPA/Gatekeeper in the reference build) enforces the baseline: approved container registries, CPU and memory limits, no privileged containers, no root containers where the standard forbids them, required namespace labels with permitted values, and PodDisruptionBudgets — with explicit system-namespace exclusions.\n- **Rejection is tested.** A deliberately noncompliant deployment is submitted and rejected — unauthorized image, missing limits — before the policy is declared live. Violations are monitored, not just blocked.\n\n**Link 5 — Network and transport:**\n\n- **Deny the unnecessary.** Ingress and egress rules are defined per workload; NetworkPolicies restrict cross-namespace traffic and host-level network access to what is justified.\n- **Encrypted inside and out.** Service-to-service traffic runs under strict mTLS (Istio in the reference build), verified — not just configured. External traffic terminates at the gateway on certificates issued and renewed automatically (cert-manager in the reference build); expiry and renewal state are monitored.\n\n**Link 6 — Evidence and rehearsal:**\n\n- **The audit trail reconstructs actions.** API audit logging records user identity, timestamps, authentication and authorization decisions, secrets access, RBAC modifications, privileged operations, and request outcomes; identity-provider login and token events are captured alongside. Logs are centralized, protected from modification, and retained by policy.\n- **Alerts watch the watchers.** Security-sensitive changes and policy violations page someone; identity events correlate with cluster activity.\n- **The drill is part of the build.** The team simulates a leaked service-account credential and runs the full loop — detect, revoke, verify dead, trace in the audit logs, size the blast radius, document the timeline, fix the gap, and prove the fix in a repeat test. Permission reviews, policy updates, and drills recur on a schedule.\n\n## Reference Stack\n\nThis record is grounded in a concrete reference build. The commitments above are stated at the capability level; the tools below are the worked example, not the mandate.\n\n| Role in the chain | Reference tool | The property that matters |\n| --- | --- | --- |\n| Human identity | Keycloak (OIDC) | One realm, group claims in the JWT, ~15-minute tokens |\n| Authorization | Kubernetes RBAC | Namespace-scoped roles bound to identity groups |\n| Machine identity | Kubernetes service accounts | Per-pipeline, single-namespace, projected tokens |\n| Admission control | OPA/Gatekeeper | Noncompliant workloads rejected before they run |\n| Network policy | Kubernetes NetworkPolicies | Unnecessary paths blocked by default |\n| Service-to-service encryption | Istio strict mTLS | Encryption verified, not assumed |\n| External TLS | cert-manager + Istio Gateway | Certificates issued, renewed, and monitored automatically |\n| Evidence | Kubernetes audit logging + centralized logs | Login → token → API call reconstructable |\n\n## How to Read This\n\nThis record is part of the **Reference Implementation** section of this journal — the how-it-concretely-looks companion to the Platform Engineering records. Where [The Four Pillars of Platform Engineering](four-pillars.html) states that a platform must be operated as a foundation, this record is one slice of that foundation made concrete: the security build I hold a platform team to, grounded in the End-to-End Kubernetes Platform Security checklist of the *Platform Engineer's Handbook*. The runnable version — every link, every verification, the final security review — lives in the **Checklist** tab. The **TL;DR** tab carries the management summary; the **Conversation** tab talks through the objections.\n\n## Rationale\n\n**Security is a chain because attackers do not respect layer boundaries.** A stolen browser token, a leaked CI credential, an over-permissive role, and an unpoliced registry are all the same incident waiting to assemble itself. Building the links in order — identity, authorization, machine identity, admission, network, evidence — means each layer assumes the previous one fails. Short-lived tokens assume credentials leak; namespace-scoped RBAC assumes tokens are stolen; admission policy assumes a compromised pipeline pushes a bad image; NetworkPolicies and mTLS assume a workload is breached; the audit trail assumes all of the above and answers *what happened*.\n\n**Every control is proven by a violation, or it is decoration.** The checklist's most distinctive discipline is that nothing counts as done until someone tried to break it: the noncompliant deployment that Gatekeeper must reject, the service account that must fail to cross a namespace, the `kubectl auth can-i` that must return `no`, the unauthorized network path that must be blocked. Configuration drift, typos in selectors, and forgotten exclusions are invisible in a green dashboard and obvious in a failed violation test. **The negative test is the control.**\n\n**Least privilege is cheapest at build time.** Cluster-admin handed out during setup \"temporarily\" becomes the permanent topology of the platform; clawing it back later is an organizational project. Scoping every human to a namespace role and every pipeline to a single-namespace service account on day one costs minutes. The final review question — *does any human or service account hold unnecessary cluster-admin?* — is binary and non-negotiable.\n\n**Machine identity is where platforms are most exposed.** Human logins get MFA and reviews; the CI service account with a permanent token in a build log gets neither, and it deploys to production every day. Treating pipelines as first-class identities — one account per pipeline, projected short-lived tokens, credentials scrubbed from logs, negative tests for what the account must *not* do — closes the gap between how we guard people and how we guard automation.\n\n**The audit trail is a security control, not an observability feature.** Without the login → token → API call trace, an incident response is archaeology; with it, the drill's questions — what did the credential touch, when, on whose authority — have answers in minutes. That is why the logs must be centralized, tamper-protected, and retained: an audit log the attacker can edit is testimony from the defendant.\n\n![Pipeline diagram tracing login to short-lived token to API call to API server, with every step dropping a correlated entry into one locked audit log.](assets/images/platform-security/login-token-apicall-trace.jpeg)\n**Figure 2:** *The running trace: any user action reconstructable from login through token to Kubernetes API call, correlated in one tamper-protected audit log.*\n\n**The drill is what converts architecture into capability.** A team that has rotated a burned credential under a stopwatch, traced it through the audit logs, and re-tested the preventive fix has an incident response capability. A team with the same architecture and no drill has a diagram. Scheduling the drills — with the permission reviews and policy updates — is what keeps the chain true as the platform evolves.\n\n![Circular diagram of the credential-compromise drill: simulate leak, detect, revoke, verify dead, trace logs, blast radius, fix, re-test, recurring on a schedule.](assets/images/platform-security/credential-compromise-drill-loop.jpeg)\n**Figure 3:** *The drill loop: simulate a leaked credential, detect, revoke, verify it is dead, trace it, size the blast radius, fix, and re-test — on a schedule.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| One central OIDC identity with short-lived tokens for all platform access. | Keycloak specifically — any OIDC provider with realms, groups, and short token lifetimes qualifies. |\n| Developers are confined to namespace-scoped roles, verified with negative tests. | Developers are locked out of production — they hold exactly the permissions their work requires, provably. |\n| Every pipeline gets its own narrowly scoped service account with projected tokens. | CI/CD is distrusted — machine identity is held to the same standard as human identity, no lower. |\n| A baseline admission policy set rejects noncompliant workloads at the door. | The full policy-as-code practice lives here — authoring, testing, and lifecycle belong to [Policy as Code Implementation](policy-as-code.html). |\n| Strict mTLS inside, automated TLS outside, unnecessary network paths denied. | The mesh is built here — [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) builds it; this record switches it to strict and verifies. |\n| Audit logs reconstruct any action from login to API call, tamper-protected. | The full telemetry stack lives here — that is [Observability Implementation](observability-implementation.html); this is the security slice. |\n| A credential-compromise drill is run, documented, and repeated on a schedule. | Drills are a launch-time ceremony — they recur, with permission reviews and policy updates. |\n\nConcretely: a platform in my organization is not declared secure by architecture review. It is declared secure when the validation pass has run — admin, user, and CI identities each tested for what they can and cannot do; policies rejecting real noncompliant deployments; mTLS and TLS verified; one action traced end to end — and when the first incident drill has produced a documented timeline and a re-tested fix.\n\n## Anti-Patterns\n\n- **The convenience admin.** Cluster-admin granted during setup to make things work, never revoked — the platform's real security posture is whatever the oldest kubeconfig can do.\n- **The immortal token.** A permanent service-account credential in a CI variable (or worse, a build log), outliving the engineer who created it and every rotation policy on paper.\n- **The shared robot.** One service account for every pipeline — when it leaks, the blast radius is the whole platform, and the audit log says only \"the robot did it.\"\n- **Policy as documentation.** Security standards that live in a wiki while the admission controller admits everything — complexity documented, nothing enforced.\n- **The untested control.** Policies, roles, and network rules deployed but never exercised by a deliberate violation — green until the day they matter.\n- **The soft interior.** TLS at the edge, plaintext everywhere inside — one compromised pod away from reading the platform's east-west traffic.\n- **The write-only audit log.** Audit logging enabled, shipped nowhere, correlated with nothing, editable by the workloads it watches — evidence that cannot testify.\n- **The paper drill.** An incident-response runbook that has never been run — the first real credential leak becomes the first rehearsal.\n\n## Related Records\n\n- [The Four Pillars of Platform Engineering](four-pillars.html) — pillar 4 (operated as a foundation) is what this record makes concrete on the security axis; guardrails with safe defaults are pillar 3's promise, enforced here.\n- [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) — the sibling record that builds the environments, GitOps machinery, and mesh this record hardens.\n- [Groundwork: Repositories, Secrets, and Releases](groundwork.html) — repositories, secrets, and release hygiene; the platform-level secrets discipline that precedes cluster identity.\n- [Policy as Code Implementation](policy-as-code.html) — the deep dive on the policy practice; this record installs admission control as one link, that record owns the policy lifecycle.\n- [CI/CD as a Platform Service](cicd-as-a-platform-service.html) — the pipeline capability whose identities this record scopes and verifies.\n- [Observability Implementation](observability-implementation.html) — the full telemetry build; this record's audit and alerting layer is its security slice.\n- [Resilience Automation](resilience-automation.html) — the sibling that generalizes the drill discipline from security incidents to failure at large.\n- [Operating Platforms](operating-platforms.html) — the operating model that consumes this record's evidence layer and drill cadence.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every Kubernetes-based platform my organization runs, everywhere I am the accountable executive; for non-Kubernetes platforms the chain holds even where the reference tools do not. I revisit it if a real incident shows a link the chain does not cover, if the scheduled drills or permission reviews stop happening (the evidence link failing quietly), or if the platform's identity, admission, or mesh technology changes enough that the reference build no longer describes what teams actually operate.\n\n## Authoritative References\n\n- *Platform Engineer's Handbook* — the End-to-End Kubernetes Platform Security chapter, whose checklist this record distills (filed in this journal's sources as the PEH 03 checklist).\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "When a platform team in my organization secures a Kubernetes platform, security is built as **one chain, end to end**: central OIDC identity with short-lived tokens, namespace-scoped least-privilege RBAC, per-pipeline machine identities, admission policies that reject noncompliant workloads, deny-by-default networking with strict mTLS and automated TLS, and a tamper-protected audit trail. Two tests run through the build: every control is proven by deliberately trying to violate it, and any action can be traced from login through token to Kubernetes API call.\n\n**What changes**\n\n* **Identity is central and short-lived.** People authenticate through one OIDC realm; groups carry authorization into Kubernetes RBAC; tokens expire in roughly fifteen minutes, so a leaked token is a small problem rather than a standing credential.\n* **Least privilege is verified, not declared.** Developers hold namespace-scoped roles and provably cannot touch system namespaces; admins get troubleshooting permissions, not omnipotence; every claim is checked with `kubectl auth can-i`. No human or service account keeps unnecessary cluster-admin.\n* **Pipelines become first-class identities.** One narrowly scoped service account per pipeline, short-lived projected tokens instead of permanent credentials, secrets kept out of build logs — and negative tests proving what each account cannot do.\n* **Policy runs at admission, encryption runs by default.** Gatekeeper (in the reference build) rejects unapproved registries, missing resource limits, privileged and root containers, and unlabeled namespaces before they run; NetworkPolicies block unnecessary paths; mTLS is strict inside, and cert-manager renews external TLS automatically.\n* **Evidence and rehearsal close the chain.** Audit logs record identity, decisions, secrets access, and privileged operations — centralized, tamper-protected, retained, and alerted on — and the build ends with a credential-compromise drill: detect, revoke, trace, size the blast radius, fix, and re-test.\n\n**What it costs**\n\n* Negative testing is real work: every control must reject a deliberate violation before it counts as done — a control that has never rejected anything is a hope, not a control.\n* Least privilege at build time means friction: per-pipeline service accounts and scoped roles cost minutes now to avoid an ungovernable cluster-admin topology later.\n* The drill, permission reviews, and policy updates recur on a schedule — this is a standing practice, not a launch ceremony.\n\n**What we are not doing**\n\n* Not the full policy-as-code practice — authoring, testing, and policy lifecycle live in [Policy as Code Implementation](policy-as-code.html); this record installs admission control as one link.\n* Not building the environments or the mesh — [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) builds them; this record hardens them. Platform-level secrets hygiene stays in [Groundwork: Repositories, Secrets, and Releases](groundwork.html).\n* Not the full telemetry stack — that is [Observability Implementation](observability-implementation.html); this record takes only the security slice of audit, alerting, and correlation.\n* Not the general operating discipline — incidents, on-call, and support live in [Operating Platforms](operating-platforms.html), which consumes the drill and evidence layer this record builds.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the complete build, validation pass, and final security review. Grounded in the* Platform Engineer's Handbook *security chapter checklist.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "5 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the end-to-end security build, in order. The Article tab carries the rationale and anti-patterns. Reference tools (Keycloak, Gatekeeper, Istio, cert-manager) are the worked example; substitute equivalents that keep the same properties.*\n\n## 1. Identity and Access (OIDC — Keycloak)\n\n- [ ] Deploy and configure the identity provider (Keycloak in the reference build)\n- [ ] Create a dedicated realm for the Kubernetes platform\n- [ ] Configure an OAuth/OIDC client for the Kubernetes API server\n- [ ] Create the required user groups:\n  - [ ] `platform-admins`\n  - [ ] `platform-users`\n- [ ] Create appropriate test users\n- [ ] Map identity-provider groups to Kubernetes RBAC groups\n- [ ] Configure short-lived access tokens\n- [ ] Set token lifetime to approximately 15 minutes\n- [ ] Configure the Kubernetes API server with:\n  - [ ] OIDC issuer URL\n  - [ ] Client ID\n  - [ ] Username claim\n  - [ ] Groups claim\n- [ ] Test login through the identity provider\n- [ ] Confirm group membership appears correctly in the issued JWT\n\n## 2. Kubernetes RBAC\n\n- [ ] Create the application/team namespace\n- [ ] Add the required governance labels:\n  - [ ] `team`\n  - [ ] `environment`\n  - [ ] `cost-center`\n- [ ] Create a namespace-scoped developer Role\n- [ ] Create RoleBindings for the appropriate identity-provider groups\n- [ ] Give platform administrators the cluster-level troubleshooting permissions they need\n- [ ] Keep normal developers limited to their own namespaces\n- [ ] Confirm developers cannot view or modify system namespaces\n- [ ] Avoid unnecessary cluster-admin access\n- [ ] Verify permissions using `kubectl auth can-i`\n\n## 3. Secure CI/CD Service Accounts\n\n- [ ] Create a separate service account for each application or pipeline\n- [ ] Scope each service account to a single namespace\n- [ ] Grant only the permissions the pipeline actually requires\n- [ ] Avoid ClusterRoleBinding to cluster-admin\n- [ ] Use short-lived projected tokens rather than permanent credentials\n- [ ] Ensure CI/CD credentials are not written to build logs\n- [ ] Verify the service account can perform its permitted deployment operations\n- [ ] Verify it cannot access other namespaces\n- [ ] Verify it cannot perform unauthorized create/delete operations\n\n## 4. Policy-as-Code Admission Control (OPA/Gatekeeper)\n\n- [ ] Deploy the admission controller (OPA Gatekeeper in the reference build)\n- [ ] Configure an approved container registry policy\n- [ ] Require CPU limits\n- [ ] Require memory limits\n- [ ] Prevent privileged containers\n- [ ] Prevent root containers where required\n- [ ] Enforce namespace labels\n- [ ] Configure permitted values or patterns for:\n  - [ ] Team\n  - [ ] Environment\n  - [ ] Cost center\n- [ ] Configure the necessary system-namespace exclusions\n- [ ] Add the required PodDisruptionBudget policy\n- [ ] Test a deliberately noncompliant deployment\n- [ ] Confirm the controller rejects unauthorized images\n- [ ] Confirm the controller rejects workloads without resource limits\n- [ ] Monitor policy violations\n- The full policy authoring, testing, and lifecycle practice lives in [Policy as Code Implementation](policy-as-code.html)\n\n## 5. Network Security\n\n- [ ] Define ingress traffic rules\n- [ ] Define egress traffic rules\n- [ ] Create the appropriate Kubernetes NetworkPolicies\n- [ ] Restrict unnecessary cross-namespace communication\n- [ ] Prevent unnecessary host-level network access\n- [ ] Configure the mesh for strict mTLS (Istio in the reference build)\n- [ ] Verify service-to-service traffic is encrypted\n- [ ] Confirm unauthorized network paths are blocked\n\n## 6. TLS and Certificate Management\n\n- [ ] Install and configure cert-manager\n- [ ] Configure the certificate issuer\n- [ ] Integrate certificate management with the mesh gateway (Istio Gateway)\n- [ ] Create the required Certificate resource\n- [ ] Store the certificate in the appropriate Kubernetes Secret\n- [ ] Configure the application's VirtualService\n- [ ] Confirm external traffic uses HTTPS/TLS\n- [ ] Verify certificates renew automatically\n- [ ] Monitor certificate expiration and renewal state\n\n## 7. Validation Testing\n\n- [ ] Authenticate as a platform administrator\n- [ ] Authenticate as a platform user\n- [ ] Authenticate using the CI/CD service account\n- [ ] Test authorized actions\n- [ ] Test unauthorized actions\n- [ ] Confirm namespace boundaries are enforced\n- [ ] Confirm RBAC denies permissions that were not explicitly granted\n- [ ] Confirm admission policies reject invalid configurations\n- [ ] Confirm network policies block unauthorized traffic\n- [ ] Confirm mTLS is active\n- [ ] Confirm TLS works for external access\n- [ ] Trace one user action end to end: login → token → Kubernetes API call\n\n## 8. Audit and Observability\n\n- [ ] Enable Kubernetes API audit logging\n- [ ] Record:\n  - [ ] User identity\n  - [ ] Timestamp\n  - [ ] Authentication/authorization decisions\n  - [ ] Secrets access\n  - [ ] RBAC modifications\n  - [ ] Privileged operations\n  - [ ] Request outcomes\n- [ ] Capture identity-provider login and token events\n- [ ] Centralize security-related logs\n- [ ] Protect audit logs from modification\n- [ ] Apply the required log-retention policies\n- [ ] Configure alerts for security-sensitive changes\n- [ ] Monitor admission-policy violations\n- [ ] Correlate identity events with Kubernetes activity\n- The full telemetry build lives in [Observability Implementation](observability-implementation.html); this is its security slice\n\n## 9. Incident Response Drill\n\n- [ ] Simulate exposure of a service-account credential\n- [ ] Detect the compromised credential\n- [ ] Revoke or rotate the credential\n- [ ] Verify the compromised credential no longer works\n- [ ] Locate the related authentication and API activity in the audit logs\n- [ ] Determine what resources the credential could access\n- [ ] Document the incident timeline\n- [ ] Implement preventive measures\n- [ ] Confirm the preventive controls work during a repeat test\n\n## 10. Final Security Review\n\n- [ ] OAuth/OIDC authentication is enabled\n- [ ] RBAC authorization follows least privilege\n- [ ] Service accounts are narrowly scoped\n- [ ] Admission policies enforce deployment standards\n- [ ] Network policies restrict unnecessary communication\n- [ ] mTLS protects service-to-service traffic\n- [ ] TLS certificates are automatically managed\n- [ ] Security events are centrally observable\n- [ ] Audit logs support investigation and compliance\n- [ ] No human or service account has unnecessary cluster-admin privileges\n- [ ] Regular permission reviews, policy updates, and security drills are scheduled\n\nThe test running through the whole build: **has every control rejected a deliberate violation, and can one action be traced from login through token to API call?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## One Chain, Not a Shopping List\n\n**Ben:** Blunt version first. Every platform team already runs RBAC, a policy engine, a mesh, some audit logging. Why does an operating model need a record for a Kubernetes hardening checklist?\n\n**Ana:** Because \"we have all the pieces\" and \"the pieces form a chain\" are different claims, and the second one is the record. Most platforms have security as a shopping list — RBAC here, Gatekeeper there, mTLS half-enabled — each bought separately, each assumed to work. This record builds it as one chain, in order: human identity, least-privilege authorization, machine identity, admission control, network and transport, and evidence. Each link assumes the previous one fails. Short-lived tokens assume credentials leak. Namespace-scoped RBAC assumes tokens get stolen. Admission policy assumes a compromised pipeline pushes a bad image. The audit trail assumes all of the above and answers *what happened*.\n\n**Ben:** And the tests running through it?\n\n**Ana:** Two. Every control is proven by deliberately trying to violate it — the noncompliant deployment Gatekeeper must reject, the service account that must fail to cross a namespace. And one action must be traceable from login through token to Kubernetes API call. The line I'd put on the wall: a control that has never rejected anything is a hope, not a control.\n\n**Ben:** The record names a very specific stack — Keycloak, Gatekeeper, Istio, cert-manager. Is this a tooling mandate?\n\n**Ana:** No, and the record is explicit: the stack is the worked example, not the mandate. The commitments are at capability level — one OIDC realm with group claims and roughly fifteen-minute tokens, an admission controller that rejects at the door, verified strict mTLS. The reference-stack table exists so nobody has to guess what a passing build looks like; swap any tool that keeps the same properties.\n\n## Identity, and Why Fifteen Minutes\n\n**Ben:** Fifteen-minute tokens. That sounds like a great way to make developers hate the platform — re-authenticating four times an hour.\n\n**Ana:** The token lifetime is fifteen minutes; the login session isn't. OIDC refresh handles renewal invisibly. What the short lifetime buys is that a leaked access token is a small problem instead of a standing credential — the window between theft and uselessness is a coffee break. And because groups ride in the JWT and map to Kubernetes RBAC groups, revoking a person is one change in the identity provider, not an archaeology dig through kubeconfigs.\n\n**Ben:** RBAC next. Every organization claims least privilege. What makes this record's version more than the claim?\n\n**Ana:** Verification. The record doesn't say \"developers should be limited to their namespaces\" — it says the build isn't done until someone has confirmed developers cannot view or modify system namespaces, and checked every claim with `kubectl auth can-i`. Claims about permissions are read from the manifest; facts about permissions come from asking the API server. And the binary question at the end of the final review: does any human or service account hold unnecessary cluster-admin? The record's anti-pattern is the convenience admin — cluster-admin granted during setup to make things work, never revoked, until the platform's real security posture is whatever the oldest kubeconfig can do.\n\n**Ben:** Why is clawing that back so hard that it justifies day-one discipline?\n\n**Ana:** Because \"temporary\" cluster-admin becomes the permanent topology. Six months in, nobody knows which automations depend on it, so nobody dares revoke it. Scoping people and pipelines correctly at build time costs minutes. Unwinding it later is an organizational project with a risk register.\n\n## The Robot Problem\n\n**Ben:** Machine identity gets its own link in the chain. Isn't a CI service account just another user?\n\n**Ana:** It should be, and that's the point — in practice it's held to a far lower standard. Humans get MFA, reviews, offboarding. The CI account gets a permanent token pasted into a variable in 2019, and it deploys to production every day. This is where platforms are most exposed. So the record: one service account per application or pipeline, scoped to a single namespace, granted only what the pipeline actually does, short-lived projected tokens instead of permanent credentials, and credentials scrubbed from build logs.\n\n**Ben:** One account per pipeline sounds like bureaucracy. Why not one well-guarded deployment account?\n\n**Ana:** The shared robot is a named anti-pattern. When the shared account leaks, the blast radius is the whole platform — and the audit log says only \"the robot did it.\" Per-pipeline accounts make the blast radius one namespace and make the audit trail name a culprit. And note the verification runs both ways: the account demonstrably can do its permitted deployments, and demonstrably cannot reach other namespaces or perform operations it was never granted. The negative test is the control.\n\n**Ben:** Admission control — but there's a whole separate record called [Policy as Code Implementation](policy-as-code.html). Why does Gatekeeper appear twice in this journal?\n\n**Ana:** Different altitude. Here, admission control is one link with a fixed baseline: approved registries, CPU and memory limits, no privileged containers, no root containers where the standard forbids them, required namespace labels with permitted values, PodDisruptionBudgets. Deploy it, then submit a deliberately noncompliant deployment and watch it bounce. The practice of authoring, testing, and evolving policies — the lifecycle — is [Policy as Code Implementation](policy-as-code.html). This record installs the lock; that record is the locksmith's trade.\n\n## Encrypted Inside, Evidenced Throughout\n\n**Ben:** Strict mTLS everywhere inside the cluster. The classic pushback: TLS at the edge is where the attackers are — why pay the mesh complexity tax for east-west traffic?\n\n**Ana:** Because the perimeter assumption is the anti-pattern — the record calls it the soft interior. TLS at the edge and plaintext inside means one compromised pod reads the platform's east-west traffic. The chain logic again: network and transport protection assumes a workload is already breached. NetworkPolicies deny unnecessary paths — cross-namespace, host-level — and strict mTLS makes what remains unreadable. And \"verified, not configured\": the build checks that traffic is actually encrypted and unauthorized paths actually blocked. The external side is the same discipline automated — cert-manager issues and renews through the gateway, and expiry is monitored, because an expired certificate is an outage with a security costume.\n\n**Ben:** The audit section reads like observability. Why is it in a security record and not [Observability Implementation](observability-implementation.html)?\n\n**Ana:** Because here the audit trail is a security control, not a telemetry feature. The record requires the API audit log to record identity, timestamps, authentication and authorization decisions, secrets access, RBAC modifications, privileged operations, outcomes — plus the identity provider's login and token events — centralized, tamper-protected, retention-managed, alerted. Without that, incident response is archaeology. With it, the questions that matter — what did this credential touch, when, on whose authority — have answers in minutes. Tamper protection is the non-negotiable part: an audit log the attacker can edit is testimony from the defendant. The full telemetry stack is [Observability Implementation](observability-implementation.html); this is its security slice.\n\n**Ben:** And then the record makes teams stage a breach. Isn't the drill theater?\n\n**Ana:** It's the opposite — the paper drill is the theater. A runbook that has never been run means the first real credential leak is the first rehearsal. The drill is a full loop: simulate an exposed service-account credential, detect it, revoke or rotate, verify the dead credential no longer works, trace the activity in the audit logs, determine the blast radius, document the timeline, implement preventive measures — and prove the fix in a repeat test. That last step is what converts architecture into capability. And it recurs on a schedule, with permission reviews and policy updates, because the chain drifts as the platform evolves.\n\n## The Close\n\n**Ben:** Close it out. What is this record explicitly not doing?\n\n**Ana:** Five fences. It doesn't build the environments, GitOps machinery, or the mesh — [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) builds them; this record hardens them and switches mTLS to strict. It doesn't own platform-level secrets and release hygiene — that's [Groundwork: Repositories, Secrets, and Releases](groundwork.html). It doesn't carry the policy lifecycle — [Policy as Code Implementation](policy-as-code.html). It doesn't build the telemetry stack — [Observability Implementation](observability-implementation.html) does; this record takes the security slice. And it doesn't own the general operating discipline — incidents, on-call, support — that's [Operating Platforms](operating-platforms.html), which consumes the drill and evidence layer this record builds. The drill discipline generalizes beyond security in [Resilience Automation](resilience-automation.html), and the whole chain is pillar four of [The Four Pillars of Platform Engineering](four-pillars.html) — operated as a foundation — made concrete on the security axis.\n\n**Ben:** So when does a platform in your organization get to call itself secure?\n\n**Ana:** Not at architecture review. When the validation pass has run — admin, user, and CI identities each tested for what they can and cannot do, policies rejecting real noncompliant deployments, mTLS and TLS verified, one action traced from login to API call — and when the first drill has produced a documented timeline and a re-tested fix.\n\n**Ben:** One sentence.\n\n**Ana:** Every control has rejected a deliberate violation, every action can be traced to an identity — and until both are true, \"secure\" is a hope, not a property.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why platform security is a chain proven by breaking it — not a list of green checkboxes — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: an engineer shows a wall of green checkmarks labeled secure while an executive inspects a single chain link.](assets/images/platform-security/comic-01-secure-says-who.jpeg)\n**Panel 1:** *The hook: 'the platform is secure' is either a claim or a chain of verified controls — the executive asks which link was tested.*\n\n![Comic panel: a burglar assembles puzzle pieces labeled stolen token, CI credential, and admin role while two engineers watch alarmed.](assets/images/platform-security/comic-02-the-incident-assembles.jpeg)\n**Panel 2:** *The problem: a stolen token, a leaked CI credential, and an over-permissive role are the same incident waiting to assemble itself.*\n\n![Comic panel: a cobwebbed robot arm holds a giant key labeled cluster-admin with a note saying temporary since 2019.](assets/images/platform-security/comic-03-the-convenience-admin.jpeg)\n**Panel 3:** *The wrong way: the convenience admin and the immortal token — the platform's real posture is whatever the oldest credential can still do.*\n\n![Comic panel: an executive presents a six-link chain labeled identity, least privilege, machine id, admission, network, evidence.](assets/images/platform-security/comic-04-six-links.jpeg)\n**Panel 4:** *The principle: six links, in order — human identity, least-privilege authorization, machine identity, admission control, network and transport, evidence.*\n\n![Comic panel: an engineer rolls a noncompliant crate at a robot gatekeeper who stamps it rejected, while an executive checks a clipboard.](assets/images/platform-security/comic-05-the-negative-test.jpeg)\n**Panel 5:** *How it plays out: nothing counts as done until someone tried to break it — the noncompliant deployment must be rejected, the forbidden action must fail.*\n\n![Comic panel: one giant robot holding keys to five doors contrasted with five small robots each holding a short-lived token at one door.](assets/images/platform-security/comic-06-one-robot-per-pipeline.jpeg)\n**Panel 6:** *Machine identity: one narrowly scoped service account per pipeline with short-lived tokens — when the shared robot leaks, the blast radius is everything.*\n\n![Comic panel: an executive times an engineer who revokes a burned credential and traces an audit trail from login to token to API call.](assets/images/platform-security/comic-07-the-stopwatch-drill.jpeg)\n**Panel 7:** *What it takes: the drill — simulate the leak, revoke, verify dead, trace login to token to API call in the audit logs, fix, and re-test on a schedule.*\n\n![Comic panel: two framed padlocks, one pristine and never tested, one battle-scarred having rejected attacks; the executive points at the scarred one.](assets/images/platform-security/comic-08-hope-is-not-a-control.jpeg)\n**Panel 8:** *The closer: a control that has never rejected anything is a hope, not a control.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

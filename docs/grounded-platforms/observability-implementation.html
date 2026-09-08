@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Observability Implementation</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="platform-security.html" title="End-to-End Platform Security">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="devex-evaluation.html" title="Developer Experience Evaluation">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference Implementation</p>
+        <h1>Observability Implementation</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-20  ·  8 min · <a class="spec-link" href="observability-implementation.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/observability-implementation/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/observability-implementation/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="platform-security.html" title="End-to-End Platform Security">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="devex-evaluation.html" title="Developer Experience Evaluation">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REF-OBSERVABILITY", "status": "draft:gray", "title": "Observability Implementation", "date": "2026-08-20", "author": "Željko Obrenović", "permalink": "observability-implementation", "timetoread": "8 min", "excerpt": "When a platform team in my organization builds observability, I hold them to a closed loop, not a tool list. Metrics, logs, and traces are collected through vendor-neutral instrumentation and correlated by common identifiers; dashboards serve named personas from version control; CI/CD refuses to ship code that cannot be observed; alerts tell the responder what to do; and SLOs live in Git and travel through the same pipeline as the code they judge. The build is done when a deployment that degrades user experience finds its own way to the team that can fix it — and when the platform can show, with numbers, that detection and recovery got faster.", "tags": "observability, opentelemetry, slos, error budgets, alerting, dashboards, telemetry, gitops, platform engineering", "icon": "assets/icons/observability-implementation.png", "logo": "assets/images/observability-implementation/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["observability", "opentelemetry", "slos", "error budgets", "alerting", "dashboards", "telemetry", "gitops", "platform engineering"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Observability is a **first-class platform capability**, built once and consumed by every team — not a per-team hobby assembled after the first bad incident. When my platform teams build it, the shape is fixed: **metrics, logs, and traces** collected through **vendor-neutral instrumentation** and correlated by common identifiers into a single pane of glass; the **platform owns the shared pipeline**, development teams own instrumenting their code against an explicit contract; **dashboards serve named personas** and live in version control; **CI/CD refuses to promote code that cannot be observed**; alerts are symptom-based and answer *what action should I take*; and **SLOs with error budgets are defined as code**, deployed through GitOps, and allowed to govern deployment velocity. The build is done when the loop closes — a deployment degrades user experience, telemetry catches it, an actionable alert reaches the right team, remediation follows — and when MTTD and MTTR have measurably dropped.\n\n## Statement\n\nWhen a platform team in my organization builds observability, this is the shape of the build I hold them to.\n\n**Strategy before stack:**\n\n- **First-class capability.** Observability is designed into the platform from the start, with named business and engineering outcomes — reduced MTTD and MTTR above all — not bolted on after an outage.\n- **One pane, not many panes.** A single-pane-of-glass strategy governs how signals come together; disconnected per-team dashboards are the failure mode, not the plan.\n- **Three signals, three questions.** Metrics say *what* happened, logs say *how*, traces say *why* — and common identifiers (service names, trace IDs) stitch them into one investigation across applications *and* the infrastructure beneath them.\n\n![Diagram of metrics, logs, and traces streams tied together by shared identifiers and converging into a single pane of glass.](assets/images/observability-implementation/three-signals-one-investigation.jpeg)\n**Figure 1:** *Metrics answer what, logs answer how, traces answer why — common identifiers stitch the three into one investigation on a single pane of glass.*\n\n**Vendor-neutral instrumentation:**\n\n- **One standard.** Applications are instrumented with OpenTelemetry SDKs under consistent semantic conventions, exporting over vendor-neutral OTLP. Instrumentation is independent of whatever backend we run this year.\n- **Collectors as infrastructure.** Telemetry flows through collectors configured for batching, buffering, retries, and high availability — ingestion that neither loses signals nor loads down the workloads it watches, and that crosses the network boundaries it has to cross.\n- **Right transport per signal.** Pull for metrics where appropriate, push for traces, a hybrid for logs — chosen deliberately, not inherited.\n- **The backends are operated like production.** Time-series storage has service discovery, retention policies, backups, and a scaling plan — and tracks the metrics that reveal degradation *before* complete failure.\n\n**A clean responsibility split:**\n\n- **Platform owns the pipeline; teams own their instruments.** The platform team runs the shared observability infrastructure; development teams instrument their own applications — against explicit observability contracts and non-functional requirements, with reusable SDK configurations, starter kits, and self-service capabilities so the paved path is the easy path.\n- **Build versus buy is a decision, not a default.** Assessed on maturity, service count, budget, staffing, compliance, and data residency — and revisited as the organization changes.\n\n**Consumption by persona:**\n\n- **Every consumer gets a view.** Customers get service health; executives get business KPIs; developers get debugging depth; QA gets release validation; DevOps and SRE get incident diagnostics; security gets forensics; compliance gets immutable audit trails.\n- **Dashboards are code.** Preconfigured per persona, templated with variables, stored in version control, annotated with deployment and incident markers, edit-restricted to owners, and kept fast.\n- **Security is a telemetry consumer too.** Policy violations, RBAC denials, and vulnerabilities surface as metrics — sanitized aggregates broadly, sensitive detail restricted, security events joinable to traces.\n\n**Enforcement and the closed loop:**\n\n- **CI/CD is the gate.** Pipelines fail when required metrics endpoints, structured logs, or trace spans are missing; telemetry is verified in staging before promotion; deployment metadata is published as telemetry and correlated automatically. Uninstrumented code does not reach production — and the pipeline itself is measured: build duration, test time, deployment frequency, flakiness.\n- **Alerts demand action.** Alerting is symptom-based, answers *what action should I take*, carries severity and a runbook, uses fast-burn and slow-burn SLO alerts, groups and routes by business impact, silences during maintenance, and gets pruned when it fires without producing action.\n- **SLOs as code.** SLIs reflect actual user experience; SLOs and error budgets are defined for customer-facing *and* internal platform services, published on dashboards in real time, allowed to govern deployment velocity — and stored in Git, code-reviewed, rollback-capable, deployed through GitOps, synchronized with recording rules, dashboards, and alerts, with deployments validated against SLOs before promotion to production.\n\n## How to Read This\n\nThis record is part of the **Reference Implementation** section of this journal — the how-it-concretely-looks companion to the Platform Engineering records, grounded in the *Platform Engineer's Handbook*, a companion that builds one internal developer platform end to end. It is [Operating Platforms](operating-platforms.html) and pillar 3's user observability from [The Four Pillars of Platform Engineering](four-pillars.html) made executable. The full working checklist — all sixteen sections plus the final readiness check — lives in the **Checklist** tab; the **TL;DR** tab carries the management summary; the **Conversation** tab talks it through.\n\nThe handbook's stack is the worked example, not the mandate. The commitments hold at capability level:\n\n| Role | Reference tool | The property that matters |\n| --- | --- | --- |\n| Instrumentation | OpenTelemetry SDKs | Vendor-neutral, consistent conventions; apps independent of the backend |\n| Telemetry transport | OpenTelemetry Collector (OTLP) | Batching, buffering, retries, high availability |\n| Metrics store | Prometheus | Pull-based service discovery; retention, backup, and scaling policies |\n| Visualization | Grafana | One layer over many backends; dashboards defined in version control |\n| SLO delivery | Flux (GitOps) | SLO definitions deployed, versioned, and rolled back like code |\n| Enforcement | CI/CD pipeline (CircleCI in the reference) | Fails builds missing metrics endpoints, structured logs, or trace spans |\n\nSwap any tool; keep every property.\n\n## Rationale\n\n**Observability is a platform capability because correlation is.** Any team can install an agent; no team alone can make its telemetry line up with everyone else's. The value of observability lives in the joins — the trace ID that connects a customer-facing error to a pod eviction three layers down — and joins require shared conventions, shared identifiers, and a shared pipeline. That is platform work by definition. It is also why the single pane of glass is a strategy, not a purchase: a dozen excellent disconnected dashboards answer a dozen local questions and fail the one that matters, *what is happening to users right now, and why*.\n\n**Vendor neutrality is the platform's hedge on its own future.** Observability backends change — pricing changes, scale changes, the build-versus-buy answer changes as the organization matures. The chapter's quiet masterstroke is separating what must be stable from what may churn: instrumentation, conventions, and the OTLP wire format are forever; the backend behind the collector is a procurement decision. Teams that instrument directly against a vendor's SDK tattoo that vendor onto every service, and the eventual migration bill is priced in engineer-years.\n\n![Layered diagram separating stable instrumentation, conventions, and OTLP transport from swappable observability backends behind the collector.](assets/images/observability-implementation/stable-boundary-swappable-backend.jpeg)\n**Figure 2:** *The stability boundary: instrumentation, conventions, and the OTLP wire format are forever; the backend behind the collector is a procurement decision.*\n\n**The responsibility split keeps both failure modes off the table.** Centralize everything and the platform team becomes the bottleneck instrumenting other people's code, badly. Decentralize everything and you get archipelago observability — every team its own stack, no correlation, no economies. The split holds: the platform owns pipes, storage, dashboards-as-a-service, and the contract; teams own emitting good telemetry into it. Starter kits and self-service make honoring the contract cheaper than evading it.\n\n**Enforcement belongs in the pipeline, because afterwards is too late.** An observability standard that is not machine-checked is a suggestion, and suggestions lose to deadlines. Failing the build on a missing metrics endpoint, absent structured logs, or missing trace spans converts the contract from documentation into physics — and verifying telemetry in staging catches the instrumentation that compiles but says nothing. The same principle points inward: a pipeline that measures build duration, test flakiness, and deployment frequency is how the platform team finds its own bottlenecks instead of hearing about them.\n\n**Alerts are for action; everything else is a dashboard.** The chapter's alerting test is the one I quote: every alert must answer *what action should I take?* Symptom-based alerting keeps the pager tied to user impact rather than internal noise; fast-burn and slow-burn SLO alerts distinguish the outage from the slow leak; grouping, routing, and maintenance silencing protect the signal; and regular pruning retires alerts that fire without producing action — because every one of those trains responders to ignore the pager, and that training is expensive to undo.\n\n**SLOs as code close the loop.** An SLO in a wiki is an opinion; an SLO in Git — reviewed, versioned, rollback-capable, deployed through GitOps, synchronized with its recording rules, dashboards, and alerts — is a control system. Error budgets displayed in real time give deployment velocity a governor that no release-review meeting can match. And defining SLOs for internal platform services, not just customer-facing applications, is the platform holding itself to the bar it sets for its tenants. The final proof is the lifecycle running end to end: deploy, emit metadata, emit telemetry, correlate, detect the SLO violation, fire the actionable alert, notify the owning team, roll back or remediate — with MTTD and MTTR trending down as the receipts.\n\n![Circular lifecycle diagram of eight stages from deploy through telemetry, SLO violation, alert, and remediation, with MTTD and MTTR charts trending down at the center.](assets/images/observability-implementation/closed-loop-lifecycle.jpeg)\n**Figure 3:** *The closed loop, end to end: deploy, metadata, telemetry, correlation, SLO violation, actionable alert, notification, remediation — with falling MTTD and MTTR as the receipts.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Observability is designed in as a first-class platform capability. | Every service needs maximal telemetry from day one — coverage follows the contract, and the contract follows real outcomes. |\n| Instrumentation is vendor-neutral; the backend may churn. | We build everything ourselves — build versus buy is assessed honestly and revisited as maturity changes. |\n| The platform owns the shared pipeline and the contract. | The platform instruments applications for teams — instrumentation is the development team's job, made easy. |\n| CI/CD fails builds that cannot be observed. | The gate is negotiable per team — the contract is enforced in the pipeline, uniformly. |\n| Alerts are symptom-based and demand an action. | More alerts mean more safety — alerts that fire without action get pruned or redesigned. |\n| SLOs live in Git and govern deployment velocity. | SLO thresholds are identical everywhere — definitions stay consistent across environments while thresholds may differ. |\n| The build is proven by measurably better MTTD and MTTR. | Installing the stack is the finish line — the loop closing is. |\n\nConcretely: no service my organization runs in production is unobservable by construction — the pipeline will not let it through — and the platform team can show me, on a dashboard whose definition is in Git, this quarter's MTTD and MTTR against last quarter's.\n\n## Anti-Patterns\n\n- **The retrofit.** Observability budgeted after the first serious incident, wired in under pressure, forever partial — the afterthought the strategy section exists to forbid.\n- **The dashboard graveyard.** Dozens of disconnected dashboards, each once useful to someone, collectively unable to say what users are experiencing right now.\n- **The vendor tattoo.** Instrumenting directly against a commercial SDK, coupling every service to a backend decision that pricing will eventually reopen.\n- **The three silos.** Metrics, logs, and traces in three systems with no common identifiers — three answers to *what*, *how*, and *why* that cannot be joined into one investigation.\n- **The unwatched watcher.** An observability stack with no retention policy, no backups, no scaling plan — the system that watches production operated like a science project.\n- **The optional endpoint.** A pipeline that ships services with no metrics endpoint, no structured logs, no spans — and a team that discovers this during the incident.\n- **The pager firehose.** Cause-based alerts on every internal wobble, unrouted, ungrouped, never pruned — training responders to ignore the one page that matters.\n- **The wiki SLO.** Targets written in a document nobody reviews, attached to no alert, governing nothing — an opinion wearing an SLO's clothes.\n\n## Related Records\n\n- [The Four Pillars of Platform Engineering](four-pillars.html) — pillar 3's user observability and pillar 4's operational discipline; this record is both made concrete for the observability capability.\n- [Operating Platforms](operating-platforms.html) — the operating discipline (incidents, on-call, support) that runs on the telemetry this record builds.\n- [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) — the environments, GitOps machinery, and mesh this telemetry watches — and the delivery path SLOs-as-code ride on.\n- [End-to-End Platform Security](platform-security.html) — securing the platform itself; this record only surfaces security signals as telemetry.\n- [CI/CD as a Platform Service](cicd-as-a-platform-service.html) — the full CI/CD service; this record takes only its observability gates and pipeline metrics.\n- [Cost, Performance, and Scalability](cost-performance-scalability.html) — cost telemetry and optimization; this record stops at making degradation visible.\n- [What Platform Success Looks Like](platform-success.html) — the organization-level scorecard; MTTD and MTTR here are this capability's own proof.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every observability build a platform team in my organization undertakes, whatever stack they choose. I revisit it if the reference architecture shifts materially (for instance, OpenTelemetry absorbing more of the backend layer, or the build-versus-buy balance moving as we scale), if the CI/CD gates prove too blunt for a class of workloads and need a principled exception model, or if a year of operation shows MTTD and MTTR flat — which would mean we built the stack and not the capability.\n\n## Authoritative References\n\n- *Platform Engineer's Handbook* — the Observability Implementation chapter, whose checklist this record distills; the reference implementation's stack is OpenTelemetry, Prometheus, Grafana, and Flux GitOps.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "When a platform team in my organization builds observability, the bar is a **closed loop, not a tool list**: metrics, logs, and traces collected through vendor-neutral instrumentation and correlated into a single pane of glass; CI/CD refusing to ship code that cannot be observed; alerts that tell the responder what to do; and SLOs living in Git, governing deployment velocity. The build is done when a deployment that degrades user experience finds its own way to the team that can fix it — and MTTD and MTTR have measurably dropped.\n\n**What changes**\n\n* **Observability becomes a platform capability with a strategy.** Designed in from the start with named outcomes (reduced MTTD/MTTR), one single-pane-of-glass plan instead of disconnected dashboards, and three correlated signals: metrics for *what*, logs for *how*, traces for *why*.\n* **Instrumentation is standardized and vendor-neutral.** OpenTelemetry SDKs, consistent conventions, OTLP export, collectors built for batching, retries, and high availability — so the backend can churn (and build-versus-buy can be revisited) without re-instrumenting a single service.\n* **Responsibilities split cleanly.** The platform team owns the shared pipeline, storage, and dashboards-as-a-service; development teams instrument their own applications against an explicit contract, with starter kits and self-service making the paved path the easy path.\n* **The pipeline enforces the contract.** Builds fail on missing metrics endpoints, structured logs, or trace spans; telemetry is verified in staging; deployments publish metadata and are auto-correlated with what follows — and the pipeline's own performance (build time, flakiness, deploy frequency) is measured too.\n* **Alerts and SLOs become a control system.** Symptom-based alerts with severity and runbooks, fast-burn and slow-burn SLO alerting, regular pruning of alerts that produce no action; SLIs reflecting real user experience; error budgets displayed in real time and allowed to govern deployment velocity; SLO definitions in Git, reviewed, rollback-capable, GitOps-deployed — for platform services as well as customer-facing ones.\n\n**What it costs**\n\n* Running the observability stack like production — retention, backups, scaling, high availability — is real operational load the platform team owns permanently.\n* The CI/CD gate is uniform and non-negotiable: teams lose the option to ship first and instrument later.\n* Persona coverage is broad by design — customers, executives, developers, QA, DevOps, SRE, security, compliance all get views — which is dashboard and access-control work, maintained from version control.\n\n**What we are not doing**\n\n* Not the operating discipline itself — incidents, on-call, and support live in [Operating Platforms](operating-platforms.html); this is the telemetry they run on.\n* Not the full CI/CD service ([CI/CD as a Platform Service](cicd-as-a-platform-service.html)) or platform hardening ([End-to-End Platform Security](platform-security.html)) — this record takes only their observability seams.\n* Not mandating the stack: OpenTelemetry, Prometheus, Grafana, and Flux are the reference implementation's worked example; the commitments hold at capability level.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries all sixteen sections and the final readiness check. Grounded in the* Platform Engineer's Handbook*'s Observability Implementation chapter.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "7 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — run it when building or auditing the observability capability. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Observability Strategy\n\n- [ ] We define observability as a first-class platform capability, not an afterthought\n- [ ] We have identified the business and engineering outcomes observability should support\n- [ ] We have defined how metrics, logs, and traces will be collected and correlated\n- [ ] We follow a Single Pane of Glass (SPOG) strategy rather than creating disconnected dashboards\n- [ ] We have identified measurable outcomes, such as reduced MTTD and MTTR\n\n## 2. Metrics, Logs, and Traces\n\n- [ ] We collect metrics to understand *what* happened\n- [ ] We collect logs to understand *how* it happened\n- [ ] We collect traces to understand *why* it happened\n- [ ] We use common identifiers, such as service names and trace IDs, to correlate telemetry\n- [ ] Telemetry covers both applications and the supporting infrastructure\n\n## 3. OpenTelemetry Standardization\n\n- [ ] Applications are instrumented using OpenTelemetry SDKs\n- [ ] OpenTelemetry collectors are deployed\n- [ ] We use consistent semantic conventions and attribute names\n- [ ] Telemetry is exported using vendor-neutral OTLP\n- [ ] Application instrumentation is independent of the observability backend\n- [ ] Collectors are configured for batching, buffering, retries, and high availability\n\n## 4. Metrics Infrastructure\n\n- [ ] A time-series database, such as Prometheus, is deployed\n- [ ] Applications expose metrics through appropriate `/metrics` endpoints\n- [ ] Automatic service discovery is enabled for metrics targets\n- [ ] Appropriate data-retention policies are defined\n- [ ] Backups and scaling are configured for observability databases\n- [ ] We track metrics that reveal degradation before a complete failure occurs\n\n## 5. Telemetry Ingestion\n\n- [ ] We use a pull model where appropriate for metrics\n- [ ] We use a push model for distributed traces\n- [ ] We use an appropriate hybrid approach for logs\n- [ ] We have verified that telemetry can cross the required network boundaries\n- [ ] Telemetry ingestion does not create excessive load on application workloads\n\n## 6. Platform and Developer Responsibilities\n\n- [ ] The platform team is responsible for shared observability infrastructure\n- [ ] Development teams are responsible for instrumenting their applications\n- [ ] We provide reusable APIs, SDK configurations, and starter kits\n- [ ] We provide self-service observability capabilities through the platform\n- [ ] We have established clear observability contracts and non-functional requirements\n\n## 7. Build vs. Buy\n\n- [ ] We have assessed the organization's maturity, service count, budget, and staffing\n- [ ] We evaluate commercial SaaS for small or early-stage environments\n- [ ] We consider hybrid open-source/commercial approaches as the organization grows\n- [ ] We evaluate self-hosted solutions where scale, customization, or economics justify them\n- [ ] We account for compliance, data-residency, and audit requirements\n- [ ] We revisit the build-versus-buy decision as organizational maturity changes\n\n## 8. Observability Personas\n\n- [ ] We have identified the primary consumers of observability data\n- [ ] We provide service-health information for external customers\n- [ ] We provide business-level KPIs for executives\n- [ ] We provide detailed debugging views for developers\n- [ ] We provide environment and release-validation views for QA\n- [ ] We provide incident-diagnostic capabilities for DevOps and SRE teams\n- [ ] We provide forensic and authentication-related information for security teams\n- [ ] We provide immutable audit information for compliance and governance teams\n\n## 9. Dashboards\n\n- [ ] Preconfigured dashboards exist for common personas\n- [ ] We use a consistent visualization layer, such as Grafana\n- [ ] Dashboards connect to multiple telemetry backends where required\n- [ ] Dashboard definitions are stored in version control\n- [ ] We provide reusable dashboard templates with variables\n- [ ] Dashboards display deployment, incident, and configuration-change markers\n- [ ] Dashboard editing is restricted to appropriate owners\n- [ ] View-only access is provided where modification is unnecessary\n- [ ] We review and optimize slow dashboard queries\n\n## 10. Security Observability\n\n- [ ] Policy violations are exposed as observability metrics\n- [ ] We track RBAC violations and network-policy blocks\n- [ ] We track container vulnerabilities by severity\n- [ ] Sanitized aggregate security metrics are surfaced broadly\n- [ ] Sensitive security details are restricted to authorized users\n- [ ] We define measurable security SLOs where appropriate\n- [ ] Security events connect to distributed traces for investigation\n\n## 11. CI/CD Integration\n\n- [ ] Observability validation is part of CI/CD\n- [ ] Pipelines fail when required metrics endpoints are missing\n- [ ] Pipelines fail when required structured logs are not emitted\n- [ ] Pipelines fail when required trace spans are absent\n- [ ] Telemetry is verified in staging before promotion to production\n- [ ] Deployment metadata is published as telemetry\n- [ ] Deployments are correlated automatically with subsequent telemetry\n- [ ] CI/CD pipeline performance is itself observable\n\n## 12. Pipeline Observability\n\n- [ ] We measure build duration\n- [ ] We measure test execution time\n- [ ] We track deployment frequency\n- [ ] We measure mean time to build\n- [ ] We track test flakiness\n- [ ] We identify and optimize CI/CD bottlenecks\n\n## 13. Alerting\n\n- [ ] We alert primarily on user-impacting symptoms rather than internal causes\n- [ ] Every alert clearly answers: *What action should I take?*\n- [ ] Alerts include severity and runbook information\n- [ ] We use SLO-based alerting where appropriate\n- [ ] Fast-burn alerts exist for severe outages\n- [ ] Slow-burn alerts exist for gradual degradation\n- [ ] Related alerts are grouped to reduce noise\n- [ ] Alerts are routed according to business impact\n- [ ] Alerts are silenced during known maintenance windows\n- [ ] We consider rate-of-change alerts instead of relying only on absolute thresholds\n- [ ] We review and prune alerts regularly\n- [ ] We remove or redesign alerts that repeatedly fire without producing action\n\n## 14. SLIs, SLOs, and Error Budgets\n\n- [ ] SLIs reflect actual user experience\n- [ ] Measurable SLO targets are defined for important services\n- [ ] Error budgets are established\n- [ ] SLO status is published on observability dashboards\n- [ ] Real-time error-budget consumption is displayed\n- [ ] Error-budget health guides deployment velocity\n- [ ] SLOs are defined for internal platform services as well as customer-facing applications\n\n## 15. SLOs as Code\n\n- [ ] SLO definitions are stored in Git alongside application code\n- [ ] SLO changes go through the normal code-review process\n- [ ] SLO definitions are rollback-capable\n- [ ] SLO definitions are deployed automatically through GitOps\n- [ ] Recording rules, dashboards, and alert configuration are synchronized\n- [ ] Deployments are validated against SLOs before production promotion\n- [ ] We provide reusable SLO templates or CRDs for development teams\n- [ ] SLO changes are tracked in Git for audit purposes\n- [ ] SLO definitions are consistent across environments, while allowing appropriate threshold differences\n\n## 16. Deployment Lifecycle\n\nThe loop the whole capability exists to close — verify every step runs end to end:\n\n- [ ] Deploy the application\n- [ ] Generate deployment metadata\n- [ ] Generate telemetry\n- [ ] Correlate deployment events with metrics, logs, and traces\n- [ ] Detect SLO violations\n- [ ] Generate an actionable alert\n- [ ] Notify the responsible team\n- [ ] Trigger rollback or remediation when appropriate\n\n## Final Readiness Check\n\n- [ ] Metrics, logs, and traces are available and correlated\n- [ ] OpenTelemetry instrumentation is standardized\n- [ ] Telemetry collection is automatic\n- [ ] Dashboards support the required personas\n- [ ] Security telemetry is incorporated\n- [ ] CI/CD prevents uninstrumented code from reaching production\n- [ ] Alerts are actionable and low-noise\n- [ ] SLIs, SLOs, and error budgets are defined\n- [ ] SLOs and dashboards are version controlled\n- [ ] Deployment events can be correlated with incidents\n- [ ] The platform can demonstrate measurable improvements in reliability and MTTR\n\nThe test running through the chapter: **can a deployment that degrades user experience find its own way — through telemetry, correlation, and an actionable alert — to the team that can fix it?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## The Loop, Not the Stack\n\n**Ben:** Blunt version first. Every team I know already has Prometheus and Grafana running somewhere. Why does observability need a reference-implementation record — isn't this a solved problem you install?\n\n**Ana:** That's exactly the confusion the record exists to kill. Installing the stack is not the capability. The bar in this record is a closed loop: a deployment degrades user experience, telemetry catches it, an actionable alert reaches the team that can fix it, remediation follows — and MTTD and MTTR measurably drop. Plenty of organizations have Prometheus and Grafana and can't run that loop once. They have the retrofit: observability wired in after the first bad incident, forever partial.\n\n**Ben:** So what makes it a *platform* capability rather than something each team does well on its own?\n\n**Ana:** Correlation. Any team can install an agent; no team alone can make its telemetry line up with everyone else's. The value lives in the joins — the trace ID connecting a customer-facing error to a pod eviction three layers down. Joins need shared conventions, shared identifiers, a shared pipeline. That's platform work by definition. The record's three-signal framing makes it concrete: metrics tell you *what* happened, logs tell you *how*, traces tell you *why* — and common identifiers stitch them into one investigation. Three excellent silos that can't be joined answer three local questions and fail the one that matters.\n\n**Ben:** Which is?\n\n**Ana:** What is happening to users right now, and why. That's the single-pane-of-glass strategy — one deliberate answer to that question, instead of a graveyard of disconnected dashboards each once useful to someone.\n\n## Vendor Neutrality and the Split\n\n**Ben:** The record leans hard on OpenTelemetry. Isn't standardizing on one instrumentation framework just a different vendor lock-in?\n\n**Ana:** It's the opposite move, and it's the chapter's quiet masterstroke: separate what must be stable from what may churn. Instrumentation, semantic conventions, and the OTLP wire format are forever; the backend behind the collector is a procurement decision. Backends *will* churn — pricing changes, scale changes, the build-versus-buy answer changes as you mature. The record treats that as a standing decision: assess maturity, service count, budget, compliance, data residency — and revisit. You can only revisit cheaply if your services aren't tattooed with a vendor's SDK. The vendor tattoo is on the anti-pattern list because the migration bill gets priced in engineer-years.\n\n**Ben:** Fine, but here's the practitioner objection to the responsibility split. If the platform team owns observability, teams will throw instrumentation over the wall. If teams own it, you get fifteen stacks. Pick your failure.\n\n**Ana:** The record refuses both. Platform owns the pipeline — collectors built for batching, buffering, retries, high availability; storage with retention, backups, and a scaling plan; dashboards as a service. Development teams own instrumenting their own code. What connects them is an explicit observability contract — non-functional requirements, stated — plus starter kits, reusable SDK configurations, and self-service, so honoring the contract is cheaper than evading it.\n\n**Ben:** A contract nobody enforces is a wish.\n\n**Ana:** Which is why enforcement lives in CI/CD, not in a policy document. Pipelines fail when required metrics endpoints are missing, when structured logs aren't emitted, when trace spans are absent. Telemetry gets verified in staging before promotion. Uninstrumented code does not reach production — the record calls the alternative the optional endpoint: the service whose missing `/metrics` you discover during the incident. A standard that isn't machine-checked is a suggestion, and suggestions lose to deadlines.\n\n**Ben:** And the collectors themselves, the metrics database — who watches the watcher?\n\n**Ana:** The record names that anti-pattern too — the unwatched watcher. The observability stack is operated like production: service discovery, retention policies, backups, scaling, and metrics that reveal degradation *before* complete failure. Plus deliberate transport choices — pull for metrics, push for traces, hybrid for logs — and ingestion that doesn't load down the workloads it's watching.\n\n## Personas, Alerts, and the Pager\n\n**Ben:** The persona list feels expansive — executives, QA, security, compliance, external customers. Isn't observability for the people on call?\n\n**Ana:** That's the narrowest reading, and the chapter rejects it. Eight consumers, each with a named view: customers get service health, executives get business KPIs, developers get debugging depth, QA gets release validation, DevOps and SRE get incident diagnostics, security gets forensics, compliance gets immutable audit trails. And the delivery mechanism matters: dashboards are code — templated, version-controlled, annotated with deployment and incident markers, edit-restricted. Security observability rides the same pipeline: policy violations, RBAC denials, vulnerabilities as metrics — sanitized aggregates broadly, sensitive detail restricted, security events joinable to traces.\n\n**Ben:** Let's do alerting, because this is where every observability effort I've seen dies. More telemetry means more alerts means everyone ignores the pager.\n\n**Ana:** The record's test is one sentence: every alert must answer *what action should I take?* If there's no action, it's a dashboard, not an alert. Alert on user-impacting symptoms, not internal causes; attach severity and a runbook; use fast-burn alerts for outages and slow-burn for gradual degradation; group related alerts, route by business impact, silence during maintenance. And prune — alerts that repeatedly fire without producing action get removed or redesigned, because each one trains responders to ignore the pager, and that training is expensive to undo. The pager firehose isn't an alerting problem, it's a discipline problem.\n\n## SLOs as Code, and What This Isn't\n\n**Ben:** SLOs, then. Most SLOs I've met live in a slide deck from two reorgs ago.\n\n**Ana:** The wiki SLO — an opinion wearing an SLO's clothes. The record's version is a control system: SLIs that reflect actual user experience, SLOs with error budgets displayed in real time, and error-budget health allowed to govern deployment velocity — a governor no release-review meeting can match. And the definitions live in Git: code-reviewed, rollback-capable, deployed through GitOps, synchronized with recording rules, dashboards, and alerts, consistent across environments with thresholds allowed to differ. Two details I'd flag for any executive: SLOs are defined for internal platform services too — the platform holds itself to the bar it sets for tenants — and deployments are validated against SLOs before promotion.\n\n**Ben:** And the pipeline measuring itself — build times, flakiness — isn't that scope creep into the CI/CD record?\n\n**Ana:** It's the seam, deliberately kept thin. This record takes only what closes the loop: deployment metadata published as telemetry, deployments auto-correlated with what follows, and pipeline performance — build duration, test time, deployment frequency, flakiness — measured so the platform team finds its own bottlenecks instead of hearing about them. The full CI/CD service is [CI/CD as a Platform Service](cicd-as-a-platform-service.html).\n\n**Ben:** Close it out. What is this record explicitly not doing?\n\n**Ana:** It's the telemetry build, not the operating discipline — incidents, on-call, and support live in [Operating Platforms](operating-platforms.html), running on what this record builds. Hardening the platform is [End-to-End Platform Security](platform-security.html); here security is only a telemetry consumer. Cost visibility and optimization are [Cost, Performance, and Scalability](cost-performance-scalability.html). And the stack itself — OpenTelemetry, Prometheus, Grafana, Flux — is the handbook's worked example, not a mandate: swap any tool, keep every property.\n\n**Ben:** So the acceptance test, in one line?\n\n**Ana:** Break something quietly and start a stopwatch. If the deployment that hurt users finds its own way — through telemetry, correlation, and one actionable page — to the team that can fix it, the capability exists. If a human has to notice first, you own a stack, not observability.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why observability is done when the loop closes, not when the stack is installed — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: an engineer proudly presents a wall of mismatched dashboards during an incident while an executive asks which one shows the users.](assets/images/observability-implementation/comic-01-the-wall-of-dashboards.jpeg)\n**Panel 1:** *The hook: a dozen excellent dashboards answer a dozen local questions — and fail the one that matters: what is happening to users right now?*\n\n![Comic panel: three disconnected towers labeled metrics, logs, and traces with broken bridges between them while an engineer runs between carrying papers.](assets/images/observability-implementation/comic-02-three-silos.jpeg)\n**Panel 2:** *The problem: metrics say what, logs say how, traces say why — and without common identifiers, the three answers can never be joined into one investigation.*\n\n![Comic panel: an engineer brands a vendor logo onto a row of services while an executive asks what happens when the price changes.](assets/images/observability-implementation/comic-03-the-vendor-tattoo.jpeg)\n**Panel 3:** *The wrong way: the vendor tattoo — instrumenting directly against a commercial SDK couples every service to a backend decision that pricing will eventually reopen.*\n\n![Comic panel: an executive draws a circular loop on a whiteboard connecting deploy, telemetry, SLO, alert, and fix while an engineer takes notes.](assets/images/observability-implementation/comic-04-the-closed-loop.jpeg)\n**Panel 4:** *The principle: observability is a closed loop — deploy, telemetry, SLO violation, actionable alert, remediation — not a shopping list of tools.*\n\n![Comic panel: a platform engineer beside shared pipeline plumbing hands a starter kit to developers who attach gauges to their own services.](assets/images/observability-implementation/comic-05-pipes-and-instruments.jpeg)\n**Panel 5:** *How it plays out: the platform owns the shared pipeline and the contract; teams instrument their own code — with starter kits making the paved path the easy path.*\n\n![Comic panel: a CI/CD conveyor gate passes an instrumented crate and blocks a bare one while the platform engineer says no telemetry, no ship.](assets/images/observability-implementation/comic-06-the-pipeline-gate.jpeg)\n**Panel 6:** *How it plays out: CI/CD is the gate — builds fail on missing metrics endpoints, structured logs, or trace spans, so uninstrumented code never reaches production.*\n\n![Comic panel: a cobwebbed wiki SLO contrasted with SLO definitions in Git driving a lever that governs deployment speed via an error budget gauge.](assets/images/observability-implementation/comic-07-slos-in-git.jpeg)\n**Panel 7:** *How it plays out: an SLO in a wiki is an opinion; an SLO in Git — reviewed, versioned, deployed through GitOps — is a control system with the error budget as governor.*\n\n![Comic panel: a responder in earmuffs is flooded by pager alerts while one actionable alert goes unnoticed and an executive holds pruning shears.](assets/images/observability-implementation/comic-08-the-pager-firehose.jpeg)\n**Panel 8:** *What it costs: every alert that fires without producing action trains responders to ignore the pager — so alerts answer 'what action should I take', or they get pruned.*\n\n![Comic panel: an engineer shows a dashboard with MTTD and MTTR trending down while the executive checks her notebook approvingly.](assets/images/observability-implementation/comic-09-the-receipts.jpeg)\n**Panel 9:** *The closer: the build is done when the loop closes and the numbers prove it — MTTD and MTTR trending down, on a dashboard whose definition lives in Git.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

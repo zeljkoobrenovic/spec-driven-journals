@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Databases</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="endpoints.html" title="Endpoints">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="cloud-infrastructure.html" title="Cloud Infrastructure">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Hardening the Estate</p>
+        <h1>Databases</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  8 min · <a class="spec-link" href="databases.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/databases/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/databases/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="endpoints.html" title="Endpoints">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="cloud-infrastructure.html" title="Cloud Infrastructure">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-DATABASES", "status": "draft:gray", "title": "Databases", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "databases", "timetoread": "8 min", "excerpt": "The database is where a security failure becomes the headline, so my organization protects data where it lives. Every critical database is known, classified, and owned; access follows least privilege with privileged accounts logged, reviewed, and never shared; sensitive data is encrypted at rest, in transit, and in backups, with keys stored separately from the data they protect; secrets are never hardcoded and passwords never stored in plaintext; injection, credential attacks, and insiders are all planned for; backups restore on a tested clock; and cloud databases meet exactly the same bar as on-premises ones. The test I hold every critical database to, straight from the chapter: what data do we have and where is it, who can access it and why, how is it protected, how would we detect misuse, and can we recover quickly — answered clearly, or we have a governance gap.", "tags": "databases, data classification, least privilege, encryption, secrets management, SQL injection, insider threats, backups", "icon": "assets/icons/databases.png", "logo": "assets/images/databases/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["databases", "data classification", "least privilege", "encryption", "secrets management", "SQL injection", "insider threats", "backups"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: The database is where a security failure becomes the headline, so my organization protects data where it lives. **Every critical database is known, classified, and owned**; **access follows least privilege**, with administrative privileges tightly restricted, privileged activity logged and reviewed, and no shared administrator accounts; **sensitive data is encrypted at rest, in transit, and in backups, with keys stored separately** from the data they protect; **secrets are never hardcoded and passwords never stored in plaintext**; **injection, credential attacks, and insiders are all planned for**, not just outsiders; **backups are encrypted, attacker-resistant, and restore on a tested clock**; and **cloud databases meet exactly the same bar as on-premises ones**. The test I hold every critical database to: **what data do we have and where is it, who can access it and why, how is it protected, how would we detect misuse or compromise, and can we recover quickly if something goes wrong** — if those five questions cannot be answered clearly, my organization has a database-security governance gap.\n\n## Statement\n\nThis is the bar every database in my organization is held to — relational or NoSQL, self-managed or cloud-managed, and the serverless ones nobody remembers deploying.\n\n![Diagram of a database surrounded by five audit tiles: what data and where, who accesses and why, how protected, how misuse is detected, and how it recovers.](assets/images/databases/five-questions-governance-test.jpeg)\n**Figure 1:** *The five-question test: if any critical database cannot answer these clearly, the gap is governance, whatever the tooling.*\n\n**I know my databases — and my data.**\n\n- **Architecture is mapped.** Where critical and sensitive data is stored, which technologies are in use — relational, NoSQL, cloud-managed, serverless, self-managed — which databases are business-critical, and **who owns and operates each one**. MySQL, PostgreSQL, SQL Server, and MongoDB are the worked examples; the commitment covers whatever actually runs.\n- **The cloud difference is understood.** The security implications of on-premises versus cloud-hosted databases, and the shared responsibility model for the cloud-managed ones.\n- **Data is classified, and risk drives protection.** Databases holding customer, personal, financial, credential, intellectual-property, and operationally critical data are identified, and the highest-risk databases receive the strongest protection.\n\n**Access is least privilege; privileged access is managed, not trusted.**\n\n- Users and applications receive only the permissions they require; administrative privileges are tightly restricted; former employees and unnecessary accounts are removed promptly; privileged access requires strong authentication; service accounts and application credentials are securely managed; shared administrator accounts are avoided.\n- **Privileged access is known, logged, monitored, and periodically reviewed** — with a Privileged Access Management solution considered for critical systems, and application accounts verified to hold no unnecessary administrator or system-level privileges.\n\n**Encryption is end to end, and keys live apart from data.**\n\n- Sensitive data is encrypted at rest and in transit over TLS; backups are encrypted; Transparent Data Encryption is understood where it applies. **Encryption keys are stored separately from the encrypted data**, rotated, access-controlled, and owned — through a real key-management or secrets-management solution.\n\n**Secrets are managed; passwords are hashed.**\n\n- Passwords are never stored in plaintext — they are protected with appropriate password-hashing algorithms and salts, and the difference between hashing and encryption is understood by the people making the choice.\n- Database passwords, API keys, and connection strings are never hardcoded in application source; a centralized secrets manager holds them, and rotation happens without major operational disruption.\n\n**Every attack mode has a plan — including the ones with valid credentials.**\n\n- **Injection**: applications use parameterized queries, validate input, run on least-privileged database accounts — because SQL injection becomes dramatically more dangerous when the application has excessive privileges — and injection is covered by secure coding standards and application security testing.\n- **Credential attacks**: brute force, credential stuffing, password reuse, dictionary attacks, and stolen credentials are countered with strong policies, MFA for administrative access, lockout and rate limiting, monitoring of abnormal authentication failures, and default credentials removed.\n- **Insiders**: malicious and accidental insider risk are both recognized; access follows job responsibility, privileged-user activity is monitored, separation of duties holds for sensitive administrative operations, sensitive data cannot be copied or exported without controls, and access is reviewed on every role change.\n- **Exfiltration**: databases are not unnecessarily exposed to the public internet; communications are protected from interception; backups, exports, snapshots, and replicas are secured; production data is restricted in development and test; unusual bulk downloads are monitored; and cloud misconfiguration is understood as a leading exposure path.\n\n**Configuration is hardened and vulnerabilities are patched on a clock.**\n\n- Databases follow documented hardening standards — least functionality, unnecessary services disabled, insecure defaults removed, network connectivity restricted to required systems, firewalls and segmentation applied — with **CIS Benchmarks and DISA STIGs** as the recognized references and regular configuration reviews.\n- Platforms and versions are known, unsupported versions are identified and replaced, patch timelines for critical vulnerabilities are defined, exceptions carry compensating controls, and critical vulnerabilities are tracked through remediation.\n\n**Activity is logged, alerts are owned, backups restore.**\n\n- Important activity is logged: authentication successes and failures, privileged administrative actions, permission and configuration changes, unusual queries and large transfers — forwarded to centralized monitoring such as a SIEM or XDR platform, with defined alerts, sufficient retention, and **a named person responsible for reviewing and responding**.\n- Critical databases are backed up regularly with encrypted, access-restricted backups and **copies an attacker cannot easily modify or delete**; RTO and RPO are defined; restoration is tested regularly — recovery procedures are proven before an incident, not during one. Redundancy, failover, and dependency mapping put databases inside disaster-recovery and business-continuity planning.\n\n**Cloud databases meet the same bar; governance makes it durable.**\n\n- Cloud-hosted databases are inventoried by provider, provider-versus-organization responsibilities are understood, IAM permissions reviewed regularly, public endpoints avoided, network controls applied, encryption, logging, backups, and monitoring enabled, and configurations continuously reviewed for misconfiguration.\n- **Every critical database has an owner**; documented standards define minimum requirements for access control, authentication, encryption, logging, backups, network security, patching, and vulnerability management; reviews are periodic; exceptions are documented and approved; unresolved risks are tracked at the appropriate management level.\n- Database breaches are in the incident-response plan; the organization can determine what data was accessed, who accessed it, when, how much was taken, and which credentials were compromised; and acquisitions, legacy systems, and third parties are held to the same scrutiny — inherited systems are never assumed to meet the standard.\n\n## How to Read This\n\nThis record sits in the **Hardening the Estate** section of the journal — after [Endpoints](endpoints.html), which covers the devices where attacks land, and before [Cloud Infrastructure](cloud-infrastructure.html), which covers the environment many of these databases now run in. It is grounded in the Databases chapter of the *Defensive Security Handbook*. Where the chapter names concrete technologies — MySQL, PostgreSQL, SQL Server, MongoDB — the checklist keeps them verbatim and this article states the commitments at the capability level, with the named platforms as the worked example. The full working checklist, including the chapter's seventeen closing questions and the five-question priority reminder, lives in the **Checklist** tab; the management summary is in the **TL;DR** tab and the conversation in the **Conversation** tab.\n\n## Rationale\n\n**The database is where the breach becomes the headline.** Endpoints get compromised and networks get crossed, but the incident report that reaches the board and the regulator is written about the data — how many records, whose, and how sensitive. That is why this record starts with knowledge rather than controls: where the critical data is, which databases hold it, and who owns each one. An organization that cannot name its critical databases is not defending them; it is defending a sample of them and hoping the breach lands in the sample.\n\n**Least privilege matters most where the data lives — because injection inherits the application's privileges.** SQL injection has been on every top-risk list for two decades, and the chapter's sharpest observation is why it stays dangerous: an injection attack is exactly as powerful as the database account the application runs on. Parameterized queries and input validation are the front door; the least-privileged application account is the blast-radius control when the front door fails. The same layering runs through the whole access model — strong authentication for privileged access, no shared admin accounts, prompt removal of the departed — because every unnecessary privilege is a standing offer to whoever compromises the credential that carries it.\n\n![Two-panel diagram showing the same injection attack compromising an entire database through an admin application account versus reaching only one table through a least-privileged account.](assets/images/databases/injection-inherits-privileges.jpeg)\n**Figure 2:** *Injection inherits the application's privileges: parameterized queries are the front door, and the least-privileged account is the blast-radius control when the door fails.*\n\n**Encryption is only as good as key separation.** Encrypted data with the keys stored alongside it is a padlock with the key taped to it — the attacker who reaches the data reaches the keys in the same breach. That is why the record insists on the full key discipline: stored separately, rotated, access-controlled, and *owned*, through a real key-management solution. The same reasoning covers the quieter copies: backups, exports, snapshots, and replicas hold exactly the same data as production and historically get a fraction of the protection. An attacker does not care which copy leaks.\n\n![Diagram contrasting encryption keys stored beside the database, lost in the same breach, with keys held in a separate vault — and showing backups, exports, snapshots, and replicas carrying the same padlock.](assets/images/databases/key-separation-and-copies.jpeg)\n**Figure 3:** *Keys live apart from data, or the breach takes both — and every quiet copy of the data gets the protection production gets.*\n\n**The insider is a user with legitimate credentials — so the controls must assume legitimacy.** Perimeter thinking fails completely against the employee, and most insider damage is accidental rather than malicious, which changes the design: job-based access limits what anyone *can* touch, separation of duties keeps single actors away from sensitive operations, export controls and bulk-download monitoring catch the unusual regardless of intent, and role-change reviews close the loophole where people accumulate access as they move through the organization. None of this presumes bad faith; all of it limits the cost of both kinds.\n\n**Backups are a security control, and untested backups are a hope.** Ransomware converted backups from an operational nicety into the last line of defense — which is exactly why attackers now target them first. Hence the record's specific demand: copies that cannot easily be modified or deleted by an attacker, encrypted and access-restricted, with defined RTO and RPO and restoration *tested regularly*. The chapter's question is the right audit probe: when did we last successfully restore a critical database from backup? If the answer is a date nobody can produce, the backup strategy is a belief.\n\n**Cloud databases inherit convenience, not security.** A managed database removes the patching of the host, not the responsibility for who can access the data, whether the endpoint is public, and whether the configuration has drifted. Misreading the shared responsibility model is the leading cause of the exposed-bucket-and-database genre of breach — which is why the record requires the same minimum bar for cloud as for on-premises, plus the cloud-specific disciplines: IAM review, no unnecessary public endpoints, and continuous misconfiguration review. The chapter's audit question is blunt and correct: do our cloud databases follow the same security requirements as our on-premises databases?\n\n**Governance is what makes any of this durable.** Controls decay without owners, standards, and consequences. Every critical database has a named owner; documented standards set minimum requirements across access, authentication, encryption, logging, backups, network security, patching, and vulnerability management; exceptions are documented and approved rather than silently accumulated; and unresolved risks are tracked where management can see them. The chapter distills the whole record into five questions — what data do we have and where, who can access it and why, how is it protected, how would we detect misuse, can we recover quickly — and I adopt its verdict verbatim: if those cannot be answered clearly for every critical database, the organization has a governance gap, whatever its tooling.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Every critical database is known, classified, and has a named owner. | All databases get identical protection — the highest-risk databases get the strongest controls. |\n| Access is least privilege; application accounts hold no admin or system-level rights. | Convenience justifies broad grants — an injection attack inherits every privilege the app account has. |\n| Sensitive data is encrypted at rest, in transit, and in backups, with keys stored separately. | Encryption at rest is sufficient by itself — keys stored with the data protect nothing. |\n| Secrets live in a centralized manager and rotate without major disruption. | Connection strings in source code are acceptable if the repo is private. |\n| Insider risk is designed for: job-based access, separation of duties, export controls, role-change reviews. | Employees are suspects — most insider damage is accidental, and the same controls limit both kinds. |\n| Backups are encrypted, attacker-resistant, and restoration is tested regularly. | A backup job that runs is a recovery capability — an untested restore is a hope. |\n| Cloud databases meet the same requirements as on-premises ones. | The provider secures the data — managed means the host is theirs; the data, access, and configuration are mine. |\n| Exceptions are documented, approved, and time-bound; risks are tracked at management level. | Exceptions are permanent — an undocumented exception is just an unmanaged risk. |\n\nConcretely: every critical database in my organization can answer the five questions — what data, who accesses it and why, how it is protected, how misuse would be detected, how quickly it recovers — and the first audit question is *\"when did we last successfully restore this database from backup?\"*\n\n## Anti-Patterns\n\n- **The database nobody owns.** Business-critical data on a system with no named owner — every control decays, and the decay is discovered during the incident.\n- **The app account with DBA rights.** An application connecting as an administrator \"because it was easier\" — every injection flaw is now a full-database compromise.\n- **Keys under the doormat.** Encryption keys stored on the same system as the encrypted data — the breach that reaches one reaches both.\n- **The plaintext password table.** Credentials stored unhashed, or \"encrypted\" reversibly — one dump exposes every user, here and everywhere passwords were reused.\n- **Production data in the test environment.** Real customer records copied to systems with a fraction of production's controls — the same data, minus the protection.\n- **The temporarily public endpoint.** A database exposed to the internet for a migration and never closed — misconfiguration, not malware, is how it leaks.\n- **The backup the attacker deleted.** Backups reachable with the same credentials as production — ransomware encrypts both, and the last line of defense goes first.\n- **Inherited and exempt.** The acquired company's legacy database, assumed compliant and never assessed — the standard applies to what you buy, not just what you build.\n\n## Related Records\n\n- [Cloud Infrastructure](cloud-infrastructure.html) — the environment many of these databases run in; the shared responsibility model in full.\n- [Authentication](authentication.html) — the organization-wide identity model behind this record's MFA, lockout, and credential discipline.\n- [Secure Software Development](secure-software-development.html) — the secure coding practice that prevents the injection attacks this record limits.\n- [Disaster Recovery](disaster-recovery.html) — the organization-wide RTO/RPO and recovery discipline this record's backup commitments plug into.\n- [Logging and Monitoring](logging-and-monitoring.html) — the SIEM/XDR pipeline database logs are forwarded to.\n- [Incident Response](incident-response.html) — the plan database breaches must be part of, and the exercises that rehearse them.\n- [Vulnerability Management](vulnerability-management.html) — the scanning-and-remediation loop that database patching answers to.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every database in my organization holding sensitive or business-critical data — self-managed, cloud-managed, and serverless — and serves as the audit bar for the existing estate and for anything acquired. I revisit it if the data estate shifts materially (a new platform class at scale, a major migration), if an audit finds critical databases failing the five-questions test (the governance claim failing in practice), or if a restore test fails — a failed restore is not a checklist miss, it is the record's central promise broken.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition — Lee Brotherston, Amanda Berlin, and William F. Reyor III (O'Reilly) — the Databases chapter, whose checklist (including the questions-you-should-be-able-to-answer set and the priority reminder) this record distills.\n- CIS Benchmarks — named by the chapter as a recognized database-hardening standard.\n- DISA STIGs — named by the chapter as a recognized database-hardening standard.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "The database is where a security failure becomes the headline, so my organization **protects data where it lives**. Every critical database is known, classified, and owned; access is least privilege with privileged accounts logged and reviewed; encryption covers rest, transit, and backups with keys stored separately; injection, credential attacks, and insiders are all planned for; backups restore on a tested clock; and cloud databases meet the same bar as on-premises ones. The test, straight from the chapter: five questions — what data, who accesses it and why, how it is protected, how misuse would be detected, how fast we recover — answered clearly for every critical database, or we have a governance gap.\n\n**What changes**\n\n* **The data estate gets mapped and classified.** Where critical and sensitive data lives, which technologies run it — relational, NoSQL, cloud-managed, serverless — which databases are business-critical, and who owns each one. The highest-risk databases get the strongest protection.\n* **Access tightens to least privilege.** Application accounts lose admin rights — an injection attack inherits every privilege the app account holds — administrative access requires strong authentication, shared admin accounts go away, departures are removed promptly, and privileged activity is logged, monitored, and periodically reviewed.\n* **Encryption and secrets become disciplined.** At rest, in transit, and in backups, with keys stored separately from data, rotated, and owned; passwords hashed and salted, never plaintext; credentials never hardcoded — a centralized secrets manager with rotation that does not break operations.\n* **Every attack mode gets a plan.** Parameterized queries and tested code against injection; MFA, lockout, and failure monitoring against credential attacks; job-based access, separation of duties, export controls, and role-change reviews against insiders — malicious and accidental alike; no public endpoints, secured copies, and bulk-download monitoring against exfiltration.\n* **Operations get a clock and an owner.** Hardening against CIS Benchmarks and DISA STIGs, defined patch timelines with compensating controls, logs forwarded to the SIEM with a named alert owner, and backups that are encrypted, attacker-resistant, and restore-tested with defined RTO and RPO.\n* **Governance makes it durable.** Documented standards with minimum requirements, periodic reviews, documented and approved exceptions, management-level risk tracking, database breaches inside the incident-response plan, and acquisitions and vendors held to the same scrutiny.\n\n**What it costs**\n\n* Least privilege and secrets migration mean reworking applications that connected as admin with hardcoded strings — deliberate, paid-down debt.\n* Restore testing, privileged-access reviews, and configuration reviews are recurring work, not one-time projects.\n* Governance overhead — owners, standards, exception approvals — is the price of controls that survive staff turnover.\n\n**What we are not doing**\n\n* Not mandating platforms — MySQL, PostgreSQL, SQL Server, and MongoDB are the worked examples; the commitments are capability-level.\n* Not building the organization-wide identity model here — that is [Authentication](authentication.html).\n* Not covering secure coding practice in full — that is [Secure Software Development](secure-software-development.html).\n* Not designing the cloud estate — that is [Cloud Infrastructure](cloud-infrastructure.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full working checklist, the seventeen closing questions, and the five-question priority reminder. Grounded in the Databases chapter of the* Defensive Security Handbook *(Brotherston, Berlin, and Reyor).*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "7 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — database security from architecture to governance, ending with the questions every organization should be able to answer. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Database Architecture\n\n- [ ] Understand where the organization's critical and sensitive data is stored\n- [ ] Know which database technologies are in use:\n  - [ ] Relational databases such as MySQL, PostgreSQL, and SQL Server\n  - [ ] NoSQL databases such as MongoDB\n  - [ ] Cloud-managed databases\n  - [ ] Serverless databases\n  - [ ] Self-managed/on-premises databases\n- [ ] Understand which databases are business-critical\n- [ ] Know who owns and operates each database\n- [ ] Understand the security implications of on-premises versus cloud-hosted databases\n- [ ] Understand the **shared responsibility model** for cloud databases\n\n## 2. Data Classification\n\n- [ ] Know what sensitive information the organization stores\n- [ ] Ensure data is classified according to sensitivity\n- [ ] Identify databases containing:\n  - [ ] Customer information\n  - [ ] Personal information\n  - [ ] Financial information\n  - [ ] Authentication credentials\n  - [ ] Intellectual property\n  - [ ] Operationally critical information\n- [ ] Ensure the highest-risk databases receive the strongest protection\n\n## 3. Access Control\n\n- [ ] Understand the difference between **authentication** and **authorization**\n- [ ] Ensure database access follows the **principle of least privilege**\n- [ ] Confirm users and applications receive only the permissions they require\n- [ ] Ensure administrative privileges are tightly restricted\n- [ ] Understand how privileged database accounts are managed\n- [ ] Ensure former employees and unnecessary accounts are removed promptly\n- [ ] Require strong authentication for privileged access\n- [ ] Ensure service accounts and application credentials are securely managed\n- [ ] Avoid shared administrator accounts wherever possible\n\n## 4. Privileged Access Management\n\n- [ ] Know who has administrative or elevated database privileges\n- [ ] Ensure privileged access is logged and monitored\n- [ ] Consider a **Privileged Access Management (PAM)** solution for critical systems\n- [ ] Require periodic review of privileged accounts\n- [ ] Verify that application accounts do not have unnecessary administrator or system-level privileges\n\n## 5. Encryption\n\n- [ ] Ensure sensitive database information is encrypted **at rest**\n- [ ] Ensure sensitive database traffic is encrypted **in transit** using TLS\n- [ ] Understand technologies such as **Transparent Data Encryption (TDE)**\n- [ ] Ensure database backups are encrypted\n- [ ] Ensure encryption keys are stored separately from the encrypted data\n- [ ] Ensure encryption keys are rotated and access to them is controlled\n- [ ] Understand who owns and manages encryption keys\n- [ ] Ensure a secure key-management or secrets-management solution is used\n\n## 6. Passwords and Secrets\n\n- [ ] Ensure passwords are never stored in plaintext\n- [ ] Understand the difference between **hashing** and **encryption**\n- [ ] Ensure passwords are protected using appropriate password-hashing algorithms\n- [ ] Ensure salts are used for password hashing\n- [ ] Ensure database passwords, API keys, connection strings, and secrets are not hard-coded in application source code\n- [ ] Use a centralized **secrets manager** where appropriate\n- [ ] Ensure secrets can be rotated without major operational disruption\n\n## 7. SQL Injection\n\n- [ ] Understand what **SQL injection** is and why it remains a major application/database risk\n- [ ] Ensure applications use parameterized queries or equivalent secure development techniques\n- [ ] Ensure user input is properly validated\n- [ ] Verify application database accounts follow least privilege\n- [ ] Understand that SQL injection becomes significantly more dangerous when the application has excessive database privileges\n- [ ] Ensure secure coding practices are included in development standards\n- [ ] Ensure SQL injection is covered by application security testing\n\n## 8. Unauthorized Access\n\n- [ ] Understand the risks from:\n  - [ ] Brute-force attacks\n  - [ ] Credential stuffing\n  - [ ] Password reuse\n  - [ ] Dictionary attacks\n  - [ ] Stolen credentials\n- [ ] Require strong password and authentication policies\n- [ ] Use MFA where appropriate, especially for administrative access\n- [ ] Implement account lockout or rate-limiting controls where appropriate\n- [ ] Monitor repeated or abnormal authentication failures\n- [ ] Ensure default credentials and unnecessary default accounts are removed\n\n## 9. Insider Threats\n\n- [ ] Recognize that legitimate users can also create database-security risks\n- [ ] Understand the difference between:\n  - [ ] Malicious insiders\n  - [ ] Accidental/inadvertent insider threats\n- [ ] Restrict access based on job responsibilities\n- [ ] Monitor privileged-user activity\n- [ ] Maintain separation of duties for sensitive administrative operations\n- [ ] Ensure sensitive information cannot be copied or exported without appropriate controls\n- [ ] Review access when employees change roles\n\n## 10. Data Leakage and Exfiltration\n\n- [ ] Understand how database information could leave the organization\n- [ ] Ensure databases are not unnecessarily exposed to the public internet\n- [ ] Protect database communications from interception\n- [ ] Secure backups, exports, snapshots, and replicas\n- [ ] Restrict the use of production data in development and testing environments\n- [ ] Monitor unusual bulk downloads or database queries\n- [ ] Implement controls to identify possible data exfiltration\n- [ ] Understand how cloud misconfigurations can expose databases\n\n## 11. Secure Configuration and Hardening\n\n- [ ] Ensure databases follow documented security-hardening standards\n- [ ] Apply the **principle of least functionality**\n- [ ] Disable unnecessary database services and features\n- [ ] Remove insecure default configurations\n- [ ] Restrict network connectivity to required systems only\n- [ ] Use firewalls and network segmentation\n- [ ] Consider recognized standards such as:\n  - [ ] CIS Benchmarks\n  - [ ] DISA STIGs\n- [ ] Require regular configuration reviews\n\n## 12. Vulnerability and Patch Management\n\n- [ ] Know which database platforms and versions are running\n- [ ] Ensure unsupported database versions are identified and replaced\n- [ ] Establish a process for database security updates\n- [ ] Define how quickly critical vulnerabilities must be patched\n- [ ] Understand exceptions where patches cannot immediately be deployed\n- [ ] Require compensating controls when patching is delayed\n- [ ] Track critical database vulnerabilities through remediation\n\n## 13. Logging, Monitoring, and Detection\n\n- [ ] Ensure important database activity is logged\n- [ ] Monitor successful and failed authentication attempts\n- [ ] Monitor privileged administrative actions\n- [ ] Monitor changes to permissions and security configurations\n- [ ] Monitor unusual database queries or unusually large data transfers\n- [ ] Forward relevant logs to centralized monitoring such as a SIEM/XDR platform\n- [ ] Define alerts for suspicious database behavior\n- [ ] Ensure logs are retained long enough to support investigations\n- [ ] Verify that someone is responsible for reviewing and responding to alerts\n\n## 14. Backup and Recovery\n\n- [ ] Ensure critical databases are backed up regularly\n- [ ] Ensure backups are encrypted\n- [ ] Restrict access to backup files and snapshots\n- [ ] Maintain copies that cannot easily be modified or deleted by an attacker\n- [ ] Define database Recovery Time Objectives (**RTO**)\n- [ ] Define Recovery Point Objectives (**RPO**)\n- [ ] Test database restoration regularly\n- [ ] Confirm recovery procedures work before an incident occurs\n\n## 15. Availability and Resilience\n\n- [ ] Understand which databases are essential to business operations\n- [ ] Ensure critical databases have appropriate redundancy\n- [ ] Understand database failover capabilities\n- [ ] Plan for hardware, software, network, and cloud-provider failures\n- [ ] Understand dependencies between databases and critical applications\n- [ ] Include databases in disaster-recovery and business-continuity planning\n\n## 16. Cloud Database Security\n\n- [ ] Know which databases are hosted in AWS, Azure, Google Cloud, or other providers\n- [ ] Understand which security responsibilities belong to the provider and which belong to the organization\n- [ ] Review cloud IAM permissions regularly\n- [ ] Avoid unnecessary public database endpoints\n- [ ] Restrict database access through network security controls\n- [ ] Enable encryption, logging, backups, and monitoring\n- [ ] Ensure cloud database configurations are continuously reviewed for misconfiguration\n\n## 17. Database Security Governance\n\n- [ ] Assign clear ownership for each critical database\n- [ ] Establish documented database-security standards\n- [ ] Define minimum requirements for:\n  - [ ] Access control\n  - [ ] Authentication\n  - [ ] Encryption\n  - [ ] Logging\n  - [ ] Backups\n  - [ ] Network security\n  - [ ] Patching\n  - [ ] Vulnerability management\n- [ ] Require periodic database-security reviews\n- [ ] Ensure exceptions are documented and approved\n- [ ] Track unresolved database risks at the appropriate management level\n\n## 18. Incident Response\n\n- [ ] Ensure database breaches are included in the incident-response plan\n- [ ] Know who must be involved if sensitive database information is compromised\n- [ ] Ensure the organization can determine:\n  - [ ] What data was accessed\n  - [ ] Who accessed it\n  - [ ] When the access occurred\n  - [ ] How much data was taken\n  - [ ] Which credentials were compromised\n- [ ] Maintain sufficient logging to support investigations\n- [ ] Understand regulatory and customer-notification obligations\n- [ ] Include database compromise scenarios in incident-response exercises\n\n## 19. Third Parties, Acquisitions, and Legacy Systems\n\n- [ ] Assess database security when acquiring another company\n- [ ] Do not assume inherited systems meet the organization's security standards\n- [ ] Identify unsupported or legacy databases\n- [ ] Review third-party access to sensitive databases\n- [ ] Understand how vendors protect company data\n- [ ] Include database-security requirements in supplier and outsourcing agreements\n- [ ] Plan remediation of inherited security weaknesses after mergers or acquisitions\n\n## 20. Questions You Should Be Able to Answer\n\n- [ ] **What are our most critical databases?**\n- [ ] **What sensitive data do they contain?**\n- [ ] **Who can access them?**\n- [ ] **Who has administrator privileges?**\n- [ ] **Are those privileges actually necessary?**\n- [ ] **Are sensitive data and backups encrypted?**\n- [ ] **Where are the encryption keys stored?**\n- [ ] **Are any databases publicly accessible?**\n- [ ] **How are database credentials and secrets managed?**\n- [ ] **How quickly do we patch critical database vulnerabilities?**\n- [ ] **How would we detect unauthorized database access?**\n- [ ] **Would we detect someone exporting millions of records?**\n- [ ] **Can we identify exactly what an administrator did?**\n- [ ] **When did we last successfully restore a critical database from backup?**\n- [ ] **How quickly could we recover a critical database?**\n- [ ] **Do our cloud databases follow the same security requirements as our on-premises databases?**\n- [ ] **What are our three largest unresolved database-security risks?**\n\n## Priority Reminder\n\n- [ ] **What data do we have, and where is it?**\n- [ ] **Who can access it, and why?**\n- [ ] **How is it protected?**\n- [ ] **How would we detect misuse or compromise?**\n- [ ] **Can we recover quickly if something goes wrong?**\n\nIf these five questions cannot be answered clearly for every critical database, the organization has a database-security governance gap. That verdict is the record's test — and the place every database-security review starts.\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Why the Database Gets Its Own Record\n\n**Ben:** Devil's advocate opening. We already have records on endpoints, servers, cloud, authentication. The database sits behind all of them. If those layers hold, why does the data layer need its own executive bar?\n\n**Ana:** Because the database is where the failure becomes the headline. Nobody writes to the regulator about a compromised laptop — they write about how many records left, whose they were, and how sensitive. And \"the layers in front will hold\" is exactly the assumption this record refuses: injection walks through the application layer with the application's own credentials, insiders start on the right side of every perimeter, and a misconfigured cloud endpoint has no layers in front of it at all. The data layer needs its own bar because every attack path ends there.\n\n**Ben:** Fine, but the record starts strangely softly — know your databases, classify your data, name an owner. That's inventory, not security.\n\n**Ana:** It is the security decision that ranks all the others. An organization that cannot name its critical databases is defending a sample of them and hoping the breach lands in the sample. Mapping the estate — relational, NoSQL, cloud-managed, serverless, the ones nobody remembers deploying — and classifying what each holds is what lets you aim the strongest controls at the highest risk instead of spreading a uniform, uniformly inadequate layer over everything. And the owner matters because controls decay without one. The anti-pattern is the database nobody owns: business-critical data whose decayed controls get discovered during the incident.\n\n## Least Privilege and the Injection Multiplier\n\n**Ben:** SQL injection. It has been on the OWASP list since before some of our engineers could vote. Why is a twenty-year-old bug in an executive record?\n\n**Ana:** Because of the multiplier the chapter points at: an injection attack is exactly as powerful as the database account the application runs on. That is the part executives can actually govern. Parameterized queries and input validation are engineering practice — [Secure Software Development](secure-software-development.html) territory. But the application account that connects as an administrator \"because it was easier\" is a standing decision, and it converts every future injection flaw into a full-database compromise. The record's demand is layered: secure the queries *and* strip the app account to least privilege, so when the front door fails the blast radius is small.\n\n**Ben:** The access section reads strict, though. No shared admin accounts, strong auth for privileged access, PAM for critical systems, periodic reviews. DBAs will say you're slowing down operations.\n\n**Ana:** Every unnecessary privilege is a standing offer to whoever compromises the credential that carries it. Shared admin accounts are the worst version — power with no attribution, so the chapter's later question, \"can we identify exactly what an administrator did,\" becomes unanswerable by design. The review cadence is what keeps the model honest over time: privileges accumulate as people change roles, and role-change reviews plus prompt removal of the departed are how the access list keeps describing reality.\n\n**Ben:** And insiders. Records that monitor employees always carry a whiff of paranoia.\n\n**Ana:** The chapter defuses that, actually — it distinguishes malicious insiders from accidental ones, and most damage is accidental. That changes the design entirely: this is not about suspecting people. Job-based access limits what anyone *can* touch, separation of duties keeps single actors away from sensitive operations, export controls and bulk-download monitoring catch the unusual regardless of intent. The same control stops the malicious exporter and the well-meaning analyst copying production data somewhere unprotected. None of it presumes bad faith; all of it caps the cost of both.\n\n## Keys, Copies, and Backups Attackers Cannot Delete\n\n**Ben:** Encryption. Everyone ticks \"encrypted at rest\" on the compliance form. What is the record adding?\n\n**Ana:** The question the form skips: where are the keys? Encrypted data with keys stored alongside it is a padlock with the key taped to it — the breach that reaches the data reaches the keys in the same motion. So the record insists on the full discipline: keys stored separately, rotated, access-controlled, and owned, through a real key-management or secrets-management solution. And the same logic extends to the quiet copies — backups, exports, snapshots, replicas hold exactly the same records as production and historically get a fraction of the protection. The attacker does not care which copy leaks.\n\n**Ben:** You said backups twice now. The record calls them a security control, which is an odd label for an ops artifact.\n\n**Ana:** Ransomware relabeled them. Backups are the last line of defense, which is precisely why attackers now target them first — encrypt production, delete the backups, then negotiate. Hence the record's most specific demand: copies that cannot easily be modified or deleted by an attacker, encrypted, access-restricted, with defined RTO and RPO and restoration tested regularly. The anti-pattern is the backup reachable with the same credentials as production — it goes first. And the audit probe is the chapter's own question: when did we last *successfully restore* a critical database from backup? If nobody can produce a date, the backup strategy is a belief.\n\n**Ben:** Plaintext passwords still get a whole section too. Is that really live in 2026?\n\n**Ana:** Every credential-stuffing dump says yes. And the section is subtler than it looks — it requires understanding the difference between hashing and encryption, because \"we encrypt the passwords\" is the classic wrong answer. Encryption is reversible; password storage must not be. Hashed, salted, with an appropriate algorithm — and the connection strings and API keys that reach the database never hardcoded in source, but held in a centralized secrets manager that can rotate them without breaking operations. If rotation is an outage, rotation never happens, and the exposed credential lives forever.\n\n## Cloud Parity and the Five Questions\n\n**Ben:** Cloud databases. The provider patches, replicates, encrypts by default. Hasn't the platform absorbed most of this record?\n\n**Ana:** It absorbed the host, not the responsibility. A managed database removes OS patching; it does not decide who can access the data, whether the endpoint is public, or whether the configuration drifted last Tuesday. Misreading that split is the leading cause of the exposed-database genre of breach — misconfiguration, not malware. So the record demands parity, and the chapter's audit question is beautifully blunt: do our cloud databases follow the same security requirements as our on-premises databases? Plus the cloud-specific loop: IAM reviewed regularly, no unnecessary public endpoints, configurations continuously reviewed. The deeper treatment of that estate is [Cloud Infrastructure](cloud-infrastructure.html).\n\n**Ben:** There's also a section people will skim past — acquisitions and third parties. Why does M&A belong in a database record?\n\n**Ana:** Because acquisitions are how organizations import databases they never assessed. The record's rule: never assume inherited systems meet the standard. Assess database security during acquisition, identify the unsupported and legacy systems, review third-party access, put database-security requirements in supplier agreements, and plan post-merger remediation explicitly. The anti-pattern is inherited-and-exempt — the acquired company's legacy database, assumed compliant, never checked, and quietly holding the same customer data as everything else.\n\n**Ben:** Close it out. The record ends with seventeen audit questions and then a five-question \"priority reminder.\" Isn't that just the checklist repeating itself?\n\n**Ana:** It is the checklist compressing itself into a governance test, and I adopt the chapter's verdict verbatim: what data do we have and where is it, who can access it and why, how is it protected, how would we detect misuse or compromise, can we recover quickly if something goes wrong. If those five cannot be answered clearly for every critical database, the organization has a database-security governance gap — whatever its tooling, whatever the compliance form says.\n\n**Ben:** So the takeaway: protect the data where it lives — know it, own it, strip privileges around it, separate the keys from it, guard every copy of it, and prove you can restore it. And if you can't answer the five questions for a critical database, that database is the incident you haven't had yet.\n\n**Ana:** That is the record. Five questions, every critical database, answered clearly — or the gap is yours.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why the database is where a breach becomes the headline — and the five questions that prove it is defended, in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Vera holds a newspaper reading millions of records exposed while a chain of incident icons leads to a glowing database.](assets/images/databases/comic-01-where-the-headline-lives.jpeg)\n**Panel 1:** *The hook: the database is where a security failure becomes the headline — the report that reaches the board is about how many records, whose, and how sensitive.*\n\n![Comic panel: Nadia guards three spotlighted databases while many more with question-mark and no-owner tags lurk in shadow.](assets/images/databases/comic-02-defending-a-sample.jpeg)\n**Panel 2:** *The problem: the database nobody owns — an organization that cannot name its critical databases is defending a sample of them and hoping the breach lands in the sample.*\n\n![Comic panel: a web-app robot wearing a DBA crown and master keys while an injection snake slips in to grab them.](assets/images/databases/comic-03-the-app-with-dba-rights.jpeg)\n**Panel 3:** *The wrong way: the app account with DBA rights — an injection attack is exactly as powerful as the account the application runs on, so 'it was easier' turns every flaw into a full-database compromise.*\n\n![Comic panel: a database drawn as a small castle with an owner flag, least-privilege gate, encryption armor, and a watchtower.](assets/images/databases/comic-04-protect-data-where-it-lives.jpeg)\n**Panel 4:** *The principle: protect data where it lives — every critical database known, classified, and owned, behind least privilege, encrypted end to end, and watched.*\n\n![Comic panel: a chest with the key taped to its padlock versus a chest and its key kept in separate buildings, Nadia guarding the key vault.](assets/images/databases/comic-05-keys-live-apart.jpeg)\n**Panel 5:** *Practice: encryption is only as good as key separation — keys stored apart from the data, rotated, access-controlled, and owned, and the quieter copies (backups, exports, snapshots, replicas) get the same protection as production.*\n\n![Comic panel: a badged employee in a corridor where only the role-matching door opens, while a bulk-export cart gets flagged overhead.](assets/images/databases/comic-06-the-legitimate-insider.jpeg)\n**Panel 6:** *Practice: the insider is a user with legitimate credentials — job-based access, separation of duties, and bulk-export monitoring limit the cost of both malice and accident, without presuming bad faith.*\n\n![Comic panel: a ransomware goblin chains production while Nadia restores from an untouchable backup behind glass, stopwatch in hand.](assets/images/databases/comic-07-the-backup-that-restores.jpeg)\n**Panel 7:** *Practice: backups are a security control and attackers target them first — copies an attacker cannot modify or delete, defined RTO and RPO, and restoration tested on a schedule, because an untested restore is a hope.*\n\n![Comic panel: a relaxed database on a cloud meets Vera's measuring bar while Nadia closes its open public-endpoint hatch.](assets/images/databases/comic-08-the-cloud-same-bar.jpeg)\n**Panel 8:** *The cost of complacency: cloud databases inherit convenience, not security — the provider patches the host, but the data, access, IAM, and configuration stay yours, and the bar is the same as on-premises.*\n\n![Comic panel: Vera raises five fingers labeled what data, who, protected how, detect, recover, while Nadia holds a clipboard of answers.](assets/images/databases/comic-09-the-five-questions.jpeg)\n**Panel 9:** *The closer: five questions for every critical database — what data and where, who can access it and why, how it is protected, how misuse would be detected, and how quickly it recovers. Unanswered clearly, they are not a tooling gap but a governance gap.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

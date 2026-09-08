@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asset Management and Documentation</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="security-program.html" title="Creating a Security Program: Risk Before Tools">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="policies.html" title="Policies: What Must Be Achieved, in Writing">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">The Security Program</p>
+        <h1>Asset Management and Documentation</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  8 min · <a class="spec-link" href="asset-management.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/asset-management/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/asset-management/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="security-program.html" title="Creating a Security Program: Risk Before Tools">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="policies.html" title="Policies: What Must Be Achieved, in Writing">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-ASSET-MANAGEMENT", "status": "draft:gray", "title": "Asset Management and Documentation", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "asset-management", "timetoread": "8 min", "excerpt": "My organization cannot defend what it does not know it has — so asset management is an ongoing security program, not a one-time inventory exercise. One authoritative system is the source of truth; every asset carries an owner, a criticality, and a risk rating; the inventory spans hardware, software, users, applications, cloud resources, and certificates and domains; the lifecycle is managed from procurement to verified destruction; and discovery and reconciliation are automated but validated before being trusted. The test I hold the inventory to: it answers security questions in minutes — which assets a new vulnerability affects, who owns a critical system, what faces the internet — and it is actively used for security decisions, not simply maintained as documentation.", "tags": "asset management, inventory, source of truth, data classification, asset lifecycle, secure disposal, documentation, defensive security", "icon": "assets/icons/asset-management.png", "logo": "assets/images/asset-management/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["asset management", "inventory", "source of truth", "data classification", "asset lifecycle", "secure disposal", "documentation", "defensive security"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: My organization cannot defend what it does not know it has — so **asset management is an ongoing security program, not a one-time inventory exercise**. **One authoritative system is the source of truth**; every asset carries **an owner, a criticality, and a risk rating**; the inventory spans every class that can be attacked — network equipment, servers, endpoints, users and accounts, applications, cloud resources, certificates and domains. **The lifecycle is managed end to end** — procure, deploy, manage, decommission — with **verified data destruction at disposal**. Discovery and reconciliation are **automated, then validated before being trusted**, and an unmanaged asset is treated as a process failure, not a device problem. The test I hold the inventory to: **it answers security questions in minutes — which assets a new vulnerability affects, who owns a critical system, what faces the internet — and it is actively used for security decisions, not simply maintained as documentation**.\n\n## Statement\n\nWhen my organization manages its assets, this is the program I hold it to.\n\n**Asset management is a program, not a project.**\n\n- **Scoped, owned, and sponsored.** The program has defined scope and objectives, an executive sponsor, a cross-functional team, documented process and procedures, consistent naming conventions — and it runs continuously, not annually.\n- **Everything has an owner.** Every asset or asset group has an owner or custodian, and roles for maintaining asset information are explicit.\n\n**There is one source of truth.**\n\n- One authoritative system holds asset records, and every team knows which system that is. Existing data sources are integrated where practical; processes prevent duplicate and conflicting records; who may create, modify, and delete records is defined; the inventory is backed up, versioned, and regularly reviewed for accuracy.\n- **The repository fits the organization — and is replaced before it breaks.** A spreadsheet may be honest for a small environment; growing environments evaluate dedicated platforms; the migration away from basic tools is planned before they become unmaintainable. Whatever the system, it supports the required security controls, scale, reporting, and integration.\n\n![Diagram of many discovery sources feeding one authoritative asset inventory that drives security decisions, with duplicate shadow inventories crossed out.](assets/images/asset-management/single-source-of-truth.jpeg)\n**Figure 1:** *One authoritative system is the source of truth: every data source feeds it, every security decision draws from it, and competing copies are retired.*\n\n\n**The schema is rich enough to act on.**\n\n- Every applicable asset records identity (ID, name, type, description, manufacturer, model, serial), ownership (owner, custodian, assigned user, department), value (business function, criticality, risk rating, data classification), state (lifecycle status, location, configuration, versions, patch level), and continuity (dependencies, backup and recovery information, warranty and support, last verification date).\n\n**Data is classified and its owners are interviewed.**\n\n- A simple, documented classification scheme — Public, Internal, Confidential, Highly Confidential — is applied to systems, applications, and data stores, with handling, access-control, encryption, sharing, retention, and disposal requirements defined per class and staff trained on the scheme.\n- Each department is asked what data it handles, where it lives, how it is accessed and shared, what regulations apply, and what has gone wrong before — the inventory reflects the business, not just the network.\n\n**Criticality and risk connect the inventory to operations.**\n\n- Each significant asset's criticality reflects business impact if unavailable or compromised; each asset's risk reflects threats, vulnerabilities, likelihood, and impact. Those ratings prioritize patching, vulnerability remediation, monitoring, incident response, backup and recovery, access reviews, security testing, and replacement decisions. An inventory that drives no decisions is documentation.\n\n**Every asset class is inventoried.**\n\n- Network equipment, physical and virtual servers, desktops and endpoints, users and accounts — including privileged, service, and shared accounts, each with an owner and periodic access reviews — applications with their data flows and third parties, cloud assets (monitoring and logging, users and secrets, network infrastructure, databases, compute and storage, IAM policies), and certificates and domains, with expiration alerting and dangling-DNS review.\n\n**The lifecycle is managed end to end.**\n\n- **Procure**: the record is created when the asset is acquired. **Deploy**: default credentials replaced, security configuration and patches applied, endpoint software installed, vulnerabilities scanned, encryption verified, record confirmed complete. **Manage**: location, ownership, upgrade, repair, and configuration changes tracked; criticality reassessed when purpose changes. **Decommission**: accounts, tokens, certificates, and access revoked; monitoring and DNS/DHCP records removed; data destroyed by an approved method, destruction verified and documented, and the asset marked retired in the inventory.\n\n![Four-stage asset lifecycle diagram — procure, deploy, manage, decommission — with the edges highlighted: hardening on deployment and verified destruction on disposal.](assets/images/asset-management/lifecycle-edges.jpeg)\n**Figure 2:** *The lifecycle is managed end to end — and its dangerous moments are the edges: hardening proven at deployment, destruction verified at decommissioning.*\n\n**Automation feeds the inventory; humans keep it honest.**\n\n- Discovery uses every practical source — ARP and DHCP data, network scanning, SNMP, OS management interfaces — and integrates vulnerability scanners, endpoint management, IAM, cloud-provider inventory, and infrastructure-as-code state. Change tracking records additions, removals, and modifications with enough history to support investigations. Alerts fire on expirations, unsupported software, unknown devices, missing endpoint protection, and disabled encryption. And **automated data is validated before it is treated as authoritative**.\n- **Unmanaged assets are findings.** A device not in the inventory is investigated: who owns it, why it bypassed the process — and the process is corrected, not just the record.\n\n**The program runs on a rhythm.**\n\n- Monthly: new discoveries, high-risk vulnerabilities on critical assets, unauthorized software, approaching expirations, missing owners. Quarterly: source reconciliation, privileged accounts, cloud resources, stale assets. Annually: the complete review — policy, classification scheme, lifecycle and disposal procedures, naming standards, integrations, and the effectiveness of the source of truth itself.\n\n## How to Read This\n\nThis record is the second in **The Security Program** section: [Creating a Security Program: Risk Before Tools](security-program.html) documents the baseline once, to ground the program; this record makes knowing-what-we-have a standing capability that everything else consumes. It is grounded in the \"Asset Management and Documentation\" chapter of the *Defensive Security Handbook* — the book's argument that the inventory is the control every other control silently depends on. The full working checklist — all thirty-two sections through the final program validation — lives in the **Checklist** tab; the management summary is in the **TL;DR** tab and the conversation in the **Conversation** tab.\n\n## Rationale\n\n**The inventory is the control every other control depends on.** Patching assumes you know what is deployed; monitoring assumes you know what is normal; incident response assumes you can find the machine; access reviews assume you know the accounts. When a critical vulnerability lands at nine on a Friday, the difference between a two-hour response and a two-week one is whether \"which assets run this software?\" is a query or a research project. That is why the record's final validation is phrased as questions with a stopwatch attached — and why the last question is the hardest: is the inventory actively used for security decisions, or simply maintained as documentation?\n\n![Diagram of patching, monitoring, incident response, and access reviews as pillars standing on an asset-inventory foundation, tilting where the foundation cracks.](assets/images/asset-management/inventory-foundation.jpeg)\n**Figure 3:** *The inventory is the control every other control depends on: patching, monitoring, response, and access reviews all stand on knowing what exists.*\n\n**Two sources of truth is zero.** The moment the CMDB, the spreadsheet, and the cloud console disagree, every consumer of asset data starts keeping their own copy, and each copy decays independently. Declaring one authoritative system — and telling every team which one it is — is not a tooling decision; it is a decision about where arguments end. Everything else in the source-of-truth discipline follows from that: integration instead of duplication, defined write access, backups, version history, and regular accuracy reviews.\n\n**An asset without an owner is an incident without a responder.** Owner is the single highest-value field in the schema. Criticality tells me how much an asset matters; owner tells me who answers the phone, who approves the maintenance window, who decides whether the strange login was expected. The record extends this to the accounts themselves — service accounts get owners precisely because they are the accounts nobody thinks they own — and to the review that catches drift: access removed promptly when people leave or change roles.\n\n**Classification turns \"protect everything\" into instructions.** An organization that protects all data equally protects its crown jewels at spreadsheet level. A four-class scheme is deliberately simple — simple enough for every department to apply — and it converts vague intent into specific requirements: this class is encrypted, shared only through these methods, retained this long, destroyed this way. The owner interviews matter just as much: the departments know what data exists, where the regulator's attention sits, and what leaked last time — the inventory has to capture what the business knows, not only what the scanner sees.\n\n**The lifecycle's dangerous moments are its edges.** In the middle of an asset's life, ordinary operations keep it roughly visible. At the edges, security fails silently: a device deployed with default credentials and no endpoint protection, or a server decommissioned with its disks intact and its service accounts still live. The record therefore front-loads deployment — credentials replaced, configuration applied, scanned, encrypted, record complete — and treats decommissioning as a security procedure with proof: approved destruction method, verified sanitization, retained certificates. A retired asset the inventory cannot vouch for is a breach with a delay timer.\n\n**Automation feeds the inventory; validation keeps it honest.** An inventory maintained by hand is stale by definition — the estate changes faster than any human process. So discovery, integration, correlation, and alerting are automated wherever practical. But automation inherits every blind spot of its sources, which is why the record insists on the step most programs skip: validate automated data before treating it as authoritative, and reconcile the sources against each other on a schedule. The robot fills the register; the quarterly reconciliation is where the register earns trust.\n\n**An unmanaged asset is a process failure, not a device problem.** Quietly adding a discovered mystery device to the inventory fixes the record and preserves the leak. The record's sequence is deliberate: find the owner, determine why the asset bypassed the process, add or remove it — and then correct the process that let it stay undocumented. Shadow assets are how organizations get breached through systems nobody was defending; the fix is upstream.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| One authoritative system is the source of truth for asset records. | A specific CMDB product is mandated — a spreadsheet can be the honest answer for a small environment, with a planned migration. |\n| Every asset has an owner, a criticality, and a risk rating. | Every field in the schema is filled for every asset on day one — coverage follows criticality. |\n| Criticality and risk drive patching, monitoring, and response priorities. | The inventory is a compliance artifact — an inventory that drives no decisions has failed the final validation. |\n| Discovery, correlation, and expiration alerting are automated. | Automated data is authoritative by default — it is validated and reconciled first. |\n| Decommissioning ends with verified, documented data destruction. | Deleting the asset record is retirement — the disk, the accounts, and the DNS entries outlive the record. |\n| Unmanaged assets are investigated and the bypass process corrected. | Discovered devices are quietly added to the inventory — that fixes the record and preserves the leak. |\n| The program runs monthly, quarterly, and annual reviews. | The annual review is the inventory — the yearly spreadsheet safari is the anti-pattern this record exists to end. |\n\nConcretely: when a critical vulnerability is announced, my first question is *\"which assets are affected, who owns them, and which are internet-facing?\"* — and I expect the answer from the inventory in minutes. If the answer requires a meeting, the asset-management program has failed its test, whatever its documentation says.\n\n## Anti-Patterns\n\n- **The annual spreadsheet safari.** A heroic once-a-year inventory, stale within a month — a project wearing a program's name.\n- **The three competing inventories.** The CMDB, the finance spreadsheet, and the cloud console all disagree, so every team keeps a private fourth.\n- **The ownerless server.** Critical, running, and nobody's — discovered at 2 a.m. during an incident when no one knows who can approve shutting it down.\n- **The write-only inventory.** Data flows in, no decision ever flows out; patching and monitoring priorities are set by gut feel while the register gathers dust.\n- **The trusting robot.** Automated discovery treated as gospel — its blind spots inherited silently, its duplicates merged into fiction, never reconciled against reality.\n- **The eBay hard drive.** A decommissioned device leaves the building with its data intact — no approved destruction method, no verification, no certificate.\n- **The quietly adopted stray.** An unknown device found on the network and simply added to the inventory — the record fixed, the process that let it bypass controls left broken.\n- **The dangling domain.** Expired certificates, abandoned DNS records, forgotten subdomains — an internet footprint nobody tracks, waiting for a takeover.\n\n## Related Records\n\n- [Creating a Security Program: Risk Before Tools](security-program.html) — the baseline sweep there is the snapshot; this record is the standing capability, and its criticality data feeds the risk register.\n- [Vulnerability Management](vulnerability-management.html) — vulnerability-to-asset correlation and criticality-driven remediation priorities are the seam between these records.\n- [Cloud Infrastructure](cloud-infrastructure.html) — cloud assets are inventoried and tagged here; hardening them lives there.\n- [Endpoints](endpoints.html) — the endpoint inventory here is the prerequisite for the endpoint hardening bar there.\n- [Logging and Monitoring](logging-and-monitoring.html) — the alerting hooks here (unknown devices, missing protection, disabled encryption) land in the monitoring pipeline there.\n- [Policies: What Must Be Achieved, in Writing](policies.html) — the asset-management, classification, and disposal policies this record operates under get their document discipline there.\n- [Incident Response](incident-response.html) — responders consume this inventory: affected systems, owners, dependencies, and sensitive-data locations in minutes.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every asset class my organization operates — physical, virtual, cloud, and the certificates and domains around them — and as the audit bar for the inventory we already keep. I revisit it if the final validation questions stop being answerable in minutes (the program failing its own test), if reconciliation repeatedly finds the source of truth losing to shadow inventories (the single-source claim failing in practice), or if the estate shifts materially — a major cloud migration, an acquisition — in ways the schema and discovery integrations were not built for.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, and William F. Reyor III) — the \"Asset Management and Documentation\" chapter, whose checklist (including the final program validation) this record distills.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "My organization cannot defend what it does not know it has — so **asset management is an ongoing security program, not a one-time inventory exercise**. One authoritative system is the source of truth; every asset carries an owner, a criticality, and a risk rating; the lifecycle runs from procurement to verified destruction; and automated discovery is validated before it is trusted. The test the program is held to: the inventory answers security questions in minutes — which assets a new vulnerability affects, who owns a critical system, what faces the internet — and it is actively used for security decisions, not simply maintained as documentation.\n\n**What changes**\n\n* **One system becomes the place arguments end.** A single authoritative inventory — sized honestly to the organization, replaced before it breaks — with defined write access, backups, version history, and every team knowing it is the official source.\n* **Every asset gets an owner and a value.** Owners and custodians on every asset and every service account; criticality and risk ratings that actually drive patching, remediation, monitoring, incident response, backup, and access-review priorities.\n* **Coverage becomes complete.** Network equipment, servers, endpoints, users and accounts, applications with their data flows, cloud assets (including IAM policies, secrets, and internet-exposed resources), and certificates and domains with expiration alerts and dangling-DNS review.\n* **The lifecycle gets security at its edges.** Deployment means default credentials replaced, patched, scanned, and encrypted before production; decommissioning means access revoked, records removed, data destroyed by an approved method, and destruction verified and documented.\n* **Automation feeds the register; humans keep it honest.** Discovery from ARP, DHCP, scanning, SNMP, and cloud APIs; integrations with vulnerability, endpoint, IAM, and IaC data; alerts on expirations and unknown devices — with automated data validated before being treated as authoritative, and unmanaged assets investigated as process failures.\n\n**What it costs**\n\n* Standing review work — monthly discoveries and expirations, quarterly reconciliation of sources and privileged accounts, an annual full review — is permanent overhead, accepted because a stale inventory is worse than none: it lies with confidence.\n* Interviewing business and data owners takes real cross-department time; the inventory has to reflect what the business knows, not just what the scanner sees.\n* Disposal discipline (approved destruction, verification, certificates) is slower than the dumpster — deliberately.\n\n**What we are not doing**\n\n* Not mandating a CMDB product — a spreadsheet can be the honest answer for a small environment, with a planned migration.\n* Not running the scan-triage-remediate loop here — that is [Vulnerability Management](vulnerability-management.html), which consumes this record's criticality data.\n* Not hardening the assets themselves — that is [Endpoints](endpoints.html), [Cloud Infrastructure](cloud-infrastructure.html), and the rest of the estate section.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries all thirty-two sections through the final program validation. Grounded in the \"Asset Management and Documentation\" chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "10 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — building and running the asset-management program, from establishing the program to the final validation. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Establish the Asset Management Program\n\n- [ ] Define the scope and objectives of the asset management program\n- [ ] Treat asset management as an ongoing security process, not a one-time inventory exercise\n- [ ] Identify all asset categories that must be tracked\n- [ ] Assign an owner or custodian to every asset or asset group\n- [ ] Establish roles and responsibilities for maintaining asset information\n- [ ] Define a consistent naming convention for assets\n- [ ] Document the asset management process and procedures\n- [ ] Identify an executive sponsor or champion for the program\n- [ ] Form a cross-functional asset management team that includes relevant departments\n\n## 2. Establish a Single Source of Truth\n\n- [ ] Select one authoritative system for asset records\n- [ ] Ensure teams know which system is the official source of asset information\n- [ ] Integrate existing data sources where practical\n- [ ] Establish processes to prevent duplicate or conflicting asset records\n- [ ] Define who may create, modify, and delete asset records\n- [ ] Back up asset inventory data\n- [ ] Maintain version history or change records where possible\n- [ ] Review the inventory regularly for accuracy and completeness\n\n## 3. Select an Appropriate Asset Repository\n\n- [ ] Choose a storage solution appropriate for the organization's size and complexity\n- [ ] For small environments, determine whether a spreadsheet or simple database is sufficient\n- [ ] For growing environments, evaluate dedicated asset management platforms\n- [ ] For large environments, evaluate enterprise-grade or customized asset management solutions\n- [ ] Ensure the system supports required security controls\n- [ ] Ensure the system is scalable\n- [ ] Ensure the system supports reporting\n- [ ] Ensure the system can integrate with other business and security systems\n- [ ] Plan to migrate away from basic tools before they become difficult to maintain\n\n## 4. Create an Inventory Schema\n\nFor every applicable asset, record:\n\n- [ ] Unique asset ID\n- [ ] Asset name\n- [ ] Asset type/category\n- [ ] Description or purpose\n- [ ] Manufacturer/vendor\n- [ ] Model\n- [ ] Serial number\n- [ ] Purchase or acquisition date\n- [ ] Warranty/support expiration\n- [ ] Physical or logical location\n- [ ] Assigned user or department\n- [ ] Asset owner\n- [ ] Asset custodian\n- [ ] Business function supported\n- [ ] Criticality rating\n- [ ] Risk rating\n- [ ] Data classification\n- [ ] Lifecycle status\n- [ ] Configuration information\n- [ ] Software/firmware/OS version\n- [ ] Licensing information\n- [ ] Support contact information\n- [ ] Relevant dependencies and integrations\n- [ ] Backup location or recovery information\n- [ ] Last inventory verification date\n\n## 5. Classify Data\n\n- [ ] Define a simple, documented data classification scheme\n- [ ] Include classifications such as Public, Internal, Confidential, and Highly Confidential/Sensitive as appropriate\n- [ ] Identify the types of data each department creates, processes, stores, and transmits\n- [ ] Identify personally identifiable information (PII)\n- [ ] Identify financial information\n- [ ] Identify employee and HR information\n- [ ] Identify authentication credentials and secrets\n- [ ] Identify regulated information such as PHI or payment card data where applicable\n- [ ] Identify intellectual property and trade secrets\n- [ ] Assign a classification to relevant systems, applications, and data stores\n- [ ] Document handling requirements for each classification\n- [ ] Define appropriate access controls for each classification\n- [ ] Define encryption requirements where appropriate\n- [ ] Define approved methods for sharing sensitive information\n- [ ] Define retention and disposal requirements\n- [ ] Train staff on the classification scheme\n- [ ] Review classifications periodically\n\n## 6. Interview Business and Data Owners\n\nAsk each department:\n\n- [ ] What types of data do you handle, process, or store?\n- [ ] What sensitive or confidential information do you regularly use?\n- [ ] What regulatory or industry requirements apply?\n- [ ] What audit requirements or findings exist?\n- [ ] Where is the data stored?\n- [ ] How is the data accessed?\n- [ ] What security controls currently protect it?\n- [ ] Who is responsible for the data?\n- [ ] Have there been previous breaches, leaks, or security incidents?\n- [ ] What retention requirements apply?\n- [ ] How long is the data stored?\n- [ ] How is data shared internally?\n- [ ] How is data shared with external parties?\n- [ ] What protocols are used to transfer sensitive information?\n- [ ] What classification or labeling practices already exist?\n- [ ] What risks or challenges does the department see?\n\n## 7. Assign Asset Criticality\n\nFor each significant asset:\n\n- [ ] Determine the business impact if the asset becomes unavailable\n- [ ] Determine the impact if the asset is compromised\n- [ ] Determine whether the asset supports a critical business process\n- [ ] Identify legal or regulatory requirements associated with the asset\n- [ ] Determine the cost of replacement or recovery\n- [ ] Assign a documented criticality rating\n- [ ] Review criticality when the asset's purpose or business importance changes\n\n## 8. Assign Asset Risk\n\n- [ ] Identify threats that could affect each important asset\n- [ ] Identify relevant vulnerabilities\n- [ ] Estimate the likelihood of a security event\n- [ ] Estimate the potential business impact\n- [ ] Consider historical incidents and industry data where available\n- [ ] Assign a documented risk level\n- [ ] Prioritize high-risk and high-criticality assets for protection\n- [ ] Review risk ratings after significant changes or incidents\n\n## 9. Connect Inventory Data to Security Operations\n\nUse criticality and risk information to prioritize:\n\n- [ ] Patch management\n- [ ] Vulnerability remediation\n- [ ] Security monitoring\n- [ ] Data labeling\n- [ ] Incident response\n- [ ] Backup and recovery\n- [ ] Access reviews\n- [ ] Security testing\n- [ ] Replacement and lifecycle decisions\n\n## 10. Inventory Network Equipment\n\nFor routers, switches, firewalls, wireless equipment, and similar devices, track:\n\n- [ ] Hostname\n- [ ] Device type\n- [ ] Manufacturer/model\n- [ ] Serial number\n- [ ] Licensing information\n- [ ] Physical location\n- [ ] Management IP address\n- [ ] Production IP addresses\n- [ ] Software/firmware version\n- [ ] Configuration backup location\n- [ ] Warranty/support information\n- [ ] System owner\n- [ ] Criticality\n- [ ] Risk rating\n\n## 11. Document Network Information\n\n- [ ] Maintain current network diagrams\n- [ ] Document DHCP servers\n- [ ] Document DNS servers\n- [ ] Record network ranges and subnets\n- [ ] Record internet ingress and egress points\n- [ ] Record public-facing IP addresses\n- [ ] Record default gateways\n- [ ] Maintain ISP information and support contacts\n- [ ] Establish normal network performance baselines\n- [ ] Review network documentation after major changes\n\n## 12. Inventory Servers\n\nFor each physical or virtual server, track:\n\n- [ ] Hostname\n- [ ] IP address(es)\n- [ ] Operating system and version\n- [ ] Applications and roles\n- [ ] Virtualization platform\n- [ ] Hardware specifications\n- [ ] Storage configuration\n- [ ] Department or team responsible\n- [ ] System owner\n- [ ] Remote-access status\n- [ ] Open ports/services\n- [ ] Management interface information\n- [ ] Backup configuration\n- [ ] Compliance requirements\n- [ ] Sensitive data stored or processed\n- [ ] Performance baseline\n- [ ] Warranty/support information\n- [ ] Patch level\n- [ ] Criticality\n- [ ] Risk rating\n\n## 13. Inventory Desktops and Endpoints\n\nFor each endpoint, track:\n\n- [ ] Hostname\n- [ ] Make/model\n- [ ] Serial number\n- [ ] Hardware specifications\n- [ ] Asset tag\n- [ ] Assigned user\n- [ ] Department\n- [ ] Location\n- [ ] Operating system\n- [ ] Patch level\n- [ ] Installed software\n- [ ] Encryption status\n- [ ] Endpoint security status\n- [ ] Warranty information\n- [ ] Criticality\n- [ ] Risk rating\n\n## 14. Inventory Users and Accounts\n\n- [ ] Record user's name and job role\n- [ ] Record department\n- [ ] Record appropriate contact information\n- [ ] Track account creation date\n- [ ] Track account termination/deactivation date\n- [ ] Record MFA status\n- [ ] Record access rights and permissions\n- [ ] Identify database administrator accounts\n- [ ] Identify domain/enterprise administrator accounts\n- [ ] Identify root/local administrator accounts\n- [ ] Identify service accounts\n- [ ] Identify privileged or shared accounts\n- [ ] Assign an owner to service accounts\n- [ ] Conduct periodic access reviews\n- [ ] Remove access promptly when users leave or change roles\n\n## 15. Inventory Applications\n\nFor each application, track:\n\n- [ ] Application name\n- [ ] Version\n- [ ] Application owner\n- [ ] Business purpose\n- [ ] Administrative users\n- [ ] Authorized users/groups\n- [ ] Vendor\n- [ ] Vendor support contact\n- [ ] Licensing information\n- [ ] Renewal date\n- [ ] Dependencies\n- [ ] Integration points\n- [ ] Servers or platforms used\n- [ ] Third parties involved\n- [ ] Authentication method\n- [ ] Data classification\n- [ ] Data created by the application\n- [ ] Data processed by the application\n- [ ] Data stored by the application\n- [ ] Data transmission methods\n- [ ] APIs or file-transfer mechanisms\n- [ ] Data retention requirements\n- [ ] Deletion schedule\n- [ ] Criticality\n- [ ] Risk rating\n\n## 16. Inventory Cloud Assets\n\n### Monitoring and Logging\n\n- [ ] Document monitoring services\n- [ ] Document alerting configuration\n- [ ] Record where alerts are sent\n- [ ] Record what conditions are monitored\n- [ ] Document log-storage locations\n- [ ] Document log-retention periods\n- [ ] Document integrations with third-party monitoring tools\n\n### Users and Secrets\n\n- [ ] Document the cloud secret-management solution\n- [ ] Identify privileged cloud users\n- [ ] Record roles and security policies\n- [ ] Identify accounts assigned to each role\n- [ ] Review permissions periodically\n\n### Network Infrastructure\n\n- [ ] Inventory VPCs or equivalent virtual networks\n- [ ] Document subnets and CIDR ranges\n- [ ] Document network security groups\n- [ ] Document firewall/security-group rules\n- [ ] Identify public-facing cloud resources\n\n### Databases\n\n- [ ] Inventory database instances\n- [ ] Document encryption settings\n- [ ] Document backup configuration\n- [ ] Document retention policies\n- [ ] Assign a data classification\n- [ ] Record owners and administrators\n\n### Compute and Storage\n\n- [ ] Inventory virtual machines\n- [ ] Inventory containers where applicable\n- [ ] Inventory cloud storage buckets/blobs\n- [ ] Inventory application/platform instances\n- [ ] Identify internet-exposed resources\n- [ ] Tag resources with owner, risk, criticality, environment, and purpose\n\n### Cloud Policies\n\n- [ ] Inventory IAM policies\n- [ ] Inventory access-control policies\n- [ ] Review policies for excessive permissions\n- [ ] Remove unused cloud resources and permissions\n\n## 17. Track Certificates and Domains\n\n- [ ] Inventory domains\n- [ ] Inventory subdomains where feasible\n- [ ] Record domain owners\n- [ ] Record domain expiration dates\n- [ ] Inventory TLS/SSL certificates\n- [ ] Record certificate owners\n- [ ] Record certificate expiration dates\n- [ ] Configure expiration alerts\n- [ ] Track renewal status\n- [ ] Remove abandoned DNS records\n- [ ] Review for potential dangling DNS entries or subdomain takeover risk\n\n## 18. Define the Asset Lifecycle\n\n### Procure\n\n- [ ] Create the asset record when the asset is acquired\n- [ ] Record serial number or unique identifier\n- [ ] Record purchase order information where applicable\n- [ ] Record asset owner\n- [ ] Assign criticality\n- [ ] Record manufacturer and model\n- [ ] Record warranty/support information\n\n### Deploy\n\n- [ ] Update the asset's location\n- [ ] Record assigned user or department\n- [ ] Replace default credentials before deployment\n- [ ] Apply required security configuration\n- [ ] Apply current patches and updates\n- [ ] Install endpoint/security software\n- [ ] Scan for vulnerabilities before production use where appropriate\n- [ ] Verify encryption requirements\n- [ ] Confirm the asset record is complete\n\n### Manage\n\n- [ ] Track location changes\n- [ ] Track user or owner changes\n- [ ] Track department changes\n- [ ] Track hardware upgrades\n- [ ] Track software upgrades\n- [ ] Track repairs\n- [ ] Track storage or inactive status\n- [ ] Track configuration changes\n- [ ] Track warranty and support status\n- [ ] Reassess criticality and risk when necessary\n\n### Decommission\n\n- [ ] Mark the asset as pending decommission\n- [ ] Identify the classification of data stored on it\n- [ ] Back up required business records\n- [ ] Revoke accounts, tokens, certificates, and access\n- [ ] Remove the asset from monitoring systems\n- [ ] Remove DNS, DHCP, cloud, and management records as appropriate\n- [ ] Remove licenses or transfer them to another asset\n- [ ] Select an approved data-destruction method\n- [ ] Verify successful sanitization or destruction\n- [ ] Record the disposal method and date\n- [ ] Retain destruction documentation when required\n- [ ] Mark the asset as retired/disposed in the inventory\n\n## 19. Securely Dispose of Storage Devices\n\nFor SSDs and other storage media:\n\n- [ ] Determine the sensitivity of the data before disposal\n- [ ] Use approved secure-erase functionality when appropriate\n- [ ] Use cryptographic erasure when full-disk encryption has been properly implemented\n- [ ] Physically destroy media when required by sensitivity or policy\n- [ ] Use an approved destruction vendor where applicable\n- [ ] Maintain certificates of destruction when required\n- [ ] Document the disposal decision and completion\n\n## 20. Gather Asset Information\n\n- [ ] Use automated discovery wherever practical\n- [ ] Review ARP data where useful\n- [ ] Review DHCP records\n- [ ] Use network discovery/scanning tools\n- [ ] Use SNMP information where appropriate\n- [ ] Use operating-system management interfaces\n- [ ] Integrate vulnerability scanner results\n- [ ] Integrate endpoint management data\n- [ ] Integrate IAM information\n- [ ] Integrate cloud-provider inventory data\n- [ ] Reconcile automated discoveries with the official inventory\n- [ ] Investigate unmanaged or unknown assets\n\n## 21. Integrate Vulnerability Management\n\n- [ ] Import vulnerability information into asset records or link the systems\n- [ ] Associate vulnerabilities with affected assets\n- [ ] Record software and operating-system versions\n- [ ] Use asset criticality to prioritize remediation\n- [ ] Use risk ratings to prioritize remediation\n- [ ] Track remediation status\n- [ ] Identify unsupported or end-of-life software\n- [ ] Regularly scan for newly introduced assets\n\n## 22. Track Installed Software\n\n- [ ] Inventory software installed on endpoints and servers\n- [ ] Record software name and version\n- [ ] Record publisher/vendor\n- [ ] Record install location where useful\n- [ ] Identify unauthorized software\n- [ ] Identify outdated software\n- [ ] Identify vulnerable software\n- [ ] Identify unused software\n- [ ] Identify users of licensed applications\n- [ ] Compare installed software against license entitlements\n\n## 23. Manage Software Licensing\n\n- [ ] Maintain records of purchased licenses\n- [ ] Maintain records of deployed licenses\n- [ ] Track license keys securely\n- [ ] Record vendor contacts\n- [ ] Track renewal dates\n- [ ] Track subscription expiration dates\n- [ ] Remove or recover licenses when employees leave\n- [ ] Reassign licenses when devices are repurposed\n- [ ] Reconcile entitlements against actual installations\n- [ ] Prepare for vendor software audits\n\n## 24. Use Cloud-Native Inventory Capabilities\n\n- [ ] Enable configuration/inventory services provided by the cloud provider\n- [ ] Inventory cloud resources automatically\n- [ ] Track configuration changes\n- [ ] Apply consistent resource tags\n- [ ] Identify newly created resources\n- [ ] Identify unapproved resources\n- [ ] Detect insecure configurations\n- [ ] Identify resources created from outdated or vulnerable images\n- [ ] Alert responsible teams when risky changes occur\n- [ ] Reconcile cloud inventory with the enterprise source of truth\n\n## 25. Manage Infrastructure as Code\n\n- [ ] Track infrastructure defined through tools such as Terraform or equivalent platforms\n- [ ] Maintain infrastructure code in version control\n- [ ] Require review and approval for infrastructure changes\n- [ ] Maintain an audit trail of changes\n- [ ] Use infrastructure state information to support asset inventory\n- [ ] Compare deployed infrastructure against approved code\n- [ ] Investigate unmanaged infrastructure created outside approved processes\n\n## 26. Implement Change Tracking\n\n- [ ] Record asset additions\n- [ ] Record asset removals\n- [ ] Record configuration changes\n- [ ] Record software installations\n- [ ] Record software removals\n- [ ] Record software version changes\n- [ ] Record ownership changes\n- [ ] Record user-assignment changes\n- [ ] Record location changes\n- [ ] Record risk/criticality changes\n- [ ] Alert on unauthorized or unexpected changes\n- [ ] Maintain sufficient history to support investigations\n\n## 27. Monitor and Report\n\n- [ ] Alert on software-license renewals\n- [ ] Alert on warranty expirations\n- [ ] Alert on certificate expirations\n- [ ] Alert on domain expirations\n- [ ] Alert on unsupported software\n- [ ] Alert on unpatched critical systems\n- [ ] Alert on unauthorized software\n- [ ] Alert on new or unknown devices\n- [ ] Alert on missing endpoint protection\n- [ ] Alert on disabled encryption where required\n- [ ] Generate regular asset inventory reports\n- [ ] Report trends to management\n- [ ] Use inventory trends to support budgeting and procurement\n- [ ] Track inventory completeness and accuracy as measurable metrics\n\n## 28. Automate Wherever Possible\n\n- [ ] Identify repetitive asset-management tasks\n- [ ] Automate asset discovery\n- [ ] Automate data collection from authoritative sources\n- [ ] Automate synchronization with DNS and DHCP\n- [ ] Automate vulnerability-to-asset correlation\n- [ ] Automate software inventory\n- [ ] Automate cloud inventory\n- [ ] Automate warranty/license/certificate expiration alerts\n- [ ] Automate stale-account detection\n- [ ] Automate reporting\n- [ ] Validate automated data before treating it as authoritative\n\n## 29. Control Unmanaged Assets\n\n- [ ] Establish a process for reporting newly discovered assets\n- [ ] Investigate devices not found in the official inventory\n- [ ] Determine the owner of undocumented assets\n- [ ] Determine why the asset bypassed the normal process\n- [ ] Add legitimate assets to inventory\n- [ ] Isolate or remove unauthorized assets where appropriate\n- [ ] Correct the process that allowed the asset to remain undocumented\n\n## 30. Maintain Documentation Quality\n\n- [ ] Keep documentation current\n- [ ] Use standardized terminology\n- [ ] Use consistent naming conventions\n- [ ] Record owners for documents and inventories\n- [ ] Record revision dates\n- [ ] Review documentation after significant changes\n- [ ] Ensure documentation is accessible to authorized personnel\n- [ ] Protect sensitive documentation from unauthorized access\n- [ ] Record lessons learned from incidents and operational problems\n- [ ] Update procedures when weaknesses are identified\n\n## 31. Periodic Asset Management Review\n\n### Monthly or Frequently\n\n- [ ] Review newly discovered assets\n- [ ] Review high-risk vulnerabilities on critical assets\n- [ ] Review unauthorized software\n- [ ] Review approaching expirations\n- [ ] Review failed inventory integrations\n- [ ] Review assets with missing owners\n\n### Quarterly\n\n- [ ] Reconcile major asset sources against the central inventory\n- [ ] Review privileged accounts\n- [ ] Review cloud resources\n- [ ] Review asset risk and criticality\n- [ ] Review unsupported software and operating systems\n- [ ] Review license utilization\n- [ ] Review stale or inactive assets\n\n### Annually\n\n- [ ] Conduct a complete asset inventory review\n- [ ] Review the asset-management policy\n- [ ] Review the data-classification scheme\n- [ ] Review lifecycle procedures\n- [ ] Review disposal procedures\n- [ ] Review naming and tagging standards\n- [ ] Review integrations and automation\n- [ ] Review vendor and support information\n- [ ] Review the effectiveness of the single source of truth\n- [ ] Identify and prioritize improvements for the next year\n\n## 32. Final Program Validation\n\n- [ ] Can you quickly determine who owns every critical asset?\n- [ ] Can you identify all internet-facing systems?\n- [ ] Can you identify which assets contain sensitive data?\n- [ ] Can you identify which systems have a vulnerable software version?\n- [ ] Can you identify which users have privileged access?\n- [ ] Can you locate a lost or stolen employee device in the inventory?\n- [ ] Can you determine which assets are affected by a new vulnerability?\n- [ ] Can you identify unauthorized cloud spending or resources?\n- [ ] Can you identify systems associated with a security incident?\n- [ ] Can you determine how sensitive data flows between systems?\n- [ ] Can you identify expired or soon-to-expire licenses, certificates, warranties, and domains?\n- [ ] Can you verify that retired assets were securely sanitized?\n- [ ] Can you produce an accurate inventory report when management or auditors request one?\n- [ ] Is asset information updated as part of normal business operations?\n- [ ] Is the inventory actively used for security decisions rather than simply maintained as documentation?\n\nWith the final validation green, my organization knows what it has — and everything downstream, from [Vulnerability Management](vulnerability-management.html) to [Incident Response](incident-response.html), gets faster and surer. The test running through the whole sequence: **can the inventory answer a security question in minutes, and is it actually used to make security decisions?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## The Least Glamorous Control\n\n**Ben:** Of all the records in a security journal, this is the one about... keeping a list. Asset management is the chapter everyone skips on the way to the firewall chapter. Convince me it deserves a record of its own.\n\n**Ana:** It deserves the record because every other record silently assumes it. Patching assumes you know what is deployed. Monitoring assumes you know what normal looks like. Incident response assumes you can find the machine, its owner, and what data is on it — at 2 a.m. When a critical vulnerability drops on a Friday afternoon, the difference between a two-hour response and a two-week one is whether \"which assets run this software?\" is a query or a research project. The record's whole framing is in its first commitment: this is an ongoing security program, not a one-time inventory exercise.\n\n**Ben:** Everyone says that. Then the annual audit comes, someone does a heroic spreadsheet sweep, and the list is stale by the next quarter.\n\n**Ana:** The record has a name for that — the annual spreadsheet safari — and its answer is structure, not virtue. An executive sponsor, a cross-functional team, documented procedures, and a review rhythm: monthly for new discoveries and expirations, quarterly for reconciling sources and reviewing privileged accounts, annually for the full program review. A program has a heartbeat; a project has a deadline and then a decay curve.\n\n**Ben:** And \"single source of truth.\" In practice every organization I've seen has three: the CMDB, the finance spreadsheet, and the cloud console. They all disagree.\n\n**Ana:** Two sources of truth is zero. The moment they disagree, every team starts keeping a private fourth copy, and each copy rots independently. Declaring one authoritative system — and making sure every team knows which one it is — is a decision about where arguments end, not about tooling. The record is deliberately un-precious about the tool itself: a spreadsheet can be the honest answer for a small environment. What's mandatory is the discipline around it — defined write access, backups, version history, regular accuracy reviews — and the plan to migrate before the basic tool becomes unmaintainable, not after.\n\n## Owners, Classes, and the Fields That Matter\n\n**Ben:** The schema section lists something like twenty-five fields per asset. Nobody fills in twenty-five fields, Ana. That inventory dies of its own ambition.\n\n**Ana:** Coverage follows criticality — the record doesn't ask for every field on every mouse and monitor on day one. But for significant assets, the schema is rich because decisions need it: you can't prioritize patching without criticality, can't respond to an incident without dependencies and backup information, can't do disposal properly without data classification. And if I had to defend one field above all: owner. An asset without an owner is an incident without a responder. Owner is who answers the phone, who approves the emergency change, who knows whether the strange login was expected.\n\n**Ben:** The record extends ownership to accounts too — service accounts specifically get owners.\n\n**Ana:** Because service accounts are the accounts nobody thinks they own. They outlive the project that created them, hold real privileges, and their passwords never rotate because nobody knows what breaks. The account inventory — creation dates, termination dates, MFA status, who is a domain admin, what is shared — plus periodic access reviews and prompt removal when people leave: that's identity hygiene grounded in the inventory, before [Authentication](authentication.html) even enters the picture.\n\n**Ben:** Then classification. Four tiers — Public, Internal, Confidential, Highly Confidential. Isn't a scheme that simple just theater?\n\n**Ana:** Simple is the feature. An organization that protects all data equally protects its crown jewels at spreadsheet level. Four classes are few enough that every department can actually apply them, and each class carries concrete instructions — access controls, encryption, approved sharing methods, retention, disposal. And the classification isn't invented in a security vacuum: the record requires interviewing each department. What data do you handle, where does it live, what regulations apply, what leaked before? The scanner sees the network; the business knows the data.\n\n## Edges and Robots\n\n**Ben:** The lifecycle section — procure, deploy, manage, decommission. That reads like an IT operations manual, not security.\n\n**Ana:** Except the lifecycle's dangerous moments are exactly its edges, and both edges are security events. At deployment: default credentials replaced, security configuration applied, patches current, endpoint protection installed, scanned, encryption verified — before production, because a machine that goes live half-configured stays half-configured. At decommissioning: accounts, tokens, and certificates revoked, monitoring and DNS records removed, and data destroyed by an approved method with the destruction verified and documented. The anti-pattern is the eBay hard drive — a retired device leaving the building with the data intact. A decommissioned asset the inventory can't vouch for is a breach with a delay timer.\n\n**Ben:** Verified destruction, certificates of destruction — that's real friction compared to the dumpster.\n\n**Ana:** Deliberate friction, and cheap compared to explaining to a regulator why customer data surfaced in a second-hand market. The record even distinguishes methods honestly — secure erase, cryptographic erasure when full-disk encryption was properly implemented, physical destruction when sensitivity demands it.\n\n**Ben:** Now automation. The record says automate everything — discovery from ARP and DHCP, scanner integration, cloud APIs, IaC state, expiration alerts. Then it turns around and says don't trust it. Which is it?\n\n**Ana:** Both, and the sequence matters: automation feeds the inventory, humans keep it honest. Hand-maintained inventories are stale by definition — the estate changes faster than any manual process. So the record automates collection, correlation, and alerting aggressively. But every automated source has blind spots and produces duplicates and ghosts, so the record insists on the step programs skip: validate automated data before treating it as authoritative, and reconcile the major sources against the central inventory quarterly. The robot fills the register; the reconciliation is where the register earns trust.\n\n**Ben:** And when discovery finds a device that isn't in the inventory at all?\n\n**Ana:** That's my favorite discipline in the chapter. The lazy fix is to quietly add it — which repairs the record and preserves the leak. The record's sequence is: find the owner, determine *why* the asset bypassed the process, add it or remove it, and then correct the process that let it stay undocumented. An unmanaged asset is a process failure wearing a device costume. Shadow assets are how organizations get breached through systems nobody was defending.\n\n## The Stopwatch Test\n\n**Ben:** The chapter ends with fifteen validation questions — can you identify all internet-facing systems, can you find which assets a new vulnerability affects, can you verify retired assets were sanitized. What makes that list more than a quiz?\n\n**Ana:** The stopwatch. Every question is phrased as something the inventory should answer in minutes, because that's how the questions arrive in real life — with a CVE trending, an auditor in the room, or an incident running. And the last question is the one that decides whether the whole program was worth it: is the inventory actively used for security decisions, or simply maintained as documentation? A write-only inventory — data in, no decisions out — fails even if every field is filled.\n\n**Ben:** So the honest test isn't completeness, it's consumption.\n\n**Ana:** Right. The inventory earns its keep when [Vulnerability Management](vulnerability-management.html) pulls criticality to order remediation, when [Incident Response](incident-response.html) pulls owners and dependencies mid-incident, when [Logging and Monitoring](logging-and-monitoring.html) alerts on unknown devices, and when budgeting pulls lifecycle trends. Completeness is the means; consumption is the point.\n\n**Ben:** All right, I'll concede it: the list isn't the boring part of security — it's the load-bearing part. One authoritative inventory, an owner on everything, security at the lifecycle's edges, automation that gets audited, and a stopwatch on every question.\n\n**Ana:** That's the record. You cannot defend what you do not know you have — and knowing, here, means answering in minutes and acting on the answer.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why the organization cannot defend what it does not know it has — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Nadia shines a flashlight on a dusty unknown server tagged with a question mark at 2 a.m.](assets/images/asset-management/comic-01-the-mystery-server.jpeg)\n**Panel 1:** *The hook: the ownerless server — critical, running, and nobody's, discovered at 2 a.m. when no one can approve shutting it down.*\n\n![Comic panel: a critical vulnerability alert arrives while Nadia digs through a mountain of binders and printouts.](assets/images/asset-management/comic-02-friday-night-research-project.jpeg)\n**Panel 2:** *The problem: when a critical vulnerability lands on a Friday night, 'which assets run this?' is either a two-hour query or a two-week research project.*\n\n![Comic panel: three screens labeled CMDB, Spreadsheet, and Cloud Console show different counts while a colleague keeps a secret fourth list.](assets/images/asset-management/comic-03-three-competing-inventories.jpeg)\n**Panel 3:** *The wrong way: the three competing inventories — when they disagree, every team keeps a private fourth, and each copy decays independently.*\n\n![Comic panel: Vera points at a single cabinet labeled Source of Truth fed by pipes from smaller systems while Nadia secures its write drawer.](assets/images/asset-management/comic-04-one-source-of-truth.jpeg)\n**Panel 4:** *The principle: one authoritative system, and every team knows which one it is — a decision about where arguments end, not a tooling decision.*\n\n![Comic panel: Nadia attaches owner name tags with criticality gauges to a server, laptop, cloud, certificate, and service account.](assets/images/asset-management/comic-05-owner-on-everything.jpeg)\n**Panel 5:** *Every asset — including the service accounts nobody thinks they own — carries an owner, a criticality, and a risk rating; owner is the single highest-value field.*\n\n![Comic panel: a conveyor belt through Procure, Deploy, Manage, Decommission with credentials replaced at deploy and a drive shredded and certified at decommission.](assets/images/asset-management/comic-06-lifecycle-edges.jpeg)\n**Panel 6:** *The lifecycle's dangerous moments are its edges: deploy hardened and scanned, decommission with revoked access and verified, documented data destruction — no eBay hard drives.*\n\n![Comic panel: a discovery robot sweeps device icons into a ledger while Nadia inspects one with a magnifying glass and sets a stray gadget aside to investigate.](assets/images/asset-management/comic-07-the-trusting-robot.jpeg)\n**Panel 7:** *Automation feeds the inventory; validation keeps it honest — and an unmanaged asset is a process failure to investigate, not a record to quietly add.*\n\n![Comic panel: a wall calendar with monthly, quarterly, and annual review rings, next to a crossed-out picture of an annual inventory safari.](assets/images/asset-management/comic-08-the-review-rhythm.jpeg)\n**Panel 8:** *The cost of staying honest: a standing rhythm — monthly discoveries and expirations, quarterly reconciliation, annual full review — not a heroic yearly spreadsheet safari.*\n\n![Comic panel: Vera times Nadia with a stopwatch as one screen instantly shows affected assets, their owner, and what faces the internet.](assets/images/asset-management/comic-09-answers-in-minutes.jpeg)\n**Panel 9:** *The closer: the test with a stopwatch — which assets are affected, who owns them, what faces the internet, answered in minutes and actually used for decisions.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

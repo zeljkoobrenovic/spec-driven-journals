@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Endpoints</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="unix-servers.html" title="Unix Application Servers">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="databases.html" title="Databases">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Hardening the Estate</p>
+        <h1>Endpoints</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  7 min · <a class="spec-link" href="endpoints.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/endpoints/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/endpoints/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="unix-servers.html" title="Unix Application Servers">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="databases.html" title="Databases">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-ENDPOINTS", "status": "draft:gray", "title": "Endpoints", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "endpoints", "timetoread": "7 min", "excerpt": "The endpoint is where the attack actually lands — the laptop that opens the attachment, the phone that leaves the taxi, the printer nobody patched. So every endpoint in my organization meets one bar: patched with the patches verified, hardened against a secure baseline, host firewall on everywhere including home networks, full-disk encryption confirmed active before the device ships, endpoint protection running but never the only control, mobile devices under MDM with remote wipe, telemetry centralized with privacy expectations agreed with HR and legal first, and the nontraditional endpoints — printers, cameras, door locks, HVAC, telephony, SCADA — inventoried and secured like everything else. The test I hold the estate to: the final endpoint security review comes back green for every device class, including the printer.", "tags": "endpoints, patch management, hardening, full-disk encryption, mobile device management, endpoint protection, IoT, monitoring", "icon": "assets/icons/endpoints.png", "logo": "assets/images/endpoints/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["endpoints", "patch management", "hardening", "full-disk encryption", "mobile device management", "endpoint protection", "IoT", "monitoring"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: The endpoint is where the attack actually lands, so every endpoint in my organization meets one bar. **Every device stays patched — and the patches are verified**, not assumed; **every endpoint type is hardened against a secure baseline** by removing what it does not need; **the host firewall is on everywhere**, including home and public networks; **full-disk encryption is confirmed active before a device is deployed**, with recovery keys centrally managed; **endpoint protection runs but is never the only control**; **mobile devices are enrolled, policy-managed, and remotely wipeable**; **endpoint activity is visible and centrally logged**, with privacy expectations set with HR and legal before the monitoring starts; and **the forgotten endpoints count** — printers, cameras, thermostats, door locks, telephony, and industrial controllers are inventoried, de-defaulted, and secured like everything else. The test I hold the estate to: **the final endpoint security review comes back green for every device class — including the printer.**\n\n## Statement\n\nThis is the bar every endpoint in my organization is held to — laptop, desktop, phone, and everything with an IP address that is not a server.\n\n![Diagram of laptops, phones, printers, cameras, door locks, HVAC, and industrial controllers all passing under one shared security bar with green checks.](assets/images/endpoints/one-bar-every-device-class.jpeg)\n**Figure 1:** *One bar for the whole estate: every device class passes the same endpoint review — including the printer.*\n\n**Every endpoint stays current — and currency is verified.**\n\n- **Patching is regular, centralized, and checked.** Operating system security updates are enabled everywhere, managed centrally where possible, and deployment is verified — a patch that did not land is a patch that did not happen.\n- **Every platform has a managed channel.** Windows endpoints update through Windows Update for Business or an approved management platform; macOS devices receive updates through MDM; Unix and Linux desktops receive regular package updates; automation carries the load wherever appropriate.\n- **The edges are covered.** Unmanaged and BYOD devices have a defined update process, third-party applications are patched and current, software without automatic updates is monitored for releases, and an inventory of installed applications and versions exists.\n\n**Endpoints are hardened by subtraction.**\n\n- Each endpoint type has a secure baseline configuration. Unnecessary services are removed or disabled — after confirming what they do — running services and processes are reviewed regularly, and unnecessary applications and components come off. Less functionality, less attack surface.\n\n**The host firewall is on. Everywhere.**\n\n- Every endpoint runs its host-based firewall, with inbound restrictions configured, outbound restrictions where appropriate, and rules reviewed periodically. The policy travels with the device: it applies on home, public, and otherwise untrusted networks, not just in the office.\n\n**Disks are encrypted before deployment — and I know what encryption does not cover.**\n\n- Full-disk encryption is enabled on every laptop and desktop holding organizational data — BitLocker on Windows, FileVault on macOS, an appropriate solution on Linux — with recovery keys stored or centrally managed, and **encryption confirmed active before the device is deployed**.\n- A locked, sleeping, or hibernating device may still hold encryption keys in memory; where stronger protection against physical attack is required, the device is shut down.\n\n**Endpoint protection runs — as one layer, never the strategy.**\n\n- Approved antivirus, antimalware, or endpoint protection software is installed, its signatures current, its services confirmed running, and its alerts actually reviewed. It is never relied on as the only control.\n\n**Mobile devices are managed devices.**\n\n- Supported mobile devices are enrolled in MDM, with PIN and password requirements enforced, VPN enforced where required, application installation controlled, approved configuration policies applied, and remote wipe enabled. Which device types and platforms the organization supports is defined, and BYOD devices carry appropriate controls.\n\n**Endpoint activity is visible — with the privacy contract signed first.**\n\n- Endpoint telemetry is collected: open network connections, running processes, open files, and other relevant activity, centralized where possible and used for malware detection and incident investigation. Tools such as osquery or Sysmon are the worked example. **Before extensive monitoring is deployed, employee privacy expectations are defined and the policies coordinated with HR and legal.**\n\n**The forgotten endpoints count.**\n\n- Nontraditional endpoints and IoT devices are inventoried; default passwords are changed immediately and unnecessary default accounts removed; firmware stays updated; insecure or specialized devices are segmented from sensitive systems. Printers, IP cameras, thermostats and HVAC, electronic door locks, IP telephony, and SCADA and industrial-control devices are all in scope — documented, secured, and tested before production.\n\n**Management is centralized, so the bar is enforceable.**\n\n- Centralized consoles wherever practical: authentication, configuration and policy enforcement, patch and software management, security logging, and organizational file storage where appropriate. Similar endpoint types carry consistent configurations, and automation takes the administrative overhead out of keeping them consistent.\n\n## How to Read This\n\nThis record sits in the **Hardening the Estate** section of the journal, alongside [Microsoft Windows Infrastructure](windows-infrastructure.html) and [Unix Application Servers](unix-servers.html) — those records cover the server estate; this one covers the devices people carry and the nontraditional endpoints around them, before the estate narrows to [Databases](databases.html) and widens to [Cloud Infrastructure](cloud-infrastructure.html). It is grounded in the Endpoints chapter of the *Defensive Security Handbook*. Where the chapter names concrete platforms — Windows Update for Business, BitLocker, FileVault, osquery, Sysmon — the checklist keeps them verbatim and this article states the commitment at the capability level, with the named platform as the worked example. The full working checklist lives in the **Checklist** tab; the management summary is in the **TL;DR** tab and the conversation in the **Conversation** tab.\n\n## Rationale\n\n**The endpoint is where the attack actually lands.** Phishing, malicious attachments, drive-by downloads, stolen laptops — the overwhelming majority of incidents begin on a device in someone's hands, not on a hardened server behind three firewalls. That is why this record refuses to treat endpoint security as the unglamorous cousin of infrastructure security. The estate of laptops, phones, and printers *is* the attack surface most adversaries see first, and the bar it is held to determines how most incidents start — or fail to.\n\n**Patching is the highest-return control, and verification is the half that gets skipped.** Enabling updates is the easy part; the chapter's discipline is in the second step — verify that patches are successfully deployed. A fleet where updates are \"enabled\" but never verified converges on the same state as an unpatched fleet, one silent failure at a time. The same logic extends to the software nobody thinks about: third-party applications, and the tools with no auto-update channel that only stay current if someone is watching for releases. An inventory of installed applications and versions is what makes that watching possible at all.\n\n![Two-panel diagram of a green patch dashboard hiding silently failed laptops versus a verification loop that finds and fixes the failed patch.](assets/images/endpoints/enabled-vs-verified-patching.jpeg)\n**Figure 2:** *Enabling updates is the easy half: without verification the fleet converges on unpatched one silent failure at a time, while the dashboard stays green.*\n\n**Hardening is subtraction, done with your eyes open.** Every service, application, and component an endpoint runs is functionality an attacker can potentially abuse; removing what is not needed shrinks the attack surface without buying a single product. But the chapter adds a caution I keep deliberately: confirm what a service does before disabling it. Hardening by guesswork produces outages, and outages produce rollbacks that quietly undo the hardening. Baselines per endpoint type, plus regular review of what is actually running, keep the subtraction honest over time.\n\n**Full-disk encryption is a pre-deployment gate, not a post-incident wish.** The moment you need encryption is the moment the laptop is already gone, which is why the record requires confirming it is active *before* the device ships — an unencrypted device discovered after the theft is a breach notification, not an IT ticket. Recovery keys are centrally managed because encryption without recoverable keys converts a security control into a data-loss mechanism. And the caveat matters: a sleeping or locked device may still hold keys in memory, so FDE protects the powered-off laptop in the taxi, not the suspended one seized at the border. When the physical threat is real, the device is shut down.\n\n![Diagram of a laptop passing an encryption-confirmed gate before deployment with keys escrowed to a vault, and a comparison of a sleeping laptop holding keys in memory versus a powered-off protected laptop.](assets/images/endpoints/fde-gate-and-sleep-caveat.jpeg)\n**Figure 3:** *Encryption is a pre-deployment gate with centrally managed keys — and it protects the powered-off laptop in the taxi, not the sleeping one.*\n\n**Endpoint protection is one layer, never the strategy.** The chapter says it plainly: do not rely on endpoint protection as the only security control. Signature-based and behavioral tools catch what they catch, and a fleet whose entire defense is an agent is one novel loader away from undefended. The agent earns its place in this record — installed, updated, running, alerts reviewed — precisely because it sits inside a stack of patching, hardening, firewalls, encryption, and monitoring, not instead of one.\n\n**Visibility without a privacy contract backfires.** Telemetry on processes, connections, and files is what turns an endpoint estate from a blind spot into a detection surface, and centralizing it is what makes investigation possible. But monitoring the devices people work on — sometimes their own devices — is an act with employment-law and trust consequences. The chapter's ordering is the right one: define employee privacy expectations and coordinate with HR and legal *before* deploying extensive monitoring. A monitoring program discovered by the workforce rather than announced to it poisons exactly the trust an insider-aware security program depends on.\n\n**The estate is bigger than the devices with keyboards.** Printers spool the documents, cameras watch the doors, HVAC controllers sit on the network, door locks decide who enters, and every one of them ships with a default password and a web interface from 2013. Attackers do not care that nobody thinks of the printer as a computer; it is one. So the record pulls the whole long tail into scope — inventoried, de-defaulted, firmware-updated, segmented where the device cannot be secured, and tested before production. The segmentation escape valve matters: some devices will never meet the bar, and for those the answer is isolation, not exemption.\n\n**Centralization is what makes the bar enforceable at scale.** Every commitment above is achievable by hand on ten devices and impossible by hand on a thousand. Centralized authentication, configuration, patching, and logging — with consistent configurations across similar device types and automation absorbing the overhead — is the difference between a policy and a posture. Decentralized endpoint management does not fail loudly; it drifts, one special-case machine at a time, until the final review is green on paper and false in fact.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Every endpoint is patched, and patch deployment is verified. | Enabling auto-update is enough — unverified patching converges on unpatched. |\n| Each endpoint type is hardened against a secure baseline by removing unneeded services. | Disable things blindly — confirm what a service does before turning it off. |\n| The host firewall is on everywhere, including home and public networks. | The corporate perimeter protects devices — the policy travels with the device. |\n| Full-disk encryption is confirmed active before deployment, keys centrally managed. | FDE protects a sleeping laptop — keys can persist in memory; shut down under real physical threat. |\n| Endpoint protection is installed, current, running, and reviewed. | Endpoint protection is the security strategy — it is one layer, never the only control. |\n| Mobile devices are MDM-enrolled with remote wipe; BYOD carries defined controls. | Personal devices are unmanageable — BYOD has a process, not an exemption. |\n| Endpoint telemetry is centralized for detection and investigation. | Monitor first, explain later — privacy expectations are set with HR and legal before deployment. |\n| Printers, cameras, HVAC, door locks, telephony, and SCADA are endpoints. | Only devices with keyboards count — the long tail is inventoried, secured, or segmented. |\n\nConcretely: no device class in my organization is exempt from the endpoint review — a new device type entering the estate gets a baseline, a patch channel, and an owner before it gets a network port, and the first audit question is *\"show me the verification, not the policy.\"*\n\n## Anti-Patterns\n\n- **The unverified patch job.** Updates \"enabled everywhere,\" deployment checked nowhere — the fleet drifts to unpatched one silent failure at a time, while the dashboard stays green.\n- **The gold image that rusted.** A hardening baseline built once, never reviewed — three years later the running services on real machines bear no resemblance to the baseline document.\n- **The exempt executive.** The board member's laptop that skips MDM, encryption checks, and patching because asking felt awkward — the highest-value target with the weakest controls.\n- **Antivirus as strategy.** One agent installed, box ticked, program declared done — the only control is the one every attacker rehearses against.\n- **The sleeping-laptop defense.** Treating a suspended, FDE-enabled laptop as protected — the keys are in memory, and the protection you counted on never engaged.\n- **The printer that wasn't an endpoint.** The device that spools every confidential document, running ten-year-old firmware with the default admin password, invisible to every review.\n- **Surveillance by surprise.** Extensive endpoint monitoring deployed quietly, discovered by the workforce — the trust the program depends on, spent on its first day.\n- **BYOD limbo.** Personal devices that touch organizational data with no enrollment, no controls, and no wipe capability — unmanaged by policy and unmanageable by design.\n\n## Related Records\n\n- [Microsoft Windows Infrastructure](windows-infrastructure.html) — the Windows server estate; this record covers the Windows devices people carry.\n- [Unix Application Servers](unix-servers.html) — the Unix server estate; Unix and Linux desktops are held to this record's bar.\n- [Asset Management and Documentation](asset-management.html) — the inventory this record's application and device tracking plugs into; you cannot patch what you do not know you have.\n- [Vulnerability Management](vulnerability-management.html) — the organization-wide scanning-and-remediation loop that endpoint patching feeds and answers to.\n- [Network Segmentation](network-segmentation.html) — where the insecure and specialized devices this record cannot harden get isolated instead.\n- [Logging and Monitoring](logging-and-monitoring.html) — the central pipeline that endpoint telemetry flows into.\n- [Physical Security](physical-security.html) — the shutdown-versus-sleep caveat is where endpoint security hands over to physical security.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every endpoint in my organization — corporate-owned, BYOD, and nontraditional — and serves as the audit bar for the existing estate. I revisit it if the endpoint mix shifts materially (a new device class at scale, a move to virtual desktops), if an audit finds device classes outside the review's scope (the \"including the printer\" test failing in practice), or if monitoring practice and the agreed privacy expectations drift apart — either direction of that drift is a defect.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition — Lee Brotherston, Amanda Berlin, and William F. Reyor III (O'Reilly) — the Endpoints chapter, whose checklist (including the final endpoint security review) this record distills.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "The endpoint is where the attack actually lands — the laptop that opens the attachment, the phone that leaves the taxi, the printer nobody patched. So every endpoint in my organization meets one bar: **patched with the patches verified, hardened, firewalled, encrypted before deployment, protected, managed, and monitored** — and the nontraditional endpoints count too. The test the estate is held to: the final endpoint security review comes back green for every device class, including the printer.\n\n**What changes**\n\n* **Patching becomes verified, not assumed.** Every platform gets a managed update channel — Windows through Windows Update for Business or an approved platform, macOS through MDM, Unix/Linux through package updates — deployment is verified, third-party applications are covered, and an inventory of installed software makes the gaps visible.\n* **Hardening becomes subtraction against a baseline.** Each endpoint type gets a secure baseline; unnecessary services and applications come off — after confirming what they do — and running services are reviewed regularly.\n* **Firewalls and encryption travel with the device.** Host firewalls are on everywhere, including home and public networks; full-disk encryption is confirmed active before a device ships, recovery keys are centrally managed, and devices facing real physical threat are shut down, not slept — keys can persist in a suspended machine's memory.\n* **Mobile and BYOD get a real process.** MDM enrollment, PIN and configuration policies, controlled app installation, remote wipe, defined supported platforms, and explicit BYOD controls.\n* **Visibility comes with a privacy contract.** Endpoint telemetry — processes, connections, files — is centralized for detection and investigation, and privacy expectations are agreed with HR and legal *before* extensive monitoring deploys.\n* **The forgotten endpoints enter scope.** Printers, cameras, HVAC, door locks, telephony, and SCADA devices are inventoried, de-defaulted, firmware-updated, and segmented where they cannot be secured.\n* **Management centralizes.** Authentication, configuration, patching, and logging run through central consoles with consistent per-type configurations — the bar becomes enforceable at scale.\n\n**What it costs**\n\n* Verification and baseline review are standing work, not one-time setup — a dashboard that says \"enabled\" is not evidence.\n* MDM, encryption checks, and firewall policies add friction to device provisioning — accepted deliberately, because the gate is cheaper than the breach notification.\n* The privacy coordination with HR and legal takes time before monitoring can expand — skipping it costs the trust the program runs on.\n\n**What we are not doing**\n\n* Not treating endpoint protection as the strategy — it is one layer in a stack, never the only control.\n* Not covering the server estate — that is [Microsoft Windows Infrastructure](windows-infrastructure.html) and [Unix Application Servers](unix-servers.html).\n* Not designing segmentation here — insecure devices get isolated per [Network Segmentation](network-segmentation.html).\n* Not mandating specific tools — named platforms are the worked example; the commitments are capability-level.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full working checklist and the final endpoint security review. Grounded in the Endpoints chapter of the* Defensive Security Handbook *(Brotherston, Berlin, and Reyor).*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — endpoint security from patching to the final review, across laptops, desktops, mobile, and the nontraditional endpoints. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Keeping Endpoints Up to Date\n\n- [ ] Enable regular operating system security updates\n- [ ] Use centralized patch management where possible\n- [ ] Verify that patches are successfully deployed\n- [ ] Keep Windows endpoints updated through Windows Update for Business or an approved management platform\n- [ ] Use MDM to manage and push updates to macOS devices\n- [ ] Configure Unix/Linux desktops to receive regular package updates\n- [ ] Automate updates with management tools or scheduled jobs where appropriate\n- [ ] Establish a process for updating unmanaged/BYOD devices\n- [ ] Keep third-party applications patched and current\n- [ ] Monitor software without automatic updates for new releases\n- [ ] Maintain an inventory of installed applications and versions\n\n## 2. Harden Endpoints\n\n- [ ] Establish a secure baseline configuration for each endpoint type\n- [ ] Remove or disable unnecessary services\n- [ ] Confirm what a service does before disabling it\n- [ ] Regularly review running services and processes\n- [ ] Remove unnecessary applications and components\n- [ ] Limit unnecessary functionality to reduce the attack surface\n\n## 3. Use Desktop Firewalls\n\n- [ ] Enable the host-based firewall on every endpoint\n- [ ] Configure inbound traffic restrictions\n- [ ] Restrict outbound traffic where appropriate\n- [ ] Review firewall rules periodically\n- [ ] Apply firewall policies to devices used on home, public, or otherwise untrusted networks\n\n## 4. Implement Full-Disk Encryption\n\n- [ ] Enable full-disk encryption on laptops and desktops containing organizational data\n- [ ] Use BitLocker on supported Windows systems\n- [ ] Use FileVault on supported macOS systems\n- [ ] Use an appropriate full-disk encryption solution on Linux/Unix systems\n- [ ] Store or centrally manage recovery keys where required\n- [ ] Confirm encryption is active before deploying devices\n- [ ] Remember that a locked, sleeping, or hibernating device may still retain encryption keys in memory\n- [ ] Shut down devices when stronger protection against physical attacks is required\n\n## 5. Endpoint Protection\n\n- [ ] Install approved antivirus/antimalware or endpoint protection software\n- [ ] Keep endpoint protection software and signatures updated\n- [ ] Confirm protection services are running correctly\n- [ ] Regularly review alerts and detections\n- [ ] Do not rely on endpoint protection as the only security control\n\n## 6. Mobile Device Management\n\n- [ ] Enroll supported mobile devices in an MDM platform\n- [ ] Enforce PIN/password requirements\n- [ ] Enforce VPN use where required\n- [ ] Control or restrict application installation\n- [ ] Apply approved configuration policies\n- [ ] Enable remote erase/wipe capabilities\n- [ ] Define which device types and platforms the organization will support\n- [ ] Apply appropriate controls to BYOD devices\n\n## 7. Endpoint Visibility and Monitoring\n\n- [ ] Collect endpoint security telemetry\n- [ ] Monitor open network connections\n- [ ] Monitor running processes\n- [ ] Monitor open files and other relevant system activity\n- [ ] Centralize endpoint logs where possible\n- [ ] Use endpoint data to support malware detection and incident investigation\n- [ ] Consider tools such as osquery or Sysmon where appropriate\n- [ ] Define employee privacy expectations before deploying extensive monitoring\n- [ ] Coordinate monitoring policies with HR/legal requirements\n\n## 8. Secure Other Endpoints\n\n- [ ] Inventory nontraditional endpoints and IoT devices\n- [ ] Change default passwords immediately\n- [ ] Remove or disable unnecessary default accounts\n- [ ] Keep device firmware and software updated\n- [ ] Segment insecure or specialized devices from sensitive systems where appropriate\n- [ ] Include printers in endpoint security reviews\n- [ ] Include IP-enabled cameras\n- [ ] Include IP-enabled thermostats/HVAC systems\n- [ ] Include electronic door-locking systems\n- [ ] Include IP telephony systems\n- [ ] Include SCADA/industrial-control devices where applicable\n- [ ] Document, secure, and test specialized devices before placing them into production\n\n## 9. Centralize Endpoint Management\n\n- [ ] Use centralized management consoles wherever practical\n- [ ] Centralize authentication\n- [ ] Centralize configuration and policy enforcement\n- [ ] Centralize patch and software management\n- [ ] Centralize security logging\n- [ ] Centralize organizational file storage where appropriate\n- [ ] Maintain consistent configurations across similar endpoint types\n- [ ] Reduce unnecessary administrative overhead through automation\n\n## Final Endpoint Security Review\n\n- [ ] All operating systems are patched\n- [ ] Third-party applications are patched\n- [ ] Unnecessary services are disabled\n- [ ] Host firewalls are enabled\n- [ ] Full-disk encryption is enabled\n- [ ] Endpoint protection is installed and current\n- [ ] Mobile devices are appropriately managed\n- [ ] Endpoint activity is sufficiently logged and monitored\n- [ ] IoT and specialized endpoints are inventoried and secured\n- [ ] Endpoint security controls are centrally managed where practical\n\nWith the final review green, the endpoint estate meets the bar — every device class covered, none exempt. The test running through the whole sequence: **does the review come back green for every device class, including the printer?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "7 min listen"}, "blocks": [{"type": "markdown", "content": "## Why Endpoints Come First for Attackers\n\n**Ben:** Straight question. This journal has records on Windows infrastructure, Unix servers, databases, cloud. Why does the humble laptop get its own executive record? Patching and antivirus is IT's day job.\n\n**Ana:** Because the laptop is where the attack actually lands. Phishing, malicious attachments, a stolen bag — the overwhelming majority of incidents start on a device in someone's hands, not on a hardened server. The server records defend what attackers want; this record defends what they reach first. And \"IT's day job\" is exactly the problem — when endpoint security is nobody's *bar* and everybody's chore, it drifts. This record states the bar: patched and verified, hardened, firewalled, encrypted, protected, managed, monitored — every device class, none exempt.\n\n**Ben:** \"Patched and verified.\" What does verification add? Every OS auto-updates now.\n\n**Ana:** Verification is the half that gets skipped. Enabling updates is a setting; verifying they deployed is a discipline. Machines fail silently — an update stuck for months, an agent that died, a laptop that never checks in. A fleet where updates are \"enabled\" but never verified converges on the same state as an unpatched fleet, one silent failure at a time, while the dashboard stays green. The record also pushes past the OS: third-party applications, software with no auto-update channel that someone has to watch, and an inventory of installed applications — because you cannot patch what you do not know is there.\n\n**Ben:** And every platform? Or is this a Windows record in disguise?\n\n**Ana:** Every platform, each through a managed channel — the chapter is explicit. Windows through Windows Update for Business or an approved management platform, macOS through MDM, Unix and Linux desktops through regular package updates, and a defined process even for unmanaged and BYOD devices. The named platforms are the worked example; the commitment is that no OS in the estate updates on the honor system.\n\n## Hardening, Firewalls, and the Encryption Caveat\n\n**Ben:** Hardening. Every security checklist since the nineties says \"disable unnecessary services.\" Why restate it?\n\n**Ana:** Because of the two words most checklists drop: *baseline* and *confirm*. Hardening is subtraction — every service and application is functionality an attacker can abuse, so what is not needed comes off. But it is subtraction with your eyes open: the record requires confirming what a service does before disabling it, because hardening by guesswork produces outages, and outages produce rollbacks that quietly undo the hardening. And it is subtraction against a per-type baseline that gets re-reviewed — otherwise the gold image rusts while the real machines drift.\n\n**Ben:** Host firewalls, though. Every device sits behind a corporate firewall already. Isn't the desktop firewall redundant?\n\n**Ana:** Only if the device never leaves. The record's point is that the policy travels with the device — home networks, coffee shops, airports, anywhere untrusted. The corporate perimeter defends the office; the host firewall defends the laptop on the kitchen table, which is where it spends half its life now. Inbound restricted, outbound restricted where appropriate, rules reviewed periodically.\n\n**Ben:** Full-disk encryption. BitLocker and FileVault are default-on these days. What's left to say?\n\n**Ana:** Two things that are not defaults. First, timing: encryption is confirmed active *before* the device is deployed, with recovery keys centrally managed. The moment you need FDE is the moment the laptop is already gone — discovering it was unencrypted after the theft is a breach notification, not an IT ticket. Second, the caveat: a locked, sleeping, or hibernating device can still hold encryption keys in memory. FDE protects the powered-off laptop in the taxi, not the suspended one seized at a border. Where the physical threat is real, the device is shut down. Counting on the sleeping-laptop defense is one of the record's named anti-patterns.\n\n**Ben:** And endpoint protection — antivirus. The industry's favorite checkbox.\n\n**Ana:** The record keeps it and demotes it in the same breath. Installed, signatures current, services confirmed running, alerts actually reviewed — and never relied on as the only control. That last line is verbatim from the chapter. An estate whose entire defense is one agent is one novel loader away from undefended. The agent earns its place inside a stack of patching, hardening, firewalls, encryption, and monitoring — not instead of it.\n\n## Monitoring People's Devices Without Losing Them\n\n**Ben:** Endpoint telemetry. Processes, network connections, open files, centralized — that is a lot of visibility into machines people also live on. Where's the line?\n\n**Ana:** The record draws it procedurally, and the ordering is the whole point: define employee privacy expectations and coordinate with HR and legal *before* deploying extensive monitoring. The telemetry itself is not optional — without it the estate is a blind spot, and tools like osquery or Sysmon are how investigations become possible at all. But a monitoring program the workforce discovers instead of being told about poisons exactly the trust the security program depends on. Surveillance by surprise costs more than the visibility is worth.\n\n**Ben:** Mobile devices. People will tolerate MDM on a corporate phone. On BYOD, remote wipe of a personal device is a fight.\n\n**Ana:** Which is why the record requires deciding, not improvising. Define which device types and platforms the organization supports, enroll supported devices with PIN policies, controlled app installation, VPN where required, remote wipe — and apply *appropriate* controls to BYOD. Appropriate is doing real work there: a containerized work profile, a wipe that covers organizational data. The anti-pattern is BYOD limbo — personal devices touching organizational data with no enrollment, no controls, and no wipe path. That is not flexibility; it is an unmanaged data store in someone's pocket.\n\n## The Printer Is a Computer\n\n**Ben:** Now the part I genuinely enjoy: the record puts printers, thermostats, and door locks in an executive security record.\n\n**Ana:** Because attackers do not share our taxonomy. The printer spools every confidential document, runs ten-year-old firmware, and still has the default admin password. IP cameras, HVAC controllers, door locks, telephony, SCADA where it applies — each one is a computer on the network that nobody thinks of as a computer. The record pulls the whole long tail into scope: inventoried, default passwords changed immediately, default accounts removed, firmware updated, and — for devices that can never meet the bar — segmented away from sensitive systems per [Network Segmentation](network-segmentation.html). Isolation is the escape valve; exemption is not.\n\n**Ben:** And the closing theme — centralize everything. Consoles, authentication, patching, logging. Isn't that just vendor-brochure language?\n\n**Ana:** It is the enforceability argument. Every commitment in this record is achievable by hand on ten devices and impossible by hand on a thousand. Central management with consistent per-type configurations and automation is what turns a policy into a posture. Decentralized endpoint management does not fail loudly — it drifts, one special-case machine at a time. And the most dangerous special case has a name in the anti-patterns: the exempt executive, the highest-value target with the weakest controls because nobody wanted to ask.\n\n**Ben:** So the takeaway: the endpoint estate is the attack surface most adversaries see first, and the bar is only real if it covers every device class — verified, not asserted, with no exemptions for rank and no blind spot for the printer.\n\n**Ana:** That is the record. And the closing test never changes: run the final endpoint security review and make it come back green for every device class — including the printer. If any class is exempt, that is where the incident starts.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why the endpoint is where the attack actually lands — and the one bar every device meets, in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: three vignettes of a laptop opening a wormy attachment, a phone left in a taxi, and a cobwebbed printer, Nadia pointing.](assets/images/endpoints/comic-01-where-the-attack-lands.jpeg)\n**Panel 1:** *The hook: the endpoint is where the attack actually lands — the laptop that opens the attachment, the phone that leaves the taxi, the printer nobody patched.*\n\n![Comic panel: a green updates-enabled dashboard above a row of quietly rusting laptops, Nadia discovering one is hollow.](assets/images/endpoints/comic-02-the-green-dashboard-lie.jpeg)\n**Panel 2:** *The problem: the unverified patch job — updates enabled everywhere and checked nowhere, so the fleet drifts to unpatched while the dashboard stays green.*\n\n![Comic panel: a manager plants one tiny antivirus umbrella over a pile of devices under malware storm clouds, an exempt crowned laptop nearby.](assets/images/endpoints/comic-03-antivirus-as-strategy.jpeg)\n**Panel 3:** *The wrong way: antivirus as strategy — one agent installed, box ticked, program declared done — while the executive's laptop skips the controls entirely.*\n\n![Comic panel: a queue of laptop, desktop, phone, and printer with race numbers approaching a single bar held by Vera, stamps reading patched, hardened, encrypted, managed.](assets/images/endpoints/comic-04-one-bar-every-device.jpeg)\n**Panel 4:** *The principle: one bar for every endpoint — patched and verified, hardened by subtraction, firewalled, encrypted, protected, managed, and monitored, whatever the device class.*\n\n![Comic panel: Nadia scans a laptop at a gate as a padlock lights up confirmed active, recovery keys in a wall case, a sleeping laptop dreaming of keys.](assets/images/endpoints/comic-05-encrypted-before-it-ships.jpeg)\n**Panel 5:** *Practice: full-disk encryption is a pre-deployment gate — confirmed active before the device ships, recovery keys centrally managed — and a sleeping laptop still holds keys in memory, so real physical threat means shut down.*\n\n![Comic panel: a laptop carries its own firewall shield from office to coffee shop to home while an enrolled phone is remotely wiped.](assets/images/endpoints/comic-06-the-policy-travels.jpeg)\n**Panel 6:** *Practice: protection travels with the device — the host firewall stays on across home and public networks, and mobile devices are enrolled, policy-managed, and remotely wipeable.*\n\n![Comic panel: Nadia signs a document with HR and legal representatives while a telemetry monitor waits unplugged behind them.](assets/images/endpoints/comic-07-the-privacy-contract-first.jpeg)\n**Panel 7:** *Practice: visibility with the privacy contract signed first — telemetry on processes, connections, and files is centralized for detection, but expectations are agreed with HR and legal before the monitoring starts.*\n\n![Comic panel: Nadia opens a closet full of printer, camera, thermostat, door lock, and desk phone wearing default-password tags.](assets/images/endpoints/comic-08-the-forgotten-endpoints.jpeg)\n**Panel 8:** *Practice: the forgotten endpoints count — printers, cameras, HVAC, door locks, and telephony get inventoried, default passwords changed, firmware updated, and the ones that cannot meet the bar get segmented, not exempted.*\n\n![Comic panel: Vera reviews a scoreboard of device classes all green-checked, the printer wearing a medal beside Nadia.](assets/images/endpoints/comic-09-green-including-the-printer.jpeg)\n**Panel 9:** *The closer: the test the estate is held to — the final endpoint security review comes back green for every device class, including the printer.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

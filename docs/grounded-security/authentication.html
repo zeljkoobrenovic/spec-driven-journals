@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Authentication</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="cloud-infrastructure.html" title="Cloud Infrastructure">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="network-security.html" title="Secure Network Infrastructure">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Identity and Network</p>
+        <h1>Authentication</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  8 min · <a class="spec-link" href="authentication.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/authentication/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/authentication/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="cloud-infrastructure.html" title="Cloud Infrastructure">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="network-security.html" title="Secure Network Infrastructure">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-AUTHENTICATION", "status": "draft:gray", "title": "Authentication", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "authentication", "timetoread": "8 min", "excerpt": "In my organization, identity is the first control plane, and no single authentication control is ever asked to carry the day alone. Identity is managed centrally under least privilege — SSO against password sprawl, automated provisioning and deprovisioning, dormant accounts removed, access cut the day someone leaves. Passwords are long, unique, and held in a vetted manager; credentials are stored only as salted, modern hashes, with MD5, SHA-1, and their generation retired. Authentication protocols are known with their attacks, verified in actual use, and chosen with threat modeling; MFA is required for privileged accounts, remote access, VPN, and email — and treated honestly as a control with known weaknesses. The test I hold the whole stack to: least privilege, centralized IAM, strong passwords, secure protocols, and MFA working together as a layered defense.", "tags": "security, authentication, identity and access management, passwords, multi-factor authentication, cryptography, authentication protocols, least privilege", "icon": "assets/icons/authentication.png", "logo": "assets/images/authentication/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["security", "authentication", "identity and access management", "passwords", "multi-factor authentication", "cryptography", "authentication protocols", "least privilege"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: In my organization, **identity is the first control plane** — and no single authentication control is ever asked to carry the day alone. **Identity is managed centrally under least privilege**: SSO against password sprawl, automated provisioning and deprovisioning, dormant accounts removed, access disabled the day an employee or vendor leaves. **Passwords are long, unique, and held in a vetted manager**, never shared and never reused, with credential stuffing assumed. **Credentials are stored only as salted hashes under modern algorithms** — MD5, SHA-1, and DES/3DES retired without nostalgia. **Authentication protocols are known with their attacks, verified in actual use, and chosen with threat modeling**; plaintext protocols are disabled. **MFA is required where it matters most** — privileged accounts, remote access, VPN, email — deployed consistently and treated honestly as a control with known weaknesses. The test I hold the stack to: **least privilege, centralized IAM, strong passwords, secure protocols, and MFA work together as a layered defense** — remove any one layer and the others still hold the line.\n\n## Statement\n\nWhen a system in my organization proves who someone is, this is the bar it is held to, end to end.\n\n**Identity is managed centrally and pruned relentlessly.**\n\n- **Least privilege is the default posture.** Every account gets the access its role requires and nothing more, and no single security control is relied on alone.\n- **Authentication and account management are centralized** where practical — SSO reduces password sprawl, and SCIM-style automation handles provisioning and deprovisioning so accounts appear and disappear with the people they belong to.\n- **Dormant identity is removed, not tolerated.** Unnecessary, obsolete, and unused accounts are deleted; access for departing employees and vendors is disabled promptly — the same day, not the same quarter.\n\n![Central identity hub driving the account lifecycle: automated provisioning on join, adjustment on role change, same-day removal on leave, and dormant accounts pruned.](assets/images/authentication/identity-lifecycle-pruning.jpeg)\n**Figure 1:** *Accounts appear and disappear with the people they belong to: provisioning is automated, departure disables access the same day, and dormant identity is removed, not tolerated.*\n\n**Passwords are long, unique, managed — and never trusted alone.**\n\n- **Length beats complexity.** Long, unique passphrases are the standard; short passwords with clever substitutions are not accepted, and randomly generated passphrases are preferred.\n- **No sharing, no reuse, no plaintext.** Passwords are never shared — not with coworkers, not with the help desk — and users are trained to report anyone who asks. Reuse across services is forbidden because exposed credentials will be tested everywhere through credential stuffing.\n- **Password managers are vetted tools, not conveniences.** The manager is protected by a strong master password and MFA, its storage encryption, lockout, auditing, and generation features are reviewed, and the software comes directly from the vendor with integrity verified.\n- **The reset path is as strong as the login path.** Weak knowledge-based questions are avoided; where questions cannot be, answers are randomized and stored in the manager; resets are protected with MFA where possible.\n\n**Credentials are stored as salted, modern hashes.**\n\n- **The team knows the difference between encryption, hashing, and salting** — and applies each where it belongs. Passwords are stored as hashes, never plaintext; every stored password gets its own random salt.\n- **Algorithm hygiene is enforced.** MD5, SHA-1, DES/3DES, and weak RSA/DSA key sizes are retired; password hashing uses modern, deliberately slow functions with NIST-aligned salts and work factors; post-quantum risk is on the radar, not on the backlog.\n\n**The infrastructure that authenticates is hardened.**\n\n- **Default credentials die on arrival.** Servers and management interfaces never run vendor defaults; BMC/iLO/IPMI interfaces are protected and segmented onto restricted networks.\n- **Windows authentication is hardened deliberately** — SMB signing required, SMB encryption where appropriate, SMBv1 disabled, fallback to weak dialects prevented, insecure guest authentication off, current Microsoft guidance reviewed.\n- **Policy fits the population.** Fine-grained password policies apply stronger requirements where justified, verified against the right groups, without needless complexity. Cloud IAM is selected on requirements — banned-password lists, conditional access, scale — not on the assumption that cloud solves access control by itself.\n\n**Protocols are known, verified, and chosen deliberately.**\n\n- **The team can explain what it runs**: NTLM's challenge-response flow and why pass-the-hash makes it legacy; the Kerberos ticket flow and its attack family — pass-the-ticket, Golden and Silver Tickets, Kerberoasting, AS-REP roasting; LDAP binds and why they run over LDAPS/TLS; RADIUS AAA and its EAP mechanisms; OIDC's token risks and SAML's assertion attacks.\n- **Actual usage is verified, not assumed** — configuration, logs, and packet analysis confirm which protocol a system really speaks. Protocols that transmit credentials in plaintext — Telnet, FTP, SNMPv2, HTTP, old SMB — are disabled.\n- **Protocol choice is an engineering decision** — requirements, scale, management complexity, interoperability, and threat modeling before production, not whatever the vendor defaulted to.\n\n**MFA is required where it matters and treated honestly.**\n\n- **MFA is mandatory for privileged accounts, remote access, VPN, email, and portals**, and extended to vendors, consultants, and other users where appropriate — in addition to strong passwords, never instead of them.\n- **MFA's weaknesses are managed, not denied.** MFA does not eliminate phishing; fatigue and push-bombing attacks are recognized, users are trained to refuse unexpected prompts, and code-matching methods are preferred over blind approval.\n- **The edges are covered.** Enrollment and reset processes are protected, systems excluded from the rollout are reviewed, and implementation is consistent across the organization — because implementation quality, not the acronym, determines what MFA is worth.\n\n## How to Read This\n\nThis record opens the **Identity and Network** section of the journal — who gets in, before what can talk to what. It is grounded in the Authentication chapter of the *Defensive Security Handbook*, and it sits at the boundary the whole estate depends on: [Microsoft Windows Infrastructure](windows-infrastructure.html), [Cloud Infrastructure](cloud-infrastructure.html), and every service with a login inherit the bar set here. The full working checklist — IAM, passwords, cryptography, every protocol, MFA, and the chapter's Final Review — lives in the **Checklist** tab; the **TL;DR** tab carries the management summary and the **Conversation** tab the dialog.\n\n## Rationale\n\n**Layering is the design, not a slogan.** The chapter's closing question — can I explain how least privilege, centralized IAM, strong passwords, secure protocols, and MFA work together as a layered defense? — is the whole record in one line. Every individual authentication control fails somewhere: passwords get phished, MFA gets fatigued, protocols get downgraded. The commitment is never that a control is unbreakable; it is that no single failure is sufficient. That is why the record refuses to let any one mechanism — including MFA — be treated as the control that makes the others optional.\n\n![Five concentric defensive rings — least privilege, centralized IAM, strong passwords, secure protocols, MFA — around a protected asset, with an attack piercing one ring and stopped by the next.](assets/images/authentication/layered-defense-holds.jpeg)\n**Figure 2:** *No single control is unbreakable and none carries the day alone: the commitment is that no single failure is sufficient — remove one layer and the others still hold the line.*\n\n**Centralization is what makes discipline enforceable.** A rule that must be applied by hand in forty systems is applied in thirty of them. SSO and centralized account management turn password policy, lockout, conditional access, and deprovisioning into decisions made once and enforced everywhere — and automated provisioning is really a deprovisioning guarantee. The day someone joins, automation is a convenience; the day someone leaves, it is the difference between access ending at once and an account nobody remembers surviving for years. Dormant accounts are the attacker's favorite identity: valid, monitored by no one, missed by no one.\n\n**Length wins because arithmetic wins.** Brute-force difficulty grows with every character far faster than with any substitution trick, which is why a long dull passphrase beats a short clever password — and why the record bans the predictable substitutions and personal facts that dictionary attacks eat first. Uniqueness is the second half of the same argument: breaches happen elsewhere, and credential stuffing means every reused password is only as safe as the least secure site it was ever typed into. A password manager is the only realistic way humans hold both lines at once, which is why the record treats it as vetted infrastructure — encrypted, MFA-protected, audited — rather than a browser convenience.\n\n**Storage discipline assumes the breach.** Hashing exists for the day the credential database is stolen. Plaintext turns that day into a total loss; fast general-purpose hashes turn it into a weekend of GPU time; unsalted hashes turn it into a rainbow-table lookup. Salted, deliberately slow, NIST-aligned hashing is the difference between an incident and a catastrophe — and weak passwords stay weak even when hashed, which is why storage discipline never excuses password discipline.\n\n![One stolen credential database with three outcomes: plaintext means total loss, fast unsalted hashes are cracked quickly, salted slow hashes leave the attacker stalled.](assets/images/authentication/stolen-database-three-fates.jpeg)\n**Figure 3:** *Hashing exists for the day the credential database is stolen: plaintext turns it into a total loss, fast hashes into a weekend of GPU time, salted slow hashing into an incident instead of a catastrophe.*\n\n**Legacy protocols carry their attacks with them.** NTLM ships with pass-the-hash; Kerberos, for all its strengths, ships with a named attack family from Golden Tickets to Kerberoasting; plaintext LDAP hands out credentials to anyone on the path. This is why protocol literacy is a defensive requirement, not trivia — the team that cannot describe the Kerberos ticket flow cannot recognize which of its failures matter. And because systems lie by default, the record requires verifying what a system *actually* speaks — in its configuration, its logs, and when needed its packets — before believing the architecture diagram.\n\n**MFA is necessary and insufficient.** Requiring MFA on privileged accounts, remote access, VPN, and email is the cheapest large risk reduction available to my organization — and the moment it is treated as a spell, attackers route around it with push bombing, fatigue, hijacked enrollment, and the systems the rollout skipped. So the record buys MFA's enormous value at its honest price: code-matching over blind approval, protected enrollment and reset, the exclusion list reviewed, and consistency across the estate — because an attacker only needs the one door where MFA was postponed.\n\n**The reset path and the management port are the same lesson.** Attackers do not fight the strong control; they find the weak sibling. A login hardened with MFA means little if the reset flow accepts a mother's maiden name, and a hardened server means little if its BMC still answers with the vendor's default password on the office LAN. The record's insistence on reset security and on segmented, non-default management interfaces is the same principle applied twice: the weakest authentication path *is* the authentication posture.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Identity is centralized: SSO, automated provisioning and deprovisioning, prompt disablement on departure. | Every system must federate tomorrow — \"when practical\" is real, but local exceptions are tracked, not forgotten. |\n| Passwords are long, unique passphrases held in a vetted password manager. | Complexity rules and forced rotation theater — length and uniqueness do the work. |\n| Credentials are stored as salted hashes under modern, slow algorithms. | Hashing excuses weak passwords — weak passwords stay vulnerable even when hashed. |\n| MD5, SHA-1, DES/3DES, and plaintext protocols are retired. | Retirement waits for the legacy app's convenience — exceptions are risk-accepted in writing, with an end date. |\n| Protocol usage is verified in configuration, logs, and packets. | The architecture diagram is evidence — systems are believed only after inspection. |\n| MFA is required for privileged accounts, remote access, VPN, and email, extended outward from there. | MFA everywhere on day one, or MFA as a replacement for password discipline and least privilege. |\n| MFA weaknesses are managed: code-matching, protected enrollment, reviewed exclusions. | MFA ends phishing — it narrows it, and the narrowing is worth having. |\n\nConcretely: every new system in my organization answers three questions before it ships — where does its identity come from, how are its credentials stored, and which protocol does it actually speak? If the answers are \"its own user table\", \"we're not sure\", and \"whatever the default was\", it does not ship.\n\n## Anti-Patterns\n\n- **The dormant account.** A contractor's login still valid eighteen months after the contract ended — valid credentials, zero oversight, the attacker's favorite way in.\n- **The complexity theater.** Eight characters, one symbol, rotated quarterly — a policy that produces `Summer2026!` on schedule while banning the long passphrase that would actually resist attack.\n- **The spreadsheet vault.** Shared credentials in a plaintext file \"just for the team\" — every reader is a breach vector, and history never forgets.\n- **The immortal protocol.** SMBv1 or NTLM kept alive indefinitely for one legacy application — the whole estate inherits pass-the-hash so one system can avoid an upgrade.\n- **The push-approval reflex.** Users trained by their own MFA to tap \"approve\" at anything — push bombing works precisely because the control taught the habit that defeats it.\n- **The reset-path backdoor.** A login guarded by MFA while the recovery flow accepts a pet's name from a public profile — attackers use the door with the weaker lock.\n- **The default that shipped.** A BMC/iLO/IPMI interface on the corporate LAN with the vendor password — a hardened server with an unlocked side entrance.\n- **The partial rollout that stalled.** MFA on email but not VPN, on staff but not vendors — the exclusion list is the attack surface, and nobody owns it.\n\n## Related Records\n\n- [Secure Network Infrastructure](network-security.html) — the devices that carry authentication traffic, hardened; this record's segmented management interfaces live on that record's networks.\n- [Network Segmentation](network-segmentation.html) — the restricted networks and VLANs this record puts management interfaces on; least privilege applied to traffic instead of accounts.\n- [Microsoft Windows Infrastructure](windows-infrastructure.html) — Kerberos, NTLM, and SMB hardening in their native habitat: the Active Directory estate.\n- [Cloud Infrastructure](cloud-infrastructure.html) — cloud IAM, conditional access, and banned-password lists as they appear in the cloud estate this record says to select on requirements.\n- [Security Education](user-education.html) — the program that trains people to refuse password requests and unexpected MFA prompts, which this record depends on.\n- [Phishing Awareness and Response](phishing-response.html) — what happens when credentials are phished anyway; this record narrows that path, that one handles it.\n- [Asset Management and Documentation](asset-management.html) — you cannot remove obsolete accounts and assets you do not know exist; the inventory this record's pruning depends on.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every system in my organization that authenticates a human or a service — on-premises, cloud, and vendor-hosted alike. I revisit it if an audit finds accounts surviving their owners' departure (the deprovisioning claim failing in practice), if a credential-storage review finds fast or unsalted hashing still in production, if MFA coverage reporting shows the exclusion list growing rather than shrinking, or if post-quantum guidance from the standards bodies moves from awareness to action — the algorithm-hygiene commitments must follow it.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, and William F. Reyor III; O'Reilly) — the Authentication chapter, whose checklist (including its Final Review) this record distills.\n- NIST recommendations for password hashing and key derivation, which the chapter names as the bar for algorithm hygiene.\n- Microsoft's current SMB and Windows authentication hardening guidance, which the chapter names for the Windows estate.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "In my organization, identity is the first control plane — and **no single authentication control is ever asked to carry the day alone**. Identity is centralized under least privilege, passwords are long, unique, and managed, credentials are stored as salted modern hashes, protocols are known and verified, and MFA guards the doors that matter most. The test the whole stack is held to: least privilege, centralized IAM, strong passwords, secure protocols, and MFA working together as a layered defense.\n\n**What changes**\n\n* **Identity becomes centralized and self-pruning.** SSO cuts password sprawl, SCIM-style automation provisions and deprovisions accounts with the people they belong to, dormant and obsolete accounts are removed, and access for departing employees and vendors ends the day they leave — not the day someone remembers.\n* **Password policy shifts from complexity theater to length and uniqueness.** Long passphrases in a vetted, MFA-protected password manager replace short clever passwords; sharing and reuse are forbidden outright, because credential stuffing means every reused password is only as safe as the weakest site it ever touched. Reset paths lose their weak security questions.\n* **Credential storage assumes the breach.** Passwords are stored only as salted hashes under modern, deliberately slow algorithms with NIST-aligned work factors; MD5, SHA-1, DES/3DES, and plaintext protocols are retired, and default credentials — including on BMC/iLO/IPMI management interfaces — die on arrival.\n* **Protocols are verified, not assumed.** Teams can explain NTLM, Kerberos, LDAP, RADIUS, OIDC, and SAML with their attack families — pass-the-hash, Golden Tickets, Kerberoasting, assertion theft — and confirm in configuration and logs which protocol a system actually speaks. New deployments choose protocols through requirements and threat modeling.\n* **MFA is mandatory where it matters and honest about its limits.** Privileged accounts, remote access, VPN, and email first, extended to vendors and consultants; push bombing is trained against, code-matching is preferred over blind approval, enrollment and reset are protected, and the exclusion list is reviewed until it shrinks.\n\n**What it costs**\n\n* Centralizing identity and retiring legacy protocols is real migration work — the immortal legacy app must finally be dealt with or its risk accepted in writing.\n* Password managers, MFA rollout, and protocol audits take budget and sustained attention; the exclusion review recurs — it is standing work, not a project.\n* Some day-one friction for users and administrators, accepted deliberately: the reset path and the management port get the same rigor as the login page.\n\n**What we are not doing**\n\n* Not mandating an identity vendor, password manager, or MFA product — commitments hold at the capability level.\n* Not hardening the network devices and segments these controls run on — that is [Secure Network Infrastructure](network-security.html) and [Network Segmentation](network-segmentation.html).\n* Not treating MFA as the end of phishing — narrowing it here, handling it in [Phishing Awareness and Response](phishing-response.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full working checklist, protocol by protocol, with the chapter's Final Review. Grounded in the Authentication chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "6 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — identity and access management, password and cryptographic discipline, every major authentication protocol with its attacks, and MFA, ending with the chapter's Final Review. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Identity and Access Management (IAM)\n\n- [ ] Understand the purpose of Identity and Access Management (IAM)\n- [ ] Apply the principle of least privilege\n- [ ] Centralize authentication and account management when practical\n- [ ] Understand how Single Sign-On (SSO) reduces password sprawl\n- [ ] Know the role of SCIM in automated user provisioning and deprovisioning\n- [ ] Remove unnecessary, obsolete, or unused accounts and assets\n- [ ] Disable access promptly when employees or vendors leave\n- [ ] Combine strong password management with MFA\n- [ ] Avoid relying on a single security control\n\n## 2. Password Security\n\n- [ ] Use long, unique passwords or passphrases\n- [ ] Avoid short passwords even when they contain mixed character types\n- [ ] Understand that password length greatly increases brute-force difficulty\n- [ ] Avoid predictable substitutions and personal information\n- [ ] Consider randomly generated passphrases, such as Diceware\n- [ ] Never share passwords with coworkers or help-desk staff\n- [ ] Train users to report anyone requesting their password\n- [ ] Never reuse passwords across different accounts or services\n- [ ] Assume exposed credentials may be tested against other services through credential stuffing\n- [ ] Avoid storing passwords in plain text\n\n## 3. Password Attacks\n\n- [ ] Understand brute-force attacks\n- [ ] Understand dictionary attacks\n- [ ] Understand rainbow-table attacks\n- [ ] Know why salts reduce the usefulness of precomputed rainbow tables\n- [ ] Recognize the danger of compromised credential databases\n- [ ] Know that weak passwords remain vulnerable even when stored as hashes\n\n## 4. Encryption\n\n- [ ] Understand that encryption is reversible when the correct key is available\n- [ ] Know that encryption protects data in transit and at rest\n- [ ] Recognize commonly used modern algorithms such as AES, RSA, and ECC\n- [ ] Understand that advances in quantum computing create risks for some current cryptographic systems\n- [ ] Be familiar with the purpose of post-quantum/quantum-resistant cryptography\n- [ ] Avoid deprecated encryption algorithms\n\n## 5. Hashing\n\n- [ ] Understand that hashing is a one-way process\n- [ ] Know that hashes produce a fixed-length output\n- [ ] Understand that even a small input change should produce a significantly different hash\n- [ ] Know that hash collisions are theoretically possible\n- [ ] Store password hashes instead of plaintext passwords\n- [ ] Use modern password-hashing or key-derivation functions rather than fast general-purpose hashes\n\n## 6. Salting\n\n- [ ] Understand that a salt is extra data added before hashing\n- [ ] Use a different random salt for each stored password\n- [ ] Know that salting prevents identical passwords from producing identical stored hashes\n- [ ] Understand how salting makes precomputed attacks more difficult\n- [ ] Recognize bcrypt as an example of a password-hashing algorithm that uses salts\n\n## 7. Cryptographic Algorithm Hygiene\n\n- [ ] Replace obsolete algorithms with stronger alternatives\n- [ ] Avoid MD5\n- [ ] Avoid SHA-1\n- [ ] Avoid DES/3DES\n- [ ] Avoid weak RSA/DSA key sizes\n- [ ] Prefer modern, currently supported cryptographic standards\n- [ ] Follow current NIST recommendations for password hashing and key derivation\n- [ ] Use sufficiently large salts and high iteration/work factors for password hashing\n\n## 8. Password Managers\n\n- [ ] Use a password manager to reduce password reuse\n- [ ] Protect the password manager with a strong master password\n- [ ] Enable MFA for the password manager\n- [ ] Determine whether passwords must be shared among administrators or teams\n- [ ] Check whether the manager supports password generation\n- [ ] Check whether it includes password-strength evaluation\n- [ ] Check whether it supports autofill where appropriate\n- [ ] Verify that stored passwords are strongly encrypted\n- [ ] Check for an automatic lockout feature\n- [ ] Review protection against malicious activity such as keylogging\n- [ ] Review available auditing and logging features\n- [ ] Obtain software directly from the vendor\n- [ ] Verify installer integrity when hashes or signatures are provided\n\n## 9. Password Reset Security\n\n- [ ] Avoid weak knowledge-based security questions\n- [ ] Do not use answers that can easily be found online or guessed\n- [ ] Use randomized answers when security questions cannot be avoided\n- [ ] Store those randomized answers in a password manager\n- [ ] Protect password-reset processes with MFA when possible\n\n## 10. Password Storage and Infrastructure\n\n- [ ] Review where passwords and credentials are stored\n- [ ] Avoid default passwords on servers and management interfaces\n- [ ] Change default credentials immediately\n- [ ] Protect management interfaces such as BMC/iLO/IPMI\n- [ ] Segment management interfaces onto restricted networks/VLANs\n- [ ] Use centralized authentication where possible instead of maintaining many local passwords\n\n## 11. SMB and Windows Authentication Hardening\n\n- [ ] Require SMB signing\n- [ ] Enable SMB encryption where appropriate\n- [ ] Require modern SMB versions\n- [ ] Disable SMBv1\n- [ ] Prevent fallback to older, weaker SMB dialects\n- [ ] Disable insecure guest authentication\n- [ ] Review current Microsoft hardening guidance\n\n## 12. Fine-Grained Password Policies\n\n- [ ] Understand the purpose of Fine-Grained Password Policies (FGPPs)\n- [ ] Use different password requirements for users or groups when justified\n- [ ] Verify that policies are applied to the correct users/security groups\n- [ ] Avoid unnecessary policy complexity\n\n## 13. Cloud IAM\n\n- [ ] Evaluate cloud IAM features such as centralized authentication\n- [ ] Use banned-password lists where supported\n- [ ] Apply conditional access policies\n- [ ] Consider scalability, infrastructure cost, and remote-access benefits\n- [ ] Select cloud IAM based on requirements rather than assuming cloud automatically solves access-control problems\n\n## 14. Authentication Protocols\n\n### NTLM\n\n- [ ] Know that NTLM uses challenge-response authentication\n- [ ] Understand the basic NTLM authentication flow\n- [ ] Know that the user's password hash is involved rather than sending the plaintext password directly\n- [ ] Recognize NTLM as a legacy authentication technology\n- [ ] Know common NTLM risks such as pass-the-hash\n- [ ] Prefer more secure authentication methods when supported\n\n### Kerberos\n\n- [ ] Know that Kerberos uses tickets and third-party authentication\n- [ ] Understand the role of the Key Distribution Center (KDC)\n- [ ] Know that the KDC contains the Authentication Server (AS) and Ticket Granting Server (TGS)\n- [ ] Understand the purpose of a Ticket Granting Ticket (TGT)\n- [ ] Understand the purpose of a service ticket\n- [ ] Know the basic Kerberos flow:\n  - [ ] Client requests a TGT\n  - [ ] KDC verifies the client and returns the TGT and session key\n  - [ ] Client presents the TGT to the TGS\n  - [ ] TGS returns a service ticket/session key\n  - [ ] Client presents the service ticket to the resource server\n- [ ] Recognize attacks such as pass-the-ticket\n- [ ] Recognize Golden Ticket attacks\n- [ ] Recognize Silver Ticket attacks\n- [ ] Recognize Kerberoasting\n- [ ] Recognize AS-REP roasting\n- [ ] Avoid weak/deprecated Kerberos encryption where possible\n\n### LDAP\n\n- [ ] Understand that LDAP provides directory access and can be used for authentication\n- [ ] Understand a basic LDAP bind\n- [ ] Know that LDAP can expose credentials if used without transport protection\n- [ ] Prefer LDAPS/TLS rather than plaintext LDAP authentication\n- [ ] Recognize common LDAP risks such as:\n  - [ ] Account discovery\n  - [ ] Brute-force attacks\n  - [ ] Domain enumeration\n\n### RADIUS\n\n- [ ] Understand that RADIUS uses a client/server authentication model\n- [ ] Know the role of a NAS/RAS as an intermediary\n- [ ] Understand Access-Request messages\n- [ ] Understand Access-Challenge messages\n- [ ] Understand Access-Accept messages\n- [ ] Understand Access-Reject messages\n- [ ] Know that RADIUS can provide authentication, authorization, and accounting (AAA)\n- [ ] Understand start, update, and stop accounting messages\n- [ ] Recognize common authentication mechanisms such as EAP-TLS, PEAP-MSCHAPv2, and EAP-TTLS/PAP\n- [ ] Protect RADIUS shared secrets and authentication traffic\n\n### OIDC and SAML\n\n- [ ] Know that OIDC is token-based and built on OAuth 2.0 flows\n- [ ] Know that OIDC commonly relies on TLS for transport security\n- [ ] Recognize risks such as token interception and client impersonation\n- [ ] Know that SAML uses XML-based assertions\n- [ ] Recognize SAML risks such as replay attacks\n- [ ] Recognize signature-wrapping attacks\n- [ ] Recognize XML injection risks\n- [ ] Recognize assertion theft\n- [ ] Protect both protocols against man-in-the-middle attacks\n\n### Protocol Security\n\n- [ ] Verify which authentication protocol a system actually uses\n- [ ] Review authentication settings in configuration files, GUIs, or management interfaces\n- [ ] Check authentication logs for protocol usage\n- [ ] Use packet-analysis tools such as Wireshark when appropriate\n- [ ] Review vendor documentation for supported protocols\n- [ ] Avoid protocols that transmit credentials in plaintext\n- [ ] Disable insecure protocols such as Telnet, FTP, SNMPv2, HTTP, and old SMB versions whenever possible\n\n### Choosing an Authentication Protocol\n\n- [ ] Identify the application's authentication requirements\n- [ ] Determine whether the solution needs to scale\n- [ ] Evaluate management complexity and technical debt\n- [ ] Define security requirements\n- [ ] Evaluate performance constraints\n- [ ] Determine interoperability requirements\n- [ ] Perform threat modeling before production deployment\n\n## 15. Multi-Factor Authentication (MFA)\n\n### MFA Fundamentals\n\n- [ ] Understand that MFA requires multiple independent authentication factors\n- [ ] Know the common factor categories:\n  - [ ] Something you know\n  - [ ] Something you have\n  - [ ] Something you are\n- [ ] Use MFA in addition to strong passwords rather than as a replacement for other controls\n- [ ] Require MFA for privileged accounts\n- [ ] Require MFA for remote access\n- [ ] Require MFA for VPN access\n- [ ] Require MFA for email and portals\n- [ ] Extend MFA to employees, vendors, consultants, and other users where appropriate\n\n### MFA Weaknesses\n\n- [ ] Do not assume MFA eliminates phishing\n- [ ] Recognize MFA fatigue/push bombing attacks\n- [ ] Train users not to approve unexpected authentication prompts\n- [ ] Prefer methods that require entering or matching a code rather than blindly approving a push\n- [ ] Protect MFA enrollment and reset processes\n- [ ] Review systems that may have been excluded from MFA deployment\n- [ ] Avoid inconsistent MFA implementation across an organization\n- [ ] Understand that implementation quality determines how effective MFA is\n\n## Final Review\n\n- [ ] Can I explain the difference between encryption, hashing, and salting?\n- [ ] Can I explain why long, unique passphrases are safer than short complex passwords?\n- [ ] Can I explain how a password manager improves security?\n- [ ] Can I describe the basic authentication flow of NTLM?\n- [ ] Can I describe the basic ticket flow of Kerberos?\n- [ ] Can I explain an LDAP bind?\n- [ ] Can I explain the RADIUS AAA process?\n- [ ] Can I compare NTLM, Kerberos, LDAP, RADIUS, OIDC, and SAML?\n- [ ] Can I identify deprecated or insecure protocols and algorithms?\n- [ ] Can I explain why MFA improves security but does not eliminate all authentication attacks?\n- [ ] Can I identify where MFA should be deployed first in an organization?\n- [ ] Can I explain how least privilege, centralized IAM, strong passwords, secure protocols, and MFA work together as a layered defense?\n\nWith the Final Review answered honestly, the authentication stack stands as a layered defense — and the question running through the whole checklist never changes: **if this one control fails, what still holds the line?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Why Identity Comes First\n\n**Ben:** Straight question first. This record covers passwords, hashing, Kerberos tickets, MFA — a security textbook's worth of material. Why does an executive operating model need all of it in one record?\n\n**Ana:** Because it's one system pretending to be many topics. The chapter this record distills ends with a single question: can you explain how least privilege, centralized IAM, strong passwords, secure protocols, and MFA work together as a layered defense? That's the record. Every one of those controls fails somewhere — passwords get phished, MFA gets fatigued, protocols get downgraded. The commitment is never that a control is unbreakable; it's that no single failure is sufficient. You can't state that commitment about passwords alone or MFA alone.\n\n**Ben:** Layered defense is a poster in every security office. What makes it operational here?\n\n**Ana:** The refusal it implies. The record refuses to let any control make the others optional. MFA doesn't excuse weak passwords. Hashing doesn't excuse weak passwords either — the checklist says explicitly that weak passwords stay vulnerable even when hashed. Centralized IAM doesn't excuse dormant accounts. The moment someone says \"we have MFA, so the password policy can relax\", the layering is gone and you're back to one control carrying the day.\n\n**Ben:** Start with centralization, then. SSO, SCIM provisioning — that sounds like an IT convenience program wearing a security costume.\n\n**Ana:** It's what makes discipline enforceable. A rule applied by hand in forty systems is applied in thirty of them. Centralize identity and password policy, lockout, conditional access, and deprovisioning become decisions made once, enforced everywhere. That holds in the cloud too — cloud IAM is chosen on requirements like conditional access and banned-password lists, not on the assumption that cloud solves access control by itself. And the automation is really an offboarding guarantee — the day someone joins, SCIM is a convenience; the day someone leaves, it's the difference between access ending at once and an account nobody remembers surviving for years. Dormant accounts are the attacker's favorite identity: valid, monitored by no one, missed by no one.\n\n## Passwords and the Arithmetic\n\n**Ben:** The password section bans complexity requirements in favor of length. Every compliance regime I've met wants the symbol and the capital letter. You're saying they're wrong?\n\n**Ana:** The arithmetic is saying it. Brute-force difficulty grows with every character far faster than with any substitution trick. A long, dull passphrase beats `P@ssw0rd1!` by orders of magnitude — and the complexity rules actively produce the predictable substitutions dictionary attacks eat first. The record's standard is long, unique, and held in a vetted password manager. Uniqueness matters as much as length: breaches happen at other people's companies, and credential stuffing means every reused password is only as safe as the least secure site it was ever typed into.\n\n**Ben:** \"Vetted\" password manager — meaning what? It's an app with a vault icon.\n\n**Ana:** Meaning it's infrastructure, so it gets an infrastructure review: strong encryption of the stored passwords verified, MFA on the manager itself, automatic lockout, auditing and logging, protection against keylogging reviewed, software obtained directly from the vendor with installer integrity checked. The manager holds the keys to everything — it gets more scrutiny than any other tool, not less.\n\n**Ben:** And the reset path. That's the part I rarely see in policies.\n\n**Ana:** Because attackers read policies too. A login guarded by MFA means nothing if the recovery flow accepts a mother's maiden name from a public genealogy site. The record makes the reset path a first-class authentication surface: no weak knowledge-based questions, randomized answers stored in the manager where questions can't be avoided, MFA on the reset itself where possible. The weakest authentication path *is* your authentication posture.\n\n## Storage, Algorithms, and Protocol Literacy\n\n**Ben:** The record spends real space on hashing and salting. Isn't that a developer's concern, three levels below an operating model?\n\n**Ana:** Storage discipline is the plan for the day the credential database is stolen — which is an executive concern, because it decides whether that day is an incident or a catastrophe. Plaintext is total loss. Fast general-purpose hashes are a weekend of GPU time. Unsalted hashes fall to precomputed rainbow tables. Salted, deliberately slow, NIST-aligned hashing is what makes the stolen database expensive to exploit. And the algorithm hygiene follows: MD5, SHA-1, DES/3DES retired, weak key sizes gone, post-quantum on the radar.\n\n**Ben:** Then the protocol tour — NTLM, Kerberos, LDAP, RADIUS, OIDC, SAML, each with named attacks. Golden Tickets, Kerberoasting, signature wrapping. Why must an operating record carry that vocabulary?\n\n**Ana:** Because legacy protocols carry their attacks with them, and you can't retire what you can't recognize. NTLM ships with pass-the-hash — that's why it's legacy. Kerberos ships with a whole named attack family. Plaintext LDAP hands credentials to anyone on the path. A team that can't describe the Kerberos ticket flow can't tell which of its failures matter. And the record adds the step most organizations skip: verify what a system *actually* speaks — in configuration, in logs, with packet analysis when needed. The architecture diagram is not evidence.\n\n**Ben:** You'll find an SMBv1 dependency somewhere. Everyone does.\n\n**Ana:** And then the record forces the honest move: disable it, or accept the risk in writing with an end date. What it forbids is the silent default — the whole estate inheriting pass-the-hash indefinitely so one legacy application can avoid an upgrade nobody scheduled.\n\n## MFA Without the Magic\n\n**Ben:** MFA. The record mandates it for privileged accounts, remote access, VPN, email. Fine — nobody argues anymore. But then it spends a whole section on MFA's weaknesses. Why undercut your own mandate?\n\n**Ana:** Because the mandate only pays if it's honest. MFA is the cheapest large risk reduction available to us — and it does not eliminate phishing. Attackers adapted: push bombing until a tired user taps approve, hijacking enrollment, targeting reset flows, walking through the systems the rollout skipped. So the record buys MFA at its honest price: code-matching preferred over blind push approval, users trained to refuse unexpected prompts, enrollment and reset protected, and the exclusion list reviewed until it shrinks. Implementation quality determines what MFA is worth — the acronym determines nothing.\n\n**Ben:** The exclusion list being the systems where MFA was postponed.\n\n**Ana:** Which is exactly where the attacker goes. Inconsistent MFA is almost worse than none, because it buys confidence without buying coverage. One VPN concentrator without MFA and the whole rollout is a decoration.\n\n**Ben:** And the infrastructure items — BMC and iLO interfaces, default credentials. Those feel bolted on.\n\n**Ana:** They're the same lesson as the reset path. Attackers don't fight the strong control; they find the weak sibling. A hardened server whose management interface still answers with the vendor's default password on the office LAN is an unlocked side entrance. Default credentials die on arrival, and management interfaces live on restricted networks — which is where this record hands off to [Network Segmentation](network-segmentation.html).\n\n**Ben:** All right. My crisp takeaway: authentication isn't a control, it's a stack — and the bar isn't \"is any layer unbreakable\" but \"if this one layer fails, what still holds the line?\"\n\n**Ana:** That's the record. Ask it of every login, every reset path, and every management port — and if the answer is \"nothing\", that's the next thing we fix.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why no single authentication control is ever asked to carry the day alone — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a burglar ignores a heavily locked front door labeled MFA and heads for an unlocked side door labeled password reset while Nadia points.](assets/images/authentication/comic-01-the-side-door.jpeg)\n**Panel 1:** *The hook: attackers never fight the strong control — they find its weak sibling, and the weakest login path is the real posture.*\n\n![Comic panel: Vera inspects a cobwebbed, still-glowing drawer labeled contractor access next to a calendar reading 18 months ago.](assets/images/authentication/comic-02-the-immortal-account.jpeg)\n**Panel 2:** *The problem: dormant identity — valid credentials, monitored by no one, missed by no one, surviving long after their owner left.*\n\n![Comic panel: a worker types Summer2026! under a complexity policy poster while Nadia facepalms holding a rejected long passphrase card.](assets/images/authentication/comic-03-complexity-theater.jpeg)\n**Panel 3:** *The wrong way: complexity theater — rules that produce 'Summer2026!' on schedule while banning the long passphrase that would actually resist attack.*\n\n![Comic panel: Vera and Nadia in front of a five-layer wall labeled least privilege, central IAM, strong passwords, secure protocols, MFA, one layer cracked but the wall standing.](assets/images/authentication/comic-04-the-layered-wall.jpeg)\n**Panel 4:** *The principle: layered defense — least privilege, centralized IAM, strong passwords, secure protocols, and MFA together; remove any one layer and the others still hold.*\n\n![Comic panel: as an employee exits, an automated console arm switches off a row of account icons while Nadia watches.](assets/images/authentication/comic-05-access-ends-same-day.jpeg)\n**Panel 5:** *Practice: centralize identity — SSO and automated provisioning mean accounts appear and disappear with the people they belong to, the day they leave.*\n\n![Comic panel: a vault labeled password manager with long passphrases beside a database labeled salted slow hashes shrugging off a rainbow table magnet.](assets/images/authentication/comic-06-the-vault-and-the-hash.jpeg)\n**Panel 6:** *Practice: length beats complexity, uniqueness beats reuse — passphrases live in a vetted manager, and storage assumes the breach with salted, deliberately slow hashes.*\n\n![Comic panel: a wall diagram says Kerberos while Nadia's magnifying glass over the cable reveals NTLM packets from a sheepish old server.](assets/images/authentication/comic-07-what-it-actually-speaks.jpeg)\n**Panel 7:** *Practice: protocol literacy — know NTLM's and Kerberos's attacks, and verify what a system actually speaks in configuration, logs, and packets before believing the diagram.*\n\n![Comic panel: a user buried in approve notifications at night while a hacker grins, and Vera holds up a code-matching phone screen.](assets/images/authentication/comic-08-the-push-bombing.jpeg)\n**Panel 8:** *The cost: MFA is necessary and insufficient — push bombing exploits the approve reflex, so the record buys MFA's value at its honest price: code-matching, protected enrollment, reviewed exclusions.*\n\n![Comic panel: a new system waits at a gate while Vera reads three checklist questions and Nadia bars the way.](assets/images/authentication/comic-09-three-questions.jpeg)\n**Panel 9:** *The closer: before anything ships — where does its identity come from, how are credentials stored, which protocol does it actually speak? No answers, no launch.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

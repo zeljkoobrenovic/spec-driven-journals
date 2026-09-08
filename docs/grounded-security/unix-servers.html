@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Unix Application Servers</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="windows-infrastructure.html" title="Microsoft Windows Infrastructure">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="endpoints.html" title="Endpoints">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Hardening the Estate</p>
+        <h1>Unix Application Servers</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  7 min · <a class="spec-link" href="unix-servers.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/unix-servers/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/unix-servers/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="windows-infrastructure.html" title="Microsoft Windows Infrastructure">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="endpoints.html" title="Endpoints">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-UNIX-SERVERS", "status": "draft:gray", "title": "Unix Application Servers", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "unix-servers", "timetoread": "7 min", "excerpt": "Every Unix application server in my organization earns its place on the network: fully patched on a small-step cadence, running only the services it exists to run, with a filesystem held to least privilege, a host firewall that permits only required traffic, file-integrity monitoring that makes unexpected change visible, restrictive mount options, applications isolated and running as dedicated non-root accounts, and mandatory access control enabled where the platform supports it. And because a control that breaks the application gets rolled back at two in the morning, every restriction is verified against required functionality and the hardening review is repeated, not archived. The test I hold every server to: only what the application requires is running, reachable, writable, and privileged — and the server still does its job.", "tags": "unix, linux, server hardening, least privilege, host firewall, file integrity monitoring, SELinux, mandatory access control, application isolation, patching", "icon": "assets/icons/unix-servers.png", "logo": "assets/images/unix-servers/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["unix", "linux", "server hardening", "least privilege", "host firewall", "file integrity monitoring", "SELinux", "mandatory access control", "application isolation", "patching"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Every Unix application server in my organization **earns its place on the network**: fully patched on a **small-step cadence**, running **only the services it exists to run**, with a **filesystem held to least privilege**, a **host firewall that permits only required traffic**, **file-integrity monitoring** that makes unexpected change visible, **restrictive mount options** on every partition that can take them, applications **isolated and running as dedicated non-root accounts**, and **mandatory access control enabled where the platform supports it**. And because a control that breaks the application gets rolled back at two in the morning, **every restriction is verified against required functionality**, exceptions are recorded, and the hardening review is repeated — not archived. The test I hold every server to: **only what the application requires is running, reachable, writable, and privileged — and the server still does its job**.\n\n## Statement\n\nThis is the hardening bar every Unix application server in my organization is held to.\n\n![Anatomy diagram of a Unix application server surrounded by eight hardening control tiles, with only required traffic entering through the host firewall.](assets/images/unix-servers/hardened-server-anatomy.jpeg)\n**Figure 1:** *The hardening bar at a glance: only what the application requires is running, reachable, writable, and privileged — and every control is verified against function.*\n\n**Patching is continuous and small-stepped.**\n\n- The operating system and **all third-party applications and packages** stay current, through the package manager wherever possible — repositories updated before upgrades, available updates reviewed before applying. Software installed outside the package manager is **tracked separately, with security-advisory subscriptions**. Important patches are tested before production, major OS upgrades carry a rollback or recovery plan, and **update intervals stay small so large, disruptive upgrades stay rare**.\n\n**Nothing runs without a reason.**\n\n- Running services and processes are inventoried, each enabled service has a known purpose, the unneeded are **disabled and prevented from starting at reboot**, required services are verified after configuration changes, and the server is **periodically rechecked for newly enabled services** — through the system's standard service-management mechanism, `systemctl` where applicable.\n\n**The filesystem is least privilege made concrete.**\n\n- Ownership and group membership of sensitive files are verified; unnecessary world-readable, world-writable, and execute permissions are removed; the system `umask` gives new files restrictive defaults; **application-service accounts — web-server users included — cannot read data they do not require**; SUID/SGID binaries are identified, justified or stripped, with special attention to privileged binaries outside normal system directories; and **unexpected permission changes are searched for regularly**.\n\n**The host defends itself.**\n\n- A host-based firewall permits **only the traffic the server's function requires**, blocks unnecessary inbound connections, and **restricts administrative services to trusted networks or addresses** where possible. Rules are reviewed for obsolete entries, verified after application or network changes, and confirmed not to break required application traffic.\n\n**Unexpected change is visible.**\n\n- A file-integrity monitoring solution watches critical OS files, application configuration, and web/application directories against a **trusted baseline**; alerts fire on unexpected change, **unexplained alerts are investigated promptly**, and integrity alerts feed the existing monitoring and logging systems.\n\n**Mounts are restrictive by default.**\n\n- Sensitive or high-risk filesystem areas sit on their own partitions where practical; `/etc/fstab` is reviewed; `nodev`, `nosuid`, `noexec`, and `ro` are applied where device files, SUID execution, executables, or writes are not needed — and every mount-option change is **verified after remount or reboot and tested against the applications**.\n\n**Applications are isolated and never needlessly root.**\n\n- Where an application can be isolated from the rest of the filesystem, it is — `chroot`, containers, jails, or another isolation mechanism — with the isolated environment stripped to minimal files and utilities, the application **not running as root unless absolutely required**, and **`chroot` never treated as a complete security boundary on its own**. Function is tested after isolation.\n- Where the platform supports **mandatory access control** — SELinux, AppArmor, TrustedBSD — it is enabled where practical, with least-privilege policies confining application processes to required files, devices, ports, and system functions; policy violations and audit logs are reviewed; permissive/audit mode is used during testing before full enforcement; and **policies are re-reviewed as the application changes**.\n\n**Accounts are dedicated and minimal.**\n\n- Each application runs under a **dedicated non-root account** with limited filesystem access and no interactive login unless required; administrative privileges such as `sudo` are restricted; unused accounts and groups are removed; and group memberships are reviewed for excessive privilege.\n\n**Hardening is verified — and repeated.**\n\n- After hardening, the application **still performs its required business functions**; the server survives a reboot with all necessary services returning; listening ports are scanned for surprises; system and application logs are reviewed; firewall, filesystem, permission, and access-control restrictions are tested. All security-related configuration changes are documented, **approved exceptions are recorded**, critical configuration files are backed up — and the hardening review is **repeated periodically and after major application, OS, or infrastructure changes**.\n\n## How to Read This\n\nThis record sits in the **Hardening the Estate** section alongside [Microsoft Windows Infrastructure](windows-infrastructure.html) — the same discipline, applied to the other half of the server fleet, one host at a time. It is grounded in the Unix Application Server Security chapter of the *Defensive Security Handbook* (Brotherston, Berlin, Reyor). The chapter names concrete mechanisms — `systemctl`, `umask`, `fstab` mount options, `chroot`, `sudo`, SELinux, AppArmor, TrustedBSD — and the **Checklist** tab keeps every one of them verbatim; this article states the commitments at the capability level, with those mechanisms as the worked example, because the commitments (minimal surface, least-privilege filesystem, self-defending host, visible change, contained applications, verified function) hold on any Unix or Linux. The management summary lives in the **TL;DR** tab and the conversation in the **Conversation** tab.\n\n## Rationale\n\n**An application server's attack surface is what runs, what listens, and what is writable.** Unlike the Windows estate, where the graph is the story, a Unix application server is usually a single-purpose machine exposed to real traffic — which makes its defense wonderfully concrete. Every daemon that runs, every port that listens, and every file the application account can write is surface; everything else is noise to remove. That is why the record's first moves are subtraction: remove what has no purpose, and patch what remains. A service that is not running cannot be exploited, and the periodic recheck exists because services have a way of coming back.\n\n**A small patching cadence beats patching heroics.** The chapter's quietest instruction is one of its best: keep update intervals small so large, disruptive upgrades are less likely. Organizations that defer updates accumulate a debt that eventually only a risky big-bang upgrade can pay — which is exactly the upgrade that breaks things, which is exactly the experience that makes them defer longer. Small steps, tested patches, rollback plans for the major jumps, and — critically — **tracking the software the package manager cannot see**, because the hand-installed application with no advisory subscription is the one that stays vulnerable for years. The estate-wide cadence and exception discipline live in [Vulnerability Management](vulnerability-management.html).\n\n![Two timelines comparing frequent small patches with flat risk against deferred patching whose growing debt ends in a risky big-bang upgrade.](assets/images/unix-servers/small-steps-vs-big-bang.jpeg)\n**Figure 2:** *A small patching cadence beats patching heroics: frequent low-risk steps keep the debt flat that deferral pays back with a disruptive big-bang upgrade.*\n\n**Least privilege on the filesystem is where a breach stops spreading.** Most application compromises begin as the application account — a web-server user executing injected code. What that account can read and write *is* the blast radius. A filesystem where the application cannot read data it does not require, where world-writable permissions have been hunted down, where the `umask` makes new files restrictive by default, and where SUID binaries outside system directories are treated as the red flags they are — that filesystem converts a compromised application into a contained nuisance instead of a data breach. This is the record's center of gravity, and the regular search for unexpected permission changes is what keeps it true after day one.\n\n![Two-panel diagram comparing a compromised application account whose reach covers most of a loose filesystem versus a least-privilege filesystem that contains it to two folders.](assets/images/unix-servers/blast-radius-least-privilege.jpeg)\n**Figure 3:** *What the application account can read and write is the blast radius: least privilege on the filesystem turns a compromised application into a contained nuisance.*\n\n**Detection on the host assumes prevention will fail.** File-integrity monitoring is the control that pays out precisely when everything above it has already lost: the attacker who got in, escalated, and modified a binary or a configuration file trips the baseline comparison. But FIM only works as a discipline — a *trusted* baseline, alerts investigated promptly rather than muted, and integration into the monitoring the organization actually watches, per [Logging and Monitoring](logging-and-monitoring.html). An integrity alert nobody investigates is a breach notification nobody read.\n\n**Isolation and mandatory access control turn a compromised application into a contained one.** Discretionary permissions govern what the application account may touch; MAC governs what the application *process* may do even after it is subverted — which files, devices, ports, and system functions, enforced by the kernel. The record's honesty matters here in both directions: `chroot` alone is not a security boundary and must not be treated as one, and SELinux-class controls are demanding enough that the chapter prescribes the workable path — permissive mode during testing, then enforcement, then policy reviews as the application evolves. The worst outcome is not a strict policy; it is the reflexive `setenforce 0` that becomes permanent.\n\n**A control that breaks the application will be rolled back at 2 a.m. — so verification is part of the control.** The chapter closes every hardening thread the same way: test it. The application still performs its business functions; the server reboots clean; the firewall change did not sever required traffic; the mount options did not break the app. This is not softness — it is what makes the hardening durable, because an unverified restriction that takes production down gets reverted in the middle of the night, usually along with three others, and never reinstated. The record prefers a recorded, approved exception to a silent regression — and it schedules the review to recur, because a server hardened once and never again is a server drifting back to soft.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| The OS and all third-party software stay current, on a small-step cadence, through the package manager where possible. | Every update applies untested — important patches are tested, and major upgrades carry rollback plans. |\n| Only services with a known purpose run, and the server is rechecked periodically. | A minimal server is built once — minimalism is maintained, because services come back. |\n| Application accounts cannot read data they do not require; world-writable permissions are removed. | Permissions are tightened until the app breaks — every restriction is tested against required function. |\n| A host firewall permits only required traffic, with admin services restricted to trusted networks. | The network firewall is enough — the host defends itself even when the network layer fails. |\n| File-integrity monitoring runs against a trusted baseline, and unexplained alerts are investigated. | Installing a FIM tool is the control — the investigation habit is. |\n| Applications are isolated and non-root; MAC is enabled where the platform supports it. | `chroot` is a security boundary, or SELinux must be enforcing on day one — permissive-then-enforce is the sanctioned path. |\n| Exceptions are approved and recorded; the hardening review repeats after major changes. | Hardening is a project — it is a cycle. |\n\nConcretely: every new Unix application server in my organization passes this record's final review before taking production traffic, and every existing one re-passes it after major application, OS, or infrastructure changes. The two questions I ask of any server: *what is listening that the application does not require?* and *what can the application account read that it does not need?* Both should have the same answer — nothing.\n\n## Anti-Patterns\n\n- **The pet server.** Hand-built, hand-patched when someone remembers, configuration drifted so far from any baseline that nobody dares touch it — irreplaceable and indefensible in equal measure.\n- **The everything daemon.** Services enabled by default in 2019 and never inventoried since; each one an unattended door, none with a known purpose.\n- **World-writable and working.** Permissions loosened to `777` to fix a deployment problem, never tightened again — the temporary fix that became the permanent hole.\n- **`setenforce 0` as troubleshooting.** SELinux disabled as the first debugging step and never re-enabled — the kernel-level control traded away for one afternoon's convenience.\n- **The hand-installed orphan.** The application installed outside the package manager, with no advisory subscription and no tracking — patched never, vulnerable for years.\n- **Chroot theater.** Isolation treated as a complete security boundary because the directory changed — the chapter says plainly it is not one on its own.\n- **The muted integrity alert.** FIM installed for the audit, alerts routed to a folder nobody reads — a breach notification system with the ringer off.\n- **Hardened once.** The server that passed review at commissioning and was never reviewed again — every subsequent deploy, upgrade, and hotfix quietly widening the surface.\n\n## Related Records\n\n- [Microsoft Windows Infrastructure](windows-infrastructure.html) — the sibling record: the same hardening discipline for the directory-centered half of the estate.\n- [Endpoints](endpoints.html) — least privilege, minimal software, and integrity discipline applied to the machines people actually sit at.\n- [Vulnerability Management](vulnerability-management.html) — the estate-wide scanning, patching cadence, and exception process this record's per-server discipline feeds.\n- [Secure Network Infrastructure](network-security.html) — the network-level controls the host firewall backstops; defense assumes either layer can fail.\n- [Logging and Monitoring](logging-and-monitoring.html) — where integrity alerts, port-scan results, and server logs are actually watched.\n- [Databases](databases.html) — the data layer these application servers front; its hardening record continues where this one stops.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every Unix and Linux server my organization runs an application on — physical, virtual, or cloud instance — proportionate to exposure, with internet-facing servers held to the full bar without exception. I revisit it if the fleet's shape changes materially (a wholesale move to immutable images or containers, where hardening shifts from servers to build pipelines), if unexplained integrity or permission-change findings recur without investigation (the visibility claim failing in practice), or if exception records start accumulating faster than they are retired — a hardening bar that leaks exceptions is a bar being quietly lowered.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, and William F. Reyor III) — the Unix Application Server Security chapter, whose checklist this record distills.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "Every Unix application server in my organization **earns its place on the network**: fully patched on a small-step cadence, running only the services it exists to run, with a least-privilege filesystem, a host firewall permitting only required traffic, file-integrity monitoring against a trusted baseline, restrictive mount options, applications isolated and non-root, and mandatory access control enabled where the platform supports it — with every restriction verified against required functionality and the review repeated, not archived. The test each server is held to: only what the application requires is running, reachable, writable, and privileged — and the server still does its job.\n\n**What changes**\n\n* **Patching becomes a cadence, not a campaign.** OS and third-party software stay current through the package manager, important patches are tested, major upgrades carry rollback plans, update intervals stay small — and software installed outside the package manager is tracked separately with advisory subscriptions, so the hand-installed orphan stops being invisible.\n* **The surface shrinks and stays shrunk.** Services are inventoried, each has a known purpose, the unneeded are disabled and blocked from restarting, and the server is periodically rechecked — because services come back.\n* **The filesystem becomes the blast-radius control.** World-readable/writable and execute permissions pruned, restrictive `umask`, application accounts unable to read data they do not require, SUID/SGID binaries justified or stripped, and unexpected permission changes searched for regularly.\n* **The host defends and watches itself.** A host firewall permits only required traffic with admin services restricted to trusted networks; file-integrity monitoring alerts on unexpected change to OS files, configs, and application directories — and unexplained alerts are investigated, not muted.\n* **Applications get contained.** Restrictive mount options (`nodev`, `nosuid`, `noexec`, `ro`) where they fit; isolation via `chroot`, containers, or jails — never treated as a complete boundary alone; dedicated non-root accounts with `sudo` restricted; and SELinux/AppArmor-class MAC enabled where practical, permissive mode first, enforcement after.\n* **Verification closes every thread.** The application still works, the server reboots clean, ports are scanned, restrictions tested, changes documented, exceptions approved and recorded — and the whole review repeats after major changes.\n\n**What it costs**\n\n* Testing every restriction against required functionality takes time — accepted deliberately, because an unverified control gets rolled back at 2 a.m. and never reinstated.\n* The periodic recheck (services, permissions, firewall rules, MAC policies) is standing work per server, not a commissioning gate.\n* MAC policies demand real effort as applications evolve; permissive-then-enforce is the sanctioned path, `setenforce 0` is not.\n\n**What we are not doing**\n\n* Not hardening until the application breaks — a recorded exception beats a silent regression.\n* Not relying on the network firewall — the host defends itself even when the layers in [Secure Network Infrastructure](network-security.html) fail.\n* Not covering the estate-wide scanning cadence or the data layer — those live in [Vulnerability Management](vulnerability-management.html) and [Databases](databases.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full hardening sequence and final security review. Grounded in the Unix Application Server Security chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "5 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the per-server hardening sequence from patching through isolation and mandatory access control, ending in the final security review. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Patch and Update Management\n\n- [ ] Keep the Unix/Linux operating system fully patched\n- [ ] Keep all third-party applications and packages up to date\n- [ ] Use the operating system's package-management system whenever possible\n- [ ] Update package repositories before installing upgrades\n- [ ] Review available updates before applying them\n- [ ] Track applications installed outside the package manager separately\n- [ ] Subscribe to security advisories for manually installed applications\n- [ ] Test important patches and upgrades before deploying them to production\n- [ ] Maintain a rollback or recovery plan before major operating-system upgrades\n- [ ] Keep update intervals small so large, disruptive upgrades are less likely\n\n## 2. Services and Daemons\n\n- [ ] Inventory all running services and processes\n- [ ] Determine the purpose of each enabled service\n- [ ] Disable services that are not required\n- [ ] Prevent unnecessary services from starting automatically after reboot\n- [ ] Verify required services start correctly after configuration changes\n- [ ] Periodically recheck the server for newly enabled or unnecessary services\n- [ ] Use the system's standard service-management mechanism, such as `systemctl`, where applicable\n\n## 3. File and Directory Permissions\n\n- [ ] Apply the principle of least privilege to files and directories\n- [ ] Verify ownership and group membership of sensitive files\n- [ ] Remove unnecessary world-readable permissions\n- [ ] Remove unnecessary world-writable permissions\n- [ ] Remove unnecessary execute permissions\n- [ ] Review the system `umask` and ensure new files receive appropriately restrictive permissions\n- [ ] Check files accessible by application-service accounts such as web-server users\n- [ ] Ensure application accounts cannot read data they do not require\n- [ ] Review SUID and SGID files and remove unnecessary special permissions\n- [ ] Regularly search for unexpected permission changes\n\n## 4. Host-Based Firewall\n\n- [ ] Enable a host-based firewall on the server\n- [ ] Permit only network traffic required for the server's function\n- [ ] Block unnecessary inbound connections\n- [ ] Restrict administrative services to trusted networks or addresses when possible\n- [ ] Review firewall rules for obsolete entries\n- [ ] Verify firewall rules after application or network changes\n- [ ] Confirm required application traffic still works after firewall changes\n\n## 5. File Integrity Monitoring\n\n- [ ] Deploy a file-integrity monitoring solution\n- [ ] Monitor critical operating-system files\n- [ ] Monitor application configuration files\n- [ ] Monitor web/application directories for unauthorized additions or modifications\n- [ ] Establish a trusted baseline of important files\n- [ ] Configure alerts for unexpected changes\n- [ ] Investigate unexplained integrity alerts promptly\n- [ ] Integrate integrity alerts with existing monitoring or logging systems where practical\n\n## 6. Filesystem and Disk Partition Security\n\n- [ ] Separate sensitive or high-risk filesystem areas onto appropriate partitions where practical\n- [ ] Review `/etc/fstab` or equivalent mount configuration\n- [ ] Use `nodev` on filesystems that should not contain device files\n- [ ] Use `nosuid` where SUID/SGID execution is unnecessary\n- [ ] Use `noexec` on data-only filesystems where executable files are not required\n- [ ] Use `ro` for filesystems that do not need to be modified\n- [ ] Verify mount-option changes after remounting or rebooting\n- [ ] Test applications after applying restrictive mount options\n\n## 7. SUID/SGID Review\n\n- [ ] Identify SUID executables\n- [ ] Identify SGID executables\n- [ ] Verify that each privileged executable is necessary\n- [ ] Remove unnecessary SUID/SGID permissions\n- [ ] Pay special attention to unexpected privileged binaries outside normal system directories\n\n## 8. Application Isolation\n\n- [ ] Determine whether the application can be isolated from the rest of the filesystem\n- [ ] Use `chroot`, containers, jails, or another isolation mechanism where appropriate\n- [ ] Minimize files and utilities available inside the isolated environment\n- [ ] Avoid running isolated applications as root unless absolutely required\n- [ ] Do not treat `chroot` alone as a complete security boundary\n- [ ] Test whether the application continues to function correctly after isolation\n\n## 9. Mandatory Access Control\n\n- [ ] Determine whether the platform supports SELinux, AppArmor, TrustedBSD, or another MAC framework\n- [ ] Enable mandatory access control where practical\n- [ ] Apply least-privilege policies to application processes\n- [ ] Restrict application access to only required files, devices, ports, and system functions\n- [ ] Review policy violations and audit logs\n- [ ] Use permissive/audit mode during testing if necessary before enabling full enforcement\n- [ ] Regularly review policies as application requirements change\n\n## 10. Application Account Security\n\n- [ ] Run each application under a dedicated non-root account where possible\n- [ ] Prevent service accounts from interactive login unless required\n- [ ] Limit service-account filesystem access\n- [ ] Restrict administrative privileges such as `sudo`\n- [ ] Remove unused accounts and groups\n- [ ] Review group memberships for excessive privileges\n\n## 11. Validation and Ongoing Maintenance\n\n- [ ] Confirm the application still performs its required business functions after hardening\n- [ ] Reboot the server when required and verify all necessary services return correctly\n- [ ] Scan for unexpected listening ports\n- [ ] Review system and application logs for errors or suspicious activity\n- [ ] Test firewall, filesystem, permissions, and access-control restrictions\n- [ ] Document all security-related configuration changes\n- [ ] Maintain a record of approved exceptions\n- [ ] Back up critical configuration files\n- [ ] Periodically repeat the hardening review\n- [ ] Review the server after major application, operating-system, or infrastructure changes\n\n## Final Security Review\n\n- [ ] Operating system is current\n- [ ] Applications are current\n- [ ] Only required services are running\n- [ ] File permissions follow least privilege\n- [ ] Host firewall allows only required traffic\n- [ ] File-integrity monitoring is active\n- [ ] Secure filesystem mount options are applied\n- [ ] Unnecessary SUID/SGID binaries have been removed or restricted\n- [ ] Application isolation is implemented where appropriate\n- [ ] Mandatory access controls are enabled where supported\n- [ ] Security controls have been tested without breaking required functionality\n- [ ] Configuration and recovery procedures are documented\n\nWith the final review green, the server holds the test that runs through the whole checklist: **only what the application requires is running, reachable, writable, and privileged — and the server still does its job.**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "7 min listen"}, "blocks": [{"type": "markdown", "content": "## Subtraction as a Security Strategy\n\n**Ben:** Another hardening record. The Windows one at least had an architecture story — forests, trusts, domain controllers. This is `umask` and firewall rules. What's the executive content in per-server hygiene?\n\n**Ana:** The content is that a Unix application server is the most concrete security problem you'll ever get, and the record refuses to let that concreteness get lost in generalities. The server's attack surface is exactly three lists: what runs, what listens, and what's writable. Everything in the record is about shrinking those lists and keeping them shrunk. The test at the end is almost aggressive in its simplicity — only what the application requires is running, reachable, writable, and privileged, and the server still does its job.\n\n**Ben:** \"Still does its job\" is doing a lot of work in that sentence.\n\n**Ana:** It's half the record, honestly, and we'll come back to it. But start with subtraction, because it's the strategy. A service that isn't running cannot be exploited — no patch, no policy, no monitoring needed. So the first moves are: inventory every running service, establish the purpose of each, disable what has none, prevent it from starting again at reboot, and — the underrated one — recheck periodically, because services come back. Every deploy, every package install is an opportunity for the surface to quietly grow.\n\n**Ben:** Patching, though. \"Keep the OS patched\" was advice in 1998. What does the record add?\n\n**Ana:** Two things people actually get wrong. First, cadence over heroics: the chapter says keep update intervals small so large, disruptive upgrades are less likely. Organizations that defer updates accumulate a debt only a risky big-bang upgrade can pay — which breaks things, which teaches them to defer longer. It's a doom loop, and small steps are the exit. Second, the software the package manager can't see. The hand-installed application with no advisory subscription is the one that stays vulnerable for years — so the record demands it be tracked separately, with subscriptions to its security advisories. That orphan is a named anti-pattern.\n\n## The Filesystem Is the Blast Radius\n\n**Ben:** The permissions section is the longest and looks the most pedestrian. Ownership checks, world-writable hunts, `umask`. Why is this the center of gravity?\n\n**Ana:** Because most application compromises begin as the application account. Someone gets code execution as the web-server user — not as root. From that moment, what that account can read and write *is* the blast radius. The record's key line: application accounts cannot read data they do not require. Add the world-writable hunt, a restrictive `umask` so new files are born safe, and the SUID review — with special attention to privileged binaries outside normal system directories, which is a classic persistence trick — and a compromised application becomes a contained nuisance instead of a data breach.\n\n**Ben:** And the regular search for unexpected permission changes?\n\n**Ana:** That's what keeps it true after day one. `chmod 777` to fix a deployment problem at midnight is the temporary fix that becomes the permanent hole — \"world-writable and working\" is in the anti-pattern list for a reason. The search makes the regression visible instead of silent.\n\n**Ben:** Host firewall. There's a network firewall already — [Secure Network Infrastructure](network-security.html) is a whole record. Why duplicate at the host?\n\n**Ana:** Because defense assumes either layer can fail. The network firewall doesn't help against the compromised neighbor on the same segment. The host permits only the traffic its function requires, blocks the rest inbound, and restricts administrative services — SSH above all — to trusted networks. And the rules get maintained: obsolete entries removed, rules verified after application changes, and required traffic confirmed still working — there's the \"still does its job\" theme again.\n\n**Ben:** File-integrity monitoring feels like a compliance checkbox. Every audit asks for it, every organization has it, nobody looks at it.\n\n**Ana:** Which is exactly the failure mode the record targets. FIM is the control that pays out when everything else has already lost — the attacker is in, escalated, and modifies a binary or a config file, and the baseline comparison catches it. But it only works as a discipline: a *trusted* baseline, alerts on unexpected change, unexplained alerts investigated promptly, and integration into the monitoring people actually watch, per [Logging and Monitoring](logging-and-monitoring.html). The anti-pattern is the muted integrity alert — a breach notification system with the ringer off.\n\n## Containment, MAC, and the 2 a.m. Rollback\n\n**Ben:** Isolation. The record says use `chroot`, containers, or jails — then immediately says `chroot` is not a security boundary. Which is it?\n\n**Ana:** Both, and the honesty is the point. Isolation raises the attacker's cost: a minimal environment with few utilities, an application that isn't root, a filesystem that mostly isn't there. But `chroot` alone can be escaped, especially by root — so the record forbids treating it as a *complete* boundary. It's a layer, in an architecture that assumes any single layer fails. The real kernel-level containment is mandatory access control — SELinux, AppArmor, TrustedBSD, wherever the platform supports one.\n\n**Ben:** Here's where I get to say it: the first thing every ops team does with SELinux is turn it off. `setenforce 0` is the most-typed troubleshooting command on Linux.\n\n**Ana:** The record names that as an anti-pattern precisely because it's universal — disabled as a debugging step, never re-enabled, kernel-level protection traded for one afternoon's convenience. But notice the chapter doesn't demand enforcement on day one. It prescribes the workable path: permissive or audit mode during testing, watch the violations, fix the policy, then enforce — and re-review policies as the application changes, because a policy frozen while the app evolves either breaks things or stops meaning anything. MAC is what distinguishes \"the account can't read the file\" from \"the *process* can't, even after it's subverted.\"\n\n**Ben:** Now the part you deferred. Half the checklist is verification — the app still works, the server reboots clean, scan the ports, test the restrictions. Isn't that just... QA?\n\n**Ana:** It's the difference between hardening that lasts and hardening that evaporates. A control that breaks the application gets rolled back at two in the morning — usually along with three neighboring controls, and none of them ever comes back. So verification is part of the control itself: test after the mount options, after the firewall change, after isolation; reboot and confirm services return. And when a restriction genuinely can't hold, the record prefers a recorded, approved exception over a silent regression. An exception register you can read beats a configuration that quietly lies.\n\n**Ben:** And the review repeats.\n\n**Ana:** Periodically, and after major application, OS, or infrastructure changes. \"Hardened once\" is the last anti-pattern — the server that passed at commissioning and drifted soft through every deploy since. The scope section is even honest about when this record itself changes shape: if the fleet goes immutable — images and containers — hardening moves into the build pipeline, and the record gets revisited.\n\n**Ben:** All right. My concession: this isn't `umask` trivia — it's one idea applied everywhere. Shrink what runs, listens, and is writable down to what the application requires, prove the application survived, and re-prove it on a schedule.\n\n**Ana:** That's the record. Two questions to ask of any server: what's listening that the application doesn't require, and what can the application account read that it doesn't need? The right answer to both is nothing — and the server still does its job.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "How a Unix application server earns its place on the network — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a server on a podium at a network checkpoint under spotlights labeled runs, listens, writable, as Nadia holds a checklist.](assets/images/unix-servers/comic-01-earning-its-place.jpeg)\n**Panel 1:** *The hook: a server's attack surface is what runs, what listens, and what is writable — everything else is noise to remove, so every server earns its place on the network.*\n\n![Comic panel: a dusty server covered in small ajar doors tagged enabled 2019 and purpose unknown, Nadia shining a flashlight.](assets/images/unix-servers/comic-02-the-everything-daemon.jpeg)\n**Panel 2:** *The problem: the everything daemon — services enabled years ago and never inventoried since, each an unattended door, none with a known purpose.*\n\n![Comic panel: a frazzled engineer spray-paints 777 on a file cabinet and bins a SELinux shield labeled temporary while Vera watches.](assets/images/unix-servers/comic-03-777-and-setenforce-0.jpeg)\n**Panel 3:** *The wrong way: world-writable and working — permissions loosened to fix a deployment and never tightened, SELinux disabled as troubleshooting and never re-enabled.*\n\n![Comic panel: Vera shows a bloated server shrinking to a clean cube with four slots labeled running, reachable, writable, privileged.](assets/images/unix-servers/comic-04-shrink-and-verify.jpeg)\n**Panel 4:** *The principle: shrink and verify — only what the application requires is running, reachable, writable, and privileged, and the server still does its job.*\n\n![Comic panel: Nadia walks small patch-labeled steps while another engineer faces a cracked cliff labeled big-bang upgrade.](assets/images/unix-servers/comic-05-small-steps-beat-heroics.jpeg)\n**Panel 5:** *Practice: a small patching cadence beats patching heroics — deferred updates pile into the risky big-bang upgrade, and software the package manager cannot see gets its own advisory subscriptions.*\n\n![Comic panel: a gremlin tagged web app account fenced into a small circle of files, unable to reach shelves labeled customer data.](assets/images/unix-servers/comic-06-blast-radius-filesystem.jpeg)\n**Panel 6:** *Practice: the filesystem is least privilege made concrete — what the application account can read and write is the blast radius, so a compromised app becomes a contained nuisance, not a data breach.*\n\n![Comic panel: a server holding a host-firewall shield with one open slot while a file-integrity tripwire bell rings and Nadia investigates.](assets/images/unix-servers/comic-07-the-host-defends-itself.jpeg)\n**Panel 7:** *Practice: the host defends itself — a firewall permitting only required traffic, and file-integrity monitoring against a trusted baseline whose alerts are investigated, not muted.*\n\n![Comic panel: an app in a clear container watched by a MAC guard robot as a dial is turned from permissive to enforce under a sign reading app still works.](assets/images/unix-servers/comic-08-contained-and-still-working.jpeg)\n**Panel 8:** *Practice: applications run isolated, non-root, and confined by mandatory access control — permissive mode during testing, then enforcement, with every restriction verified against required function so it survives the 2 a.m. rollback.*\n\n![Comic panel: Vera holds two question cards while Nadia points at a large zero on a board next to a tidy humming server.](assets/images/unix-servers/comic-09-the-two-questions.jpeg)\n**Panel 9:** *The closer: two questions for any server — what is listening that the app does not require, and what can its account read that it does not need? Both should answer: nothing. And the review repeats; it is never archived.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

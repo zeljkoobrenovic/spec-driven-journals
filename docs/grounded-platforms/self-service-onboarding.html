@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Self-Service Platform Onboarding</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="devex-evaluation.html" title="Developer Experience Evaluation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="cicd-as-a-platform-service.html" title="CI/CD as a Platform Service">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference Implementation</p>
+        <h1>Self-Service Platform Onboarding</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-20  ·  8 min · <a class="spec-link" href="self-service-onboarding.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/self-service-onboarding/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/self-service-onboarding/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="devex-evaluation.html" title="Developer Experience Evaluation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="cicd-as-a-platform-service.html" title="CI/CD as a Platform Service">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REF-ONBOARDING", "status": "draft:gray", "title": "Self-Service Platform Onboarding", "date": "2026-08-20", "author": "Željko Obrenović", "permalink": "self-service-onboarding", "timetoread": "8 min", "excerpt": "When a platform team in my organization builds self-service onboarding, the front door is an API, not a portal: the developer portal is one client of a versioned onboarding API that owns the provisioning logic. A new team is one authenticated call that provisions the whole bundle — namespace, RBAC, quotas, identity groups, repository, catalog entry — with every step idempotent, so a retried half-failure converges instead of duplicating. A project is a complete developer unit, never just a repository. The bar I hold the build to: portal form to first deployment in about five minutes, without a ticket and without a platform engineer in the loop.", "tags": "onboarding, self-service, api-first, provisioning, developer portal, rbac, resource quotas, idempotency, team lifecycle", "icon": "assets/icons/self-service-onboarding.png", "logo": "assets/images/self-service-onboarding/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["onboarding", "self-service", "api-first", "provisioning", "developer portal", "rbac", "resource quotas", "idempotency", "team lifecycle"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: When a platform team in my organization builds self-service onboarding, the front door is an **API, not a portal**: the developer portal is one client of a versioned, schema-validated onboarding API that owns the provisioning logic. A new team is **one authenticated call** that provisions the whole bundle — namespace, RBAC, resource quotas, identity groups, source repository, catalog entry — with **every step idempotent**, so a retried half-failure converges instead of duplicating resources. Guardrails ship inside the bundle: tiered quotas, three standing roles, network policies, and an audit trail that records who asked, when, and why. A project is a **complete developer unit** — repository, namespaces, pipeline, catalog entry, documentation — never just a repo. The bar the build is held to: **portal form to first deployment in about five minutes**, without a ticket and without a platform engineer in the loop.\n\n## Statement\n\nWhen my organization builds self-service onboarding, this is the shape of the build, end to end.\n\n**The front door is an API:**\n\n- **API-first, portal second.** Provisioning logic lives in an onboarding API (`POST /api/v1/teams`), never inside the developer portal. Backstage's scaffolder is a client of that API — swappable, like every other client.\n- **Authenticated and authorized.** Every request is authenticated and requires the `platform:teams:create` permission; authorization is validated before any infrastructure is touched.\n- **Schema-validated, contract-documented.** Requests are validated against an OpenAPI/JSON Schema — team name, display name, and team-lead email required; names lowercase alphanumeric with hyphens, capped at 63 characters; resource tier defaulting to `starter`. The OpenAPI specification is the source of truth for clients and documentation.\n- **Accountable by design.** The API tracks who submitted each request, when, and why, and returns provisioning status to the caller.\n\n**A team is one call, fully provisioned:**\n\n- **The whole bundle, one workflow.** The workflow creates the team's namespace, applies RBAC roles and the correct resource quota, creates the source repository and the Keycloak groups, registers the team in the Backstage catalog, and returns namespace, repository, and status.\n- **Every step idempotent.** Retrying a partially failed request converges on the desired state — no duplicate namespaces, groups, repositories, or catalog entities.\n- **Namespaces carry their metadata.** A consistent convention (`team-{teamname}`, `team-{teamname}-{environment}`), labels for team, owner, tier, cost center, and managed-by, annotations linking to the catalog entry and the team's Slack channel, mesh enrollment via sidecar injection where required, and network policies applied automatically.\n\n![Diagram: portal, CLI, and script clients call one versioned onboarding API whose idempotent workflow provisions namespace, RBAC, quota, identity groups, repository, and catalog entry.](assets/images/self-service-onboarding/api-first-provisioning-flow.jpeg)\n**Figure 1:** *The front door is an API: every client is equal, and one authenticated call runs the idempotent workflow that provisions the complete team bundle.*\n\n**Guardrails ship in the bundle:**\n\n- **Three roles, one boundary.** `team-admin`, `team-developer`, `team-viewer` — admins control their namespace, developers deploy and debug, viewers read. Secret deletion is reserved for admin roles. RoleBindings bind to OIDC groups named `{team}-admins`, `{team}-developers`, `{team}-viewers`; permissions cannot escalate outside the team's namespace, and `platform-*` namespaces are untouchable.\n- **Quotas are tiers, not negotiations.** Starter, standard, and enterprise tiers define CPU and memory requests and maximums, and cap persistent volume claims, load balancers, and deployments; a LimitRange supplies default requests, limits, and per-container maximums. Quota alerts feed the observability platform; quota upgrades are self-service requests, with an approval workflow where governance requires one.\n- **Identity is wired, then reconciled.** Team groups are created idempotently via the Keycloak Admin API at provisioning time — the lead into admins, members into developers — with group names matching RoleBinding subjects, membership in JWT claims where needed, and periodic reconciliation between Keycloak and Kubernetes so the two never silently drift.\n\n**Teams live, projects are whole:**\n\n- **A managed lifecycle.** Platform admins create teams and seed the initial team admin; team admins add and remove members, assign roles, request quota increases, and create sub-namespaces. Teams are `active`, `archived`, or `deleted`, with explicit inactivity rules for archival and deletion rules for archived teams.\n- **A project is a complete developer unit.** Not a repository, not a namespace — a bundle provisioned together: source repository, deployment namespaces, CI/CD pipeline, catalog entry, documentation scaffolding, with naming conventions that flow into every downstream resource.\n- **Templates by archetype.** Backend service, frontend application, data pipeline, ML model — with language and framework variants, stored in version-controlled Git repositories, carrying metadata about supported platform features, and previewing their resources before execution. The scaffolder validates name uniqueness, team membership, and quota availability — and requires a cost center for production and GPU-quota approval for ML where applicable — then calls the onboarding API and surfaces links to the new repository and catalog entry.\n\n**Failure and observability are part of the door:**\n\n- **Honest failure semantics.** Capacity is pre-checked; quota beyond available capacity returns 409, infrastructure failure returns 503, GitHub rate limits and Kubernetes API errors are retried with exponential backoff and jitter; failed attempts land in the audit trail; project-level partial failures have defined rollback.\n- **Operated as a production service.** Prometheus metrics, structured logs, distributed traces, and an audit of every success and failure with requester, timestamps, purpose, and retries. The API is load-tested, versioned by URL for breaking changes, and covered by a deprecation policy announced before removal.\n- **Measured by outcomes.** Time-to-first-deploy, onboarding ticket count, and abandonment rate are tracked — and the end-to-end walkthrough, run as a test user, completes in about five minutes.\n\n## Reference Stack\n\nThis record is grounded in the handbook's concrete build. The commitments above hold at the capability level; the stack is the worked example, not the mandate.\n\n| Role | Reference tool | The property that matters |\n| --- | --- | --- |\n| Developer portal and scaffolder | Backstage | One front door; the scaffolder is a client of the onboarding API, not its home |\n| Onboarding API | Custom REST service (OpenAPI) | Versioned, schema-validated; the single place provisioning logic lives |\n| Identity | Keycloak (OIDC) | Groups created with the team; names mirror RBAC subjects; reconciled periodically |\n| Cluster substrate | Kubernetes (Kind locally) | Namespace-per-team with RBAC, ResourceQuota, and LimitRange |\n| Deployment | ArgoCD (GitOps) | The deployed state a new team lands in is reconciled from Git |\n| Source hosting | GitHub | Repositories provisioned by the workflow through a token-scoped API |\n| Service mesh | Istio | Mesh enrollment is a namespace label applied at creation |\n| Telemetry | Prometheus, structured logs, traces | The onboarding service is operated like any production service |\n| Orchestration (future) | Decided by the maturity review | Evaluated when the custom API's maintenance cost outgrows its flexibility |\n\n## How to Read This\n\nThis record is part of the **Reference Implementation** section of this journal — the how-it-concretely-looks companion to the Platform Engineering records. Where [The Four Pillars of Platform Engineering](four-pillars.html) argues that a broad developer base must be served self-service, this record shows what that pillar looks like as a running build: the API, the bundle, the guardrails, the metrics. It is grounded in the Self-Service Platform Onboarding chapter checklist of the *Platform Engineer's Handbook*. The runnable version — prerequisites through production readiness and the future maturity review — lives in the **Checklist** tab; the **TL;DR** tab carries the management summary, and the **Conversation** tab talks it through.\n\n## Rationale\n\n**Onboarding is where the self-service pillar becomes real or fake.** Pillar 3 of [The Four Pillars of Platform Engineering](four-pillars.html) promises that new users onboard without manual platform-team work. If joining the platform starts with a ticket, that promise is already broken — the platform team is the bottleneck it was built to remove, and every new team pays the queue tax before writing a line of code. Time-to-first-deploy, ticket count, and abandonment rate are the honest measures of whether the front door actually opens.\n\n**API-first is what keeps the portal replaceable.** Provisioning logic embedded in Backstage makes the portal the platform: untestable in isolation, unusable from a CLI or a script, and unswappable when the portal decision changes. Behind an API with an OpenAPI contract as the source of truth, the portal is one client among several, client SDKs can be generated, and the future maturity review — Argo Workflows, Tekton, Crossplane, Kratix, or a commercial orchestrator — can swap the engine without breaking a single caller. **The API is the commitment; the orchestration behind it is an implementation detail.**\n\n**Idempotency is the difference between self-service and self-harm.** Team provisioning spans at least four systems — Kubernetes, the identity provider, source hosting, the catalog — and multi-system workflows fail partway as a matter of course. Without idempotency, every retry mints duplicates and every partial failure needs a human archaeologist. With it, retry is the recovery procedure: a failed request is re-submitted and the workflow converges. That is why the record treats idempotency, backoff with jitter, capacity pre-checks, and honest 409/503/429 semantics as part of the door, not hardening to add later.\n\n**Guardrails must arrive with the namespace, not after it.** A namespace created without quotas, RBAC, and network policies is a standing invitation to the incidents that guardrails exist to prevent — and retrofitting limits onto a running team is a negotiation, not a configuration change. Tiered quotas keep the fairness conversation cheap: a team asks for the next tier through a workflow instead of negotiating bespoke limits with an engineer. The labels applied at creation — owner, tier, cost center — are what make cost attribution and ownership answerable for the rest of the team's life.\n\n**Identity drift is the silent failure mode.** Access lives in two systems — Keycloak groups and Kubernetes RoleBindings — and they are only correct together. Creating them in the same workflow with matching names is the first half; periodic reconciliation is the second, because anything not reconciled will drift, and identity drift surfaces as either developers locked out or, worse, access that should have died with a departed teammate.\n\n![Diagram: Keycloak groups and Kubernetes RoleBindings created together by the provisioning workflow and kept aligned by a periodic reconciliation loop, with drift flagged.](assets/images/self-service-onboarding/identity-reconciliation-loop.jpeg)\n**Figure 2:** *Access is only correct in two systems together: groups and RoleBindings are created in one workflow and reconciled periodically, because anything not reconciled will drift.*\n\n**A repository is not a project.** A developer who receives a repo but must separately request a namespace, a pipeline, a catalog entry, and documentation has not been onboarded — they have been given a to-do list. Treating the project as the unit — everything provisioned together, from an archetype template, with a preview before execution — is what makes the five-minute bar reachable at all.\n\n**The five-minute test keeps everyone honest.** The end-to-end walkthrough — open the portal as a test user, pick a template, submit, confirm repository, namespace, RBAC, quotas, groups, catalog entry, pipeline, and cluster access, ready to trigger the first deployment — is the record's acceptance test. It is cheap to run and hard to argue with, and I expect it re-run whenever the onboarding path changes.\n\n![Timeline diagram: portal form to API call to provisioned bundle to first deploy in about five minutes, with no ticket and no human in the loop.](assets/images/self-service-onboarding/five-minute-walkthrough-timeline.jpeg)\n**Figure 3:** *The acceptance test: portal form to first deployment in about five minutes, with no ticket and no platform engineer in the loop.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Provisioning logic lives behind a versioned onboarding API. | The portal is the platform — Backstage is one client, and logic never lives in it. |\n| One authenticated call provisions the complete team bundle. | Provisioning is infallible — failures return honest statuses, and retries converge because every step is idempotent. |\n| Quotas come in tiers with a starter default. | Teams size their own resources — upgrades are self-service requests, with approval where governance requires it. |\n| Team admins run their own membership, roles, and sub-namespaces. | Anyone creates teams — creation stays with platform admins, who seed the first team admin. |\n| Teams are archived and deleted by explicit lifecycle rules. | Namespaces live forever because nobody owns deleting them. |\n| The reference stack is Backstage, Keycloak, GitHub, Kubernetes, ArgoCD. | A tool mandate — commitments hold at the capability level, and the maturity review may swap the engine, never the API-first and self-service principles. |\n\nConcretely: when a platform team in my organization ships onboarding, I ask to see the OpenAPI spec, watch the five-minute walkthrough live, and see the dashboard with time-to-first-deploy, ticket count, and abandonment. **A demo of the portal is not a demo of the capability; the API contract and the metrics are.**\n\n## Anti-Patterns\n\n- **The ticket behind the portal.** A scaffolder form that opens a ticket for a human to run scripts — self-service theater with a queue inside.\n- **The portal that ate the platform.** Provisioning logic embedded in Backstage, making the portal untestable, unswappable, and the only citizen — every CLI, script, and future client is second-class.\n- **The half-provisioned team.** A namespace without a repository, groups without RoleBindings — partial failure left as debris because no step was idempotent and no rollback was defined.\n- **Quota by negotiation.** No tiers — every team's resources are a bespoke deal with an engineer, and fairness and capacity planning die together.\n- **The immortal namespace.** No lifecycle states, no inactivity rules — the cluster accretes the namespaces of teams that no longer exist.\n- **The repo-shaped project.** Onboarding creates a repository and calls it a project; the namespace, pipeline, catalog entry, and documentation each need another request.\n- **Optimistic provisioning.** No capacity pre-check, no 409/503/429 semantics, no backoff — failures surface as mystery states in a developer's browser.\n- **Two truths about identity.** Keycloak groups and Kubernetes RoleBindings created separately and never reconciled, drifting until access is wrong in both directions.\n\n## Related Records\n\n- [The Four Pillars of Platform Engineering](four-pillars.html) — pillar 3 (a broad base served self-service) is the bar; this record is its reference build.\n- [Platform as a Product](platform-as-a-product.html) — onboarding is the platform's first product surface; abandonment and ticket counts are product feedback.\n- [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) — the substrate this build assumes: cluster, GitOps, and mesh already standing.\n- [End-to-End Platform Security](platform-security.html) — the SSO and identity-realm wiring this record's Keycloak integration builds on.\n- [Starter Kit Templates](starter-kits.html) — the contents of the project templates the scaffolder executes; this record only provisions them as a unit.\n- [CI/CD as a Platform Service](cicd-as-a-platform-service.html) — the pipeline service each new project is wired into.\n- [Self-Service Infrastructure Management](self-service-infrastructure.html) — day-2 self-service: infrastructure resources after the team exists.\n- [Observability Implementation](observability-implementation.html) — the observability platform that quota alerts and onboarding metrics land in.\n- [Cost, Performance, and Scalability](cost-performance-scalability.html) — the cost side of the tier and cost-center labels applied here.\n- [Developer Experience Evaluation](devex-evaluation.html) — time-to-first-deploy and friction, measured in the wider developer-experience frame.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to any platform team in my organization building team or project onboarding, whatever the underlying stack. I revisit it if the onboarding ticket count or abandonment rate trends up (the door is failing as a product), if the five-minute walkthrough degrades and stays degraded (the door is failing as an engineering artifact), or if the custom API's maintenance burden triggers the maturity review (the candidates and comparison criteria live in the Checklist tab). If that review picks a new engine, the engine changes — the API-first and self-service principles do not.\n\n## Authoritative References\n\n- *Platform Engineer's Handbook* — the Self-Service Platform Onboarding chapter, whose checklist this record distills into the Checklist tab.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "When a platform team in my organization builds self-service onboarding, the front door is an **API, not a portal**: a versioned onboarding API owns the provisioning logic, the developer portal is one client of it, and a new team is **one authenticated, idempotent call** that provisions namespace, RBAC, quotas, identity groups, repository, and catalog entry together. The bar the build is held to: **portal form to first deployment in about five minutes**, without a ticket and without a platform engineer in the loop.\n\n**What changes**\n\n* **Provisioning logic moves behind an API.** `POST /api/v1/teams`, authenticated and permission-checked, validated against an OpenAPI/JSON Schema that stays the source of truth for clients and documentation. Backstage's scaffolder calls it — like every other client — so the engine can change later without breaking a single caller.\n* **A team is one call, and retries converge.** The workflow provisions the whole bundle — namespace with labels and network policies, three standing roles bound to matching Keycloak groups, tiered quotas with a LimitRange, source repository, catalog entry — with every step idempotent, so a retried half-failure completes instead of duplicating resources.\n* **Guardrails ship in the bundle.** Starter/standard/enterprise quota tiers with self-service upgrade requests (approval where governance requires), secret deletion reserved for admins, no escalation outside the team's namespace, `platform-*` namespaces untouchable, and periodic Keycloak↔Kubernetes reconciliation so identity never silently drifts.\n* **A project is a complete developer unit.** Repository, namespaces, CI/CD pipeline, catalog entry, and documentation scaffolding provisioned together from versioned archetype templates — never a repo with a to-do list attached.\n* **Onboarding is operated and measured.** Honest 409/503/429 failure semantics with backoff and jitter, a full audit trail, Prometheus metrics, and three product metrics on a dashboard: time-to-first-deploy, onboarding ticket count, abandonment rate — plus the end-to-end five-minute walkthrough as the standing acceptance test.\n\n**What it costs**\n\n* The onboarding API is a production service: load-tested, versioned by URL, covered by a deprecation policy, monitored, and on somebody's pager.\n* Idempotency, capacity pre-checks, rollback, and reconciliation are real engineering effort — paid up front so that retry, not archaeology, is the recovery procedure.\n* Lifecycle discipline has teeth: inactivity archival and deletion rules mean namespaces of dissolved teams actually go away.\n\n**What we are not doing**\n\n* Not the template contents — archetypes and scaffolding depth live in [Starter Kit Templates](starter-kits.html); not the pipeline service itself, which is [CI/CD as a Platform Service](cicd-as-a-platform-service.html).\n* Not day-2 infrastructure requests — databases and buckets after the team exists are [Self-Service Infrastructure Management](self-service-infrastructure.html).\n* Not a tool mandate — Backstage, Keycloak, GitHub, and ArgoCD are the reference stack; the commitments hold at the capability level, and a future orchestrator may replace the engine but never the API-first and self-service principles.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full build, prerequisites through production readiness. Grounded in the* Platform Engineer's Handbook *chapter checklist.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "7 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the end-to-end build of self-service onboarding on the reference stack (Backstage, Keycloak, GitHub, Kubernetes, ArgoCD). The Article tab carries the rationale and anti-patterns.*\n\n## 1. Prerequisites\n\n- [ ] Confirm the Kind cluster is operational\n- [ ] Confirm ArgoCD is installed and working\n- [ ] Confirm the demo application is deployed\n- [ ] Confirm the Backstage developer portal is running\n- [ ] Confirm SSO is configured in Backstage\n- [ ] Confirm Keycloak has the platform realm configured\n- [ ] Confirm at least one Keycloak test user exists\n- [ ] Create a GitHub Personal Access Token with `repo` and `admin:org` scopes\n- [ ] Export the token as `GITHUB_TOKEN`\n\n## 2. Design the Onboarding API\n\n- [ ] Use an API-first architecture — provisioning logic lives in the API, not directly in Backstage\n- [ ] Create a `POST /api/v1/teams` endpoint\n- [ ] Require authentication and the `platform:teams:create` permission\n- [ ] Validate every request against an OpenAPI/JSON Schema\n- [ ] Require the essential fields:\n  - [ ] Team name\n  - [ ] `display_name`\n  - [ ] Team lead email\n- [ ] Enforce lowercase alphanumeric team names with hyphens\n- [ ] Limit team names to 63 characters\n- [ ] Default the resource tier to `starter` when omitted\n- [ ] Track who submitted each onboarding request\n- [ ] Track when and why the request was submitted\n- [ ] Return provisioning status information to the caller\n- [ ] Keep the OpenAPI specification as the source of truth for clients and documentation\n\n## 3. Implement the Provisioning Workflow\n\n- [ ] Validate the requester's permissions before touching infrastructure\n- [ ] Create the team's Kubernetes namespace\n- [ ] Apply team RBAC roles\n- [ ] Apply the correct resource quota\n- [ ] Create the team's source repository\n- [ ] Create the required Keycloak groups\n- [ ] Register the team in the Backstage catalog\n- [ ] Return the namespace, repository, and provisioning status\n- [ ] Make every provisioning step idempotent\n- [ ] Confirm that retrying a partially failed request does not duplicate resources\n\n## 4. Automate Namespace Provisioning\n\n- [ ] Establish a consistent naming convention such as `team-{teamname}`\n- [ ] Use `team-{teamname}-{environment}` for environment-specific namespaces\n- [ ] Add labels for:\n  - [ ] Team\n  - [ ] Owner\n  - [ ] Resource tier\n  - [ ] Cost center\n  - [ ] Managed-by\n- [ ] Add useful integration annotations\n- [ ] Add the Backstage team/catalog URL annotation\n- [ ] Add a Slack channel annotation where applicable\n- [ ] Enable Istio sidecar injection when service-mesh enrollment is required\n- [ ] Automatically apply appropriate network policies\n\n## 5. Configure RBAC\n\n- [ ] Create a `team-admin` role\n- [ ] Create a `team-developer` role\n- [ ] Create a `team-viewer` role\n- [ ] Give team admins full namespace-level control as intended\n- [ ] Allow developers to deploy and debug workloads\n- [ ] Give viewers read-only access\n- [ ] Prevent developers from deleting Kubernetes secrets\n- [ ] Reserve secret deletion for team-admin/platform-admin roles\n- [ ] Create RoleBindings for Keycloak/OIDC groups\n- [ ] Use consistent group names:\n  - [ ] `{team}-admins`\n  - [ ] `{team}-developers`\n  - [ ] `{team}-viewers`\n- [ ] Confirm team admins cannot modify `platform-*` namespaces\n- [ ] Confirm permissions cannot be escalated outside the team's namespace\n\n## 6. Configure Resource Quotas\n\n- [ ] Define resource tiers such as:\n  - [ ] Starter\n  - [ ] Standard\n  - [ ] Enterprise\n- [ ] Define CPU request limits for each tier\n- [ ] Define memory request limits for each tier\n- [ ] Define CPU maximums\n- [ ] Define memory maximums\n- [ ] Limit persistent volume claims\n- [ ] Limit load balancer services\n- [ ] Limit the number of deployments where appropriate\n- [ ] Configure a Kubernetes LimitRange\n- [ ] Define default CPU and memory requests\n- [ ] Define default CPU and memory limits\n- [ ] Define maximum per-container CPU and memory\n- [ ] Connect quota alerts to the observability platform (see [Observability Implementation](observability-implementation.html))\n- [ ] Implement self-service quota upgrade requests\n- [ ] Add an approval workflow where governance is required\n\n## 7. Integrate Keycloak\n\n- [ ] Use the Keycloak Admin REST API for group management\n- [ ] Create team groups during team provisioning\n- [ ] Create the standard groups:\n  - [ ] `{team}-admins`\n  - [ ] `{team}-developers`\n  - [ ] `{team}-viewers`\n- [ ] Add the team lead to the admins group\n- [ ] Add team members to the developers group\n- [ ] Match Keycloak group names to Kubernetes RoleBinding subjects\n- [ ] Include team membership in JWT claims where required\n- [ ] Implement periodic reconciliation between Keycloak and Kubernetes\n- [ ] Make Keycloak group creation idempotent\n\n## 8. Enable Self-Service Team Management\n\n- [ ] Allow platform admins to create teams\n- [ ] Allow platform admins to assign the initial team admin\n- [ ] Allow team admins to add members\n- [ ] Allow team admins to remove members\n- [ ] Allow team admins to assign team roles\n- [ ] Allow team admins to request quota increases\n- [ ] Allow team admins to create sub-environments/sub-namespaces\n- [ ] Define team lifecycle states:\n  - [ ] Active\n  - [ ] Archived\n  - [ ] Deleted\n- [ ] Define inactivity rules for automatic archival\n- [ ] Define deletion rules for archived teams\n\n## 9. Build Project Templates\n\n- [ ] Treat a project as a complete developer unit, not only a repository or namespace\n- [ ] Provision the following together:\n  - [ ] Source repository\n  - [ ] Deployment namespace(s)\n  - [ ] CI/CD pipeline (see [CI/CD as a Platform Service](cicd-as-a-platform-service.html))\n  - [ ] Backstage catalog entry\n  - [ ] Documentation scaffolding\n- [ ] Define project naming conventions that flow into downstream resources\n- [ ] Organize templates by archetype, for example:\n  - [ ] Backend service\n  - [ ] Frontend application\n  - [ ] Data pipeline\n  - [ ] ML model\n- [ ] Add language/framework-specific variants\n- [ ] Store templates in version-controlled Git repositories\n- [ ] Include template metadata and supported platform features\n- [ ] Provide a preview of resources before execution\n\n## 10. Configure the Backstage Scaffolder\n\n- [ ] Create a Backstage software template\n- [ ] Collect the project/service name\n- [ ] Collect the owning team\n- [ ] Collect the template type\n- [ ] Provide resource tier selection\n- [ ] Default the tier to `starter`\n- [ ] Default the environment to `dev`\n- [ ] Default repository visibility appropriately\n- [ ] Validate project-name uniqueness\n- [ ] Validate team membership\n- [ ] Validate quota availability\n- [ ] Require a cost center for production environments where applicable\n- [ ] Require GPU quota approval for ML templates where applicable\n- [ ] Call the onboarding API from the Backstage workflow\n- [ ] Publish the GitHub repository\n- [ ] Surface a link to the source repository after completion\n- [ ] Surface a link to the Backstage catalog entry after completion\n\n## 11. Handle Failures Safely\n\n- [ ] Treat every provisioning operation as potentially fallible\n- [ ] Pre-check cluster capacity before provisioning\n- [ ] Return `409 Conflict` when requested quota exceeds available capacity\n- [ ] Return an appropriate `503` for Kubernetes infrastructure failures\n- [ ] Handle GitHub `429` rate-limit responses\n- [ ] Handle Kubernetes API `503` responses\n- [ ] Implement exponential backoff\n- [ ] Add jitter to retry behavior\n- [ ] Record failed attempts in the audit trail\n- [ ] Verify retries are safe\n- [ ] Prevent duplicate namespace creation\n- [ ] Prevent duplicate identity groups\n- [ ] Prevent duplicate repositories/catalog entities\n- [ ] Define rollback behavior for project-level partial failures\n\n## 12. Add Observability and Auditability\n\n- [ ] Expose Prometheus metrics\n- [ ] Produce structured logs\n- [ ] Produce distributed traces where applicable\n- [ ] Audit successful provisioning operations\n- [ ] Audit failed provisioning operations\n- [ ] Record the requesting user\n- [ ] Record provisioning timestamps\n- [ ] Record the requested purpose/context\n- [ ] Record retry attempts\n- [ ] Track time-to-first-deploy\n- [ ] Track onboarding ticket count\n- [ ] Track onboarding abandonment rate\n\n## 13. Test the End-to-End Developer Experience\n\n- [ ] Open the developer portal as a test user\n- [ ] Select a project template\n- [ ] Enter the service name\n- [ ] Select the owning team\n- [ ] Select the resource tier\n- [ ] Submit the request\n- [ ] Confirm the Git repository is created\n- [ ] Confirm the namespace is created\n- [ ] Confirm RBAC is applied correctly\n- [ ] Confirm quota and LimitRange resources are applied\n- [ ] Confirm Keycloak groups are created\n- [ ] Confirm the Backstage catalog entity is registered\n- [ ] Confirm the CI/CD pipeline is configured\n- [ ] Confirm Kubernetes access works\n- [ ] Confirm the first deployment is ready to trigger\n- [ ] Verify the complete workflow can finish in approximately five minutes\n\n## 14. Production Readiness\n\n- [ ] Document the API with OpenAPI/Swagger UI\n- [ ] Establish API versioning rules\n- [ ] Use URL-based versions for breaking changes\n- [ ] Define a deprecation policy\n- [ ] Announce deprecations before removing versions\n- [ ] Generate client SDKs where useful\n- [ ] Secure all secrets appropriately\n- [ ] Validate authorization before provisioning\n- [ ] Confirm every provisioning operation is idempotent\n- [ ] Load-test the onboarding API\n- [ ] Test GitHub API rate-limit behavior\n- [ ] Test Kubernetes API failure scenarios\n- [ ] Test quota exhaustion\n- [ ] Test partial provisioning failures\n- [ ] Test permission-escalation attempts\n- [ ] Document rollback and recovery procedures\n\n## 15. Future Maturity Review\n\n- [ ] Assess whether the custom API is becoming difficult to maintain\n- [ ] Evaluate Argo Workflows for persistent multi-step orchestration\n- [ ] Evaluate Tekton for Kubernetes-native workflows\n- [ ] Evaluate Crossplane for declarative infrastructure provisioning\n- [ ] Evaluate Kratix for promise-based platform capabilities\n- [ ] Evaluate a commercial orchestrator if reducing maintenance burden becomes a priority\n- [ ] Compare learning curve, flexibility, maintenance, GitOps alignment, complexity, time-to-value, and cost before migrating\n- [ ] Preserve the API-first and self-service principles regardless of the orchestration technology selected\n\nThe bar running through the chapter: **a developer goes from portal form to first deployment in about five minutes — without a ticket, and without a platform engineer in the loop.**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## The Five-Minute Claim\n\n**Ben:** Blunt version first. Onboarding is a form and a script. Why does it deserve its own record in an operating model?\n\n**Ana:** Because onboarding is where the self-service pillar becomes real or fake. [The Four Pillars of Platform Engineering](four-pillars.html) promises that new users onboard without manual platform-team work. In most organizations, joining the platform starts with a ticket — and the moment it does, the platform team is the bottleneck it was built to remove. Every new team pays the queue tax before writing a line of code. This record sets the bar for the build: a developer goes from portal form to first deployment in about five minutes, without a ticket and without a platform engineer in the loop.\n\n**Ben:** Five minutes sounds like a demo number. Marketing writes those.\n\n**Ana:** It's not a slogan, it's the acceptance test — and it's literally on the checklist. Open the portal as a test user, pick a template, submit, then confirm the repository, the namespace, RBAC, quotas, identity groups, catalog entry, pipeline, and cluster access, ready to trigger the first deploy. Cheap to run, hard to argue with. And it's re-run whenever the onboarding path changes, because a five-minute path that quietly degrades to forty is a ticket queue with better fonts.\n\n## An API, Not a Portal\n\n**Ben:** The reference build uses Backstage. So isn't this really \"configure the Backstage scaffolder well\"? Why insist the front door is an API?\n\n**Ana:** Because logic that lives in the portal makes the portal the platform. The record's first commitment is API-first: provisioning logic lives in an onboarding API — `POST /api/v1/teams`, authenticated, requiring a `platform:teams:create` permission, validated against an OpenAPI schema — and Backstage's scaffolder is one client of that API. The anti-pattern has a name: the portal that ate the platform. Embed provisioning in Backstage and it's untestable in isolation, unusable from a CLI or a script, and unswappable when the portal decision changes.\n\n**Ben:** Who actually cares about swappability? Nobody replaces their portal.\n\n**Ana:** People replace their orchestration engine, though — and the record plans for it. The checklist ends with a maturity review: when the custom API becomes hard to maintain, evaluate Argo Workflows, Tekton, Crossplane, Kratix, or a commercial orchestrator, comparing learning curve, flexibility, maintenance, GitOps alignment, complexity, time-to-value, and cost. The reason that review is cheap instead of a rewrite is precisely that the API is the commitment and the engine behind it is an implementation detail. The OpenAPI spec stays the source of truth for every client and for the documentation; swap the engine and not a single caller breaks.\n\n**Ben:** And the schema fussiness — lowercase names, hyphens, 63 characters? That reads like bureaucracy in a contract.\n\n**Ana:** It reads like Kubernetes. Sixty-three characters, lowercase alphanumeric with hyphens — that's a DNS label, because the team name flows into namespace names like `team-{teamname}` and beyond. Validate it at the front door and every downstream resource inherits a legal, consistent name. Skip it and the failure shows up three systems deep, where nobody can read it. The API also tracks who asked, when, and why, and returns provisioning status — accountability is designed into the door, not bolted on.\n\n## One Call, Whole Team\n\n**Ben:** Walk me through what one call actually buys.\n\n**Ana:** Permission check first — nothing touches infrastructure until the requester's authorization is validated. Then the bundle: the namespace with its labels — team, owner, tier, cost center, managed-by — and annotations linking to the catalog entry and the Slack channel; network policies applied automatically; mesh enrollment as a sidecar-injection label where required; three RBAC roles bound to Keycloak groups created in the same workflow; the resource quota for the tier; the source repository; the catalog registration. And the status comes back to the caller.\n\n**Ben:** That's at least four systems — Kubernetes, Keycloak, GitHub, the catalog. Multi-system workflows fail partway. That's not a risk, it's a schedule.\n\n**Ana:** The record agrees, which is why idempotency is non-negotiable: every provisioning step converges on the desired state, so retrying a partially failed request completes it instead of minting duplicates. Retry becomes the recovery procedure. Without that, you get the half-provisioned team — a namespace without a repository, groups without RoleBindings — debris that needs a human archaeologist. And the failure semantics are honest: capacity pre-checked, 409 when the quota won't fit, 503 when the infrastructure is down, GitHub rate limits retried with exponential backoff and jitter, every failed attempt in the audit trail, defined rollback for project-level partial failures.\n\n**Ben:** You keep saying team, but developers don't deploy teams. They deploy services.\n\n**Ana:** Which is why the second unit matters: a project is a complete developer unit, never just a repository. One template execution provisions the repo, the deployment namespaces, the CI/CD pipeline, the catalog entry, and the documentation scaffolding together — from archetype templates, backend service, frontend app, data pipeline, ML model, versioned in Git, with a preview before execution. The anti-pattern is the repo-shaped project: onboarding hands you a repository and calls it a project, and the namespace, pipeline, and catalog entry each need another request. That's not onboarding, that's a to-do list.\n\n## Guardrails in the Box\n\n**Ben:** Quotas. Every team believes it's special. Why tiers instead of asking teams what they need?\n\n**Ana:** Because quota by negotiation kills fairness and capacity planning together. The record ships three tiers — starter, standard, enterprise — each defining CPU and memory requests and maximums, plus caps on volumes, load balancers, and deployments, with a LimitRange supplying defaults per container. New teams default to starter. And it's not a cage: quota upgrades are self-service requests, with an approval workflow where governance requires one. The conversation about resources becomes a workflow step, not a bespoke deal with an engineer.\n\n**Ben:** Identity is the part I'd expect to rot. Groups in Keycloak, RoleBindings in Kubernetes — two systems, one truth, allegedly.\n\n**Ana:** The record treats that as the silent failure mode. Two defenses: creation and reconciliation. The groups — `{team}-admins`, `-developers`, `-viewers` — are created idempotently in the same provisioning workflow, with names that exactly match the RoleBinding subjects, the lead seeded into admins. Then periodic reconciliation between Keycloak and Kubernetes, because anything not reconciled will drift — and identity drift surfaces either as developers locked out or as access that should have died with a departed teammate. There's also a hard boundary: developers can't delete secrets, team admins can't touch `platform-*` namespaces, and nothing escalates outside the team's own namespace.\n\n**Ben:** And after day zero? Teams change, teams dissolve.\n\n**Ana:** Team admins run their own membership — add, remove, assign roles, request quota, create sub-namespaces — while creating teams stays with platform admins, who seed the first team admin. And teams have a lifecycle: active, archived, deleted, with explicit inactivity rules for archival and deletion rules for archived teams. Otherwise you get the immortal namespace — a cluster accreting the namespaces of teams that no longer exist, each one still holding quota and secrets.\n\n## What This Isn't\n\n**Ben:** The operational bill for all this. You've just described a production service the platform team has to run.\n\n**Ana:** Deliberately. Prometheus metrics, structured logs, traces, a full audit trail, load testing, URL-based versioning with a deprecation policy — the onboarding API is operated like anything else in production, because it *is* production: it's the front door. And it's measured as a product: time-to-first-deploy, onboarding ticket count, abandonment rate. Those three numbers tell you whether the door actually opens — that's onboarding as the first product surface of [Platform as a Product](platform-as-a-product.html).\n\n**Ben:** Close it out. What is this record explicitly not doing?\n\n**Ana:** It's day zero, not the whole platform. What goes inside the project templates is [Starter Kit Templates](starter-kits.html); the pipeline service each project is wired into is [CI/CD as a Platform Service](cicd-as-a-platform-service.html); databases and buckets after the team exists are [Self-Service Infrastructure Management](self-service-infrastructure.html); the cost side of those tier and cost-center labels is [Cost, Performance, and Scalability](cost-performance-scalability.html). And it's not a tool mandate — Backstage, Keycloak, GitHub, ArgoCD are the reference stack the record is grounded in, honestly named. The commitments hold at the capability level.\n\n**Ben:** So if I remember one sentence?\n\n**Ana:** The portal is a client; the API is the platform's front door — and a new team walks through it in five minutes, or the self-service pillar is a story we tell ourselves.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why the front door of a platform is an API and not a portal — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a shiny portal door opens onto a ticket-counter queue while Vera points and Kai looks embarrassed.](assets/images/self-service-onboarding/comic-01-the-ticket-behind-the-portal.jpeg)\n**Panel 1:** *The hook: the ticket behind the portal — a shiny front door with a queue hidden inside is self-service theater, not self-service.*\n\n![Comic panel: developer teams queue at a toll booth staffed by Kai while a calendar shows weeks passing.](assets/images/self-service-onboarding/comic-02-the-queue-tax.jpeg)\n**Panel 2:** *The problem: every new team pays the queue tax — the platform team becomes the bottleneck it was built to remove.*\n\n![Comic panel: a bloated portal screen has swallowed provisioning machinery while a CLI and a script wait outside a velvet rope.](assets/images/self-service-onboarding/comic-03-the-portal-that-ate-the-platform.jpeg)\n**Panel 3:** *The wrong way: the portal that ate the platform — logic buried in the portal is untestable, unswappable, and closed to every other client.*\n\n![Comic panel: Kai shows a doorway labeled Onboarding API v1 with equal paths from a portal, a CLI, and a script.](assets/images/self-service-onboarding/comic-04-api-first-front-door.jpeg)\n**Panel 4:** *The principle: API-first, portal second — provisioning logic lives behind a versioned, schema-validated API, and the portal is one swappable client.*\n\n![Comic panel: one button press delivers a crate containing namespace, RBAC, quota, groups, repo, and catalog to a new team.](assets/images/self-service-onboarding/comic-05-one-call-whole-bundle.jpeg)\n**Panel 5:** *How it plays out: a team is one call, fully provisioned — namespace, RBAC, quotas, identity groups, repository, and catalog entry arrive together.*\n\n![Comic panel: duplicates pile up on one side while on the other a retry neatly completes a half-finished bundle.](assets/images/self-service-onboarding/comic-06-retry-converges.jpeg)\n**Panel 6:** *The safeguard: every step idempotent — retrying a partial failure converges on the desired state instead of minting duplicates.*\n\n![Comic panel: a pre-fenced yard with quota and policy fence sections, three labeled gate keys, and an audit ledger on the gate.](assets/images/self-service-onboarding/comic-07-guardrails-in-the-crate.jpeg)\n**Panel 7:** *The guardrails ship in the bundle: tiered quotas, three standing roles, network policies, and an audit trail arrive with the namespace — never retrofitted.*\n\n![Comic panel: a developer with a lone repo box and a long to-do list next to Kai's complete project kit crate.](assets/images/self-service-onboarding/comic-08-repo-is-not-a-project.jpeg)\n**Panel 8:** *The unit: a repository is not a project — a project ships repo, namespaces, pipeline, catalog entry, and docs together, from a template, in one go.*\n\n![Comic panel: Vera holds a stopwatch at five minutes as a developer's first deploy launches and Kai checks a small dashboard.](assets/images/self-service-onboarding/comic-09-the-five-minute-test.jpeg)\n**Panel 9:** *The closer: the five-minute test — portal form to first deployment, no ticket, no platform engineer in the loop, re-run whenever the path changes.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

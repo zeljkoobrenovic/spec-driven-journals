@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Self-Service Infrastructure Management</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="cicd-as-a-platform-service.html" title="CI/CD as a Platform Service">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="starter-kits.html" title="Starter Kit Templates">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference Implementation</p>
+        <h1>Self-Service Infrastructure Management</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-20  ·  8 min · <a class="spec-link" href="self-service-infrastructure.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/self-service-infrastructure/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/self-service-infrastructure/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="cicd-as-a-platform-service.html" title="CI/CD as a Platform Service">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="starter-kits.html" title="Starter Kit Templates">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REF-INFRA", "status": "draft:gray", "title": "Self-Service Infrastructure Management", "date": "2026-08-20", "author": "Željko Obrenović", "permalink": "self-service-infrastructure", "timetoread": "8 min", "excerpt": "When a platform team in my organization builds infrastructure self-service, this is the shape I hold them to: an application team provisions a production-grade database by declaring a claim with a handful of parameters in its own namespace — and everything else is carried by a platform-owned blueprint. The composition translates the request into provider-specific infrastructure with encryption on, public access off, and environment defaults baked in; governance validates the claim before anything is created; every resource is tagged with owner, cost center, and environment; lifecycle automation cleans up what teams forget. The test I keep running: can a developer go from claim to connected application without a ticket, and can I still answer who owns every resource and why it exists?", "tags": "self-service, infrastructure, blueprints, crossplane, governance, lifecycle, tagging, cost allocation, platform engineering", "icon": "assets/icons/self-service-infrastructure.png", "logo": "assets/images/self-service-infrastructure/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["self-service", "infrastructure", "blueprints", "crossplane", "governance", "lifecycle", "tagging", "cost allocation", "platform engineering"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Application teams in my organization provision infrastructure by **declaring a claim, not by filing a ticket** — a small, validated request (size, version, tier, backups) in their own namespace. Everything beneath the claim is a **platform-owned blueprint**: a composition that translates the request into provider-specific infrastructure with the security non-negotiables and environment defaults compiled in, tags that make every resource attributable, an admission gate that validates tier and namespace **before creation**, lifecycle automation that expires what teams forget, and a control plane that continuously reconciles declared and actual state. Needs the blueprints don't cover get a **governed escape hatch**, not a workaround. The test I keep running: can a developer go from claim to connected application without a human in the loop — and can I still answer who owns every resource and why it exists?\n\n## Statement\n\nWhen a platform team in my organization builds self-service infrastructure management, the finished capability has this shape:\n\n**The developer interface is a blueprint, deliberately small:**\n\n- **A claim, not a console.** Developers request infrastructure by declaring a claim in their own namespace — kind, storage, version, tier, backups — never by clicking through a cloud console or filing a ticket.\n- **Bounded parameters, enforced by validation.** The blueprint's schema carries the platform's opinion: storage within sanctioned bounds (15–500 GB in the reference build), only supported engine versions (PostgreSQL 13–16), named environment tiers (development, staging, production), a backup toggle.\n- **Connection status is part of the contract.** The claim reports endpoint and port back; the developer never asks the platform team \"where is my database?\"\n\n**The platform owns everything beneath the claim:**\n\n- **The composition carries the standards.** Tier maps to instance class (db.t3.micro / db.t3.small / db.r6g.large in the reference build), storage and version map through, backup toggles convert to retention periods — and the non-negotiables ride along on every claim: public access disabled, storage encrypted, networking and subnet references set by the platform.\n- **Environment defaults are baked into the blueprint.** Development gets minimal backup retention; staging gets 7-day backups and performance insights; production gets 30-day backups, Multi-AZ, and deletion protection — selected by composition labels, without the developer asking for any of it.\n- **Provider credentials never leave the platform.** The control plane authenticates with the cloud; application teams authenticate with the control plane.\n\n**Governance and hygiene are automated, not reviewed:**\n\n- **Validation runs before creation.** An admission gate checks tier against namespace — each tier only in the namespaces approved for it, production the strictest: production-tier resources only in approved production namespaces — and rejects bad claims with an actionable error, tested in both directions.\n- **Every resource is owned and attributable.** Team, cost center, environment, and a managed-by identifier are required tags; every resource can answer who owns it, why it exists, and where its cost lands.\n- **Lifecycle is enforced by a controller.** Owner labels are required; development resources expire (30 days in the reference build), staging resources expire (90 days), production has no automatic limit; eligible dev resources are cleaned up automatically and violations are reported.\n- **Drift converges back to the declaration.** The control plane continuously reconciles declared and actual state; a manual edit to managed infrastructure is drift to be corrected, not a change of record.\n\n**The edges are governed, not forbidden:**\n\n- **Escape hatches exist.** Needs no blueprint covers get a governed request path with a captured business justification — and recurring exceptions become new blueprints (specialized GPU blueprints, with cost controls and scheduling restrictions, are the canonical example).\n\n![Layered stack diagram: a small developer-owned claim on top, platform-owned validation, composition, tags, and credential layers beneath, resting on cloud resources.](assets/images/self-service-infrastructure/claim-blueprint-stack.jpeg)\n**Figure 1:** *The ownership split: the developer declares a small claim; validation, composition, tags, and cloud credentials are platform-owned layers beneath it.*\n\n## Reference Stack\n\nThis record is grounded in the *Platform Engineer's Handbook* build, which implements the capability with a concrete stack. The tools are the worked example, not the mandate — what binds is the property in the right-hand column.\n\n| Role | Reference tool | The property that matters |\n| --- | --- | --- |\n| Infrastructure control plane | Crossplane on Kubernetes | Declared state, continuously reconciled against actual cloud resources |\n| Developer interface | Composite Resource Definition + namespaced claim (`PostgreSQLClaim`) | Few parameters, validated ranges, platform defaults enforced by schema |\n| Translation layer | Crossplane Composition (AWS RDS) | Tier-to-instance mapping and security non-negotiables decided once, applied on every claim |\n| Cloud integration | Crossplane providers + ProviderConfig | Platform holds the cloud credentials; resource limits and package versions reviewed |\n| Governance gate | Validating admission webhook | Tier/namespace policy checked before creation; rejections carry actionable errors |\n| Hygiene | Lifecycle controller | Owner labels required; age limits on dev/staging; automatic cleanup and violation reports |\n| Credential delivery | Generated connection secrets | Applications consume endpoint and credentials from a secret — never hand-copied |\n\n## How to Read This\n\nThis record is part of the **Reference Implementation** section of this journal — the how-it-concretely-looks companion to the Platform Engineering records. Where [The Four Pillars of Platform Engineering](four-pillars.html) states that a platform must serve a broad developer base through self-service with guardrails, this record is that pillar made concrete for infrastructure, end to end: blueprint, composition, governance, lifecycle, and the demo application that proves the loop closes. It is grounded in the Self-Service Infrastructure Management chapter checklist of the *Platform Engineer's Handbook*. The full working checklist — prerequisites through the final completion check — lives in the **Checklist** tab; the **TL;DR** tab carries the management summary; the **Conversation** tab argues it out loud.\n\n## Rationale\n\n**The blueprint is the product.** The chapter's core move is compressing an infrastructure decision that has dozens of parameters — instance class, subnet groups, encryption, retention, networking — into a claim with about five. That compression is where the platform earns its keep: the developer states intent (a development-tier PostgreSQL 15 with 20 GB and backups), and the composition compiles the organization's standards into everything the developer did not say. This is the difference between self-service and self-configuration. A \"self-service\" offering that exposes every provider knob has merely moved the cloud console into YAML — the complexity is relocated, not managed, which is the exact failure [The Four Pillars of Platform Engineering](four-pillars.html) warns against.\n\n**Defaults are the strongest policy instrument I have.** Production gets Multi-AZ, deletion protection, and 30-day backups because the production composition says so — not because a reviewer remembered to ask. Encryption is on and public access is off on every database because no claim can express otherwise. Policy that lives in defaults is enforced at a marginal cost of zero and cannot be forgotten under deadline pressure. Policy that lives in review meetings is enforced at the speed of meetings. The flip side is accountability: a wrong default ships to every claim, so the platform team owns each default as deliberately as any written policy.\n\n**Governance must run before creation, and rejection must teach.** The admission gate evaluates tier against namespace before any resource exists — a production-tier claim in a sandbox namespace never gets far enough to cost money or leak data. Just as load-bearing: rejections return actionable messages, and the build is not done until both accepted and rejected claims have been tested. **A guardrail that rejects without explaining trains teams to route around the platform**; a guardrail that explains trains them to fix the claim. The blueprint-scoped gate here complements, not replaces, the cluster-wide policy engine in [Policy as Code Implementation](policy-as-code.html).\n\n**Self-service without lifecycle automation is a cost incident on a delay timer.** Making provisioning easy multiplies the number of resources nobody remembers creating. The reference build pairs the easy front door with an automated back door: owner labels required, 30-day limits on development resources, 90-day limits on staging, automatic cleanup for what expires, violations reported. That cleanup will sometimes delete a resource a team forgot it wanted — the friction is the policy working, which is why it is paired with clear violation reporting. Production is deliberately exempt from auto-expiry — the asymmetry is the policy: aggressive hygiene where forgetting is cheap, human judgment where deletion is catastrophic. The required tags — team, cost center, environment, managed-by — are what make the cleanup, and the cost conversation in [Cost, Performance, and Scalability](cost-performance-scalability.html), possible at all.\n\n**The loop is only closed when an application connects.** The chapter does not stop at \"claim goes Ready.\" It ends with a demo application consuming the generated connection secret — host, port, user, password, database name — behind a readiness probe, and a health endpoint reporting database connectivity. That last mile is where most self-service efforts quietly fail: the database exists, but credentials travel by Slack. **Provisioning is not the product; a connected application is.** And the validation goes further than the happy path: invalid storage, unsupported versions, wrong-namespace claims, and deliberate manual drift all get tested. A control plane that reconciles drift has failure modes of its own — composition errors, stuck claims — so the build practices debugging down the claim → composite → managed-resource chain, and validates compositions in a development cluster before promotion.\n\n![Pipeline diagram from claim through admission gate, composition, database ready, and connection secret to a connected application with a passing health check.](assets/images/self-service-infrastructure/claim-to-connected-app-pipeline.jpeg)\n**Figure 2:** *The loop closes at the application's health check, not at 'claim Ready' — with governance running before anything is created and credentials arriving as a generated secret.*\n\n**Escape hatches keep the governance honest.** Some team will need infrastructure no blueprint covers — the question is only whether they go through a governed path or around the platform. The chapter's answer is explicit: a request process that captures business justification, organizational governance for the exception, and a feedback loop where recurring exceptions become new blueprints — GPU workloads, with their own cost controls and scheduling restrictions, being the canonical next one. **An escape hatch is how the blueprint catalog learns.**\n\n![Circular loop diagram from uncovered need through governed request, exception, and recurring pattern to a new blueprint that grows the catalog, with a crossed-out bypass path beside it.](assets/images/self-service-infrastructure/escape-hatch-learning-loop.jpeg)\n**Figure 3:** *The escape-hatch loop: uncovered needs pass through a governed path, and recurring exceptions become the catalog's next blueprints.*\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Developers provision infrastructure through small, validated claims. | Developers get raw cloud-console or provider-credential access with tagging guidelines. |\n| The composition bakes in security and environment defaults on every claim. | Every workload gets identical infrastructure — tiers exist precisely so dev, staging, and production differ deliberately. |\n| Governance validates tier and namespace before creation, with actionable errors. | A platform engineer reviews each request — the gate is software, and humans review blueprints, not claims. |\n| Dev and staging resources expire automatically; production does not. | Production is unmanaged — it has owners, tags, and backups; it just is not auto-deleted. |\n| The capability is proven by a connected application, failure tests, and drift tests. | \"The claim went Ready\" is done — done is a health endpoint reporting database connectivity. |\n| Uncovered needs get a governed escape hatch and may become new blueprints. | The catalog is frozen — or, conversely, that any team can bypass governance by calling their need special. |\n\nConcretely: when a platform team in my organization ships this capability, I expect to watch one demo — a claim applied in an application namespace, the claim reaching Ready, the connection secret appearing, the application's health endpoint confirming connectivity — and one rejection: a production-tier claim in the wrong namespace bouncing with an error message a developer could act on. If either demo needs a human in the loop, the capability is not done.\n\n## Anti-Patterns\n\n- **The ticket behind the curtain.** A self-service portal that opens a ticket a platform engineer resolves by hand — the interface changed, the queue did not, and the platform team is still the bottleneck.\n- **The thousand-knob blueprint.** An interface exposing every provider parameter \"for flexibility\" — the console relocated into YAML, hiding nothing, standardizing nothing.\n- **Console keys under the doormat.** Handing teams cloud credentials with a tagging convention and hoping — every team relearns the same security and cost mistakes at production prices.\n- **The immortal dev database.** No lifecycle limits, no owner labels — eighteen months later, nobody can say which of four hundred databases are safe to delete, so none are.\n- **The silent no.** Governance that rejects claims without actionable messages — teams stop fixing claims and start routing around the platform.\n- **Drift by hand.** \"Quick\" manual fixes to managed infrastructure that the control plane reverts — or worse, that force reconciliation to be disabled, at which point declared state is fiction.\n- **The sealed catalog.** No escape hatch for uncovered needs — teams with real requirements go around the platform entirely, and the catalog never learns what to build next.\n- **Ready-means-done.** Declaring victory when the claim goes Ready, while credentials travel by Slack and the first failure mode is discovered in production.\n\n## Related Records\n\n- [The Four Pillars of Platform Engineering](four-pillars.html) — the structural test; this record is pillar 3 (broad self-service base with guardrails) made concrete for infrastructure.\n- [Self-Service Platform Onboarding](self-service-onboarding.html) — the sibling record that gets teams onto the platform; this one governs what they can provision once there.\n- [Policy as Code Implementation](policy-as-code.html) — the cluster-wide policy engine; the admission gate here is blueprint-scoped tier/namespace validation, not a replacement for it.\n- [Cost, Performance, and Scalability](cost-performance-scalability.html) — where the tagging and lifecycle discipline built here pays out as cost allocation and optimization.\n- [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) — the cluster, GitOps, and mesh substrate this capability runs on.\n- [Starter Kit Templates](starter-kits.html) — the application scaffolding that consumes these claims from a project's first day.\n- [Platform as a Product](platform-as-a-product.html) — the operating mechanics behind treating the blueprint catalog as a product with customers.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every internal platform in my organization that offers infrastructure provisioning to application teams, whatever control plane implements it. I revisit it if the escape-hatch rate climbs — many exceptions mean the blueprints no longer match real needs; if lifecycle reports show violations accumulating without cleanup — automation that only reports is not automation; or if teams begin provisioning around the platform despite the blueprints existing, which means the paved path has stopped being the easiest path and the capability is failing in public.\n\n## Authoritative References\n\n- *Platform Engineer's Handbook* — the Self-Service Infrastructure Management chapter, whose checklist this record distills: the Crossplane-based PostgreSQL blueprint, composition, governance, lifecycle automation, and end-to-end demo workflow.\n- Camille Fournier and Ian Nowland, *Platform Engineering: A Guide for Technical, Product, and People Leaders* (O'Reilly, 2024) — the conceptual frame this journal's [The Four Pillars of Platform Engineering](four-pillars.html) record draws from; this record is its self-service pillar in executable form.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "When a platform team in my organization builds infrastructure self-service, application teams provision by **declaring a claim, not filing a ticket** — a small, validated request (size, version, tier, backups) in their own namespace — while a platform-owned blueprint carries everything beneath it: provider translation, security non-negotiables, environment defaults, required tags, pre-creation governance, and lifecycle automation. The test: a developer goes from claim to connected application without a human in the loop, and I can still answer who owns every resource and why it exists.\n\n**What changes**\n\n* **A blueprint interface, deliberately small.** Developers state intent — in the reference build, a PostgreSQL claim with storage bounded 15–500 GB, versions 13–16, a dev/staging/production tier, and a backup toggle — and the schema's validation enforces the platform's opinion. Endpoint and port are reported back on the claim itself.\n* **Standards compiled into the composition.** Tier maps to instance class, backups convert to retention, public access is off and encryption is on for every database; production gets Multi-AZ, deletion protection, and 30-day backups by default, without the developer asking.\n* **Governance before creation.** An admission gate validates tier against namespace — production-tier claims only in approved production namespaces — and rejections return errors a developer can act on. Both accepted and rejected claims are tested before the capability ships.\n* **Ownership and hygiene automated.** Every resource carries team, cost-center, environment, and managed-by tags; a lifecycle controller requires owner labels, expires development resources at 30 days and staging at 90, cleans up automatically, and reports violations. Production is exempt from auto-expiry by design.\n* **The loop closes at the application.** Done means a demo application consuming the generated connection secret behind a readiness probe, a health endpoint reporting database connectivity, and failure modes tested: invalid claims rejected, manual drift reconciled by the control plane.\n* **Governed escape hatches.** Needs no blueprint covers get a request path with captured justification — and recurring exceptions become new blueprints (GPU workloads, with cost controls and scheduling restrictions, are the canonical next one).\n\n**What it costs**\n\n* The platform team owns real software — blueprints, compositions, an admission webhook, a lifecycle controller — with versioning, testing in a development cluster before promotion, and practiced debugging of the claim → composite → managed-resource chain.\n* Defaults-as-policy means the platform team is accountable for every default; a wrong one ships to every claim.\n* Lifecycle enforcement will delete resources teams forgot they wanted — that friction is the policy working, and it must be paired with clear violation reporting.\n\n**What we are not doing**\n\n* Not platform onboarding — namespaces, access, and quotas live in [Self-Service Platform Onboarding](self-service-onboarding.html).\n* Not the cluster-wide policy engine — that is [Policy as Code Implementation](policy-as-code.html); the gate here is blueprint-scoped.\n* Not the cost discipline itself — the tags built here feed [Cost, Performance, and Scalability](cost-performance-scalability.html).\n* Not mandating Crossplane — the reference stack is the worked example; the commitments bind the capability.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full build, prerequisites through the final completion check. Grounded in the* Platform Engineer's Handbook*, Self-Service Infrastructure Management chapter.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "7 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the end-to-end build a platform team runs, from prerequisites to the final completion check. The Article tab carries the rationale and anti-patterns. Tool names (Crossplane, AWS instance classes) are the reference stack; substitute equivalents that preserve the same properties.*\n\n## 1. Prerequisites\n\n- [ ] Confirm Python 3.10 or later is installed (needed for the chapter's helper scripts)\n- [ ] Install the PyYAML library (used by the same scripts)\n- [ ] Confirm access to a Kubernetes cluster\n- [ ] Confirm kubectl is configured for the target cluster\n- [ ] Install Crossplane in the platform cluster\n- [ ] Verify Crossplane is running correctly\n- [ ] Confirm the PostgreSQL XRD is available or ready to deploy\n\n## 2. Configure Control-Plane Providers\n\n- [ ] Install the required Crossplane provider\n- [ ] Configure provider resource limits\n- [ ] Create the required cloud/provider credentials secret\n- [ ] Create the ProviderConfig\n- [ ] Verify Crossplane can authenticate with the infrastructure provider\n- [ ] Review provider package versions before applying configuration\n- Providers are how the control plane integrates with systems such as AWS, Azure, GCP, and Kubernetes — the platform holds these credentials, never application teams.\n\n## 3. Create the PostgreSQL Infrastructure Blueprint\n\n- [ ] Create the PostgreSQLInstance Composite Resource Definition\n- [ ] Create the PostgreSQLClaim claim type\n- [ ] Define the storageGB parameter\n- [ ] Set storage minimum to 15 GB\n- [ ] Set storage maximum to 500 GB\n- [ ] Define supported PostgreSQL versions\n- [ ] Allow versions 13, 14, 15, and 16\n- [ ] Define development, staging, and production tiers\n- [ ] Add the enableBackups parameter\n- [ ] Define connection-status fields such as endpoint and port\n- The XRD exposes a simplified developer interface while its defaults and validation rules enforce platform standards.\n\n## 4. Create the PostgreSQL Composition\n\n- [ ] Create the AWS PostgreSQL composition\n- [ ] Map the development tier to db.t3.micro\n- [ ] Map the staging tier to db.t3.small\n- [ ] Map the production tier to db.r6g.large\n- [ ] Map requested storage to allocated database storage\n- [ ] Map the PostgreSQL version to the database engine version\n- [ ] Convert the backup setting into the appropriate retention period\n- [ ] Disable public database access\n- [ ] Enable storage encryption\n- [ ] Configure network/security-group references\n- [ ] Configure subnet-group references\n- [ ] Configure connection-secret generation\n- [ ] Return endpoint and port information to the composite resource\n- The composition translates the high-level developer request into provider-specific infrastructure settings — the standards ride along on every claim.\n\n## 5. Add Environment-Specific Defaults\n\n- [ ] Create development defaults\n  - [ ] Use db.t3.micro for development\n  - [ ] Configure minimal backup retention for development\n- [ ] Create staging defaults\n  - [ ] Use db.t3.small for staging\n  - [ ] Configure 7-day backups for staging\n  - [ ] Enable performance insights for staging\n- [ ] Create production defaults\n  - [ ] Use db.r6g.large for production\n  - [ ] Enable Multi-AZ for production\n  - [ ] Configure 30-day backups for production\n  - [ ] Enable deletion protection for production\n- [ ] Allow claims to select the correct composition using labels\n\n## 6. Implement Required Tagging\n\n- [ ] Add a team tag\n- [ ] Add a cost-center tag\n- [ ] Add an environment tag\n- [ ] Add a managed-by identifier\n- [ ] Ensure every resource identifies its owner\n- [ ] Ensure every resource identifies its purpose/environment\n- [ ] Ensure tagging supports cost allocation\n- Ownership, purpose, environment, and cost-allocation metadata on every resource is what makes [Cost, Performance, and Scalability](cost-performance-scalability.html) possible later.\n\n## 7. Add Governance Guardrails\n\n- [ ] Implement a validating admission webhook\n- [ ] Validate the requested infrastructure tier\n- [ ] Validate the target namespace\n- [ ] Allow production-tier resources only in approved production namespaces\n- [ ] Allow staging resources only in permitted staging/production namespaces\n- [ ] Allow development resources where appropriate\n- [ ] Return clear error messages when requests are rejected\n- [ ] Test both accepted and rejected claims\n- The admission flow evaluates claims against tier and namespace policies **before** allowing resource creation.\n\n## 8. Configure Lifecycle Automation\n\n- [ ] Deploy the lifecycle controller\n- [ ] Require an owner label\n- [ ] Configure development resource age limits (reference: 30 days)\n- [ ] Configure staging resource age limits (reference: 90 days)\n- [ ] Leave production resources without an automatic age limit where appropriate\n- [ ] Enable automatic cleanup for eligible development resources\n- [ ] Detect missing ownership metadata\n- [ ] Report policy violations\n- [ ] Observe lifecycle-controller output during testing\n\n## 9. Create the Demo Application Database Claim\n\n- [ ] Create demo-app/infrastructure/database.yaml\n- [ ] Set the claim kind to PostgreSQLClaim\n- [ ] Name the database claim demo-app-db\n- [ ] Deploy it to the application namespace\n- [ ] Add team ownership labels\n- [ ] Add an owner label\n- [ ] Add the cost-center label\n- [ ] Set storage requirements\n- [ ] Select the PostgreSQL version\n- [ ] Select the environment tier\n- [ ] Configure backup requirements\n- [ ] Request a connection secret\n- The reference claim uses 20 GB, PostgreSQL 15, the development tier, backups enabled, and a generated connection secret.\n\n## 10. Connect the Application to the Database\n\n- [ ] Reference the generated Kubernetes secret from the application deployment\n- [ ] Configure DATABASE_HOST\n- [ ] Configure DATABASE_PORT\n- [ ] Configure DATABASE_USER\n- [ ] Configure DATABASE_PASSWORD\n- [ ] Configure the database name\n- [ ] Confirm the deployment has a readiness probe\n- [ ] Verify the application starts successfully\n- The deployment obtains all connection information from the generated secret — credentials never travel by hand.\n\n## 11. Test the Complete Workflow\n\n- [ ] Apply the PostgreSQL claim\n- [ ] Wait for the claim to reach the Ready state\n- [ ] Confirm the connection secret was created\n- [ ] Confirm the application can access the database\n- [ ] Call the application's health endpoint\n- [ ] Verify the response reports database connectivity\n- [ ] Confirm all infrastructure tests pass\n\n## 12. Validate Failure and Drift Handling\n\n- [ ] Test an invalid storage request\n- [ ] Test an unsupported PostgreSQL version\n- [ ] Test a production claim in a non-production namespace\n- [ ] Confirm rejected requests return actionable feedback\n- [ ] Test manual infrastructure drift\n- [ ] Confirm the control plane attempts to reconcile external-resource drift\n- [ ] Inspect the claim, composite resource, and managed resource when debugging\n- [ ] Validate compositions in a development cluster before promotion\n- [ ] Consider integration tests with a readiness timeout\n- The control plane continuously reconciles declared and actual state, but composition errors and some failure modes still require manual debugging — practice the claim → composite → managed-resource chain before you need it.\n\n## 13. Provide Controlled Escape Hatches\n\n- [ ] Identify infrastructure needs not covered by existing blueprints\n- [ ] Provide a governed process for custom infrastructure requests\n- [ ] Capture the business justification for exceptions\n- [ ] Maintain organizational governance for custom requests\n- [ ] Consider specialized blueprints for GPU workloads\n- [ ] Apply cost controls to expensive infrastructure\n- [ ] Apply scheduling restrictions where appropriate\n- Explicit escape hatches let teams innovate without bypassing governance — and recurring exceptions tell you which blueprint to build next.\n\n## Final Completion Check\n\n- [ ] Crossplane is installed and configured\n- [ ] Providers are operational\n- [ ] PostgreSQL XRD is deployed\n- [ ] PostgreSQL composition is deployed\n- [ ] Governance and tagging are enforced\n- [ ] Environment-specific defaults are configured\n- [ ] Demo application database is provisioned\n- [ ] Application consumes generated credentials\n- [ ] Connectivity tests pass\n- [ ] Lifecycle controller is monitoring compliance\n- [ ] Self-service infrastructure workflow works end to end\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## The Claim and the Ticket\n\n**Ben:** Blunt version first. Every cloud team I know already says they do self-service infrastructure. There's a portal, there's a form — you ask for a database, you get a database. Why does this need a record?\n\n**Ana:** Because of what happens after the form. In most of those setups, the form opens a ticket and a platform engineer resolves it by hand — the record calls that the ticket behind the curtain. The interface changed; the queue didn't. This record's shape is different: a developer declares a claim in their own namespace — kind, storage, version, tier, backups, roughly five parameters — and software does everything else. The composition translates it into provider-specific infrastructure, governance validates it before anything is created, tags land automatically, credentials arrive as a generated secret. The test at the end is literal: claim to connected application, no human in the loop.\n\n**Ben:** Five parameters. A real database has dozens — instance class, subnet groups, parameter groups, retention windows. Where did they go?\n\n**Ana:** Into the blueprint, which is the whole point. The developer states intent — a development-tier PostgreSQL 15, 20 gigabytes, backups on — and the composition compiles the organization's standards into everything the developer didn't say. Storage is bounded, fifteen to five hundred gigabytes in the reference build. Versions are a supported list, 13 through 16. Tier maps to instance class. And the non-negotiables ride on every claim: encryption on, public access off, networking set by the platform. That compression is where the platform earns its keep.\n\n**Ben:** And if I expose all the knobs anyway, \"for flexibility\"?\n\n**Ana:** Then you've built the thousand-knob blueprint — the cloud console relocated into YAML. It hides nothing and standardizes nothing. [The Four Pillars of Platform Engineering](four-pillars.html) has a name for that failure: complexity moved somewhere else instead of managed.\n\n## Defaults as Policy\n\n**Ben:** The environment tiers. Isn't that just t-shirt sizing?\n\n**Ana:** It's sizing plus policy, and the policy half matters more. Development gets a small instance and minimal backup retention. Staging gets 7-day backups and performance insights. Production gets the large instance, Multi-AZ, deletion protection, and 30-day backups — selected by a label, without the developer asking for any of it. That's the strongest policy instrument in the record: a default is enforced at a marginal cost of zero and can't be forgotten under deadline pressure. Policy that lives in review meetings is enforced at the speed of meetings.\n\n**Ben:** Sure, but somebody still has to say no sometimes. Where does \"no\" live if there's no reviewer?\n\n**Ana:** In an admission gate that runs before creation. It checks the requested tier against the target namespace — production-tier resources only in approved production namespaces, staging where staging is permitted. A production claim in a sandbox namespace never gets far enough to cost money or leak data. And the record is picky about the shape of the no: rejections return actionable error messages, and the build isn't done until both accepted and rejected claims have been tested.\n\n**Ben:** Why so much weight on the error message? That feels like polish.\n\n**Ana:** It's load-bearing. A guardrail that rejects without explaining — the silent no — trains teams to route around the platform. A guardrail that explains trains them to fix the claim. The difference between those two behaviors is the difference between a platform and an obstacle. And to be clear about scope: this gate is blueprint-scoped, tier and namespace. The cluster-wide policy engine is its own record, [Policy as Code Implementation](policy-as-code.html) — this complements it, it doesn't replace it.\n\n## The Immortal Dev Database\n\n**Ben:** Here's my real objection. Everything you've described makes provisioning easier. Easier provisioning means more infrastructure. In eighteen months you've got four hundred databases and nobody remembers which ones matter.\n\n**Ana:** The record agrees — self-service without lifecycle automation is a cost incident on a delay timer. So the easy front door is paired with an automated back door. Every resource carries required tags: team, cost center, environment, managed-by. A lifecycle controller requires owner labels, expires development resources at 30 days and staging at 90, cleans up what's eligible automatically, and reports violations. The immortal dev database — no owner, no limit, too scary to delete — is exactly the anti-pattern this kills.\n\n**Ben:** Thirty days is aggressive. Someone's demo environment disappears mid-quarter.\n\n**Ana:** And the asymmetry is deliberate: aggressive hygiene where forgetting is cheap, human judgment where deletion is catastrophic. Production has no automatic age limit — it has owners, tags, and 30-day backups; it just isn't auto-deleted. If your development resource genuinely needs to live longer, that's a conversation the owner label makes possible. Without the label, it's not a conversation anyone can even start. And those same tags are what make the cost-allocation story in [Cost, Performance, and Scalability](cost-performance-scalability.html) real instead of aspirational.\n\n**Ben:** What about drift? Somebody logs into the console and \"quickly fixes\" the production database at 2 a.m.\n\n**Ana:** The control plane continuously reconciles declared and actual state, so the manual edit gets corrected back — drift by hand loses to the declaration. Which people find rude the first time — and then they stop editing by hand. The dangerous version is the team that finds reconciliation annoying and disables it — at that point your declared state is fiction. The record also stays honest about the flip side: reconciliation isn't magic, composition errors and stuck claims happen, so the build includes practicing the debugging chain — claim, composite resource, managed resource — and validating compositions in a development cluster before promotion.\n\n## Done Means Connected\n\n**Ben:** How do you know the whole thing actually works? \"The claim went Ready\" sounds like a checkbox that lies.\n\n**Ana:** The record names Ready-means-done as an anti-pattern for exactly that reason. The chapter's workflow ends with an application: a demo claim — 20 gigabytes, PostgreSQL 15, development tier, backups, generated connection secret — and a deployment that consumes that secret for host, port, user, password, and database name, behind a readiness probe, with a health endpoint reporting database connectivity. Provisioning is not the product; a connected application is. My acceptance test as the accountable executive is two demos: watch a claim go from applied to connected with no human touching it, and watch a production-tier claim in the wrong namespace bounce with an error a developer could act on. If either needs a hand, it's not done.\n\n**Ben:** Last one. Blueprints can't cover everything. The ML team shows up needing GPU instances your catalog has never heard of. Now what — they wait a quarter for a new blueprint?\n\n**Ana:** No — they take the escape hatch, and the fact that one exists is a governance feature, not a leak. A governed request path, business justification captured, the exception tracked. The alternative is the sealed catalog, where teams with real needs go around the platform entirely and you lose both the standardization and the visibility. And the escape hatch is how the catalog learns: recurring exceptions become the next blueprint — GPU workloads with their own cost controls and scheduling restrictions are the canonical example. The revisit trigger in the record is exactly that rate: too many exceptions means the blueprints stopped matching reality.\n\n**Ben:** So the one-breath version?\n\n**Ana:** Developers declare intent in five parameters; the blueprint carries the standards; governance says no before creation and says it clearly; lifecycle automation forgets nothing; and done means an application is connected. If a database in my organization exists, I can tell you who owns it, what it costs, and why — and no ticket was filed to create it.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why infrastructure self-service means a small claim on top of a platform-owned blueprint — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a developer stands between a long ticket queue and Kai offering a single small card labeled CLAIM.](assets/images/self-service-infrastructure/comic-01-the-database-request.jpeg)\n**Panel 1:** *The hook: 'I just need a database' — and the answer is either a queue or a claim.*\n\n![Comic panel: a developer waits by a crossed-out calendar while an engineer hand-cranks a manual provisioning machine behind a curtain.](assets/images/self-service-infrastructure/comic-02-the-waiting-queue.jpeg)\n**Panel 2:** *The problem: the ticket behind the curtain — the interface changed, the queue did not, and the platform team is still the bottleneck.*\n\n![Comic panel: Kai unrolls a huge YAML scroll covered in knobs and dials that buries a small developer while Vera watches.](assets/images/self-service-infrastructure/comic-03-thousand-knob-yaml.jpeg)\n**Panel 3:** *The wrong way: the thousand-knob blueprint — every provider parameter exposed 'for flexibility' is the cloud console relocated, not complexity managed.*\n\n![Comic panel: an iceberg with a small five-field claim card above the waterline and a huge blueprint block of platform standards below it.](assets/images/self-service-infrastructure/comic-04-the-blueprint-iceberg.jpeg)\n**Panel 4:** *The principle: the blueprint is the product — the developer declares intent in a handful of parameters, and the composition compiles the organization's standards into everything beneath.*\n\n![Comic panel: near-identical claim cards, differing only in tier, pass through doors labeled dev, staging, and prod, with the prod door automatically adding armor and a padlock.](assets/images/self-service-infrastructure/comic-05-defaults-are-policy.jpeg)\n**Panel 5:** *How it plays out: policy that lives in defaults cannot be forgotten under deadline pressure — production gets Multi-AZ and deletion protection because the composition says so.*\n\n![Comic panel: an admission gate stops a production-tier claim at a sandbox area and points it toward the approved namespace with a helpful sign.](assets/images/self-service-infrastructure/comic-06-the-gate-that-teaches.jpeg)\n**Panel 6:** *The gate runs before anything is created — and a rejection that explains trains teams to fix the claim, not to route around the platform.*\n\n![Comic panel: a cleanup robot sweeps expired dev databases into a bin while a production database on a pedestal is left untouched.](assets/images/self-service-infrastructure/comic-07-the-immortal-dev-database.jpeg)\n**Panel 7:** *What easy provisioning costs: resources nobody remembers creating — so owner labels are required, dev and staging expire automatically, and production keeps human judgment.*\n\n![Comic panel: a connection secret travels by conveyor from a database into an application that lights up a green healthy indicator, while a chat window with a pasted password is crossed out.](assets/images/self-service-infrastructure/comic-08-the-loop-closes.jpeg)\n**Panel 8:** *Provisioning is not the product; a connected application is — credentials arrive by generated secret, never by Slack.*\n\n![Comic panel: Vera ticks two checkboxes in her notebook while a developer walks an unattended path from claim to running app and every resource wears a name tag.](assets/images/self-service-infrastructure/comic-09-the-two-question-test.jpeg)\n**Panel 9:** *The test that never stops running: claim to connected application without a human — while every resource can still answer who owns it and why it exists.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

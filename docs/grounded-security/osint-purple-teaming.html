@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OSINT and Purple Teaming</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="secure-software-development.html" title="Secure Software Development">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="logging-and-monitoring.html" title="Logging and Monitoring">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Assess and Improve</p>
+        <h1>OSINT and Purple Teaming</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  7 min · <a class="spec-link" href="osint-purple-teaming.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/osint-purple-teaming/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/osint-purple-teaming/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="secure-software-development.html" title="Secure Software Development">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="logging-and-monitoring.html" title="Logging and Monitoring">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-OSINT-PURPLE-TEAMING", "status": "draft:gray", "title": "OSINT and Purple Teaming", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "osint-purple-teaming", "timetoread": "7 min", "excerpt": "My organization looks at itself the way an attacker would — deliberately, regularly, and under written authorization. OSINT is the defender's mirror: we sweep what our physical assets, email addresses, external systems, document metadata, public web content, social media, and breach exposure reveal, and we close what we find. Purple teaming turns the mirror into a drill: expected detections are recorded before testing begins, red simulates realistic attacker behavior within scope, blue proves that alerts fire and logs support investigation, and every gap becomes an owned, deadlined, retested fix. The test I hold the practice to: an exercise is not finished until red activity has been compared with blue detections and every gap has an owner, a deadline, and a retest.", "tags": "security, OSINT, purple teaming, attack surface, detection testing, red team, blue team, self-assessment, continuous improvement", "icon": "assets/icons/osint-purple-teaming.png", "logo": "assets/images/osint-purple-teaming/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["security", "OSINT", "purple teaming", "attack surface", "detection testing", "red team", "blue team", "self-assessment", "continuous improvement"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: My organization looks at itself the way an attacker would — deliberately, regularly, and under **written authorization with defined scope, rules of engagement, and an emergency stop**. **OSINT is the defender's mirror**: we sweep what our physical assets, email addresses and personnel, internet-facing systems, document metadata, public web content, social-media posts, and breach exposure reveal about us — and we close what we find. **Investigation is disciplined**: sources recorded, facts separated from assumptions, no more personal data collected than necessary, every finding reproducible by another analyst. **Purple teaming turns the mirror into a drill**: expected detections are recorded before testing begins, red simulates realistic attacker behavior within scope, blue proves alerts fire and logs support investigation, and the two are compared honestly. The test I hold the practice to: **an exercise is not finished until every gap it found has an owner, a deadline, and a retest.**\n\n## Statement\n\nWhen my organization assesses its own exposure and drills its own defenses, this is the bar it is held to.\n\n**Nothing runs without authorization.**\n\n- **Written approval first.** No OSINT investigation, penetration test, or purple-team exercise starts without written approval, a defined scope — systems, domains, networks, accounts, locations — and documented rules of engagement with prohibited activities.\n- **Privacy, legal, and ethics are requirements, not afterthoughts.** They are established before collection begins; stakeholders are notified and escalation procedures defined.\n- **Disruptive techniques stay in the lab.** Anything that could disrupt production runs in a controlled lab, on systems we own or are explicitly authorized to test.\n\n**We audit our own exposure across every channel an attacker would use.**\n\n- **Physical.** Sensitive assets — laptops, servers, documents, badges, removable media — are identified; disposal is reviewed, paper is shredded, trash is secured, workspaces are checked for exposed credentials, monitors are positioned against shoulder surfing, and staff are trained to stay aware.\n- **Email and people.** Publicly discoverable addresses, revealing naming conventions, staff directories, and vendor information are reviewed; phishing exposure is assessed, monitored decoy accounts are considered for defensive detection, and awareness training follows the findings.\n- **Technology.** Internet-facing domains, subdomains, IPs, DNS records, visible OS and software versions, exposed administrative interfaces, and cloud services are inventoried; unsupported or unnecessary services are removed and changes to the external attack surface are tracked.\n- **Metadata and web content.** Published documents and images are inspected for metadata — usernames, software versions, geodata — and stripped before publishing; the public website and indexed files are searched for credentials, secrets, internal URLs, and accidentally exposed configuration or backup files, with a removal process and alerts for newly indexed sensitive content.\n- **Social media and breaches.** What employees publicly disclose about roles, technologies, travel, and office interiors is reviewed and guided; organizational addresses are checked against known breaches, unique passwords and MFA are enforced, compromised credentials are reset promptly and monitored.\n\n![Diagram of six exposure channels — physical, email and people, internet-facing technology, metadata and web, social media, breach data — feeding one OSINT sweep that produces a fix list.](assets/images/osint-purple-teaming/osint-exposure-channels.jpeg)\n**Figure 1:** *The defender's mirror: one sweep across every channel an attacker would use, ending in a prioritized list of exposures to close.*\n\n**Investigation is disciplined, minimal, and reproducible.**\n\n- An OSINT framework organizes the categories; tools are selected for the question at hand. The source and reliability of every finding are recorded, confirmed facts are separated from assumptions, no more personal information is collected than necessary, and the investigation is documented so another analyst can reproduce it. Tools support analysis; they do not replace judgment — the chapter's Maltego and Shodan walkthroughs are kept in the Checklist tab as scoped, authorized worked examples of exactly this discipline.\n\n**Purple teaming is planned, bounded, and measured.**\n\n- Every exercise defines the control or scenario under test, red-team and blue-team responsibilities, objectives with measurable success criteria, communication and emergency-stop procedures — and **the expected defensive detections are recorded before testing begins**.\n- **Red proves the path.** Realistic attacker behavior, not trophy exploitation; minimal disruption to production; every technique and its outcome recorded; evidence preserved; a hard stop the moment safety or scope limits are exceeded.\n- **Blue proves the alarm.** Expected alerts fire, logs contain enough to investigate, time-to-identify is measured, escalation and incident-response procedures are tested, analysts can name the affected hosts and accounts, containment works, and telemetry gaps are identified. Lab exercises against coerced authentication run only on designated systems — and end with the weakness hardened, not just observed.\n\n**Every gap becomes an owned fix, and the loop repeats.**\n\n- Red activity is compared with blue detections; vulnerabilities, visibility gaps, and process failures are ranked by risk, assigned owners and deadlines, fixed, and **retested**. Detection rules, awareness training, and documentation are updated; lessons feed the next exercise.\n- The public digital footprint is monitored continuously, exposure is reassessed after major change, exercises repeat periodically, regressions are tracked, new attacker techniques are incorporated — and every discovered weakness is treated as an opportunity to strengthen defenses.\n\n## How to Read This\n\nThis record sits in the **Assess and Improve** section of the journal — the continuous loop that tests whether everything the earlier sections built actually works. Where [Vulnerability Management](vulnerability-management.html) runs the standing pipeline against known weaknesses, this record is the adversarial lens: it finds what no scanner reports, and it exercises the detection estate that [Logging and Monitoring](logging-and-monitoring.html) builds. It is grounded in the OSINT and Purple Teaming chapter of the *Defensive Security Handbook* — and everything in it is written as defense: self-assessment of my own organization, under written authorization, on systems we own or are explicitly authorized to test. The full working checklist lives in the **Checklist** tab; the **TL;DR** tab carries the management summary and the **Conversation** tab the dialog.\n\n## Rationale\n\n**Attackers do the reconnaissance whether I do or not.** Everything OSINT finds — the exposed admin interface, the org chart in a staff directory, the credentials in a breach dump, the badge visible in a team photo — is already available to anyone who looks. The only question is who looks first. Running the sweep myself converts an attacker's free head start into my own prioritized to-do list; refusing to look does not make the exposure smaller, only the surprise larger.\n\n**Authorization is what separates a security exercise from an incident.** The chapter opens with approval, scope, rules of engagement, and legal requirements before a single technique — and that ordering is not bureaucracy. Written authorization is what makes the activity defensible, keeps testers inside legal and ethical bounds, protects the people whose data an investigation touches, and gives everyone an emergency stop when something behaves unexpectedly. A test nobody approved is indistinguishable from an attack, and my organization treats it as one.\n\n**Exposure is a whole-organization property, not a network property.** The sweep deliberately spans dumpsters and shoulder surfing, email naming conventions, EXIF data in photos, social-media posts about new vendors and travel, and breach corpora — because attackers assemble their picture from all of it at once. A program that only scans IP ranges audits a fraction of the surface. This is also why the fixes land everywhere: shredders and privacy screens, metadata stripping before publication, awareness guidance that extends to home working, MFA and prompt credential resets.\n\n**Discipline in collection is both an ethical and a quality requirement.** Recording the source and reliability of each finding, separating confirmed fact from assumption, and collecting no more personal information than necessary are not ceremony. They keep the investigation lawful and proportionate, they keep conclusions honest when a finding is challenged, and they make the work reproducible — another analyst can retrace it, which is the same standard I hold any engineering investigation to. Tools accelerate all of this; none of them replaces the analyst's judgment.\n\n**A detection that has never been exercised is a guess.** The single sharpest discipline in the chapter is recording the expected defensive detections *before* testing begins. That one step converts the exercise from theater into measurement: if the alert I predicted fires, the control is confirmed; if it does not, I have found a real gap — in telemetry, in rules, or in the assumption itself — before an attacker does. Blue-team verification then goes beyond \"did an alert fire\" to the questions an incident will actually ask: are the logs sufficient, how fast was it identified, did escalation work, could analysts name the affected hosts and accounts, did containment hold.\n\n![Comparison diagram of expected detections recorded before a purple-team test against alerts that actually fired, with one missing alert flagged as a gap.](assets/images/osint-purple-teaming/predicted-vs-fired-detections.jpeg)\n**Figure 2:** *Prediction turns the drill into measurement: detections are written down before red moves, and every alert that fails to fire is a gap found before an attacker finds it.*\n\n**The exercise's product is the remediation loop, not the report.** Comparing red activity with blue detections, ranking findings by risk and business impact, assigning owners and deadlines, updating detections and training, and retesting corrected weaknesses is where the value lives. An exercise whose findings have no owners is an expensive way to document known problems. And the loop never closes for good: footprints drift, organizations change, attacker techniques evolve — so the sweep is periodic, regressions are tracked, and every weakness found is treated as a chance to get stronger.\n\n![Circular remediation loop from comparing red and blue results through ranking, owner and deadline assignment, fixing, and retesting, contrasted with a shelved report.](assets/images/osint-purple-teaming/remediation-loop.jpeg)\n**Figure 3:** *The deliverable is the closed gap, not the deck: findings are ranked, owned, deadlined, fixed, and retested — and the loop feeds the next exercise.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| No OSINT, penetration testing, or purple teaming without written approval, defined scope, and rules of engagement. | Self-assessment is optional — the sweep and the drill are standing practice, not a one-off audit. |\n| We inventory our exposure across physical, email, technology, metadata, web, social, and breach channels. | We surveil our employees — collection is minimal, proportionate, and bounded by privacy, legal, and ethical requirements. |\n| Expected detections are recorded before testing begins. | The blue team is told the schedule and script of every move — the point is honest measurement of detection, not a demo. |\n| Red simulates realistic attacker behavior with minimal disruption and stops on scope or safety limits. | Red pursues maximum exploitation — proving the path matters; trophies do not. |\n| Every finding gets an owner, a deadline, a fix, and a retest. | A findings report is the deliverable — the deliverable is the closed gap. |\n| Techniques that could disrupt production run in a controlled lab, and captured authentication material is never reused outside the exercise. | The lab findings stay academic — the exercise ends by hardening the weakness it demonstrated. |\n| The footprint is monitored continuously and exercises repeat periodically. | One clean sweep proves we are safe — exposure regrows with every hire, launch, and post. |\n\nConcretely: every OSINT investigation and purple-team exercise in my organization starts with a written authorization naming scope and rules of engagement, records expected detections before the first technique runs, and ends with a ranked findings list where every line has an owner, a deadline, and a scheduled retest. The first review question after any exercise is *\"which of the gaps we found last time came back?\"*\n\n## Anti-Patterns\n\n- **The unauthorized favor.** An engineer \"quickly checks\" a system's exposure without written approval — well-intentioned, indistinguishable from an attack, and legally naked the moment anything breaks.\n- **The mirror we never look into.** Exposure assessed once, during an audit year, while domains, employees, posts, and breach dumps accumulate unwatched in between.\n- **The trophy hunt.** A red team that chases maximum exploitation instead of testing whether exposed information meaningfully supports an attack path — production disrupted, little learned.\n- **The scripted demo.** An \"exercise\" where blue knows every move in advance and the alerts are confirmed to fire on schedule — a rehearsal of success, not a measurement of detection.\n- **The scrapbook investigation.** OSINT findings with no recorded sources, facts blended with assumptions, and a method nobody can reproduce — conclusions that collapse the first time they are challenged.\n- **The graded-and-forgotten exercise.** A polished findings deck with no remediation owners, no deadlines, and no retest — the same gaps rediscovered, at full price, next year.\n- **The stockpiled capture.** Credentials or authentication material captured during an exercise and kept, reused, or accessed outside it — the defender becoming the breach.\n- **The paper blue team.** Detection coverage asserted from the SIEM's marketing sheet rather than proven by exercising it — alerts that have never fired against real behavior.\n\n## Related Records\n\n- [Logging and Monitoring](logging-and-monitoring.html) — the detection estate this record exercises; purple-team findings are its test results.\n- [Incident Response](incident-response.html) — blue-team verification drills the escalation, investigation, and containment machinery defined there.\n- [Vulnerability Management](vulnerability-management.html) — the standing pipeline for known weaknesses; this record's adversarial findings feed it, and its externally visible gaps show up here.\n- [Asset Management and Documentation](asset-management.html) — the external attack-surface inventory is only checkable against a known asset base.\n- [Security Education](user-education.html) — OSINT findings about phishing exposure and social-media disclosure become that program's training content.\n- [Phishing Awareness and Response](phishing-response.html) — email exposure, decoy accounts, and credential-breach monitoring border directly on the phishing defenses defined there.\n- [Physical Security](physical-security.html) — the physical asset review here is the OSINT view of the controls that record establishes.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every self-assessment activity in my organization — OSINT sweeps, red-team and purple-team exercises, and lab-based detection tests. I revisit it if an exercise runs without written authorization or breaches scope (the framing failing in practice), if remediation from two consecutive exercises stays unowned or unretested (the loop degrading into reporting), or if the external footprint materially changes shape — new subsidiaries, major cloud moves, a merger — faster than the periodic sweep can track.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition — Lee Brotherston, Amanda Berlin, and William F. Reyor III; the OSINT and Purple Teaming chapter, whose checklist this record distills.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "My organization looks at itself the way an attacker would — deliberately, regularly, and **under written authorization**. OSINT is the defender's mirror: we sweep what our physical assets, email addresses, external systems, document metadata, public web content, social media, and breach exposure reveal, and we close what we find. Purple teaming turns the mirror into a drill: expected detections recorded before testing begins, red simulating realistic attacker behavior within scope, blue proving alerts fire and logs support investigation. The test: an exercise is not finished until every gap it found has an owner, a deadline, and a retest.\n\n**What changes**\n\n* **Every assessment starts with authorization.** Written approval, defined scope, rules of engagement, privacy and legal requirements, stakeholder notification, and an emergency stop — before the first technique runs. Disruptive techniques stay in a controlled lab, on systems we own or are explicitly authorized to test.\n* **Exposure is audited across every channel.** Physical assets and disposal, email and personnel exposure, the internet-facing attack surface, document metadata, indexed web content, social-media disclosure, and breach data — with the fixes landing where the leaks are: shredding, metadata stripping, removal processes, MFA, and prompt credential resets.\n* **Investigation becomes disciplined.** Sources and reliability recorded, facts separated from assumptions, no more personal data collected than necessary, and every investigation reproducible by another analyst.\n* **Detection is measured, not assumed.** Expected detections are recorded before each exercise; blue-team verification covers alerts, log sufficiency, time to identify, escalation, containment, and telemetry gaps — against realistic red-team behavior, not a scripted demo.\n* **Findings become closed gaps.** Red activity is compared with blue detections; findings are ranked by risk, assigned owners and deadlines, fixed, and retested. Footprint monitoring is continuous, exercises repeat, and regressions are tracked.\n\n**What it costs**\n\n* Authorization and scoping add ceremony to every exercise — accepted deliberately, because an unauthorized test is indistinguishable from an attack.\n* The sweep and the drill recur; this is standing work, not an annual audit line item.\n* Remediation deadlines from exercises compete with feature work — the exercise is only worth running if its findings are resourced.\n\n**What we are not doing**\n\n* Not running an offensive-security program — everything here is defensive self-assessment under written authorization.\n* Not replacing the standing pipeline for known weaknesses — that is [Vulnerability Management](vulnerability-management.html).\n* Not building the detection estate itself — the SIEM, rules, and coverage this record exercises live in [Logging and Monitoring](logging-and-monitoring.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full assessment and exercise sequence. Grounded in the OSINT and Purple Teaming chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "6 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the full OSINT and purple-team self-assessment sequence, from written authorization through the post-exercise remediation loop. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Authorization and Scope\n\n- [ ] Obtain written approval before conducting OSINT, penetration testing, or purple-team exercises\n- [ ] Define the systems, domains, networks, accounts, and locations that are in scope\n- [ ] Document rules of engagement and prohibited activities\n- [ ] Establish privacy, legal, and ethical requirements\n- [ ] Notify appropriate stakeholders and define escalation procedures\n- [ ] Use a controlled lab for techniques that could disrupt production systems\n\n## 2. Physical Asset Review\n\n- [ ] Identify sensitive physical assets, including laptops, servers, documents, badges, and removable media\n- [ ] Review disposal procedures for confidential documents and equipment\n- [ ] Ensure sensitive paper records are shredded before disposal\n- [ ] Secure trash or recycling containing potentially sensitive material\n- [ ] Check workspaces for exposed passwords, account information, or confidential documents\n- [ ] Position monitors to reduce opportunities for shoulder surfing\n- [ ] Consider privacy screens where sensitive information is regularly viewed\n- [ ] Train staff to remain aware of their surroundings when handling sensitive data\n\n## 3. Email and Personnel Exposure\n\n- [ ] Identify employee email addresses that are publicly discoverable\n- [ ] Review whether email naming conventions reveal unnecessary information\n- [ ] Assess exposure to phishing and social-engineering attacks\n- [ ] Consider monitored decoy/canary email accounts for defensive detection\n- [ ] Review public staff directories for excessive contact information\n- [ ] Check vendor and contractor information that could assist social engineering\n- [ ] Keep third-party and vendor contact information current\n- [ ] Provide phishing and social-engineering awareness training\n\n## 4. Technology and External Attack-Surface Review\n\n- [ ] Inventory internet-facing domains and subdomains\n- [ ] Identify exposed IP addresses and services\n- [ ] Review DNS records and related infrastructure\n- [ ] Identify externally visible operating systems and software versions\n- [ ] Check for publicly exposed administrative interfaces\n- [ ] Review externally visible cloud services and hosting providers\n- [ ] Verify that unsupported or unnecessary services are removed\n- [ ] Track changes to the organization's external attack surface\n\n## 5. Metadata Review\n\n- [ ] Inspect publicly available documents for metadata\n- [ ] Review images for EXIF information\n- [ ] Look for usernames, author names, software versions, and creation dates\n- [ ] Check for geographic information accidentally embedded in files\n- [ ] Remove unnecessary metadata before publishing documents\n- [ ] Incorporate metadata review into incident response and forensic procedures\n\n## 6. Public Web Content\n\n- [ ] Search the organization's public website for sensitive information\n- [ ] Review publicly indexed files and directories\n- [ ] Check whether configuration or backup files have been accidentally exposed\n- [ ] Search for credentials, secrets, internal URLs, and sensitive keywords\n- [ ] Review cached or archived versions of public pages where appropriate\n- [ ] Establish a process for removing exposed information\n- [ ] Consider alerts for newly indexed sensitive content\n\n## 7. Personal and Social-Media Exposure\n\n- [ ] Review what employees publicly disclose about their roles and responsibilities\n- [ ] Look for posts revealing new software, vendors, technologies, or projects\n- [ ] Check for photographs exposing badges, screens, office layouts, or equipment\n- [ ] Review whether posts reveal travel, schedules, or organizational changes\n- [ ] Train staff to limit unnecessary disclosure of workplace information\n- [ ] Extend security awareness guidance to remote and home-working situations\n\n## 8. Data-Breach Exposure\n\n- [ ] Determine whether organizational email addresses appear in known breaches\n- [ ] Identify accounts at increased risk of credential-stuffing attacks\n- [ ] Enforce unique passwords across services\n- [ ] Require multifactor authentication where possible\n- [ ] Reset or disable compromised credentials promptly\n- [ ] Monitor for reused or exposed credentials\n\n## 9. OSINT Framework\n\n- [ ] Use an OSINT framework to organize investigation categories\n- [ ] Select tools according to the type of information being investigated\n- [ ] Record the source and reliability of each finding\n- [ ] Separate confirmed facts from assumptions\n- [ ] Avoid collecting more personal information than necessary\n- [ ] Document findings so that another analyst can reproduce the investigation\n- [ ] Remember that tools support analysis but do not replace analyst judgment\n\n## 10. Maltego Review\n\n- [ ] Start with an authorized domain or other approved entity\n- [ ] Use transforms to identify related infrastructure and information\n- [ ] Review DNS, email, website, and other relevant relationships\n- [ ] Avoid running excessive transforms without a clear objective\n- [ ] Switch between graph and list views to analyze large result sets\n- [ ] Validate important findings using independent sources\n- [ ] Export or document useful results for remediation\n- [ ] Protect any sensitive information collected during the investigation\n\n## 11. Shodan / Internet-Exposure Review\n\n- [ ] Search only for systems within the approved scope\n- [ ] Identify publicly visible devices and services\n- [ ] Review exposed ports and service banners\n- [ ] Compare detected products and versions with known vulnerabilities\n- [ ] Look for patterns that reveal a specific technology or vendor\n- [ ] Use filters or facets to narrow large result sets\n- [ ] Export a prioritized list of assets requiring investigation\n- [ ] Correct unnecessary internet exposure\n- [ ] Consider continuous monitoring for changes to the digital footprint\n\n## 12. Purple-Team Planning\n\n- [ ] Define the security control or scenario being tested\n- [ ] Establish clear red-team and blue-team responsibilities\n- [ ] Agree on objectives and measurable success criteria\n- [ ] Confirm that testing occurs only within authorized scope\n- [ ] Create communication and emergency-stop procedures\n- [ ] Record the expected defensive detections before testing begins\n- [ ] Ensure backups and recovery procedures are available where needed\n\n## 13. Red-Team Exercise\n\n- [ ] Simulate realistic attacker behavior rather than pursuing unnecessary exploitation\n- [ ] Test whether exposed information can meaningfully support an attack path\n- [ ] Record each technique attempted\n- [ ] Record which techniques succeed or fail\n- [ ] Minimize disruption to production services\n- [ ] Preserve evidence needed for later analysis\n- [ ] Stop testing immediately if safety or scope limits are exceeded\n\n## 14. Blue-Team Exercise\n\n- [ ] Verify that expected alerts are generated\n- [ ] Confirm that logs contain enough information to investigate the activity\n- [ ] Measure how quickly suspicious activity is identified\n- [ ] Test escalation and incident-response procedures\n- [ ] Check whether analysts can determine the affected hosts and accounts\n- [ ] Confirm that containment actions work as intended\n- [ ] Identify gaps in telemetry, logging, and detection coverage\n\n## 15. Responder / Coerced-Authentication Lab Exercise\n\n- [ ] Perform the exercise only on systems you own or are explicitly authorized to test\n- [ ] Use an isolated lab whenever possible\n- [ ] Confirm that participating Windows systems and test accounts are designated for the exercise\n- [ ] Identify the network behavior being tested, such as LLMNR/NBT-NS/WPAD exposure\n- [ ] Monitor whether authentication attempts can be induced under test conditions\n- [ ] Verify whether the blue team detects the activity\n- [ ] Do not reuse or access captured authentication material outside the authorized exercise\n- [ ] Disable unnecessary LLMNR, NBT-NS, or WPAD functionality where appropriate\n- [ ] Strengthen SMB and authentication protections\n- [ ] Review relevant endpoint, network, and identity logs after testing\n\n## 16. Post-Exercise Review\n\n- [ ] Compare red-team activity with blue-team detections\n- [ ] Identify vulnerabilities, visibility gaps, and process failures\n- [ ] Rank findings by risk and business impact\n- [ ] Assign remediation owners\n- [ ] Establish remediation deadlines\n- [ ] Update detection rules and monitoring\n- [ ] Improve security awareness training where human factors contributed\n- [ ] Update documentation and incident-response procedures\n- [ ] Retest corrected weaknesses\n- [ ] Record lessons learned for the next purple-team exercise\n\n## 17. Continuous Improvement\n\n- [ ] Monitor the organization's public digital footprint regularly\n- [ ] Reassess OSINT exposure after major organizational or technology changes\n- [ ] Repeat purple-team exercises periodically\n- [ ] Track whether previously identified weaknesses return\n- [ ] Incorporate new attacker techniques into future exercises\n- [ ] Treat every discovered weakness as an opportunity to strengthen defenses\n\nWith the loop running — sweep, drill, compare, fix, retest, repeat — the test never changes: **is every gap the last exercise found owned, deadlined, and retested?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Why Defenders Do Reconnaissance\n\n**Ben:** Straight question first. This is a defensive-security journal, and this record has a red team in it. OSINT, Shodan, coerced-authentication labs — why is an executive operating model teaching people to attack?\n\n**Ana:** It isn't. Everything in this record is my organization looking at itself — the defender's self-assessment. Here's the uncomfortable fact the chapter starts from: the reconnaissance happens whether we do it or not. The exposed admin interface, the credentials in a breach dump, the badge visible in a team photo — all of that is already available to anyone who looks. OSINT is us looking first. And purple teaming is us checking whether the alarms we paid for actually ring. Both are defense; they just borrow the attacker's eyes.\n\n**Ben:** Then why does the record open with authorization paperwork? If it's all self-assessment on our own systems, written approval feels like bureaucracy for its own sake.\n\n**Ana:** Because authorization is the line between a security exercise and an incident. A test nobody approved is indistinguishable from an attack — technically, legally, and to the on-call engineer whose pager just went off. Written approval, defined scope, rules of engagement, prohibited activities, privacy and legal requirements, stakeholder notification, an emergency stop. That frame is what makes the activity defensible, and it's also what protects the testers. The record is blunt about it: an engineer who \"quickly checks\" something without approval is the first anti-pattern on the list.\n\n**Ben:** And anything dangerous?\n\n**Ana:** Stays in a controlled lab, on systems we own or are explicitly authorized to test. The chapter's coerced-authentication exercise is the model: isolated lab, designated systems and test accounts, and captured authentication material is never reused outside the exercise. The exercise ends by hardening the weakness — disabling the protocols that made it possible, strengthening authentication — not by admiring it.\n\n## The Sweep\n\n**Ben:** The exposure review covers dumpsters, shoulder surfing, EXIF data, and LinkedIn posts. That's a strange list for a technology organization. Isn't the attack surface mostly the network?\n\n**Ana:** That's exactly the assumption the chapter is written against. Attackers assemble their picture from everything at once: an email naming convention from the staff directory, a new vendor named in a social post, a software version in a PDF's metadata, an office layout in a team photo, a password on a whiteboard behind someone's video call. Exposure is a whole-organization property. A program that only scans IP ranges is auditing a fraction of the surface — and usually the fraction that's already best defended.\n\n**Ben:** Fine, but where does that end? \"Review what employees publicly disclose\" can slide into monitoring your own people.\n\n**Ana:** Which is why the discipline section exists, and why privacy, legal, and ethical requirements are established before collection begins. The record's rules: collect no more personal information than necessary, record the source and reliability of every finding, separate confirmed facts from assumptions, and document the investigation so another analyst can reproduce it. The output isn't a dossier on individuals — it's guidance and training: limit what posts reveal about roles, technologies, and travel, extend the awareness guidance to home working. The fix for social exposure is education, not surveillance.\n\n**Ben:** And breach data? Half the internet's credentials have leaked at some point.\n\n**Ana:** Which is why the response is mechanical, not dramatic: check whether organizational addresses appear in known breaches, identify accounts at risk of credential stuffing, enforce unique passwords, require MFA where possible, reset compromised credentials promptly, and keep monitoring. Boring, and exactly the kind of boring that stops account takeover.\n\n## Recording the Prediction\n\n**Ben:** Now purple teaming. My skeptical take: these exercises are theater. Red gets in — red always gets in — everyone nods gravely at a slide deck, nothing changes. Convince me otherwise.\n\n**Ana:** The chapter has one discipline that kills the theater, and it's my favorite line in the whole checklist: record the expected defensive detections *before* testing begins. That single step turns the exercise from a demo into a measurement. You wrote down \"this technique should trigger this alert within this window.\" Now there are only two outcomes, and both are valuable: the prediction holds and the control is confirmed, or it doesn't and you've found a real gap — in telemetry, in rules, or in your own assumptions — before an attacker does.\n\n**Ben:** But if red always gets in, what is red even measuring?\n\n**Ana:** Red isn't there to win; that's the trophy-hunt anti-pattern. Red simulates realistic attacker behavior, tests whether the exposed information from the OSINT sweep meaningfully supports an attack path, records every technique and whether it succeeded, minimizes disruption, preserves evidence, and stops immediately if scope or safety limits are exceeded. The score isn't \"did red get in\" — it's the comparison between what red did and what blue saw.\n\n**Ben:** And blue's side is more than \"an alert fired\"?\n\n**Ana:** Much more — blue verification asks the questions a real incident will ask. Did the expected alerts generate? Do the logs contain enough to actually investigate? How fast was the activity identified? Did escalation and incident-response procedures work? Could analysts name the affected hosts and accounts? Did containment hold? And where are the telemetry gaps? That last one matters most: the exercise maps what we *cannot* see, which no dashboard will ever volunteer.\n\n## From Findings to Fixes\n\n**Ben:** Post-exercise. This is where these programs usually die — the deck gets presented, everyone agrees it's concerning, and the same findings reappear next year.\n\n**Ana:** The record refuses to treat the report as the deliverable. The deliverable is the closed gap. Compare red activity with blue detections, identify vulnerabilities, visibility gaps, and process failures, rank by risk and business impact — then owners, deadlines, detection-rule updates, training improvements where human factors contributed, documentation updates, and a retest of every corrected weakness. The exercise isn't finished at the readout; it's finished at the retest.\n\n**Ben:** And the honest metric of whether the program works?\n\n**Ana:** Regression tracking. The first review question after any exercise is \"which of the gaps we found last time came back?\" If previously fixed weaknesses keep returning, the loop is broken somewhere — ownership, deadlines, or retesting. The chapter also insists the loop never fully closes: monitor the public footprint continuously, reassess after major organizational or technology change, repeat the exercises, and fold new attacker techniques into the next round.\n\n**Ben:** How does this relate to the rest of the journal? We already have [Vulnerability Management](vulnerability-management.html) and [Logging and Monitoring](logging-and-monitoring.html).\n\n**Ana:** Cleanly. Vulnerability management is the standing pipeline against known weaknesses — scanners, priorities, patches. This record is the adversarial lens that finds what no scanner reports: the leaked document, the credential in a breach, the detection rule that never fires. And logging-and-monitoring builds the detection estate; this record is its examination. Purple-team findings are the test results that tell that record whether its coverage claims are true. The blue-team drill also exercises the machinery of [Incident Response](incident-response.html) — escalation, investigation, containment — under controlled conditions instead of during a real breach.\n\n**Ben:** All right, here's my concession. The record isn't about attacking — it's about refusing to be the last to know. Look at yourself before the attacker does, predict what your defenses should catch, measure honestly, and don't call the exercise done until every gap has an owner, a deadline, and a retest.\n\n**Ana:** That's the whole record. The mirror, the drill, and the loop — under authorization, every time.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why my organization looks at itself the way an attacker would — and drills what it finds — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a shadowy figure pins company photos and charts on a corkboard with strings while Vera and Nadia stand by the building.](assets/images/osint-purple-teaming/comic-01-they-are-already-looking.jpeg)\n**Panel 1:** *The hook: the reconnaissance is happening either way — the only question is who looks at our exposure first.*\n\n![Comic panel: a dumpster with documents, a team photo showing a badge, a password sticky note in a window, and an open door labeled ADMIN.](assets/images/osint-purple-teaming/comic-02-exposure-everywhere.jpeg)\n**Panel 2:** *The problem: exposure is a whole-organization property — dumpsters, badges in photos, sticky notes, breach dumps, and forgotten admin panels add up to one picture.*\n\n![Comic panel: an engineer 'just checking' a system at night while the security monitor flashes an intruder alert with his silhouette.](assets/images/osint-purple-teaming/comic-03-the-unauthorized-favor.jpeg)\n**Panel 3:** *The wrong way: the unauthorized favor — a test nobody approved is indistinguishable from an attack, and gets treated as one.*\n\n![Comic panel: Vera holds an AUTHORIZED document with a scoped map and rules while a big red STOP button hangs on the wall.](assets/images/osint-purple-teaming/comic-04-the-permission-slip.jpeg)\n**Panel 4:** *The principle: nothing runs without written approval — defined scope, rules of engagement, privacy and legal bounds, and an emergency stop everyone can pull.*\n\n![Comic panel: Nadia holds a mirror showing the company building covered in glowing tags on its weak spots while Vera writes a to-do list.](assets/images/osint-purple-teaming/comic-05-the-defenders-mirror.jpeg)\n**Panel 5:** *Practice: OSINT as the defender's mirror — sweep what physical assets, email, systems, metadata, web content, social posts, and breach data reveal, and close what you find.*\n\n![Comic panel: Nadia sorts sourced evidence cards into FACTS and ASSUMPTIONS trays while a second analyst reproduces the work behind her.](assets/images/osint-purple-teaming/comic-06-facts-in-one-bin.jpeg)\n**Panel 6:** *Practice: investigation discipline — every finding sourced, facts separated from assumptions, no more personal data than necessary, and reproducible by another analyst.*\n\n![Comic panel: a prediction card sealed before the test, then a red tester picking a lock while a blue defender watches one bell ring and one stay silent.](assets/images/osint-purple-teaming/comic-07-predict-then-drill.jpeg)\n**Panel 7:** *Practice: the purple drill — expected detections recorded before testing begins; red simulates realistic attacker behavior in scope, blue proves alerts fire and logs support investigation.*\n\n![Comic panel: Vera files away a glossy report and points at a board where every gap card has a name, a date, and a RETEST stamp.](assets/images/osint-purple-teaming/comic-08-owner-deadline-retest.jpeg)\n**Panel 8:** *The finish line: not the report — the exercise ends when every gap found has an owner, a deadline, a fix, and a retest.*\n\n![Comic panel: Vera and Nadia walk a circular garden path clipping new weed sprouts that pop up behind them around the building.](assets/images/osint-purple-teaming/comic-09-the-regrowing-footprint.jpeg)\n**Panel 9:** *The closer: the loop repeats — footprints drift and exposure regrows with every hire, launch, and post, so the sweep is periodic and the first question is 'which gaps came back?'*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

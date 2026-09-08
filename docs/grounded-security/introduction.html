@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Introduction: Security as Records</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-next" href="security-program.html" title="Creating a Security Program: Risk Before Tools">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Start Here</p>
+        <h1>Introduction: Security as Records</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  5 min · <a class="spec-link" href="introduction.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/introduction/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/introduction/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-next" href="security-program.html" title="Creating a Security Program: Risk Before Tools">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-INTRODUCTION", "status": "draft:gray", "title": "Introduction: Security as Records", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "introduction", "timetoread": "5 min", "excerpt": "This journal is my defensive-security operating model, written down as records: how a security program is created and governed, what happens when incidents, disasters, and phishing land, how the estate is hardened from the server room to the cloud, who gets in and what can talk to what, and how the organization keeps finding and fixing its own weaknesses. Twenty-four records from the chapter checklists of Brotherston, Berlin, and Reyor's Defensive Security Handbook, each shipping its working checklist. Start here for the map.", "tags": "defensive security, security program, incident response, hardening, operating model, introduction", "icon": "assets/icons/introduction.png", "logo": "assets/images/introduction/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["defensive security", "security program", "incident response", "hardening", "operating model", "introduction"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **KEY POINTS:**\n>\n> * **This journal is my defensive-security operating model, written down** — 24 records covering the program before the tools (creating it, knowing what you have, policies, standards, education, compliance), what happens when it goes wrong (incidents, disasters, phishing), hardening the estate (physical to cloud), identity and the network, and the continuous loop of assessing and improving — grounded in Lee Brotherston, Amanda Berlin, and William F. Reyor III's *Defensive Security Handbook*, 2nd edition.\n> * **Every record ships its working checklist, not just the argument** — the article states the principle I commit to and why; the **Checklist** tab carries the runnable self-assessment distilled from the source chapter, ready to run against a real estate.\n> * **Read it as an operating manual, not a book report** — the material is adapted from a book I trust through a practitioner-executive lens; where my practice differs from the source, the record says so, and every record names the conditions under which I would revise it.\n\n<br>\n\nIf you build, run, or depend on systems in my organization, you should **not have to guess** what I think defensible looks like. This journal writes it down: what a security program is and where its authority comes from, what happens in the first hour of an incident, what every server, endpoint, database, and cloud account is held to, who gets in and what can talk to what, and how we keep finding our own weaknesses before someone else does. The Map below carries the full inventory. Each record states the operating principle in the article; the runnable checklist lives in the record's **Checklist** tab.\n\n## Why an Executive Writes the Security Model Down\n\nBecause **security is decided before the incident, in writing — or during the incident, in panic.** Every engineer in the organization makes security decisions daily — what to log, what to expose, what to patch, whom to trust — and a model that lives in the security team's heads reaches none of them. Incidents are the worst possible time to discover that nobody agreed on who declares one, disasters are the worst possible time to test a recovery plan, and an audit is the worst possible time to learn what your own policy says. Writing the model down does two things: it tells the teams doing security work what I will hold them to — and it tells everyone else what they are entitled to expect from the security program, **including the right to hear \"no, that risk we accept, in writing.\"**\n\n![Split diagram contrasting security decided beforehand as written records reaching teams with decisions improvised in panic during an incident.](assets/images/introduction/written-down-vs-panic.jpeg)\n**Figure 1:** *Security is decided before the incident, in writing — or during the incident, in panic; written records reach every engineer making daily security decisions.*\n\nThe journal inherits its charter from its siblings: the [engineering-executive journal](../grounded-engineering-executive/introduction.html) commits me to an inspectable executive operating model, and the [platforms journal](../grounded-platforms/introduction.html) writes down what I hold platform work to. This journal covers defense: the program, the response, the hardening, the access, and the loop that improves all of it.\n\n## What a Record Looks Like\n\nEvery record follows the same shape, so you always know where to look:\n\n| Part | What it gives you |\n| --- | --- |\n| **Status / Principle** blockquote | The operating principle in one quotable paragraph. |\n| **Statement → Rationale → Anti-Patterns** | The ADR-shaped body: what I commit to, why it holds, what it does *not* say, and the failure modes it guards against. |\n| **Checklist** tab | The working self-assessment distilled from the source chapter — the part you run against a real estate. |\n| **TL;DR** and **Conversation** tabs | The management summary for the skim, and the two-host dialog for the argument out loud. |\n| **View spec** link | The authoring contract behind the post — intent, success criteria, and a decision log, versioned like everything else. |\n\nEvery record carries a stable `SEC-` identifier and `status: draft`, deliberately: the material is adopted from a source I trust and adapted ahead of being fully worn in at my current scope, and each record **names its own revisiting conditions**.\n\n## Where the Material Comes From\n\nOne book, credited openly and per record: **Lee Brotherston, Amanda Berlin, and William F. Reyor III, *Defensive Security Handbook: Best Practices for Securing Infrastructure*, 2nd edition** (O'Reilly, 2024) — the pragmatic blue-team book, written for organizations that must defend themselves with the engineers and budget they actually have rather than the security department they wish they had. The 24 records follow the book's 24 chapters, one record per chapter checklist.\n\nThe chapter checklists are the ground truth; the records state **what *I* will run and hold security work to**, in first person, with the adaptations I have made. Where my practice differs from the book, the record says so.\n\n## The Map\n\nFive sections after this one:\n\n- **The Security Program** — the program before the tools: [Creating a Security Program: Risk Before Tools](security-program.html) creates the program and gives it authority; [Asset Management and Documentation](asset-management.html) establishes that you cannot defend what you do not know you have; [Policies: What Must Be Achieved, in Writing](policies.html), [Standards and Procedures](standards-and-procedures.html), and [Security Education](user-education.html) turn intent into rules, rules into repeatable practice, and practice into people who don't click; [Industry Compliance Standards and Frameworks](compliance.html) keeps the auditors a by-product of doing security, not the point of it.\n- **Response and Recovery** — what happens when it goes wrong: [Incident Response](incident-response.html) decides who declares, who leads, and who speaks before anything is on fire; [Disaster Recovery](disaster-recovery.html) makes recovery a tested capability rather than a document; [Phishing Awareness and Response](phishing-response.html) handles the attack that starts most of the others.\n- **Hardening the Estate** — the systems themselves, from the door to the cloud: [Physical Security](physical-security.html), [Microsoft Windows Infrastructure](windows-infrastructure.html), [Unix Application Servers](unix-servers.html), [Endpoints](endpoints.html), [Databases](databases.html), and [Cloud Infrastructure](cloud-infrastructure.html) each state the baseline that class of system is held to.\n- **Identity and Network** — who gets in and what can talk to what: [Authentication](authentication.html) governs identity and credentials; [Secure Network Infrastructure](network-security.html) and [Network Segmentation](network-segmentation.html) control the paths and the blast radius; [Intrusion Detection and Prevention Systems](ids-ips.html) watches the traffic that gets through.\n- **Assess and Improve** — the continuous loop: [Vulnerability Management](vulnerability-management.html) finds and fixes weaknesses on a cadence; [Secure Software Development](secure-software-development.html) moves security into the code before it ships; [OSINT and Purple Teaming](osint-purple-teaming.html) tests the defense the way an attacker would; [Logging and Monitoring](logging-and-monitoring.html) makes everything else observable; [The Extra Mile](the-extra-mile.html) is what comes after the baseline holds.\n\n![Map of the journal's five sections as regions: the security program (6 records) as the foundation; response and recovery (3), hardening the estate (6), and identity and network (4) built on it; assess and improve (5) looping around them all.](assets/images/introduction/journal-map-five-sections.jpeg)\n**Figure 2:** *The map: five sections, twenty-four records — the program is the ground, response, hardening, and identity stand on it, and the assess-and-improve loop keeps them all honest.*\n\n**The sections answer different questions about the same defense.** The program records decide *on whose authority and against what inventory* everything else operates — [Asset Management and Documentation](asset-management.html) is the ground under every hardening record, because a baseline you cannot enumerate is a baseline you cannot enforce. The response records assume the hardening will sometimes fail — [Logging and Monitoring](logging-and-monitoring.html) is what turns [Incident Response](incident-response.html) from guesswork into investigation, and [Network Segmentation](network-segmentation.html) is what keeps the incident it investigates small. The seams run in both directions: [Security Education](user-education.html) and [Phishing Awareness and Response](phishing-response.html) are the same threat handled before and after the click, and [Vulnerability Management](vulnerability-management.html) is the loop that keeps every baseline in the Hardening section honest. Follow the links rather than the section order if a thread pulls you.\n\n## How to Read This Journal\n\n- **If you do security or infrastructure work here** — start with [Creating a Security Program: Risk Before Tools](security-program.html) and [Asset Management and Documentation](asset-management.html); then run the Checklist tab of each record that names a system class you own ([Microsoft Windows Infrastructure](windows-infrastructure.html), [Unix Application Servers](unix-servers.html), [Endpoints](endpoints.html), [Databases](databases.html), [Cloud Infrastructure](cloud-infrastructure.html)) against the real estate.\n- **If you lead an application team** — [Secure Software Development](secure-software-development.html), [Authentication](authentication.html), and [Security Education](user-education.html) tell you what your team is held to; [Incident Response](incident-response.html) tells you what happens, and what is expected of you, when something your team runs is involved in an incident.\n- **If you are my peer or my manager** — read the Status/Principle blockquotes across all five sections; that is **the whole operating model in twenty minutes**. [Creating a Security Program: Risk Before Tools](security-program.html) and [Industry Compliance Standards and Frameworks](compliance.html) are where the governance and investment arguments live.\n- **If something is on fire right now** — [Incident Response](incident-response.html), then [Phishing Awareness and Response](phishing-response.html) or [Disaster Recovery](disaster-recovery.html) as the situation dictates; their Checklist tabs are written to be run under pressure.\n- **If you are building your own model** — take the checklists and adapt them; that is what I did. The book is worth your time in full, and disagreeing with my adaptations is a fine way to find your own.\n\n## Status and Revisiting\n\nThis journal is **a living document**. Every record starts in `draft` status and moves to `accepted` **as practice wears it in**, each on the revisiting conditions it declares for itself — and this introduction gets updated whenever the journal's shape changes.\n\n## Authoritative References\n\n- Lee Brotherston, Amanda Berlin, and William F. Reyor III, *Defensive Security Handbook: Best Practices for Securing Infrastructure*, 2nd edition (O'Reilly, 2024).\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "This journal is **my defensive-security operating model, written down as records** — twenty-four of them, one per source chapter checklist, covering the program before the tools, what happens when it goes wrong, how the estate is hardened, who gets in and what can talk to what, and how the organization keeps finding its own weaknesses. If you build, run, or depend on systems in my organization, you should not have to guess what I think defensible looks like.\n\n**What changes**\n\n* **The charter is explicit**: this is an operating model, not a book report. Every record is written in first person, states what I commit to and hold security work to, and names the conditions under which I would revise it.\n* **One book, five sections, one journal.** Brotherston, Berlin, and Reyor's *Defensive Security Handbook*, 2nd edition, grounds all twenty-four records. The sections follow the executive's questions rather than the book's chapter order, and the seams between them are cross-linked record to record: asset management under every hardening baseline, logging under incident response, education and phishing response as the same threat before and after the click.\n* **The map is complete.** Every record is listed by section with links, so the whole model is navigable from one page.\n* **Each record ships its working checklist.** The article carries the principle and rationale; the Checklist tab carries the runnable self-assessment distilled from the source chapter — the part you run against a real estate.\n* **There is a reading path for each audience**: security and infrastructure engineers start with [Creating a Security Program: Risk Before Tools](security-program.html) and [Asset Management and Documentation](asset-management.html) and run the checklists for the system classes they own; application-team leads read what their teams are held to; my peers read the highlight blockquotes across all five sections — the whole model in twenty minutes; and if something is on fire, [Incident Response](incident-response.html) is written to be run under pressure.\n\n**What it costs**\n\n* The commitments are binding once written: the teams doing security work know what I will hold them to, and everyone else knows what they may expect — including the right to hear \"no, that risk we accept, in writing.\"\n* The journal is a living document that must be maintained. Records start as `draft` — adopted from a source I trust ahead of being fully worn in — and move to `accepted` only as practice earns it, each on its own declared revisiting conditions.\n\n**What we are not doing**\n\n* Not summarizing the book — each record carries its own adapted material; this post is only the map, and the book remains worth reading in full.\n* Not publishing a threat assessment, a risk register, or a statement about any specific system or incident — the records are the model, not the audit.\n* Not covering the sibling journals' ground: platforms, engineering management, people-management tools, and the executive operating model live in their own journals.\n\n*The Article tab carries the full map and reading guide; every record's Checklist tab carries the part you run.*\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Why Write It Down at All\n\n**Ben:** Let me open with the obvious question. You run engineering, not a security department. Why does an engineering executive sit down and write a defensive-security operating model into twenty-four records? Isn't this what you hire a CISO for?\n\n**Ana:** Because security is decided before the incident, in writing — or during the incident, in panic. There is no third option. Every engineer in the organization makes security decisions daily: what to log, what to expose, what to patch, whom to trust. A model that lives in the security team's heads reaches none of them. And the worst moments to improvise are exactly the ones this journal covers — the first hour of an incident, the day the recovery plan gets its first real test, the audit where you learn what your own policy says.\n\n**Ben:** So the writing-down is for whom, exactly? The security folks?\n\n**Ana:** Both directions at once. It tells the teams doing security work what the executive will hold them to — the bar is public, not discovered at review time. And it tells everyone else what they are entitled to expect from the security program. Including one thing people forget is an entitlement: the right to hear \"no, that risk we accept, in writing.\" A written model turns risk acceptance from a hallway shrug into a decision someone owns.\n\n**Ben:** You could still do that with a one-page security policy. Twenty-four records is a lot of journal.\n\n**Ana:** The scope is the reason. Defense isn't one question. How do you create a program with actual authority, and against what inventory does it operate? What happens when it goes wrong — incidents, disasters, phishing? What is every class of system held to, from the server room to the cloud account? Who gets in, and what can talk to what? And how do you keep finding your own weaknesses before someone else does? One page answers none of those. Twenty-four records answer all of them, and each one is short.\n\n## Not a Book Report\n\n**Ben:** Here's my skeptical read, though. The material comes from one book — Brotherston, Berlin, and Reyor's *Defensive Security Handbook*. So this is a book club with extra formatting. Why should anyone read your version instead of the original?\n\n**Ana:** They should read the original — the journal says so explicitly, the book is credited per record and recommended in full. But the journal is doing a different job. The book tells you what three practitioners recommend to any organization. A record tells you what *this executive* commits to run in this one. Every record is written in first person: here is the principle I hold security work to, here is why, here is where my practice differs from the source — and the record says so when it differs.\n\n**Ben:** And when the commitment turns out wrong?\n\n**Ana:** That's the part a book can't do: every record names its own revisiting conditions. The conditions under which the author would change their mind are written next to the commitment itself. That's the difference between an operating model and an opinion.\n\n**Ben:** Then explain the status. Every record is marked `draft`. If you believe this stuff, why not just call it accepted?\n\n**Ana:** Because that would be dishonest, and deliberately so. The material is adopted from a source the author trusts, adapted ahead of being fully worn in at current scope. Records move from `draft` to `accepted` as practice wears them in — each on the revisiting conditions it declares for itself. `Draft` doesn't mean \"unsure\"; it means \"committed, and still collecting evidence.\" Pretending otherwise is how security policies become fiction — and fictional security policies are worse than none, because people believe them.\n\n## One Book, Five Sections\n\n**Ben:** The book has its own chapter order. Why reshuffle it into five sections? You could have shipped the chapters in sequence and been done.\n\n**Ana:** Because the sections follow the executive's questions, not the table of contents. The Security Program section is the program before the tools — [Creating a Security Program: Risk Before Tools](security-program.html) creates it and gives it authority, [Asset Management and Documentation](asset-management.html) establishes that you cannot defend what you don't know you have, and [Policies: What Must Be Achieved, in Writing](policies.html), [Standards and Procedures](standards-and-procedures.html), [Security Education](user-education.html), and [Industry Compliance Standards and Frameworks](compliance.html) turn intent into rules, practice, people, and evidence. Response and Recovery assumes things will go wrong. Hardening the Estate holds each class of system to a baseline. Identity and Network controls who gets in and what can talk to what. And Assess and Improve is the loop that keeps all of it honest.\n\n**Ben:** And the seams between them?\n\n**Ana:** That's where the interesting decisions live. [Asset Management and Documentation](asset-management.html) is the ground under every hardening record — a baseline you cannot enumerate is a baseline you cannot enforce. [Logging and Monitoring](logging-and-monitoring.html) sits in the improvement section, but it's what turns [Incident Response](incident-response.html) from guesswork into investigation. [Network Segmentation](network-segmentation.html) is what keeps the incident small enough to investigate at all. And [Security Education](user-education.html) and [Phishing Awareness and Response](phishing-response.html) are literally the same threat, handled before and after the click. Ship the chapters in book order and those pairs sit forty pages apart. The five sections put the questions together, and the cross-links carry you across the seams.\n\n**Ben:** Twenty-four records, cross-linked every which way. Be honest — who actually reads this?\n\n**Ana:** Nobody reads it cover to cover, and it's not designed for that. There's a reading path per audience. Security and infrastructure engineers start with [Creating a Security Program: Risk Before Tools](security-program.html) and [Asset Management and Documentation](asset-management.html), then run the Checklist tab of every record naming a system class they own — Windows, Unix, endpoints, databases, cloud. An application-team lead reads [Secure Software Development](secure-software-development.html), [Authentication](authentication.html), and [Security Education](user-education.html) to learn what their team is held to. A peer executive reads only the Status and Principle blockquotes across all five sections — that's the whole operating model in twenty minutes. And if something is on fire right now, [Incident Response](incident-response.html) and its neighbors are written to be run under pressure.\n\n## The Part You Run\n\n**Ben:** You keep saying \"records,\" but I've heard you insist this journal is a manual, not a shelf of essays. What makes it runnable?\n\n**Ana:** Every record ships in two halves. The article states the principle and the rationale — what the author commits to and why it holds. And the Checklist tab carries the working self-assessment distilled from the source chapter — grouped, concrete items you run against a real estate. The argument and the audit, on the same page. If you only argue, nothing changes; if you only audit, nobody knows why the items matter.\n\n**Ben:** And the records all look the same?\n\n**Ana:** Deliberately. Same shape every time: a stable `SEC-` identifier, a quotable Status-and-Principle blockquote up top, then statement, rationale, anti-patterns — including what the record does *not* say, which is where most misreadings die. Plus a TL;DR tab for the skim, a Conversation tab like this one, and a visible spec link: the authoring contract behind the post, with its intent and decision log, versioned like everything else. You always know where to look, whichever record you open.\n\n## What This Journal Is Not\n\n**Ben:** Close it out. What is this journal explicitly not doing? Because \"my security operating model\" could be read as covering everything with the word security in it.\n\n**Ana:** Three boundaries. First, it is not a summary of the book — each record carries its own adapted material, and this introduction is only the map. If you want Brotherston, Berlin, and Reyor, read Brotherston, Berlin, and Reyor. Second, it is not a threat assessment or a risk register — no statement about any specific system, incident, or weakness. The records are the model, not the audit. Third, it stays off the sibling journals' ground: platforms, engineering management, people-management tools, and the executive operating model live in their own journals. This one covers defense — the program, the response, the hardening, the access, and the loop that improves all of it.\n\n**Ben:** And the journal itself — does it get the same revisiting treatment as the records?\n\n**Ana:** It's a living document by design. Records earn `accepted` as practice wears them in, and the introduction gets updated whenever the journal's shape changes. If you build, run, or depend on systems in this organization — you should not have to guess what defensible looks like. Now you don't.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why a defensive-security operating model gets written down instead of lived in the security team's heads — in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: engineers build on a giant shield-shaped floor with question-mark thought bubbles while Vera points them out to Nadia.](assets/images/introduction/comic-01-guessing-the-bar.jpeg)\n**Panel 1:** *The hook: everyone who builds or runs systems makes security decisions daily — and without a written model, they all have to guess what defensible looks like.*\n\n![Comic panel: engineers panic under red alarm lights arguing over who declares the incident while Nadia holds a written plan in the doorway.](assets/images/introduction/comic-02-decided-in-panic.jpeg)\n**Panel 2:** *Why write it down: security is decided before the incident, in writing — or during the incident, in panic. An incident is the worst time to discover nobody agreed who declares one.*\n\n![Comic panel: Vera shows Nadia a bookcase of twenty-four record binders, one open to a page with a stamped acceptance line.](assets/images/introduction/comic-03-the-model-on-paper.jpeg)\n**Panel 3:** *The move: write the model down as twenty-four records — what security work is held to, and what everyone else is entitled to expect, including the right to hear 'no, that risk we accept, in writing.'*\n\n![Comic panel: Nadia holds a blueprint-style record page with a quote box, body sections, and a revisit tag, while Vera holds the source book.](assets/images/introduction/comic-04-anatomy-of-a-record.jpeg)\n**Panel 4:** *What a record is: one quotable principle up top, an ADR-shaped body below, a revisit condition at the bottom — each adapted from one chapter of a single credited source, the Defensive Security Handbook.*\n\n![Comic panel: Vera and Nadia study a map with five regions labeled Program, Response, Hardening, Identity and Network, and Assess and Improve.](assets/images/introduction/comic-05-five-sections.jpeg)\n**Panel 5:** *The map: five sections answer different questions about the same defense — The Security Program, Response and Recovery, Hardening the Estate, Identity and Network, and Assess and Improve.*\n\n![Comic panel: Nadia draws connecting threads between map regions — ledger to fortress, watchtower to fire station, classroom to fishing hook.](assets/images/introduction/comic-06-the-seams.jpeg)\n**Panel 6:** *The seams: asset inventory is the ground under every hardening baseline, logging is what turns incident response into investigation, and user education and phishing response are the same threat before and after the click.*\n\n![Comic panel: Vera reads a principle page while Nadia ticks a clipboard checklist against a rack of servers.](assets/images/introduction/comic-07-argument-and-checklist.jpeg)\n**Panel 7:** *How to read it: the article states the principle and why it holds; the record's checklist is the runnable part — written to be run against a real estate, some of them under pressure.*\n\n![Comic panel: Nadia stamps a binder DRAFT while Vera points at the same binder shown aging from DRAFT to well-worn ACCEPTED.](assets/images/introduction/comic-08-worn-in.jpeg)\n**Panel 8:** *The closer: every record starts as a draft on purpose — adopted ahead of being worn in, each naming its own revisiting conditions, and moved to accepted only as practice wears it in.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

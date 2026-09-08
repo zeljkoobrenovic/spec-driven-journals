@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Creating a Security Program: Risk Before Tools</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="introduction.html" title="Introduction: Security as Records">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="asset-management.html" title="Asset Management and Documentation">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">The Security Program</p>
+        <h1>Creating a Security Program: Risk Before Tools</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  8 min · <a class="spec-link" href="security-program.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/security-program/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/security-program/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="introduction.html" title="Introduction: Security as Records">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="asset-management.html" title="Asset Management and Documentation">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-SECURITY-PROGRAM", "status": "draft:gray", "title": "Creating a Security Program: Risk Before Tools", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "security-program", "timetoread": "8 min", "excerpt": "A security program in my organization is designed before anything is bought. Purpose and business objectives come first, organized around a recognized framework; responsibility is structured into executive, risk, security, and auditing functions; the baseline is documented before it is improved; risk is calculated — likelihood times impact — and every risk gets an explicit treatment: avoided, remediated, transferred, or accepted with a named approver and an expiry date. Work is prioritized into tiered milestones, and the program rehearses through use cases, kill-chain mapping, tabletops, and drills. The test I hold the program to: every major risk has an owner, a treatment decision, and a review date in a maintained risk register — and the program itself is periodically reassessed.", "tags": "security program, risk management, governance, NIST CSF, risk register, tabletop exercises, security leadership, defensive security", "icon": "assets/icons/security-program.png", "logo": "assets/images/security-program/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["security program", "risk management", "governance", "NIST CSF", "risk register", "tabletop exercises", "security leadership", "defensive security"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: My security program is designed before anything is bought. **Purpose and business objectives come first**, organized around a recognized framework — the NIST Cybersecurity Framework's Identify, Protect, Detect, Respond, Recover, and Govern functions — applied with judgment, never blindly. **Responsibility is structured**: executive leadership with real authority and funding, a risk function, a security team, and an independent audit. **The baseline is documented before it is improved**, risk is calculated — **likelihood times impact, recorded in a register** — and every risk receives an explicit treatment: avoided, remediated, transferred, or **accepted out loud, with a named approver and an expiry date**. Work is prioritized into tiered milestones from quick wins to multiyear goals, and the program **rehearses** — use cases, kill-chain mapping, tabletop exercises, technical drills. The test I hold the program to: **every major risk has an owner, a treatment decision, and a review date in a maintained risk register — and the program itself is periodically reassessed**.\n\n## Statement\n\nWhen my organization creates — or audits — its security program, this is the shape I hold it to.\n\n![Pipeline diagram showing a security program designed stage by stage — purpose, framework, baseline, risk, treatment, rehearsal — with tools purchased only at the end.](assets/images/security-program/program-before-tools-pipeline.jpeg)\n**Figure 1:** *The program is designed before anything is bought: purpose, framework, baseline, calculated risk, explicit treatment, and rehearsal come first — tools come last.*\n\n**The program starts with purpose, not products.**\n\n- **Business objectives first.** The purpose and goals of the program are defined, and the business objectives it must support are identified, before any control is chosen.\n- **A framework as the map.** Security activities are organized around a recognized framework — NIST CSF 2.0 and its Identify, Protect, Detect, Respond, Recover, and Govern functions — with compliance, legal, regulatory, and industry requirements identified up front.\n- **Fit over fashion.** Standards that do not fit the organization are not blindly applied. The initial scope of the program is documented.\n\n**Responsibility is structured, not implied.**\n\n- **Executive leadership with teeth.** A CIO or CISO carries security leadership, with sufficient authority to make organization-wide decisions, set long-term goals, allocate funding, and approve major milestones.\n- **A risk function.** Someone owns risk assessment, documents business and cybersecurity risks, selects a risk framework where appropriate, and coordinates with enterprise risk management.\n- **A security team for daily operations** — asset management, threat and vulnerability assessment, monitoring, training — with specialist roles defined where needed.\n- **An independent audit.** An auditing function reviews processes and controls for gaps, verifies that milestones actually completed, documents findings, and tracks remediation.\n- **Sized honestly.** Smaller organizations combine roles; the plan to separate them as the organization grows exists from day one.\n\n**The baseline is documented before it is improved.**\n\n- The current posture is inventoried across the whole surface: policies and procedures, endpoints, licenses and certificates, the internet footprint, network infrastructure, logging and monitoring, ingress and egress points, vendors and their access, and critical applications with named owners.\n\n**Risk is calculated, not felt.**\n\n- Each assessment has a defined scope; critical assets, sensitive data, and business-critical services are identified; industry-specific and common threats — malware, ransomware, phishing, credential attacks, remote exploitation, insider threats, DDoS — are named, informed by threat intelligence, the OWASP Top 10, and CIS Controls.\n- Internal and external scans, firewall and permission reviews, and asset records feed the assessment. Each risk is documented as threat, vulnerability, affected asset, and consequence — then rated: **likelihood 1–5, impact 1–5, Risk = Likelihood × Impact**, classified and recorded in the risk register.\n\n**Every risk gets an explicit treatment.**\n\n- **Avoid** — eliminate the risky activity; stop collecting unnecessary sensitive data. **Remediate** — patch, close, harden, correct. **Transfer** — outsource or insure, contractually documented. **Accept** — only when the others are impractical, with documented justification, approval from the right owner or executive, compensating controls, and an expiry or review date. Accepted risk is reassessed at least annually.\n\n![Diagram of one rated risk branching into four treatments — avoid, remediate, transfer, accept — with acceptance requiring an approver, compensating controls, and an expiry date.](assets/images/security-program/four-risk-treatments.jpeg)\n**Figure 2:** *Every risk gets an explicit treatment — and acceptance is the most heavily documented path, never the lightest: a named approver, compensating controls, and an expiry date.*\n\n\n**Risk is monitored as standing work.**\n\n- The register is formal and maintained: every risk has an owner, existing controls, planned actions, due dates, and residual risk. High risks are reviewed regularly, ratings updated when conditions change, and risk monitoring integrates with vulnerability management.\n\n**Governance closes the loop.**\n\n- Documented security and risk-management policies define how risks are identified, assessed, treated, monitored, and reported. Regulatory obligations are tracked. Reporting channels reach management and the board. Training and awareness run continuously, and lessons from incidents, audits, and assessments feed corrective actions whose effectiveness is measured.\n\n**Work is prioritized and tiered.**\n\n- Risks are ranked; active attacks come before routine program work; business context outranks vendor recommendations; low-cost/high-impact improvements and controls that reduce multiple risks go first. Milestones live in four tiers — quick wins in hours or days, this year, next year, long term — and every major initiative's priority is documented.\n\n**The program rehearses before it is tested for real.**\n\n- Roughly three high-priority attack scenarios become security use cases — assets, attacker actions, defensive controls, detection opportunities — and mature into playbooks. Attacks are mapped to the Cyber Kill Chain stage by stage. Tabletop exercises run with real scenarios, cross-department participants, and tracked corrective actions; technical drills test backup restoration, disaster recovery, failover, and incident-response procedures.\n- **The team grows deliberately** — skill gaps identified, labs and CTFs used, conference participation and mentoring encouraged, communication skills valued alongside technical ones.\n\n## How to Read This\n\nThis record opens **The Security Program** section of the journal — the program before the tools. Everything that follows, from [Asset Management and Documentation](asset-management.html) to [The Extra Mile](the-extra-mile.html), hangs on the frame this record establishes: named responsibility, calculated risk, explicit treatment, and a rehearsal habit. It is grounded in the \"Creating a Security Program\" chapter of the *Defensive Security Handbook* — the book's opening argument that defense starts with organization, not acquisition. The full working checklist — every step through the program completion review — lives in the **Checklist** tab; the management summary is in the **TL;DR** tab and the conversation in the **Conversation** tab.\n\n## Rationale\n\n**A framework prevents a program of accidents.** Without a shared map, a security program becomes the sediment of past incidents — a control here because of that breach, a tool there because of that vendor visit. Organizing around NIST CSF's six functions gives every activity an address and makes gaps visible: if nothing in the program answers to Recover, that is now a fact, not a feeling. The same chapter that recommends the framework warns against applying standards blindly — the framework is a map of the territory, and my organization's territory is what gets defended.\n\n**Authority is a control.** A security leader who cannot make organization-wide decisions, allocate funding, or approve milestones is a suggestion box with a title. The chapter puts the executive team first for a reason: every downstream commitment in this journal — patching windows, network changes, mandatory training — eventually collides with a business priority, and the collision is resolved by whoever has authority. Structuring responsibility across executive, risk, security, and audit functions also builds the tension the program needs: the audit function exists precisely to verify that what the security team says happened, happened.\n\n**You cannot defend what you have not written down.** The baseline sweep — endpoints, certificates, internet footprint, vendors, ingress and egress — is unglamorous, and it is the step most programs skip on the way to buying something. But every serious decision that follows depends on it: risk assessment needs to know which assets exist, prioritization needs to know which systems are legacy, and incident response needs to know what \"normal\" looks like. The baseline is a snapshot; [Asset Management and Documentation](asset-management.html) turns it into a standing capability.\n\n**Likelihood times impact converts anxiety into a queue.** Unquantified risk produces two failure modes: everything is critical, or whatever was in the news is critical. A 1–5 rating on likelihood and impact is not science — it is arithmetic honesty. It forces every risk through the same two questions, makes disagreements specific (\"you rated this a 4; here's why it's a 2\"), and produces an ordering that budget and staffing conversations can actually use. The register is where the arithmetic becomes accountable: owner, controls, actions, due dates, residual risk.\n\n**Accepted risk is a decision with a name and an expiry date.** Every organization accepts risk; the only question is whether it does so out loud. Silent acceptance — the risk nobody remediated and nobody signed for — is how organizations discover, mid-incident, that a known problem had been known for three years. The record's bar is deliberate: acceptance requires justification, an approver with the standing to accept it, compensating controls, and a date on which the acceptance expires and must be re-argued. Risk accepted forever was never really assessed.\n\n**Quick wins buy the right to do long-term work.** The four-tier milestone structure is political engineering as much as planning. Removing unused endpoints, disabling stale accounts, and patching critical vulnerabilities in the first weeks demonstrates that the program produces safety, not paperwork — and that credibility is what funds the network redesigns and multiyear goals in tiers three and four. Prioritizing by business context rather than vendor recommendation keeps the queue honest: the vendor does not know my organization; my risk register does.\n\n![Ascending four-step timeline of security milestones, where early quick wins build the credibility that funds this-year, next-year, and long-term work.](assets/images/security-program/four-tier-milestones.jpeg)\n**Figure 3:** *Milestones live in four tiers — and the quick wins of the first weeks buy the credibility that funds the multiyear work.*\n\n**Rehearsal is where the program meets reality.** Use cases, kill-chain mapping, tabletop exercises, and technical drills are the difference between a program that exists on paper and one that works under pressure. A tabletop is cheap; discovering during a real incident that nobody knows who calls legal is not. The chapter's discipline — record decisions, record unclear responsibilities, record missing tools, assign owners and deadlines to every finding, update the plan before the next exercise — turns rehearsal into a compounding asset. The same holds for drills: a backup that has never been restored is a hope, not a control.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| The program is organized around a recognized framework, applied with judgment. | Every control in the framework is implemented regardless of fit — blind application is explicitly rejected. |\n| Security leadership has organization-wide authority, funding, and milestone approval. | Security overrides the business — authority exists so trade-offs are decided, not dodged. |\n| Every risk is rated (likelihood × impact) and recorded in a maintained register. | The ratings are precise measurements — they are honest, comparable judgments that make prioritization arguable. |\n| Risk may be accepted — with justification, a named approver, compensating controls, and an expiry. | Acceptance is a way to make a risk disappear — it is the most heavily documented treatment, not the lightest. |\n| Active attacks and urgent threats come before routine program work. | The loudest stakeholder or the latest headline sets the priority — the register does. |\n| Tabletop exercises and technical drills run regularly, with findings tracked to completion. | Rehearsal is a compliance formality — an exercise that produces no corrective actions was not challenging enough. |\n| Smaller organizations combine roles. | One person owning everything is the end state — the plan to separate roles exists from day one. |\n\nConcretely: no security purchase in my organization precedes a documented risk it treats, and the first question in any program review is *\"show me the risk register — who owns the top five, what is the treatment, and when is each next reviewed?\"*\n\n## Anti-Patterns\n\n- **The shopping-cart program.** Tools bought first, risks named later — the program becomes an inventory of licenses looking for a strategy.\n- **The borrowed framework, applied blind.** Every control from the standard implemented wholesale, fit or not; effort flows to checkbox completeness instead of actual exposure.\n- **The unfunded mandate.** A CISO with a title, no budget, and no authority — accountable for outcomes they cannot influence.\n- **The risk register graveyard.** A register written once for the auditors: no owners, no due dates, no reviews, and no relation to what anyone works on.\n- **The silent acceptance.** Risks nobody remediated and nobody signed for — accepted by default, discovered mid-incident.\n- **The audit as ambush.** No independent review until the external auditor arrives — or findings documented and never remediated, the same list every year.\n- **The paper exercise.** Response plans that have never been tabletopped, backups that have never been restored, failover that has never failed over.\n- **The permanent hero.** One person holding every role indefinitely — the \"combine roles\" concession without the \"plan to separate\" commitment.\n\n## Related Records\n\n- [Asset Management and Documentation](asset-management.html) — the baseline documented here becomes a standing program with a single source of truth there.\n- [Policies: What Must Be Achieved, in Writing](policies.html) — governance here requires documented policies; the document discipline lives there.\n- [Industry Compliance Standards and Frameworks](compliance.html) — regulatory, legal, and contractual requirements identified here are operated in full there.\n- [Security Education](user-education.html) — the training and awareness commitments here become a program there.\n- [Incident Response](incident-response.html) — the use cases, playbooks, and tabletop discipline established here are exercised in anger there.\n- [Vulnerability Management](vulnerability-management.html) — the scans that feed the risk assessment here become a standing loop there, integrated with the register.\n- [Logging and Monitoring](logging-and-monitoring.html) — the monitoring gaps identified in the baseline here are closed there.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to the creation of any security program in my organization and as the audit bar for the one we operate. I revisit it if the organization's regulatory footprint changes materially (new obligations reshape the governance layer), if the risk register stops driving actual prioritization (the register failing as the working document is a program defect, not a documentation gap), or if two consecutive tabletop exercises produce no findings — which means the exercises have stopped being honest, not that the program is finished.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, and William F. Reyor III) — the \"Creating a Security Program\" chapter, whose checklist (including the program completion review) this record distills.\n- NIST Cybersecurity Framework (CSF) 2.0 — the framework the chapter recommends, with its Identify, Protect, Detect, Respond, Recover, and Govern functions.\n- NIST Risk Management Framework (RMF) and OCTAVE — the risk frameworks the chapter names as options.\n- OWASP Top 10 and CIS Controls — the threat and control references the chapter points the assessment at.\n- The Cyber Kill Chain — the attack-stage model the chapter maps defenses against.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "A security program in my organization is designed before anything is bought — **risk before tools**. Purpose and business objectives come first, organized around a recognized framework applied with judgment; responsibility is structured into executive, risk, security, and audit functions; the baseline is documented; risk is calculated and every risk gets an explicit treatment; work is tiered into milestones; and the program rehearses. The test the program is held to: every major risk has an owner, a treatment decision, and a review date in a maintained risk register — and the program itself is periodically reassessed.\n\n**What changes**\n\n* **The program gets a map and named owners.** Security activities are organized around the NIST CSF functions (Identify, Protect, Detect, Respond, Recover, Govern); a CIO or CISO carries organization-wide authority and funding; risk, security operations, and independent audit are distinct responsibilities — combined honestly in small organizations, with a plan to separate.\n* **The baseline is written down before it is improved.** Policies, endpoints, licenses and certificates, the internet footprint, network infrastructure, logging, ingress and egress, vendors, and critical applications are all inventoried — because nothing downstream works against an unknown estate.\n* **Risk becomes arithmetic, not anxiety.** Each risk is documented as threat, vulnerability, asset, and consequence, rated likelihood × impact on a 1–5 scale, and recorded in a register with an owner, controls, actions, due dates, and residual risk.\n* **Every risk gets a decision.** Avoided, remediated, transferred, or accepted — and acceptance is the heavyweight option: documented justification, a named approver, compensating controls, and an expiry date, reassessed at least annually.\n* **The program rehearses.** Roughly three high-priority attack scenarios become use cases and playbooks; attacks are mapped to the Cyber Kill Chain; tabletop exercises and technical drills (backup restoration, DR, failover) run regularly with findings tracked to completion.\n\n**What it costs**\n\n* Standing governance work — the register, the reviews, the reporting to management and board — is permanent overhead, accepted deliberately because an unmaintained register is decoration.\n* Tabletops and drills consume cross-department time from legal, HR, finance, and communications, not just security.\n* Quick wins come first, which means some ambitious projects wait in tiers three and four until credibility and prerequisites exist.\n\n**What we are not doing**\n\n* Not selecting tools in this record — no purchase precedes a documented risk it treats.\n* Not building the standing asset inventory here — the baseline is a snapshot; the program is [Asset Management and Documentation](asset-management.html).\n* Not writing the policy documents or the incident-response operating model here — those are [Policies: What Must Be Achieved, in Writing](policies.html) and [Incident Response](incident-response.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full working checklist through the program completion review. Grounded in the \"Creating a Security Program\" chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "8 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — creating a security program from groundwork to completion review. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Lay the Groundwork\n\n- [ ] Define the purpose and goals of the security program\n- [ ] Identify business objectives the security program must support\n- [ ] Select a cybersecurity framework to guide the program\n- [ ] Consider using the NIST Cybersecurity Framework (CSF) 2.0\n- [ ] Organize security activities around the Identify, Protect, Detect, Respond, Recover, and Govern functions\n- [ ] Identify relevant compliance, legal, regulatory, and industry requirements\n- [ ] Avoid blindly applying standards that do not fit the organization\n- [ ] Document the initial scope of the security program\n\n## 2. Establish Security Teams and Responsibilities\n\n### Executive Team\n\n- [ ] Assign executive security leadership, such as a CIO or CISO\n- [ ] Give security leadership sufficient authority to make organization-wide decisions\n- [ ] Establish long-term security goals\n- [ ] Identify corporate risks requiring executive attention\n- [ ] Allocate security funding and resources\n- [ ] Approve major security milestones\n\n### Risk Team\n\n- [ ] Establish responsibility for security risk assessment\n- [ ] Identify and document business and cybersecurity risks\n- [ ] Select a risk framework where appropriate, such as:\n  - [ ] NIST Risk Management Framework (RMF)\n  - [ ] OCTAVE\n- [ ] Coordinate cybersecurity risk with broader enterprise risk management\n\n### Security Team\n\n- [ ] Assign responsibility for daily security operations\n- [ ] Establish asset-management responsibilities\n- [ ] Establish threat and vulnerability assessment processes\n- [ ] Monitor the environment for attacks and suspicious activity\n- [ ] Establish risk-management activities\n- [ ] Provide security awareness and technical training\n- [ ] Define specialist roles where needed, including:\n  - [ ] Network security\n  - [ ] Security operations\n  - [ ] Security engineering\n  - [ ] Application security\n  - [ ] Offensive security\n\n### Auditing Team\n\n- [ ] Establish an independent or semi-independent auditing function\n- [ ] Review security processes and controls for gaps\n- [ ] Verify that required security tasks and milestones are completed\n- [ ] Document audit findings\n- [ ] Track remediation of audit issues\n\n### Cross-Team Coordination\n\n- [ ] Define security responsibilities across departments\n- [ ] Establish regular communication between security, IT, legal, HR, finance, and leadership\n- [ ] Combine roles where necessary for smaller organizations\n- [ ] Plan to separate specialized roles as the organization grows\n\n## 3. Determine the Baseline Security Posture\n\n### Policies and Procedures\n\n- [ ] Inventory existing security policies\n- [ ] Inventory security procedures\n- [ ] Inventory incident-response plans and playbooks\n- [ ] Identify missing or outdated documentation\n\n### Endpoints\n\n- [ ] Inventory desktops\n- [ ] Inventory laptops\n- [ ] Inventory servers\n- [ ] Record operating-system and software versions\n- [ ] Record deployment or implementation dates\n- [ ] Identify unsupported or legacy systems\n\n### Licensing and Certificates\n\n- [ ] Inventory software licenses\n- [ ] Record license renewal dates\n- [ ] Inventory SSL/TLS certificates\n- [ ] Record certificate expiration dates\n- [ ] Create reminders for upcoming renewals\n\n### Internet Footprint\n\n- [ ] Inventory public domains\n- [ ] Inventory mail servers\n- [ ] Inventory public-facing applications\n- [ ] Inventory DMZ systems\n- [ ] Document cloud infrastructure\n- [ ] Identify externally accessible services\n\n### Network Infrastructure\n\n- [ ] Inventory firewalls\n- [ ] Inventory routers\n- [ ] Inventory switches\n- [ ] Inventory wireless access points\n- [ ] Inventory IDS/IPS systems\n- [ ] Document important network traffic flows\n\n### Logging and Monitoring\n\n- [ ] Identify systems currently generating security logs\n- [ ] Confirm logs are centrally available where possible\n- [ ] Determine appropriate log-retention periods\n- [ ] Identify monitoring gaps\n- [ ] Define alerting responsibilities\n\n### Ingress and Egress\n\n- [ ] Document internet service providers\n- [ ] Record ISP account details in an approved secure location\n- [ ] Document external IP addresses\n- [ ] Identify all network ingress points\n- [ ] Identify all network egress points\n\n### Vendors\n\n- [ ] Inventory third-party vendors\n- [ ] Identify vendors with remote access\n- [ ] Record primary vendor contacts\n- [ ] Identify systems and data accessible to each vendor\n- [ ] Review vendor security risks\n\n### Applications\n\n- [ ] Inventory critical business applications\n- [ ] Identify internally maintained applications\n- [ ] Identify third-party/SaaS applications\n- [ ] Assign application owners\n- [ ] Identify applications supporting critical business functions\n\n## 4. Assess Threats and Risks\n\n### Identify Scope, Assets, and Threats\n\n- [ ] Define which systems, departments, locations, and data are included in each assessment\n- [ ] Identify critical assets\n- [ ] Identify sensitive data\n- [ ] Identify business-critical services\n- [ ] Identify industry-specific threats\n- [ ] Identify common threats, including:\n  - [ ] Malware\n  - [ ] Ransomware\n  - [ ] Phishing\n  - [ ] Credential attacks\n  - [ ] Remote exploitation\n  - [ ] Insider threats\n  - [ ] Distributed denial-of-service attacks\n- [ ] Review relevant threat-intelligence sources\n- [ ] Review the OWASP Top 10 where applicable\n- [ ] Review CIS Controls\n- [ ] Review relevant cloud-security guidance\n- [ ] Review sector-specific ISAC information where available\n\n### Assess Risk and Impact\n\n- [ ] Conduct internal vulnerability scans\n- [ ] Conduct external vulnerability scans\n- [ ] Review firewall rules\n- [ ] Review user permissions\n- [ ] Review authentication controls\n- [ ] Review asset-management records\n- [ ] Evaluate the likelihood of each identified risk\n- [ ] Evaluate the potential impact of each risk\n- [ ] Document the threat\n- [ ] Document the vulnerability\n- [ ] Document the affected asset\n- [ ] Document the potential consequence\n\n### Risk Calculation\n\n- [ ] Assign a likelihood rating from 1–5\n- [ ] Assign an impact rating from 1–5\n- [ ] Calculate **Risk = Likelihood × Impact**\n- [ ] Classify the resulting risk level\n- [ ] Record the result in the risk register\n\n## 5. Decide How Each Risk Will Be Treated\n\n### Risk Avoidance\n\n- [ ] Determine whether the risky activity or process can be eliminated\n- [ ] Stop collecting or processing unnecessary sensitive information where possible\n\n### Risk Remediation\n\n- [ ] Patch vulnerable systems\n- [ ] Close unnecessary ports\n- [ ] Strengthen firewall rules\n- [ ] Harden endpoint configurations\n- [ ] Remove unnecessary services\n- [ ] Correct insecure permissions\n\n### Risk Transfer\n\n- [ ] Identify risks that can appropriately be transferred\n- [ ] Review outsourcing options where appropriate\n- [ ] Review cyber-insurance options where applicable\n- [ ] Confirm transferred risks are contractually documented\n\n### Risk Acceptance\n\n- [ ] Accept risk only when avoidance, remediation, or transfer is impractical\n- [ ] Document the business justification\n- [ ] Obtain approval from the appropriate risk owner or executive\n- [ ] Document compensating controls\n- [ ] Establish an expiration or review date\n- [ ] Reassess accepted risk at least annually or when conditions change\n\n## 6. Monitor Risk\n\n- [ ] Maintain a formal risk register\n- [ ] Assign an owner to each risk\n- [ ] Record existing controls\n- [ ] Record planned treatment actions\n- [ ] Record due dates\n- [ ] Record residual risk\n- [ ] Review high-risk items regularly\n- [ ] Schedule quarterly or annual risk-review meetings as appropriate\n- [ ] Review risks after major organizational or technical changes\n- [ ] Update risk ratings when conditions change\n- [ ] Integrate risk monitoring with vulnerability management where possible\n\n## 7. Establish Governance\n\n### Policies\n\n- [ ] Create documented security and risk-management policies\n- [ ] Define how risks are identified\n- [ ] Define how risks are assessed\n- [ ] Define how risks are treated\n- [ ] Define how risks are monitored\n- [ ] Define how risks are reported\n- [ ] Review policies regularly\n- [ ] Update policies when the threat or business environment changes\n\n### Regulatory Compliance\n\n- [ ] Identify applicable laws\n- [ ] Identify applicable regulations\n- [ ] Identify contractual requirements\n- [ ] Identify applicable industry standards\n- [ ] Track regulatory changes\n- [ ] Update policies and controls when requirements change\n\n### Communication and Reporting\n\n- [ ] Define security-reporting channels\n- [ ] Define escalation procedures\n- [ ] Provide regular risk reports to management\n- [ ] Provide appropriate reporting to the board or governing body\n- [ ] Communicate material risks to affected stakeholders\n\n### Training and Awareness\n\n- [ ] Establish employee security-awareness training\n- [ ] Define role-specific security responsibilities\n- [ ] Train staff on reporting suspicious activity\n- [ ] Provide specialized training for technical personnel\n- [ ] Reinforce security and risk awareness regularly\n\n### Continuous Improvement\n\n- [ ] Review lessons learned from incidents\n- [ ] Review lessons learned from audits\n- [ ] Review lessons learned from assessments\n- [ ] Identify control weaknesses\n- [ ] Track corrective actions\n- [ ] Measure whether remediation was effective\n- [ ] Update security goals and processes based on findings\n\n## 8. Prioritize Security Work\n\n- [ ] Rank risks from highest to lowest\n- [ ] Address active attacks and urgent threats before routine program work\n- [ ] Consider both likelihood and impact when prioritizing\n- [ ] Consider the business context before following vendor recommendations\n- [ ] Identify low-cost/high-impact security improvements\n- [ ] Prioritize controls that reduce multiple risks\n- [ ] Consider implementation time\n- [ ] Consider staff availability\n- [ ] Consider budget requirements\n- [ ] Consider dependencies between projects\n- [ ] Document why each major initiative received its priority\n\n## 9. Create Security Milestones\n\n### Tier 1 — Quick Wins\n\n- [ ] Identify changes that can be completed in hours or days\n- [ ] Remove unused endpoints\n- [ ] Disable unused accounts\n- [ ] Patch critical vulnerabilities\n- [ ] Move legacy systems to more secure network segments\n- [ ] Close unnecessary ports\n- [ ] Apply immediately available vendor patches\n- [ ] Remove unnecessary access\n\n### Tier 2 — This Year\n\n- [ ] Plan larger network-routing changes\n- [ ] Implement user security education\n- [ ] Decommission shared accounts\n- [ ] Retire unnecessary services\n- [ ] Replace outdated devices\n- [ ] Complete improvements requiring moderate planning and coordination\n\n### Tier 3 — Next Year\n\n- [ ] Plan major infrastructure changes\n- [ ] Plan major server replacements\n- [ ] Implement mature monitoring capabilities\n- [ ] Improve authentication systems\n- [ ] Plan major cloud transitions where appropriate\n- [ ] Schedule projects that require significant planning or have prerequisites\n\n### Tier 4 — Long Term\n\n- [ ] Plan network redesigns\n- [ ] Plan major software replacements\n- [ ] Plan new facilities or data-center changes\n- [ ] Plan projects dependent on major contracts or renewals\n- [ ] Establish multiyear security goals\n\n## 10. Develop Security Use Cases\n\n- [ ] Identify approximately three high-priority attack scenarios to begin with\n- [ ] Include scenarios affecting critical infrastructure\n- [ ] Include scenarios affecting sensitive data\n- [ ] Consider ransomware\n- [ ] Consider DDoS attacks\n- [ ] Consider disgruntled employees\n- [ ] Consider insider threats\n- [ ] Consider data exfiltration\n- [ ] Identify the assets involved in each scenario\n- [ ] Map attacker actions\n- [ ] Map defensive controls\n- [ ] Map detection and monitoring opportunities\n- [ ] Convert mature use cases into security playbooks\n\n## 11. Map Attacks to the Cyber Kill Chain\n\n### Reconnaissance\n\n- [ ] Identify how an attacker could research the organization\n- [ ] Monitor exposure of employee information\n- [ ] Monitor exposed email addresses or credentials\n- [ ] Reduce unnecessary public technical information\n\n### Weaponization\n\n- [ ] Track threats and exploit techniques being used against similar organizations\n- [ ] Maintain threat-awareness processes\n- [ ] Use threat information to tune defensive controls\n\n### Delivery\n\n- [ ] Strengthen email security\n- [ ] Filter unnecessary or dangerous attachment types\n- [ ] Use malware-blocking technologies\n- [ ] Block malicious domains\n- [ ] Train users to adopt a \"trust but verify\" approach\n- [ ] Monitor suspicious downloads and file types\n\n### Exploitation\n\n- [ ] Patch endpoints\n- [ ] Disable unnecessary macros\n- [ ] Restrict dangerous file types\n- [ ] Maintain endpoint protection\n- [ ] Monitor proxy and IDS logs for exploitation attempts\n\n### Installation\n\n- [ ] Maintain tested backups\n- [ ] Keep critical backups offline or otherwise protected from ransomware\n- [ ] Apply application-control or filesystem restrictions where appropriate\n- [ ] Monitor unexpected encryption or file changes\n\n### Command and Control\n\n- [ ] Monitor outbound network traffic\n- [ ] Block known malicious IP addresses\n- [ ] Use DNS filtering or sinkholing where appropriate\n- [ ] Alert on connections to known command-and-control infrastructure\n\n### Actions on Objectives\n\n- [ ] Monitor unusual file-access patterns\n- [ ] Detect mass file modification or encryption\n- [ ] Monitor suspicious access to sensitive data\n- [ ] Create alerts for abnormal filesystem changes\n- [ ] Maintain controls to detect data exfiltration\n\n## 12. Conduct Tabletop Exercises and Drills\n\n### Preparation\n\n- [ ] Select a realistic incident scenario\n- [ ] Define the goals of the exercise\n- [ ] Assign a facilitator or moderator\n- [ ] Select participants from relevant departments\n- [ ] Include representatives from:\n  - [ ] Security\n  - [ ] IT\n  - [ ] Management\n  - [ ] HR\n  - [ ] Legal\n  - [ ] Finance\n  - [ ] Physical security\n  - [ ] Communications/marketing\n  - [ ] Other affected departments\n- [ ] Assign an evaluator or note-taker\n\n### Exercise Materials\n\n- [ ] Prepare a scenario handout\n- [ ] Provide space or materials for notes\n- [ ] Provide current incident-response runbooks\n- [ ] Provide relevant policies and procedures\n- [ ] Prepare a list of tools and external services\n- [ ] Prepare contact information for key parties\n\n### During the Exercise\n\n- [ ] Present the scenario\n- [ ] Ask \"what if\" questions\n- [ ] Introduce additional complications when useful\n- [ ] Encourage participants to challenge assumptions\n- [ ] Follow the applicable runbook or playbook\n- [ ] Record decisions\n- [ ] Record unclear responsibilities\n- [ ] Record missing processes or tools\n\n### After the Exercise\n\n- [ ] Ask what went well\n- [ ] Ask what could have gone better\n- [ ] Identify missing services or processes\n- [ ] Identify unnecessary or irrelevant steps\n- [ ] Document corrective actions\n- [ ] Assign owners to corrective actions\n- [ ] Establish deadlines\n- [ ] Update the response plan before the next exercise\n\n### Technical Drills\n\n- [ ] Test backup restoration\n- [ ] Test disaster-recovery procedures\n- [ ] Test failover to secondary systems\n- [ ] Test selected incident-response procedures\n- [ ] Validate that security controls operate as expected\n\n## 13. Expand the Team and Skillsets\n\n- [ ] Identify technical skill gaps within the security team\n- [ ] Create a home lab or provide access to a training lab\n- [ ] Encourage hands-on security practice\n- [ ] Use safe environments for testing new tools and techniques\n- [ ] Encourage participation in Capture the Flag (CTF) competitions\n- [ ] Use CTFs to improve technical and teamwork skills\n- [ ] Identify open-source projects employees can contribute to\n- [ ] Create internal projects for skills development\n- [ ] Encourage participation in security conferences and local meetups\n- [ ] Encourage staff to volunteer, speak, sponsor, or train at industry events\n- [ ] Establish mentoring opportunities\n- [ ] Encourage staff to act as both mentors and mentees\n- [ ] Evaluate communication and collaboration skills in addition to technical skills\n- [ ] Build a culture of continuous learning\n\n## 14. Program Completion Review\n\n- [ ] Security leadership and responsibilities are defined\n- [ ] Critical assets are inventoried\n- [ ] The current security baseline is documented\n- [ ] Major threats are identified\n- [ ] Risks are assessed and recorded\n- [ ] High risks have documented treatment plans\n- [ ] A risk register is maintained\n- [ ] Security governance is established\n- [ ] Policies and procedures are documented\n- [ ] Compliance obligations are identified\n- [ ] Security work is prioritized\n- [ ] Short-, medium-, and long-term milestones are established\n- [ ] Key attack scenarios have use cases or playbooks\n- [ ] Logging and monitoring support major security scenarios\n- [ ] Incident-response exercises are conducted\n- [ ] Exercise findings are tracked to completion\n- [ ] Security training is ongoing\n- [ ] The security program is periodically reassessed\n- [ ] Improvements are continuously incorporated into the program\n\nWith the completion review green, the organization has a security program — named responsibility, a documented baseline, a working risk register, tiered milestones, and a rehearsal habit — that the rest of this journal builds on, starting with [Asset Management and Documentation](asset-management.html). The test running through the whole sequence: **does every major risk have an owner, a treatment decision, and a review date — and is the program itself periodically reassessed?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Why a Program, Not a Toolset\n\n**Ben:** Straight question first. Every security vendor on earth will sell my organization protection this quarter. This record says: stop, define purpose, pick a framework, structure four teams, document a baseline. Why is the slow path the right one?\n\n**Ana:** Because a security program built from purchases is an inventory of licenses looking for a strategy. The record's opening move — the chapter's opening move — is to define what the program is *for*: the business objectives it must support, the compliance and regulatory requirements it must satisfy, and a framework that gives every activity an address. NIST CSF 2.0's six functions — Identify, Protect, Detect, Respond, Recover, Govern — are a map. If nothing in your program answers to Recover, the map makes that a visible fact instead of a nagging feeling.\n\n**Ben:** Frameworks have a reputation, though. Organizations that adopt one tend to end up implementing controls because the standard lists them, not because they matter here.\n\n**Ana:** And the record rejects that explicitly — the checklist literally says avoid blindly applying standards that do not fit the organization. The framework organizes the work; the risk register prioritizes it. Those are different jobs. A control gets implemented because a documented risk calls for it, not because it has a paragraph number.\n\n**Ben:** Then the team structure. Executive, risk, security, audit — four functions for what might be a five-person company. That's org-chart cosplay.\n\n**Ana:** It's four *responsibilities*, not four departments. The record is honest about size: smaller organizations combine roles, with a plan to separate them as they grow. What's non-negotiable is that each responsibility exists and is named. Someone with real authority — a CIO or CISO who can make organization-wide decisions and allocate funding. Someone who owns risk assessment. Someone who runs daily operations. And someone who independently checks that what the security team says happened, happened. Drop the audit function and you have a program grading its own homework.\n\n**Ben:** The authority point — why does that lead the whole chapter?\n\n**Ana:** Because authority is a control. Every commitment in this journal eventually collides with a business priority: a patching window versus a product launch, mandatory training versus a sales quarter. A security leader who can't win — or even properly argue — that collision is a suggestion box with a title. The unfunded mandate is the first anti-pattern for a reason.\n\n## Risk as Arithmetic\n\n**Ben:** Now the part I find suspicious. Likelihood one-to-five, impact one-to-five, multiply, record. That's not measurement — that's numerology with a spreadsheet.\n\n**Ana:** It's not measurement and the record doesn't claim it is. It's arithmetic honesty. Unquantified risk produces exactly two failure modes: everything is critical, or whatever was in this morning's headlines is critical. Forcing every risk through the same two questions — how likely, how bad — makes disagreement specific and productive. When you say credential stuffing is a four and I say it's a two, we now have an arguable claim about *my organization*, with our scan results, our permission reviews, and our asset records on the table.\n\n**Ben:** But the inputs are only as good as the baseline, and most organizations don't actually know what they have.\n\n**Ana:** Which is why the baseline sweep comes before the assessment — and it's the least glamorous, most skipped step in security. Endpoints and their OS versions, certificates and their expiry dates, the internet footprint, every ingress and egress point, vendors and what they can touch, applications and their owners. You cannot rate the likelihood of remote exploitation if you don't know what's externally accessible. The record treats the baseline as a snapshot to ground the program; making it a standing capability is the next record, [Asset Management and Documentation](asset-management.html).\n\n**Ben:** Fine. Risk rated, register written. In my experience the register then goes to sleep until the auditors visit.\n\n**Ana:** The record's word for that is the risk register graveyard. The bar is that the register is the working document: every risk has an owner, existing controls, planned actions, due dates, and residual risk. High risks reviewed regularly, ratings updated when conditions change, the whole thing integrated with [Vulnerability Management](vulnerability-management.html) so scan findings and register entries stop being parallel universes. My program-review question is always the same: show me the top five, who owns each, and when is each next reviewed. If nobody can answer, the program is decorative.\n\n## Accepting Risk Out Loud\n\n**Ben:** Four treatments — avoid, remediate, transfer, accept. Acceptance is where I've watched programs quietly rot. \"We accept this risk\" is corporate for \"we'd rather not spend the money.\"\n\n**Ana:** Only when acceptance is cheap. The record makes it the most expensive option on paper: documented business justification, approval from an owner or executive with the standing to accept it, documented compensating controls, and — this is the part people skip — an expiration or review date. Accepted risk gets reassessed at least annually or when conditions change. A risk accepted forever was never really assessed; it was just abandoned with a signature.\n\n**Ben:** Why the expiry date specifically?\n\n**Ana:** Because the silent acceptance is how organizations get hurt. Mid-incident, someone finds the three-year-old ticket describing exactly this weakness, and it turns out everyone knew and no one decided. The expiry converts acceptance from a disappearing act into a standing appointment: this executive accepted this risk until this date, and on that date it gets re-argued with current facts. That's also fairer to the approver — they signed for a year, not for eternity.\n\n**Ben:** And transfer? Cyber insurance as a security strategy makes me itch.\n\n**Ana:** The record's requirement is narrow: if a risk is transferred — outsourced or insured — it's contractually documented. Transfer moves the financial consequence; it doesn't move the breach, the downtime, or the headlines. That's why it sits alongside the other treatments instead of replacing them.\n\n## Rehearsal and the Long Game\n\n**Ben:** Milestones in four tiers, starting with quick wins. Isn't leading with unused-account cleanup a bit small for an executive record?\n\n**Ana:** Quick wins buy the right to do long-term work. Removing unused endpoints, disabling stale accounts, patching critical vulnerabilities — done in the first weeks, they demonstrate the program produces safety rather than paperwork. That credibility is what funds tier three and tier four: the network redesigns, the authentication overhaul, the multiyear goals. And the prioritization rule underneath is the one I'd defend hardest: business context before vendor recommendation. The vendor doesn't know my organization. My register does.\n\n**Ben:** Last section — use cases, kill-chain mapping, tabletops, drills. Rehearsal feels like something you earn after the program works, not part of creating it.\n\n**Ana:** It's the opposite: rehearsal is how you find out whether the program works while the finding is still cheap. Three high-priority attack scenarios — ransomware, insider threat, data exfiltration — mapped as use cases: which assets, which attacker actions, which controls, which detection opportunities. Then a tabletop with security, IT, legal, HR, finance, and communications in the room. A tabletop costs an afternoon; discovering during a real incident that nobody knows who calls legal costs considerably more. And the discipline is in the follow-through — every finding gets an owner and a deadline, and the response plan is updated before the next exercise. Same for technical drills: a backup that has never been restored is a hope, not a control.\n\n**Ben:** And if two tabletops in a row come back clean?\n\n**Ana:** Then the exercises have stopped being honest — that's an explicit revisit trigger in the record. An exercise that produces no corrective actions wasn't challenging enough.\n\n**Ben:** All right. So the honest summary: the program isn't the tools — it's named owners, a documented estate, a register that actually drives the queue, acceptance with signatures and expiry dates, and a rehearsal habit that keeps everyone honest.\n\n**Ana:** That's the record. And one test to audit it by: every major risk has an owner, a treatment decision, and a review date — and the program itself gets periodically reassessed. If that holds, the tools conversation can finally happen, because now you know what you're buying and why.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why the security program is designed before anything is bought — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Nadia wheels a shopping cart full of boxed security tools while Vera asks which risk each one treats.](assets/images/security-program/comic-01-the-shopping-cart.jpeg)\n**Panel 1:** *The hook: the shopping-cart program — tools bought first, risks named later, licenses looking for a strategy.*\n\n![Comic panel: A wall of mismatched patches labeled after past incidents, with an empty cobwebbed gap labeled Recover.](assets/images/security-program/comic-02-program-of-accidents.jpeg)\n**Panel 2:** *The problem: without a shared map the program becomes the sediment of past incidents — and the gaps stay invisible.*\n\n![Comic panel: During an incident Nadia pulls out a dusty folder labeled Known Risk, dated three years earlier, unsigned.](assets/images/security-program/comic-03-the-silent-acceptance.jpeg)\n**Panel 3:** *The wrong way: silent acceptance — the risk nobody remediated and nobody signed for, discovered mid-incident.*\n\n![Comic panel: Vera unrolls a map with six regions named after the NIST CSF functions while Nadia places flags on it.](assets/images/security-program/comic-04-risk-before-tools.jpeg)\n**Panel 4:** *The principle: purpose and business objectives first, organized around a framework — every activity gets an address, every gap becomes visible.*\n\n![Comic panel: Nadia writes Risk equals Likelihood times Impact on a whiteboard as a cloud of monsters becomes a neat numbered queue.](assets/images/security-program/comic-05-likelihood-times-impact.jpeg)\n**Panel 5:** *Risk is calculated, not felt: likelihood 1–5, impact 1–5 — arithmetic honesty that converts anxiety into a queue.*\n\n![Comic panel: Four doors labeled Avoid, Remediate, Transfer, Accept; the Accept door bears a signature line and an expiry tag.](assets/images/security-program/comic-06-accepted-with-a-name.jpeg)\n**Panel 6:** *Every risk gets an explicit treatment — and acceptance needs a justification, a named approver, compensating controls, and an expiry date.*\n\n![Comic panel: A four-step staircase from Quick Wins to Long Term; Nadia unplugs an old machine on the first step.](assets/images/security-program/comic-07-quick-wins-first.jpeg)\n**Panel 7:** *Work is tiered: quick wins in days, then this year, next year, long term — early safety buys the right to do the multiyear work.*\n\n![Comic panel: A tabletop exercise around scenario cards while a backup tape labeled Never Restored sits under glass behind them.](assets/images/security-program/comic-08-rehearse-before-real.jpeg)\n**Panel 8:** *The program rehearses: tabletops, kill-chain mapping, and drills — a backup that has never been restored is a hope, not a control.*\n\n![Comic panel: Vera holds an open risk register ledger with columns for owner, treatment, and review date as Nadia points at the top row.](assets/images/security-program/comic-09-show-me-the-register.jpeg)\n**Panel 9:** *The closer: the test the program is held to — every major risk has an owner, a treatment decision, and a review date, and the program itself is reassessed.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

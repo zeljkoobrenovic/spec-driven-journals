@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grounded Security</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        header.site {
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+
+        header.site .logo {
+            display: block;
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            margin-bottom: 0;
+            border: 1px solid var(--rule);
+        }
+
+        header.site .logo-credit {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 0;
+            padding-left: 2px;
+            text-align: right;
+        }
+
+        header.site h1 {
+            margin-top: 20px;
+            margin-bottom: 8px;
+            padding: 0;
+            font-size: 51px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            line-height: normal;
+        }
+
+        header.site p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .search {
+            margin: 0 0 38px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            font-family: inherit;
+        }
+
+        .search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .hits {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 4px 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 24px;
+        }
+
+        .tag-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .tag-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tag-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .tag-filter button .count {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .tag-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tag-filter button.hidden {
+            display: none;
+        }
+
+        .tag-filter .tag-toggle {
+            border-style: dashed;
+            border-color: var(--muted);
+            color: var(--muted);
+        }
+
+        .tag-filter .tag-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+        }
+
+        .status-filter button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 10px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-filter button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .status-filter button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .status-filter button .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .status-filter button .count {
+            color: var(--muted);
+        }
+
+        .status-filter button.active .count {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        ul.posts .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0 0;
+        }
+
+        ul.posts .tags .tag {
+            font-size: 12px;
+            padding: 1px 8px;
+            border-radius: 999px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            background-color: var(--tag-bg);
+        }
+
+        section.group {
+            margin-bottom: 48px;
+        }
+
+        section.group > h2 {
+            font-size: 32px;
+            margin: 0 0 4px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        section.group > .group-desc {
+            color: var(--muted);
+            margin: -8px 0 16px;
+            font-size: 15px;
+        }
+
+        section.group.empty {
+            display: none;
+        }
+
+        ul.posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.posts li {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px dashed var(--rule);
+        }
+
+        ul.posts li:last-child {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        ul.posts li.hidden {
+            display: none;
+        }
+
+        ul.posts .icon {
+            flex: 0 0 100px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 7px;
+        }
+
+        ul.posts .icon img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        ul.posts .icon.placeholder {
+            background: var(--rule);
+            border-radius: 4px;
+        }
+
+        ul.posts .meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        ul.posts .meta .post-id {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 2px;
+        }
+
+        ul.posts .meta .post-status,
+        ul.posts .meta .post-id-text {
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        ul.posts .meta .post-status .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        ul.posts .meta .post-id .post-id-sep {
+            margin-right: 8px;
+            color: var(--rule);
+        }
+
+        ul.posts .meta a {
+            color: rgb(23, 86, 169);
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 23px;
+        }
+
+        ul.posts .meta a:hover {
+            color: var(--accent);
+        }
+
+        ul.posts .meta .excerpt {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .empty-msg {
+            color: var(--muted);
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-msg.show {
+            display: block;
+        }
+
+        nav.view-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 24px;
+            flex-wrap: wrap;
+        }
+
+        nav.view-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.view-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.view-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #visual[hidden] {
+            display: none;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 0 0 8px;
+        }
+
+        .visual-card {
+            display: block;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .visual-card.hidden {
+            display: none;
+        }
+
+        .visual-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+        }
+
+        .visual-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 18px;
+        }
+
+        .visual-toolbar button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 12px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .visual-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .visual-toolbar button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Expanded mode: one full-width image per row, uncropped; the image
+           links to the image file itself, the title links to the article. */
+        #visual.expanded .visual-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        #visual.expanded .visual-card img {
+            aspect-ratio: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        #visual.expanded .visual-card .visual-title {
+            font-size: 18px;
+        }
+
+        .visual-card .no-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--tag-bg, #f2f2f2);
+            border: 1px dashed var(--rule);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .visual-card .visual-title {
+            margin: 8px 2px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgb(23, 86, 169);
+        }
+
+        .visual-card:hover .visual-title {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header class="site">
+        <a href="assets/images/journal-logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/journal-logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+        <div style="padding: 4px;">
+            <h1>Grounded Security</h1>
+            <p>Željko Obrenović's defensive-security operating model, written as records — how a security program is created and governed, how incidents, disasters, and phishing are handled, how the estate is hardened from physical access to cloud, how identity and the network are controlled, and how the organization detects, tests, and improves. Each record ships its working checklist. Informed by practice and by Lee Brotherston, Amanda Berlin, and William F. Reyor III's &quot;Defensive Security Handbook&quot;.</p>
+        </div>
+    </header>
+
+    <div style="padding: 4px;">
+        <nav class="view-tabs" id="view-tabs" role="tablist">
+            <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
+            <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
+        </nav>
+        <div class="status-filter" id="status-filter"></div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="search">
+            <input id="q" type="search" placeholder="Search..." autocomplete="off" style="width: calc(100% - 150px)">
+            <span class="hits" id="hits"></span>
+        </div>
+
+        <div id="sections"></div>
+        <div id="visual" hidden></div>
+        <p class="empty-msg" id="empty">No posts match your search.</p>
+    </div>
+</main>
+
+<script id="data" type="application/json">{"sections": [{"title": "Start Here", "description": "What this journal is, why an engineering executive writes the defensive-security operating model down as records, and how to read it.", "posts": [{"id": "SEC-INTRODUCTION", "status": "draft:gray", "title": "Introduction: Security as Records", "excerpt": "This journal is my defensive-security operating model, written down as records: how a security program is created and governed, what happens when incidents, disasters, and phishing land, how the estate is hardened from the server room to the cloud, who gets in and what can talk to what, and how the organization keeps finding and fixing its own weaknesses. Twenty-four records from the chapter checklists of Brotherston, Berlin, and Reyor's Defensive Security Handbook, each shipping its working checklist. Start here for the map.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "logo": "assets/images/introduction/logo.jpeg", "tags": ["defensive security", "security program", "incident response", "hardening", "operating model", "introduction"]}]}, {"title": "The Security Program", "description": "The program before the tools: creating a security program, knowing what you have, and the policies, standards, education, and compliance frame that everything else hangs on.", "posts": [{"id": "SEC-SECURITY-PROGRAM", "status": "draft:gray", "title": "Creating a Security Program: Risk Before Tools", "excerpt": "A security program in my organization is designed before anything is bought. Purpose and business objectives come first, organized around a recognized framework; responsibility is structured into executive, risk, security, and auditing functions; the baseline is documented before it is improved; risk is calculated — likelihood times impact — and every risk gets an explicit treatment: avoided, remediated, transferred, or accepted with a named approver and an expiry date. Work is prioritized into tiered milestones, and the program rehearses through use cases, kill-chain mapping, tabletops, and drills. The test I hold the program to: every major risk has an owner, a treatment decision, and a review date in a maintained risk register — and the program itself is periodically reassessed.", "url": "security-program.html", "icon": "assets/icons/security-program.png", "logo": "assets/images/security-program/logo.jpeg", "tags": ["security program", "risk management", "governance", "NIST CSF", "risk register", "tabletop exercises", "security leadership", "defensive security"]}, {"id": "SEC-ASSET-MANAGEMENT", "status": "draft:gray", "title": "Asset Management and Documentation", "excerpt": "My organization cannot defend what it does not know it has — so asset management is an ongoing security program, not a one-time inventory exercise. One authoritative system is the source of truth; every asset carries an owner, a criticality, and a risk rating; the inventory spans hardware, software, users, applications, cloud resources, and certificates and domains; the lifecycle is managed from procurement to verified destruction; and discovery and reconciliation are automated but validated before being trusted. The test I hold the inventory to: it answers security questions in minutes — which assets a new vulnerability affects, who owns a critical system, what faces the internet — and it is actively used for security decisions, not simply maintained as documentation.", "url": "asset-management.html", "icon": "assets/icons/asset-management.png", "logo": "assets/images/asset-management/logo.jpeg", "tags": ["asset management", "inventory", "source of truth", "data classification", "asset lifecycle", "secure disposal", "documentation", "defensive security"]}, {"id": "SEC-POLICIES", "status": "draft:gray", "title": "Policies: What Must Be Achieved, in Writing", "excerpt": "A security policy in my organization states what must be achieved — implementation lives in standards and procedures. The language is mandatory or it is not policy: must, will, shall, and do, never should, try, and mostly, with permitted exceptions documented. Every policy is a governed document — version, effective date, owner, approver, scope — and the set is managed deliberately: separate manageable documents, centrally stored under revision control, formally approved, communicated, and reviewed at least annually with obsolete versions archived. The test I hold the policy set to: any employee can find the current approved version of the policy that applies to them and understand what it requires — and nobody can find an obsolete one.", "url": "policies.html", "icon": "assets/icons/policies.png", "logo": "assets/images/policies/logo.jpeg", "tags": ["security policies", "governance", "policy language", "document control", "policy lifecycle", "compliance", "defensive security"]}, {"id": "SEC-STANDARDS-AND-PROCEDURES", "status": "draft:gray", "title": "Standards and Procedures", "excerpt": "In my organization, security documentation is a hierarchy with a division of labor: policy explains why, standards define what, procedures identify who, when, and where, and work instructions explain how. Standards speak in mandatory language — must, shall, will — and are specific enough to implement consistently; requirements are written once and referenced everywhere; procedures are written for the people who run them, not the people who wrote them. Every document carries its contract — version, owner, approver, purpose, scope, requirements, related documents — and lives in one approved repository where the authoritative version is unambiguous. The test I hold the documentation to: a new employee can find the authoritative document and apply it correctly without asking anyone.", "url": "standards-and-procedures.html", "icon": "assets/icons/standards-and-procedures.png", "logo": "assets/images/standards-and-procedures/logo.jpeg", "tags": ["security documentation", "standards", "procedures", "policies", "governance", "knowledge management", "audit readiness", "security program"]}, {"id": "SEC-USER-EDUCATION", "status": "draft:gray", "title": "Security Education", "excerpt": "In my organization, security awareness is an ongoing program, not a once-a-year compliance module. It starts with one or two clear objectives tailored to our actual threat landscape, and with a measured baseline of what users know and do before any training runs — so improvement targets are real, not invented. Training is reinforced through repetition, spaced learning, and realistic exercises like phishing simulations; reporting suspicious activity is made simple; and nobody is ever punished for reporting a mistake, even after clicking, because a click reported in minutes is the cheapest incident we will ever have. Awareness exercises double as tests of our incident-response machinery. The test I hold the program to: behavior change measured against the baseline — not course-completion rates.", "url": "user-education.html", "icon": "assets/icons/user-education.png", "logo": "assets/images/user-education/logo.jpeg", "tags": ["security awareness", "user education", "training", "phishing simulations", "security culture", "positive reinforcement", "metrics", "security program"]}, {"id": "SEC-COMPLIANCE", "status": "draft:gray", "title": "Industry Compliance Standards and Frameworks", "excerpt": "In my organization, compliance is the floor, never the program. Compliance standards are minimum requirements — an organization can be fully compliant and still be weak — so we never confuse the three layers of the map: laws and regulations that bind us, compliance standards that operationalize them, and security frameworks we choose in order to actually build the program. For every regulated data type we hold, we can name the regulation that governs it — FERPA for student records, GLBA for nonpublic personal information, HIPAA for ePHI, PCI DSS for cardholder data, SOX for financial-reporting controls — and we use frameworks like CIS, the ISO 27000 series, MITRE ATT&CK, and NIST CSF to build what compliance merely attests. The test I hold the posture to: being compliant is never mistaken for being secure.", "url": "compliance.html", "icon": "assets/icons/compliance.png", "logo": "assets/images/compliance/logo.jpeg", "tags": ["compliance", "regulations", "security frameworks", "NIST CSF", "ISO 27001", "PCI DSS", "HIPAA", "GLBA", "SOX", "governance", "risk", "security program"]}]}, {"title": "Response and Recovery", "description": "What happens when it goes wrong: incident response, disaster recovery, and the phishing attacks that start most of it.", "posts": [{"id": "SEC-INCIDENT-RESPONSE", "status": "draft:gray", "title": "Incident Response", "excerpt": "When my organization suspects a security incident, the response is a practiced discipline, not an improvisation. Preparation is finished before the incident starts — definitions, severity levels, roles, external contracts, and forensic tooling tested in peacetime; a suspected incident is escalated early rather than sat on over a possible false positive; declaration is a formal act that names an incident manager and starts the activity log; evidence is preserved before remediation destroys it; containment, eradication, and recovery are distinct gates, each confirmed rather than assumed; communications flow from one authoritative source; and no incident closes without a blameless review whose corrective actions have owners and deadlines. The test I hold the capability to: the engineer who suspects a compromise at 2 a.m. knows exactly whom to call — and is thanked for a false positive, never punished for escalating.", "url": "incident-response.html", "icon": "assets/icons/incident-response.png", "logo": "assets/images/incident-response/logo.jpeg", "tags": ["security", "incident response", "forensics", "evidence preservation", "containment", "eradication", "recovery", "postmortem", "defensive security"]}, {"id": "SEC-DISASTER-RECOVERY", "status": "draft:gray", "title": "Disaster Recovery", "excerpt": "My organization's disaster recovery starts from the business, not from the backup tool. Every critical system carries a Recovery Point Objective and a Recovery Time Objective that business owners agreed to and someone priced; the recovery strategy — physical backups, warm standby, high availability, alternate systems, or cloud-native replication rebuilt through infrastructure-as-code — is chosen per system against those targets; dependencies are mapped so no application claims a recovery time its authentication service cannot meet; failover and failback have documented steps and named authority; and the plan is tested against real scenarios, without leaning on systems the disaster would have taken out, with security controls intact throughout — because a disaster is not an excuse to drop them. The test I hold the plan to: backups are proven by restoring them, and recovery is proven within the RTO — a backup that has never been restored is a hope, not a plan.", "url": "disaster-recovery.html", "icon": "assets/icons/disaster-recovery.png", "logo": "assets/images/disaster-recovery/logo.jpeg", "tags": ["security", "disaster recovery", "business continuity", "RPO", "RTO", "backups", "failover", "failback", "resilience", "defensive security"]}, {"id": "SEC-PHISHING-RESPONSE", "status": "draft:gray", "title": "Phishing Awareness and Response", "excerpt": "Phishing is the front door of most incidents, and my organization defends it with people, not just filters. Every employee runs the same short verification habit before clicking — was I expecting this, does the sender match, is it manufacturing urgency, is it asking for credentials — and verifies unusual requests through a separate trusted channel; the warning signs are taught in plain language across every medium the attack arrives on, because phishing feels, looks, and sounds funny long before a tool flags it; and reporting is fast, easy, and blame-free whether or not anyone clicked, because the employee who clicked is the response's first sensor, not its culprit. A username or password is never given to another person, and the help-desk and reporting contacts are filled in, published, and known. The test I hold the culture to: the employee who clicked reports it within minutes — because they know they will be helped, not punished.", "url": "phishing-response.html", "icon": "assets/icons/phishing-response.png", "logo": "assets/images/phishing-response/logo.jpeg", "tags": ["security", "phishing", "social engineering", "security awareness", "reporting culture", "human firewall", "user education", "defensive security"]}]}, {"title": "Hardening the Estate", "description": "The systems themselves: physical security, Windows and Unix infrastructure, endpoints, databases, and cloud.", "posts": [{"id": "SEC-PHYSICAL-SECURITY", "status": "draft:gray", "title": "Physical Security", "excerpt": "Physical access is a security boundary of the same rank as the network, and my organization defends it in layers. Secure areas are gated by real controls — locks, badges, biometrics, more than one of them where it matters; access is revoked as promptly as it is granted, with badges recovered, shared codes changed, and permissions reviewed on every role change; media is tracked like the data it carries; visitors and contractors are identified, escorted, and time-boxed; and every employee is trained that politeness does not override procedure. The test I hold the estate to: no single failed control — a held door, a cloned badge, a confident pretext — is enough to reach sensitive systems or data.", "url": "physical-security.html", "icon": "assets/icons/physical-security.png", "logo": "assets/images/physical-security/logo.jpeg", "tags": ["physical security", "access control", "badges", "tailgating", "social engineering", "secure media", "datacenter security", "visitors", "defense in depth"]}, {"id": "SEC-WINDOWS-INFRASTRUCTURE", "status": "draft:gray", "title": "Microsoft Windows Infrastructure", "excerpt": "My organization runs its Windows estate as one security system, not a fleet of servers — and the real boundary of that system is the Active Directory forest, not the domain. Nothing unsupported stays on the network without an approved exception and isolation; patching is centrally managed for Windows and the third-party software attackers actually exploit; domain controllers are treated as the crown jewels — dedicated, physically secured, and covered by a tested compromise-recovery plan; privilege is minimized, individually attributable, and monitored, with unique local administrator passwords and no shared accounts; and the security baseline is enforced through Group Policy, not documented in a binder. The test I hold the estate to: every privileged action is attributable to a named person, and a compromised domain controller has a documented, tested path back.", "url": "windows-infrastructure.html", "icon": "assets/icons/windows-infrastructure.png", "logo": "assets/images/windows-infrastructure/logo.jpeg", "tags": ["windows", "active directory", "domain controllers", "group policy", "privileged access", "LAPS", "service accounts", "patching", "hardening", "security baselines"]}, {"id": "SEC-UNIX-SERVERS", "status": "draft:gray", "title": "Unix Application Servers", "excerpt": "Every Unix application server in my organization earns its place on the network: fully patched on a small-step cadence, running only the services it exists to run, with a filesystem held to least privilege, a host firewall that permits only required traffic, file-integrity monitoring that makes unexpected change visible, restrictive mount options, applications isolated and running as dedicated non-root accounts, and mandatory access control enabled where the platform supports it. And because a control that breaks the application gets rolled back at two in the morning, every restriction is verified against required functionality and the hardening review is repeated, not archived. The test I hold every server to: only what the application requires is running, reachable, writable, and privileged — and the server still does its job.", "url": "unix-servers.html", "icon": "assets/icons/unix-servers.png", "logo": "assets/images/unix-servers/logo.jpeg", "tags": ["unix", "linux", "server hardening", "least privilege", "host firewall", "file integrity monitoring", "SELinux", "mandatory access control", "application isolation", "patching"]}, {"id": "SEC-ENDPOINTS", "status": "draft:gray", "title": "Endpoints", "excerpt": "The endpoint is where the attack actually lands — the laptop that opens the attachment, the phone that leaves the taxi, the printer nobody patched. So every endpoint in my organization meets one bar: patched with the patches verified, hardened against a secure baseline, host firewall on everywhere including home networks, full-disk encryption confirmed active before the device ships, endpoint protection running but never the only control, mobile devices under MDM with remote wipe, telemetry centralized with privacy expectations agreed with HR and legal first, and the nontraditional endpoints — printers, cameras, door locks, HVAC, telephony, SCADA — inventoried and secured like everything else. The test I hold the estate to: the final endpoint security review comes back green for every device class, including the printer.", "url": "endpoints.html", "icon": "assets/icons/endpoints.png", "logo": "assets/images/endpoints/logo.jpeg", "tags": ["endpoints", "patch management", "hardening", "full-disk encryption", "mobile device management", "endpoint protection", "IoT", "monitoring"]}, {"id": "SEC-DATABASES", "status": "draft:gray", "title": "Databases", "excerpt": "The database is where a security failure becomes the headline, so my organization protects data where it lives. Every critical database is known, classified, and owned; access follows least privilege with privileged accounts logged, reviewed, and never shared; sensitive data is encrypted at rest, in transit, and in backups, with keys stored separately from the data they protect; secrets are never hardcoded and passwords never stored in plaintext; injection, credential attacks, and insiders are all planned for; backups restore on a tested clock; and cloud databases meet exactly the same bar as on-premises ones. The test I hold every critical database to, straight from the chapter: what data do we have and where is it, who can access it and why, how is it protected, how would we detect misuse, and can we recover quickly — answered clearly, or we have a governance gap.", "url": "databases.html", "icon": "assets/icons/databases.png", "logo": "assets/images/databases/logo.jpeg", "tags": ["databases", "data classification", "least privilege", "encryption", "secrets management", "SQL injection", "insider threats", "backups"]}, {"id": "SEC-CLOUD-INFRASTRUCTURE", "status": "draft:gray", "title": "Cloud Infrastructure", "excerpt": "The provider secures the cloud; my organization secures what it puts in the cloud — the data, the identities, the configurations, and the workloads. That split is a contract I read correctly for every service model, and everything else in this record follows from it: misconfiguration is treated as the leading cloud risk and countered with automated configuration monitoring and infrastructure as code behind review; MFA sits on every root and administrator account and access dies the day someone leaves; IAM is least-privilege by role with alerts on escalation; the old disciplines — inventory, patching, backups, encryption, logging — carry into the cloud undiminished; architecture follows established patterns and the provider Well-Architected frameworks; and no alert is trusted until it has fired on a test. Compliance is the baseline of this program, never the end of it.", "url": "cloud-infrastructure.html", "icon": "assets/icons/cloud-infrastructure.png", "logo": "assets/images/cloud-infrastructure/logo.jpeg", "tags": ["security", "cloud", "shared responsibility", "misconfiguration", "IAM", "infrastructure as code", "secrets management", "GuardDuty", "well-architected", "defensive security"]}]}, {"title": "Identity and Network", "description": "Who gets in and what can talk to what: authentication, network security, segmentation, and intrusion detection and prevention.", "posts": [{"id": "SEC-AUTHENTICATION", "status": "draft:gray", "title": "Authentication", "excerpt": "In my organization, identity is the first control plane, and no single authentication control is ever asked to carry the day alone. Identity is managed centrally under least privilege — SSO against password sprawl, automated provisioning and deprovisioning, dormant accounts removed, access cut the day someone leaves. Passwords are long, unique, and held in a vetted manager; credentials are stored only as salted, modern hashes, with MD5, SHA-1, and their generation retired. Authentication protocols are known with their attacks, verified in actual use, and chosen with threat modeling; MFA is required for privileged accounts, remote access, VPN, and email — and treated honestly as a control with known weaknesses. The test I hold the whole stack to: least privilege, centralized IAM, strong passwords, secure protocols, and MFA working together as a layered defense.", "url": "authentication.html", "icon": "assets/icons/authentication.png", "logo": "assets/images/authentication/logo.jpeg", "tags": ["security", "authentication", "identity and access management", "passwords", "multi-factor authentication", "cryptography", "authentication protocols", "least privilege"]}, {"id": "SEC-NETWORK-SECURITY", "status": "draft:gray", "title": "Secure Network Infrastructure", "excerpt": "Every network device my organization runs — router, switch, access point, firewall, VPN appliance — is inventoried, hardened, patched, and watched. Defaults die on arrival; every open port has a justified business purpose; configuration is code with secrets in a dedicated store; the management plane is encrypted, isolated behind a dedicated network and bastion, and administered through individual, centrally authenticated accounts. The network filters outbound as strictly as inbound, IPv6 gets the same security attention as IPv4, wireless runs on modern protocols with rogue-AP monitoring, and VPN appliances are treated as the front door attackers try first. The test I hold the estate to: the hardening claims are proven by a scan, not asserted in a diagram — and they are re-proven after every change.", "url": "network-security.html", "icon": "assets/icons/network-security.png", "logo": "assets/images/network-security/logo.jpeg", "tags": ["security", "network security", "device hardening", "patch management", "SNMP", "management network", "wireless security", "VPN", "egress filtering", "monitoring"]}, {"id": "SEC-NETWORK-SEGMENTATION", "status": "draft:gray", "title": "Network Segmentation", "excerpt": "Segmentation in my organization is least privilege applied to traffic: systems are separated by risk, function, sensitivity, and business need, and between segments the default is deny. Internet-facing systems live in a DMZ that cannot talk freely inward; VLANs are used with ACLs but never mistaken for walls; devices earn admission through NAC before they get network access; VPN users reach only the resources they need; application tiers and human duties are segmented alongside the network; and sensitive data lives in dedicated zones with extra monitoring. The whole design is documented, monitored, and tested — because the test I hold it to, from the chapter's own final review, is concrete: each segment can communicate only with the systems it legitimately needs, and prohibited traffic is proven blocked, not assumed.", "url": "network-segmentation.html", "icon": "assets/icons/network-segmentation.png", "logo": "assets/images/network-segmentation/logo.jpeg", "tags": ["security", "network segmentation", "least privilege", "default deny", "DMZ", "VLANs", "ACLs", "network access control", "lateral movement"]}, {"id": "SEC-IDS-IPS", "status": "draft:gray", "title": "Intrusion Detection and Prevention Systems", "excerpt": "My organization treats intrusion detection as a capability it operates, not a product it bought. An IDS detects, logs, and alerts; an IPS detects and actively blocks — and blocking is enabled only where false positives are understood, because an IPS that blocks legitimate traffic is an outage engine. Coverage is layered: network sensors at the choke points, host-based monitoring where the network cannot see, honeypots for cheap high-signal tripwires, and cloud detection that adapts to workloads that appear and disappear. Placement determines what can be inspected; encrypted traffic limits visibility unless we deliberately choose inspection; and tuning is an ongoing process, not a one-time configuration. The test I hold the whole layer to: logs and alerts only provide value when someone reviews them and knows how to respond.", "url": "ids-ips.html", "icon": "assets/icons/ids-ips.png", "logo": "assets/images/ids-ips/logo.jpeg", "tags": ["security", "intrusion detection", "intrusion prevention", "IDS", "IPS", "network monitoring", "honeypots", "alert management", "defensive security"]}]}, {"title": "Assess and Improve", "description": "The continuous loop: vulnerability management, secure software development, OSINT and purple teaming, logging and monitoring, and the extra mile beyond the baseline.", "posts": [{"id": "SEC-VULNERABILITY-MANAGEMENT", "status": "draft:gray", "title": "Vulnerability Management", "excerpt": "Vulnerability management in my organization is a program, not a scanner subscription. A formal process with documented roles covers detection through remediation; scans are scheduled and deliberately mixed — authenticated where accuracy matters, unauthenticated where the attacker's view matters — with scanner credentials treated as the sensitive asset they are and fragile systems scanned safely. Prioritization starts from CVSS but is decided by context: data sensitivity, exposure, criticality, and whether exploitation is live. Remediation runs against SLAs by severity and exposure, tracked and escalated; risk acceptance is senior-approved, compensated, and always expiring — because accepting a risk does not remove the vulnerability. The program is measured in trends, and the trends feed patching, configuration management, and operations.", "url": "vulnerability-management.html", "icon": "assets/icons/vulnerability-management.png", "logo": "assets/images/vulnerability-management/logo.jpeg", "tags": ["security", "vulnerability management", "scanning", "remediation", "CVSS", "risk acceptance", "SLAs", "patching", "defensive security"]}, {"id": "SEC-SECURE-SOFTWARE-DEVELOPMENT", "status": "draft:gray", "title": "Secure Software Development", "excerpt": "My organization builds security into software; it does not test security onto it at the end. Language choice is a security decision made with each language's risks understood; secure coding standards are documented and applied consistently, and no user-supplied input — defined broadly, from network to peripheral — is processed without validation of type, length, range, and relational validity. Security testing runs throughout development, not only before release: static analysis in the pipeline with secret detection, dynamic testing against the running application, and systematic peer review, each covering the others' blind spots. Security is incorporated into every stage of the lifecycle, from developer training through requirements, threat-modeled design, coding, testing, and a release with operational handoff — and the final review is the gate: standards followed, input validated, testing complete, known vulnerabilities remediated or formally addressed, before production.", "url": "secure-software-development.html", "icon": "assets/icons/secure-software-development.png", "logo": "assets/images/secure-software-development/logo.jpeg", "tags": ["security", "secure development", "SDLC", "input validation", "static analysis", "dynamic testing", "threat modeling", "code review", "defensive security"]}, {"id": "SEC-OSINT-PURPLE-TEAMING", "status": "draft:gray", "title": "OSINT and Purple Teaming", "excerpt": "My organization looks at itself the way an attacker would — deliberately, regularly, and under written authorization. OSINT is the defender's mirror: we sweep what our physical assets, email addresses, external systems, document metadata, public web content, social media, and breach exposure reveal, and we close what we find. Purple teaming turns the mirror into a drill: expected detections are recorded before testing begins, red simulates realistic attacker behavior within scope, blue proves that alerts fire and logs support investigation, and every gap becomes an owned, deadlined, retested fix. The test I hold the practice to: an exercise is not finished until red activity has been compared with blue detections and every gap has an owner, a deadline, and a retest.", "url": "osint-purple-teaming.html", "icon": "assets/icons/osint-purple-teaming.png", "logo": "assets/images/osint-purple-teaming/logo.jpeg", "tags": ["security", "OSINT", "purple teaming", "attack surface", "detection testing", "red team", "blue team", "self-assessment", "continuous improvement"]}, {"id": "SEC-LOGGING-AND-MONITORING", "status": "draft:gray", "title": "Logging and Monitoring", "excerpt": "Logging in my organization is not storage — it is our ability to answer questions during the worst hour. The SIEM is designed from risk backwards: coverage scope, compliance requirements, and highest-value systems first, use cases mapped to frameworks like MITRE ATT&CK, and collection that starts with high-value sources instead of hoarding everything. Logs are stored centrally under a Record of Authority; alerts are few, focused, and actionable; coverage follows the attacker's path across identity, endpoints, applications, cloud, databases, DNS, and the network; and detections are tested, not trusted — malicious behavior is reproduced in a controlled environment and the log and the alert are both confirmed. The test I hold the estate to: every alert that is enabled is one analysts know how to investigate — and every claimed detection has been proven to fire.", "url": "logging-and-monitoring.html", "icon": "assets/icons/logging-and-monitoring.png", "logo": "assets/images/logging-and-monitoring/logo.jpeg", "tags": ["security", "logging", "monitoring", "SIEM", "detection engineering", "MITRE ATT&CK", "Sigma", "alerting", "cloud logging", "Sysmon"]}, {"id": "SEC-THE-EXTRA-MILE", "status": "draft:gray", "title": "The Extra Mile", "excerpt": "The last mile of a security program is the unglamorous one — the services everyone depends on and nobody watches. In my organization, email infrastructure is provably well-configured: no open relay, hostname and reverse DNS consistent, blocklists checked, filtering confirmed. Operational mail survives personnel changes, because certificates, licenses, and alerts route to role-based aliases and shared groups, never to one person's inbox. DNS is operated as a security control — recursion restricted, internal and external separated, zone transfers limited, sinkholing considered, and DNSSEC deployed only when its benefits clearly outweigh its risks. Obscurity is only ever an additional layer, and the team keeps learning, because the threat model does not stand still. The test I hold the extra mile to: obscurity measures never stand in for patching, authentication, access control, and monitoring.", "url": "the-extra-mile.html", "icon": "assets/icons/the-extra-mile.png", "logo": "assets/images/the-extra-mile/logo.jpeg", "tags": ["security", "email security", "DNS security", "open relay", "DNSSEC", "DNS sinkhole", "security through obscurity", "continuous learning", "operational continuity"]}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('sections');
+        const visualRoot = document.getElementById('visual');
+        const tabList = document.getElementById('tab-list');
+        const tabVisual = document.getElementById('tab-visual');
+        const empty = document.getElementById('empty');
+        const hits = document.getElementById('hits');
+        const tagFilter = document.getElementById('tag-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const qInput = document.getElementById('q');
+
+        function el(tag, attrs, children) {
+            const e = document.createElement(tag);
+            if (attrs) for (const k in attrs) {
+                if (k === 'class') e.className = attrs[k];
+                else if (k === 'text') e.textContent = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            if (children) children.forEach(c => c && e.appendChild(c));
+            return e;
+        }
+
+        // Tag and status counts across all posts.
+        // status is stored as "name" or "name:color"; we count by name and
+        // remember the (first observed) color per name so the filter chip dot
+        // matches the inline post-status pill.
+        const tagCounts = new Map();
+        const statusCounts = new Map();
+        const statusColors = new Map();
+        let totalPosts = 0;
+        data.sections.forEach(section => {
+            section.posts.forEach(p => {
+                totalPosts++;
+                (p.tags || []).forEach(t => tagCounts.set(t, (tagCounts.get(t) || 0) + 1));
+                if (p.status) {
+                    const parts = String(p.status).split(':');
+                    const name = parts[0].trim();
+                    const color = (parts[1] || '').trim();
+                    if (name) {
+                        statusCounts.set(name, (statusCounts.get(name) || 0) + 1);
+                        if (color && !statusColors.has(name)) statusColors.set(name, color);
+                    }
+                }
+            });
+        });
+
+        // Build status filter buttons (sorted by count desc, then alpha).
+        // Only renders if any post defines a status, so the row stays empty
+        // and invisible otherwise.
+        const sortedStatuses = Array.from(statusCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeStatuses = new Set();
+        sortedStatuses.forEach(([name, count]) => {
+            const btn = el('button', {type: 'button', 'data-status': name});
+            const dot = el('span', {class: 'status-dot'});
+            const color = statusColors.get(name);
+            if (color) dot.style.background = color;
+            btn.appendChild(dot);
+            btn.appendChild(document.createTextNode(name));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeStatuses.has(name)) activeStatuses.delete(name);
+                else activeStatuses.add(name);
+                btn.classList.toggle('active', activeStatuses.has(name));
+                applyFilters();
+            });
+            statusFilter.appendChild(btn);
+        });
+
+        // Build tag filter buttons (sorted by count desc, then alpha).
+        // Show only the first TAG_VISIBLE_LIMIT tags initially; the rest are
+        // toggled via a "show more / fewer" button. Selected tags stay
+        // visible even when collapsed, so an active filter never disappears.
+        const TAG_VISIBLE_LIMIT = 12;
+        const sortedTags = Array.from(tagCounts.entries())
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+        const activeTags = new Set();
+        const overflowButtons = [];
+        sortedTags.forEach(([tag, count], idx) => {
+            const btn = el('button', {type: 'button', 'data-tag': tag});
+            btn.appendChild(document.createTextNode(tag));
+            btn.appendChild(el('span', {class: 'count', text: '(' + count + ')'}));
+            btn.addEventListener('click', function () {
+                if (activeTags.has(tag)) activeTags.delete(tag);
+                else activeTags.add(tag);
+                btn.classList.toggle('active', activeTags.has(tag));
+                applyFilters();
+            });
+            if (idx >= TAG_VISIBLE_LIMIT) {
+                btn.classList.add('hidden');
+                overflowButtons.push(btn);
+            }
+            tagFilter.appendChild(btn);
+        });
+
+        let tagsExpanded = false;
+        if (overflowButtons.length) {
+            const toggle = el('button', {type: 'button', class: 'tag-toggle'});
+            const hiddenLabel = '+ ' + overflowButtons.length + ' more';
+            const shownLabel = 'show fewer';
+            toggle.textContent = hiddenLabel;
+            toggle.addEventListener('click', function () {
+                tagsExpanded = !tagsExpanded;
+                overflowButtons.forEach(b => {
+                    // keep selected overflow tags visible even when collapsed
+                    if (tagsExpanded || b.classList.contains('active')) {
+                        b.classList.remove('hidden');
+                    } else {
+                        b.classList.add('hidden');
+                    }
+                });
+                toggle.textContent = tagsExpanded ? shownLabel : hiddenLabel;
+            });
+            tagFilter.appendChild(toggle);
+        }
+
+        // Render sections
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const ul = el('ul', {class: 'posts'});
+            section.posts.forEach(p => {
+                const li = el('li');
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                li.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                li.dataset.tags = tags.join('|').toLowerCase();
+                li.dataset.status = statusName.toLowerCase();
+                const iconWrap = el('div', {class: p.icon ? 'icon' : 'icon placeholder'});
+                if (p.icon) iconWrap.appendChild(el('img', {src: p.icon, alt: ''}));
+                li.appendChild(iconWrap);
+                const meta = el('div', {class: 'meta'});
+                if (p.id || p.status) {
+                    const idLine = el('p', {class: 'post-id'});
+                    if (p.status) {
+                        // status front-matter is "name" or "name:color".
+                        const parts = String(p.status).split(':');
+                        const statusName = parts[0].trim();
+                        const statusColor = (parts[1] || '').trim();
+                        const wrap = el('span', {class: 'post-status'});
+                        const dot = el('span', {class: 'status-dot'});
+                        if (statusColor) dot.style.background = statusColor;
+                        wrap.appendChild(dot);
+                        wrap.appendChild(document.createTextNode(statusName));
+                        idLine.appendChild(wrap);
+                    }
+                    if (p.status && p.id) {
+                        idLine.appendChild(el('span', {class: 'post-id-sep', text: '•'}));
+                    }
+                    if (p.id) idLine.appendChild(el('span', {class: 'post-id-text', text: '[' + p.id + ']'}));
+                    meta.appendChild(idLine);
+                }
+                meta.appendChild(el('a', {href: p.url, text: p.title}));
+                if (p.excerpt) meta.appendChild(el('p', {class: 'excerpt', text: p.excerpt}));
+                if (tags.length) {
+                    const tagWrap = el('div', {class: 'tags'});
+                    tags.forEach(t => tagWrap.appendChild(el('span', {class: 'tag', text: t})));
+                    meta.appendChild(tagWrap);
+                }
+                li.appendChild(meta);
+                ul.appendChild(li);
+            });
+            sec.appendChild(ul);
+            root.appendChild(sec);
+        });
+
+        // Render the Visual Overview pane: same sections, but each post is a
+        // card showing its hero logo image (instead of the abstract). Cards
+        // carry the same data-* attributes so search/tag/status filters apply
+        // to both views.
+        const visualToolbar = el('div', {class: 'visual-toolbar'});
+        const expandBtn = el('button', {type: 'button', text: 'Expand images'});
+        visualToolbar.appendChild(expandBtn);
+        visualRoot.appendChild(visualToolbar);
+
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const grid = el('div', {class: 'visual-grid'});
+            section.posts.forEach(p => {
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                const card = el('a', {class: 'visual-card', href: p.url});
+                card.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                card.dataset.tags = tags.join('|').toLowerCase();
+                card.dataset.status = statusName.toLowerCase();
+                if (p.logo) {
+                    card.appendChild(el('img', {src: p.logo, alt: p.title, loading: 'lazy'}));
+                } else {
+                    card.appendChild(el('div', {class: 'no-logo', text: 'no image'}));
+                }
+                card.appendChild(el('p', {class: 'visual-title', text: p.title}));
+                grid.appendChild(card);
+            });
+            sec.appendChild(grid);
+            visualRoot.appendChild(sec);
+        });
+
+        // Expand toggle: full-width uncropped images, one per row. Clicking
+        // anywhere on a card opens the article in both modes.
+        let visualExpanded = false;
+        expandBtn.addEventListener('click', function () {
+            visualExpanded = !visualExpanded;
+            visualRoot.classList.toggle('expanded', visualExpanded);
+            expandBtn.classList.toggle('active', visualExpanded);
+            expandBtn.textContent = visualExpanded ? 'Compact grid' : 'Expand images';
+        });
+
+        // Tab switching between the article list and the visual overview.
+        // #visual in the URL hash deep-links the visual tab.
+        function selectView(visual) {
+            root.hidden = visual;
+            visualRoot.hidden = !visual;
+            tabList.classList.toggle('active', !visual);
+            tabVisual.classList.toggle('active', visual);
+            tabList.setAttribute('aria-selected', String(!visual));
+            tabVisual.setAttribute('aria-selected', String(visual));
+            const hash = visual ? '#visual' : '';
+            if (window.location.hash !== hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+            }
+        }
+
+        tabList.addEventListener('click', function () { selectView(false); });
+        tabVisual.addEventListener('click', function () { selectView(true); });
+        if (window.location.hash === '#visual') selectView(true);
+
+        function applyFilters() {
+            const q = qInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            function matchItem(item) {
+                const matchQ = !q || item.dataset.haystack.indexOf(q) !== -1;
+                let matchTag = true;
+                if (activeTags.size) {
+                    const itemTags = item.dataset.tags ? item.dataset.tags.split('|') : [];
+                    // any-match: post must carry at least one selected tag
+                    matchTag = false;
+                    for (const t of activeTags) {
+                        if (itemTags.indexOf(t.toLowerCase()) !== -1) {
+                            matchTag = true;
+                            break;
+                        }
+                    }
+                }
+                let matchStatus = true;
+                if (activeStatuses.size) {
+                    const itemStatus = item.dataset.status || '';
+                    // any-match: post status must equal one of the selected statuses
+                    matchStatus = false;
+                    for (const s of activeStatuses) {
+                        if (itemStatus === s.toLowerCase()) {
+                            matchStatus = true;
+                            break;
+                        }
+                    }
+                }
+                return matchQ && matchTag && matchStatus;
+            }
+
+            // Both views hold the same posts; count visibility once (list view)
+            // but toggle hidden state in both so tab switches stay filtered.
+            [root, visualRoot].forEach((pane, paneIdx) => {
+                pane.querySelectorAll('section.group').forEach(sec => {
+                    let secVisible = false;
+                    sec.querySelectorAll('li, .visual-card').forEach(item => {
+                        const match = matchItem(item);
+                        item.classList.toggle('hidden', !match);
+                        if (match) {
+                            secVisible = true;
+                            if (paneIdx === 0) visibleCount++;
+                        }
+                    });
+                    sec.classList.toggle('empty', !secVisible);
+                });
+            });
+            empty.classList.toggle('show', visibleCount === 0);
+            hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)
+                ? visibleCount + ' of ' + totalPosts + ''
+                : totalPosts + '');
+        }
+
+        qInput.addEventListener('input', applyFilters);
+        applyFilters();
+    })();
+</script>
+</body>
+</html>

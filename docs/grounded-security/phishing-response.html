@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phishing Awareness and Response</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="disaster-recovery.html" title="Disaster Recovery">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="physical-security.html" title="Physical Security">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Response and Recovery</p>
+        <h1>Phishing Awareness and Response</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  7 min · <a class="spec-link" href="phishing-response.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/phishing-response/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/phishing-response/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="disaster-recovery.html" title="Disaster Recovery">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="physical-security.html" title="Physical Security">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-PHISHING-RESPONSE", "status": "draft:gray", "title": "Phishing Awareness and Response", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "phishing-response", "timetoread": "7 min", "excerpt": "Phishing is the front door of most incidents, and my organization defends it with people, not just filters. Every employee runs the same short verification habit before clicking — was I expecting this, does the sender match, is it manufacturing urgency, is it asking for credentials — and verifies unusual requests through a separate trusted channel; the warning signs are taught in plain language across every medium the attack arrives on, because phishing feels, looks, and sounds funny long before a tool flags it; and reporting is fast, easy, and blame-free whether or not anyone clicked, because the employee who clicked is the response's first sensor, not its culprit. A username or password is never given to another person, and the help-desk and reporting contacts are filled in, published, and known. The test I hold the culture to: the employee who clicked reports it within minutes — because they know they will be helped, not punished.", "tags": "security, phishing, social engineering, security awareness, reporting culture, human firewall, user education, defensive security", "icon": "assets/icons/phishing-response.png", "logo": "assets/images/phishing-response/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["security", "phishing", "social engineering", "security awareness", "reporting culture", "human firewall", "user education", "defensive security"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Phishing is the front door of most incidents, and my organization defends it with **people, not just filters**. Every employee runs the same short verification habit before clicking — *was I expecting this, does the sender match, is it manufacturing urgency, is it asking for credentials* — and **verifies unusual requests through a separate trusted channel**. The warning signs are taught in plain language across every medium the attack arrives on — email, web, phone, and found media — because **phishing feels, looks, and sounds funny long before a tool flags it**. **Reporting is fast, easy, and blame-free whether or not anyone clicked**: the employee who clicked is the response's first sensor, not its culprit, and one report protects everyone who received the same attack. A username or password is **never given to another person**, and the help-desk and reporting contacts are filled in, published, and known. The test I hold the culture to: **the employee who clicked reports it within minutes — because they know they will be helped, not punished.**\n\n## Statement\n\nWhen a phishing attempt reaches anyone in my organization — and it will — this is the behavior I hold the organization to.\n\n**Before the click, a short verification habit runs every time.**\n\n- **Expectation first.** Was I expecting this email, link, or attachment? Do I recognize the sender, and does the sender's address actually match the person or organization it claims to be?\n- **Pressure is a signal.** Unusual urgency or pressure is treated as a warning sign in itself, not a reason to comply faster.\n- **Credential requests are suspect by default.** Any message asking for a username, password, financial information, or other sensitive data earns scrutiny.\n- **Verification goes out-of-band.** Work-related requests that feel unusual are verified with the sender through a separate trusted method — never by replying to the message that made the request. Links are checked for the correct URL over `https://` before use.\n- **Doubt stops the hand.** When anything feels suspicious, the action is to stop and contact the help desk — not to proceed carefully.\n\n![Decision flow showing an incoming message checked against four questions, with doubt routed to out-of-band verification or the help desk instead of a click.](assets/images/phishing-response/before-the-click-habit.jpeg)\n**Figure 1:** *The pre-click habit: four cheap questions on every message, and any doubt routes to a separate trusted channel — never to a careful click.*\n\n**The warning signs are taught, in plain language, across every medium.**\n\n- **Something feels funny:** a login that bounces straight back to the login page; a website that misbehaves; an unexpected package, delivery, payroll, or greeting-card message; a document claiming sensitive content nobody asked for.\n- **Something looks funny:** an attachment that opens with a strange error or does not contain what it promised; a prompt to enable macros, install software, update a driver, or add a media player; a familiar-looking site on the wrong URL; an unknown USB drive or other removable media.\n- **Something sounds funny:** \"IT\" asking for a username or password; a caller needing immediate access to fix an issue nobody reported; an unfamiliar vendor probing for details about systems and software; unusual requests made in the name of facilities, management, or another department.\n\n![Three panels of warning signs — feels funny, looks funny, sounds funny — above icons for email, web, phone, and removable media.](assets/images/phishing-response/feels-looks-sounds-funny.jpeg)\n**Figure 2:** *Three sensory families of warning signs across every medium the attack arrives on — phishing feels, looks, and sounds funny long before a tool flags it.*\n\n**After a click, speed and honesty beat shame.**\n\n- Stop interacting with the message, site, or attachment; enter nothing further; contact the help desk immediately; say exactly what was clicked, what happened, and **whether credentials or sensitive data were entered**; then follow instructions for password changes and device checks. Fast reporting is framed as what it is: the act that protects everyone else and stops the spread.\n\n**No click still means report.**\n\n- Suspicious messages are reported through the organization's phishing-reporting process, kept available for review, and **never forwarded to coworkers** unless IT asks. One report is treated as a campaign signal — others likely received the same attack, and follow-up attempts from similar senders are expected.\n\n**What must be reported is spelled out.**\n\n- Suspicious emails fishing for credentials, banking details, or system information; unexpected links and attachments; attempts by unauthorized people to access computers, accounts, systems, or workspaces; requests touching protected health information or other confidential data; suspicious calls, messages, websites, and removable media.\n\n**The non-negotiables are few and absolute.**\n\n- Do not click unexpected links. Do not open unexpected attachments. **Never give your username or password to another person.** Verify unusual requests through a trusted channel. When something feels, looks, or sounds suspicious, report it. When in doubt, contact the help desk — and **the help-desk, phishing-report, and after-hours contacts are filled in, published, and known**, because a rule that ends in a blank line protects no one.\n\n## How to Read This\n\nThis record closes the **Response and Recovery** section by covering the attack that starts most of what [Incident Response](incident-response.html) handles. It differs from its neighbors in audience: the chapter's checklist is written for *every employee*, not for responders — it is the handout, the onboarding artifact, the poster version of the organization's phishing defense — and this record is the executive commitment that stands behind it. It is grounded in the Phishing Awareness and Response chapter of the *Defensive Security Handbook* (Brotherston, Berlin, Reyor). The full employee-facing checklist lives in the **Checklist** tab; the management summary in the **TL;DR** tab; the conversation in the **Conversation** tab.\n\n## Rationale\n\n**The last line of defense thinks, so train the thinking.** Mail filters, link rewriting, and attachment sandboxing catch volume, and my organization runs them — but the attack that matters is the one engineered to pass them, and it lands in front of a human. The chapter's checklist is therefore not a technology list; it is a habit: a handful of questions cheap enough to run on every message, calibrated to catch exactly what filters miss — the well-crafted message whose only flaws are that it was unexpected, slightly off, and in a hurry. A defense that depends on employees never making mistakes is a fantasy; a defense that makes suspicion cheap and reporting safe is a system.\n\n**Urgency is the payload.** Nearly every phishing attack carries the same engine: manufactured time pressure that switches the target from judgment to compliance — the invoice due today, the executive who needs gift cards now, the account that will be locked in an hour. Teaching people that *pressure itself is the warning sign* inverts the attack: the harder the message pushes, the more suspicious it becomes. The out-of-band verification rule is the escape hatch — a thirty-second call through a known-good channel defeats attacks that no amount of message inspection would catch, because the attacker controls the message but not the second channel.\n\n**Feels, looks, sounds — because the attack is multi-channel.** The chapter's three warning-sign families are deliberately sensory, and deliberately broader than email. The login that bounces back (credentials already harvested), the macro prompt (the payload asking permission), the familiar site on a wrong URL, the found USB drive, the caller from \"IT\" — vishing, smishing, and baiting all run the same con through different media. Training only the inbox builds a defense the attacker walks around with a phone call. Plain, memorable language is a design choice: an employee who can say \"something sounded funny\" reports; one who thinks reporting requires technical vocabulary stays silent.\n\n**The clicked employee is a sensor, not a culprit.** The record's center of gravity is what happens in the minutes after a mistake. An employee who clicked holds exactly the intelligence the response needs — what was clicked, what happened next, whether credentials went in — and the only variable is whether they surrender it in minutes or hide it for days. Every ounce of blame added to the reporting path converts directly into attacker dwell time. That is why the test in the principle is cultural: helped, not punished. The disclosure question — *did you enter a username or password?* — is the single highest-value fact in the entire exchange, and people answer it honestly exactly once: when honesty is safe.\n\n![Two timelines after a phishing click: a blame-free culture gets a report in minutes and quick containment, while a blame culture hides the click for days of attacker dwell time.](assets/images/phishing-response/sensor-not-culprit-dwell-time.jpeg)\n**Figure 3:** *The clicked employee is the response's first sensor: every ounce of blame on the reporting path converts directly into attacker dwell time.*\n\n**The near-miss is campaign intelligence.** The employee who did not click and therefore reports nothing has silently discarded the organization's early warning: phishing arrives in campaigns, and the message one person deleted is sitting unread in thirty other inboxes. Hence the record's insistence that no-click still means report, that the message is kept for review rather than deleted, and that it is never helpfully forwarded to coworkers — the forward spreads the live payload faster than the attacker could. One report, routed through the process, protects everyone who received the same attack.\n\n**Absolute rules survive stress; nuanced rules do not.** Under pressure — which is precisely when phishing strikes — people fall back on the simplest rule they know. So the record keeps a short list of absolutes, and the sharpest is *never give your username or password to another person* — no exception for IT, for a manager, for anyone, because legitimate IT never needs it and every exception becomes the pretext an attacker uses. And the checklist's closing blanks — help desk, reporting method, after-hours contact — are the whole program in miniature: **a reporting culture with an unfilled contact line is a poster, not a defense.** Filling them in, publishing them, and keeping them current is an executive responsibility, not a formatting detail.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Every employee runs the verification habit and reports suspicion — everyone is a sensor. | Employees are the ones blamed when an attack succeeds — the system absorbs mistakes; that is its job. |\n| Reporting is blame-free, whether or not the person clicked. | Clicks have no follow-up — password resets, device checks, and coaching still happen; they are help, not punishment. |\n| Unusual requests are verified through a separate trusted channel. | Every email needs a phone call — the habit triggers on unexpected, pressured, or sensitive requests. |\n| Urgency and pressure are treated as warning signs in themselves. | Nothing is ever actually urgent — verified urgent requests proceed; unverified ones wait thirty seconds for the check. |\n| A username or password is never given to another person, IT included. | Credential sharing is acceptable with sufficiently senior people — seniority is the pretext attacks are built on. |\n| Suspicious messages are reported and kept, never forwarded to coworkers. | Warning colleagues is wrong — warnings travel through IT's channel, not with the live payload attached. |\n| Help-desk, reporting, and after-hours contacts are filled in, published, and known. | Publishing contacts once is enough — they are verified current as part of the program. |\n\nConcretely: anyone in my organization, asked at random, can name the way to report a phish; every reported message earns a thank-you regardless of outcome; and the after-a-click path — stop, report, disclose what was entered, follow instructions — is rehearsed in onboarding and refreshed in [Security Education](user-education.html), not discovered during the first real incident.\n\n## Anti-Patterns\n\n- **The shame spiral.** Clickers are named, mocked, or written up — and the next employee who clicks tells no one, handing the attacker days of quiet dwell time that a safe report would have cut to minutes.\n- **The urgency reflex.** The message says *now*, so the employee complies now — pressure treated as a reason to skip verification instead of the reason to run it.\n- **The helpful forward.** A suspicious email forwarded to the whole team as a warning — spreading the live link to more inboxes faster than the attacker's own send.\n- **The silent near-miss.** \"I didn't click, so there's nothing to report\" — the campaign's earliest warning deleted, while the same message waits in thirty other inboxes.\n- **The credential courtesy.** A password read out to a caller from \"IT\" who was polite, insistent, and in a hurry — the one absolute rule broken for the exact scenario it exists to stop.\n- **The filter faith.** \"Our email security catches this\" — awareness treated as redundant, right up until the message engineered to pass the filter lands in front of an untrained human.\n- **The blank contact line.** A reporting policy whose help-desk and after-hours lines were never filled in or went stale — suspicion with nowhere to go becomes suspicion discarded.\n- **The annual checkbox.** Phishing awareness as a once-a-year compliance module — the habit this record needs is built by continuous reinforcement, not by a certificate.\n\n## Related Records\n\n- [Security Education](user-education.html) — the program that teaches, drills, and refreshes this record's habits; this is its highest-stakes curriculum.\n- [Incident Response](incident-response.html) — where a reported phish with a click goes next; this record's fast-report culture is that record's early-escalation culture applied to everyone.\n- [Authentication](authentication.html) — MFA and credential hygiene bound the damage when a password is phished anyway; the technical backstop to the never-share rule lives there.\n- [Endpoints](endpoints.html) — the macro prompts, malicious installers, and found USB media in the warning signs land on endpoints; hardening there absorbs the clicks that slip through.\n- [Creating a Security Program: Risk Before Tools](security-program.html) — the program that owns the reporting channel, keeps the contact lines current, and measures whether the culture test holds.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to everyone in my organization, on every channel a social-engineering attempt can arrive — email, web, phone, text, and physical media. I revisit it if reporting rates fall or a real incident reveals employees hesitated to report (the culture test failing), if attack techniques shift materially — AI-generated lures, deepfake voice calls, and QR-code phishing already strain the sender-checks — or if a phishing simulation program is introduced, whose design must reinforce the blame-free reporting culture rather than undermine it.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, William F. Reyor III; O'Reilly) — the Phishing Awareness and Response chapter, whose employee-facing checklist this record distills.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "Phishing is the front door of most incidents, and my organization defends it with **people, not just filters**. Every employee runs a short verification habit before clicking — was I expecting this, does the sender match, is it manufacturing urgency, is it asking for credentials — and verifies unusual requests through a separate trusted channel. The warning signs are taught in plain language across every medium the attack arrives on, and reporting is fast, easy, and blame-free whether or not anyone clicked. The test: the employee who clicked reports it within minutes — because they know they will be helped, not punished.\n\n**What changes**\n\n* **A pre-click habit becomes universal.** Expectation, sender match, urgency, and credential requests are checked on every message; unusual work requests are verified out-of-band through a known-good channel; doubt means stop and contact the help desk, not proceed carefully.\n* **Warning signs are taught by feel, look, and sound.** The bounced login, the misbehaving site, the strange attachment error, the macro prompt, the familiar page on a wrong URL, the found USB drive, the caller from \"IT\" wanting a password — phishing is trained as a multi-channel con, not an email-only problem.\n* **The after-click path is rehearsed and safe.** Stop, enter nothing more, report immediately, disclose exactly what was clicked and whether credentials went in, follow instructions for resets and device checks — with the clicked employee treated as the response's first sensor, never its culprit.\n* **Near-misses become intelligence.** Suspicious messages are reported and kept even when nobody clicked — one report protects everyone who received the same campaign — and are never forwarded to coworkers, which spreads the live payload.\n* **A few rules become absolute.** No unexpected links, no unexpected attachments, never give a username or password to another person, verify unusual requests, report anything that feels, looks, or sounds funny — and the help-desk, phishing-report, and after-hours contacts are filled in, published, and current.\n\n**What it costs**\n\n* Continuous reinforcement instead of an annual module — the habit is built by repetition through onboarding and ongoing education.\n* A visible thank-you culture for reports, including false alarms and clicks — blame is the one expense this record forbids.\n* A small standing overhead of out-of-band verification on unusual requests — thirty seconds that defeats attacks no filter catches.\n\n**What we are not doing**\n\n* Not replacing technical email defenses — filters catch the volume; this record catches what is engineered to pass them.\n* Not running the post-click investigation here — a reported click hands off to [Incident Response](incident-response.html).\n* Not owning the broader curriculum or the credential controls — those live in [Security Education](user-education.html) and [Authentication](authentication.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full employee-facing checklist with the warning signs and contact lines. Grounded in the Phishing Awareness and Response chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "3 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the employee-facing phishing checklist, from the pre-click verification habit through the warning signs, the after-a-click response, and the rules to remember. This is the handout version: written for every employee, not just responders. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Before Clicking a Link or Opening an Attachment\n\n- [ ] Was I expecting this email, link, or attachment?\n- [ ] Do I recognize the sender?\n- [ ] Does the sender's email address match the person or organization it claims to be from?\n- [ ] Is the message creating unusual urgency or pressure?\n- [ ] Is it asking for a username, password, financial information, or other sensitive data?\n- [ ] If the message appears work-related, have I verified the request with the sender through a separate trusted method?\n- [ ] If the message contains a website link, have I checked that the URL is correct and uses `https://`?\n- [ ] If anything feels suspicious, have I stopped and contacted the IT Help Desk?\n\n## 2. Warning Signs: Something Feels Funny\n\n- [ ] I logged in and was immediately sent back to the login page\n- [ ] A website does not behave as expected\n- [ ] I received an unexpected package, delivery, payroll, greeting card, or similar message\n- [ ] I received a document claiming to contain sensitive information that I was not expecting\n\n## 3. Warning Signs: Something Looks Funny\n\n- [ ] An attachment opens with an unusual error or does not contain what was promised\n- [ ] I am prompted to enable macros, install software, update a driver, or install a new media player\n- [ ] A website looks familiar, but the URL is different\n- [ ] I found an unknown USB drive, CD, DVD, or other removable media\n\n## 4. Warning Signs: Something Sounds Funny\n\n- [ ] Someone claiming to be from IT asks for my username or password\n- [ ] A caller says they need immediate access to fix an issue I did not report\n- [ ] A new vendor or unfamiliar person wants information about our systems, software, or environment\n- [ ] Someone makes an unusual request while claiming to represent facilities, management, IT, or another department\n\n## 5. If I Already Clicked or Opened Something Suspicious\n\n- [ ] Stop interacting with the message, website, or attachment\n- [ ] Do not enter any additional information\n- [ ] Contact the IT Help Desk immediately\n- [ ] Tell IT what I clicked or opened and what happened afterward\n- [ ] Report whether I entered a username, password, or other sensitive information\n- [ ] Follow IT instructions for password changes, device checks, or other response actions\n- [ ] Report the incident quickly so IT can help protect other users and prevent the issue from spreading\n\n## 6. If I Did Not Click the Link or Attachment\n\n- [ ] Report the suspicious message to IT or through the organization's phishing-reporting process\n- [ ] Do not forward the suspicious message to coworkers unless IT instructs me to do so\n- [ ] Keep the message available if IT needs to review it\n- [ ] Remember that other employees may have received the same attack\n- [ ] Be alert for follow-up attempts from the same or a similar sender\n\n## 7. Information That Should Be Reported\n\n- [ ] Suspicious emails asking for usernames, passwords, banking information, software details, or other sensitive information\n- [ ] Unexpected emails containing links or attachments\n- [ ] Attempts by unauthorized people to access a computer, account, system, or workspace\n- [ ] Requests involving protected health information (PHI) or other confidential information\n- [ ] Suspicious phone calls, messages, websites, or removable media\n\n## 8. Key Rules to Remember\n\n- [ ] Do not click unexpected links\n- [ ] Do not open unexpected attachments\n- [ ] Never give your username or password to another person\n- [ ] Verify unusual requests through a trusted communication channel\n- [ ] When something feels, looks, or sounds suspicious, report it\n- [ ] When in doubt, contact the IT Help Desk\n\n**IT Help Desk:** ______________________________\n**Phishing Report Method:** ____________________\n**Emergency/After-Hours Contact:** _____________\n\nWith the contact lines filled in and published, this page is the whole defense in one place: the questions to ask before clicking, the signs that something feels, looks, or sounds funny, and the report-fast path for both the click and the near-miss. The test running through the whole sequence: **would the person who clicked report it within minutes, knowing they will be helped, not punished?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "7 min listen"}, "blocks": [{"type": "markdown", "content": "## Why People, Not Just Filters\n\n**Ben:** I'll start where every budget conversation starts. We pay for serious email security — filtering, link rewriting, attachment sandboxing. If those work, phishing awareness is redundant; if they don't, I should fix the filters. Why is the answer \"train everyone\"?\n\n**Ana:** Because the filters and the training defend against different messages. Filters catch volume — the sloppy campaigns, the known-bad domains. The attack that matters is the one engineered to pass them: clean domain, no malware in the message body, plausible pretext, one link. That one lands in front of a human, every time. This record is the executive commitment behind a checklist the handbook wrote for *every employee* — not for responders. It's the handout: a short verification habit before clicking, plain-language warning signs, and a report-fast path for both the click and the near-miss.\n\n**Ben:** A \"verification habit\" that people run on hundreds of messages a day? Nobody sustains that.\n\n**Ana:** They don't have to run all of it on everything — that's why the questions are cheap and self-triggering. Was I expecting this? Do I recognize the sender, and does the address actually match who it claims to be? Is it manufacturing urgency? Is it asking for credentials or money? A normal message clears those in a second without conscious effort. The habit only bites on the message that's unexpected, pressured, or asking for something sensitive — which is precisely the profile of the attack the filters missed.\n\n**Ben:** The urgency point interests me, because real work is urgent constantly. How does an employee tell attacker urgency from CFO urgency?\n\n**Ana:** They don't have to tell them apart — that's the trick. The record inverts the attack: pressure itself is the warning sign, and the response to pressure is a thirty-second out-of-band check. Call the known number, message the known handle — never reply to the message that made the request. Real CFO urgency survives thirty seconds of verification effortlessly. Attacker urgency dies there, because the attacker controls the message but not the second channel. Nearly every phish runs on the same engine — manufactured time pressure that switches people from judgment to compliance — so teaching \"the harder it pushes, the more suspicious it is\" defuses the whole engine at once.\n\n## Feels, Looks, Sounds\n\n**Ben:** The warning signs read almost childishly — \"something feels funny,\" \"something looks funny,\" \"something sounds funny.\" Is that register really appropriate for an operating record?\n\n**Ana:** It's the most deliberate design choice in the chapter. An employee who can say \"something sounded funny about that call\" reports. An employee who believes reporting requires technical vocabulary — \"I observed a suspected credential-harvesting attempt\" — stays silent. The sensory language lowers the bar to exactly where it belongs: gut level. And look at what the three families actually cover. Feels funny: you logged in and bounced straight back to the login page — your credentials are already harvested. Looks funny: the macro prompt, the attachment with the weird error, the familiar site on a wrong URL, the USB drive in the parking lot. Sounds funny: the caller from \"IT\" who needs your password, the vendor probing about your systems.\n\n**Ben:** Half of those aren't email.\n\n**Ana:** That's the second point of the three families. Vishing, smishing, baiting with found media — the same con through different channels. Train only the inbox and the attacker walks around your training with a phone call. The record explicitly covers what must be reported: suspicious calls, messages, websites, and removable media, not just email.\n\n**Ben:** And the one absolute — never give your username or password to another person. Not even IT? That feels dogmatic. Sometimes support genuinely needs access.\n\n**Ana:** Legitimate IT never needs your password — they have administrative paths for everything they legitimately do. That's exactly why the rule can be absolute, and absolute is the point: under stress, people fall back on the simplest rule they know, and stress is when phishing strikes. The moment you allow \"unless it's really IT,\" you've handed the attacker their pretext, because *claiming to be IT is the attack*. It's the first line in the sounds-funny list. A rule with exceptions is a negotiation; this one has to be a reflex. And [Authentication](authentication.html) backs the reflex technically — MFA bounds the damage when a password leaks anyway.\n\n## The Minutes After the Click\n\n**Ben:** Now the heart of it. Someone clicks, enters their password, realizes. You know what happens in most companies: they change the password quietly, tell no one, and hope. Why would this record's employee behave differently?\n\n**Ana:** Because the record spends its cultural capital on exactly that moment. Walk through what the clicked employee holds: what was clicked, what happened next, and the single highest-value fact in the whole exchange — whether credentials went in. The response needs that intelligence in minutes. The only variable is whether the person surrenders it or sits on it, and that's decided entirely by what happened to the last person who reported. Every ounce of blame added to the reporting path converts directly into attacker dwell time. Hence the record's test: the employee who clicked reports within minutes, because they know they'll be helped, not punished.\n\n**Ben:** \"Helped, not punished\" — but there are consequences. Password resets, device checks. Doesn't that feel like punishment from the receiving end?\n\n**Ana:** Only if it's framed that way, which is why the record refuses the framing. The resets and checks are the help — they're what stops the stolen credential from becoming a breach. The after-click path is rehearsed in onboarding so it feels like a fire drill, not a confession: stop interacting, enter nothing more, contact the help desk, say what happened, answer the credentials question honestly, follow instructions. People answer that question honestly exactly once: when honesty is safe. The anti-pattern — the shame spiral — buys you an organization where clicks go quiet and attackers get days instead of minutes.\n\n**Ben:** What about the employee who didn't click? They spotted it, deleted it, moved on. No harm done, surely.\n\n**Ana:** That deletion discarded the campaign's earliest warning. Phishing arrives in campaigns — the message one person deleted is sitting unread in thirty other inboxes. So the record insists: no click still means report, keep the message for review, and — the counterintuitive one — never forward it to coworkers as a warning. The helpful forward spreads the live payload faster than the attacker's own send. Warnings travel through IT's channel; one report protects everyone who received the same attack.\n\n## The Blank Lines at the Bottom\n\n**Ben:** The checklist ends with fill-in-the-blank lines. Help desk, phishing report method, after-hours contact. Rather anticlimactic for a defense doctrine.\n\n**Ana:** Those three lines are the executive test of the whole record. Everything above them — the habit, the warning signs, the blame-free reporting — collapses if suspicion has nowhere to go. A reporting culture with an unfilled contact line is a poster, not a defense. And note the third line: after-hours. Phishing doesn't keep business hours, and the employee who realizes at 9 p.m. on a Friday that they entered their password needs a number that answers. Filling those lines, publishing them, keeping them current — that's not formatting, that's the program. My concrete bar: anyone in the organization, asked at random, can name the way to report a phish.\n\n**Ben:** And when a report with a click comes in, this record's job is done?\n\n**Ana:** It hands off. A reported click becomes a suspected incident, and [Incident Response](incident-response.html) takes it — same early-escalation culture, applied to everyone rather than just engineers. This record is that record's front porch. The teaching machinery lives in [Security Education](user-education.html); the endpoint hardening that absorbs the clicks that slip through lives in [Endpoints](endpoints.html).\n\n**Ben:** Then here's my concession, and it's a reframe. I came in thinking phishing awareness was training people not to click. It's actually building a sensor network out of the whole organization — cheap verification at every node, plain-language signal definitions, and a reporting channel that people trust enough to use within minutes, especially when they're the ones who tripped.\n\n**Ana:** That's the record. The click will happen — the defense was never \"nobody ever clicks.\" The defense is that the click is reported before it becomes a breach. Filters catch the volume; the culture catches the one that got through. And the whole thing is measured by a single moment: the employee, password already entered, picking up the phone anyway.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why the front door of most incidents is defended with people, not just filters — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a shady figure dangles a fishing lure shaped like a link before an office door shaped like an envelope.](assets/images/phishing-response/comic-01-the-front-door.jpeg)\n**Panel 1:** *The hook: phishing is the front door of most incidents — the attack that starts most of what incident response later has to handle.*\n\n![Comic panel: filter gates shred crude spam while one polished letter marked due today slips through onto an employee's desk.](assets/images/phishing-response/comic-02-past-the-filters.jpeg)\n**Panel 2:** *The problem: filters catch volume, but the attack that matters is engineered to pass them — a well-crafted message whose only flaws are that it was unexpected, slightly off, and in a hurry.*\n\n![Comic panel: one employee is mocked under a spotlight labeled clicker while another hides a screen and an intruder sneaks deeper.](assets/images/phishing-response/comic-03-the-shame-spiral.jpeg)\n**Panel 3:** *The wrong way: the shame spiral. Mock the clicker and the next employee who clicks tells no one — every ounce of blame on the reporting path converts directly into attacker dwell time.*\n\n![Comic panel: four question cards circle a screen as an employee's hand pauses over the mouse and Nadia holds a stopwatch.](assets/images/phishing-response/comic-04-the-pre-click-habit.jpeg)\n**Panel 4:** *The principle: defend with people, not just filters. Every employee runs the same short habit before clicking — was I expecting this, does the sender match, is it manufacturing urgency, is it asking for credentials?*\n\n![Comic panel: three mini-scenes labeled feels funny, looks funny, sounds funny — a bouncing login, a wrong URL and USB stick, and a suspicious IT caller.](assets/images/phishing-response/comic-05-feels-looks-sounds.jpeg)\n**Panel 5:** *The warning signs are sensory and multi-channel: something feels funny, looks funny, or sounds funny long before a tool flags it — and training only the inbox builds a defense the attacker walks around with a phone call.*\n\n![Comic panel: an employee phones the real colleague on a separate line while a pushy email shouts and the attacker deflates.](assets/images/phishing-response/comic-06-out-of-band.jpeg)\n**Panel 6:** *Urgency is the payload, so pressure is the signal: the harder the message pushes, the more suspicious it becomes — and a thirty-second call through a known-good channel defeats what no inspection would catch.*\n\n![Comic panel: Nadia hands a warm cup to an employee who honestly fills a report form admitting a password was entered.](assets/images/phishing-response/comic-07-sensor-not-culprit.jpeg)\n**Panel 7:** *After the click, speed and honesty beat shame: stop, report immediately, and say exactly what was entered — the clicked employee is the response's first sensor, not its culprit.*\n\n![Comic panel: Vera points at a rules poster headed never give your password to anyone while Nadia fills in blank contact lines.](assets/images/phishing-response/comic-08-absolutes-and-blanks.jpeg)\n**Panel 8:** *The non-negotiables are few and absolute — never give your username or password to another person, IT included — and the contact lines are filled in, published, and current, because a reporting culture with a blank contact line is a poster, not a defense.*\n\n![Comic panel: an employee presses report and a green shield wave covers a grid of thirty inboxes while a stopwatch reads three minutes.](assets/images/phishing-response/comic-09-one-report-thirty-inboxes.jpeg)\n**Panel 9:** *The closer: the culture test — the employee who clicked reports it within minutes, because they know they will be helped, not punished. Phishing arrives in campaigns, and one report protects everyone who received the same attack.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

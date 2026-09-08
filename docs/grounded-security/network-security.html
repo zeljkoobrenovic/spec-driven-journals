@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Secure Network Infrastructure</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="authentication.html" title="Authentication">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="network-segmentation.html" title="Network Segmentation">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Identity and Network</p>
+        <h1>Secure Network Infrastructure</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  9 min · <a class="spec-link" href="network-security.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/network-security/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/network-security/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="authentication.html" title="Authentication">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="network-segmentation.html" title="Network Segmentation">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-NETWORK-SECURITY", "status": "draft:gray", "title": "Secure Network Infrastructure", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "network-security", "timetoread": "9 min", "excerpt": "Every network device my organization runs — router, switch, access point, firewall, VPN appliance — is inventoried, hardened, patched, and watched. Defaults die on arrival; every open port has a justified business purpose; configuration is code with secrets in a dedicated store; the management plane is encrypted, isolated behind a dedicated network and bastion, and administered through individual, centrally authenticated accounts. The network filters outbound as strictly as inbound, IPv6 gets the same security attention as IPv4, wireless runs on modern protocols with rogue-AP monitoring, and VPN appliances are treated as the front door attackers try first. The test I hold the estate to: the hardening claims are proven by a scan, not asserted in a diagram — and they are re-proven after every change.", "tags": "security, network security, device hardening, patch management, SNMP, management network, wireless security, VPN, egress filtering, monitoring", "icon": "assets/icons/network-security.png", "logo": "assets/images/network-security/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["security", "network security", "device hardening", "patch management", "SNMP", "management network", "wireless security", "VPN", "egress filtering", "monitoring"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: The network my organization runs on is not trusted by default — it is **inventoried, hardened, patched, and watched**, device by device. **Defaults die on arrival**: credentials, community strings, and factory configurations are replaced with hardened baselines. **Every open port has a justified business purpose**, and management traffic is **encrypted and isolated** on a dedicated network behind a hardened bastion, administered through **individual, centrally authenticated accounts** — never shared logins. **Configuration is code**, reviewed and version-controlled, with secrets in a dedicated store. The network **filters outbound as strictly as inbound**, treats **IPv6 as a first-class citizen**, runs wireless on modern protocols with rogue-AP monitoring, and treats **VPN appliances as the front door attackers try first**. The test I hold the estate to: **hardening is proven by a scan, not asserted in a diagram** — and re-proven after every change.\n\n## Statement\n\nWhen my organization operates network infrastructure — routers, switches, wireless access points, firewalls, VPN appliances — this is the bar every device is held to.\n\n**Every device is inventoried, hardened, and patched through discipline, not heroics.**\n\n- **The inventory is complete** — routers, switches, WAPs, firewalls, VPN appliances, and the wireless and IoT devices that attach to them. A device not in the inventory is a device not being patched.\n- **Hardening follows established baselines** — CIS Benchmarks or vendor guides where appropriate; unnecessary services and management interfaces disabled; default usernames, passwords, and community strings changed; configurations reviewed regularly for risky settings.\n- **Patching is a controlled cycle**: vendor advisories tracked, release notes reviewed, hardware revisions confirmed, firmware downloaded only from the vendor with integrity verified, configuration backed up, rollback documented, stakeholders notified, changes scheduled through change control, function tested afterward, monitoring confirmed green, outcome communicated.\n\n**Every open port earns its place.**\n\n- Devices are scanned for listening TCP and UDP ports; every open port has a legitimate business purpose or is closed. Unexpected management services on high ports are investigated, not shrugged at.\n- **Telnet is replaced by SSH, HTTP management by HTTPS**, and management services are reachable only from trusted management networks. Port scans are repeated after configuration changes, and authenticated vulnerability scans run where possible.\n\n**Configuration is code; secrets never live in repositories.**\n\n- Network configurations are managed as code where practical — templates in version control, peer review and change control on every change, automated deployment tested before production.\n- **Credentials, API keys, and secrets live in a dedicated secrets-management system** and are never committed to configuration repositories.\n\n**The management plane is the crown jewels — encrypted, isolated, and individually accountable.**\n\n- **SNMP runs v3 with authentication and encryption**; v1 and v2c are avoided, `public` and `private` community strings are dead, access is restricted to authorized management systems, and SNMP cannot be abused as a DDoS amplifier.\n- **Management traffic is encrypted end to end**; devices that cannot support secure management are replaced, and any remaining insecure access is restricted and formally risk-accepted in writing.\n- **A dedicated management network or VLAN** carries administrative traffic; management interfaces are never exposed to the public internet; entry is through a hardened, minimal, MFA-protected bastion host or VPN, with least privilege, RBAC, and centrally logged administrative activity — Zero Trust approaches considered for high-security environments.\n- **Administration is individual and centralized** — TACACS+-style AAA, individual accounts, no shared logins, prompt removal on role change, separation of duties, and regular review of privileged activity.\n\n![Administrator with an individual account reaching routers, switches, and firewalls only through an encrypted, MFA-protected bastion into a dedicated management network, while the internet is blocked at the boundary.](assets/images/network-security/management-plane-isolation.jpeg)\n**Figure 1:** *The management plane is the crown jewels: one encrypted, MFA-protected path through a hardened bastion into a dedicated network — never the public internet, never a shared login.*\n\n**Each device class carries its own discipline.**\n\n- **Routers**: default-deny ACLs applied to the right interfaces and directions, administrative protocols restricted to trusted subnets, dynamic routing protocols authenticated, route advertisements protected.\n- **Switches**: VLANs used for segmentation but never mistaken for physical isolation; VLAN hopping protected against; port security with MAC limits; unused ports disabled or parked in a restricted VLAN; DHCP snooping and Dynamic ARP Inspection enabled; spanning tree secured.\n- **Wireless and IoT**: inventoried, patched, and segmented from sensitive systems; unsupported devices removed or isolated; Bluetooth, cellular, Zigbee, and NFC disabled or constrained where not required; Wi-Fi on WPA2-AES minimum and WPA3 preferred, with enterprise authentication where appropriate, rogue and evil-twin access points detected, and deauthentication attacks monitored.\n\n**Traffic is controlled in both directions, in both protocols.**\n\n- **Segmentation separates** sensitive systems, management traffic, public-facing services, and less-trusted IoT — with inter-segment traffic restricted and controls verified regularly.\n- **Egress is filtered as deliberately as ingress**: only necessary outbound protocols and destinations, denied connections logged, command-and-control patterns monitored, unusual outbound connections investigated — because egress control is what makes exfiltration hard.\n- **IPv6 is secured as a first-class citizen**: discovered where it is enabled, policied, firewalled, monitored — including link-local addresses and tunneling mechanisms — with controls equivalent to IPv4.\n- **DDoS is prepared for**: no open amplifiers (DNS, SNMP), public services behind appropriate protection, origin servers shielded behind the CDN or proxy, a response plan written and traffic monitored for abnormal patterns.\n\n**Remote access and the watch floor close the loop.**\n\n- **VPN appliances are patched aggressively and their advisories tracked** — MFA required, unused accounts disabled, users restricted to the resources they need, and login anomalies investigated.\n- **Monitoring is centralized**: device logs collected centrally, authentication failures and configuration changes watched, unexpected reboots and new listening services alerted on, firewall and egress denials reviewed, unauthorized devices detected — and hardened configurations periodically revalidated, because hardening decays.\n\n## How to Read This\n\nThis record is the infrastructure backbone of the **Identity and Network** section — the devices themselves, hardened, before [Network Segmentation](network-segmentation.html) designs what can talk to what and [Intrusion Detection and Prevention Systems](ids-ips.html) watches the traffic that flows. It is grounded in the Network Security chapter of the *Defensive Security Handbook*, whose checklist carries the title \"Secure Network Infrastructure\" — and this record keeps that name, because that is what the chapter is: not network security in the abstract, but the concrete discipline of the boxes the network is made of. The full working checklist — all twenty-one practice areas plus the chapter's Final Review — lives in the **Checklist** tab; the **TL;DR** tab carries the management summary and the **Conversation** tab the dialog.\n\n## Rationale\n\n**Inventory is the precondition for everything else.** You cannot patch a device you do not know you own, and you cannot notice a rogue device without a list of legitimate ones. Every commitment in this record — advisories tracked, firmware current, configurations revalidated — silently assumes a complete inventory, which is why the inventory comes first and why a device found outside it is treated as a finding, not a footnote. This is [Asset Management and Documentation](asset-management.html) applied to the boxes the network is made of.\n\n**The management plane is worth more than any device it manages.** An attacker who owns one server owns one server; an attacker who owns the management network owns the estate. That asymmetry justifies every layer of the record's management discipline — encrypted protocols, a dedicated network, no internet exposure, a hardened bastion, MFA, individual accounts with centralized AAA. Shared admin logins fail the same test from the inside: when every administrator is `admin`, accountability is a rounding error and offboarding is impossible.\n\n**Hardening is a claim; scanning is the evidence.** Configurations drift, upgrades resurrect disabled services, and a device hardened last year is an assumption, not a fact. That is why the record insists on the verification loop: port scans repeated after changes, authenticated vulnerability scans, and periodic revalidation that hardened configurations remain in place. A hardening standard without a re-scan schedule is a diagram of the network as it was once hoped to be.\n\n![Circular loop of baseline applied, configuration drift, re-scan revealing findings, and fixes restoring the baseline — hardening proven by scans, not assumed.](assets/images/network-security/hardening-verification-loop.jpeg)\n**Figure 2:** *Hardening is a claim; scanning is the evidence — configurations drift and upgrades resurrect disabled services, so the scan loop recurs and the finding is believed over the diagram.*\n\n**Configuration-as-code turns network changes into engineering.** A CLI change made at midnight is invisible to review and irreproducible by the next engineer; a configuration template in version control is a diff someone approved. The same move that made server infrastructure auditable applies to the network — with the same non-negotiable: secrets go to a dedicated store, never to the repository, because a community string in git history is a community string published.\n\n**Egress filtering is where compromise gets caught.** Perimeter thinking spends everything on inbound and lets any internal host talk to the entire internet — which is precisely what malware needs to fetch its second stage and exfiltrate its haul. Filtering outbound traffic, logging the denials, and reading those logs turns the network itself into a detection system: a workstation repeatedly denied a connection to an unexpected address is one of the cheapest, highest-signal alerts my organization will ever get.\n\n![Comparison of an ingress-only firewall letting a compromised workstation reach its command-and-control and exfiltrate data, versus egress filtering blocking, logging, and alerting on the outbound attempt.](assets/images/network-security/egress-filtering-catches-compromise.jpeg)\n**Figure 3:** *Egress is filtered as deliberately as ingress: the denied outbound connection from a workstation is one of the cheapest, highest-signal alerts the organization will ever get.*\n\n**IPv6 ignored is a parallel network with no guards.** Most estates run IPv6 whether anyone decided to or not — enabled by default, tunneled through Teredo or 6to4, invisible to teams who think in IPv4. An attacker does not care which protocol the defenders monitor; traffic flows where inspection is absent. Equivalent controls for IPv6 are not an advanced topic; they are the closing of a door that was open the whole time.\n\n**VPN appliances and wireless are the perimeter's soft edges.** VPN concentrators are internet-facing by design, hold credentials by design, and have carried some of the most exploited vulnerabilities of recent years — which earns them the record's most aggressive patching posture, MFA, and anomaly review. Wireless extends the network past the walls: WPA2/WPA3 keeps the traffic honest, but only rogue-AP and evil-twin monitoring keeps the *network* honest, because the cheapest attack on a wireless estate is standing up a friendly-looking imposter.\n\n**Layer 2 is an attack surface, not plumbing.** ARP spoofing, MAC flooding, VLAN hopping, and rogue DHCP happen below where most monitoring looks — and they hand an attacker the man-in-the-middle position every encrypted protocol upstream is trying to deny. Port security, DHCP snooping, and Dynamic ARP Inspection are cheap, mostly-invisible controls that close the floor under the whole stack; encrypted protocols are the backstop that keeps intercepted traffic worthless anyway.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Every network device is inventoried, baselined, and patched through change control with documented rollback. | Emergency patches wait for the change board — a critical VPN advisory is the emergency process, executed with the same backup-and-rollback discipline. |\n| Every open port has a justified business purpose, re-verified by scans after changes. | Scanning once at deployment is enough — hardening decays, so verification recurs. |\n| Management interfaces live on a dedicated network behind a bastion, never on the public internet. | Administrators lose remote access — they gain a hardened, MFA-protected, audited path. |\n| SNMP runs v3; `public`/`private` community strings are dead. | Monitoring tools are exempt because they are \"internal\" — internal is where attackers operate. |\n| Configuration is code with secrets in a dedicated store. | Every estate converts overnight — but new changes go through review, and secrets leave the repos now. |\n| Egress is filtered, denials are logged and read; IPv6 gets IPv4-equivalent controls. | Blocking IPv6 blindly — the record requires evaluating operational impact, not amputation. |\n| Device administration uses individual, centrally authenticated accounts with separation of duties. | Break-glass access disappears — it exists, sealed, logged, and reviewed when used. |\n| Devices that cannot support secure management are replaced, or their risk formally accepted. | \"Legacy\" is a permanent excuse — acceptance is written, owned, and has an end date. |\n\nConcretely: every network device in my organization can answer four questions — who inventoried it, which baseline hardened it, when it was last patched, and when its hardening was last re-verified by a scan. A device that cannot answer all four is the next work item, and a scan finding that contradicts the diagram is believed over the diagram.\n\n## Anti-Patterns\n\n- **The unknown device.** A switch in a wiring closet that no inventory lists — unpatched for years, defaults intact, discovered only when it appears in an incident timeline.\n- **The `public` community string.** SNMP v2c answering the whole LAN with the factory default — a full map of the estate, free to anyone who asks, and a ready-made DDoS amplifier.\n- **The internet-facing admin page.** A firewall's management interface reachable from anywhere \"temporarily, for the vendor\" — the control plane of the network, one credential-stuffing run from ownership.\n- **The ingress-only firewall.** Meticulous inbound rules and an outbound policy of *any-any* — the compromise walks out the front door, second stage and stolen data alike, unlogged.\n- **The IPv4-only security program.** Firewalls, monitoring, and policies all blind to the IPv6 the operating systems enabled by default — a parallel network with no guards.\n- **The shared `admin` login.** One credential in every engineer's muscle memory — no accountability, no offboarding, and a password that survives every departure.\n- **The forever-unpatched appliance.** A VPN concentrator running firmware from three advisories ago because the outage window never came — the internet-facing front door, held open by scheduling.\n- **The hardened-once network.** Baselines applied at deployment, never revalidated — drift, upgrades, and \"temporary\" changes quietly un-harden the estate while the documentation stays green.\n\n## Related Records\n\n- [Network Segmentation](network-segmentation.html) — the design of what can talk to what; this record hardens the devices that enforce those boundaries.\n- [Authentication](authentication.html) — the credential, MFA, and protocol discipline this record applies to device administration and management planes.\n- [Intrusion Detection and Prevention Systems](ids-ips.html) — detection and prevention on the traffic; this record's device logs and egress denials feed it.\n- [Vulnerability Management](vulnerability-management.html) — the org-wide scanning program; this record's authenticated device scans and revalidation are its network slice.\n- [Logging and Monitoring](logging-and-monitoring.html) — the central platform this record's device logs, alerts, and administrative audit trails flow into.\n- [Asset Management and Documentation](asset-management.html) — the inventory discipline this record's first commitment depends on.\n- [Cloud Infrastructure](cloud-infrastructure.html) — the same hardening instincts where the \"devices\" are virtual networks, security groups, and managed services.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every network device my organization operates — on-premises, in colocation, and the virtual network constructs that replace hardware in cloud estates. I revisit it if an incident or audit finds devices outside the inventory (the precondition failing), if scan results repeatedly contradict the hardening claims (the verification loop failing), if the estate's architecture shifts materially toward SDN or Zero Trust Network Access (the management-plane commitments must be restated in those terms), or if egress filtering is being routed around because it is too coarse — friction in the filter is a defect to fix, not a rule to waive.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, and William F. Reyor III; O'Reilly) — the Network Security chapter, whose checklist (\"Secure Network Infrastructure\", including its Final Review) this record distills.\n- CIS Benchmarks and vendor hardening guides, which the chapter names as the baselines for routers, switches, and network devices.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "The network my organization runs on is not trusted by default — every router, switch, access point, firewall, and VPN appliance is **inventoried, hardened, patched, and watched**. Defaults die on arrival, every open port earns its place, the management plane is isolated and individually accountable, and traffic is filtered outbound as strictly as inbound. The test the estate is held to: hardening is proven by a scan, not asserted in a diagram — and re-proven after every change.\n\n**What changes**\n\n* **Device operations become a controlled cycle.** A complete inventory, CIS-style baselines, tracked vendor advisories, and a patch process with verified firmware, configuration backups, documented rollback, change control, and post-upgrade testing — no more heroic midnight upgrades from memory.\n* **The management plane gets crown-jewel treatment.** SNMPv3 with defaults dead, encrypted management protocols only, a dedicated management network never exposed to the internet, a hardened MFA-protected bastion as the entry point, and individual centrally authenticated admin accounts with separation of duties — shared logins end.\n* **Configuration becomes code.** Templates in version control, peer review and change control on every change, automated changes tested before production, and secrets in a dedicated store — never in a repository.\n* **Traffic is controlled in both directions and both protocols.** Segmentation separates sensitive, management, public-facing, and IoT traffic; egress is filtered with denials logged and read, because outbound control is what makes exfiltration hard; IPv6 gets IPv4-equivalent policy, filtering, and monitoring — including its tunneling mechanisms.\n* **The soft edges get the hardest watch.** Wireless runs WPA2-AES minimum and WPA3 preferred with rogue and evil-twin AP detection; IoT is inventoried, patched, and segregated; layer 2 is defended with port security, DHCP snooping, and Dynamic ARP Inspection; VPN appliances are patched aggressively, MFA-protected, and their logins watched for anomalies; DDoS amplifiers are closed and a response plan exists.\n* **Verification becomes standing work.** Central logs, alerts on reboots and new listening services, egress-denial review, periodic vulnerability scans — and periodic revalidation that hardened configurations are still hardened, because hardening decays.\n\n**What it costs**\n\n* Real engineering time for the inventory, baselining, and configuration-as-code migration — and recurring time for the scan-and-revalidate loop, which never finishes.\n* Change-control discipline slows individual device changes deliberately; the bastion path adds a hop to every administrative session.\n* Some legacy devices will fail the secure-management bar and must be replaced, or their risk formally accepted in writing with an owner and an end date.\n\n**What we are not doing**\n\n* Not designing the segmentation architecture itself — zones, DMZ, and NAC live in [Network Segmentation](network-segmentation.html).\n* Not building the detection layer — that is [Intrusion Detection and Prevention Systems](ids-ips.html), fed by this record's logs.\n* Not mandating vendors — the commitments hold for any estate, hardware or virtual.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries all twenty-one practice areas and the chapter's Final Review. Grounded in the Network Security chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "7 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the full secure-network-infrastructure discipline, from device hardening and patching through the management plane, wireless, egress, IPv6, and monitoring, ending with the chapter's Final Review. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Device Hardening\n\n- [ ] Disable unnecessary services and management interfaces\n- [ ] Replace insecure/default configurations with hardened configurations\n- [ ] Use established security baselines such as CIS Benchmarks where appropriate\n- [ ] Enable encryption for administrative and management traffic\n- [ ] Restrict administrative access to authorized users and systems\n- [ ] Change all default usernames, passwords, and community strings\n- [ ] Keep device firmware and software supported and up to date\n- [ ] Regularly review configurations for unnecessary or risky settings\n\n## 2. Firmware and Software Patching\n\n- [ ] Maintain an inventory of routers, switches, WAPs, firewalls, VPN appliances, and other network devices\n- [ ] Regularly check vendors for patches, firmware releases, and security advisories\n- [ ] Review release notes before installing an update\n- [ ] Confirm the device model and hardware revision support the update\n- [ ] Download firmware only from the official vendor\n- [ ] Verify the integrity/signature of downloaded firmware when supported\n- [ ] Back up the current device configuration before upgrading\n- [ ] Document the recovery or rollback procedure\n- [ ] Notify stakeholders before a change that may cause an outage\n- [ ] Schedule upgrades through the organization's change-control process\n- [ ] Install the update according to vendor instructions\n- [ ] Restart the device when required\n- [ ] Perform functional testing after the upgrade\n- [ ] Confirm monitoring systems show the device operating normally\n- [ ] Communicate the outcome of the change to affected stakeholders\n\n## 3. Services and Open Ports\n\n- [ ] Scan network devices to identify listening TCP and UDP ports\n- [ ] Verify that every open port has a legitimate business purpose\n- [ ] Disable services that are not required\n- [ ] Investigate unexpected management services on high-numbered ports\n- [ ] Restrict management services to trusted management networks\n- [ ] Replace Telnet with SSH wherever possible\n- [ ] Replace HTTP management interfaces with HTTPS\n- [ ] Review UDP services such as SNMP and time synchronization\n- [ ] Repeat port scans after configuration changes to verify hardening\n- [ ] Conduct authenticated vulnerability scans when possible\n\n## 4. Infrastructure as Code / DevOps\n\n- [ ] Consider managing network configurations as code\n- [ ] Store configuration templates in version control\n- [ ] Use peer review and change-control processes for configuration changes\n- [ ] Use automated deployment/testing where appropriate\n- [ ] Store credentials, API keys, and other secrets in a dedicated secrets-management system\n- [ ] Never commit passwords or other secrets directly into configuration repositories\n- [ ] Test automated configuration changes before production deployment\n\n## 5. SNMP Security\n\n- [ ] Avoid SNMPv1\n- [ ] Avoid SNMPv2c where possible\n- [ ] Prefer SNMPv3 with authentication and encryption\n- [ ] Never leave SNMP community strings set to defaults such as `public` or `private`\n- [ ] Use strong, unique SNMP credentials\n- [ ] Restrict SNMP access to authorized management systems\n- [ ] Limit read/write SNMP permissions to systems that actually require them\n- [ ] Prevent publicly accessible SNMP services\n- [ ] Monitor for unauthorized SNMP queries\n- [ ] Check that SNMP cannot be abused as a DDoS amplification service\n\n## 6. Encrypted Management Protocols\n\n- [ ] Use SSH rather than Telnet for command-line administration\n- [ ] Use HTTPS/TLS rather than HTTP for web-based administration\n- [ ] Disable insecure management protocols whenever possible\n- [ ] Replace devices that cannot support secure management protocols\n- [ ] If insecure management cannot immediately be removed, restrict access as much as possible\n- [ ] Document and formally accept any remaining risk\n\n## 7. Management Network\n\n- [ ] Create a dedicated management network or VLAN\n- [ ] Restrict management interfaces so they are reachable only from the management network\n- [ ] Do not expose management interfaces directly to the public internet\n- [ ] Use a hardened bastion host/jump box or VPN for administrative access\n- [ ] Require strong authentication for access to the management network\n- [ ] Apply least privilege to administrative users\n- [ ] Use role-based access control where supported\n- [ ] Consider privileged access management for sensitive systems\n- [ ] Log administrative activity centrally\n- [ ] Consider Zero Trust Network Access or software-defined perimeter approaches for high-security environments\n\n## 8. Bastion Hosts\n\n- [ ] Use a hardened bastion host as a controlled administrative entry point\n- [ ] Install only software and services required for administration\n- [ ] Patch the bastion host frequently\n- [ ] Require strong authentication/MFA\n- [ ] Restrict which administrators can connect\n- [ ] Restrict which network devices can be reached through the bastion host\n- [ ] Log and audit administrative sessions where possible\n\n## 9. Router Security\n\n- [ ] Patch router firmware regularly\n- [ ] Disable unnecessary services\n- [ ] Secure all router management interfaces\n- [ ] Use ACLs to explicitly permit required traffic\n- [ ] Deny unnecessary traffic by default\n- [ ] Apply ACLs to the correct interfaces and directions\n- [ ] Restrict administrative protocols to trusted subnets\n- [ ] Review routing protocol security\n- [ ] Authenticate dynamic routing protocols when supported\n- [ ] Protect against malicious or unauthorized route advertisements\n- [ ] Review the appropriate CIS Benchmark or vendor hardening guide\n\n## 10. Switch Security\n\n- [ ] Segment networks using VLANs appropriately\n- [ ] Do not treat VLANs as equivalent to physical isolation\n- [ ] Protect against VLAN hopping\n- [ ] Enable port security on access ports\n- [ ] Limit the number of MAC addresses permitted per port\n- [ ] Disable unused switch ports\n- [ ] Place unused ports in an unused/restricted VLAN where appropriate\n- [ ] Enable DHCP snooping where supported\n- [ ] Enable Dynamic ARP Inspection where supported\n- [ ] Consider private VLANs for additional segmentation\n- [ ] Protect against MAC spoofing\n- [ ] Secure spanning-tree configurations\n- [ ] Review the appropriate CIS Benchmark or vendor guidance\n\n## 11. Wireless and IoT Devices\n\n- [ ] Maintain an inventory of wireless and IoT devices\n- [ ] Patch wireless devices and IoT firmware regularly\n- [ ] Remove or isolate devices that are no longer supported\n- [ ] Disable unnecessary wireless technologies and interfaces\n- [ ] Apply strong access controls to IoT devices\n- [ ] Segment IoT devices from sensitive systems\n- [ ] Secure device web-management interfaces\n- [ ] Monitor for unauthorized wireless devices\n\n### Bluetooth\n\n- [ ] Disable Bluetooth when it is not required\n- [ ] Avoid unnecessary discoverable/pairing modes\n- [ ] Keep Bluetooth-capable devices patched\n- [ ] Monitor for unauthorized connections where appropriate\n\n### Cellular\n\n- [ ] Prefer current-generation cellular technologies where available\n- [ ] Be aware of weaknesses in legacy 2G/3G networks\n- [ ] Protect sensitive applications independently of the cellular transport\n\n### Zigbee\n\n- [ ] Use supported encryption features\n- [ ] Protect Zigbee-connected devices with strong access controls\n- [ ] Patch vulnerable IoT gateways and web interfaces\n\n### NFC\n\n- [ ] Limit NFC use to required applications\n- [ ] Use encryption and payment/security standards where applicable\n- [ ] Be aware of physical-proximity attacks in crowded environments\n\n## 12. Wi-Fi Security\n\n- [ ] Do not use WEP\n- [ ] Avoid legacy WPA/TKIP\n- [ ] Use WPA2 with AES/CCMP at minimum where WPA3 is unavailable\n- [ ] Prefer WPA3 for supported devices\n- [ ] Use strong, unique wireless credentials\n- [ ] Avoid weak pre-shared keys\n- [ ] Use enterprise authentication where appropriate\n- [ ] Keep access points and wireless controllers patched\n- [ ] Detect and remove rogue access points\n- [ ] Monitor for evil-twin access points\n- [ ] Protect against deauthentication/disconnection attacks where supported\n- [ ] Review wireless logs for suspicious activity\n\n## 13. Network Segmentation\n\n- [ ] Separate sensitive systems from general user networks\n- [ ] Separate management traffic from ordinary user traffic\n- [ ] Place public-facing systems in appropriately isolated network segments\n- [ ] Separate IoT and other less-trusted devices\n- [ ] Restrict traffic between segments using firewalls or ACLs\n- [ ] Allow only explicitly required communications between segments\n- [ ] Regularly verify segmentation controls\n\n## 14. Egress Filtering\n\n- [ ] Filter outbound as well as inbound traffic\n- [ ] Permit only necessary outbound protocols and destinations where practical\n- [ ] Restrict systems from reaching unexpected external IP addresses\n- [ ] Restrict unnecessary outbound ports\n- [ ] Log denied outbound connections\n- [ ] Monitor for command-and-control traffic\n- [ ] Investigate unusual outbound connections\n- [ ] Use egress controls to make data exfiltration more difficult\n- [ ] Review dropped outbound traffic for compromised internal hosts\n\n## 15. IPv6 Security\n\n- [ ] Determine where IPv6 is enabled across the organization\n- [ ] Do not assume IPv6 is unused simply because the network primarily uses IPv4\n- [ ] Create security policies for IPv6 traffic\n- [ ] Configure firewalls to inspect and filter IPv6\n- [ ] Monitor IPv6 traffic\n- [ ] Account for IPv6 link-local addresses\n- [ ] Identify and control IPv6 tunneling mechanisms such as Teredo, 6in4, 6to4, and 6rd\n- [ ] Avoid blindly blocking IPv6 without evaluating operational impact\n- [ ] Ensure security tools can detect IPv6-based attacks\n- [ ] Apply equivalent security controls to IPv4 and IPv6\n\n## 16. Centralized AAA / TACACS+\n\n- [ ] Use centralized authentication for network-device administration\n- [ ] Consider TACACS+ for network infrastructure\n- [ ] Centralize authorization and accounting\n- [ ] Ensure administrators have individual accounts\n- [ ] Avoid shared administrative accounts\n- [ ] Remove access promptly when administrators leave or change roles\n- [ ] Apply separation of duties\n- [ ] Send administrative logs to a centralized logging platform\n- [ ] Regularly review privileged account activity\n\n## 17. ARP and MAC-Layer Attacks\n\n- [ ] Enable protections against ARP cache poisoning\n- [ ] Enable Dynamic ARP Inspection where supported\n- [ ] Enable DHCP snooping\n- [ ] Enable switch port security\n- [ ] Limit permitted MAC addresses on access ports\n- [ ] Monitor for unexpected MAC-address changes\n- [ ] Investigate suspicious ARP activity\n- [ ] Use encrypted protocols so intercepted traffic remains protected\n\n## 18. DDoS Protection\n\n- [ ] Ensure public services cannot be abused as DDoS amplifiers\n- [ ] Restrict externally accessible UDP services\n- [ ] Prevent open DNS, SNMP, and similar amplification services\n- [ ] Place critical public-facing services behind appropriate DDoS protection/CDN services\n- [ ] Restrict direct access to origin servers when using a reverse proxy/CDN\n- [ ] Develop a DDoS response plan\n- [ ] Monitor traffic for abnormal volume and patterns\n\n## 19. VPN Security\n\n- [ ] Keep SSL-VPN and IPsec-VPN appliances fully patched\n- [ ] Regularly review VPN-vendor security advisories\n- [ ] Require MFA for remote-access VPNs\n- [ ] Disable unused VPN accounts\n- [ ] Protect VPN credentials\n- [ ] Restrict VPN users to only the resources they require\n- [ ] Log and monitor remote-access activity\n- [ ] Investigate unusual login locations, times, and patterns\n\n## 20. Wireless Attack Monitoring\n\n- [ ] Monitor for weak or obsolete Wi-Fi security configurations\n- [ ] Detect rogue access points\n- [ ] Detect evil-twin access points\n- [ ] Monitor for repeated deauthentication attacks\n- [ ] Be aware of Wi-Fi jamming/interference\n- [ ] Investigate unexplained wireless outages\n- [ ] Consider wireless intrusion-detection capabilities for sensitive environments\n- [ ] Consider physical security measures where deliberate RF interference is a concern\n\n## 21. Monitoring and Auditing\n\n- [ ] Centralize network-device logs\n- [ ] Monitor authentication failures\n- [ ] Monitor configuration changes\n- [ ] Alert on unexpected device reboots\n- [ ] Alert on new or unexpected listening services\n- [ ] Review firewall and ACL logs\n- [ ] Review denied egress traffic\n- [ ] Monitor for unusual routing changes\n- [ ] Monitor for unauthorized devices\n- [ ] Periodically scan infrastructure for vulnerabilities\n- [ ] Periodically validate that hardened configurations remain in place\n\n## Final Review\n\n- [ ] All network devices are inventoried\n- [ ] All network devices are running supported software/firmware\n- [ ] Default credentials have been removed\n- [ ] Unnecessary services and ports are disabled\n- [ ] Administrative traffic is encrypted\n- [ ] Management interfaces are isolated\n- [ ] Least privilege is enforced\n- [ ] Network segmentation is implemented and tested\n- [ ] Inbound and outbound filtering are configured\n- [ ] SNMP is securely configured\n- [ ] Wireless networks use modern security protocols\n- [ ] IPv6 receives the same security attention as IPv4\n- [ ] VPN infrastructure is patched and monitored\n- [ ] DDoS protections are in place for public-facing services\n- [ ] Central logging and monitoring are enabled\n- [ ] Backups of device configurations are current\n- [ ] Recovery procedures have been tested\n- [ ] Configuration and security reviews are performed regularly\n\nWith the Final Review green, the network infrastructure stands hardened — and stays hardened only as long as the loop keeps running. The test running through the whole checklist: **is every claim on this page provable by a scan, not just asserted in a diagram?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Boxes, Not Abstractions\n\n**Ben:** This record is called \"Secure Network Infrastructure\" and it reads like a network engineer's runbook — firmware, SNMP strings, spanning tree. Why is the executive operating model down in the wiring closet?\n\n**Ana:** Because the network is where every other control physically lives. Segmentation is enforced by these switches, detection rides on these taps, identity traffic crosses these routers. If the boxes are soft, everything above them is decoration. And the record's core claim is an executive claim, not an engineering one: hardening is proven by a scan, not asserted in a diagram. That's a standard of evidence, and setting standards of evidence is exactly what an operating model is for.\n\n**Ben:** Start with the inventory, then. Every record in every security book starts with an inventory. Isn't that a platitude by now?\n\n**Ana:** It's a precondition wearing a platitude's clothes. You cannot patch a device you don't know you own, you can't track an advisory for it, and you can't spot a rogue device without a list of legitimate ones. Every other commitment in the record silently assumes the inventory — which is why a device found outside it is treated as a finding, not a footnote. The anti-pattern is real and common: the switch in a wiring closet no list mentions, unpatched for years, discovered when it shows up in an incident timeline.\n\n**Ben:** The patching section is fifteen steps. Release notes, hardware revisions, config backups, rollback documentation, stakeholder communication. Isn't that ceremony for what's ultimately \"click upgrade\"?\n\n**Ana:** Ask anyone who has bricked a core switch at 2 a.m. The ceremony is the difference between an upgrade and a gamble. Firmware from the vendor with integrity verified — because poisoned firmware is a real supply-chain path. Config backed up and rollback documented — because the upgrade that fails without a way back is an outage you scheduled for yourself. And change control isn't the enemy of urgency: a critical VPN advisory goes through the emergency path, with the same backup-and-rollback discipline, just faster.\n\n## The Management Plane\n\n**Ben:** The record's most aggressive language is about management interfaces. Dedicated network, bastion host, MFA, never on the internet. Why does the admin page rank above the devices themselves?\n\n**Ana:** Asymmetry. An attacker who owns one server owns one server. An attacker who owns the management plane owns the estate — every switch, every firewall rule, every log they'd like to erase. That's why management traffic is encrypted end to end, why management interfaces answer only on a dedicated network, and why the way in is one hardened, minimal, MFA-protected bastion whose sessions are logged. It's also why the record kills the shared `admin` login: when every engineer is `admin`, accountability is a rounding error and offboarding is impossible. Individual accounts, centralized AAA — TACACS+ is the classic answer — separation of duties, and privileged activity actually reviewed.\n\n**Ben:** And SNMP gets its own section because…?\n\n**Ana:** Because it's the most information-rich service nobody thinks about. A `public` community string on v2c answers the whole LAN with a map of your estate — interfaces, routes, sometimes write access — and an exposed SNMP service doubles as a DDoS amplifier for someone else's attack. So: v3 with authentication and encryption, defaults dead, access restricted to the systems that need it, queries monitored.\n\n**Ben:** Configuration as code — that's fashionable. Is it security or is it taste?\n\n**Ana:** It's auditability. A CLI change at midnight is invisible to review and irreproducible by the next engineer; a template in version control is a diff someone approved and anyone can replay. The non-negotiable inside it is the secrets rule: credentials and community strings go to a dedicated secrets store, never to the repository — because a secret in git history is a secret published, permanently.\n\n## Both Directions, Both Protocols\n\n**Ben:** Egress filtering. Every network I've seen filters inbound obsessively and lets anything out. The record calls that a named anti-pattern. Defend it — outbound filtering breaks things and users scream.\n\n**Ana:** It breaks things because nobody ever wrote down what legitimate outbound looks like — which is itself the finding. The perimeter-only posture is exactly what malware needs: unrestricted egress to fetch its second stage and walk the data out. Filter outbound to necessary protocols and destinations, log the denials, and *read* the log — and the network becomes a detection system. A workstation repeatedly denied a connection to an unexpected address is one of the cheapest, highest-signal alerts we will ever get. The record even says friction in the filter is a defect to fix, not a reason to waive the rule.\n\n**Ben:** Then IPv6, which most organizations handle by pretending it doesn't exist.\n\n**Ana:** While their operating systems run it by default and tunnel it through Teredo and 6to4 past every IPv4-shaped control. That's a parallel network with no guards. The record's demand is equivalence, not heroics: find where IPv6 is enabled, write policy for it, filter it, monitor it — including link-local and the tunneling mechanisms — and don't blindly block it without evaluating what breaks. An attacker doesn't care which protocol the defenders monitor.\n\n**Ben:** And DDoS? That's mostly someone else's botnet problem, surely.\n\n**Ana:** Two duties, both ours. Never be part of the cannon — no open DNS or SNMP amplifiers answering the internet on our address space. And don't be an easy target: public-facing services behind DDoS protection or a CDN, origin servers shielded so attackers can't route around it, and a response plan written before the traffic spike, not during it.\n\n**Ben:** Layer 2 — ARP inspection, DHCP snooping, port security. That's deep plumbing. Does it earn its place in an operating record?\n\n**Ana:** It closes the floor under the whole stack. ARP spoofing and rogue DHCP hand an attacker the man-in-the-middle position below where most monitoring looks. Dynamic ARP Inspection, DHCP snooping, port security with MAC limits, unused ports disabled — cheap, mostly invisible controls. And the backstop is encrypted protocols everywhere, so intercepted traffic is worthless even when someone does get that position. Same spirit as the VLAN warning: a VLAN is a label on a frame, not a wall — useful for segmentation, never mistaken for physical isolation.\n\n## The Soft Edges and the Loop\n\n**Ben:** VPN appliances get singled out for \"the most aggressive patching posture\". Why them specifically?\n\n**Ana:** They're internet-facing by design, they hold credentials by design, and their vulnerabilities have been among the most exploited of recent years — an unpatched VPN concentrator is the front door with the lock removed. So: advisories tracked as they publish, patches applied on the emergency path when needed, MFA required, unused accounts disabled, users restricted to the resources they need, and login anomalies — locations, times, patterns — actually investigated.\n\n**Ben:** Wireless and IoT?\n\n**Ana:** The perimeter's other soft edge. WPA2-AES minimum, WPA3 preferred, enterprise authentication where appropriate — that keeps the traffic honest. But the network stays honest only with monitoring, because the cheapest wireless attack is standing up a friendly-looking imposter: rogue and evil-twin AP detection, deauthentication monitoring. And IoT is inventoried, patched, and segregated from sensitive systems, with Bluetooth, Zigbee, and the rest disabled where they're not needed — the smart screen in the boardroom does not share a segment with finance.\n\n**Ben:** Last objection. The record ends with \"periodically validate that hardened configurations remain in place.\" You hardened everything once — why doesn't it stay hardened?\n\n**Ana:** Because hardening decays. Configurations drift, upgrades resurrect disabled services, \"temporary\" changes outlive their tickets. That's the hardened-once anti-pattern: documentation green, estate quietly un-hardened. So verification is standing work — port scans repeated after changes, authenticated vulnerability scans, central logs with alerts on reboots and new listening services, and the periodic re-check that reality still matches the baseline.\n\n**Ben:** So the takeaway I'd carry out of the room: the network isn't secure because we hardened it — it's secure because we can prove it's still hardened, this week, with a scan.\n\n**Ana:** That's the record. Four questions for any device: who inventoried it, which baseline hardened it, when was it last patched, when was its hardening last re-verified. A device that can't answer all four is the next work item — and when the scan contradicts the diagram, we believe the scan.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why the network is inventoried, hardened, patched, and watched — and proven by a scan, not a diagram — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Nadia shines a flashlight on a cobwebbed switch tagged not in inventory while Vera checks a clipboard.](assets/images/network-security/comic-01-the-unknown-switch.jpeg)\n**Panel 1:** *The hook: the unknown device — a switch no inventory lists, unpatched for years, discovered only when it shows up in an incident timeline.*\n\n![Comic panel: rack devices with factory tags reading admin/admin, public, private while a door opens itself for an attacker.](assets/images/network-security/comic-02-defaults-everywhere.jpeg)\n**Panel 2:** *The problem: factory defaults — credentials, community strings, and Telnet still on mean the estate answers to anyone who asks.*\n\n![Comic panel: a framed diagram stamped hardened 2019 hides a real rack with glowing open ports and creeping weeds as Nadia looks behind it.](assets/images/network-security/comic-03-the-diagram-says-secure.jpeg)\n**Panel 3:** *The wrong way: the hardened-once network — baselines applied at deployment, never revalidated, while drift quietly un-hardens the estate and the documentation stays green.*\n\n![Comic panel: Vera scans a rack with a beam, devices show green checks except one red open port that Nadia moves to fix.](assets/images/network-security/comic-04-proven-by-a-scan.jpeg)\n**Panel 4:** *The principle: inventoried, hardened, patched, watched — and the claim is proven by a scan, not asserted in a diagram, then re-proven after every change.*\n\n![Comic panel: a fortified room labeled management network reached only by a bastion drawbridge with MFA keypad, Nadia crossing with her badge.](assets/images/network-security/comic-05-the-management-vault.jpeg)\n**Panel 5:** *Practice: the management plane is the crown jewels — dedicated network, never internet-exposed, entered through a hardened MFA bastion with individual, centrally authenticated accounts.*\n\n![Comic panel: midnight CLI changes vanish into smoke on one side; on the other a reviewed config template pipeline with a separate secrets safe.](assets/images/network-security/comic-06-config-is-code.jpeg)\n**Panel 6:** *Practice: configuration is code — version-controlled templates, peer review, tested deployment; secrets live in a dedicated store, never in the repository.*\n\n![Comic panel: a burglar with a data sack blocked at an exit turnstile labeled egress filter while a denied-log lamp lights on Nadia's desk.](assets/images/network-security/comic-07-egress-catches-the-thief.jpeg)\n**Panel 7:** *Practice: filter outbound as strictly as inbound — a host repeatedly denied an unexpected connection is one of the cheapest, highest-signal alerts the organization will ever get.*\n\n![Comic panel: attackers probe a rusty VPN gate, a fake Wi-Fi antenna, and an unguarded tunnel labeled IPv6 while Vera watches from a tower.](assets/images/network-security/comic-08-the-soft-edges.jpeg)\n**Panel 8:** *The cost: the perimeter's soft edges — unpatched VPN appliances, evil-twin access points, and an IPv6 network nobody guards are where compromise walks in.*\n\n![Comic panel: a sweating network device interrogated under a lamp as Vera reads four questions and Nadia holds a work-order pad.](assets/images/network-security/comic-09-four-questions.jpeg)\n**Panel 9:** *The closer: every device answers four questions — who inventoried it, which baseline hardened it, when it was patched, when its hardening was last re-verified. No answers, next work item.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

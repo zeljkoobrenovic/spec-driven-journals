@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Secure Software Development</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="vulnerability-management.html" title="Vulnerability Management">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="osint-purple-teaming.html" title="OSINT and Purple Teaming">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Assess and Improve</p>
+        <h1>Secure Software Development</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  8 min · <a class="spec-link" href="secure-software-development.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/secure-software-development/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/secure-software-development/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="vulnerability-management.html" title="Vulnerability Management">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="osint-purple-teaming.html" title="OSINT and Purple Teaming">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-SECURE-SOFTWARE-DEVELOPMENT", "status": "draft:gray", "title": "Secure Software Development", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "secure-software-development", "timetoread": "8 min", "excerpt": "My organization builds security into software; it does not test security onto it at the end. Language choice is a security decision made with each language's risks understood; secure coding standards are documented and applied consistently, and no user-supplied input — defined broadly, from network to peripheral — is processed without validation of type, length, range, and relational validity. Security testing runs throughout development, not only before release: static analysis in the pipeline with secret detection, dynamic testing against the running application, and systematic peer review, each covering the others' blind spots. Security is incorporated into every stage of the lifecycle, from developer training through requirements, threat-modeled design, coding, testing, and a release with operational handoff — and the final review is the gate: standards followed, input validated, testing complete, known vulnerabilities remediated or formally addressed, before production.", "tags": "security, secure development, SDLC, input validation, static analysis, dynamic testing, threat modeling, code review, defensive security", "logo": "assets/images/secure-software-development/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)", "icon": "assets/icons/secure-software-development.png"}, "tags": ["security", "secure development", "SDLC", "input validation", "static analysis", "dynamic testing", "threat modeling", "code review", "defensive security"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: My organization **builds security into software; it does not test security onto it at the end**. **Language choice is a security decision** — memory-safe languages preferred where practical, each language's risks understood and countered. **Secure coding standards are documented and applied consistently**, and **no user-supplied input is processed without validation** — type, length, range, and relational validity, with input defined broadly enough to include every channel data arrives on. **Security testing runs throughout development** — static analysis in the pipeline, dynamic testing against the running application, systematic peer review — each method covering the others' blind spots, because none suffices alone. **Security is incorporated into every stage of the lifecycle**, from training through release. The gate I hold every release to is the final review: **standards followed, input validated, testing complete, security in every stage, and known vulnerabilities remediated or formally addressed — before production.**\n\n## Statement\n\nWhen my organization writes software, this is the bar every codebase and every release is held to.\n\n**Language choice is a security decision.**\n\n- Security is a criterion when selecting a programming language: the language's **built-in protections against common vulnerabilities** are evaluated, **memory-safe languages are preferred where practical**, the risks of the selected language are understood, and its security scanning tools and libraries are used.\n- The per-language discipline is explicit: **assembly** only when necessary, with its lack of safety checks acknowledged; **C/C++** with careful pointer and memory management against buffer overflows, use-after-free, and double-free; **Go** leaning on garbage collection, strong typing, bounds checking, and limited pointer arithmetic — with the `unsafe` package avoided unless absolutely necessary; **Rust** using ownership and memory-safety protections; **Python, Ruby, and Perl** validating input carefully even though automatic memory management removes many memory risks; **PHP** avoiding insecure features such as unsafe remote file inclusion and improperly validated user-controlled input.\n\n**Secure coding standards are written down and applied everywhere.**\n\n- **Documented secure coding standards** exist for the development team and are applied **consistently across the codebase** — not per developer, not per mood.\n- **User-supplied input is defined broadly** — networks, files, command-line input, GUI interactions, peripheral devices — and **never processed without validation first**: expected data type, expected length, expected range, and validity in relation to other data in the same transaction, with invalid data rejected or discarded.\n- **Approved libraries and reusable code** handle common security-sensitive tasks, and standards exist for the areas where improvisation is most expensive: **cryptography, database access, memory management, network communication, error handling, authentication, audit logging, and access management** — plus secure session management for web applications and defined security requirements for client–server communication.\n\n**Security testing runs throughout development — three methods, one discipline.**\n\n- Security testing happens **before code reaches production and throughout development**, with methods selected to fit the application and the environment.\n- **Static analysis** scans source without executing it, integrated into CI/CD, running on new and modified code at every commit, with findings reviewed for false positives; it checks for buffer overflows and memory weaknesses, unsafe and dangerous functions, and — via secret-detection tools — accidentally committed **passwords, tokens, API keys, and private cryptographic keys**. Its limit is named: static analysis can miss design-level vulnerabilities, so it is supplemented, never solitary.\n- **Dynamic testing** exercises the running application with varied inputs, hunting what static analysis cannot see — improper input handling, injection, reflection and output-handling issues — with its own coverage limits acknowledged.\n- **Peer review** is systematic, not social: another developer reviews new and modified code specifically for security weaknesses, findings are verified before remediation is demanded, reviewers are chosen for knowledge of the language and the vulnerability class, and review is **combined with automated testing rather than relied on alone**.\n\n**Security lives in every stage of the lifecycle.**\n\n- **Training**: developers are trained in secure development, threat modeling, security testing, and relevant privacy obligations — able both to write secure code and to interpret security-testing results.\n- **Requirements**: security requirements are identified **at the same time as functional requirements**, treated as mandatory rather than optional additions, documented clearly, and kept visible throughout the project.\n- **Architecture and design**: security expectations are defined **before coding begins** — where encryption is required, where access controls are required, how sensitive information is stored and handled; **threat modeling happens during design**, high-level attack methods are identified, proposed designs are reviewed for weaknesses and modified to reduce attack surface, and controls land in the right places.\n- **Code and build**: development follows the approved architecture, the predetermined language, the organizational coding guidelines, agreed security practices, and approved libraries and tools.\n- **Test and review**: functionality *and* security are tested, multiple security-testing methods are used where appropriate, defects are identified, documented, and severity-assessed, vulnerable code goes back to its developers, and **fixes are retested before release**.\n- **Release**: the formal release process runs — a final security review, confirmation that identified defects are addressed, operational documentation prepared, **incident-response and business-continuity procedures in place**, and information and responsibility transferred to the operational support teams.\n\n![Pipeline diagram with a shield built into each of six SDLC stages, contrasted with a crossed-out pipeline that has one shield bolted on at the end.](assets/images/secure-software-development/security-in-every-stage.jpeg)\n**Figure 1:** *Security is incorporated into every stage of the lifecycle — not bolted on as a final check before shipping.*\n\n**The final review is the gate.**\n\n- Before production: secure coding standards documented and followed; user input validated before processing; appropriate static, dynamic, and manual testing completed; security incorporated into every SDLC stage; **known vulnerabilities remediated or formally addressed**; and the application ready for its final security review.\n\n## How to Read This\n\nThis record sits in the **Assess and Improve** section of the journal as the upstream half of a pair: [Vulnerability Management](vulnerability-management.html) finds and fixes weaknesses in the running estate; this record makes sure my organization ships fewer of them in the first place. It is grounded in the Secure Software Development chapter of the *Defensive Security Handbook* (Brotherston, Berlin, and Reyor). The full working checklist — language considerations, coding standards, the three testing methods, all six SDLC stages, and the final review — lives in the **Checklist** tab; the management summary is in the **TL;DR** tab and the conversation in the **Conversation** tab.\n\n## Rationale\n\n**A defect found at design costs a meeting; the same defect found in production costs an incident.** That gradient is the entire argument for building security in rather than bolting it on. A security review scheduled only at the end can find flaws but cannot afford to fix the deep ones — by then the architecture is poured concrete, and the review's real choices are \"ship it anyway\" or \"miss the date.\" Moving security into requirements and design — where threat modeling reshapes the attack surface before it exists — is not idealism; it is buying the fix at its cheapest point on the curve.\n\n![Chart of the cost to fix one defect rising steeply from a meeting at design stage to an incident in production.](assets/images/secure-software-development/cost-of-fix-gradient.jpeg)\n**Figure 2:** *The same defect, priced at two points on the curve: a meeting at design, an incident in production — building security in buys the fix at its cheapest point.*\n\n**Language choice is risk allocation, whether we admit it or not.** Choosing C++ is choosing to manage memory correctly forever; choosing a memory-safe language retires whole vulnerability classes at the compiler. Neither choice is wrong — sometimes the performance or the ecosystem genuinely demands the sharper tool — but the record requires the choice to be made *as* a security decision, with the risks named and the countermeasures budgeted. And safety features only help when they are used: a Go codebase threaded with `unsafe`, or a Python service that skips input validation because \"memory is managed,\" has quietly opted back into the risks the language was chosen to avoid.\n\n**Input validation is the one rule with no safe exception.** Nearly every classic application vulnerability — injection, overflow, path traversal, deserialization abuse — is at bottom the same event: data that arrived from outside was treated as more trustworthy than it was. That is why the record defines user-supplied input broadly — network, file, command line, GUI, peripheral — and why validation checks structure, not just presence: type, length, range, and whether the value is coherent with the rest of the transaction. \"Never process input without validating it first\" is the cheapest sentence in this journal relative to the damage it prevents.\n\n**Standards beat heroics because security-sensitive code punishes improvisation.** Cryptography, session management, database access, authentication — these are domains where subtly wrong looks identical to right until the breach. Documented standards and approved libraries convert those domains from per-developer invention into settled organizational decisions, made once, reviewed properly, reused everywhere. Consistency is itself a control: a codebase that does the same thing the same way everywhere is a codebase where the anomaly stands out.\n\n**The three testing methods are honest about each other's blindness — that is their strength.** Static analysis reads everything but understands nothing about runtime; dynamic testing sees real behavior but only along the paths it happens to walk; human reviewers see intent and design but tire, and cannot read every line. Any one of them alone produces confident false comfort. The record runs all three — static in the pipeline at every commit, dynamic against the running application, systematic peer review by people who know the language and the vulnerability class — precisely because each one's blind spot is another's specialty. The secret-detection clause earns its own mention: a committed credential is not a code-quality issue, it is a standing breach, and machines find it faster than reviewers do.\n\n![Venn diagram of static analysis, dynamic testing, and peer review overlapping, each labeled with its strength and blind spot, with a shield in the shared center.](assets/images/secure-software-development/three-methods-blind-spots.jpeg)\n**Figure 3:** *Three methods, one discipline: each testing method's blind spot is another's specialty, so none is trusted alone.*\n\n**Retesting and the final review keep the gate honest.** A fix that was never retested is a hypothesis, and a release gate that can be talked past is decoration. The record's release stage demands the unglamorous proofs: security defects severity-assessed and returned, fixes retested before release, the final review confirming that every earlier stage actually happened — and known vulnerabilities either remediated or *formally* addressed, meaning a documented, owned decision rather than a shrug. \"Formally addressed\" is the honest release valve: it keeps the gate strict without pretending every finding can be fixed by Friday.\n\n**A release is not done when the code ships; it is done when someone can operate it under attack.** The chapter's release stage includes what most SDLC diagrams forget: operational documentation, incident-response and business-continuity procedures in place, and a real transfer of knowledge and responsibility to support teams. Software without an operational handoff is an incident where the only person who understands the system is the one who has moved on to the next project.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Language choice weighs security; memory-safe languages are preferred where practical. | Existing C/C++ codebases are rewritten on principle — the record demands managed risk, not migration. |\n| No user-supplied input is processed without type, length, range, and relational validation. | Validation applies only to web forms — every input channel counts, including files and peripherals. |\n| Security-sensitive domains use approved libraries and documented standards. | Teams may hand-roll cryptography or session management if they feel confident. |\n| Static analysis runs in CI on every change, with findings reviewed for false positives. | Every static-analysis finding is a defect, or an unreviewed finding queue counts as testing. |\n| Static, dynamic, and peer review all run — each covers the others' blind spots. | Any single method — including a strong review culture — is sufficient alone. |\n| Security requirements are mandatory and set alongside functional requirements. | Security requirements are a backlog category that can be traded away under deadline. |\n| Threat modeling happens during architecture and design. | Threat modeling is a post-hoc audit exercise on a finished design. |\n| Release requires a final security review, ops documentation, IR/BC procedures, and handoff. | Shipping the code closes the project. |\n\nConcretely: every project in my organization can show its documented coding standard, its threat model, its pipeline's static-analysis and secret-detection stages, its dynamic-test results, and its final review — and the first question at the release gate is not *\"did we test it?\"* but *\"which stage would have caught the defect class we most fear, and did that stage actually run?\"*\n\n## Anti-Patterns\n\n- **The pre-release security sprint.** Security compressed into a two-week audit before launch — deep flaws found precisely when they are most expensive to fix, then waived to protect the date.\n- **The trusted input.** Validation applied to the login form but not the file upload, the API, or the message queue — the attacker simply uses the door without the guard.\n- **Artisanal crypto.** A developer hand-rolling cryptography or session management because the approved library felt heavy — subtly wrong, invisible until the breach.\n- **The suppressed finding.** A static-analysis queue so full of unreviewed noise that the team globally silences it — the scanner still runs, satisfying the pipeline, detecting nothing anyone reads.\n- **The heroic reviewer.** Peer review as the only security control, resting on one senior engineer's vigilance — thorough on Monday, exhausted by Thursday, on holiday when it mattered.\n- **The optional requirement.** Security requirements logged as nice-to-haves and traded away in the first scope negotiation — mandatory in name, decorative in practice.\n- **The committed credential.** An API key pushed \"temporarily\" with no secret detection in the pipeline — history is forever, and the key is live in every clone.\n- **The orphaned release.** Code shipped with no operational documentation, no incident-response procedure, no handoff — the first production incident finds a system nobody on call understands.\n\n## Related Records\n\n- [Vulnerability Management](vulnerability-management.html) — the downstream program that finds what slips through; this record exists to shrink its backlog at the source.\n- [Standards and Procedures](standards-and-procedures.html) — the organizational machinery for standards; the secure coding standard is one of its most consequential instances.\n- [Security Education](user-education.html) — the organization-wide awareness layer; this record's developer training is its technical, role-specific counterpart.\n- [Authentication](authentication.html) — the identity baseline that application authentication and access-management standards must align with.\n- [Databases](databases.html) — the hardened database layer; this record governs the code that talks to it, including the database-access standard that keeps injection out.\n- [Incident Response](incident-response.html) — the procedures the release stage requires to be in place before software goes to production.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to all software my organization develops — products, internal tools, and infrastructure code alike. I revisit it if production incidents trace repeatedly to a vulnerability class the pipeline should have caught (the testing trio failing in practice), if static-analysis findings age unreviewed (the suppressed-finding anti-pattern arriving on schedule), if the language portfolio shifts materially toward or away from memory safety, or if the tooling landscape changes what \"appropriate testing\" means — including AI-assisted code generation and review, which changes the volume and character of code the gate must judge, not the gate itself.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, and William F. Reyor III; O'Reilly) — the Secure Software Development chapter, whose checklist (including its final review) this record distills.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "My organization **builds security into software rather than testing it on at the end**. Language choice is made as a security decision; secure coding standards are documented and applied consistently, with no user-supplied input processed unvalidated; static analysis, dynamic testing, and peer review run throughout development, each covering the others' blind spots; and security is incorporated into every stage of a six-stage lifecycle, from developer training to a release with operational handoff. The gate every release passes is the final review: standards followed, input validated, testing complete, known vulnerabilities remediated or formally addressed.\n\n**What changes**\n\n* **Language selection becomes a risk decision.** Memory-safe languages are preferred where practical; where sharper tools are genuinely needed, their risks are named and countered — C/C++ memory discipline, Go without `unsafe`, input validation everywhere regardless of memory model.\n* **Input validation becomes non-negotiable.** User-supplied input is defined broadly — networks, files, command line, GUI, peripherals — and never processed without checks on type, length, range, and coherence with the rest of the transaction. Nearly every classic vulnerability is untrusted data treated as trusted; this is the cheapest rule relative to the damage it prevents.\n* **Security-sensitive code stops being improvised.** Cryptography, database access, session management, authentication, error handling, audit logging, and access management run on documented standards and approved libraries — decided once, reviewed properly, reused everywhere.\n* **Testing becomes a trio.** Static analysis in CI on every change, with secret detection for committed passwords, tokens, and keys, and findings reviewed rather than silenced; dynamic testing against the running application for what static cannot see; systematic peer review by developers who know the language and the vulnerability class — combined, never substituted.\n* **The lifecycle carries security at every stage.** Trained developers; security requirements set alongside functional ones and treated as mandatory; threat modeling during design, where fixes are cheapest; coding against approved architecture and libraries; defects severity-assessed, returned, and retested; and a release stage that includes operational documentation, incident-response and business-continuity procedures, and a real handoff to support teams.\n\n**What it costs**\n\n* Threat modeling, review, and testing time inside every project schedule — paid at design time, where defects are cheapest, instead of at incident time.\n* Pipeline and tooling investment: static analysis, secret detection, and dynamic testing wired into CI/CD and kept reviewed, not just running.\n* Standards maintenance — the coding guidelines and approved-library lists are living documents someone owns.\n\n**What we are not doing**\n\n* Not rewriting existing codebases on principle — the record demands managed risk, not migration.\n* Not replacing the estate-wide program — finding what still slips through lives in [Vulnerability Management](vulnerability-management.html).\n* Not mandating tools — analyzers and scanners are named as capabilities; any toolchain with the same properties qualifies.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full sequence — language considerations, coding standards, the three testing methods, all six SDLC stages, and the final review. Grounded in the Secure Software Development chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "6 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the full secure-development sequence, from language selection through the six SDLC stages and the final review, following the handbook's chapter. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Language Selection\n\n- [ ] Consider **security** when choosing a programming language\n- [ ] Evaluate the language's built-in protections against common vulnerabilities\n- [ ] Prefer memory-safe languages where practical\n- [ ] Understand the security risks associated with the selected language\n- [ ] Use security scanning tools and libraries available for the language\n\n### Language-Specific Considerations\n\n- [ ] **Assembly:** Use only when necessary; recognize the lack of safety checks and high risk of memory-related errors\n- [ ] **C/C++:** Carefully manage pointers and memory to prevent buffer overflows, use-after-free, double-free, and related vulnerabilities\n- [ ] **Go:** Take advantage of garbage collection, strong typing, bounds checking, and limited pointer arithmetic\n- [ ] **Go:** Avoid the `unsafe` package unless absolutely necessary\n- [ ] **Rust:** Use ownership and memory-safety protections to reduce memory-corruption vulnerabilities\n- [ ] **Python/Ruby/Perl:** Validate input carefully even though automatic memory management reduces many memory-related risks\n- [ ] **PHP:** Avoid insecure features and practices such as unsafe remote file inclusion and improperly validated user-controlled input\n\n## 2. Secure Coding Guidelines\n\n- [ ] Establish documented secure coding standards for the development team\n- [ ] Apply the standards consistently across the codebase\n- [ ] Define **user-supplied input** broadly, including data from:\n  - [ ] Networks\n  - [ ] Files\n  - [ ] Command-line input\n  - [ ] GUI interactions\n  - [ ] Peripheral devices\n- [ ] Never process user input without validating it first\n- [ ] Confirm that input is the expected **data type**\n- [ ] Confirm that input is the expected **length**\n- [ ] Confirm that input falls within the expected **range**\n- [ ] Confirm that input is valid in relation to other data in the same transaction\n- [ ] Reject or discard invalid data appropriately\n- [ ] Use approved libraries or reusable code for common security-sensitive tasks\n- [ ] Establish standards for:\n  - [ ] Cryptography\n  - [ ] Database access\n  - [ ] Memory management\n  - [ ] Network communication\n  - [ ] Error handling\n  - [ ] Authentication\n  - [ ] Audit logging\n  - [ ] Access management\n- [ ] For web applications, define secure session-management requirements\n- [ ] Define security requirements for communication between client-side and server-side components\n\n## 3. Security Testing\n\n- [ ] Perform security testing before releasing code to production\n- [ ] Select testing methods appropriate to the application and development environment\n- [ ] Include security testing throughout development rather than only at release\n\n### Automated Static Testing\n\n- [ ] Scan source code without executing it\n- [ ] Integrate static analysis into the CI/CD pipeline when possible\n- [ ] Scan new and modified code whenever changes are committed\n- [ ] Review findings for false positives\n- [ ] Check for buffer overflows and other memory-related weaknesses\n- [ ] Check for use of unsafe or dangerous functions\n- [ ] Use secret-detection tools to identify accidentally committed:\n  - [ ] Passwords\n  - [ ] Tokens\n  - [ ] API keys\n  - [ ] Private cryptographic keys\n- [ ] Supplement static analysis with other techniques because it may miss design-level vulnerabilities\n\n### Automated Dynamic Testing\n\n- [ ] Test the application while it is running\n- [ ] Supply a variety of inputs and observe application behavior\n- [ ] Test for vulnerabilities that may be difficult to detect statically\n- [ ] Test for improper input handling and injection vulnerabilities\n- [ ] Test for reflection or output-handling issues where relevant\n- [ ] Account for the possibility that dynamic testing may not provide complete coverage\n\n### Peer Review\n\n- [ ] Have another developer review new or modified code\n- [ ] Review code systematically for security weaknesses\n- [ ] Verify findings before requiring remediation\n- [ ] Use reviewers with appropriate knowledge of the language and vulnerability type\n- [ ] Combine peer review with automated testing rather than relying on it alone\n\n## 4. Secure Software Development Lifecycle\n\n### Stage 1: Training\n\n- [ ] Train developers in secure software-development practices\n- [ ] Provide training in threat modeling\n- [ ] Provide training in security testing\n- [ ] Provide relevant privacy training\n- [ ] Ensure developers understand both how to write secure code and how to interpret security-testing results\n\n### Stage 2: Requirements\n\n- [ ] Identify security requirements at the same time as functional requirements\n- [ ] Treat security requirements as mandatory requirements rather than optional additions\n- [ ] Document security requirements clearly\n- [ ] Keep security requirements visible throughout the project\n\n### Stage 3: Architecture and Design\n\n- [ ] Define security expectations before coding begins\n- [ ] Identify where encryption is required\n- [ ] Identify where access controls are required\n- [ ] Identify how sensitive information will be stored and handled\n- [ ] Perform threat modeling during architecture and design\n- [ ] Identify high-level attack methods\n- [ ] Review proposed designs for weaknesses\n- [ ] Modify the design to reduce the attack surface\n- [ ] Ensure security controls are implemented in the appropriate locations\n\n### Stage 4: Code and Build\n\n- [ ] Develop according to approved architecture and design specifications\n- [ ] Use the predetermined programming language\n- [ ] Follow organizational secure coding guidelines\n- [ ] Apply agreed-upon security best practices\n- [ ] Use approved libraries and development tools\n\n### Stage 5: Test and Review\n\n- [ ] Test functionality\n- [ ] Perform security testing\n- [ ] Use multiple security-testing methods where appropriate\n- [ ] Identify and document security defects\n- [ ] Assess the severity and impact of defects\n- [ ] Return vulnerable code to developers for remediation\n- [ ] Retest security fixes before release\n\n### Stage 6: Release\n\n- [ ] Follow the organization's formal release process\n- [ ] Conduct a final security review\n- [ ] Confirm that identified security defects have been addressed\n- [ ] Prepare required operational documentation\n- [ ] Ensure incident-response procedures are in place\n- [ ] Ensure business-continuity procedures are in place\n- [ ] Transfer appropriate information and responsibilities to operational support teams\n\n## Final Review\n\n- [ ] Secure coding standards are documented and followed\n- [ ] User input is validated before processing\n- [ ] Appropriate static, dynamic, and manual testing has been completed\n- [ ] Security has been incorporated into every SDLC stage\n- [ ] Known vulnerabilities have been remediated or formally addressed\n- [ ] The application is ready for a final security review before production release\n\nWith the final review green, the release carries its standards, its validation, its testing evidence, and its operational handoff. The test running through the whole sequence: **security was built into every stage — not tested on at the end.**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Built In, Not Bolted On\n\n**Ben:** Let me start where every engineering leader groans. \"Build security in, don't bolt it on\" has been a slide in every conference deck for twenty years. What does this record commit to that the slide doesn't?\n\n**Ana:** The slide states a preference; the record installs a gate. The commitment is that security is incorporated into every one of six lifecycle stages — training, requirements, architecture and design, code and build, test and review, release — and that a release passes a final review proving it: standards documented and followed, input validated, static, dynamic, and manual testing completed, known vulnerabilities remediated or formally addressed. The difference between the slide and the record is that the record can fail you.\n\n**Ben:** And the economic argument, since you'll make it anyway?\n\n**Ana:** A defect found at design costs a meeting; the same defect found in production costs an incident. The pre-release security sprint — the record's first anti-pattern — finds deep flaws at exactly the moment they're most expensive to fix, when the architecture is poured concrete and the real options are \"ship anyway\" or \"miss the date.\" Threat modeling during design isn't idealism; it's buying the fix at the cheapest point on the curve.\n\n**Ben:** \"Formally addressed\" in that final review — isn't that the escape hatch? Every gate has one, and everything eventually goes through it.\n\n**Ana:** It's a valve, and it's deliberately narrow. \"Formally addressed\" means a documented, owned decision about a known vulnerability — the same discipline [Vulnerability Management](vulnerability-management.html) applies to risk acceptance — not a shrug on the way to the release party. It keeps the gate strict without pretending every finding can be fixed by Friday. The failure mode isn't having the valve; it's letting it become the default path, and that shows up in the record's own review questions.\n\n## Languages and the One Unbreakable Rule\n\n**Ben:** Language selection as a security decision. Practically speaking — are you telling teams to rewrite their C++ in Rust?\n\n**Ana:** No, and the record's practice table says so explicitly: managed risk, not migration on principle. The commitment is that the choice is *made* as a security decision — memory-safe languages preferred where practical, and when you genuinely need the sharper tool, the risks named and countered. Choosing C++ is choosing to manage pointers and memory correctly forever — buffer overflows, use-after-free, double-free. That's sometimes the right choice. What's never right is making it accidentally.\n\n**Ben:** But memory-safe languages have their own smugness problem. I've seen Python teams skip validation because \"the language handles that.\"\n\n**Ana:** The chapter anticipates exactly that — Python, Ruby, and Perl get their own line: validate input carefully *even though* automatic memory management removes many memory risks. Same with Go: the language gives you garbage collection, bounds checking, strong typing — and an `unsafe` package that opts you straight back out. A Go codebase threaded with `unsafe` has quietly repurchased the risks the language was chosen to avoid. Safety features only count when you actually use them.\n\n**Ben:** Which brings us to input validation. Every developer says they do it. Every breach report says they didn't.\n\n**Ana:** Because most teams define \"input\" as the web form. The record defines user-supplied input broadly — networks, files, command-line input, GUI interactions, peripheral devices — and the rule has no exception clause: never process input without validating it first. Type, length, range, and the check people skip: whether the value is coherent with the other data in the same transaction. Nearly every classic vulnerability — injection, overflow, traversal — is at bottom the same event: outside data treated as more trustworthy than it was. The trusted-input anti-pattern is the attacker using the door without the guard.\n\n**Ben:** And the standards list — cryptography, sessions, database access, auth. Why standards rather than trusting strong engineers?\n\n**Ana:** Because those are the domains where subtly wrong looks identical to right until the breach. Artisanal crypto is the canonical anti-pattern: a hand-rolled implementation because the approved library felt heavy. Standards and approved libraries convert the most dangerous decisions from per-developer invention into settled organizational ones — made once, reviewed properly, reused everywhere. And consistency is itself a control: in a codebase that does the same thing the same way everywhere, the anomaly stands out.\n\n## Three Tests, Three Blind Spots\n\n**Ben:** Static analysis, dynamic testing, peer review. Tool vendors will happily sell me any one of the three as sufficient. Why does the record insist on all of them?\n\n**Ana:** Because each one is blind in a way another isn't, and the record is honest about it — the chapter itself says static analysis may miss design-level vulnerabilities. Static reads every line but understands nothing about runtime. Dynamic sees real behavior — injection, input handling, output issues — but only on the paths it happens to walk. Reviewers see intent and design but tire, and can't read everything. Run alone, each produces confident false comfort. Run together — static in CI on every commit, dynamic against the running application, systematic review by people who know the language and the vulnerability class — each blind spot lands in another method's specialty.\n\n**Ben:** The static-analysis pipeline is where I've watched this die, though. Three thousand findings, ninety percent noise, and one Tuesday somebody silences the whole thing.\n\n**Ana:** The suppressed finding — and notice the record treats it as a process failure, not a tool failure. The commitment includes reviewing findings for false positives, which is standing work someone owns. A scanner that runs but is never read satisfies the pipeline and detects nothing. Same discipline on the human side: findings are verified before remediation is demanded, so review doesn't decay into noise either.\n\n**Ben:** And secret detection gets its own clause. Why elevate that one check?\n\n**Ana:** Because a committed credential isn't a code-quality issue — it's a standing breach. Passwords, tokens, API keys, private keys in history are live in every clone, forever. Machines find them faster than reviewers, and the tooling is cheap. It's the highest ratio of damage-prevented to effort in the whole testing section.\n\n## The Stages Everyone Forgets\n\n**Ben:** Six stages, and the first one is training. That's usually the line item that dies in budget season.\n\n**Ana:** And the record puts it first on purpose, with a precise bar: developers trained in secure development, threat modeling, security testing, and privacy — able both to write secure code *and* to interpret security-testing results. That second half is underrated. A pipeline that outputs findings nobody can interpret is the suppressed-finding anti-pattern with extra steps. Every later stage assumes stage one happened.\n\n**Ben:** Then requirements. \"Security requirements are mandatory, not optional.\" Every requirement is mandatory until the deadline conversation.\n\n**Ana:** Which is why the record's language is specific: identified at the same time as functional requirements, treated as mandatory rather than optional additions, documented, and kept visible throughout the project. The optional-requirement anti-pattern is precisely the backlog category that gets traded away in the first scope negotiation. Mandatory means it doesn't trade — if it genuinely can't be met, that's a formal decision at the gate, not a quiet deletion in a sprint-planning call.\n\n**Ben:** And release. Most SDLC diagrams end at \"deploy.\"\n\n**Ana:** The chapter's release stage is the one most organizations skip: formal release process, final security review, defects confirmed addressed — and then operational documentation, incident-response and business-continuity procedures in place, and a real transfer of information and responsibility to support teams. The orphaned release is the anti-pattern: the first production incident finds a system nobody on call understands, and the one person who does has moved on. A release isn't done when the code ships; it's done when someone can operate it under attack.\n\n**Ben:** All right, here's my concession, and it's crisper than I expected: the record's real move is turning \"we care about security\" into evidence — a standard you can read, a threat model that exists, a pipeline that ran, and a gate that can actually say no.\n\n**Ana:** That's it exactly. Built in, not bolted on — and provably so, at every stage, before production. The downstream program in [Vulnerability Management](vulnerability-management.html) will always find something. This record's job is to make sure it finds less every quarter.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why security is built into software, not tested onto it at the end — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a worker bolts padlocks onto a finished glass building labeled APP while Vera and Nadia watch.](assets/images/secure-software-development/comic-01-bolted-on.jpeg)\n**Panel 1:** *The hook: bolted-on security — locks added to a finished building protect the walls, not the design.*\n\n![Comic panel: the same defect fixed cheaply on a whiteboard versus expensively as a burning production incident.](assets/images/secure-software-development/comic-02-the-cost-curve.jpeg)\n**Panel 2:** *The problem: the cost curve — a defect found at design costs a meeting; the same defect in production costs an incident.*\n\n![Comic panel: Nadia finds a crack in a building foundation while a manager with a LAUNCH FRIDAY calendar holds a WAIVED stamp.](assets/images/secure-software-development/comic-03-the-security-sprint.jpeg)\n**Panel 3:** *The wrong way: the pre-release security sprint — deep flaws found when the architecture is poured concrete, then waived to protect the date.*\n\n![Comic panel: a six-station factory line from Train to Release with a green shield at every station.](assets/images/secure-software-development/comic-04-every-stage.jpeg)\n**Panel 4:** *The principle: build security in — training, requirements, threat-modeled design, coding, testing, and release each carry the shield.*\n\n![Comic panel: Nadia as a bouncer checks a queue of data parcels at four doors labeled Network, File, CLI, USB and turns one away.](assets/images/secure-software-development/comic-05-validate-every-door.jpeg)\n**Panel 5:** *Practice: the one rule with no safe exception — no user-supplied input, on any channel, is processed without validation first.*\n\n![Comic panel: Nadia weighs a guarded saw labeled memory-safe against a bare blade with a warning tag while Vera points at price tags.](assets/images/secure-software-development/comic-06-the-sharp-tool.jpeg)\n**Panel 6:** *Practice: language choice is risk allocation — memory-safe where practical, the sharper tool only with its risks named and countered.*\n\n![Comic panel: three flashlight beams labeled Static, Dynamic, Review overlap in a dark cave of code, one catching a glowing API key.](assets/images/secure-software-development/comic-07-three-flashlights.jpeg)\n**Panel 7:** *Practice: the testing trio — static in the pipeline, dynamic against the running app, systematic peer review — none suffices alone, and secret detection catches the committed key.*\n\n![Comic panel: a truck of code boxes waits at a gate labeled PRODUCTION while Vera holds a checklist with green check marks.](assets/images/secure-software-development/comic-08-the-final-gate.jpeg)\n**Panel 8:** *The gate: standards followed, input validated, testing complete, fixes retested — known vulnerabilities remediated or formally addressed, before production.*\n\n![Comic panel: a calm night-shift operator holds a runbook during an alert storm as Nadia hands over and waves goodbye.](assets/images/secure-software-development/comic-09-shipped-is-not-done.jpeg)\n**Panel 9:** *The closer: shipped is not done — a release is finished when someone else can operate it under attack, runbook, incident response, and handoff included.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

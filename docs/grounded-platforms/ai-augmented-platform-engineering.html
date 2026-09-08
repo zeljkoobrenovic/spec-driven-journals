@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI-Augmented Platform Engineering</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="resilience-automation.html" title="Resilience Automation">← Previous</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference Implementation</p>
+        <h1>AI-Augmented Platform Engineering</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-20  ·  9 min · <a class="spec-link" href="ai-augmented-platform-engineering.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/ai-augmented-platform-engineering/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/ai-augmented-platform-engineering/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="resilience-automation.html" title="Resilience Automation">← Previous</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REF-AI", "status": "draft:gray", "title": "AI-Augmented Platform Engineering", "date": "2026-08-20", "author": "Željko Obrenović", "permalink": "ai-augmented-platform-engineering", "timetoread": "9 min", "excerpt": "AI is entering my platform operations whether I plan for it or not, so I plan for it. When a platform team in my organization adds AI to the platform, the build starts from a measurable operational problem with a documented baseline — not from a model looking for a use case. The agent is grounded in our own runbooks and telemetry, bounded in what it may observe, decide, and do, fenced by guardrails enforced in code rather than prompts, and audited down to the prompt version. Autonomy is earned from evidence, one risk tier at a time — and the test I keep running is whether I can reconstruct, after the fact, exactly what the agent saw, decided, and did, and whether I would have approved it in advance.", "tags": "ai, llm agents, rag, guardrails, incident triage, aiops, auditability, platform operations", "icon": "assets/icons/ai-augmented-platform-engineering.png", "logo": "assets/images/ai-augmented-platform-engineering/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["ai", "llm agents", "rag", "guardrails", "incident triage", "aiops", "auditability", "platform operations"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: AI enters my platform as a **governed operator, not a clever demo**. An AI-augmented platform capability starts from a **measurable operational problem** with a documented baseline; it is **grounded in the platform's own data** through retrieval, not left to answer from its training set; it acts through **agents with bounded responsibilities** and **risk-tiered autonomy** — read-only work runs free, mutations need approval, destructive actions stay human-decided and human-executed; it is fenced by **guardrails enforced in code**, because a prompt is a request, not a control; it treats **model failure as a normal operational condition** with deterministic fallbacks and no silent errors; it leaves a **complete audit trail** down to the model and prompt version; and it **expands its autonomy only when the evidence supports it**. The test I keep running: can I reconstruct, after the fact, exactly what the agent saw, decided, and did — and would I have approved it in advance?\n\n## Statement\n\nWhen a platform team in my organization builds AI into platform operations, this is the shape of the build I hold it to.\n\n**Start from the problem, not the model:**\n\n- **A real operational problem first.** The use case begins with a business or operational problem, never with \"what could we build with AI\". The best candidates are high-volume, repetitive cognitive work: alert deduplication, documentation search, incident triage, anomaly and event correlation, context-aware prioritization and routing.\n- **One focused first implementation.** The first build targets one use case or one runbook — small enough to evaluate before anything expands.\n- **A documented baseline.** Before any automation, the current manual workflow is written down: what engineers check first, which logs, metrics, tickets, and documents they gather, which decisions are repetitive and which need real judgment — with measured time, effort, accuracy, MTTR, and false-positive rates. Without the baseline, there is no way to prove the AI helped.\n- **No AI on irreversible decisions** without explicit human approval — this constraint is set at use-case selection, not discovered in an incident review.\n\n**Ground the model in the platform's reality:**\n\n- **Deployment matched to the workload.** Managed APIs for reasoning-heavy or prototype work; cloud-hosted open models when data control matters; self-hosted models when local control, air-gapped operation, or high-volume cost efficiency is important; hybrid where different workloads justify different models. Licensing, data residency, and compliance are verified before use — and serving, routing, versioning, token metering, and latency monitoring are part of the build, not an afterthought.\n- **Retrieval before fine-tuning.** The model is grounded through RAG over authoritative platform documentation, runbooks, incident history, and operational data — logs, metrics, traces, Kubernetes events — before fine-tuning is even considered.\n- **Retrieval as engineering.** Semantic retrieval for conceptually related information, keyword retrieval where exact commands and terminology matter, hybrid where both do; documents split along meaningful section boundaries with enough overlap to preserve context.\n\n**Bound the agents and tier the risk:**\n\n- **Every agent has a job description.** A specific, clearly bounded responsibility; explicit definitions of what it can observe, what it can decide, what it can execute, and how it communicates with other agents; an orchestrator for multi-agent workflows; and an explicit designation of which agents run autonomously and which run supervised.\n- **Autonomy is priced by reversibility.** Read-only queries and context gathering are low-risk and can run free. Ticket creation and documentation updates may be autonomous — a deliberate decision, not a default. Service restarts, rollbacks, scaling, and configuration changes require human approval. Destructive or irreversible actions — and anything touching backups, security policies, critical infrastructure, database migrations, or financial commitments — are decided *and executed* by humans.\n\n**Enforce safety in code, expect failure, audit everything:**\n\n- **Pre-execution checks.** AI-generated operational changes are dry-run in staging, validated against security and resource policies (a policy engine such as OPA or Kyverno where applicable), shown to the reviewer command by command, with an estimated blast radius and a rollback plan defined before execution.\n- **Guardrails are programmatic.** Rate limits on repeated actions, different permissions for production and non-production, dependency checks before remediation, cost thresholds that trigger approval, rollback conditions for failed actions, input validation and prompt-injection prevention, strict tenant isolation, and validation of generated outputs before acting on them. Prompts advise; code enforces.\n- **Model failure is a normal operational condition.** Defined behavior for API outages, rate limits, and quota exhaustion; cached responses where safe; deterministic fallbacks; unresolved cases routed to a human; never a silent failure or an unexplained empty response.\n- **Confidence thresholds gate what runs on its own.** Thresholds define what runs autonomously, what needs human confirmation, and what gets suppressed or escalated — combined with incident severity, and recalibrated from actual results.\n- **Everything is auditable and measured.** Every agent action is logged with its context, reasoning, confidence score, the human's approve/reject/modify decision, the action taken, the outcome, and the model and prompt versions needed to investigate regressions. AI-specific metrics — token usage, latency, confidence trends, cost per action, override rates, AI-assisted versus manual MTTR, false positives — are watched like any other platform SLI, and agent health is actively evaluated: autonomy is stopped or restricted when accuracy falls.\n- **Expansion is gated by evidence.** Business impact is measured against the baseline; scope, autonomy, and additional agents grow incrementally and only when guardrails, fallbacks, override reviews, drift trends, and costs support it — never as a one-shot platform transformation.\n\n![Pipeline diagram of the AI platform control chain: problem and baseline, grounding, bounded agents, risk tiers, guardrails in code, audit trail, and an evidence gate looping back to the start.](assets/images/ai-augmented-platform-engineering/governed-operator-control-chain.jpeg)\n**Figure 1:** *The control chain: an AI capability enters platform operations through every one of these gates — and the evidence gate at the end decides whether anything expands.*\n\n## Reference Stack\n\nThis record is grounded in the *Platform Engineer's Handbook* reference build. The tools are the worked example; the commitments hold at the capability level.\n\n| Role | Reference tool | The property that matters |\n| --- | --- | --- |\n| Model access | Managed LLM APIs; cloud-hosted or self-hosted open models | Deployment matched to data control, latency, and cost — chosen per workload, not per fashion |\n| Grounding | RAG over platform docs, runbooks, incident history, operational telemetry | The model answers from our platform's reality, not its training set |\n| Retrieval | Hybrid semantic (vector) + keyword search | Conceptual questions and exact commands both retrieve correctly |\n| Action validation | OPA / Kyverno policy engines | AI-proposed changes pass the same policy gates as human changes |\n| Guardrails | Programmatic checks in the agent runtime | Safety enforced in code; prompts are advice, not controls |\n| Audit and telemetry | Structured audit log + AI metrics in the platform observability stack | Every action reconstructable; token cost, latency, confidence, and override rate watched like SLIs |\n\n## How to Read This\n\nThis record is part of the **Reference Implementation** section of my journal — the how-it-concretely-looks companion to the Platform Engineering records. It is grounded in the AI-augmented platform engineering chapter of the *Platform Engineer's Handbook*, the build-it-end-to-end companion this section follows. The runnable version — all fifteen build steps plus the final readiness check — lives in the **Checklist** tab. The **TL;DR** tab is the two-minute management version; the **Conversation** tab argues it out loud. The record states what must be true when the build is done; the tools named above are how the reference build gets there.\n\n## Rationale\n\n**The use case is the strategy.** The failure mode of AI in operations is almost never the model — it is a demo in search of a problem. The chapter's discipline is unglamorous and correct: find high-volume, repetitive cognitive work where engineers already grind through alert duplication, documentation archaeology, and triage; document how that work happens today; measure it; and only then automate one focused slice of it. **The baseline is the whole argument** — without a measured before, every claim of AI value is a vibe.\n\n**Grounding beats cleverness.** An ungrounded model answers operational questions from its training set — fluent, confident, and about somebody else's platform. Retrieval over our own runbooks, incident history, and telemetry is what makes the answers *ours*, and retrieval is real engineering: semantic search for concepts, keyword search where an exact flag or command matters, chunks split on section boundaries so the context survives. RAG comes before fine-tuning because it is cheaper, auditable, and updatable at the speed our documentation changes.\n\n![Diagram of a retrieval pipeline: docs, runbooks, incidents, and telemetry are chunked, indexed semantically and by keyword, and merged into the context a model answers from.](assets/images/ai-augmented-platform-engineering/grounding-retrieval-pipeline.jpeg)\n**Figure 2:** *Grounding as engineering: the platform's own corpus, chunked on section boundaries, retrieved through hybrid semantic and keyword search — so the model answers about our platform, not somebody else's.*\n\n**An agent is a role, not a genie.** The moment \"the AI\" becomes one undifferentiated thing with broad access, nobody can say what it may do — which means nobody can say what it may not. Bounded responsibilities with explicit observe/decide/act/communicate contracts do for agents what job descriptions and access scopes do for people. The supervision question — which agents run autonomously, which run watched — is answered per agent, in advance, on paper.\n\n**Autonomy is priced by reversibility.** The risk tiers encode a simple economic fact: a wrong read-only query costs seconds; a wrong rollback costs an outage; a wrong database migration costs the weekend, or the company. So the freedom an agent gets tracks the reversibility of its actions — and for the irreversible tier, the human does not just approve, the human *executes*. **An approval click on an action you did not read is not a control**, which is why the reviewer sees every proposed command, the blast radius, and the rollback plan before anything runs.\n\n![Stepped diagram of four risk tiers from read-only to destructive, showing autonomy shrinking and human involvement growing as reversibility falls.](assets/images/ai-augmented-platform-engineering/risk-tier-autonomy-ladder.jpeg)\n**Figure 3:** *Autonomy priced by reversibility: the agent runs free where mistakes cost seconds, needs approval where they cost outages, and steps aside entirely where they cannot be undone.*\n\n**Prompts are requests; code is enforcement.** Telling the model to be careful is not a guardrail. Rate limits, environment-scoped permissions, cost thresholds, dependency checks, input sanitization, tenant isolation, and output validation live in code, where the model cannot talk its way past them — and where a prompt-injected input cannot either. The policy engine that already gates human changes ([Policy as Code Implementation](policy-as-code.html)) gates AI-proposed changes for the same reason and with the same rules.\n\n**The model will fail; the platform must not.** APIs go down, quotas exhaust, confidence collapses. Treating that as exceptional produces silent failures and unexplained empty responses — the worst possible behavior in an operational tool, because it teaches engineers to distrust it precisely when they need it. Deterministic fallbacks, cached responses where safe, and an explicit route-to-human path make the AI layer degrade the way the rest of the platform does: predictably.\n\n**Trust is built from evidence, spent on autonomy.** The audit trail, the AI-specific metrics, and the agent-health checks are the same discipline the platform applies to everything else, extended to a component that is probabilistic by nature. Override rates, confidence drift, cost per action, and AI-versus-manual MTTR tell us whether the agent is earning its autonomy — and the expansion gate makes the answer consequential: **scope grows when the evidence says so, and shrinks when it does not.** Stopping autonomous use when accuracy falls is not an embarrassment; it is the system working.\n\n![Circular loop diagram: operate, audit and measure, review against baseline, then an evidence decision that either expands autonomy a tier or restricts it.](assets/images/ai-augmented-platform-engineering/evidence-gated-expansion-loop.jpeg)\n**Figure 4:** *The evidence loop: autonomy is earned from measured results against the baseline — scope grows when the evidence says so, and shrinks when it does not.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Start from a measured operational problem; automate one focused use case first. | Deploy AI wherever a model could plausibly help, and find the value later. |\n| Ground the model in platform data through RAG before considering fine-tuning. | Fine-tune first — or let the model answer from its training set. |\n| Every agent has bounded observe/decide/act responsibilities, designated autonomous or supervised. | One general agent with broad access \"to be efficient\". |\n| Autonomy is risk-tiered; humans decide and execute destructive and irreversible actions. | Full autonomy is the goal and approvals are transitional friction. |\n| Guardrails are enforced in code and validated by policy engines. | Careful prompt-writing counts as a safety mechanism. |\n| Model failure is a normal condition with deterministic fallbacks and a human route. | AI failure is rare enough to handle ad hoc. |\n| Every action is auditable down to model and prompt versions, and AI metrics are watched like SLIs. | Logging and metrics are overhead to add once the agent proves itself. |\n| Expand scope, agents, and autonomy incrementally, gated on measured evidence. | Run an AI platform transformation as one program. |\n\nConcretely: the first AI capability my platform team ships is one use case with a written baseline, a bounded agent, code-enforced guardrails, a complete audit trail, and a scheduled review that decides — from override rates, accuracy, and cost against that baseline — whether it earns more scope. The honest cost statement: governance is most of the build — the risk tiers, guardrail code, audit trail, and AI-specific observability take longer than wiring up the model itself. **Autonomy is earned in tiers, and it is revocable.**\n\n## Anti-Patterns\n\n- **The demo in search of a problem.** Starting from \"what can we build with AI\" and retrofitting a justification — impressive in the all-hands, absent from the MTTR chart.\n- **The prompt-shaped guardrail.** Safety implemented as system-prompt instructions — \"never delete anything\" — with nothing in code to make it true when the model, or a prompt-injected input, decides otherwise.\n- **The intern with root.** One general-purpose agent, broad production access, no risk tiers — trusted like a senior engineer, verified like neither.\n- **The ungrounded oracle.** A model answering operational questions from its training set instead of retrieval over our runbooks and telemetry — fluent, confident, and describing somebody else's platform.\n- **The silent shrug.** AI failure surfacing as an empty response or a quiet timeout — teaching engineers to distrust the tool exactly when they need it most.\n- **The black box without a flight recorder.** Actions taken with no record of context, reasoning, confidence, human decision, or model and prompt versions — making every regression uninvestigable and every audit a reconstruction from memory.\n- **The vibe-based victory.** Declaring the AI a success with no baseline to compare against — no before-MTTR, no manual-effort cost, no override rate.\n- **The big-bang transformation.** Rolling AI across all of platform operations at once, instead of one evaluable use case that earns each expansion.\n\n## Related Records\n\n- [Resilience Automation](resilience-automation.html) — the remediation and failure-testing machinery this record's agents may propose to trigger; the risk tiers here gate what that automation is allowed to do unattended.\n- [Observability Implementation](observability-implementation.html) — the telemetry pipelines the AI consumes as grounding data; this record adds AI-specific metrics on top of them.\n- [Policy as Code Implementation](policy-as-code.html) — the policy engine that validates AI-proposed actions with the same rules as human changes.\n- [Cost, Performance, and Scalability](cost-performance-scalability.html) — the platform's cost discipline; this record's cost-per-action and token metering extend it to the AI layer.\n- [Operating Platforms](operating-platforms.html) — the operating discipline (incidents, on-call, support) that AI augmentation plugs into; the human ownership there does not move.\n- [The Four Pillars of Platform Engineering](four-pillars.html) — the AI/ML platform considerations in the qualification test; this record is that consideration built end to end.\n- [What Platform Success Looks Like](platform-success.html) — the measurement mindset this record applies to the AI capability itself: business impact against a baseline, or no expansion.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to any AI capability my platform teams build into platform operations — triage, retrieval, remediation-proposal, or routing — everywhere I am the accountable executive. I revisit it if human override rates stay high while autonomy expands anyway (the evidence gate failing in public), if an incident reveals an agent action that cannot be reconstructed from the audit trail, if AI-assisted resolution becomes slower or costlier than the manual baseline it replaced, or if the model landscape shifts enough that the deployment-approach guidance (managed versus self-hosted, RAG versus fine-tuning) no longer reflects real trade-offs.\n\n## Authoritative References\n\n- *Platform Engineer's Handbook* — the AI-Augmented Platform Engineering chapter, whose checklist this record distills. (The source PDF's filename reads \"Cost, Performance, and Scalability\"; the chapter's own title page reads \"AI-Augmented Platform Engineering\".)\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "When my platform teams bring AI into platform operations, it enters as a **governed operator, not a clever demo**: the capability starts from a measurable operational problem with a documented baseline, is grounded in our own platform data, acts through bounded agents with risk-tiered autonomy, is fenced by guardrails enforced in code, and expands only when the evidence supports it. The test I keep running: can I reconstruct, after the fact, exactly what the agent saw, decided, and did — and would I have approved it in advance?\n\n**What changes**\n\n* **Problem first, baseline always.** The first AI build targets one focused use case of high-volume, repetitive cognitive work — alert deduplication, documentation search, incident triage — with the current manual workflow documented and measured (time, accuracy, MTTR, false positives) before anything is automated. No AI on irreversible decisions without explicit human approval.\n* **Grounded, not guessing.** Deployment (managed API, cloud-hosted, or self-hosted model) is matched to data control, latency, and cost; the model is grounded through RAG over our runbooks, incident history, and telemetry — hybrid semantic and keyword retrieval — before fine-tuning is even considered.\n* **Bounded agents, tiered autonomy.** Every agent has explicit observe/decide/act/communicate boundaries and an autonomous-or-supervised designation. Read-only work runs free; restarts, rollbacks, scaling, and config changes need human approval; destructive and irreversible actions are decided *and executed* by humans.\n* **Guardrails in code, failure as normal.** Dry-runs, policy-engine validation (the same gates as human changes), blast-radius estimates, rate limits, cost thresholds, input sanitization, tenant isolation, and output validation live in code — prompts advise, code enforces. Model outages get deterministic fallbacks and a route to a human; never a silent failure.\n* **Audited and evidence-gated.** Every action is logged with context, reasoning, confidence, the human decision, the outcome, and model/prompt versions; AI metrics (cost per action, override rate, AI-vs-manual MTTR) are watched like SLIs; autonomy expands — or is revoked — based on measured results against the baseline.\n\n**What it costs**\n\n* Governance is most of the build: risk tiers, guardrail code, audit trails, and AI-specific observability take longer than wiring up the model itself.\n* Human approval stays in the loop for every mutating action, and humans keep executing the destructive tier — some theoretical automation speed is deliberately left on the table.\n* The evidence gate cuts both ways: an AI capability that cannot beat its manual baseline gets restricted or stopped, whatever was announced.\n\n**What we are not doing**\n\n* Not the remediation machinery itself — that is [Resilience Automation](resilience-automation.html); nor the telemetry pipelines ([Observability Implementation](observability-implementation.html)) or policy engine ([Policy as Code Implementation](policy-as-code.html)) this capability builds on.\n* Not an organization-wide AI coding or tooling policy — this record covers AI inside platform operations only.\n* Not a one-shot AI transformation of platform operations — scope grows one evaluated use case at a time.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries all fifteen build steps and the final readiness check. Grounded in the* Platform Engineer's Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "8 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the AI capability build, end to end. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Identify the Right Use Case\n\n- [ ] We start with a real business or operational problem rather than asking what can be built with AI\n- [ ] We identify high-volume, repetitive cognitive work\n- [ ] We look for opportunities involving alert duplication, documentation search, or incident triage\n- [ ] We identify tasks where pattern recognition could improve anomaly detection or event correlation\n- [ ] We identify decisions where contextual information could improve prioritization or routing\n- [ ] We do not use AI for irreversible decisions without explicit human approval\n- [ ] We select one focused use case or runbook for the first implementation\n\n## 2. Define the Current Workflow\n\n- [ ] We document the existing manual process\n- [ ] We identify what engineers always check first\n- [ ] We identify the logs, metrics, tickets, and documentation normally gathered\n- [ ] We separate repetitive decisions from decisions requiring significant human judgment\n- [ ] We record the current time and effort required to complete the workflow\n- [ ] We establish a baseline for current accuracy, MTTR, false positives, or other relevant metrics\n\n## 3. Select the AI Deployment Approach\n\n- [ ] We evaluate managed APIs for reasoning-heavy or prototype workloads\n- [ ] We evaluate cloud-hosted open-source models when greater data control is required\n- [ ] We evaluate self-hosted models when local control, air-gapped operation, or high-volume cost efficiency is important\n- [ ] We consider a hybrid approach where different workloads use different model types\n- [ ] We review current licensing requirements before using or fine-tuning open-source models\n- [ ] We verify applicable data residency and compliance requirements\n- [ ] We account for model serving, routing, versioning, token metering, and latency monitoring\n\n## 4. Ground the AI with Platform Data\n\n- [ ] We prefer RAG before considering fine-tuning\n- [ ] We identify authoritative platform documentation and runbooks\n- [ ] We include relevant incident history where appropriate\n- [ ] We include operational data such as logs, metrics, traces, or Kubernetes events where required\n- [ ] We implement document ingestion and indexing\n- [ ] We use semantic/vector retrieval for conceptually related information\n- [ ] We include keyword retrieval where exact commands or terminology matter\n- [ ] We consider hybrid retrieval combining semantic and keyword search\n- [ ] We split documents along meaningful section boundaries rather than arbitrary character limits\n- [ ] We preserve enough overlap between chunks to maintain context\n\n## 5. Define Agent Responsibilities\n\n- [ ] Every agent has a specific and clearly bounded responsibility\n- [ ] We define what information each agent can observe\n- [ ] We define what decisions each agent can make\n- [ ] We define what actions each agent can execute\n- [ ] We define how agents communicate with one another\n- [ ] We establish an orchestrator or coordination mechanism for multi-agent workflows\n- [ ] We determine which agents can operate autonomously\n- [ ] We determine which agents require supervision\n\n## 6. Classify Actions by Risk\n\n- [ ] We classify read-only queries and context gathering as low-risk where appropriate\n- [ ] We determine whether incident-ticket creation or documentation updates can be autonomous\n- [ ] We require human approval for actions such as service restarts, deployment rollbacks, scaling, or configuration changes\n- [ ] We require humans to decide and execute destructive or irreversible actions\n- [ ] We require human control for actions affecting backups, security policies, critical infrastructure, database migrations, or financial commitments\n\n## 7. Add Pre-Execution Safety Checks\n\n- [ ] We dry-run AI-generated operational changes in staging or a sandbox\n- [ ] We validate generated actions against security and resource policies\n- [ ] We use policy engines such as OPA or Kyverno where applicable\n- [ ] We require explicit human approval for high-impact actions\n- [ ] We show the reviewer every proposed command or API action\n- [ ] We estimate the expected impact and blast radius\n- [ ] We define a rollback plan before execution\n\n## 8. Implement Guardrails in Code\n\n- [ ] Guardrails are enforced programmatically rather than relying only on prompts\n- [ ] We add rate limits for repeated actions or notifications\n- [ ] We apply different permissions for production and non-production environments\n- [ ] We check dependencies before performing remediation\n- [ ] We add cost thresholds that trigger approval\n- [ ] We add rollback conditions for failed or rapidly reverted actions\n- [ ] We validate inputs before including them in model prompts\n- [ ] We prevent unsanitized input from controlling agent behavior\n- [ ] We maintain strict tenant or organizational context isolation\n- [ ] We validate generated outputs before acting on them\n\n## 9. Plan for AI Failure\n\n- [ ] We treat model failures as normal operational conditions\n- [ ] We define behavior for API outages, rate limits, or quota exhaustion\n- [ ] We use cached responses when safe and appropriate\n- [ ] We route unresolved failures to a human\n- [ ] We never silently fail or return an unexplained empty response\n- [ ] We validate response format and guardrail compliance\n- [ ] We maintain deterministic fallback behavior\n- [ ] We require human confirmation when AI triage cannot determine a reliable result\n\n## 10. Establish Confidence and Approval Thresholds\n\n- [ ] We define confidence thresholds for autonomous actions\n- [ ] We define a middle range requiring human confirmation\n- [ ] We suppress or escalate low-confidence results rather than creating unnecessary noise\n- [ ] We combine confidence with incident severity when routing alerts\n- [ ] We recalibrate thresholds using actual operational results\n\n## 11. Build an Audit Trail\n\n- [ ] We log every agent action\n- [ ] We record the context supplied to the model\n- [ ] We record model or agent reasoning information required by our governance process\n- [ ] We record confidence scores\n- [ ] We record whether a human approved, rejected, or modified the recommendation\n- [ ] We record the action taken\n- [ ] We record the final outcome\n- [ ] We preserve the model and prompt versions needed to investigate regressions\n\n## 12. Monitor AI-Specific Metrics\n\n- [ ] We track token usage\n- [ ] We track inference latency\n- [ ] We track confidence-score trends\n- [ ] We compare model decisions with known ground truth\n- [ ] We track cost per action\n- [ ] We track the human override rate\n- [ ] We track AI-assisted versus manual MTTR\n- [ ] We track false-positive rates\n- [ ] We track developer or customer satisfaction\n- [ ] We track GPU/CPU utilization when models are hosted locally\n- [ ] We track vector database query latency\n- [ ] We track agent action queue depth\n\n## 13. Evaluate Agent Health\n\n- [ ] We investigate consistently low confidence scores\n- [ ] We investigate high human override rates\n- [ ] We stop or restrict autonomous use if triage accuracy falls below acceptable thresholds\n- [ ] We investigate when AI-assisted resolution becomes slower than manual resolution\n- [ ] We recalibrate when false-positive rates rise\n- [ ] We investigate unexpected increases in cost or token consumption\n- [ ] We watch for unbounded agent reasoning loops\n\n## 14. Measure Business Impact\n\n- [ ] We measure the reduction in MTTR\n- [ ] We measure improvements in incident detection or prevention\n- [ ] We measure improvements in developer productivity\n- [ ] We measure reductions in alert fatigue\n- [ ] We measure triage classification accuracy\n- [ ] We measure root-cause hypothesis precision\n- [ ] We measure runbook or documentation retrieval effectiveness\n- [ ] We measure the time from alert generation to ticket creation\n- [ ] We measure human approval and review time\n- [ ] We compare AI operating costs against the equivalent manual effort\n- [ ] We calculate the value of time saved\n- [ ] We confirm that the AI system creates measurable value before expanding its scope\n\n## 15. Review Before Expanding\n\n- [ ] We confirm that guardrails work as intended\n- [ ] We confirm that failures reliably fall back to safe behavior\n- [ ] We review human overrides and rejected recommendations\n- [ ] We review model drift and accuracy trends\n- [ ] We review costs and infrastructure utilization\n- [ ] We update documentation and runbooks based on feedback\n- [ ] We expand autonomous scope only when the evidence supports it\n- [ ] We add additional agents or use cases incrementally rather than attempting a complete platform transformation at once\n\n## Final Readiness Check\n\n- [ ] The use case solves a measurable operational problem\n- [ ] Agent responsibilities and boundaries are clearly defined\n- [ ] Platform knowledge is grounded through reliable data or RAG\n- [ ] High-impact actions require appropriate human approval\n- [ ] Guardrails are enforced in code\n- [ ] Failure and fallback paths are tested\n- [ ] Actions and outcomes are fully auditable\n- [ ] AI-specific observability is in place\n- [ ] Success metrics and thresholds are defined\n- [ ] Business value can be measured\n- [ ] The first implementation is small enough to evaluate before expanding\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## The Intern with Root\n\n**Ben:** Blunt version first. Every platform team on earth is bolting an LLM onto their ops stack right now. Why does this need a record — isn't it just \"use AI, be careful\"?\n\n**Ana:** Because \"be careful\" is exactly what fails. The record's framing is that AI enters the platform as a governed operator, not a clever demo — and everything in it is the difference between those two. One of its named anti-patterns is the intern with root: one general-purpose agent, broad production access, no risk tiers. Trusted like a senior engineer, verified like neither.\n\n**Ben:** And the governed version is what, in one breath?\n\n**Ana:** Start from a measurable operational problem with a documented baseline. Ground the model in the platform's own data through retrieval. Bound every agent in what it can observe, decide, and do. Tier its autonomy by risk. Enforce guardrails in code, not prompts. Treat model failure as a normal operational condition. Audit everything down to the prompt version. And expand only when the evidence supports it.\n\n**Ben:** That's a lot of machinery before anyone gets to the fun part.\n\n**Ana:** The machinery *is* the part. Wiring up a model takes an afternoon. The record's honest cost statement is that governance is most of the build — and the chapter's whole structure agrees: fifteen steps, and the model selection is one of them.\n\n## Problem First, Baseline Always\n\n**Ben:** Step one, then. Teams usually start with \"we got API access, what should we build?\"\n\n**Ana:** Which the record names as its first anti-pattern: the demo in search of a problem. Impressive in the all-hands, absent from the MTTR chart. The discipline is the reverse — find high-volume, repetitive cognitive work that already exists: alert deduplication, documentation search, incident triage, event correlation, routing decisions where context would help. Then pick *one* focused use case or runbook for the first implementation.\n\n**Ben:** One? That feels timid for a transformation.\n\n**Ana:** It's not a transformation, deliberately — the big-bang version is another named anti-pattern. One use case, small enough to evaluate. And before you automate anything, you document the current manual workflow: what engineers check first, what they gather, which decisions are rote and which need judgment — and you measure it. Time, accuracy, MTTR, false positives.\n\n**Ben:** Why so much ceremony about the baseline?\n\n**Ana:** Because the baseline is the whole argument. Without a measured before, every claim of AI value is a vibe — the record calls that one the vibe-based victory. Later, the expansion gate asks whether AI-assisted resolution beats manual, whether the cost per action beats the equivalent manual effort. Those questions are unanswerable without the baseline. And one constraint gets set right at use-case selection: no AI on irreversible decisions without explicit human approval. You decide that before the incident review, not during it.\n\n**Ben:** Fine. But why retrieval? The whole appeal of these models is that they already know Kubernetes.\n\n**Ana:** They know Kubernetes in general. They do not know *our* runbooks, our incident history, our naming, our weird legacy namespace. The ungrounded oracle answers fluently, confidently — about somebody else's platform. So the record grounds the model with RAG over authoritative docs, runbooks, incident history, and operational data before fine-tuning is even considered: cheaper, auditable, and it updates at the speed the documentation does. And retrieval is real engineering — semantic search for concepts, keyword search where the exact flag matters, hybrid where both do, chunks split on section boundaries with overlap so context survives.\n\n## Guardrails Are Code\n\n**Ben:** Here's my sharpest objection. You can just tell the model the rules. System prompt: \"never delete anything, always ask before restarting a service.\" Why isn't that enough?\n\n**Ana:** Because a prompt is a request, not a control. The record's phrase is the prompt-shaped guardrail — safety implemented as instructions, with nothing in code to make it true when the model decides otherwise. Or when an attacker does: unsanitized input that steers agent behavior is prompt injection, and no prompt defends against prompts. So the guardrails are programmatic — rate limits, separate permissions for production and non-production, dependency checks before remediation, cost thresholds that trigger approval, input validation, strict tenant isolation, output validation before anything acts.\n\n**Ben:** And before an action actually runs?\n\n**Ana:** Dry-run in staging, validation against security and resource policies — through the same policy engine that gates human changes, which is the whole point of [Policy as Code Implementation](policy-as-code.html) — an estimated blast radius, and a rollback plan defined before execution. And the reviewer sees every proposed command. An approval click on an action you did not read is not a control.\n\n**Ben:** Which brings us to approvals. If a human has to bless every action, haven't you built a very expensive suggestion box? The point of automation is removing the human.\n\n**Ana:** The point is removing the *toil*, and the record prices autonomy by reversibility. Read-only queries and context gathering — low-risk, run free. That's most of triage, and most of the value. Ticket creation and documentation updates can be autonomous, as a deliberate decision. Restarts, rollbacks, scaling, configuration changes — human approval. And destructive or irreversible actions, plus anything touching backups, security policies, critical infrastructure, database migrations, or money — the human doesn't just approve, the human executes. A wrong query costs seconds; a wrong migration costs the weekend, or the company.\n\n**Ben:** So some automation speed is left on the table.\n\n**Ana:** Deliberately, and the record says so. The tiers can move — but only on evidence, which we'll get to.\n\n## When the Model Fails\n\n**Ben:** The model API goes down at 3 a.m. mid-incident. Now what?\n\n**Ana:** Now nothing dramatic — and that's the design. The record treats model failure as a normal operational condition, not an exception: defined behavior for outages, rate limits, quota exhaustion; cached responses where safe; deterministic fallbacks; unresolved cases routed to a human. The one forbidden behavior is the silent shrug — an unexplained empty response or a quiet timeout. That teaches engineers to distrust the tool at exactly the moment they need it, and trust doesn't come back.\n\n**Ben:** And when the model is up but unsure?\n\n**Ana:** Confidence thresholds, in bands. Above the line, autonomous. A middle range that requires human confirmation. Below it, suppress or escalate rather than generating noise — combined with incident severity when routing, and recalibrated from actual operational results, not set once and forgotten.\n\n## Earning Autonomy\n\n**Ben:** Last push. Audit trails, AI metrics, health checks, business-impact measurement — this reads like you're operating a suspect, not a tool.\n\n**Ana:** You're operating a probabilistic component with production reach — the record just extends the platform's normal discipline to it. Every action logged with the context the model saw, its reasoning, its confidence, whether the human approved, rejected, or modified it, the action, the outcome, and the model and prompt versions — because without those, a regression is uninvestigable. That's the black box without a flight recorder. Then the AI-specific metrics get watched like SLIs: token usage, latency, confidence trends, cost per action, override rate, AI-assisted versus manual MTTR, false positives.\n\n**Ben:** And those numbers actually decide something?\n\n**Ana:** They decide everything. High override rates get investigated. If triage accuracy falls below threshold, autonomous use stops or gets restricted — the record is explicit that this is the system working, not an embarrassment. And expansion runs through a gate: guardrails confirmed, fallbacks tested, overrides reviewed, drift and cost reviewed, and scope grows only when the evidence supports it — one use case, one agent at a time. Autonomy is earned in tiers, and it is revocable.\n\n**Ben:** Close it out. What is this record explicitly not doing?\n\n**Ana:** It's not the remediation machinery — that's [Resilience Automation](resilience-automation.html); these tiers gate what that automation may do unattended. It's not the telemetry pipeline — [Observability Implementation](observability-implementation.html) builds what the AI reads. It's not the policy engine — [Policy as Code Implementation](policy-as-code.html) built the gate the agent's actions pass through. And it's not an organization-wide AI coding policy — this is AI inside platform operations only.\n\n**Ben:** One-sentence version for the elevator?\n\n**Ana:** After anything the agent did, I can reconstruct exactly what it saw, decided, and executed — and I would have approved it in advance. If either half fails, it doesn't run autonomously in my platform.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why AI enters the platform as a governed operator, not a clever demo — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Kai unveils a shiny robot holding a blank sign while Vera asks what problem it solves.](assets/images/ai-augmented-platform-engineering/comic-01-the-demo-in-search-of-a-problem.jpeg)\n**Panel 1:** *The hook: the failure mode of AI in operations is almost never the model — it is a demo in search of a problem.*\n\n![Comic panel: engineers buried under duplicate alerts, documentation binders, and a conveyor of tickets while Vera points at them.](assets/images/ai-augmented-platform-engineering/comic-02-the-grind-worth-automating.jpeg)\n**Panel 2:** *The problem: the real candidates are unglamorous — alert deduplication, documentation archaeology, incident triage — high-volume, repetitive, measurable.*\n\n![Comic panel: a robot with a ROOT badge and a 'please be careful' sticky note reaches for a wall of production levers.](assets/images/ai-augmented-platform-engineering/comic-03-the-intern-with-root.jpeg)\n**Panel 3:** *The wrong way: the intern with root — one undifferentiated agent, broad production access, and safety implemented as a polite prompt.*\n\n![Comic panel: Vera at a whiteboard showing a robot passing through gates labeled problem, grounding, bounds, guardrails, audit.](assets/images/ai-augmented-platform-engineering/comic-04-the-governed-operator.jpeg)\n**Panel 4:** *The principle: AI enters the platform as a governed operator — problem first, grounded, bounded, fenced in code, audited, and expanded only on evidence.*\n\n![Comic panel: a robot ignores a crystal ball and instead reads from shelves labeled runbooks, incidents, and metrics.](assets/images/ai-augmented-platform-engineering/comic-05-grounded-in-our-reality.jpeg)\n**Panel 5:** *How it plays out: grounding through retrieval — the agent answers from our runbooks, incident history, and telemetry, not from somebody else's platform.*\n\n![Comic panel: three doors labeled read, change, and destroy — the robot passes the first freely, is checked at the second, and is barred from the vault.](assets/images/ai-augmented-platform-engineering/comic-06-autonomy-priced-by-reversibility.jpeg)\n**Panel 6:** *The tiers: read-only runs free, mutations need approval, destructive and irreversible actions stay human-decided and human-executed.*\n\n![Comic panel: a robot walks a path fenced by solid guardrails labeled rate limit, policy, cost cap, and rollback, while a paper 'be careful' sign lies in a bin.](assets/images/ai-augmented-platform-engineering/comic-07-guardrails-in-code.jpeg)\n**Panel 7:** *The fence: rate limits, scoped permissions, policy checks, cost thresholds, and rollback conditions live in code — where the model cannot talk its way past them.*\n\n![Comic panel: a depleted robot hands its task to a human at a fallback desk while an orange flight recorder prints an audit tape.](assets/images/ai-augmented-platform-engineering/comic-08-failure-is-normal-audit-everything.jpeg)\n**Panel 8:** *The safety net: model failure is a normal operational condition — deterministic fallbacks, a route to a human, never a silent shrug — and every action lands in the flight recorder.*\n\n![Comic panel: Vera and Kai replay a timeline labeled saw, decided, did, while Vera holds a stamp between approve and stop.](assets/images/ai-augmented-platform-engineering/comic-09-the-reconstruction-test.jpeg)\n**Panel 9:** *The closer: the test that never stops running — reconstruct exactly what the agent saw, decided, and did, and ask whether you would have approved it in advance. Autonomy is earned in tiers, and it is revocable.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

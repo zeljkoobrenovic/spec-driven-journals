@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Working Small</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="lanes.html" title="Lanes">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="routines.html" title="Routines">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Operating Takes</p>
+        <h1>Working Small</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-14  ·  8 min · <a class="spec-link" href="working-small.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/working-small/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/working-small/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Product Management</a><span class="nav-right"><a class="nav-prev" href="lanes.html" title="Lanes">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="routines.html" title="Routines">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PM-WORKING-SMALL", "status": "draft:gray", "title": "Working Small", "date": "2026-08-14", "author": "Željko Obrenović", "permalink": "working-small", "timetoread": "8 min", "excerpt": "It is far easier to teach a team that works small to think big than to teach a team that thinks big to work small — so a team that can deliver continuously, test assumptions, and keep risk-reduction tempo high is the asset I protect hardest. Cycles are forcing functions, not boxes to fill; estimates come in five coarse sizes; and real progress on big things can be sensed daily and weekly.", "tags": "product management, working small, cadence, cycles, estimation, tempo", "icon": "assets/icons/working-small.png", "logo": "assets/images/working-small/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["product management", "working small", "cadence", "cycles", "estimation", "tempo"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: It is far easier to teach a team that works small to think big than to teach a team that thinks big to work small — so a team that can deliver continuously, get frequent feedback, and keep the tempo of assumptions tested and risk reduced high is a gift, and I protect it hardest. I treat every planning cycle as a forcing function rather than a box to fill, estimate only at coarse resolutions, and expect real progress — even on big, hard things — to be sensed daily and weekly. Ship. Learn. Don't wait for the quarter.\n\n## Statement\n\nMy operating model for size and tempo has five parts:\n\n- **Protect the team that works small.** Continuous delivery, frequent feedback, high tempo of assumptions tested and risk reduced — where that exists, it is the most valuable asset in the portfolio, and I defend it before I optimize anything else.\n- **Build the environment and the skill.** Working small dies under constant interruption, strategy churn, WIP overload, and premature convergence on estimates. It also requires skill — rapidly considering options and slicing them for maximum leverage — that must be hired for and nurtured.\n- **No cycle is \"the\" cycle.** Quarters, two-week sprints, and six-week cycles are each simultaneously too long and too short. I use cycles as forcing functions and refuse to let any of them become the unit reality must be cut to fit.\n- **Estimate in five sizes.** 1–3 days, 1–3 weeks, 1–3 months, 1–3 quarters, 1–3 years — at the atomic level of the actual bet. Any finer resolution is waste.\n- **Expect progress daily and weekly.** Even the big, hard stuff. The job is coaching teams to break work up without losing the big picture — and to get changes into the world and measure their impact.\n\n## How to Read This\n\nThis record is grounded in John Cutler's \"20 Unfiltered Operating Takes\" (TBM 435), read through the same practitioner-executive lens as the rest of this journal. It answers two questions I am asked constantly: *\"How do I get my team to ship smaller and faster?\"* and *\"What is the right planning cadence?\"* — and explains why my answer to the second is \"wrong question.\" The working checklist, derived from the essay, lives in the **Checklist** tab.\n\n## Rationale\n\n**The asymmetry is the whole argument.** A team that can work small has the mechanics of learning: it can take shots, and you can't make shots you don't take. Teaching that team ambition is coaching. A team that thinks big but cannot work small has no feedback loop to learn *with* — every lesson costs a quarter. Both directions are possible, but they are not symmetric, which is why, given the choice, I hire and build for working small first.\n\n![Diagram contrasting a fast four-station learning flywheel with one slow big-release loop.](assets/images/working-small/small-work-learning-loop.jpeg)\n**Figure 1:** *Working small is a learning flywheel: many laps of ship, feedback, test, de-risk while the big loop completes one.*\n\n**Environment eats skill.** People who worked small brilliantly at their last company will flounder if I interrupt them constantly, change strategy under them, load them with WIP, and demand they converge prematurely on estimates. When a team stops shipping small, my first suspect is the environment I own, not the team's competence. But environment alone is not enough either — slicing options for leverage is a real skill, and a team that has never done it needs coaching, not just calm.\n\n**Every cadence is too long and too short.** Quarters are too long to keep you working small and too short for the meaningful multi-quarter things. Two-week sprints are too long for true small work and too short for anything big. Six weeks is a genuinely decent forcing function — real things fit in six weeks — yet at any scale you will still occasionally tackle bigger things and still need the durable lanes that live in the one-to-three-quarter range. Time is weird: it always feels like both. The conclusion is not a better cycle; it is refusing to be beholden to any one cycle, because life and learning are only happening *now*.\n\n**\"Boxes to fill\" is the perversion.** The damage begins when a cycle stops being a checkpoint and becomes a container: every bet magically resized to exactly one quarter, teams chasing their tails through wholesale quarterly rebalancing, work waiting at the border for the next planning window. A quarter is not a big sprint; scaling \"sprint\" up until it is corporate-compatible inverts the idea it came from. And a quarterly rebalance that reshuffles everything is a diagnostic, not a ritual: it means the work is too big *and* the real prioritization questions live on a longer horizon than a quarter.\n\n![Timeline of identical quarter boxes with work bars of many lengths misfitting them, one visibly sawed to fit.](assets/images/working-small/cycle-misfit-chart.jpeg)\n**Figure 2:** *Work is not box-shaped: treat cycles as checkpoints to pass through, not containers to fill.*\n\n**Coarse estimates, honest shapes.** The five-size ladder works only when applied at the atomic level of the actual bet. A big messy 1–3-quarter project is what it is — imagining the 1–3-week pieces that \"add up\" to it may help, but the commitment is the quarter-scale bet, and what it needs from me is a de-risking strategy and wise use of the company's money.\n\nA different 1–3-quarter bet is an umbrella: experiment-friendly, funded iteratively, housing 1–3-week and 1–3-month bets where only the first couple need to work. The two look identical on a roadmap and are entirely different relationships between the parts — in the messy project you need significant progress across the pieces; in the umbrella you need pivot-or-proceed points. Precision beyond the ladder adds nothing to either; knowing which shape you hold changes everything. Either way, the team still meets weekly, and inertia toward the goal is still daily.\n\n![Diagram contrasting an interlocking messy project with de-risking milestones and an umbrella bet of independent small bets behind pivot gates.](assets/images/working-small/two-shapes-of-a-big-bet.jpeg)\n**Figure 3:** *Same size on a roadmap, different physics: the messy project needs progress across its parts; the umbrella needs only its first bets to work.*\n\n**Progress you cannot sense weekly is not progress.** Big and hard does not exempt work from observability. If weeks pass with nothing shipped, nothing learned, and nothing de-risked, the work is not \"in progress\" — it is in hiding. The coaching job is teaching teams to break things up without losing the big picture, so that the biggest bet in the portfolio still produces a weekly heartbeat of shipped changes and tested assumptions.\n\n## What This Means in Practice\n\n| What this principle says | What it does **not** say |\n| --- | --- |\n| Cycles are forcing functions we use deliberately. | Cadences are worthless — a good six-week checkpoint is a fine tool. |\n| Estimates come in five coarse sizes, at the level of the real bet. | Estimation is pointless — sizing a bet honestly is how it gets funded. |\n| Big bets must produce weekly evidence of progress. | Everything must be small — some bets are legitimately quarter-scale. |\n| Ship and learn continuously; don't wait for the planning window. | Ship anything regardless of impact — [Outcomes](outcomes.html) still governs what counts. |\n| Protect small-working teams from interruption and WIP. | Teams choose their own strategy free of any constraint. |\n\n## Anti-Patterns\n\n- **The quarter-shaped bet.** Every initiative in the portfolio mysteriously takes exactly one quarter. Reality is not that tidy; the planning container did the sizing.\n- **The wholesale rebalance.** Each quarter boundary reshuffles everything everyone is doing — the tell that work is too big and the real prioritization horizon is longer than the cycle.\n- **Precision theater.** Debating whether a bet is 13 or 16 story points, or five or seven weeks, when the honest answer is \"1–3 months.\"\n- **The interrupted sprinter.** Leadership laments slow shipping while loading the team with WIP, mid-cycle pivots, and premature estimate demands.\n- **Iterating to nowhere.** Working small degrading into a functional feature factory — high tempo, usable output, no needle moved. Tempo is necessary, not sufficient.\n- **Waiting for the window.** Finished, shippable learning held back because \"that lands next cycle.\"\n\n## Related Records\n\n- [The Right Processes](right-processes.html) — the discovery and delivery loop this tempo runs inside; that record picks processes, this one sizes the work flowing through them.\n- [Outcomes](outcomes.html) — the guard against the feature-factory failure mode of working small; the needle still decides what ships next.\n- [Lanes](lanes.html) — the durable direction that keeps small work pointed somewhere; lanes give the daily tempo its multi-quarter meaning.\n- [Routines](routines.html) — the weekly heartbeat where progress is sensed and assumptions are retested.\n- [Team Objectives](team-objectives.html) — how ambition gets set so that working small has something big to think about.\n\n## Scope and Revisiting\n\nThis principle governs how work is sized, estimated, and paced across every product team I am responsible for. I revisit it if a domain emerges where weekly-sensible progress is genuinely impossible rather than merely uncomfortable — deep research bets may earn a longer heartbeat, explicitly and per bet — and whenever I catch a planning cadence quietly becoming the unit that reality gets cut to fit.\n\n## Authoritative References\n\n- John Cutler, \"TBM 435: 20 Unfiltered Operating Takes\", *The Beautiful Mess*, August 2026 — the source essay; this record distills its Shipping Smaller/Faster, Cycles, and Estimation sections and the \"real progress can be sensed daily and weekly\" take.\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "3 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this principle — derived from John Cutler's \"20 Unfiltered Operating Takes\". The Article tab carries the rationale and anti-patterns.*\n\n## Audit the Environment\n\n- [ ] The team is not being interrupted mid-cycle with new asks.\n- [ ] Strategy is not changing under the team faster than it can ship against it.\n- [ ] WIP is capped — the team is not loaded with parallel commitments.\n- [ ] Nobody is forced to converge prematurely on estimates.\n- [ ] The team can get changes into production and measure their impact.\n\n## Build the Skill\n\n- [ ] The team can rapidly lay out options for a piece of work.\n- [ ] The team can slice options to get the most leverage from the smallest change.\n- [ ] Slicing skill is part of hiring criteria and internal coaching, not assumed.\n- [ ] Teams that already work small are recognized and protected as an asset.\n- [ ] Small-working teams are coached to think big — connected to lanes and larger bets.\n\n## Keep Cycles as Tools\n\n- [ ] No single cadence is treated as \"the\" cycle that all work must fit.\n- [ ] Cycle boundaries act as checkpoints and forcing functions, not containers.\n- [ ] Shippable work and learning are released when ready, never held for the planning window.\n- [ ] Bets are not resized to match the cycle length.\n- [ ] A wholesale rebalance at a cycle boundary is investigated as a smell: work too big, prioritization horizon too short.\n\n## Estimate on the Ladder\n\n- [ ] Every bet is sized on the coarse ladder: 1–3 days, 1–3 weeks, 1–3 months, 1–3 quarters, 1–3 years.\n- [ ] Estimates are made at the atomic level of the actual bet, not its imagined pieces.\n- [ ] No estimation effort is spent on finer resolution than the ladder.\n- [ ] Each 1–3-quarter (or larger) bet has its shape named — one of:\n  - Big messy project — needs a de-risking strategy and significant progress across its parts.\n  - Iteratively funded umbrella — houses smaller bets, with pivot/proceed points; only the first few need to work.\n\n## Sense Progress Weekly\n\n- [ ] Every bet, including the biggest, produces weekly evidence: something shipped, learned, or de-risked.\n- [ ] Big work is broken up without losing the big picture — and leaders coach this actively.\n- [ ] The weekly conversation covers what was done and learned, not only what is planned.\n- [ ] Work with no sensed progress for weeks is surfaced and challenged, not left \"in progress\".\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Working small — why tempo beats the perfect cadence, in eight panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned product-minded executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. MILA: an energetic young product manager, dark hair in a ponytail, denim jacket over a striped shirt, carries a tablet covered in sticky notes.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and amber accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Mila stares at an enormous package labeled Q3 Release stuck in a doorway.](assets/images/working-small/comic-01-ship-smaller.jpeg)\n**Panel 1:** *The hook: everything ships big, late, and all at once.*\n\n![Comic panel: whiteboard showing a small runner reaching a big star easily, while a giant statue cannot pass a small gate.](assets/images/working-small/comic-02-the-asymmetry.jpeg)\n**Panel 2:** *The asymmetry: teaching small to think big is coaching; the reverse is a rebuild.*\n\n![Comic panel: Mila tangled in ribbons labeled WIP, interrupts, new strategy, estimates now, while Vera cuts one.](assets/images/working-small/comic-03-environment-kills.jpeg)\n**Panel 3:** *The environment: interruptions, WIP, and churn kill tempo faster than any skill gap.*\n\n![Comic panel: three clocks labeled Quarter, Sprint, and 6 Weeks, each tagged both too long and too short.](assets/images/working-small/comic-04-every-clock-wrong.jpeg)\n**Panel 4:** *The relativity: every cycle is too long and too short at the same time.*\n\n![Comic panel: a worker saws a plank labeled Big Bet to fit identical quarter-sized boxes on a conveyor.](assets/images/working-small/comic-05-boxes-to-fill.jpeg)\n**Panel 5:** *The perversion: a quarter is not a big sprint, and bets are not box-shaped.*\n\n![Comic panel: Vera points at a five-rung ladder of coarse estimate sizes while Mila discards a calculator.](assets/images/working-small/comic-06-the-ladder.jpeg)\n**Panel 6:** *The ladder: estimate in five coarse sizes — anything finer is waste.*\n\n![Comic panel: a roped boulder labeled Big Project beside an umbrella sheltering small boats labeled Small Bets.](assets/images/working-small/comic-07-two-shapes.jpeg)\n**Panel 7:** *The shapes: the messy project needs a de-risking rope; the umbrella bet needs pivot points.*\n\n![Comic panel: a heartbeat monitor with pulses labeled shipped and learned as Vera and Mila watch.](assets/images/working-small/comic-08-ship-learn.jpeg)\n**Panel 8:** *The closer: a weekly heartbeat of shipping and learning — that is progress you can sense.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

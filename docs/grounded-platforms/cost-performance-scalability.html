@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cost, Performance, and Scalability</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="policy-as-code.html" title="Policy as Code Implementation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="resilience-automation.html" title="Resilience Automation">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference Implementation</p>
+        <h1>Cost, Performance, and Scalability</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-20  ·  8 min · <a class="spec-link" href="cost-performance-scalability.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/cost-performance-scalability/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/cost-performance-scalability/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="policy-as-code.html" title="Policy as Code Implementation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="resilience-automation.html" title="Resilience Automation">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REF-COST", "status": "draft:gray", "title": "Cost, Performance, and Scalability", "date": "2026-08-20", "author": "Željko Obrenović", "permalink": "cost-performance-scalability", "timetoread": "8 min", "excerpt": "When a platform team in my organization takes on cost, performance, and scalability, the finished build makes three things true at once: cost is visible and attributable to the team that incurs it, performance is defined by SLOs and defended by tested autoscaling, and consumption is bounded by guardrails that catch mistakes before the invoice does. Savings work never starts before the SLOs are on the table — a cheaper platform that misses its latency target has not been optimized, it has been broken at a discount. And optimization runs as a continuous loop — baseline, rightsize, scale, buy capacity at the right price, measure, repeat — never as a one-time savings project. The test I keep running: can any engineer see what their workload costs today, and does a bad cost decision get caught before month-end?", "tags": "platform engineering, cost optimization, finops, autoscaling, kubernetes, slos, capacity management, cost governance, rightsizing", "icon": "assets/icons/cost-performance-scalability.png", "logo": "assets/images/cost-performance-scalability/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["platform engineering", "cost optimization", "finops", "autoscaling", "kubernetes", "slos", "capacity management", "cost governance", "rightsizing"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: When a platform team in my organization builds the cost, performance, and scalability capability, the finished build makes three things true at once. **Cost is visible and attributable** — every workload's spend is queryable, labeled to a team and cost center, and reported back through showback or chargeback. **Performance is defended, not assumed** — availability and latency SLOs are defined first, the cost of meeting each is calculated, trade-offs are explicit, and autoscaling is load-tested against those SLOs before it is trusted. **Consumption is bounded** — quotas, limit ranges, anomaly alerts, and CI/CD cost gates catch expensive mistakes before the invoice does. Optimization runs as a continuous loop — baseline, rightsize, scale, buy capacity at the right price, measure, repeat — never as a one-time savings project. The test I keep running: can any engineer see what their workload costs today, and does a bad cost decision get caught before month-end?\n\n## Statement\n\nWhen my organization builds this capability into a platform, this is the shape of the build I hold the team to.\n\n**Goals and trade-offs come first:**\n\n- **SLOs before savings.** Availability and performance SLOs are defined, with acceptable latency, throughput, and downtime named explicitly — and the cost of meeting each SLO is calculated, so the trade-off between cost, performance, and scalability is a decision, not an accident.\n- **Cost justified by value, never by price alone.** Infrastructure spend is justified by the business value it delivers; nothing is chosen only because it is the cheapest option on the menu.\n\n**Cost is observable and attributable:**\n\n- **Every workload has a price tag.** Cloud-native cost reporting is on, and cluster-level cost visibility (OpenCost in the reference stack) makes CPU and memory cost queryable per workload.\n- **Every price tag has an owner.** Consistent labels — team, cost center, business unit, application — are applied to namespaces and deployments, workload costs are allocated to specific teams or projects, dashboards make the numbers visible, and showback or chargeback reporting closes the loop.\n\n**Optimization starts from a measured baseline:**\n\n- **Baseline, then target.** The workload to optimize is chosen, its current hourly and monthly cost recorded, and a measurable reduction target set before anything is touched.\n- **Profile before you cut.** Actual CPU and memory usage, peak periods, whether peaks coincide, and the gap between usage and configured requests are all measured first.\n\n**Workloads are rightsized and scale on demand:**\n\n- **Requests follow observed usage.** Oversized CPU and memory requests are reduced with reasonable headroom; the workload's bound — CPU, memory, I/O, or storage — determines the instance category, with automated instance selection (Karpenter) where it pays.\n- **Horizontal scaling is configured and proven.** HPA carries sensible minimum and maximum replicas, utilization targets, safe scale-up and scale-down behavior, stabilization windows against thrash, and business-level metrics (requests per second, queue depth, active sessions) where CPU is the wrong signal — and it is tested under generated load against the SLO before it is trusted.\n- **Vertical recommendations are observed before they are obeyed.** VPA runs in recommendation mode first, watches realistic behavior long enough to mean something, gets bounded by minimum and maximum limits, excludes containers that must not be touched, and the HPA-plus-VPA interplay is an explicit decision.\n\n**Capacity is bought at the right price per stability class:**\n\n- **On-demand for stability, spot for the fault-tolerant.** Stable baseline capacity runs on-demand or committed; spot capacity serves fault-tolerant workloads with interruption handling, taints and affinity for isolation, and fallback to on-demand — and never carries business-critical single replicas, uninterruptible long jobs, or latency-critical paths.\n- **Commitments cover the true baseline only.** Committed-use discounts apply to predictable baseline load, never stretched over variable development, test, batch, or emerging workloads.\n\n**Consumption is bounded and anomalies page someone:**\n\n- **Quotas and limits by policy.** ResourceQuotas per team or namespace, LimitRanges with defaults, minima, and maxima, and mandatory CPU and memory requests — enforced by policy-as-code, not by convention.\n- **Spikes are alerts, not invoices.** A normal cost baseline exists, unexpected spikes alert, thresholds are tuned to observed behavior, and runaway memory or CPU consumers get investigated while they are still small.\n\n**Deployments expose their financial impact, and results are measured:**\n\n- **The pipeline talks money.** Cost is estimated before production deployment, resource-request changes are diffed against the previous release, unusually large increases require explicit approval, quota-exceeding deployments fail with a clear remediation message, and estimated cost lands in pull-request and deployment summaries.\n- **The loop closes.** Post-optimization cost is compared against the baseline, SLOs, latency, and autoscaling behavior are re-verified, remaining waste is identified, and the loop runs again. Optimization is a standing platform practice, not a project with an end date.\n\n![Circular diagram of the optimization loop — baseline, rightsize, autoscale, buy capacity, measure — with an SLO shield at the center connected to every stage.](assets/images/cost-performance-scalability/continuous-optimization-loop.jpeg)\n**Figure 1:** *Optimization runs as a closed loop — baseline, rightsize, scale, buy capacity at the right price, measure, repeat — with the SLOs as the fixed constraint every stage checks against.*\n\n## How to Read This\n\nThis record is part of the **Reference Implementation** section of this journal — the how-it-concretely-looks companion to the Platform Engineering records. Where [The Four Pillars of Platform Engineering](four-pillars.html) states that a platform must get cheaper as adoption grows, this record shows what that pillar looks like as a build, end to end. It is grounded in the \"Cost, Performance, and Scalability\" chapter checklist of the *Platform Engineer's Handbook*, read as a practitioner-executive contract: when a platform team builds this capability, this is what done means. The runnable version — every step from SLO definition to the 30%-reduction exercise — lives in the **Checklist** tab; the **TL;DR** tab carries the management summary; the **Conversation** tab talks it through.\n\n## Reference Stack\n\nThe handbook builds this capability on a concrete stack. I name it honestly as the worked example — the commitments above hold whatever tools implement them.\n\n| Role | Reference tool | The property that matters |\n| --- | --- | --- |\n| Cost visibility | OpenCost + cloud-native cost reporting | Every workload's CPU and memory cost is queryable, not reconstructed from the invoice |\n| Attribution | Kubernetes labels (team, cost center, business unit, application) | Every euro maps to an owner |\n| Reporting | Grafana dashboards, showback/chargeback | Teams see their own spend without asking |\n| Horizontal scaling | HPA, with custom business metrics | Replicas follow demand while holding the SLO |\n| Rightsizing | VPA in recommendation mode, Goldilocks | Requests follow observed usage, not guesses |\n| Instance selection | Karpenter | Node shapes follow workload profiles automatically |\n| Capacity mix | On-demand / spot / committed-use | Each stability class pays its right price |\n| Guardrails | ResourceQuotas, LimitRanges, Kyverno/Gatekeeper | Consumption is bounded by policy, not by convention |\n| Cost gates | Pipeline cost checks and quota checks | Financial impact is visible before deploy, not after |\n| Anomaly detection | Cost baseline + alerting | Spikes page someone; they do not wait for month-end |\n\n## Rationale\n\n**Cost work without SLOs is just a smaller number.** The chapter's first move is not a savings measure — it is defining availability and performance SLOs and calculating what meeting each one costs. That ordering is the whole discipline: a cheaper platform that misses its latency target has not been optimized, it has been broken at a discount. Making the trade-offs explicit also kills the lowest-price reflex, because the question is never \"what is cheapest\" but \"what is the cheapest way to meet the SLO the business actually needs.\"\n\n**You cannot allocate what you cannot see, and unallocated cost changes nobody's behavior.** An organization with one cloud invoice has one team that cares about cost: finance. Labels on every namespace and deployment, per-workload cost tracking, and showback or chargeback turn the invoice into hundreds of small, ownable numbers — and the team that sees its own number is the team that fixes it. Attribution is the mechanism that converts cost from an executive's problem into everyone's constraint.\n\n**The baseline is what separates optimization from guessing.** Recording current cost, setting a measurable target, and profiling actual usage against configured requests before changing anything is what makes the eventual claim — \"we cut this workload 30%\" — a fact instead of a story. It also surfaces the most common finding in practice: requests sized by fear, provisioned for a peak that telemetry shows never coincides across resources.\n\n**Autoscaling is a performance instrument before it is a savings instrument.** HPA earns trust by being load-tested against the SLO, not by existing; stabilization windows and safe scale behaviors are what keep it from thrashing exactly when traffic is least forgiving. VPA earns trust by watching first — recommendation mode, a realistic observation window, bounded limits, excluded sidecars — because a recommender that acts on a week it did not see is a new source of outages. The chapter's insistence on testing scaling under generated load is the difference between having autoscaling and hoping for it.\n\n**Capacity pricing follows workload stability, not the other way around.** Spot capacity is a real discount with a real failure mode, so it carries only what tolerates interruption — with handling, isolation, and on-demand fallback built in — and never the business-critical single replica. Committed-use discounts are the same bet inverted: they pay off only on the true baseline, and committing variable or emerging workloads converts a discount into a liability. The mix is a design decision per stability class, revisited as the workload portfolio moves.\n\n![Layered demand chart showing committed baseline capacity, on-demand variable capacity, and spot burst capacity with a fallback arrow to on-demand.](assets/images/cost-performance-scalability/capacity-mix-stability-classes.jpeg)\n**Figure 2:** *Each stability class pays its right price: committed discounts cover only the true baseline, on-demand carries the variable load, and spot carries fault-tolerant bursts with fallback built in.*\n\n**Guardrails and gates move the cost conversation to before the money is spent.** Quotas and limit ranges bound what any tenant can consume; policy-as-code makes declared requests non-optional; anomaly detection catches the leak and the runaway consumer while they are still cheap; and the CI/CD gates put the estimated cost of a change in front of the engineer who is about to make it — with an approval step for the big ones and a clear remediation message when a quota blocks the deploy. Every one of these moves the same conversation earlier: from the month-end invoice review to the pull request.\n\n![Pipeline diagram with cost gates in sequence — estimate, diff, approve, quota, deploy, compare — including a remediation loop from the quota gate.](assets/images/cost-performance-scalability/pipeline-cost-gates.jpeg)\n**Figure 3:** *The pipeline talks money: cost is estimated, diffed, approved, and quota-checked before deploy — and compared against the estimate after — so the conversation happens at the pull request, not at month-end.*\n\n**Optimization is a platform practice, not a project.** The chapter closes its worked exercise the way I close every optimization round: measure against the baseline, verify the SLOs still hold, find the remaining waste, repeat. A one-time savings drive produces a one-time saving, and the waste grows back — because the forces that created it (fear-sized requests, unlabeled workloads, unwatched autoscalers) are still there. The capability this record describes is the standing loop that keeps them in check.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Define SLOs and calculate the cost of meeting each before optimizing. | Chase the lowest price — cheapest infrastructure that misses the SLO is a failure, not a saving. |\n| Make cost visible and attributable per team via labels and showback/chargeback. | Use chargeback as a blame instrument — the number exists so the owning team can act on it. |\n| Rightsize requests from observed usage, with reasonable headroom. | Strip headroom to the bone — the target is fit, not asphyxiation. |\n| Configure HPA where extra replicas actually help, and load-test it against the SLO. | Autoscale everything by default — HPA on the wrong workload or the wrong metric is thrash, not elasticity. |\n| Run VPA in recommendation mode first and adopt high-confidence recommendations. | Let a recommender resize production on day one, sidecars included. |\n| Use spot for fault-tolerant workloads, with interruption handling and fallback. | Put business-critical single replicas or uninterruptible jobs on spot to hit a savings number. |\n| Commit discounts on the true, predictable baseline. | Commit variable dev, test, batch, or emerging workloads — that turns a discount into a liability. |\n| Gate deployments on cost estimates, request diffs, and quota checks — with a clear remediation path. | Block every cost increase — major increases need approval, not prohibition; growth that pays for itself is the point. |\n\nConcretely: every platform in my organization that claims this capability can show me, on a dashboard, what any named workload costs today and which team pays for it; can show the load-test evidence behind its autoscaling; and can show the last optimization round's baseline, result, and SLO verification. **A cost story without a baseline is an anecdote.**\n\n## Anti-Patterns\n\n- **The lowest bid.** Choosing infrastructure on price alone, with no SLO on the table — the savings are real and so is the outage.\n- **The invisible bill.** One org-level invoice, no labels, no attribution — cost stays finance's problem, and nobody who could fix it ever sees it.\n- **Optimizing in the dark.** Rightsizing without a recorded baseline or a profiling window — changes nobody can verify, savings nobody can prove.\n- **Scaling thrash.** HPA without stabilization windows or safe scale behaviors, never tested under load — an autoscaler that amplifies traffic spikes instead of absorbing them.\n- **VPA on day one.** Turning a recommender loose on production before it has observed realistic behavior — resizing sidecars and all.\n- **Spot roulette.** Business-critical single replicas and uninterruptible jobs on spot capacity, because the discount looked good in the spreadsheet.\n- **The commitment trap.** Committed-use discounts stretched over variable and emerging workloads — paying steady-state prices for load that never became steady.\n- **The quota-free commons.** No ResourceQuotas, no LimitRanges, requests optional — one team's memory leak is everyone's capacity problem.\n- **The month-end surprise.** No cost baseline, no anomaly alerts — every spike discovered on the invoice, weeks after it started.\n- **The savings project.** A quarterly cost-cutting drive with an end date — the waste grows back because the forces that created it were never put under a standing loop.\n\n## Related Records\n\n- [The Four Pillars of Platform Engineering](four-pillars.html) — pillar 3's economic signature (each new adopting team costs less than the last) is what this capability makes measurable and true; pillar 4's capacity management is what it operationalizes.\n- [Operating Platforms](operating-platforms.html) — capacity and cost management as part of the standing operating discipline; this record is that discipline's cost loop made concrete.\n- [What Platform Success Looks Like](platform-success.html) — the efficiency and cost metrics by which platform success is judged; this record builds the instrumentation behind them.\n- [Observability Implementation](observability-implementation.html) — the telemetry stack this capability reuses to carry cost signals, dashboards, and anomaly alerts.\n- [Policy as Code Implementation](policy-as-code.html) — the enforcement machinery behind the quotas, limit ranges, and required requests this record mandates.\n- [CI/CD as a Platform Service](cicd-as-a-platform-service.html) — the pipeline into which this record's cost estimates, diffs, and quota gates are built.\n- [Self-Service Platform Onboarding](self-service-onboarding.html) — the default quotas a new tenant receives at onboarding; this record governs how those bounds hold over time.\n- [Resilience Automation](resilience-automation.html) — the failure-injection sibling: spot interruption handling built here is exercised there.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every platform team in my organization that owns shared compute capacity or bills workloads to product teams, everywhere I am the accountable executive. I revisit it if cloud spend grows faster than platform adoption for two consecutive quarters (the loop is not running), if an optimization round ships without SLO re-verification (savings are being taken out of reliability), if cost anomalies keep being discovered on invoices rather than by alerts, or if teams start gaming quotas instead of negotiating them — which means the guardrails have become bureaucracy and need redesign, not more enforcement.\n\n## Authoritative References\n\n- *Platform Engineer's Handbook* — the \"Cost, Performance, and Scalability\" chapter and its checklist, which this record distills; the chapter's worked 30%-reduction exercise is reproduced in the Checklist tab.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "When a platform team in my organization builds the cost, performance, and scalability capability, the finished build makes three things true at once: **cost is visible and attributable** to the team that incurs it, **performance is defined by SLOs and defended by tested autoscaling**, and **consumption is bounded by guardrails** that catch expensive mistakes before the invoice does. Optimization runs as a continuous loop — baseline, rightsize, scale, buy capacity at the right price, measure, repeat — never as a one-time savings project.\n\n**What changes**\n\n* **SLOs come before savings.** Availability and performance SLOs are defined first, the cost of meeting each is calculated, and trade-offs are explicit — nothing is chosen only because it is cheapest.\n* **Every workload gets a price tag and an owner.** Cloud-native cost reporting plus OpenCost, consistent labels (team, cost center, business unit, application), Grafana dashboards, and showback or chargeback — the team that sees its own number is the team that fixes it.\n* **Optimization becomes a measured loop.** Baseline cost recorded and usage profiled before anything is touched; requests rightsized with headroom; HPA load-tested against the SLO with stabilization windows; VPA run in recommendation mode before any recommendation is obeyed; results verified against the baseline and the SLOs, then the loop repeats.\n* **Capacity is bought per stability class.** On-demand or committed for the true baseline, spot for fault-tolerant workloads with interruption handling and fallback — never for business-critical single replicas, and no commitments stretched over variable workloads.\n* **Cost decisions move into the pipeline.** Quotas and limit ranges enforced by policy-as-code, anomaly alerts on a tuned baseline, and CI/CD gates that estimate cost, diff resource requests, require approval for major increases, and fail quota-breaking deployments with a clear remediation message.\n\n**What it costs**\n\n* SLO definition and per-SLO cost calculation are real up-front work — the discipline forbids skipping straight to the savings.\n* Attribution, dashboards, and anomaly tuning are standing platform obligations, not a setup task; the loop has no end date.\n* Some savings are deliberately left on the table: headroom stays in rightsized requests, and spot discounts are refused for workloads that cannot tolerate interruption.\n\n**What we are not doing**\n\n* Not the enforcement machinery itself — Gatekeeper and Kyverno live in [Policy as Code Implementation](policy-as-code.html); the telemetry stack lives in [Observability Implementation](observability-implementation.html); the pipeline lives in [CI/CD as a Platform Service](cicd-as-a-platform-service.html).\n* Not onboarding-time default quotas — those live in [Self-Service Platform Onboarding](self-service-onboarding.html); this record governs how bounds hold over time.\n* Not FinOps org design or the platform's own business-case economics — [The Four Pillars of Platform Engineering](four-pillars.html) and [What Platform Success Looks Like](platform-success.html) carry those.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full build, including the handbook's worked 30%-reduction exercise. Grounded in the* Platform Engineer's Handbook*, \"Cost, Performance, and Scalability\" chapter.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "6 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the cost, performance, and scalability build, end to end. The Article tab carries the rationale and anti-patterns. Tools named here (OpenCost, Grafana, Karpenter, VPA/Goldilocks, Kyverno/Gatekeeper) are the reference stack; substitute equivalents freely as long as the property holds.*\n\n## 1. Define Goals and Trade-Offs\n\n- [ ] We have defined availability and performance SLOs\n- [ ] We have identified acceptable latency, throughput, and downtime\n- [ ] We have calculated the cost required to meet each SLO\n- [ ] Cost/performance/scalability trade-offs are explicit\n- [ ] Infrastructure cost is justified by the business value delivered\n- [ ] We do not choose infrastructure based only on the lowest price\n\n## 2. Establish Cost Observability\n\n- [ ] Cloud-native cost reporting is enabled\n- [ ] OpenCost (or equivalent) is installed and configured for Kubernetes cost visibility\n- [ ] We have consistent Kubernetes labels for:\n  - [ ] Team\n  - [ ] Cost center\n  - [ ] Business unit\n  - [ ] Application\n- [ ] Cost labels are applied consistently to namespaces and deployments\n- [ ] We track CPU cost\n- [ ] We track memory allocation and memory cost\n- [ ] We have Grafana dashboards for cost reporting\n- [ ] Workload costs are allocated to specific teams or projects\n- [ ] Showback or chargeback reporting is established\n\n## 3. Establish a Workload Baseline\n\n- [ ] We have selected the application to optimize\n- [ ] Its current hourly and monthly cost is recorded\n- [ ] A measurable cost-reduction target is set\n- [ ] We monitor actual CPU usage\n- [ ] We monitor actual memory usage\n- [ ] Peak CPU periods are identified\n- [ ] Peak memory periods are identified\n- [ ] We know whether CPU and memory peaks occur at the same time\n- [ ] Actual usage is compared with configured resource requests\n\n## 4. Rightsize Workloads\n\n- [ ] Oversized CPU requests are reduced, leaving reasonable headroom\n- [ ] Oversized memory requests are reduced, leaving reasonable headroom\n- [ ] We have determined whether the workload is:\n  - [ ] CPU-bound\n  - [ ] Memory-bound\n  - [ ] I/O-bound\n  - [ ] Storage-bound\n- [ ] An appropriate instance category is selected for the workload\n- [ ] Compute-optimized instances are considered for CPU-heavy workloads\n- [ ] Memory-optimized instances are considered for memory-heavy workloads\n- [ ] Automated instance selection (Karpenter) is considered\n\n## 5. Configure Horizontal Pod Autoscaling\n\n- [ ] HPA is configured for workloads that benefit from additional replicas\n- [ ] Minimum replicas are set appropriately\n- [ ] Maximum replicas are set appropriately\n- [ ] CPU utilization targets are configured\n- [ ] Memory utilization targets are configured where appropriate\n- [ ] Scale-up behavior is safe\n- [ ] Scale-down behavior is safe\n- [ ] Stabilization windows reduce scaling thrash\n- [ ] Custom business-level metrics are considered, such as:\n  - [ ] Requests per second\n  - [ ] Queue depth\n  - [ ] Active sessions\n- [ ] HPA is tested under generated load\n- [ ] Scaling maintains the required SLO\n\n## 6. Evaluate Vertical Pod Autoscaling\n\n- [ ] VPA is installed if required\n- [ ] VPA runs in recommendation/\"off\" mode first\n- [ ] VPA has had enough time to observe realistic workload behavior\n- [ ] CPU recommendations are reviewed\n- [ ] Memory recommendations are reviewed\n- [ ] Goldilocks is used, if desired, to inspect recommendations\n- [ ] High-confidence recommendations are implemented\n- [ ] Minimum and maximum resource limits are defined\n- [ ] Containers that should not be modified (such as sidecars) are excluded\n- [ ] We have decided whether HPA and VPA should be used together\n\n## 7. Optimize Infrastructure Capacity\n\n- [ ] Stable baseline capacity is identified\n- [ ] On-demand capacity is used where stability is required\n- [ ] Spot instances are evaluated for fault-tolerant workloads\n- [ ] Spot instances are avoided for unsuitable workloads, such as:\n  - [ ] Business-critical single replicas\n  - [ ] Long-running jobs that cannot tolerate interruption\n  - [ ] Highly latency-sensitive operations\n- [ ] Interruption handling is configured for spot workloads\n- [ ] Taints/tolerations are configured where spot nodes require workload isolation\n- [ ] Node affinity prefers spot capacity where appropriate\n- [ ] Fallback to on-demand capacity is allowed when needed\n- [ ] Committed-use discounts are evaluated for predictable baseline workloads\n- [ ] We do not overcommit beyond the true baseline\n- [ ] Committed capacity is not used for highly variable development, test, batch, or emerging workloads\n\n## 8. Implement Cost Governance\n\n- [ ] ResourceQuotas are defined for each team or namespace\n- [ ] CPU request quotas are set\n- [ ] Memory request quotas are set\n- [ ] CPU limits are set\n- [ ] Memory limits are set\n- [ ] Maximum pod counts are limited where appropriate\n- [ ] Persistent volume claims are limited where appropriate\n- [ ] LimitRanges are configured for individual containers\n- [ ] Default resource requests are defined\n- [ ] Default resource limits are defined\n- [ ] Minimum and maximum allowable resources are defined\n- [ ] Workloads are required to declare CPU requests\n- [ ] Workloads are required to declare memory requests\n- [ ] Resource requirements are enforced with policy-as-code tools (Kyverno or Gatekeeper — see [Policy as Code Implementation](policy-as-code.html))\n\n## 9. Configure Cost Anomaly Detection\n\n- [ ] A normal cost baseline is established\n- [ ] Unexpected cost spikes trigger alerts\n- [ ] Current spending rates are compared with historical averages\n- [ ] Anomaly thresholds are tuned based on observed production behavior\n- [ ] Memory leaks that continuously increase resource consumption are investigated\n- [ ] Workloads consuming unexpectedly high CPU are investigated\n- [ ] Alerts are reviewed and refined over time\n\n## 10. Integrate Cost Controls into CI/CD\n\n- [ ] Workload cost is estimated before production deployment\n- [ ] New CPU requests are compared with the previous deployment\n- [ ] New memory requests are compared with the previous deployment\n- [ ] Unusually large increases in resource requirements are flagged\n- [ ] Major cost increases require explicit approval or override\n- [ ] Namespace ResourceQuotas are checked during deployment\n- [ ] Deployments that would exceed namespace budgets fail\n- [ ] Failed quota checks return a clear remediation message\n- [ ] Estimated monthly cost is added to deployment metadata\n- [ ] Cost information appears in pull-request or deployment summaries\n- [ ] Post-deployment cost is compared with the previous seven-day average\n\n## 11. Measure Optimization Results\n\n- [ ] Post-optimization cost is compared with the original baseline\n- [ ] Performance has not degraded\n- [ ] Availability SLOs are still being met\n- [ ] Latency remains acceptable under load\n- [ ] Autoscaling responds correctly\n- [ ] Remaining waste is identified\n- [ ] Optimization is repeated where necessary\n\n## 12. The Worked Exercise: A 30% Reduction Round\n\nThe handbook's completion exercise — one full pass of the loop, run as training:\n\n- [ ] Establish the application's baseline cost\n- [ ] Set a 30% cost-reduction target\n- [ ] Profile CPU and memory usage for 1 week\n- [ ] Rightsize resource requests using observed usage\n- [ ] Configure HPA targeting approximately 75% CPU utilization\n- [ ] Load-test the HPA configuration\n- [ ] Run VPA in recommendation/\"off\" mode\n- [ ] Review VPA/Goldilocks recommendations after 1 week\n- [ ] Evaluate whether a different instance type would be cheaper\n- [ ] Measure results after approximately 2 weeks\n- [ ] Determine whether the 30% reduction target was achieved\n- [ ] Document the changes made\n- [ ] Document the cost and performance results\n- [ ] Share the findings with the platform team\n\n## Final Review\n\n- [ ] Cost is visible and attributable\n- [ ] SLOs are defined and measurable\n- [ ] Workloads are appropriately sized\n- [ ] Autoscaling is configured where beneficial\n- [ ] Capacity uses the right mix of on-demand, spot, and committed resources\n- [ ] Cost guardrails prevent uncontrolled consumption\n- [ ] Cost anomalies trigger alerts\n- [ ] CI/CD exposes the financial impact of deployments\n- [ ] Optimization is treated as a continuous platform practice, not a one-time project\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## The Bill Nobody Owns\n\n**Ben:** Blunt version first. Every organization already has someone yelling about the cloud bill — usually finance, usually in the last week of the quarter. Why does cost need to be a *platform capability* with its own record?\n\n**Ana:** Because the yelling proves the point. An organization with one cloud invoice has exactly one team that cares about cost, and it's the team least able to fix it. The record's first structural move is attribution: cloud-native cost reporting plus OpenCost on the clusters, consistent labels — team, cost center, business unit, application — on every namespace and deployment, dashboards, and showback or chargeback. That turns one enormous invoice into hundreds of small, ownable numbers. The team that sees its own number is the team that fixes it.\n\n**Ben:** And the \"performance and scalability\" part of the title? That reads like three chapters stapled together.\n\n**Ana:** It's one discipline, deliberately. The chapter's very first step is not a savings measure — it's defining availability and performance SLOs, naming acceptable latency, throughput, and downtime, and calculating what meeting each SLO costs. Cost work without SLOs is just a smaller number. A cheaper platform that misses its latency target hasn't been optimized — it's been broken at a discount.\n\n**Ben:** So no cost cutting before the SLOs are on the table.\n\n**Ana:** None. And the same clause kills the lowest-price reflex: the question is never \"what's cheapest,\" it's \"what's the cheapest way to meet the SLO the business actually needs.\" Infrastructure spend gets justified by business value, not by being the smallest line item on the menu.\n\n## The Loop, Not the Project\n\n**Ben:** Fine — attribution and SLOs. But every company I've seen runs a big cost-optimization project once a year, saves twenty percent, and moves on. What's wrong with that?\n\n**Ana:** The record names it as an anti-pattern: the savings project. A one-time drive produces a one-time saving, and the waste grows back, because the forces that created it — fear-sized resource requests, unlabeled workloads, unwatched autoscalers — are all still there. The capability is a standing loop: baseline, rightsize, scale, buy capacity at the right price, measure, repeat.\n\n**Ben:** Walk me through one turn of it.\n\n**Ana:** You pick the workload, record its current hourly and monthly cost, and set a measurable reduction target — before touching anything. Then you profile: actual CPU and memory usage, peak periods, whether the peaks even coincide, and the gap between what the workload uses and what it requests. That gap is usually the whole story — requests sized by fear, provisioned for a combined peak that telemetry shows never happens.\n\n**Ben:** And then you cut the requests.\n\n**Ana:** With reasonable headroom — the target is fit, not asphyxiation. And rightsizing goes past requests: you determine whether the workload is CPU-bound, memory-bound, I/O-bound, or storage-bound, and match the instance category to that — compute-optimized for CPU-heavy, memory-optimized for memory-heavy, or automated instance selection with Karpenter so node shapes follow workload profiles without a human in the loop.\n\n**Ben:** Why insist on the baseline ceremony? Engineers can usually spot an oversized deployment on sight.\n\n**Ana:** Because the baseline is what separates optimization from guessing. Without a recorded starting cost and a re-verification at the end, \"we cut this workload thirty percent\" is a story, not a fact. The record's closing line in practice: a cost story without a baseline is an anecdote. The handbook even ships the loop as a worked exercise — baseline, thirty-percent target, one week of profiling, rightsize, load-test, measure after two weeks, document, share with the platform team. That exercise is in the Checklist tab near-verbatim.\n\n## Autoscaling You Can Trust\n\n**Ben:** Autoscaling. My skeptical take: HPA is a checkbox everyone ticks and nobody tests, and the first traffic spike turns it into a flapping disaster.\n\n**Ana:** The record agrees with the diagnosis and prescribes the opposite of the checkbox. HPA goes only on workloads that actually benefit from extra replicas, with sensible minimum and maximum replica counts, utilization targets, safe scale-up and scale-down behavior, and stabilization windows precisely against the thrash you're describing. And then the load-bearing clause: it's tested under generated load, and the test verifies that scaling maintains the SLO. Autoscaling is a performance instrument before it's a savings instrument. Untested, you don't have autoscaling — you have hope.\n\n**Ben:** CPU utilization is a lousy signal for plenty of services, though.\n\n**Ana:** Which is why the record keeps custom business-level metrics in scope — requests per second, queue depth, active sessions — for the workloads where CPU is the wrong dial.\n\n**Ben:** And VPA? Letting a robot resize production workloads sounds like a new outage category.\n\n**Ana:** It is, if you skip the observation discipline. VPA runs in recommendation mode first — \"off\" mode — and watches realistic workload behavior long enough to mean something. You review the CPU and memory recommendations, Goldilocks if you want them inspectable, implement only the high-confidence ones, bound everything with minimum and maximum limits, and exclude containers that must not be touched — sidecars, classically. And whether HPA and VPA run together is an explicit decision, not an accident of two teams installing two controllers.\n\n## Buying Capacity at the Right Price\n\n**Ben:** Spot instances. The discount is enormous and so are the war stories. Where does the record land?\n\n**Ana:** On stability classes. Capacity pricing follows workload stability, not the other way around. Stable baseline load runs on-demand or committed. Spot serves fault-tolerant workloads — with interruption handling configured, taints and tolerations where spot nodes need isolation, node affinity to prefer spot where it pays, and fallback to on-demand when the market moves. And there's an explicit never-list: business-critical single replicas, long-running jobs that can't tolerate interruption, highly latency-sensitive operations. The anti-pattern name is spot roulette — putting the wrong workload on spot because the discount looked good in a spreadsheet.\n\n**Ben:** And committed-use discounts? Finance loves those.\n\n**Ana:** Same bet, inverted. Commitments pay off on the true, predictable baseline — and only there. The record forbids overcommitting beyond that baseline and specifically keeps committed capacity away from variable development, test, batch, and emerging workloads. Commit those and you've converted a discount into a liability: steady-state prices for load that never became steady. The record calls it the commitment trap.\n\n## Guardrails, Gates, and the Month-End Surprise\n\n**Ben:** All of this is still voluntary, though. What stops one team's memory leak from eating the whole cluster's budget?\n\n**Ana:** Governance by policy, not by convention. ResourceQuotas per team or namespace — CPU, memory, pod counts, persistent volume claims. LimitRanges per container, with default requests and limits and allowable minima and maxima. Workloads are required to declare CPU and memory requests, and all of it is enforced with policy-as-code — Kyverno or Gatekeeper in the reference stack. The machinery itself lives in [Policy as Code Implementation](policy-as-code.html); this record states what the machinery enforces. Without it you get the quota-free commons: one team's leak is everyone's capacity problem.\n\n**Ben:** And when something slips through anyway?\n\n**Ana:** Then the question is when you find out — and the record's answer is \"before the invoice.\" A normal cost baseline, alerts on unexpected spikes, current spend compared against historical averages, thresholds tuned to real production behavior, and standing investigations into memory leaks and unexpectedly hungry CPU consumers. The anti-pattern is the month-end surprise: every spike discovered on the invoice, weeks after it started.\n\n**Ben:** You said \"before the invoice\" — how early can you actually push the cost conversation?\n\n**Ana:** Into the pull request. That's the CI/CD integration: estimate workload cost before production deployment, diff the new CPU and memory requests against the previous release, flag unusually large increases, require explicit approval for major ones, check namespace quotas during deployment and fail with a clear remediation message when the budget would be exceeded, put estimated monthly cost in the deployment metadata and PR summary, and compare post-deployment cost against the previous seven-day average. The engineer about to spend the money sees the number before spending it.\n\n**Ben:** Careful, though — a pipeline that blocks every cost increase will just teach teams to route around it.\n\n**Ana:** Agreed, and the record is explicit: major increases need approval, not prohibition. Growth that pays for itself is the point. And there's a matching revisit trigger — if teams start gaming quotas instead of negotiating them, the guardrails have become bureaucracy and need redesign, not more enforcement.\n\n**Ben:** Close it out. What is this record explicitly not doing?\n\n**Ana:** It's one capability of the reference implementation, scoped to its own chapter. The telemetry stack it rides on is [Observability Implementation](observability-implementation.html); the pipeline it gates is [CI/CD as a Platform Service](cicd-as-a-platform-service.html); the enforcement engine is [Policy as Code Implementation](policy-as-code.html); the default quotas a new tenant starts with are [Self-Service Platform Onboarding](self-service-onboarding.html). And the economics of the platform itself — cheaper per team as adoption grows — that's pillar three of [The Four Pillars of Platform Engineering](four-pillars.html); this record is what makes that claim measurable. The test that runs through all of it: can any engineer see what their workload costs today — and does a bad cost decision get caught before month-end?\n\n**Ben:** And if the answer is \"we'll know when the invoice arrives\"?\n\n**Ana:** Then you don't have a cost capability. You have a subscription to surprises.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why savings work never starts before the SLOs are on the table — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: an engineer unrolls a very long cloud invoice with a huge circled total while an executive asks who saw it coming.](assets/images/cost-performance-scalability/comic-01-the-month-end-surprise.jpeg)\n**Panel 1:** *The hook: the month-end surprise — every cost spike discovered on the invoice, weeks after it started.*\n\n![Comic panel: a single giant invoice on a finance desk while unaware developer teams work in the background without any price tags.](assets/images/cost-performance-scalability/comic-02-the-invisible-bill.jpeg)\n**Panel 2:** *The problem: one org-level invoice and no attribution — cost stays finance's problem, and nobody who could fix it ever sees it.*\n\n![Comic panel: an engineer with giant scissors beside a tiny cut-down server with a discount tag while a latency gauge points into the red.](assets/images/cost-performance-scalability/comic-03-broken-at-a-discount.jpeg)\n**Panel 3:** *The wrong way: the lowest bid — a cheaper platform that misses its latency target has not been optimized, it has been broken at a discount.*\n\n![Comic panel: an executive at a whiteboard showing a balance scale weighing an SLO shield against a coin stack.](assets/images/cost-performance-scalability/comic-04-slos-before-savings.jpeg)\n**Panel 4:** *The principle: SLOs before savings — the question is never 'what is cheapest' but 'what is the cheapest way to meet the SLO the business needs.'*\n\n![Comic panel: a giant invoice splitting into many small labeled price tags landing on different team desks.](assets/images/cost-performance-scalability/comic-05-every-price-tag-an-owner.jpeg)\n**Panel 5:** *How it plays out: labels and showback turn one invoice into hundreds of small, ownable numbers — and the team that sees its own number is the team that fixes it.*\n\n![Comic panel: an engineer walking a circular track with stations for baseline, rightsize, scale, and measure.](assets/images/cost-performance-scalability/comic-06-the-standing-loop.jpeg)\n**Panel 6:** *The loop: baseline, rightsize, scale, measure — then run it again.*\n\n![Comic panel: a load-testing machine fires traffic at duplicating server pods while an SLO gauge stays green.](assets/images/cost-performance-scalability/comic-07-autoscaling-earns-trust.jpeg)\n**Panel 7:** *How it plays out: autoscaling earns trust by being load-tested against the SLO — the difference between having autoscaling and hoping for it.*\n\n![Comic panel: an engineer holds a cost-drive trophy while a hedge of money-shaped leaves regrows wildly behind him.](assets/images/cost-performance-scalability/comic-08-the-savings-project.jpeg)\n**Panel 8:** *The cost: the savings project with an end date — the waste grows back, because the forces that created it were never put under a standing loop.*\n\n![Comic panel: a developer views their workload's cost dashboard with an alert bell while an unopened invoice envelope waits in the corner.](assets/images/cost-performance-scalability/comic-09-before-the-invoice-does.jpeg)\n**Panel 9:** *The closer: the test that never stops running — can any engineer see what their workload costs today, and does a bad cost decision get caught before month-end?*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

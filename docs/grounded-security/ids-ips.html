@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intrusion Detection and Prevention Systems</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="network-segmentation.html" title="Network Segmentation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="vulnerability-management.html" title="Vulnerability Management">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Identity and Network</p>
+        <h1>Intrusion Detection and Prevention Systems</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  7 min · <a class="spec-link" href="ids-ips.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/ids-ips/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/ids-ips/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="network-segmentation.html" title="Network Segmentation">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="vulnerability-management.html" title="Vulnerability Management">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-IDS-IPS", "status": "draft:gray", "title": "Intrusion Detection and Prevention Systems", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "ids-ips", "timetoread": "7 min", "excerpt": "My organization treats intrusion detection as a capability it operates, not a product it bought. An IDS detects, logs, and alerts; an IPS detects and actively blocks — and blocking is enabled only where false positives are understood, because an IPS that blocks legitimate traffic is an outage engine. Coverage is layered: network sensors at the choke points, host-based monitoring where the network cannot see, honeypots for cheap high-signal tripwires, and cloud detection that adapts to workloads that appear and disappear. Placement determines what can be inspected; encrypted traffic limits visibility unless we deliberately choose inspection; and tuning is an ongoing process, not a one-time configuration. The test I hold the whole layer to: logs and alerts only provide value when someone reviews them and knows how to respond.", "tags": "security, intrusion detection, intrusion prevention, IDS, IPS, network monitoring, honeypots, alert management, defensive security", "icon": "assets/icons/ids-ips.png", "logo": "assets/images/ids-ips/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["security", "intrusion detection", "intrusion prevention", "IDS", "IPS", "network monitoring", "honeypots", "alert management", "defensive security"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: My organization treats detection as a capability it operates, not a product it bought. **An IDS detects, logs, and alerts; an IPS detects and actively blocks** — and I keep those two commitments apart, enabling blocking only where false positives are understood, because an IPS that disrupts legitimate traffic is an outage engine with a security badge. **Coverage is layered** — network sensors, host-based monitoring, honeypots, and cloud-native detection each see what the others cannot — and **placement determines what can actually be inspected**: sensors sit at the choke points the threat model cares about, not where the rack had space. **Encrypted traffic limits visibility unless we deliberately choose inspection**, and **tuning is an ongoing process**, not a one-time configuration. The test the whole layer is held to: **logs and alerts only provide value when someone reviews them and knows how to respond.**\n\n## Statement\n\nWhen my organization deploys and operates intrusion detection and prevention, this is the bar it is held to.\n\n**Detection and prevention are distinct commitments.**\n\n- **An IDS detects, logs, and alerts** on suspicious activity; **an IPS can detect and actively block or disrupt** it. Visibility and alerting are the baseline; prevention is a separate, deliberate step.\n- **IDS/IPS complements endpoint security** — antivirus and EDR — it does not replace them, and they do not replace it.\n- **Alerts are reviewed in context** before anything is declared malicious, and **threat intelligence feeds** inform whether an IP address, domain, or behavior is actually suspicious.\n\n![Diagram of an IDS watching a copy of traffic and alerting versus an IPS placed inline that blocks a malicious packet before it reaches the server.](assets/images/ids-ips/ids-detects-ips-blocks.jpeg)\n**Figure 1:** *Two distinct commitments: the IDS watches a copy and alerts; the IPS sits inline and blocks — which is why prevention is earned, not defaulted.*\n\n**Coverage is layered across network and host.**\n\n- **Network sensors watch traffic, not computers.** NIDS sensors are placed where important traffic can be observed, using promiscuous-mode interfaces where needed; the engine — Snort for signature-based detection, Suricata for multithreaded high-speed monitoring with file extraction and TLS inspection, Zeek for network analysis and visibility — is chosen against the environment and the monitoring goals, and they can run alongside each other.\n- **Host monitoring sees what the network cannot.** HIDS — OSSEC is the chapter's worked example — watches files, processes, system changes, and connections on the individual host; file integrity monitoring compares current files against known-good hashes, because unexpected changes to important files can indicate compromise; osquery gives administrators SQL-like queries over endpoint state. HIDS and EDR overlap — EDR normally adds stronger response and remediation.\n- **Honeypots buy signal cheaply.** A decoy system designed to attract attackers is isolated, closely monitored, and treated as high signal — unexpected interaction with a honeypot is usually suspicious. Honeypots supplement other controls; they never replace them.\n\n![Diagram of network sensors, host agents, a honeypot, and cloud-native detection casting overlapping fields of view over one network.](assets/images/ids-ips/layered-detection-coverage.jpeg)\n**Figure 2:** *Layered coverage: network sensors, host agents, honeypots, and cloud-native detection each see what the others cannot.*\n\n**Prevention is earned, not defaulted.**\n\n- An IPS is placed **inline** so traffic passes through it and malicious traffic can be stopped before it reaches its destination; TCP-reset interruption is recognized as less reliable than true inline blocking.\n- **False positives are considered before automatic blocking is allowed.** Blocking decisions may draw on signatures, behaviors, and anomalies — but the possibility of blocking legitimate business is weighed first, every time.\n\n**Next-generation firewalls are a choice, not a reflex.**\n\n- An NGFW combines firewalling with application awareness, identity tracking, threat detection, and often built-in IDS/IPS — and it can reduce appliance sprawl in smaller environments. But **an NGFW is not automatically the best choice**: network size, architecture, security requirements, scalability, and budget decide.\n\n**Cloud detection adapts to cloud dynamics.**\n\n- Cloud environments change rapidly; static monitoring struggles with containers, microservices, and dynamically created workloads, so cloud IDS/IPS integrates with cloud-native platforms and orchestration, understands container and workload lifecycles, and uses virtual network taps where traffic must reach sensors.\n- **The native services of each provider are known and used**: GuardDuty, CloudTrail, VPC Flow Logs, and EventBridge on AWS; Defender for Cloud, Sentinel, KQL, and the Activity/Resource/Monitor log layers on Azure; Event Threat Detection, Security Command Center, Cloud Audit Logs, and Cloud Logging on GCP — with firewall, network, and security logs reviewed together for context.\n\n**Alerts are managed; tuning never ends.**\n\n- **Alert fatigue is treated as a real failure mode.** Attention goes to alerts that are useful and actionable; a rule is never disabled simply because it is noisy — thresholds, IP ranges, ports, severity levels, and exclusions are adjusted instead, and low-priority events are logged rather than alerted.\n- **Rules are engineered**: more specific rules produce fewer false positives, custom rules are tested — with PCAP files where useful — before broad deployment, and **tuning is an ongoing process, not a one-time configuration task**.\n\n**Placement and encryption are faced honestly.**\n\n- **Placement determines which traffic can actually be inspected.** Sensors sit at network choke points; internet-edge monitoring covers inbound and outbound, DMZ monitoring covers public-facing systems, and internal monitoring exists because perimeter-only monitoring misses lateral movement. Placement follows the topology and the threats that matter most, and microsegmented networks get multiple monitoring points or complementary technologies.\n- **Encryption limits visibility, and we say so.** IDS/IPS cannot normally inspect encrypted payloads without decryption; where deeper visibility is required, SSL/TLS inspection is a deliberate choice weighed against its performance overhead and its privacy, compliance, and legal implications — and techniques like JA3 fingerprinting identify suspicious encrypted connections without reading the payload.\n\n## How to Read This\n\nThis record closes the **Identity and Network** section of the journal: [Authentication](authentication.html) decides who gets in, [Secure Network Infrastructure](network-security.html) and [Network Segmentation](network-segmentation.html) decide what can talk to what — and this record decides how my organization notices when something got in anyway. It is grounded in the Understanding IDSs and IPSs chapter of the *Defensive Security Handbook* (Brotherston, Berlin, and Reyor). The named tools — Snort, Suricata, Zeek, OSSEC, osquery, the cloud provider services — are the chapter's worked examples, not a mandate; my commitments hold at the capability level. The full working checklist lives in the **Checklist** tab, the management summary in the **TL;DR** tab, and the conversation in the **Conversation** tab.\n\n## Rationale\n\n**A sensor nobody reads is a compliance prop.** The chapter's final reminder is the whole record in one line: logs and alerts only provide value when someone reviews them and knows how to respond. Detection hardware is easy to buy and easy to point at during an audit; the operating commitment — a tuned alert queue that a named human works, with a response path they know — is the part that actually shortens an intrusion. That is why this record puts alert management and ownership on the same level as sensor selection, and why its finish line is a reviewed alert, not an installed appliance.\n\n**Detection and prevention fail differently, so I govern them differently.** A false positive in an IDS costs an analyst minutes; a false positive in an inline IPS blocks legitimate business in real time. That asymmetry is why the record holds the two apart: visibility first, everywhere it matters; blocking only where the traffic is well understood and the false-positive rate has been measured, not assumed. The chapter's warning that TCP resets are less reliable than true inline blocking cuts the same way — if we choose prevention, we choose the honest version of it, placed inline, with eyes open.\n\n**Placement is the real coverage decision.** An IDS inspects only the traffic that reaches it. Perimeter monitoring alone tells a comfortable story — inbound and outbound covered — while an attacker who is already inside moves laterally between internal systems in total silence. So placement is driven by topology and threat model: choke points, the DMZ for public-facing systems, internal sensors for lateral movement, and multiple monitoring points where microsegmentation fragments the view. The uncomfortable question — *which traffic can none of our sensors see?* — is asked on purpose, before an incident asks it for us.\n\n![Network map showing edge and DMZ sensors covering perimeter traffic while lateral movement crosses an unwatched interior until an internal sensor covers the choke point.](assets/images/ids-ips/sensor-placement-lateral-blindspot.jpeg)\n**Figure 3:** *A sensor inspects only the traffic that reaches it: perimeter coverage tells a comfortable story while lateral movement crosses the interior — until internal sensors watch the choke points.*\n\n**The network view and the host view lie in different ways.** Network sensors miss what happens on the box; host agents miss what happens on the wire; encrypted traffic blinds the first and a compromised kernel blinds the second. Layering NIDS, HIDS with file integrity monitoring, and queryable endpoint state is not tool accumulation — it is the only arrangement where each layer's blind spot is another layer's field of view. Honeypots earn their place in that arrangement on economics: a decoy has no legitimate users, so nearly every interaction with it is signal — the cheapest high-fidelity alert in the whole estate, provided it is isolated and someone is watching it.\n\n**Encryption forced a choice, and pretending otherwise is the worst option.** Most traffic is now encrypted, which means most payloads are invisible to network inspection by default. The wrong responses are the common ones: ignore the blind spot, or decrypt everything without weighing the performance, privacy, compliance, and legal consequences. The record demands the deliberate middle: know where inspection is genuinely required, pay its costs knowingly, and use payload-free signals — connection metadata, JA3 fingerprints — everywhere else.\n\n**Tuning is the job, not the setup.** Every network changes; every rule set ages. A detection layer tuned once at deployment converges on one of two failure states — silence, because someone disabled the noisy rules, or noise, because nobody did. The chapter's discipline is the sustainable one: adjust thresholds, ranges, and exclusions rather than disabling rules; log low-priority events instead of alerting on everything; treat tuning as standing work. Alert fatigue is not an analyst weakness — it is an engineering defect in the alert pipeline, and it gets fixed like one.\n\n**Cloud detection must move at cloud speed.** Sensors built for stable networks fail quietly in environments where workloads live for minutes. Detection that integrates with orchestration and understands container lifecycles — plus the provider-native services that already sit in the control plane — is not a preference, it is the only version that keeps coverage as the environment changes. Static monitoring in a dynamic cloud does not degrade loudly; it just watches yesterday's topology.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Every environment that matters has detection coverage — network, host, and cloud — and a named owner for the alerts. | Every packet everywhere is inspected — placement follows the threat model, not completionism. |\n| IPS blocking is enabled only where false positives are understood and measured. | Prevention is forbidden — an IPS on well-understood traffic is exactly where blocking belongs. |\n| Noisy rules are tuned — thresholds, ranges, exclusions — or demoted to log-only. | Noisy rules are disabled, or every event deserves an immediate alert. |\n| Encrypted traffic is a named visibility limit; SSL/TLS inspection is a deliberate, weighed choice. | We decrypt everything by default, or pretend encryption changed nothing. |\n| Honeypots run as isolated, monitored tripwires that supplement other controls. | Honeypots substitute for real detection coverage anywhere. |\n| Cloud detection uses native services and adapts to workload lifecycles. | The on-premises sensor architecture is copied into the cloud unchanged. |\n| An NGFW is evaluated against size, architecture, requirements, scalability, and budget. | Consolidating onto an NGFW is always — or never — the right answer. |\n\nConcretely: no detection deployment in my organization is complete when the appliance is racked. It is complete when the sensors sit where the threat model says traffic must be seen, the alert queue is tuned enough that a named owner actually works it, and that owner knows what to do when an alert is real. The first review question is not *\"do we have an IDS?\"* but *\"who reviewed its alerts this week, and what did they do about them?\"*\n\n## Anti-Patterns\n\n- **The shelfware sensor.** An IDS bought for the audit, racked, and never tuned — it satisfies the checkbox and detects nothing anyone hears about.\n- **The unread queue.** Ten thousand alerts a day, zero owned; alert fatigue is treated as analyst weakness instead of the pipeline defect it is.\n- **The silenced rule.** A noisy rule disabled outright instead of tuned — the one alert that mattered was in the category someone turned off.\n- **Day-one auto-block.** An IPS switched to inline blocking before anyone measured false positives; the security tool becomes the most reliable cause of outages.\n- **The perimeter-only story.** Monitoring at the internet edge and nowhere else — lateral movement between internal systems happens in a coverage hole shaped exactly like the network's interior.\n- **The encrypted blind spot nobody names.** Dashboards imply full visibility while most payloads are encrypted and uninspected — a decision made by default instead of on purpose.\n- **The forgotten honeypot.** A decoy deployed with enthusiasm and abandoned — unmonitored, unpatched, and now the attacker's most comfortable machine in the estate.\n- **The static sensor in a dynamic cloud.** On-premises monitoring copied into an orchestrated environment; workloads are born and die unseen while the sensor watches a subnet that no longer means anything.\n\n## Related Records\n\n- [Secure Network Infrastructure](network-security.html) — the firewall and network-protocol baseline this detection layer sits on top of.\n- [Network Segmentation](network-segmentation.html) — segmentation decides what can talk to what; this record places the listening posts, including in microsegmented networks.\n- [Logging and Monitoring](logging-and-monitoring.html) — the pipeline that collects, retains, and correlates what these sensors emit; the \"someone reviews it\" half of this record's test lives there too.\n- [Endpoints](endpoints.html) — antivirus and EDR, the endpoint controls that HIDS overlaps with and that IDS/IPS complements rather than replaces.\n- [Cloud Infrastructure](cloud-infrastructure.html) — the cloud estate whose native detection services (GuardDuty, Defender, Event Threat Detection) this record puts to work.\n- [Incident Response](incident-response.html) — what happens when an alert is reviewed and turns out to be real.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every environment my organization operates — on-premises, cloud, and hybrid — as the bar for detection and prevention coverage. I revisit it if an incident review finds the intrusion crossed a segment no sensor could see (the placement claim failing in practice), if alert volume grows past what the owning team can genuinely review (the record's own test failing quietly), if IPS blocking causes a business-impacting outage (the prevention bar was set too low), or if the encrypted share of traffic or the regulatory position on TLS inspection shifts enough to change the inspection trade-off.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, and William F. Reyor III; O'Reilly) — the Understanding IDSs and IPSs chapter, whose checklist (including its final reminders) this record distills.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "My organization treats intrusion detection as a capability it operates, not a product it bought. **An IDS detects, logs, and alerts; an IPS detects and actively blocks** — and the two are governed separately, with blocking enabled only where false positives are understood. Coverage is layered across network sensors, host monitoring, honeypots, and cloud-native detection; placement follows the threat model; encrypted traffic is named honestly as a visibility limit; and tuning is standing work. The test the layer is held to: logs and alerts only provide value when someone reviews them and knows how to respond.\n\n**What changes**\n\n* **Detection and prevention are held apart.** Visibility and alerting come first, everywhere it matters; inline blocking is a separate, deliberate step taken only where traffic is well understood — because an IDS false positive costs an analyst minutes while an IPS false positive blocks legitimate business in real time.\n* **Coverage becomes layered by design.** Network sensors (Snort, Suricata, or Zeek, chosen per environment) watch the wire; host-based monitoring with file integrity checking and queryable endpoint state watches what the network cannot see; isolated, monitored honeypots provide cheap high-signal tripwires; each layer covers another's blind spot.\n* **Placement becomes a threat-model decision.** Sensors sit at choke points — internet edge, DMZ, and crucially the interior, because perimeter-only monitoring misses lateral movement. The question \"which traffic can none of our sensors see?\" is asked before an incident asks it for us.\n* **Alert management becomes engineering.** Noisy rules are tuned — thresholds, ranges, exclusions — or demoted to log-only, never simply disabled; low-priority events are logged rather than alerted; alert fatigue is treated as a pipeline defect, not analyst weakness; every alert queue has a named owner.\n* **Cloud detection adapts to cloud dynamics.** Monitoring integrates with orchestration and workload lifecycles, and the provider-native services — GuardDuty and CloudTrail, Defender and Sentinel, Event Threat Detection and Security Command Center — are put to work rather than replicated around.\n\n**What it costs**\n\n* Internal and DMZ sensor coverage, not just the perimeter — more monitoring points, more traffic to process.\n* Continuous tuning is standing work; the alert pipeline is never \"done.\"\n* SSL/TLS inspection, where chosen, carries performance overhead and privacy, compliance, and legal weight that must be deliberately accepted.\n\n**What we are not doing**\n\n* Not enabling automatic blocking by default — prevention is earned per traffic class, not switched on at install.\n* Not mandating tools — Snort, Suricata, Zeek, and OSSEC are the chapter's worked examples; the commitments are capability-level.\n* Not building the log pipeline or the response process here — collection and correlation live in [Logging and Monitoring](logging-and-monitoring.html), and what happens after a real alert lives in [Incident Response](incident-response.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full working checklist, from IDS/IPS concepts through placement, tuning, and encrypted traffic. Grounded in the Understanding IDSs and IPSs chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "5 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the full IDS/IPS reference from detection concepts through placement, tuning, and encrypted traffic, following the handbook's chapter. The Article tab carries the rationale and anti-patterns.*\n\n## 1. IDS vs. IPS\n\n- [ ] Remember: an **IDS detects, logs, and alerts** on suspicious activity\n- [ ] Remember: an **IPS can detect and actively block or disrupt** suspicious traffic\n- [ ] IDS = visibility and alerting; IPS = visibility plus prevention\n- [ ] Use IDS/IPS tools to complement endpoint security such as antivirus and EDR\n- [ ] Always review alerts in context before deciding whether activity is malicious\n- [ ] Use threat intelligence feeds to help determine whether an IP address, domain, or behavior is suspicious\n\n## 2. Network-Based IDS (NIDS)\n\n- [ ] Remember: a **NIDS monitors network traffic** rather than activity on just one computer\n- [ ] Place NIDS sensors where important traffic can be observed\n- [ ] Use **promiscuous mode** to let a network interface listen to traffic passing across the network\n- [ ] Consider **Snort** for signature-based network intrusion detection and prevention\n- [ ] Note that Snort 3 supports multithreading for improved performance\n- [ ] Consider **Suricata** — multithreaded and designed for high-speed network monitoring\n- [ ] Use Suricata for file extraction, protocol analysis, and TLS-related inspection where needed\n- [ ] Consider **Zeek** for network analysis, logging, and visibility\n- [ ] Remember that Zeek can work alongside tools such as Snort and Suricata rather than replacing them\n- [ ] Choose between Snort, Suricata, and Zeek based on the environment and monitoring goals\n\n## 3. Host-Based IDS (HIDS)\n\n- [ ] Remember: a **HIDS monitors activity on an individual host or endpoint**\n- [ ] Use HIDS tools to watch files, processes, system changes, and network connections\n- [ ] Consider **OSSEC** as an example of a host-based intrusion detection tool\n- [ ] Use file integrity monitoring to compare current files with known-good values or hashes\n- [ ] Treat unexpected changes to important files as a possible indicator of compromise\n- [ ] Use **osquery** to query endpoint information with SQL-like commands\n- [ ] Remember that HIDS and **EDR** can overlap, but EDR normally provides stronger response and remediation features\n- [ ] Use endpoint monitoring especially where network monitoring cannot see everything happening on the device\n\n## 4. Honeypots\n\n- [ ] Remember: a **honeypot is a decoy system or service designed to attract attackers**\n- [ ] Keep honeypots isolated and closely monitored\n- [ ] Treat unexpected interaction with a honeypot as usually suspicious\n- [ ] Expect honeypot alerts to have a high signal-to-noise ratio\n- [ ] Consider examples such as **Cowrie, OpenCanary, MySQLpot, and NoPo**\n- [ ] Use honeypots to supplement other security controls, not replace them\n\n## 5. Intrusion Prevention Systems\n\n- [ ] Place an IPS **inline** so traffic passes through it\n- [ ] Use inline placement to stop malicious traffic before it reaches its destination\n- [ ] Base IPS decisions on signatures, behaviors, anomalies, and other detection methods as appropriate\n- [ ] Understand that some systems attempt to interrupt suspicious connections using **TCP reset packets**\n- [ ] Remember that TCP reset techniques are generally less reliable than true inline blocking\n- [ ] Note that Snort can be configured for active response or prevention\n- [ ] Always consider the possibility of false positives before allowing automatic blocking\n\n## 6. Next-Generation Firewalls\n\n- [ ] Remember: an **NGFW combines traditional firewall functions with more advanced security features**\n- [ ] Note that NGFWs often include built-in IDS/IPS capabilities\n- [ ] Look for common features: application awareness, application control, identity tracking, and threat detection\n- [ ] Note that some NGFWs can inspect encrypted traffic\n- [ ] Consider NGFWs to reduce the need for separate security appliances in smaller environments\n- [ ] Remember that an NGFW is not automatically the best choice for every organization\n- [ ] Consider network size, architecture, security requirements, scalability, and budget before choosing a product\n- [ ] Know the common vendors: Cisco, Check Point, Palo Alto Networks, Fortinet, SonicWall, and Sophos\n\n## 7. IDS/IPS in the Cloud\n\n- [ ] Adapt IDS/IPS monitoring as cloud environments change rapidly\n- [ ] Expect traditional static monitoring to struggle with containers, microservices, and dynamically created workloads\n- [ ] Integrate cloud IDS/IPS solutions with cloud-native platforms and orchestration tools where possible\n- [ ] Use monitoring that understands container and workload lifecycle changes in Kubernetes environments\n- [ ] Use virtual network taps or similar mechanisms to send cloud traffic to IDS/IPS systems\n\n## 8. AWS Reminders\n\n- [ ] Use **Amazon GuardDuty** for managed threat detection\n- [ ] Remember that GuardDuty uses threat intelligence, anomaly detection, and machine learning\n- [ ] Use **AWS CloudTrail** to record account and API activity\n- [ ] Use **VPC Flow Logs** for information about network traffic\n- [ ] Use **Amazon EventBridge** to help route security-related events\n- [ ] Remember that third-party IDS/IPS products can also be deployed in AWS\n\n## 9. Azure Reminders\n\n- [ ] Use **Microsoft Defender for Cloud** for security monitoring and threat detection\n- [ ] Use **Microsoft Sentinel** for SIEM and security analytics capabilities\n- [ ] Use **KQL** to query Microsoft security and logging data\n- [ ] Use **Azure Activity Logs** to record subscription-level activity\n- [ ] Use **Azure Resource Logs** for information about individual resources\n- [ ] Use **Azure Monitor Logs** to centralize and analyze logging data\n\n## 10. GCP Reminders\n\n- [ ] Use **Event Threat Detection (ETD)** to analyze Google Cloud logging data for suspicious activity\n- [ ] Review ETD findings in **Security Command Center**\n- [ ] Use **Cloud Audit Logs** to record administrative and access-related activity\n- [ ] Use **Cloud Logging** to collect logs from Google Cloud services and workloads\n- [ ] Review firewall, network, and security logs together for better context\n\n## 11. Alert Management\n\n- [ ] Remember that too many alerts cause **alert fatigue**\n- [ ] Focus attention on alerts that provide useful and actionable information\n- [ ] Remember: a **false positive** is an alert for activity that is not actually malicious\n- [ ] Recognize that a legitimate event can still be noisy if it occurs too frequently\n- [ ] Do not automatically disable a rule simply because it generates many alerts\n- [ ] Adjust thresholds, IP ranges, ports, severity levels, or exclusions when appropriate\n- [ ] Consider logging low-priority events instead of generating immediate alerts for all of them\n- [ ] Treat IDS/IPS tuning as an **ongoing process**, not a one-time configuration task\n\n## 12. Snort Rule Reminders\n\n- [ ] Remember the basic structure: **action + protocol + source + destination + rule options**\n- [ ] `msg` = message shown when the rule triggers\n- [ ] `sid` = unique signature ID\n- [ ] `rev` = rule revision number\n- [ ] `content` = data the rule should search for\n- [ ] `offset` = where the content search should begin in the packet\n- [ ] `flow` = direction or state of the network connection\n- [ ] Write more specific rules — they usually create fewer false positives\n- [ ] Test custom rules before deploying them broadly\n- [ ] Use **PCAP files** for testing and validating detection rules\n\n## 13. IDS/IPS Placement\n\n- [ ] Remember that IDS/IPS placement determines which traffic can actually be inspected\n- [ ] Place sensors at important **network choke points**\n- [ ] Monitor the internet connection for visibility into inbound and outbound traffic\n- [ ] Remember that perimeter monitoring alone may miss traffic moving between internal systems\n- [ ] Monitor the **DMZ** to improve visibility into public-facing systems\n- [ ] Use internal monitoring to help detect lateral movement\n- [ ] Recognize that large numbers of VLANs can make complete monitoring more difficult and expensive\n- [ ] Choose placement based on the network topology and the threats you are most concerned about\n- [ ] Use multiple monitoring points or other security technologies in microsegmented networks\n\n## 14. Encrypted Traffic\n\n- [ ] Remember that IDS/IPS tools cannot normally inspect encrypted payload contents without decryption\n- [ ] Recognize that encryption can hide malicious activity from network monitoring tools\n- [ ] Remember that some attacks can still be detected using visible connection information or unencrypted portions of traffic\n- [ ] Consider **SSL/TLS inspection** for deeper visibility into encrypted traffic\n- [ ] Account for the performance overhead TLS inspection introduces\n- [ ] Weigh the privacy, compliance, and legal concerns of decrypting traffic\n- [ ] Note that some NGFWs include built-in SSL/TLS inspection\n- [ ] Note that Snort and Suricata can be used with proxies that decrypt traffic\n- [ ] Use **JA3 fingerprints/hashes** to identify TLS clients or suspicious encrypted connections without reading the encrypted payload\n\n## 15. Final Reminders\n\n- [ ] **IDS = detect and alert**\n- [ ] **IPS = detect and prevent**\n- [ ] **NIDS = monitor the network**\n- [ ] **HIDS = monitor the host**\n- [ ] EDR adds endpoint detection plus response capabilities\n- [ ] Honeypots provide decoy systems that help expose attacker behavior\n- [ ] NGFWs combine firewalling with advanced security functions\n- [ ] Cloud environments require adaptable monitoring\n- [ ] Reduce false positives so important alerts are easier to recognize\n- [ ] Put IDS/IPS sensors where they can see the traffic that matters\n- [ ] Remember that encrypted traffic limits visibility unless additional inspection techniques are used\n- [ ] Make IDS/IPS tools part of a **larger layered security strategy**\n- [ ] Remember that logs and alerts only provide value when someone reviews them and knows how to respond\n\nWith the final reminders internalized, the detection layer has sensors where the threat model needs them, a tuned alert queue, and honest answers about encrypted traffic. The test running through the whole sequence: **logs and alerts only provide value when someone reviews them and knows how to respond.**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Detect First, Block Later\n\n**Ben:** Straight question first. Every firewall vendor sells \"IDS/IPS included\" as a checkbox. Why does an executive operating model need a whole record on it?\n\n**Ana:** Because the checkbox is exactly the failure mode the record exists to prevent. The chapter this is grounded in ends with the line the whole record hangs on: logs and alerts only provide value when someone reviews them and knows how to respond. An IDS you bought is a compliance prop; an IDS you operate — placed where the threat model needs it, tuned so the queue is workable, owned by a named human — is a capability. The record holds my organization to the second thing.\n\n**Ben:** Fine, but then collapse the distinction. If an IPS can detect *and* block, why would anyone run a mere IDS? Detection without prevention sounds like watching the burglary on camera.\n\n**Ana:** Because the two fail differently, and the record governs them differently. An IDS false positive costs an analyst a few minutes of context-checking. An IPS false positive blocks legitimate traffic in real time — the security tool becomes an outage engine with a badge. So the commitment is: visibility first, everywhere it matters; blocking only where the traffic is well understood and the false-positive rate has been measured, not assumed. The chapter is explicit — always consider false positives before allowing automatic blocking. And if we do choose prevention, we choose the honest version: truly inline, not TCP resets, which the chapter flags as less reliable.\n\n**Ben:** So prevention is earned per traffic class, not switched on at install.\n\n**Ana:** Exactly that phrase.\n\n## Layers and Placement\n\n**Ben:** The record stacks network sensors, host agents, honeypots, cloud services. That reads like tool accumulation. Why isn't one good network sensor enough?\n\n**Ana:** Because each layer lies in its own way. A network sensor misses what happens on the box; a host agent misses what happens on the wire; encrypted traffic blinds the first, a compromised host undermines the second. NIDS at the choke points, HIDS with file integrity monitoring — comparing files against known-good hashes, because unexpected changes to important files are a classic compromise indicator — plus something like osquery so you can actually ask endpoints questions. Layering is the only arrangement where each blind spot is another layer's field of view.\n\n**Ben:** And honeypots? Decoy servers feel like a hobby project, not an executive commitment.\n\n**Ana:** They earn their place on pure economics. A honeypot has no legitimate users, so almost any interaction with it is signal — the highest signal-to-noise alert in the estate, nearly free. The conditions are the record's, though: isolated, and closely monitored. An abandoned honeypot is worse than none — it becomes the attacker's most comfortable machine.\n\n**Ben:** Placement. Every network diagram I've seen puts the sensor at the internet edge and declares victory.\n\n**Ana:** And that is the perimeter-only story the record names as an anti-pattern. An IDS inspects only the traffic that reaches it. Perimeter monitoring covers inbound and outbound — and misses everything moving laterally between internal systems, which is precisely where an attacker who is already inside lives. So: choke points, the DMZ for public-facing systems, internal sensors for lateral movement, and in microsegmented networks, multiple monitoring points. The review question the record demands we ask on purpose: which traffic can none of our sensors see?\n\n## Encryption and the Alert Queue\n\n**Ben:** Here's the uncomfortable one. Most traffic is TLS now. Your network sensors are staring at ciphertext. Isn't the whole NIDS layer quietly obsolete?\n\n**Ana:** It is diminished, and the record's first demand is that we say so instead of letting dashboards imply full visibility. Then it demands a deliberate choice rather than either default: not ignoring the blind spot, and not decrypting everything reflexively either — SSL/TLS inspection carries performance overhead and real privacy, compliance, and legal weight. The middle path is: inspect where visibility is genuinely required and pay the cost knowingly, and use payload-free signals everywhere else — connection metadata, and JA3 fingerprints that identify suspicious TLS clients without reading a byte of payload.\n\n**Ben:** Alert management. Every SOC I've talked to drowns. Ten thousand alerts a day and the analysts triage by vibes. Your record fixes that with... what, discipline?\n\n**Ana:** With engineering. The record treats alert fatigue as a defect in the pipeline, not weakness in the analyst. The chapter's rule is the one everyone violates: never disable a rule just because it is noisy — adjust thresholds, IP ranges, ports, severity levels, exclusions; demote low-priority events to log-only instead of alerting on all of them. The silenced rule is the anti-pattern where the alert that mattered was in the category someone turned off. And tuning is explicitly ongoing work — a detection layer tuned once at deployment converges on either silence or noise.\n\n**Ben:** Noise if nobody disables the rules, silence if somebody does.\n\n**Ana:** Right. Both end with an unread queue, which fails the record's one test.\n\n## Cloud and the Close\n\n**Ben:** Cloud. Can't I just lift the on-premises sensor architecture into the VPC and call it done?\n\n**Ana:** That's the static-sensor anti-pattern. Workloads in orchestrated environments live for minutes; a sensor watching a subnet that no longer means anything degrades silently. Cloud detection has to integrate with the orchestration layer and understand container lifecycles — and the record insists on using what the providers already run in the control plane: GuardDuty, CloudTrail, VPC Flow Logs on AWS; Defender for Cloud and Sentinel on Azure; Event Threat Detection and Security Command Center on GCP. Virtual taps where traffic genuinely has to reach your own sensors. And the chapter's quiet gem: review firewall, network, and security logs together — context lives in the combination.\n\n**Ben:** One more: the vendor pitch says consolidate all of this into a next-generation firewall. One box, IDS/IPS included, even TLS inspection.\n\n**Ana:** The record's answer is that an NGFW is a choice, not a reflex. In smaller environments, consolidation genuinely reduces appliance sprawl. But the chapter says it flatly: an NGFW is not automatically the best choice for every organization — network size, architecture, security requirements, scalability, and budget decide. Evaluate it like any architecture decision, not like a rescue.\n\n**Ben:** All right. So the honest summary: the hardware was never the point — detection is an operating commitment, and the record's finish line is a tuned queue that a named person actually works.\n\n**Ana:** That's the record in one line. Sensors where the threat model says traffic must be seen, blocking only where it's been earned, honesty about what encryption hides — and the test that never changes: logs and alerts only provide value when someone reviews them and knows how to respond. If nobody reviewed the alerts this week, we don't have detection; we have furniture.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why detection is a capability you operate, not a product you bought — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a dusty IDS appliance with an audit-passed ribbon blinks alerts at an empty chair while Vera points at the chair.](assets/images/ids-ips/comic-01-the-shelfware-sensor.jpeg)\n**Panel 1:** *The hook: the shelfware sensor — bought for the audit, racked, blinking at an empty chair. Detection hardware is easy to buy; someone reviewing it is the actual control.*\n\n![Comic panel: a searchlight labeled perimeter points outward while an intruder moves between internal buildings in the dark behind it.](assets/images/ids-ips/comic-02-silent-lateral-movement.jpeg)\n**Panel 2:** *The problem: the perimeter-only story — inbound and outbound covered, while an attacker already inside moves laterally in a coverage hole shaped exactly like the network's interior.*\n\n![Comic panel: a robot gate labeled IPS block-all stops workers carrying orders and payroll parcels while a small villain slips past.](assets/images/ids-ips/comic-03-day-one-auto-block.jpeg)\n**Panel 3:** *The wrong way: day-one auto-block — an IPS switched inline before false positives were measured becomes an outage engine with a security badge.*\n\n![Comic panel: an owl labeled IDS with a detect-log-alert notepad beside an IPS gate whose lever unlocks only after a false-positive checklist.](assets/images/ids-ips/comic-04-detect-then-earn-blocking.jpeg)\n**Panel 4:** *The principle: an IDS detects, logs, and alerts; an IPS actively blocks — and the two are held apart, with blocking enabled only where false positives are understood.*\n\n![Comic panel: a periscope labeled NIDS, a stethoscope on a server labeled HIDS, and a cloud radar labeled cloud-native each light a different corner.](assets/images/ids-ips/comic-05-layers-see-differently.jpeg)\n**Panel 5:** *Practice: layer the coverage — network sensors watch the wire, host monitoring sees what the network cannot, cloud-native detection moves at cloud speed; each layer's blind spot is another's field of view.*\n\n![Comic panel: an intruder touches a decoy server labeled totally real payroll server in a glass room and a giant bell alerts Nadia.](assets/images/ids-ips/comic-06-the-honeypot-tripwire.jpeg)\n**Panel 6:** *Practice: the honeypot economy — a decoy has no legitimate users, so nearly every interaction is signal: the cheapest high-fidelity alert in the estate, isolated and watched.*\n\n![Comic panel: an analyst drowning in alerts reaches for a mute switch while Nadia adjusts a console with threshold, range, and severity sliders.](assets/images/ids-ips/comic-07-tune-dont-silence.jpeg)\n**Panel 7:** *Practice: alert fatigue is an engineering defect, not analyst weakness — noisy rules get thresholds, ranges, and exclusions adjusted or demoted to log-only; tuning never ends.*\n\n![Comic panel: sealed envelopes pass a scanner showing question marks while Vera weighs a TLS inspection key against privacy and legal weights and Nadia dusts an envelope for JA3 fingerprints.](assets/images/ids-ips/comic-08-the-encrypted-blind-spot.jpeg)\n**Panel 8:** *The cost: encryption forced a choice — inspect deliberately where it is worth the performance, privacy, and legal price, and read the envelope's fingerprints everywhere else. The worst option is pretending the blind spot isn't there.*\n\n![Comic panel: Nadia works a tidy alert queue with reviewed stamps and a named owner while Vera checks her notebook.](assets/images/ids-ips/comic-09-who-reviewed-this-week.jpeg)\n**Panel 9:** *The closer: the first review question is never 'do we have an IDS?' — it is 'who reviewed its alerts this week, and what did they do about them?' Alerts only have value when someone reviews them and knows how to respond.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

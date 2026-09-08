@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Platform Creation: Environments, GitOps, and the Mesh</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="groundwork.html" title="Groundwork: Repositories, Secrets, and Releases">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="platform-security.html" title="End-to-End Platform Security">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference Implementation</p>
+        <h1>Platform Creation: Environments, GitOps, and the Mesh</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-20  ·  8 min · <a class="spec-link" href="platform-creation.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/platform-creation/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/platform-creation/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="groundwork.html" title="Groundwork: Repositories, Secrets, and Releases">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="platform-security.html" title="End-to-End Platform Security">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REF-PLATFORM-CREATION", "status": "draft:gray", "title": "Platform Creation: Environments, GitOps, and the Mesh", "date": "2026-08-20", "author": "Željko Obrenović", "permalink": "platform-creation", "timetoread": "8 min", "excerpt": "When a platform team in my organization creates a platform, the build I hold them to has one defining property: the platform exists in Git, not in the clusters. Environments are declarative stacks with isolated networks and pinned versions; provisioning and runtime configuration live in two deliberately separated repositories, with GitOps continuously reconciling what runs; every change promotes through one pipeline that validates each environment and records an approval before production; service traffic runs through a mesh with mTLS; and misconfiguration dies in the pipeline before it reaches the GitOps repository. The test I keep running: if the clusters vanished tonight, could the pipeline rebuild every environment from a tagged commit by morning?", "tags": "platform engineering, reference implementation, gitops, infrastructure as code, environments, service mesh, ci/cd, policy as code, kubernetes", "icon": "assets/icons/platform-creation.png", "logo": "assets/images/platform-creation/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["platform engineering", "reference implementation", "gitops", "infrastructure as code", "environments", "service mesh", "ci/cd", "policy as code", "kubernetes"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: When a platform team in my organization creates a platform, the finished build has one defining property: **the platform exists in Git, not in the clusters**. Environments are declarative stacks — a platform sandbox, an application dev, an application prod — with isolated, planned networks and pinned versions, provisioned as code and proven by tests. Provisioning and runtime configuration live in **two deliberately separated repositories**: infrastructure-as-code builds the clusters; GitOps continuously reconciles everything that runs on them, correcting drift visibly. Every change promotes through **one pipeline** — lint, test, preview, deploy, validate — sandbox first, then dev, then a recorded approval before production. Service-to-service traffic runs through a **mesh with controlled ingress and mTLS**, and misconfiguration is **blocked by policy checks before it ever reaches the GitOps repository**. The test I keep running: if the clusters vanished tonight, could the pipeline rebuild every environment from a tagged commit by morning?\n\n## Statement\n\nWhen my organization builds a platform, this is the shape of the build, end to end.\n\n**Environments are declarative stacks.**\n\n- **Three environments minimum, each a named stack.** A platform sandbox, an application dev, an application prod — each with its own configuration file, a unique cluster name, a pinned runtime image, and explicit readiness settings.\n- **Consistent where it matters, smaller where it can be.** Non-production environments run reduced capacity; security and governance settings stay identical across all of them. What was tested is what ships.\n- **Platform environments and application environments are separate SDLC concepts.** The platform team needs a place to break the platform that is not where application teams work.\n\n**Networks are designed, not defaulted.**\n\n- **Isolation by construction.** Every environment gets its own network with non-overlapping CIDR ranges — checked against VPN and host-network ranges before anything is provisioned. Cluster, pod, and service ranges are all explicit.\n- **Ingress is a deliberate, minimal port map.** HTTP and HTTPS enter where the configuration says they enter; everything else stays closed. Zero trust starts with not exposing what nothing needs.\n- **Ordering is code.** Network creation completes before cluster creation depends on it; the generated kubeconfig feeds the provider; cluster name, network, and kubeconfig are exported as stack outputs.\n\n![Diagram of three environment stacks, each in its own isolated network with non-overlapping CIDR ranges and a single minimal ingress point.](assets/images/platform-creation/three-stacks-isolated-networks.jpeg)\n**Figure 1:** *Three environments, three isolated networks: non-overlapping CIDR ranges planned up front, minimal ingress, smaller non-production capacity — identical security everywhere.*\n\n**One pipeline promotes every change, and tests prove every environment.**\n\n- **Quality gates on every commit.** Formatting, type checking, import order, static analysis, and security scanning — tuned so real violations fail the pipeline and false positives do not drown the signal.\n- **Fixed promotion order.** Lint → pre-deployment tests → preview → deploy → post-deployment validation. Sandbox deploys from commits to main; production-oriented releases ride Git tags; app-dev deploys only after sandbox validates; app-prod deploys only after a manual approval, recorded in the CI/CD system.\n- **Validation after every environment, gates only where they govern.** An infrastructure test suite reads the stack outputs and verifies the build black-box — network exists, API reachable, nodes ready — and fails clearly when it should. Approval gates exist only where they provide meaningful governance value.\n\n![Diagram of one pipeline promoting changes through lint, test, preview, deploy, and validate stages across sandbox, app-dev, and a recorded approval gate before app-prod.](assets/images/platform-creation/staged-promotion-pipeline.jpeg)\n**Figure 2:** *One pipeline, fixed order: every change validates in sandbox, then app-dev, and reaches production only through a recorded approval on a tagged release.*\n\n**Provisioning and runtime configuration are separated — and Git is the source of truth.**\n\n- **Two repositories, two jobs.** Infrastructure provisioning lives in the platform-core repository; runtime and application configuration live in a separate GitOps repository. Application Kubernetes manifests are never managed directly by IaC — application lifecycle uses Kubernetes-native tooling.\n- **Continuous reconciliation.** A version-pinned GitOps controller, installed from the provisioning layer, watches the configuration repository per environment — with explicit reconciliation intervals, health waits, and pruning policy. Manual drift is corrected; failed reconciliations are visible; a Git commit is what changes the cluster.\n- **Onboarding is declarative.** New team repositories and platform services join through configuration, with versions explicitly pinned — never through manual installation.\n\n![Diagram of the platform-core repository provisioning clusters one-way while the platform-gitops repository is continuously reconciled against them in a loop that corrects manual drift.](assets/images/platform-creation/two-repos-reconciliation-loop.jpeg)\n**Figure 3:** *Two repositories, two jobs: provisioning flows one way from platform-core, while the GitOps controller loops forever between platform-gitops and the clusters, correcting drift.*\n\n**Service traffic runs through a mesh.**\n\n- **Controlled ingress and declared routing.** Traffic enters through a gateway; routing rules are resources, not tribal knowledge.\n- **Encrypted by default.** mTLS between services is enabled and verified; workloads that need isolation get authorization and network policies.\n- **Costs measured, hooks confirmed.** The mesh's resource and latency overhead is monitored honestly, and its telemetry — metrics, traces, logs — is confirmed consumable before the full observability build in [Observability Implementation](observability-implementation.html).\n\n**Misconfiguration dies in the pipeline.**\n\n- **Policy checks before the GitOps repository.** Policy-as-code rejects floating `latest` tags, wildcard chart versions, and unpinned deployments before a manifest ever reaches the repository the cluster obeys.\n- **Policies are tested code.** Every policy has tests for allowed and rejected cases; enforcement is identical in every environment; violations fail the pipeline early.\n\n**The finished platform is a versioned baseline.**\n\n- **A final validation sweep** — stacks, deployments, networks, tests, scans, policies, reconciliation, mesh health, gateway routing, mTLS, telemetry, approval gates, drift correction — before the platform is called done.\n- **A semantic version tag** triggers the release pipeline across every environment, and the working version is recorded as the baseline all future development builds on.\n\n## Reference Stack\n\nThis record is grounded in a concrete build. The tools are the worked example, not the mandate — every commitment above holds at the level of the capability, and any tool below can be swapped for an equivalent that preserves the property that matters. The handbook's build is deliberately laptop-scale: Kind gives it disposable clusters on Docker, a teaching runtime that a real deployment swaps for managed Kubernetes.\n\n| Role | Reference tool | The property that matters |\n| --- | --- | --- |\n| Infrastructure as code | Pulumi (Python) | Environments are stacks: one configuration file per environment, provisioning as reviewable, testable code |\n| Kubernetes runtime | Kind on Docker | Disposable clusters with pinned node images — cheap to destroy and rebuild |\n| CI/CD | CircleCI | One pipeline: lint → test → preview → deploy → validate, staged promotion, recorded production approval |\n| GitOps controller | Flux | Runtime configuration continuously reconciled from Git; drift corrected; pruning explicit |\n| Application lifecycle | Helm / Kustomize | Kubernetes-native application management, kept out of the IaC layer |\n| Service mesh | Istio (Envoy) | Controlled ingress, declared routing, mTLS between services |\n| Policy checks | OPA / Rego + conftest | Misconfiguration fails the pipeline before reaching the GitOps repository |\n| Infrastructure tests | BATS | Black-box verification of stack outputs: network, API, nodes |\n| Quality and scanning | Black, mypy, isort, Semgrep, Trivy | Formatting, types, static analysis, and security scanning gate every commit |\n\n## How to Read This\n\nThis journal is my platform operating model, one record per source checklist. This record belongs to the **Reference Implementation** section — the how-it-concretely-looks companion to the conceptual records: where [The Four Pillars of Platform Engineering](four-pillars.html) states the test a platform must pass, these records state the shape of the build that passes it. It is grounded in the Platform Creation chapter of the *Platform Engineer's Handbook*, the hands-on companion that constructs an internal developer platform end to end. The runnable build — all seventeen stages plus the definition of done — lives in the **Checklist** tab; the **TL;DR** tab carries the management summary; the **Conversation** tab talks the reasoning through.\n\n## Rationale\n\n**Two repositories, because two change cadences.** Provisioning changes rarely and carefully; runtime configuration changes daily and broadly. Fusing them means every application change rides the machinery built for infrastructure change — slow, privileged, and reviewed by the wrong people. Splitting them puts each kind of change on rails matched to its risk, and the GitOps repository becomes the platform's front door: the place where new services, new versions, and new team repositories arrive declaratively.\n\n**Reconciliation is the difference between documented state and actual state.** A cluster that accepts manual changes is a cluster whose Git history is fiction. Continuous reconciliation makes Git the source of truth in the only sense that counts: drift gets corrected, failed reconciliations are visible, and deletions follow a stated pruning policy rather than someone's memory. The build is not done until this is demonstrated — a controlled change applied, deliberate drift reconciled, a deletion pruned as configured.\n\n**Staged promotion is how confidence compounds.** The sandbox proves the platform before application environments see the change; app-dev proves applications before production sees them; and production opens only on an approval that the CI/CD system records — who, what, when. But the record is equally deliberate about restraint: **approval gates exist only where they provide meaningful governance value**. A gate at every step trains everyone to click through — including at the one gate that matters.\n\n**Pinning is what makes \"rebuildable\" true.** A platform of floating `latest` tags and wildcard chart versions cannot be rebuilt, only re-discovered — this week's rebuild is not last week's platform. Pinning is a rule humans agree with and violate weekly, which is why it is enforced as policy-as-code in the pipeline: mechanical, early, and identical in every environment. The cheapest place to kill a bad manifest is before it reaches the repository the cluster obeys.\n\n**The mesh goes in before the tenants do.** Retrofitting mTLS, controlled ingress, and authorization policies onto a populated platform is a migration project; installing them into an empty one is configuration. That is why the mesh is part of creation, not a later hardening phase. The honesty requirement cuts the other way too: mesh proxies tax every request, so their resource and latency overhead is measured from day one rather than assumed away.\n\n**Networks are the part you cannot patch later.** Overlapping CIDRs do not fail in the sandbox; they fail months later when a VPN range collides with a pod range and half the organization cannot reach the cluster. Address ranges are the platform decision with the worst retrofit cost per minute of planning — so they are planned once, checked against everything they could collide with, and verified non-overlapping across environments before anything ships.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Build with the reference stack as the worked example. | These tools are mandatory — every commitment holds at capability level; swap tools, keep properties. |\n| Separate provisioning from runtime configuration. | Split repositories for their own sake — the line sits exactly where change cadence and ownership change. |\n| Git is the source of truth; drift is reconciled. | Nobody may ever touch a cluster — break-glass access exists, but reconciliation puts the cluster back and makes the intervention visible. |\n| Record a manual approval before production. | Put gates everywhere — a gate that provides no governance value is ceremony, and ceremony trains click-through. |\n| Enable mTLS and gateway ingress at creation. | The mesh is free — its resource and latency overhead is measured, not assumed away. |\n| Block misconfiguration with pipeline policy checks. | This is the whole policy story — admission-time enforcement inside the clusters is [Policy as Code Implementation](policy-as-code.html). |\n| Confirm metrics, traces, and logs are consumable. | Build the observability platform now — that is [Observability Implementation](observability-implementation.html), on these hooks. |\n| Run non-production environments smaller. | Run non-production environments looser — security and governance settings stay consistent everywhere. |\n\nConcretely: any platform build in my organization can be asked two questions at review — *show me the commit that produced this environment*, and *show me the last time drift was reconciled*. If either answer involves a person's recollection rather than a pipeline log, the build is not done. **A platform you cannot rebuild is a platform you do not own.**\n\n## Anti-Patterns\n\n- **The snowflake environment.** Environments provisioned or patched by hand until production no longer resembles what was tested — the stack files say one thing, the clusters another.\n- **The kubectl backdoor.** Manual cluster changes the reconciler is never allowed to correct — the clusters drift ever further from what the repository claims, with an audit trail that audits nothing.\n- **IaC all the way up.** Managing application manifests from the provisioning layer, coupling every application change to infrastructure machinery and every application team to the platform team's release cadence.\n- **The floating latest.** Unpinned images, wildcard chart versions, an unpinned controller — every rebuild produces a slightly different platform, and you learn the differences one incident at a time.\n- **The ceremonial gate.** Approval steps nobody reads at every stage — governance theatre that makes clicking through a habit, and habits do not pause at the production approval.\n- **Mesh as ornament.** Installing the mesh but never enforcing mTLS, never routing through the gateway, never measuring proxy overhead — paying the tax without collecting the property.\n- **The overlapping CIDR.** Network ranges chosen by default and discovered in production, when the VPN and the pod network fight over the same addresses.\n- **The untested policy.** Policy-as-code with no tests for allowed and rejected cases — enforcing you-don't-know-what, and finding out from the teams it blocks.\n\n## Related Records\n\n- [Groundwork: Repositories, Secrets, and Releases](groundwork.html) — the stage before this one: repository conventions, secrets management, and release discipline that this build assumes.\n- [End-to-End Platform Security](platform-security.html) — the stage after: end-to-end hardening of what this record creates; here, security means mesh mTLS and pipeline checks.\n- [Observability Implementation](observability-implementation.html) — the telemetry hooks confirmed here become the full observability platform there.\n- [CI/CD as a Platform Service](cicd-as-a-platform-service.html) — this record's pipeline builds the platform itself; that record turns CI/CD into a product for application teams.\n- [Policy as Code Implementation](policy-as-code.html) — pipeline-time checks here; admission-time enforcement inside the clusters there.\n- [The Four Pillars of Platform Engineering](four-pillars.html) — this build is pillars two and four made concrete: software abstractions that manage complexity, operated as a foundation.\n- [Implementing Platforms](implementing-platforms.html) — the strategy-side view of build, harvest, and buy choices that a build like this one embodies.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every platform my organization creates or substantially rebuilds, everywhere I am the accountable executive. I revisit it if a rebuild-from-tag exercise fails or takes longer than the recovery objectives allow, or if drift-correction exceptions accumulate until reconciliation is decorative. I also revisit it if measured mesh overhead stops earning its security and routing value for our workload profile, or if the two-repository split starts generating more coordination than it removes — the latter a sign the line between provisioning and runtime configuration is drawn in the wrong place, not that the line should go.\n\n## Authoritative References\n\n- *Platform Engineer's Handbook* — the Platform Creation chapter, whose checklist this record distills: environments, network foundation, Kubernetes runtime, CI/CD, GitOps structure, the Istio service mesh, pipeline policy checks, and release.\n- Camille Fournier and Ian Nowland, *Platform Engineering: A Guide for Technical, Product, and People Leaders* (O'Reilly, 2024) — the conceptual frame this reference implementation serves, distilled in [The Four Pillars of Platform Engineering](four-pillars.html).\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "When a platform team in my organization creates a platform, the finished build has one defining property: **the platform exists in Git, not in the clusters**. The test I keep running: if the clusters vanished tonight, could the pipeline rebuild every environment from a tagged commit by morning?\n\n**What changes**\n\n* **Environments become declarative stacks.** A platform sandbox, an application dev, and an application prod — each with its own configuration file, unique cluster name, pinned runtime versions, and a planned network with non-overlapping CIDR ranges checked against VPN and host networks. Non-production runs smaller; security and governance settings stay identical everywhere.\n* **Provisioning and runtime configuration split into two repositories.** Infrastructure-as-code builds the clusters; a GitOps controller continuously reconciles everything that runs on them. Application manifests never live in the IaC layer; manual drift is corrected visibly; new team repositories and platform services onboard declaratively, versions pinned.\n* **One pipeline promotes every change.** Lint, tests, preview, deploy, validate — plus security scanning on every commit; sandbox from main, production releases from Git tags, validation after every environment, and a manual approval recorded in the CI/CD system before production. Approval gates exist only where they provide real governance value.\n* **Service traffic runs through a mesh from day one.** Controlled gateway ingress, declared routing, verified mTLS, isolation policies where needed — with proxy overhead measured honestly and telemetry hooks confirmed for the observability build to come.\n* **Misconfiguration dies in the pipeline.** Policy-as-code blocks floating `latest` tags, wildcard chart versions, and unpinned deployments before manifests reach the GitOps repository; the policies themselves are tested for allowed and rejected cases.\n\n**What it costs**\n\n* Two repositories and a reconciler mean more moving parts than one repo and a deploy script — the coordination is the price of matching each kind of change to its own rails.\n* The mesh taxes every request; the record requires measuring that overhead rather than assuming it away.\n* Pinning everything makes upgrades deliberate work — nothing moves until a human moves a version, which is precisely the point.\n\n**What we are not doing**\n\n* Not mandating the reference stack — Pulumi, Kind, CircleCI, Flux, Istio, and OPA are the worked example; every commitment holds at the level of the capability.\n* Not the full security, observability, or policy story — hardening is [End-to-End Platform Security](platform-security.html), the telemetry build is [Observability Implementation](observability-implementation.html), and in-cluster admission enforcement is [Policy as Code Implementation](policy-as-code.html).\n* Not CI/CD for application teams — that product is [CI/CD as a Platform Service](cicd-as-a-platform-service.html); this pipeline builds the platform itself.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries all seventeen build stages and the definition of done. Grounded in the Platform Creation chapter of the* Platform Engineer's Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "8 min read"}, "blocks": [{"type": "markdown", "content": "*The working build behind this record, stage by stage. The Article tab carries the rationale and anti-patterns. Tool names are the reference stack — swap any of them for an equivalent that preserves the same property.*\n\n## 1. Repository and Local Tooling\n\n- [ ] Create or clone the platform-core repository\n- [ ] Create the base repository structure: `.circleci/`, `modules/`, `scripts/`, `tests/`\n- [ ] Configure the repository as a Python Pulumi project\n- [ ] Install and verify Docker\n- [ ] Install and verify kubectl\n- [ ] Install and verify Kind\n- [ ] Install and authenticate the Pulumi CLI\n- [ ] Install Helm\n- [ ] Install BATS for infrastructure testing\n- [ ] Confirm all required commands run successfully from the development machine\n\n## 2. Platform Environments\n\n- [ ] Create the platform-sandbox Pulumi stack\n- [ ] Create the app-dev Pulumi stack\n- [ ] Create the app-prod Pulumi stack\n- [ ] Create a separate Pulumi YAML configuration file for each stack\n- [ ] Define a unique cluster name for each environment\n- [ ] Pin the Kubernetes/Kind node image version\n- [ ] Define deployment readiness/wait settings\n- [ ] Keep security and governance settings consistent across environments\n- [ ] Use smaller capacity where appropriate for non-production environments\n- [ ] Confirm platform environments and application environments are treated as separate SDLC concepts\n\n## 3. Network Foundation\n\n- [ ] Create `modules/network.py`\n- [ ] Define a PortMap configuration model\n- [ ] Define a NetworkConfig configuration model\n- [ ] Assign a unique Docker network to every platform environment\n- [ ] Assign non-overlapping CIDR ranges\n- [ ] Check CIDRs against VPN and host-network ranges\n- [ ] Define the cluster virtual network range\n- [ ] Define pod CIDRs\n- [ ] Define service CIDRs\n- [ ] Configure required ingress port mappings\n  - [ ] Map HTTP traffic (e.g. host port 8080)\n  - [ ] Map HTTPS traffic (e.g. host port 8443)\n- [ ] Implement Docker-network creation through Pulumi\n- [ ] Generate the Kind cluster configuration programmatically\n- [ ] Bind the Kind cluster to the appropriate Docker network\n- [ ] Apply a zero-trust approach by minimizing unnecessary exposure\n- [ ] Verify CIDRs do not overlap between environments\n\n## 4. Kubernetes Runtime\n\n- [ ] Create `modules/cluster.py`\n- [ ] Define a ClusterConfig configuration model\n- [ ] Configure the cluster name\n- [ ] Configure the pinned Kind image\n- [ ] Configure cluster readiness timeout values\n- [ ] Implement Kind cluster creation as a Pulumi-managed command\n- [ ] Ensure network creation completes before cluster creation\n- [ ] Generate the cluster kubeconfig\n- [ ] Configure the Pulumi Kubernetes provider with the generated kubeconfig\n- [ ] Enable server-side apply where appropriate\n- [ ] Export useful Pulumi outputs: cluster name, Docker network, kubeconfig\n- [ ] Deploy platform-sandbox with `pulumi up`\n- [ ] Confirm kubectl can connect to the cluster\n- [ ] Confirm all Kubernetes nodes reach Ready\n\n## 5. Infrastructure Validation Tests\n\n- [ ] Create `tests/infrastructure.bats`\n- [ ] Add test setup that retrieves Pulumi stack outputs\n- [ ] Configure KUBECONFIG automatically during tests\n- [ ] Capture the Docker network name\n- [ ] Capture the cluster name\n- [ ] Add teardown logic to remove temporary kubeconfig files\n- [ ] Test that the expected Docker network exists\n- [ ] Test that the Kubernetes API is reachable\n- [ ] Test that at least one Kubernetes node exists\n- [ ] Test that required nodes are ready\n- [ ] Run the infrastructure test suite locally\n- [ ] Confirm tests fail clearly when infrastructure is unavailable\n\n## 6. Code Quality and Security Checks\n\n- [ ] Add Python formatting checks with Black\n- [ ] Add type checking with mypy\n- [ ] Add import-order checking with isort\n- [ ] Add static-analysis checks\n- [ ] Add security scanning\n  - [ ] Consider an open-source SAST tool such as Semgrep\n  - [ ] Consider Trivy for container, dependency, IaC, and SBOM scanning\n- [ ] Configure checks to fail the pipeline on significant violations\n- [ ] Tune scanning rules to avoid excessive false positives\n\n## 7. CI/CD Pipeline\n\n- [ ] Create `.circleci/config.yml`\n- [ ] Configure the required machine executor\n- [ ] Configure access to the local/platform deployment environment\n- [ ] Add a lint stage\n- [ ] Add pre-deployment testing\n- [ ] Add a Pulumi preview stage\n- [ ] Add a Pulumi deployment stage\n- [ ] Add post-deployment validation\n- [ ] Run sandbox deployments from commits to main\n- [ ] Restrict regular branch deployments to the main branch\n- [ ] Use Git tags for production-oriented releases\n- [ ] Deploy and validate platform-sandbox before application environments\n- [ ] Deploy app-dev after successful sandbox validation\n- [ ] Add a manual approval gate before app-prod\n- [ ] Deploy app-prod only after approval\n- [ ] Run validation tests after every environment deployment\n- [ ] Keep approval gates only where they provide meaningful governance value\n\n## 8. GitOps Foundation\n\n- [ ] Create a separate platform-gitops repository\n- [ ] Keep infrastructure provisioning in platform-core\n- [ ] Keep runtime/application configuration in platform-gitops\n- [ ] Avoid managing application Kubernetes manifests directly with IaC\n- [ ] Use Helm and/or Kustomize for Kubernetes application lifecycle management\n- [ ] Install Flux in the platform cluster\n- [ ] Create a flux-system namespace\n- [ ] Create the Flux installation module in platform-core\n- [ ] Pin the Flux version\n- [ ] Verify Flux controllers become healthy\n\n## 9. App-of-Apps GitOps Structure\n\n- [ ] Configure platform-gitops as the central coordination repository\n- [ ] Create environment-specific configuration directories\n- [ ] Add a configuration for platform-sandbox\n- [ ] Add configurations for application environments as needed\n- [ ] Define Flux GitRepository resources\n- [ ] Define Flux Kustomization resources\n- [ ] Point Flux to the correct repository path for each environment\n- [ ] Configure reconciliation intervals\n- [ ] Enable pruning where appropriate\n- [ ] Configure Flux to wait for resources to become healthy\n- [ ] Bootstrap Flux from platform-core\n- [ ] Verify Flux begins monitoring platform-gitops\n- [ ] Verify a Git commit triggers reconciliation\n- [ ] Confirm new team repositories can be onboarded declaratively\n\n## 10. Platform Services Repository Structure\n\n- [ ] Create or identify the repository containing shared platform services\n- [ ] Add the repository to the GitOps configuration\n- [ ] Create environment-specific overlays/configurations\n- [ ] Use GitOps to deploy platform extensions rather than direct manual installation\n- [ ] Ensure platform-service versions are explicitly pinned\n\n## 11. Istio Service Mesh\n\n- [ ] Add the Istio Helm repository as a GitOps source\n- [ ] Pin the Istio chart/version\n- [ ] Deploy the Istio base components\n- [ ] Deploy the Istio control plane\n- [ ] Configure namespace/service-mesh integration\n- [ ] Verify Istio components become healthy\n- [ ] Verify Envoy/data-plane integration where sidecars are enabled\n- [ ] Configure an Istio Gateway for controlled ingress\n- [ ] Configure VirtualService resources for traffic routing\n- [ ] Enable or enforce mTLS as required\n- [ ] Verify service-to-service encrypted communication\n- [ ] Add authorization/network policies where workloads require isolation\n- [ ] Test service routing through the gateway\n- [ ] Monitor the resource and latency overhead introduced by service-mesh proxies\n\n## 12. Observability Hooks\n\n- [ ] Confirm Istio emits service metrics\n- [ ] Confirm Istio can produce distributed tracing information\n- [ ] Confirm logs and telemetry can be consumed by an observability system\n- [ ] Validate visibility into service-to-service communication\n- [ ] Validate that latency and traffic behavior can be inspected\n- *Note: leave the full observability platform implementation for the dedicated observability stage — see [Observability Implementation](observability-implementation.html)*\n\n## 13. Policy-as-Code\n\n- [ ] Add an Open Policy Agent/Rego policy directory\n- [ ] Install and configure conftest for pipeline policy checks\n- [ ] Define policies for invalid or unsafe configuration\n- [ ] Prevent container images from using floating `latest` tags\n- [ ] Require reproducible/pinned deployment versions\n- [ ] Reject wildcard Helm versions such as `v2.*.*`\n- [ ] Run policy checks before manifests reach the GitOps repository\n- [ ] Make policy violations fail the pipeline early\n- [ ] Add tests for both allowed and rejected policy cases\n- [ ] Keep policy enforcement consistent across environments\n\n## 14. Production Environment Gate\n\n- [ ] Confirm sandbox deployment succeeds\n- [ ] Confirm sandbox validation tests succeed\n- [ ] Confirm app-dev deployment succeeds\n- [ ] Confirm app-dev validation succeeds\n- [ ] Require explicit approval for the production deployment\n- [ ] Record the approval through the CI/CD system\n- [ ] Deploy app-prod\n- [ ] Run production validation tests\n- [ ] Confirm security and governance controls match tested environments\n\n## 15. GitOps and Reconciliation Validation\n\n- [ ] Make a controlled configuration change in Git\n- [ ] Confirm Flux detects the change\n- [ ] Confirm Flux applies the desired state\n- [ ] Confirm manual configuration drift is reconciled\n- [ ] Confirm failed reconciliations are visible\n- [ ] Confirm deleted Git-managed resources are handled according to the configured pruning policy\n- [ ] Verify Git remains the source of truth for runtime configuration\n\n## 16. Final Platform Validation\n\n- [ ] All required Pulumi stacks exist\n- [ ] Every environment deploys successfully\n- [ ] Kubernetes clusters are accessible\n- [ ] Nodes are healthy\n- [ ] Network ranges do not conflict\n- [ ] CI linting passes\n- [ ] Pre-deployment tests pass\n- [ ] Infrastructure deployment tests pass\n- [ ] Security scans pass\n- [ ] Policy-as-code checks pass\n- [ ] Flux is healthy\n- [ ] GitOps reconciliation works\n- [ ] Istio is healthy\n- [ ] Gateway routing works\n- [ ] mTLS works as intended\n- [ ] Required telemetry is available\n- [ ] Production approval gates work\n- [ ] Configuration drift can be detected and reconciled\n\n## 17. Release\n\n- [ ] Commit all platform code and configuration\n- [ ] Push all repositories\n- [ ] Apply a semantic version tag, such as `v0.1.0`\n- [ ] Push the version tag\n- [ ] Confirm the tag triggers the expected release pipeline\n- [ ] Confirm the deployment completes across all target environments\n- [ ] Confirm every environment is deployed and configured\n- [ ] Record the working platform version as the baseline for future development\n\n## Definition of Done\n\n- [ ] Infrastructure is declarative and reproducible\n- [ ] Development teams receive a standardized Kubernetes runtime\n- [ ] Environment configuration is managed consistently\n- [ ] CI/CD automatically tests deployments\n- [ ] GitOps continuously reconciles runtime configuration\n- [ ] Platform services are deployed using Kubernetes-native tooling\n- [ ] Service communication is centrally secured and managed\n- [ ] Misconfigurations are blocked through policy-as-code\n- [ ] The platform can be rebuilt from source-controlled configuration\n- [ ] The platform is ready for the next stages: [End-to-End Platform Security](platform-security.html), [Observability Implementation](observability-implementation.html), and developer-experience work\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## If the Clusters Vanished Tonight\n\n**Ben:** Blunt version first. This record is a build recipe — stacks, CIDRs, Flux, Istio, version tags. Why does a recipe belong in an executive operating model?\n\n**Ana:** Because it isn't a recipe, it's a bar. The record answers one question: when a platform team in my organization builds a platform, what must be true when they call it done? And the whole answer compresses into one property — the platform exists in Git, not in the clusters. The running test: if the clusters vanished tonight, could the pipeline rebuild every environment from a tagged commit by morning?\n\n**Ben:** Every infrastructure team on earth claims they have infrastructure-as-code. What makes this more than that claim?\n\n**Ana:** The claim usually covers provisioning and stops. This record covers the whole stack of the build: three declarative environments — platform sandbox, app-dev, app-prod — each with its own configuration file, unique cluster name, and pinned versions; networks planned with non-overlapping CIDRs checked against VPN and host ranges; one pipeline that lints, tests, previews, deploys, and validates; a GitOps controller reconciling runtime configuration continuously; a mesh with mTLS; policy checks that kill bad manifests before they land. And then it makes you prove it — the build ends with a controlled drift test and a semantic version tag that rebuilds everything.\n\n**Ben:** Sandbox, dev, prod — fine, standard. What's the part people actually get wrong?\n\n**Ana:** Two subtleties. Platform environments and application environments are separate SDLC concepts — the platform team needs a place to break the platform that is not where application teams work; most organizations only build the second kind. And non-production runs smaller capacity but identical security and governance settings. Cheaper is allowed; looser is not — otherwise what you tested is not what you shipped.\n\n## Two Repositories and the Backdoor\n\n**Ben:** Now the split. Provisioning in one repository, runtime configuration in another, a reconciler in between. For a platform one team owns, isn't that ceremony? One repo, one deploy script, done.\n\n**Ana:** It works until the platform has tenants — which is the entire point of a platform. Provisioning changes rarely, carefully, with privileged credentials. Runtime configuration changes daily, broadly, by many hands. Fuse them and every application change rides infrastructure machinery — slow, privileged, reviewed by the wrong people. The record even bans the specific failure: application Kubernetes manifests are never managed directly by IaC. That's the anti-pattern called IaC all the way up.\n\n**Ben:** And the reconciler? I can apply manifests from CI without running a controller in the cluster.\n\n**Ana:** CI applies; it doesn't reconcile. The difference shows up the day someone runs kubectl at two in the morning. A cluster that accepts manual changes is a cluster whose Git history is fiction — the record calls it the kubectl backdoor. With continuous reconciliation, drift gets corrected, failed reconciliations are visible, deletions follow a stated pruning policy. And the build is not done until that's demonstrated: make a change in Git, watch it land; drift the cluster by hand, watch it come back.\n\n**Ben:** So nobody can ever touch a cluster? That's a fantasy during an incident.\n\n**Ana:** The record doesn't say that — break-glass exists. It says the reconciler puts the cluster back and makes the intervention visible. You can act at two in the morning; you cannot leave a secret behind.\n\n**Ben:** And how would you ever audit that?\n\n**Ana:** Two review questions, and I ask both: show me the commit that produced this environment, and show me the last time drift was reconciled. If either answer involves a person's recollection instead of a pipeline log, the build is not done.\n\n## The Mesh Tax and the Gate That Matters\n\n**Ben:** Istio at creation time. Here's my objection: a brand-new platform with three services does not need a service mesh. That's resume-driven engineering with a sidecar tax on every request.\n\n**Ana:** The tax is real, and the record refuses to hide it — proxy resource and latency overhead is monitored from day one, and measured overhead that stops earning its value is a named revisit trigger. But the timing argument runs the other way. Retrofitting mTLS, controlled ingress, and authorization policies onto a populated platform is a migration project — every tenant team in the blast radius. Installing them into an empty platform is configuration. You buy the property when it's cheapest.\n\n**Ben:** And the anti-pattern is installing it and not using it.\n\n**Ana:** Mesh as ornament — mTLS never enforced, gateway never routed through, overhead never measured. Paying the tax without collecting the property. The record requires the verification: encrypted service-to-service communication confirmed, routing tested through the gateway, telemetry hooks — metrics, traces, logs — confirmed consumable. The full observability platform is deliberately deferred to [Observability Implementation](observability-implementation.html); this stage just proves the hooks exist.\n\n**Ben:** Manual approval before production. You automate everything else and then put a human in the loop — isn't that admitting the automation isn't trusted?\n\n**Ana:** It's admitting that governance needs a name attached. The approval is recorded in the CI/CD system — who, what, when — after sandbox and app-dev have both deployed and validated. But notice the restraint clause, because it's the half people skip: approval gates exist only where they provide meaningful governance value. Gates at every step train everyone to click through — including at the one gate that matters. The record calls that the ceremonial gate. One recorded gate, at production, that people take seriously — not five that nobody reads.\n\n## What a Version Number Buys\n\n**Ben:** Policy-as-code in the pipeline. Why is \"no floating latest tags\" worth executive attention? That's a linting rule.\n\n**Ana:** Because it's the rule that makes \"rebuildable\" true. A platform of floating tags and wildcard chart versions cannot be rebuilt, only re-discovered — this week's rebuild is not last week's platform. And pinning is exactly the kind of rule humans agree with and violate weekly, so it's enforced mechanically: policy checks run before manifests reach the GitOps repository, violations fail the pipeline early, enforcement is identical in every environment. The cheapest place to kill a bad manifest is before it reaches the repository the cluster obeys.\n\n**Ben:** And the policies themselves?\n\n**Ana:** Tested code — cases for what passes and what gets rejected. Untested policy is enforcing you-don't-know-what, and you find out from the teams it blocks. One boundary worth naming: this is pipeline-time checking. Admission-time enforcement inside the clusters — the Gatekeeper layer — is its own record, [Policy as Code Implementation](policy-as-code.html).\n\n**Ben:** The whole thing ends with a version tag. v0.1.0. Feels anticlimactic.\n\n**Ana:** It's the punchline, actually. The tag triggers the release pipeline, the pipeline rebuilds and validates every environment, and that version becomes the recorded baseline all future work builds on. That's the vanished-clusters test passed in public. A platform you cannot rebuild is a platform you do not own.\n\n**Ben:** Last objection. The reference build runs on Kind — Docker clusters on a laptop. My production platform is not a laptop.\n\n**Ana:** Which is why every commitment is stated at capability level and the tools are named as the worked example. Pulumi, Kind, CircleCI, Flux, Istio, OPA — the reference stack from the *Platform Engineer's Handbook* build this record is grounded in. Swap any of them; the record still binds: declarative environments, planned networks, one validating pipeline, the provisioning/runtime split with Git as source of truth, a mesh with measured overhead, policy at the pipeline, a versioned baseline. Kind just makes the whole thing cheap to destroy and rebuild — which, for a record whose test is \"rebuild it by morning,\" is not an accident.\n\n**Ben:** And what is this record explicitly not?\n\n**Ana:** Not the stages around it. Repositories, secrets, and release discipline come before — that's [Groundwork: Repositories, Secrets, and Releases](groundwork.html). Hardening comes after — [End-to-End Platform Security](platform-security.html). The observability build is [Observability Implementation](observability-implementation.html), and CI/CD as a product for application teams is [CI/CD as a Platform Service](cicd-as-a-platform-service.html); this pipeline builds the platform itself. This record is [The Four Pillars of Platform Engineering](four-pillars.html)' second and fourth pillars made concrete: software abstractions that manage complexity, operated as a foundation — starting from the first commit.\n\n**Ben:** So the one-line version.\n\n**Ana:** The clusters are an implementation detail. The platform is the repository — and the pipeline that can prove it.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why the platform must exist in Git, not in the clusters — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: at night, Vera asks Kai whether glowing server clusters could be rebuilt by morning if they vanished.](assets/images/platform-creation/comic-01-the-midnight-question.jpeg)\n**Panel 1:** *The hook: the only test that matters — if the clusters vanished tonight, could the pipeline rebuild every environment by morning?*\n\n![Comic panel: a patched, snowflake-shaped production server no longer matches the clean configuration file Kai is holding.](assets/images/platform-creation/comic-02-the-snowflake.jpeg)\n**Panel 2:** *The problem: the snowflake environment — patched by hand until production no longer resembles what was tested, and Git history is fiction.*\n\n![Comic panel: version labels float away as balloons while Kai rebuilds a platform that no longer matches the original photo.](assets/images/platform-creation/comic-03-the-floating-latest.jpeg)\n**Panel 3:** *The wrong way: floating latest tags and wildcard versions — a platform that cannot be rebuilt, only re-discovered, one incident at a time.*\n\n![Comic panel: Vera shows a Git cabinet with two drawers, one building clusters and one feeding running services.](assets/images/platform-creation/comic-04-the-platform-lives-in-git.jpeg)\n**Panel 4:** *The principle: the platform exists in Git, not in the clusters — provisioning in one repository, runtime configuration in another.*\n\n![Comic panel: a change crate rides one conveyor through sandbox, dev, and a stamped approval gate before prod.](assets/images/platform-creation/comic-05-one-pipeline-promotes.jpeg)\n**Panel 5:** *How it plays out: one pipeline promotes every change — sandbox first, then dev, then a recorded approval before production.*\n\n![Comic panel: a mechanical arm from a Git book reverses Kai's manual dial change and prints a log slip.](assets/images/platform-creation/comic-06-drift-reconciled.jpeg)\n**Panel 6:** *How it plays out: drift is corrected, visibly — a Git commit is what changes the cluster, and break-glass fixes are reversed and logged.*\n\n![Comic panel: a robot bouncer turns away a manifest tagged latest at the GitOps repository door while a pinned one enters.](assets/images/platform-creation/comic-07-the-policy-bouncer.jpeg)\n**Panel 7:** *How it plays out: misconfiguration dies in the pipeline — policy-as-code rejects floating tags before they ever reach the GitOps repository.*\n\n![Comic panel: Kai installs mTLS padlocks and a gateway in an empty platform while Vera weighs a proxy on a scale.](assets/images/platform-creation/comic-08-locks-before-tenants.jpeg)\n**Panel 8:** *What it costs: the mesh goes in before the tenants — mTLS is configuration on an empty platform, a migration on a full one — and its overhead is measured from day one.*\n\n![Comic panel: at sunrise a pipeline rebuilds three environments from a Git tag while Vera and Kai look on satisfied.](assets/images/platform-creation/comic-09-rebuilt-by-morning.jpeg)\n**Panel 9:** *The closer: a semantic version tag rebuilds every environment by morning — a platform you cannot rebuild is a platform you do not own.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

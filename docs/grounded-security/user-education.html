@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Security Education</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="standards-and-procedures.html" title="Standards and Procedures">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="compliance.html" title="Industry Compliance Standards and Frameworks">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">The Security Program</p>
+        <h1>Security Education</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  6 min · <a class="spec-link" href="user-education.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/user-education/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/user-education/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="standards-and-procedures.html" title="Standards and Procedures">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="compliance.html" title="Industry Compliance Standards and Frameworks">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-USER-EDUCATION", "status": "draft:gray", "title": "Security Education", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "user-education", "timetoread": "6 min", "excerpt": "In my organization, security awareness is an ongoing program, not a once-a-year compliance module. It starts with one or two clear objectives tailored to our actual threat landscape, and with a measured baseline of what users know and do before any training runs — so improvement targets are real, not invented. Training is reinforced through repetition, spaced learning, and realistic exercises like phishing simulations; reporting suspicious activity is made simple; and nobody is ever punished for reporting a mistake, even after clicking, because a click reported in minutes is the cheapest incident we will ever have. Awareness exercises double as tests of our incident-response machinery. The test I hold the program to: behavior change measured against the baseline — not course-completion rates.", "tags": "security awareness, user education, training, phishing simulations, security culture, positive reinforcement, metrics, security program", "icon": "assets/icons/user-education.png", "logo": "assets/images/user-education/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["security awareness", "user education", "training", "phishing simulations", "security culture", "positive reinforcement", "metrics", "security program"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: My organization treats its people as a security control, and controls get engineered, not lectured. **Security awareness is an ongoing process, not a once-a-year compliance exercise**: one or two clear objectives, tailored to our specific risks, with executive support and cultural fit. **The baseline comes before the program** — we measure what users currently know and do, and set improvement targets against it. **Training is repetition, spaced learning, and realistic exercises** tied to everyday work; **reporting is simple, and reporting is never punished** — even after a click — because the cheapest incident is the one reported in minutes. **Awareness exercises double as tests of incident response**, and the metrics loop runs continuously: reporting up, click rates down, topics adjusted to the threats we actually face. The test I hold the program to: **behavior change measured against the baseline, not course-completion rates**.\n\n## Statement\n\nWhen my organization runs security education, this is the program it is held to.\n\n**The program has few, clear objectives — and they are ours.**\n\n- One or two clear, achievable security-awareness objectives, not a catalog.\n- Training tailored to my organization's specific risks and threat landscape, with executive support and alignment with organizational culture.\n- Security awareness treated as an ongoing process, not a once-a-year compliance exercise — reinforced regularly through repetition and spaced learning, with realistic hands-on exercises such as phishing simulations, and lessons taught in terms of users' everyday work.\n\n**The baseline comes before the program.**\n\n- Users' current security knowledge and behavior are measured before launch, through realistic exercises that identify common weaknesses.\n- How users currently react to phishing, suspicious links, and unusual requests is assessed — and the baseline results set measurable improvement targets.\n\n![Sequence diagram: measure the baseline, set targets against it, run spaced training, and compare behavior back to the same baseline line.](assets/images/user-education/baseline-before-program.jpeg)\n**Figure 1:** *The baseline comes before the program: what users know and do is measured first, targets are set against it, and every later claim of improvement is compared to that starting line.*\n\n\n**Rules are clear and reporting is the easy option.**\n\n- Program rules are clear, concise, and consistent with organizational policies and culture, with input from employees and stakeholders at different levels.\n- What to do on encountering suspicious activity is explicitly explained, and reporting suspicious emails or incidents is simple and accessible.\n\n**Training builds habits, not certificates.**\n\n- Key lessons are reinforced through repeated practice: hovering over and verifying links before clicking; recognizing suspicious emails, requests, and social-engineering tactics.\n- Users are encouraged to report mistakes and suspicious activity quickly; examples closely resemble real-world threats; computer-based training is supplemented with interactive awareness activities.\n\n**Reinforcement is positive — fear and shame are off the table.**\n\n- It is explicit that users will not be punished for reporting a mistake, and reporting is encouraged even when a user has already clicked a malicious link.\n- Good security behavior and participation are rewarded; gamification, competitions, recognition, and small incentives are considered; the learning environment is supportive.\n\n**Education and incident response test each other.**\n\n- What users should do after identifying — or falling for — an attack is defined.\n- Existing incident-response procedures are tested during awareness exercises; gaps, inconsistencies, and inefficiencies are identified; procedures and policies are updated from lessons learned.\n\n**Success is measured against the baseline, continuously.**\n\n- The metrics are tracked: simulated phishing emails sent, opened, and clicked; credentials submitted; phishing attempts reported and suspicious emails not reported; training access; changes in reporting and click rates over time; progress toward the program's goals.\n- Current results are compared against the original baseline: reporting of suspicious activity rising, successful phishing and malware incidents falling, risky behavior declining — reviewed periodically, never judged from a single assessment.\n- Training topics are adjusted to emerging threats and performance data, and program objectives are updated as the organization's security maturity improves.\n\n## How to Read This\n\nThis record sits in **The Security Program** section of the journal — the human layer of the program, alongside [Policies: What Must Be Achieved, in Writing](policies.html) and [Standards and Procedures](standards-and-procedures.html), which govern the documents people are trained on. It is grounded in the User Education chapter of the *Defensive Security Handbook* (Brotherston, Berlin, and Reyor), whose checklist is titled Security Education and treats awareness as a program to be engineered and measured, not a module to be completed. The full working checklist — program design, baseline, reinforcement, metrics, and the final review — lives in the **Checklist** tab; the management summary is in the **TL;DR** tab and the conversation in the **Conversation** tab.\n\n## Rationale\n\n**Users are a security control, not a liability to be minimized.** The people who receive the phish see it before any analyst does. A workforce trained to recognize suspicious requests and equipped with a one-click reporting path is a detection sensor deployed at every mailbox — the widest coverage any control in my estate will ever have. Treating users as the problem produces exactly the users you feared; treating them as a control produces reports, and reports are how [Phishing Awareness and Response](phishing-response.html) gets its head start.\n\n**The baseline turns training from ritual into engineering.** A program launched without measuring current knowledge and behavior can never demonstrate improvement — it can only demonstrate activity. Measuring first, through realistic exercises rather than quizzes, does two things: it reveals the weaknesses that are actually ours (not the vendor catalog's), and it sets targets that mean something. Every later claim the program makes — reporting up, clicks down — is only credible against that starting line.\n\n**Few objectives beat many.** One or two clear, achievable objectives force the program to decide what matters this year — credential phishing, say, or unusual payment requests — and give every exercise, message, and metric a common direction. A program with twelve objectives has none; it is a curriculum, and curricula get completed, not absorbed.\n\n**Fear teaches concealment, and concealment is the expensive failure mode.** Punish the click and the next click goes unreported — the attacker gets hours or days of quiet instead of minutes. That is why the record is absolute about positive reinforcement: no punishment for reporting a mistake, reporting encouraged *even after* the malicious link was clicked, good behavior rewarded, and a supportive environment instead of fear or shame. The cheapest incident my organization will ever have is the one reported in minutes by the person it happened to.\n\n![Two timelines after a phishing click: punishment leads to concealment and days of attacker dwell time; no-blame reporting starts the response in minutes.](assets/images/user-education/report-vs-conceal.jpeg)\n**Figure 2:** *Fear teaches concealment: punish the click and the next one goes unreported for days — the cheapest incident is the one reported in minutes by the person it happened to.*\n\n**Repetition beats the annual module because that is how habits form.** The once-a-year compliance module changes nothing except a completion dashboard; spaced, repeated, hands-on practice — with examples that closely resemble the threats we actually receive — is what changes what people do when nobody is watching. And the lessons must be framed in users' everyday work: an accountant learns invoice fraud, an engineer learns credential phishing, because relevance is what makes practice stick.\n\n**The exercise tests us as much as them.** Every phishing simulation is also a live rehearsal of the reporting path, the triage queue, and the response runbook. Running awareness exercises against the real [Incident Response](incident-response.html) machinery is the cheapest integration test the response program will ever get — and the record requires that the gaps found this way flow back into updated procedures, not just updated slide decks.\n\n**Behavior change is the only honest metric.** Completion rates measure attendance. The record's metrics — click rates, credential submissions, reporting rates, unreported suspicious emails, all trended against the baseline over multiple assessments — measure whether the organization actually behaves differently. A program that reports completion percentages to the board is reporting the cost, not the outcome.\n\n![Comparison of a completion-rate certificate against a behavior trend chart where reporting rises and clicks fall against the baseline.](assets/images/user-education/behavior-not-completion.jpeg)\n**Figure 3:** *Behavior change is the only honest metric: reporting up, clicks down, trended against the baseline — completion rates measure attendance, not outcome.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Security awareness is an ongoing, reinforced program with one or two clear objectives. | More training is better — an unfocused catalog is a cost center with a completion rate. |\n| The baseline is measured before the program launches, and targets are set against it. | The baseline is a one-time gate — it is the reference line every later review compares against. |\n| Phishing simulations and exercises closely resemble real threats. | Simulations are designed to trick and humiliate — a gotcha teaches resentment, not recognition. |\n| Nobody is punished for reporting a mistake, even after clicking. | There is no accountability anywhere — willful, repeated policy violations are a management matter, outside this program. |\n| Reporting suspicious activity is simple, accessible, and explicitly rewarded. | Every report must be a true positive — false positives are the acceptable price of fast detection. |\n| Awareness exercises test incident-response procedures and feed lessons back. | The exercise is only about users — a failed reporting path is our defect, not theirs. |\n| Success is behavior change against the baseline, reviewed periodically. | One good assessment ends the work — topics and objectives keep moving with the threats and our maturity. |\n\nConcretely: my organization's awareness program reports to me on two lines — the reporting-rate trend and the click-rate trend, both against the original baseline — and the first question after every simulation is *\"did the reporting path and response procedures work?\"* Completion rates appear nowhere in that conversation.\n\n## Anti-Patterns\n\n- **The annual compliance module.** Forty-five minutes in December, a certificate, and no measurable change in behavior — the program exists to satisfy an auditor, not to stop a phish.\n- **The gotcha simulation.** Phishing tests engineered to maximize clicks — fake bonus announcements, cruel timing — that produce resentment and concealment instead of recognition and reporting.\n- **Completion-rate theater.** Reporting 98% completion to the board while click rates and reporting rates go unmeasured — attendance dressed up as outcome.\n- **Punishing the click.** Naming, shaming, or disciplining users who fall for a simulation or a real phish — guaranteeing the next real click goes unreported for days.\n- **The generic catalog.** Off-the-shelf training untouched by our actual threat landscape — users learn about threats we do not face, in scenarios they will never see.\n- **Metrics without a baseline.** Improvement claims with no starting line — the program can show motion but never progress.\n- **The untested reporting path.** Users told to \"report suspicious emails\" through a path nobody has exercised — the simulation succeeds, the report goes nowhere, and the lesson learned is that reporting is pointless.\n- **The static curriculum.** The same topics, the same templates, year after year — while the threats moved on and the organization's maturity made the material insulting.\n\n## Related Records\n\n- [Phishing Awareness and Response](phishing-response.html) — the operational flow when a real phish lands; this record trains the sensors that feed it.\n- [Incident Response](incident-response.html) — the machinery that awareness exercises rehearse and improve; lessons flow both ways.\n- [Creating a Security Program: Risk Before Tools](security-program.html) — the program that commissions the education effort and gives it executive backing.\n- [Policies: What Must Be Achieved, in Writing](policies.html) — the rules users are trained on; education makes policy lived rather than merely published.\n- [Standards and Procedures](standards-and-procedures.html) — the documentation users are pointed at; this record builds the habit of consulting it.\n- [OSINT and Purple Teaming](osint-purple-teaming.html) — the adversarial view of what attackers can learn about us, which shapes realistic exercise design.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to the security education of everyone in my organization — employees and contractors within our systems — and as the audit bar for the awareness program we already run. I revisit it if the metrics loop shows reporting rates flat or falling against the baseline (the program is not working, and repetition of a failing program is not a strategy), if a real incident reveals that users hid a mistake (the no-blame commitment failing in practice), or if the threat landscape shifts enough that the program's one or two objectives are no longer the right ones.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, William F. Reyor III; O'Reilly) — the User Education chapter, whose Security Education checklist (including the final review) this record distills.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "My organization treats its people as a security control, and controls get engineered, not lectured. **Security awareness is an ongoing program, not a once-a-year compliance module**: one or two clear objectives tailored to our actual threat landscape, a measured baseline before launch, training built on repetition and realistic exercises, a reporting path so simple that reporting is the easy option, and a hard rule that nobody is punished for reporting a mistake — even after clicking. The test the program is held to: behavior change measured against the baseline, not course-completion rates.\n\n**What changes**\n\n* **The program gets a focus.** One or two clear, achievable objectives replace the training catalog, and every exercise, message, and metric points at them — with executive support and cultural fit, not just budget.\n* **A baseline comes first.** Before any training runs, we measure what users currently know and do through realistic exercises — how they react to phishing, suspicious links, and unusual requests — and set measurable improvement targets against that starting line.\n* **Training becomes habit-building.** Spaced, repeated, hands-on practice with examples that closely resemble the threats we actually receive, framed in each user's everyday work; interactive activities supplement the computer-based module instead of being replaced by it.\n* **Reporting becomes the easy, safe option.** What to do about suspicious activity is explicit, the reporting path is one click, good behavior is rewarded — and reporting is never punished, even after the malicious link was clicked, because a click reported in minutes is the cheapest incident we will ever have.\n* **Exercises test the response machinery.** Every simulation doubles as a rehearsal of the reporting path and incident-response procedures; gaps found flow back into updated procedures, and the metrics loop — sent, opened, clicked, submitted, reported — is reviewed periodically against the baseline, with topics adjusted to emerging threats.\n\n**What it costs**\n\n* Standing work, not a yearly event: simulations, reinforcement, and metric reviews recur indefinitely.\n* Baseline discipline delays the visible launch — measuring first feels slower than shipping training on day one.\n* Rewarding reporting means absorbing false positives; that noise is the accepted price of fast detection.\n\n**What we are not doing**\n\n* Not running gotcha simulations designed to humiliate — they teach concealment, the expensive failure mode.\n* Not handling the operational response to real phish — that is [Phishing Awareness and Response](phishing-response.html), fed by the sensors this program trains.\n* Not writing the rules users are trained on — that is [Policies: What Must Be Achieved, in Writing](policies.html); the response machinery the exercises rehearse is [Incident Response](incident-response.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full program checklist, from design and baseline through metrics and the final review. Grounded in the User Education chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "3 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the security-education program from design and baseline through reinforcement, metrics, and the final review, from the User Education chapter of the* Defensive Security Handbook*. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Program Design\n\n- [ ] Define 1–2 clear, achievable security-awareness objectives\n- [ ] Tailor training to the organization's specific risks and threat landscape\n- [ ] Obtain executive support and align the program with organizational culture\n- [ ] Treat security awareness as an ongoing process, not a once-a-year compliance exercise\n- [ ] Reinforce training regularly using repetition and spaced learning\n- [ ] Include realistic, hands-on exercises such as phishing simulations\n- [ ] Teach users how security lessons apply to their everyday work\n\n## 2. Establish a Baseline\n\n- [ ] Measure users' current security knowledge and behavior before launching the program\n- [ ] Conduct realistic exercises to identify common weaknesses\n- [ ] Assess how users currently react to phishing, suspicious links, and unusual requests\n- [ ] Use baseline results to set measurable improvement targets\n\n## 3. Rules and Guidelines\n\n- [ ] Create clear and concise program rules\n- [ ] Ensure instructions are consistent with organizational policies and culture\n- [ ] Get input from employees and stakeholders at different levels\n- [ ] Clearly explain what users should do when they encounter suspicious activity\n- [ ] Make reporting suspicious emails or incidents simple and accessible\n\n## 4. Training and Reinforcement\n\n- [ ] Reinforce key lessons through repeated practice\n- [ ] Teach users to hover over and verify links before clicking\n- [ ] Train users to recognize suspicious emails, requests, and social-engineering tactics\n- [ ] Encourage users to report mistakes and suspicious activity quickly\n- [ ] Use examples that closely resemble real-world threats\n- [ ] Supplement computer-based training with interactive awareness activities\n\n## 5. Positive Reinforcement\n\n- [ ] Make it clear that users will not be punished for reporting a mistake\n- [ ] Encourage reporting even when a user has already clicked a malicious link\n- [ ] Reward good security behavior and participation\n- [ ] Consider gamification, competitions, recognition, or small incentives\n- [ ] Maintain a supportive learning environment instead of relying on fear or shame\n\n## 6. Incident Response\n\n- [ ] Define what users should do after identifying or falling for an attack\n- [ ] Test existing incident-response procedures during awareness exercises\n- [ ] Identify gaps, inconsistencies, or inefficiencies in response processes\n- [ ] Update procedures and policies based on lessons learned\n\n## 7. Metrics to Track\n\n- [ ] Number of simulated phishing emails sent\n- [ ] Number or percentage of emails opened\n- [ ] Number or percentage of malicious links clicked\n- [ ] Number of credentials submitted during simulations\n- [ ] Number of phishing attempts reported\n- [ ] Number of suspicious emails not reported\n- [ ] Number of users accessing training or awareness resources\n- [ ] Changes in reporting rates over time\n- [ ] Changes in phishing click rates over time\n- [ ] Progress toward established security-awareness goals\n\n## 8. Measure Overall Success\n\n- [ ] Compare current results against the original baseline\n- [ ] Look for increased reporting of suspicious activity\n- [ ] Look for a decrease in successful phishing or malware incidents\n- [ ] Track reductions in risky user behavior\n- [ ] Review metrics periodically rather than relying on a single assessment\n- [ ] Adjust training topics based on emerging threats and performance data\n- [ ] Update program objectives as the organization's security maturity improves\n\n## 9. Final Review\n\n- [ ] Confirm users understand that security is part of their responsibility\n- [ ] Confirm training focuses on behavior change, not just course completion\n- [ ] Keep the program engaging, relevant, and easy to participate in\n- [ ] Continue reinforcing good habits over time\n- [ ] Use encouragement and positive reinforcement rather than punishment\n\nWith the final review green, the program is running as designed — ongoing, measured, and humane. The test running through the whole checklist: **is behavior changing against the baseline, or are we only counting completions?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "7 min listen"}, "blocks": [{"type": "markdown", "content": "## Users as a Control\n\n**Ben:** Let me open with the industry's dirty secret: security awareness training is the control everyone runs and nobody believes in. Click rates barely move, the modules are despised, and the whole thing exists so an auditor can tick a box. Why write a record defending it?\n\n**Ana:** Because the thing you just described — the annual compliance module — is the record's first anti-pattern, not its subject. The chapter's claim is different: your people are a security control, and controls get engineered, not lectured. The person who receives the phish sees it before any analyst does. A workforce trained to recognize suspicious requests, with a one-click reporting path, is a detection sensor at every mailbox — the widest coverage of any control in the estate. The record is about engineering that sensor properly.\n\n**Ben:** Engineering how? Every vendor says \"ongoing program\" too.\n\n**Ana:** Start with what the record refuses: a training catalog. One or two clear, achievable objectives — not twelve. Tailored to our threat landscape, not the vendor's scenario library. With executive support and cultural fit, because a program the organization resents is a program the organization routes around. And then the discipline most programs skip entirely: the baseline.\n\n## The Baseline\n\n**Ben:** Right, the baseline. Measuring what users know before training them. Isn't that just an extra assessment nobody asked for — a delay before the real work?\n\n**Ana:** It's the difference between engineering and ritual. A program launched without measuring current behavior can never demonstrate improvement — only activity. So before launch: measure current knowledge and behavior, run realistic exercises to find *our* common weaknesses, assess how users actually react to phishing and unusual requests today, and set measurable targets against those results. Every claim the program makes afterward — reporting up, clicks down — is only credible against that starting line.\n\n**Ben:** And \"realistic exercises\" means phishing simulations. Which brings us to the ugliest part of this industry: the gotcha test. Fake bonus announcements. Fake layoff notices. Security teams bragging about click rates they engineered to be high.\n\n**Ana:** The record bans that outright — it's the gotcha simulation anti-pattern. Simulations should closely resemble the threats we actually receive, because the goal is recognition, not humiliation. A test designed to maximize clicks produces two things: a scary number for a slide deck, and a workforce that resents and conceals. Both are anti-outcomes. The exercise exists to build the habit — hover, verify, report — and to measure whether the habit is forming.\n\n## Never Punish the Report\n\n**Ben:** Now the part executives will push back on hardest. No punishment for reporting a mistake — even after clicking a malicious link. Where's the accountability? If someone clicks every quarter, do we just keep sending them encouragement?\n\n**Ana:** Separate two things the record is careful to separate. Reporting is never punished — that's absolute, and it's cold economics, not softness. Punish the click and the next click goes unreported; the attacker gets hours or days of quiet instead of minutes. The cheapest incident my organization will ever have is the one reported in minutes by the person it happened to. Fear teaches concealment, and concealment is the expensive failure mode.\n\n**Ben:** And the serial clicker?\n\n**Ana:** Willful, repeated policy violation is a management matter — it sits outside this program, and the record says so explicitly. What the program owns is making the safe behavior easy and rewarded: simple reporting, recognition, small incentives, gamification where it fits the culture, a supportive environment instead of fear or shame. You want the person who just clicked to have exactly one instinct: report it now.\n\n**Ben:** Rewarding reporting will buy you a pile of false positives. Every newsletter becomes a ticket.\n\n**Ana:** Accepted, and cheerfully. False positives are the price of fast detection, and triage is cheaper than dwell time. A user who reports ten harmless emails and one real phish has paid for the program. The metric the record actually worries about runs the other way — the suspicious emails *not* reported. That number is on the tracking list precisely because silence is the failure mode.\n\n## The Exercise Tests Us Too\n\n**Ben:** There's an incident-response section in this checklist that surprised me. Testing IR procedures during awareness exercises? That's scope creep — education program grading the response team?\n\n**Ana:** It's the cheapest integration test the response program will ever get. Every simulation is a live rehearsal of the whole path: the user reports, the report lands somewhere, someone triages, a runbook fires. The record requires defining what users do after identifying or falling for an attack, testing the existing procedures during exercises, and feeding the gaps back into updated procedures — not just updated slides. Because here's the failure nobody plans for: the simulation succeeds, the user dutifully reports, and the report goes nowhere. The lesson that user learns is that reporting is pointless — the untested reporting path anti-pattern. That's our defect, not theirs.\n\n**Ben:** So a failed exercise might indict the security team rather than the users.\n\n**Ana:** Regularly does, and that's the point. The exercise tests the humans *and* the machinery — [Incident Response](incident-response.html) gets rehearsed, [Phishing Awareness and Response](phishing-response.html) gets its sensors calibrated, and the education program gets honest about whether the easy option is actually easy.\n\n## Behavior, Not Completion\n\n**Ben:** Close on the measurement question. Every awareness program produces a dashboard. What makes this one worth believing?\n\n**Ana:** What it refuses to count as success. Completion rates measure attendance — the record calls reporting them \"completion-rate theater.\" The honest metrics are behavioral: click rates, credential submissions, reporting rates, unreported suspicious emails — all trended against the original baseline, reviewed periodically, never judged from a single assessment. And the program itself stays alive: topics adjust to emerging threats and performance data, objectives update as the organization's maturity improves. The same curriculum two years running is its own anti-pattern.\n\n**Ben:** What do you actually show the board?\n\n**Ana:** Two lines. The reporting-rate trend and the click-rate trend, both against the baseline. The first question after every simulation is whether the reporting path and response procedures worked. Completion percentages appear nowhere in that conversation.\n\n**Ben:** Then here's my concession, and it's a real one. This record isn't defending awareness training — it's replacing it. Measure before you teach, drill what's real, make reporting the easy and safe option, let every exercise test your own response machinery, and accept only one definition of success: people behaving differently than the baseline says they used to.\n\n**Ana:** That's the record in one line. The module produces certificates; the program produces reports in minutes — and the report in minutes is the whole game.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why security awareness is engineered like a control — baseline first, no blame, behavior over certificates — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: bored employees click through a December training video as a printer piles up identical certificates under a 98 percent complete dashboard.](assets/images/user-education/comic-01-the-december-module.jpeg)\n**Panel 1:** *The hook: the annual compliance module — forty-five minutes in December, a certificate, and no measurable change in behavior.*\n\n![Comic panel: a fish-shaped phishing email reaches a grid of employee inboxes before a distant analyst with binoculars can spot it.](assets/images/user-education/comic-02-the-widest-sensor.jpeg)\n**Panel 2:** *The problem framed right: the people who receive the phish see it before any analyst does — a trained workforce is a detection sensor at every mailbox.*\n\n![Comic panel: a manager shames one employee for clicking while another hides a suspicious email and an intruder slips deeper into the systems.](assets/images/user-education/comic-03-punishing-the-click.jpeg)\n**Panel 3:** *The wrong way: punish the click and the next click goes unreported — the attacker gets hours or days of quiet instead of minutes.*\n\n![Comic panel: Vera plans with exactly two objective cards tailored to real threats while a crossed-out twelve-objective catalog sits in a bin.](assets/images/user-education/comic-04-controls-get-engineered.jpeg)\n**Panel 4:** *The principle: people are a security control, and controls get engineered — one or two clear objectives, tailored to the threats we actually face, with executive backing.*\n\n![Comic panel: Nadia paints a baseline starting line on a track and records what users know and do before a target flag ahead.](assets/images/user-education/comic-05-baseline-first.jpeg)\n**Panel 5:** *The baseline comes before the program: measure what users currently know and do — otherwise the program can demonstrate activity, but never improvement.*\n\n![Comic panel: an employee who just clicked a bad link presses a big report button and Nadia responds with a thumbs up and a stopwatch.](assets/images/user-education/comic-06-the-big-red-report-button.jpeg)\n**Panel 6:** *Reporting is the easy option and never punished — even after the click — because the cheapest incident is the one reported in minutes by the person it happened to.*\n\n![Comic panel: employees train like in a gym, hovering over links and spotting fake invoices in repeated sessions while a framed certificate gathers dust.](assets/images/user-education/comic-07-habits-not-certificates.jpeg)\n**Panel 7:** *Training builds habits, not certificates: spaced repetition, realistic examples that resemble real threats, and lessons framed in each person's everyday work.*\n\n![Comic panel: a reported phishing email travels a pipeline through report, triage, and response stations while Nadia patches a leaky joint.](assets/images/user-education/comic-08-the-exercise-tests-us-too.jpeg)\n**Panel 8:** *The exercise tests us as much as them: every simulation rehearses the reporting path and response runbook — and the gaps found flow back into the procedures.*\n\n![Comic panel: Vera and Nadia review a chart where reporting rises and clicks fall from a baseline mark, with a completion certificate in the wastebasket.](assets/images/user-education/comic-09-behavior-against-the-baseline.jpeg)\n**Panel 9:** *The closer: the test the program is held to — behavior change measured against the baseline, reporting up and clicks down; completion rates appear nowhere in that conversation.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CI/CD as a Platform Service</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="self-service-onboarding.html" title="Self-Service Platform Onboarding">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="self-service-infrastructure.html" title="Self-Service Infrastructure Management">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference Implementation</p>
+        <h1>CI/CD as a Platform Service</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-20  ·  7 min · <a class="spec-link" href="cicd-as-a-platform-service.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/cicd-as-a-platform-service/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/cicd-as-a-platform-service/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Platforms</a><span class="nav-right"><a class="nav-prev" href="self-service-onboarding.html" title="Self-Service Platform Onboarding">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="self-service-infrastructure.html" title="Self-Service Infrastructure Management">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "PLT-REF-CICD", "status": "draft:gray", "title": "CI/CD as a Platform Service", "date": "2026-08-20", "author": "Željko Obrenović", "permalink": "cicd-as-a-platform-service", "timetoread": "7 min", "excerpt": "When a platform team in my organization takes over CI/CD, it takes it over as a product: reusable actions and composed pipeline templates that teams reference, not copy. A team's pipeline declares what its service needs in roughly thirty lines; everything about how — building, scanning, deploying progressively, rolling back — lives in versioned platform templates that teams pin like any other dependency. The platform pipeline is itself tested, gated, and instrumented, so DORA metrics and pipeline bottlenecks are measured rather than argued by anecdote. The test I keep running: if a team's workflow file is growing, that is not their problem to solve — it is a platform capability we have not built yet.", "tags": "ci/cd, platform engineering, reusable pipelines, progressive delivery, dora metrics, pipeline observability, semantic versioning, security gates", "icon": "assets/icons/cicd-as-a-platform-service.png", "logo": "assets/images/cicd-as-a-platform-service/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["ci/cd", "platform engineering", "reusable pipelines", "progressive delivery", "dora metrics", "pipeline observability", "semantic versioning", "security gates"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: In my organization, CI/CD is a service the platform ships, not a craft each team practices. One platform repository holds the reusable actions and composed pipeline templates; it is **semantically versioned**, tested by its own CI, and consumed by reference — never by copy. Team pipelines are **minimal wrappers of roughly thirty lines** that declare *what* the service needs; everything about *how* lives in platform templates, and team-specific logic that keeps growing is read as a missing platform capability, not team creativity. Security scanning is a **gate, not a report** — a vulnerable image never reaches the registry. Delivery is **progressive by default** — canary or blue-green, analyzed against live metrics, rolled back automatically when unhealthy. And the pipeline itself is **instrumented end to end**, so DORA metrics, stage timings, and adoption are measured, not guessed.\n\n## Statement\n\nWhen a platform team in my organization builds CI/CD as a platform service, this is the shape I hold the build to.\n\n**One platform repository, run like a product:**\n\n- **Structured for reuse.** A single platform repository with `actions/` for composite single-task actions, `workflows/` for composed pipeline templates, `tests/` for validation and integration tests, and `docs/` for usage guides, migration instructions, and changelogs. Reusable tasks stay separate from the pipeline templates that compose them.\n- **Versioned so teams can trust it.** Semantic versioning throughout: major for breaking changes, minor for compatible features, patch for fixes. Specific release tags (`v1.2.3`) plus floating major tags (`v1`); teams pin to stable versions; breaking changes ship with documented migration requirements.\n- **Tested like the software it is.** Every platform action is validated in CI — syntax, required fields, supported types, described inputs, composite actions that actually contain steps. An invalid action cannot be released.\n\n**Team pipelines declare what; the platform owns how:**\n\n- **Minimal wrappers.** Team-owned workflow files reference platform templates and pass typed inputs — target under roughly thirty lines. Sensible defaults, secrets configured at the workflow level, controlled escape hatches where genuinely needed.\n- **Batteries included.** The composed templates carry automated testing, linting, container build, security scanning, and deployment stages with proper job dependencies — per application type, starting with the backend microservice pipeline.\n- **Growth is a signal.** Team-specific pipeline logic that keeps growing is investigated, not tolerated as local color.\n\n**Builds are gated, delivery is progressive:**\n\n- **The build gate.** A reusable container-build action: Buildx, build caching, generated metadata and tags, registry authentication, vulnerability scanning. HIGH or CRITICAL findings fail the build, and a vulnerable image is never pushed to the registry. The action exposes image tag and digest as outputs; third-party actions are pinned to known versions.\n- **The delivery gate.** Progressive delivery per service — blue-green where instant switching is useful, canary where gradual traffic shifting is preferred — with deployment analysis wired to live success-rate thresholds. Unhealthy releases stop or roll back automatically; the previous stable release remains recoverable. The pipeline ends at a GitOps manifest change; the cluster machinery of [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) takes it from there.\n\n**The pipeline is measured, not narrated:**\n\n- **Telemetry as a built-in.** Pipeline events flow through a collector into metrics and traces; a pipeline run is traceable from trigger through deployment, with time in tests, builds, and deploys measured and failures associated with the commits or infrastructure changes that caused them.\n- **Evidence, not opinion.** A baseline taken before the build — workflow counts, pipeline line counts, adoption rate, deployment frequency, lead time, change failure rate, MTTR, p95 build duration, scan pass rate — so line-count reduction and DORA improvement can be demonstrated, not asserted.\n- **Migration is part of the product.** A real application pipeline is migrated end to end as the validation, and documentation plus migration guidance exist for every team that follows.\n\n## How to Read This\n\nThis record is part of the **Reference Implementation** section of my platform operating model — the how-it-concretely-looks companion to the Platform Engineering records. It is grounded in the \"CI/CD as a Platform Service\" chapter of the *Platform Engineer's Handbook*, which builds this capability end to end on a concrete stack. **The tools are the worked example, not the mandate**: the commitments above hold at the capability level whatever the vendor. The full working checklist — every step, in build order — lives in the **Checklist** tab; the **TL;DR** tab carries the management summary, and the **Conversation** tab talks through the objections.\n\n## Reference Stack\n\n| Role | Reference tool | The property that matters |\n| --- | --- | --- |\n| Reusable tasks and pipelines | GitHub Actions (composite actions + reusable workflows) | Teams compose by reference; implementation lives in one platform repo |\n| Container build | Docker Buildx | Cached, metadata-tagged builds exposing image tag and digest |\n| Vulnerability scanning | Trivy | HIGH/CRITICAL fails the build; vulnerable images never reach the registry |\n| Progressive delivery | Argo Rollouts | Canary and blue-green with metric-driven automatic rollback |\n| Deployment analysis | Prometheus | Success-rate thresholds gate every traffic shift |\n| Delivery into clusters | Flux (GitOps) | The pipeline commits manifests; the cluster pulls — see [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) |\n| Pipeline telemetry | OpenTelemetry Collector → Prometheus, Grafana | Every run traced trigger-to-deployment; bottlenecks measured |\n\n## Rationale\n\n**Copy-paste is how pipeline debt compounds.** Before any of this exists, the honest baseline is an inventory: how many workflows, how many thousands of lines of YAML, how many repositories already share anything. Every copied pipeline is a fork that will never be merged — every improvement becomes N pull requests, every bug becomes immortal, and every security fix rolls out at the speed of the slowest team. Consolidating CI/CD into referenced, versioned templates is the only mechanism I know that makes a pipeline improvement land everywhere at once.\n\n![Diagram contrasting copied pipelines, where one fix becomes many pull requests, with one versioned platform repository referenced by many thin team pipelines.](assets/images/cicd-as-a-platform-service/copy-paste-vs-reference.jpeg)\n**Figure 1:** *Copied pipelines turn one improvement into N pull requests; a referenced, versioned platform repository makes it land everywhere at once.*\n\n**The thirty-line wrapper is the interface contract.** The number matters less than what it measures: the quality of the abstraction. A team pipeline that fits in thirty lines of typed inputs is a team that declares *what* — language, service name, deploy target — while the platform owns *how*. When a team's workflow file grows past that, one of two things is true: the team is routing around the platform, or the platform is missing a capability many teams need. Both are roadmap input, which is why the record treats **team-specific pipeline logic as a discovery mechanism**, exactly the product posture [Platform as a Product](platform-as-a-product.html) demands.\n\n![Layered stack diagram: a thin thirty-line team wrapper of typed inputs on top of deep versioned platform template layers for test, lint, build and scan, and deploy.](assets/images/cicd-as-a-platform-service/what-how-layered-stack.jpeg)\n**Figure 2:** *The interface contract: a thin team wrapper declares what; the deep, versioned platform layers own how.*\n\n**Versioning is what makes a shared pipeline safe to depend on.** The moment every team references one template, that template is a single point of coordinated breakage — unless it is versioned like the product it is. Semantic versions, pinnable releases, floating major tags for teams that want compatible updates automatically, and documented migrations for the rest: this is [The Four Pillars of Platform Engineering](four-pillars.html) pillar two applied to CI/CD, a real software abstraction with an owned lifecycle. And the platform's own actions get CI, because a platform that ships an invalid action ships an outage to everyone simultaneously.\n\n**A scan that ships anyway is theater.** Advisory scanning produces dashboards of known vulnerabilities already running in production. The reference build makes the scan a gate: HIGH or CRITICAL fails the build and the image never reaches the registry, so the registry itself becomes a trustworthy boundary. This is the pipeline's slice of security only — the cluster-side story is [End-to-End Platform Security](platform-security.html) and admission-time enforcement is [Policy as Code Implementation](policy-as-code.html) — but it is the slice that stops vulnerable artifacts at the cheapest possible point.\n\n**Progressive delivery turns rollback from heroics into a property.** A big-bang deploy makes every release a bet with the whole table's chips, and rollback a manual scramble under pressure. Canary and blue-green, analyzed against live success-rate thresholds, make the platform watch every release and retreat automatically when the metrics say so — with the previous stable release verified recoverable before anyone needs it. Recovery becomes something the platform does, not something an engineer performs at 2 a.m.\n\n![Pipeline flow diagram from commit through build, a scan gate deflecting a vulnerable image before the registry, progressive rollout with a metric gauge and automatic rollback loop to stable, ending at a GitOps manifest.](assets/images/cicd-as-a-platform-service/gated-pipeline-flow.jpeg)\n**Figure 3:** *The gated flow: the scan gate stops vulnerable images before the registry, and progressive rollout retreats to stable automatically when live metrics say so.*\n\n**You cannot improve a pipeline you cannot see.** Instrumenting CI/CD itself — traces from trigger to deployment, stage timings, failures tied to commits — replaces anecdote with measurement. It answers the practical question (where is the bottleneck: tests, builds, or deploys?) and the executive one (are deployment frequency, lead time, change failure rate, and MTTR actually improving?). The same telemetry produces the platform's own proof of value: adoption rate and demonstrated line-count reduction, the evidence [What Platform Success Looks Like](platform-success.html) asks every platform to carry.\n\n**Migration is the product's first release.** A platform pipeline nobody has migrated to is a hypothesis. The reference build ends by moving a real application onto the platform template — inputs, secrets, pinned version, GitOps manifests, progressive rollout — and by shipping the documentation and migration guidance that make the second migration cheaper than the first.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Team pipelines are minimal wrappers, roughly thirty lines. | Teams lose control — typed inputs, sensible defaults, and controlled escape hatches keep the *what* in their hands. |\n| The reference stack is GitHub Actions, Trivy, Argo Rollouts, Flux, OpenTelemetry. | Those tools are mandated — commitments hold at the capability level; the stack is the worked example. |\n| HIGH/CRITICAL findings fail the build and block the push. | Every scanner finding blocks work — the gate's threshold is explicit and deliberate. |\n| The platform pipeline is semantically versioned and teams pin. | Teams must chase every release — floating major tags deliver compatible updates; breaking changes come with migration docs. |\n| Delivery is progressive with automated rollback. | Every service must canary — blue-green is chosen where instant switching fits; the strategy is per service. |\n| The pipeline itself is instrumented and DORA metrics are measured. | Telemetry is for grading teams — it exists to find pipeline bottlenecks and to prove the platform's own value. |\n| Migrate a real application as validation. | Migration is announced by memo — it ships with documentation and guidance for the teams that follow. |\n\nConcretely: a CI/CD platform build in my organization is done when a real service deploys through a pinned platform pipeline declared in under thirty lines of team-owned YAML, a vulnerable image demonstrably cannot reach the registry, an unhealthy canary demonstrably rolls itself back, and the before/after numbers — line counts, adoption, DORA — are on a dashboard rather than in a slide.\n\n## Anti-Patterns\n\n- **The snowflake estate.** Hundreds of hand-rolled pipelines, thousands of YAML lines, nothing shared — the baseline inventory nobody wanted to take.\n- **Copy-paste as a service.** \"Reuse\" by copying workflow files between repositories — every improvement becomes N pull requests and every bug becomes permanent.\n- **Pinned to `main`.** Teams referencing unversioned platform actions — one merge breaks every pipeline in the company at once.\n- **The advisory scanner.** Vulnerability scanning that reports and ships anyway, filling the registry with known-vulnerable images and the dashboard with guilt.\n- **The untested platform action.** CI code with no CI of its own — an invalid action released to everyone simultaneously.\n- **The escape hatch that became the road.** Team-specific logic growing quietly for months, never investigated as the missing platform capability it is.\n- **The big-bang deploy.** One hundred percent of traffic switched at once, rollback as a manual redeploy performed under pressure.\n- **The blind pipeline.** No telemetry on CI/CD itself — bottleneck debates by anecdote, DORA metrics unmeasurable, the platform's value unprovable.\n- **Migration by memo.** The platform pipeline announced but never proven on a real service, with no migration guide — adoption stalls at the teams who wrote it.\n\n## Related Records\n\n- [The Four Pillars of Platform Engineering](four-pillars.html) — this record is pillars two and three made concrete for one offering: a software abstraction with an owned lifecycle, consumed self-service by many teams.\n- [Platform as a Product](platform-as-a-product.html) — the product mechanics this record applies: versioning, migration guides, adoption metrics, team logic as roadmap input.\n- [Groundwork: Repositories, Secrets, and Releases](groundwork.html) — the repository, secrets, and release discipline this build stands on.\n- [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) — the GitOps and cluster machinery the pipeline hands off to at the manifest commit.\n- [End-to-End Platform Security](platform-security.html) — the end-to-end security story; this record carries only the build-time scan gate.\n- [Policy as Code Implementation](policy-as-code.html) — admission-time enforcement inside clusters, complementing this record's pipeline gates.\n- [Observability Implementation](observability-implementation.html) — the platform observability stack; this record instruments the pipeline itself.\n- [Starter Kit Templates](starter-kits.html) — how new services get this pipeline from day one, so migration is only for the existing estate.\n- [Developer Experience Evaluation](devex-evaluation.html) — where the DORA and developer-experience measurements this record baselines are read and acted on.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies whenever a platform team in my organization builds or consolidates CI/CD as a shared service, whatever the vendor stack. I revisit it if team pipeline line counts start creeping back up (the abstraction is leaking), if adoption stalls while teams maintain parallel pipelines (the product is not winning on merit), if the scan gate accumulates routine bypasses (the gate has become theater), or if a rollback fails in production despite passing verification (the delivery-gate promise is broken).\n\n## Authoritative References\n\n- *Platform Engineer's Handbook* — the \"CI/CD as a Platform Service\" chapter, whose checklist this record distills and reproduces in the Checklist tab.\n- Camille Fournier and Ian Nowland, *Platform Engineering: A Guide for Technical, Product, and People Leaders* (O'Reilly, 2024) — the conceptual foundation this reference implementation executes; see [The Four Pillars of Platform Engineering](four-pillars.html) and [Platform as a Product](platform-as-a-product.html).\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "In my organization, CI/CD is a **service the platform ships, not a craft each team practices**: one versioned platform repository of reusable actions and pipeline templates, consumed by reference; team pipelines shrunk to roughly thirty lines that declare *what* while the platform owns *how*; scanning as a gate, delivery as a progressive rollout with automated rollback, and the pipeline itself instrumented so its value is measured, not asserted. This record is part of the Reference Implementation section — the end-to-end shape I hold a platform team to when it builds this capability.\n\n**What changes**\n\n* **One platform repository, run like a product.** Composite actions, composed workflow templates, tests, and docs in one place — semantically versioned (`v1.2.3` releases, floating `v1` tags), pinned by teams, with breaking changes shipped alongside migration guidance. The platform's own actions have CI; an invalid action cannot be released.\n* **Team pipelines become minimal wrappers.** Under roughly thirty lines of typed inputs, defaults, and workflow-level secrets, with controlled escape hatches. Team-specific logic that keeps growing is investigated as a missing platform capability — roadmap input, not local color.\n* **The registry becomes a trustworthy boundary.** The reusable container-build action scans every image; HIGH or CRITICAL findings fail the build, and a vulnerable image is never pushed.\n* **Every release watches itself.** Canary or blue-green per service, deployment analysis wired to live success-rate thresholds, unhealthy releases stopped or rolled back automatically, the previous stable release verified recoverable. The pipeline ends at a GitOps manifest; the cluster machinery of [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) applies it.\n* **The pipeline is measured end to end.** Telemetry from trigger through deployment — stage timings, failures tied to commits, traces in dashboards — against a recorded baseline, so DORA metrics, adoption rate, and pipeline line-count reduction are demonstrable.\n\n**What it costs**\n\n* A baseline inventory before the build — workflow counts, YAML line counts, DORA and scan-pass-rate baselines — because migration claims need before/after evidence.\n* Product discipline on the platform side: versioning, migration docs, and a real application migrated end to end as the first release, not an announcement memo.\n* A shared template is a single point of coordinated breakage; semantic versioning and pinning are the standing tax that makes it safe.\n\n**What we are not doing**\n\n* Not mandating the reference stack — GitHub Actions, Trivy, Argo Rollouts, Flux, and OpenTelemetry are the worked example; the commitments hold at the capability level.\n* Not the platform-wide observability stack ([Observability Implementation](observability-implementation.html)), the end-to-end security story ([End-to-End Platform Security](platform-security.html)), or in-cluster policy enforcement ([Policy as Code Implementation](policy-as-code.html)) — this record carries only the pipeline's own telemetry and gates.\n* Not day-one wiring for new services — that lives in [Starter Kit Templates](starter-kits.html); this record builds the service and migrates the existing estate.\n\n*The Article tab carries the rationale, reference stack, and anti-patterns; the Checklist tab carries the full build checklist. Grounded in the \"CI/CD as a Platform Service\" chapter of the* Platform Engineer's Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "6 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record, in build order. The Article tab carries the rationale, the reference stack, and the anti-patterns.*\n\n## 1. Assess the Current State\n\n- [ ] Inventory existing CI/CD workflows across repositories\n- [ ] Measure the total workflow count and total pipeline line count\n- [ ] Identify repositories already using shared platform actions\n- [ ] Establish the baseline platform adoption rate\n- [ ] Record baseline delivery and pipeline metrics:\n  - [ ] Deployment frequency\n  - [ ] Lead time for changes\n  - [ ] Change failure rate\n  - [ ] Mean time to restore\n  - [ ] p95 build duration\n  - [ ] Security scan pass rate\n\n## 2. Create the Platform Actions Repository\n\n- [ ] Create an `actions/` directory for composite actions\n- [ ] Create a `workflows/` directory for reusable workflows\n- [ ] Create a `tests/` directory for validation and integration tests\n- [ ] Create a `docs/` directory for usage guides, migration instructions, and changelogs\n- [ ] Keep reusable tasks separate from composed pipeline templates\n\n## 3. Build Reusable Actions\n\n- [ ] Create a reusable container-build action\n- [ ] Configure Docker Buildx\n- [ ] Generate container metadata and tags\n- [ ] Configure build caching\n- [ ] Add container registry authentication\n- [ ] Add vulnerability scanning with Trivy\n- [ ] Fail builds on HIGH or CRITICAL vulnerabilities\n- [ ] Ensure vulnerable images are never pushed to the registry\n- [ ] Expose useful outputs, such as image tag and image digest\n- [ ] Pin third-party actions to known versions\n\n## 4. Test Platform Actions\n\n- [ ] Validate `action.yml` syntax\n- [ ] Verify required fields such as `name`, `description`, and `runs`\n- [ ] Validate supported runner/action types\n- [ ] Confirm composite actions contain steps\n- [ ] Confirm every input has a description\n- [ ] Run validation automatically in CI\n- [ ] Prevent invalid platform actions from being released\n\n## 5. Build Reusable Pipeline Templates\n\n- [ ] Create reusable workflows for common application types\n- [ ] Create a backend microservice pipeline\n- [ ] Add typed workflow inputs\n- [ ] Add sensible default values\n- [ ] Configure secrets at the workflow level\n- [ ] Add automated testing\n- [ ] Add linting\n- [ ] Add container build and security scanning\n- [ ] Add deployment stages\n- [ ] Configure job dependencies with `needs`\n- [ ] Provide controlled escape hatches where appropriate\n- [ ] Expose the outputs required by downstream workflows\n\n## 6. Keep Team Pipelines Minimal\n\n- [ ] Replace custom team pipelines with references to platform templates\n- [ ] Keep team-owned workflow files as minimal wrappers\n- [ ] Target fewer than roughly 30 lines per team pipeline\n- [ ] Let teams specify *what* they need\n- [ ] Keep implementation details — the *how* — inside platform templates\n- [ ] Investigate large amounts of team-specific logic as a possible missing platform capability\n\n## 7. Version the Platform\n\n- [ ] Apply semantic versioning to platform actions and workflows\n- [ ] Use major versions for breaking changes\n- [ ] Use minor versions for new compatible features\n- [ ] Use patch versions for fixes\n- [ ] Create specific release tags, such as `v1.2.3`\n- [ ] Maintain floating major tags, such as `v1`\n- [ ] Allow teams to pin to stable versions\n- [ ] Document breaking changes and migration requirements\n\n## 8. Implement Progressive Delivery\n\n- [ ] Install Argo Rollouts\n- [ ] Choose an appropriate deployment strategy per service\n- [ ] Configure blue-green deployment where instant switching is useful\n- [ ] Configure canary deployment where gradual traffic shifting is preferred\n- [ ] Connect deployment analysis to Prometheus metrics\n- [ ] Define success-rate thresholds\n- [ ] Shift traffic progressively during canary releases\n- [ ] Automatically stop or roll back unhealthy releases\n- [ ] Verify the previous stable release remains recoverable\n\n## 9. Add CI/CD Observability\n\n- [ ] Deploy or configure an OpenTelemetry Collector\n- [ ] Receive workflow events from the CI system (GitHub workflow events in the reference stack)\n- [ ] Collect workflow and job telemetry\n- [ ] Export pipeline metrics to Prometheus\n- [ ] Export traces to the tracing backend\n- [ ] Track pipeline execution from trigger through deployment\n- [ ] Measure time spent in tests, builds, and deployments\n- [ ] Associate failures with commits or infrastructure changes\n- [ ] Make pipeline traces visible in Grafana\n- [ ] Use telemetry to identify pipeline bottlenecks\n\n## 10. Migrate the First Application Pipeline\n\n- [ ] Update the application CI workflow to use the reusable platform pipeline\n- [ ] Provide service-specific inputs\n- [ ] Configure required secrets\n- [ ] Pin the platform workflow to a stable version\n- [ ] Update GitOps manifests with the generated image\n- [ ] Verify Flux CD detects and applies the change (see [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html))\n- [ ] Confirm Argo Rollouts starts the progressive deployment\n\n## 11. Validate the Final Implementation\n\n- [ ] The platform actions repository contains reusable tasks\n- [ ] The application pipeline uses composed platform tasks\n- [ ] Automated tests and security scans pass\n- [ ] Canary or blue-green deployment functions correctly\n- [ ] Automated rollback is verified\n- [ ] Pipeline traces are visible in Grafana\n- [ ] Platform adoption metrics are being collected\n- [ ] DORA metrics can be measured\n- [ ] Pipeline line-count reduction can be demonstrated\n- [ ] Documentation and migration guidance are available for development teams\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## The Thing Every Team Thinks It Owns\n\n**Ben:** Straight to the sore spot. CI/CD is the one thing every engineering team already does and already has opinions about. Why does an operating model take it away from them?\n\n**Ana:** Because nobody is taking anything away — the record takes over the part teams never wanted: the *how*. Start with what the baseline inventory finds in most organizations: hundreds of workflows, thousands of lines of YAML, and reuse implemented by copy-paste. The record calls that copy-paste as a service. Every copied pipeline is a fork that will never be merged — every improvement becomes N pull requests, every bug becomes immortal, and every security fix rolls out at the speed of the slowest team.\n\n**Ben:** So what does the team keep?\n\n**Ana:** The *what*. A team pipeline becomes a minimal wrapper — the target is under roughly thirty lines — of typed inputs: language, service name, deploy target, secrets at the workflow level. Everything about *how* — testing, linting, container build, scanning, deployment stages — lives in versioned platform templates the team references like any other dependency.\n\n**Ben:** Thirty lines sounds like a slogan, not an engineering number.\n\n**Ana:** It's a measurement of abstraction quality. If a team's workflow fits in thirty lines, the platform is genuinely absorbing the complexity. If the file keeps growing, one of two things is true: the team is routing around the platform, or the platform is missing a capability many teams need. Either way, the record's move is the same — investigate large team-specific logic as a possible missing platform capability. It's a discovery mechanism, not a compliance rule.\n\n## One Template to Break Them All\n\n**Ben:** Here's the practitioner nightmare, though. The day everyone references one template, one merge to that template breaks every pipeline in the company at once. You've built a single point of coordinated breakage.\n\n**Ana:** You have — unless you run the repository like a product, which is why the versioning section is not optional plumbing. Semantic versioning throughout: major for breaking, minor for compatible features, patch for fixes. Specific release tags like `v1.2.3` so teams can pin, floating major tags like `v1` for teams that want compatible updates automatically, and breaking changes documented with migration requirements. Nobody references `main`. The anti-pattern even has a name: pinned to `main`.\n\n**Ben:** And the platform's own code? Platform teams are famously the cobbler's children — CI tooling with no CI.\n\n**Ana:** The record closes that explicitly. Every platform action is validated in its own CI — syntax, required fields, supported types, every input described, composite actions that actually contain steps — and an invalid action cannot be released. A platform that ships a broken action ships an outage to everyone simultaneously, so the platform's actions are tested like the software they are. That's [The Four Pillars of Platform Engineering](four-pillars.html) pillar two applied to CI/CD: a real software abstraction with an owned lifecycle.\n\n**Ben:** This is all GitHub Actions language. What happens when we're not a GitHub shop?\n\n**Ana:** The reference stack — GitHub Actions, Buildx, Trivy, Argo Rollouts, Flux, OpenTelemetry — is the worked example, named honestly because the record is grounded in a build-it-end-to-end handbook. The commitments hold at the capability level: reusable tasks in one versioned repository, minimal team wrappers, a scan gate, progressive delivery, pipeline telemetry. Swap any vendor; the shape survives.\n\n## Gates, Not Reports\n\n**Ben:** The scan gate. Security scanners cry wolf for a living. Fail every build on findings and teams will spend their lives triaging — or bypassing.\n\n**Ana:** Which is why the threshold is explicit: HIGH or CRITICAL fails the build, and — this is the part with teeth — the vulnerable image is never pushed to the registry. Not \"pushed with a warning,\" never pushed. The alternative is the advisory scanner: dashboards of known vulnerabilities already running in production. A scan that ships anyway is theater. The gate makes the registry itself a trustworthy boundary, at the cheapest point to stop a bad artifact.\n\n**Ben:** And when the gate accumulates exceptions?\n\n**Ana:** Then the record's own revisit trigger fires — routine bypasses mean the gate has become theater, and the record gets revisited rather than quietly hollowed out. Worth saying what this gate is *not*, too: it's the pipeline's slice of security only. The cluster-side story is [End-to-End Platform Security](platform-security.html), and admission-time enforcement is [Policy as Code Implementation](policy-as-code.html).\n\n**Ben:** Next gate: progressive delivery. Canary infrastructure is real complexity. Why is it in the default pipeline and not an advanced option?\n\n**Ana:** Because the alternative is the big-bang deploy — one hundred percent of traffic switched at once, and rollback as a manual redeploy performed under pressure at 2 a.m. The reference build uses Argo Rollouts: blue-green where instant switching is useful, canary where gradual traffic shifting is preferred — chosen per service, not one strategy mandated for all. Deployment analysis is wired to Prometheus success-rate thresholds, unhealthy releases stop or roll back automatically, and the previous stable release is verified recoverable before anyone needs it. Rollback stops being heroics and becomes a property of the platform.\n\n**Ben:** And the pipeline's job ends where?\n\n**Ana:** At a GitOps manifest change. The pipeline commits the new image reference; Flux detects and applies it; Rollouts takes the release from there. The cluster machinery belongs to [Platform Creation: Environments, GitOps, and the Mesh](platform-creation.html) — the migration checklist verifies the handoff end to end.\n\n## Proving It Worked\n\n**Ben:** Last objection, and it's the one my CFO would raise. Platform teams love this consolidation story. How do we know it actually paid?\n\n**Ana:** Because the record makes the pipeline itself observable — and makes you take the baseline *before* you build. Workflow counts, total YAML line counts, adoption rate, and the delivery numbers: deployment frequency, lead time, change failure rate, mean time to restore, p95 build duration, scan pass rate. Then telemetry flows through an OpenTelemetry Collector — workflow events in, metrics to Prometheus, traces to the tracing backend, visible in Grafana. Every run traceable from trigger through deployment, time in tests, builds, and deploys measured, failures associated with the commits that caused them.\n\n**Ben:** So bottleneck debates end.\n\n**Ana:** Anecdote loses its seat at the table, yes. And the same telemetry produces the platform's proof of value: adoption rate climbing, line-count reduction demonstrated, DORA metrics moving — the evidence [What Platform Success Looks Like](platform-success.html) asks every platform to carry. Not a slide. A dashboard.\n\n**Ben:** And the measurement isn't a team scoreboard?\n\n**Ana:** Explicitly not — the record's contrast table says so. The telemetry exists to find pipeline bottlenecks and prove the platform's value, not to grade teams.\n\n**Ben:** Close it out. What is this record explicitly not doing?\n\n**Ana:** It's one offering, built end to end. The platform-wide observability stack is [Observability Implementation](observability-implementation.html) — here we instrument only the pipeline. End-to-end security is [End-to-End Platform Security](platform-security.html); in-cluster policy is [Policy as Code Implementation](policy-as-code.html). Day-one wiring for new services is [Starter Kit Templates](starter-kits.html) — this record migrates the existing estate, starting with one real application moved onto the platform pipeline, with documentation and migration guidance so the second migration is cheaper than the first. And the product mechanics it leans on throughout are [Platform as a Product](platform-as-a-product.html).\n\n**Ben:** The one-sentence test?\n\n**Ana:** A real service deploying through a pinned platform pipeline declared in under thirty lines of team-owned YAML — where a vulnerable image cannot reach the registry, an unhealthy release rolls itself back, and the before-and-after numbers are on a dashboard. If your team's pipeline is growing instead, that's not their problem to solve. It's the capability we haven't built yet.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why CI/CD stops being a per-team craft and becomes a product the platform ships — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. KAI: a hands-on platform engineering lead, short dark hair, gray zip-up hoodie with a small gear pin, laptop covered in infrastructure stickers under one arm, a coil of cable slung over the shoulder.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and teal accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: an engineer unrolls an enormous scroll of pipeline code across the floor while an executive watches and says it is not that team's problem.](assets/images/cicd-as-a-platform-service/comic-01-the-growing-workflow.jpeg)\n**Panel 1:** *The hook: a team's workflow file keeps growing — and that is not that team's problem to solve.*\n\n![Comic panel: an engineer pushes a cart of identical pull requests toward a wall of near-identical filing cabinets, one per repository.](assets/images/cicd-as-a-platform-service/comic-02-copy-paste-estate.jpeg)\n**Panel 2:** *The problem: copy-paste is how pipeline debt compounds — every improvement becomes N pull requests, every bug becomes immortal.*\n\n![Comic panel: a scanner flags containers on a conveyor belt that still carries them into the registry, under a dashboard full of warnings.](assets/images/cicd-as-a-platform-service/comic-03-the-advisory-scanner.jpeg)\n**Panel 3:** *The wrong way: the advisory scanner — a scan that ships anyway just fills the registry with known-vulnerable images and the dashboard with guilt.*\n\n![Comic panel: an executive presents a versioned product box labeled platform pipelines, connected by threads to many small team desks.](assets/images/cicd-as-a-platform-service/comic-04-cicd-as-a-product.jpeg)\n**Panel 4:** *The principle: one platform repository, run like a product — semantically versioned, tested by its own CI, consumed by reference.*\n\n![Comic panel: an engineer holds a small thirty-line card labeled what, in front of a glass machine room labeled how.](assets/images/cicd-as-a-platform-service/comic-05-the-thirty-line-wrapper.jpeg)\n**Panel 5:** *How it plays out: the thirty-line wrapper — teams declare what their service needs; everything about how lives in platform templates.*\n\n![Comic panel: a closed gate blocks a container marked critical from the registry while clean containers pass through.](assets/images/cicd-as-a-platform-service/comic-06-the-scan-gate.jpeg)\n**Panel 6:** *How it plays out: the build gate — HIGH or CRITICAL fails the build, and a vulnerable image never reaches the registry.*\n\n![Comic panel: a mechanical arm lifts a canary carrying a new-release flag back to a stable platform as a metric gauge dips red.](assets/images/cicd-as-a-platform-service/comic-07-the-canary-retreats.jpeg)\n**Panel 7:** *How it plays out: progressive delivery — the platform watches every release against live metrics and retreats automatically, no 2 a.m. heroics.*\n\n![Comic panel: two people study a dashboard tracing a pipeline from trigger to deploy, with one slow stage highlighted and improving bars.](assets/images/cicd-as-a-platform-service/comic-08-the-measured-pipeline.jpeg)\n**Panel 8:** *What it proves: an instrumented pipeline — stage timings, DORA metrics, and adoption on a dashboard rather than in a slide.*\n\n![Comic panel: an executive pins a piece of team pipeline code onto a roadmap board under next platform capability.](assets/images/cicd-as-a-platform-service/comic-09-the-missing-capability.jpeg)\n**Panel 9:** *The closer: the test that keeps running — a growing team pipeline is not that team's problem; it is a platform capability we have not built yet.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

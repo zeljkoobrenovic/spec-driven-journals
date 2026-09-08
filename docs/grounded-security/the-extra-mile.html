@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Extra Mile</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="logging-and-monitoring.html" title="Logging and Monitoring">← Previous</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Assess and Improve</p>
+        <h1>The Extra Mile</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  6 min · <a class="spec-link" href="the-extra-mile.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/the-extra-mile/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/the-extra-mile/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="logging-and-monitoring.html" title="Logging and Monitoring">← Previous</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-THE-EXTRA-MILE", "status": "draft:gray", "title": "The Extra Mile", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "the-extra-mile", "timetoread": "6 min", "excerpt": "The last mile of a security program is the unglamorous one — the services everyone depends on and nobody watches. In my organization, email infrastructure is provably well-configured: no open relay, hostname and reverse DNS consistent, blocklists checked, filtering confirmed. Operational mail survives personnel changes, because certificates, licenses, and alerts route to role-based aliases and shared groups, never to one person's inbox. DNS is operated as a security control — recursion restricted, internal and external separated, zone transfers limited, sinkholing considered, and DNSSEC deployed only when its benefits clearly outweigh its risks. Obscurity is only ever an additional layer, and the team keeps learning, because the threat model does not stand still. The test I hold the extra mile to: obscurity measures never stand in for patching, authentication, access control, and monitoring.", "tags": "security, email security, DNS security, open relay, DNSSEC, DNS sinkhole, security through obscurity, continuous learning, operational continuity", "icon": "assets/icons/the-extra-mile.png", "logo": "assets/images/the-extra-mile/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["security", "email security", "DNS security", "open relay", "DNSSEC", "DNS sinkhole", "security through obscurity", "continuous learning", "operational continuity"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: The last mile of a security program is the unglamorous one — the services everyone depends on and nobody watches. In my organization, **email infrastructure is provably well-configured**: no open relay, relay restricted to authorized domains and users, hostname and forward/reverse DNS consistent, blocklists checked, spam and phishing filtering confirmed. **Operational mail survives personnel changes** — certificates, licenses, and security alerts route to role-based aliases and shared groups, never to one person's inbox. **DNS is operated as a security control**: recursion restricted, internal and external DNS separated, zone transfers limited to trusted servers, passive monitoring and sinkholing considered, and DNSSEC deployed only when its benefits clearly outweigh its complexity and risk. **Obscurity is only ever an additional layer**, and **the team's learning is standing work**, because the threat model does not stand still. The test I hold the extra mile to: **obscurity measures never stand in for patching, authentication, access control, and monitoring.**\n\n## Statement\n\nWhen my organization goes beyond the baseline, this is what the extra mile is held to.\n\n**Email infrastructure is provably correct.**\n\n- **No open relay, ever.** The mail server relays only for authorized domains and users, and the configuration is confirmed, not assumed.\n- **Identity is consistent end to end.** The SMTP HELO/EHLO hostname correctly identifies the server, the hostname matches public DNS, reverse DNS (PTR) is valid, and forward and reverse records agree.\n- **Reputation is checked.** The server and its IP are checked against common blocklists, other common misconfigurations are reviewed with standard tooling, and spam and phishing filtering is enabled and properly configured.\n\n**Operational mail outlives individuals.**\n\n- **Role-based aliases over personal inboxes.** Licensing, certificates, renewals, and security alerts route to shared aliases and groups — with group nesting where it simplifies distribution — so important operational mail keeps reaching the right team after personnel changes.\n- **The make-or-buy question is answered honestly.** Whether operating an internal mail server is worth the administrative and security overhead is a reviewed decision; a managed provider is the answer when we cannot securely maintain our own.\n\n![Diagram of operational mail reaching a team through a role-based alias that survives personnel changes, contrasted with mail dying in a departed employee's personal inbox.](assets/images/the-extra-mile/role-alias-continuity.jpeg)\n**Figure 1:** *Operational mail reaches a function, not a person: role-based aliases keep renewals and alerts arriving after every personnel change.*\n\n**DNS is operated as a security control.**\n\n- **Recursion is a privilege, not a default.** Recursive queries are disabled on authoritative servers that do not need them, recursive access is restricted to authorized internal systems, and public systems cannot needlessly query internal DNS.\n- **Internal and external DNS are separate worlds.** They are split where practical, internet-facing systems use appropriate external resolvers, and internal-only hostnames stay unexposed.\n- **Zones do not leak.** Zone transfers (AXFR) are restricted to trusted name servers, verified by attempting unauthorized retrieval, and records are reviewed for unnecessary disclosure of internal infrastructure.\n- **DNS doubles as a sensor.** Passive DNS monitoring is considered — queries, responses, and errors collected for central analysis, reviewed for newly registered and suspicious domains, feeding malware detection and incident investigation. A DNS sinkhole or Response Policy Zone is considered for known-malicious domains, with the domain list maintained and sinkhole events monitored for infected internal systems.\n- **DNSSEC is an engineering decision.** It is evaluated carefully — complexity, operational risk, and DDoS-amplification exposure included — and deployed only when its benefits clearly outweigh the added risk and management burden, never because it appears more secure.\n\n**Obscurity is an extra layer, never a control.**\n\n- Nonstandard ports for administrative services, renamed default accounts, and service banners that do not volunteer versions are legitimate supplements. But: changing a port does not secure a vulnerable service, blocking internet scanners is not a strategy, equipment labels do not need to advertise function, nothing internet-facing ships before vulnerability testing, and **hidden names, ports, or services never substitute for patching, authentication, access control, and monitoring**.\n\n**The team's learning is standing work.**\n\n- The security team reads — the chapter names its shelf, from incident-response and SOC-building handbooks to awareness-program guides; follows reputable sources such as CISA, Krebs on Security, Mandiant, and the SANS Internet Storm Center; tracks newly disclosed vulnerabilities affecting our technologies; uses podcasts to stay current; keeps CISA and NIST NVD resources, malware-analysis and threat-intelligence references, and OSINT tooling at hand; considers CTFs for skill development; and periodically prunes its sources.\n\n**The final review is run.** Email provably not an open relay; mail DNS and hostname settings correct; critical mail on resilient role-based groups; recursion restricted; internal and external DNS separated; zone transfers limited; DNS activity monitored; sinkholing considered or implemented; obscurity never a primary control; internet-facing systems tested before deployment; and the team's learning process alive.\n\n## How to Read This\n\nThis record closes the **Assess and Improve** section — and the journal's tour through the *Defensive Security Handbook*. It is grounded in the book's Extra Mile chapter: the collection of hardening steps, continuity habits, and professional disciplines that do not fit neatly into any earlier chapter but decide whether the program is finished or merely mostly done. Where [Secure Network Infrastructure](network-security.html) secures the transport, this record secures two services that ride on it and that everything else quietly assumes — mail and DNS — and then fixes two habits of mind: obscurity kept in its place, and a team that keeps learning. The full working checklist, including the chapter's Final Review, lives in the **Checklist** tab; the **TL;DR** tab carries the management summary and the **Conversation** tab the dialog.\n\n## Rationale\n\n**The extra mile is where quiet failures live.** Mail and DNS are the two services with the worst ratio of importance to attention: every alert, invoice, certificate renewal, and login flow depends on them, yet neither pages anyone while it is merely misconfigured. A wrong PTR record or a stale blocklist entry costs deliverability for weeks before anyone connects the symptoms; an over-permissive resolver serves attackers silently for years. These systems do not announce their failures — which is exactly why their correctness must be proven on a checklist rather than inferred from the absence of complaints.\n\n**An open relay is someone else's attack launched on my reputation.** A mail server that relays for anyone becomes spam infrastructure within days of being discovered, and the damage lands on my domain: blocklisted IPs, rejected legitimate mail, and a reputation that takes far longer to rebuild than the configuration took to fix. The identity chain matters for the same reason — HELO hostname, forward DNS, and PTR record agreeing is how the rest of the internet distinguishes my mail server from a spoofing attempt. Deliverability is a security property wearing an operations costume.\n\n**Mail routed to a person is a single point of failure with a notice period.** The certificate that expires into a departed employee's inbox is a folk tale because it keeps happening. Role-based aliases and shared groups are continuity engineering: the license renewal, the vendor security advisory, and the 2 a.m. alert reach a *function*, and the function outlives every individual who fills it. The same honesty applies one level up — if operating our own mail infrastructure securely costs more attention than we can actually pay, the professional answer is a managed provider, not pride.\n\n**DNS sees everything, which makes it both a leak and a sensor.** As a leak: open recursion invites abuse and amplification, permissive zone transfers hand an attacker a complete map of the estate, and internal hostnames exposed in public records narrate the infrastructure to anyone who asks. As a sensor: nearly every piece of malware resolves a name, so passive DNS monitoring and a sinkhole turn the same ubiquity into detection — the sinkhole log is a self-reporting list of infected machines. Running DNS as a security control means closing the leak and wiring up the sensor, and both feed the estate in [Logging and Monitoring](logging-and-monitoring.html).\n\n![Diagram of a DNS server with leaks being sealed on one side — recursion, zone transfers, internal names — and serving as a sensor on the other, with a sinkhole flagging an infected host.](assets/images/the-extra-mile/dns-leak-and-sensor.jpeg)\n**Figure 2:** *DNS sees everything: run as a control, it stops leaking the estate's map — and the same ubiquity, wired as a sensor, makes infected machines report themselves.*\n\n**DNSSEC is a trade-off, not a virtue.** The chapter is unusual and right in refusing the checkbox: DNSSEC adds real infrastructure complexity, real operational risk — a botched key rollover takes the whole domain down — and larger responses that can increase DDoS-amplification exposure. Deploying it \"because it appears more secure\" is security decoration. The record demands the sober version: deploy when the benefits clearly outweigh the burden for our actual threat model, and decline honestly otherwise.\n\n**Obscurity buys minutes; controls buy safety — and the order matters.** Moving SSH off port 22 and quieting banners genuinely cuts scanner noise and slows opportunistic sweeps — worth having, as seasoning. The failure mode is promotion: the moment a hidden port or renamed account is doing a control's job, the system is one `nmap` flag away from undefended. The record keeps the hierarchy explicit — patching, authentication, access control, and monitoring are the meal; obscurity is only ever the seasoning — and backs it with the hard gate that nothing internet-facing ships before vulnerability testing.\n\n![Layered diagram of patching, authentication, access control, and monitoring as thick foundation blocks under a thin obscurity layer, beside a crossed-out obscurity layer standing alone.](assets/images/the-extra-mile/obscurity-is-seasoning.jpeg)\n**Figure 3:** *The meal and the seasoning: obscurity is a legitimate thin top layer — the moment it stands alone, one scan flag away from undefended.*\n\n**A security team that stops learning defends last year's threat model.** Attacker techniques, disclosed vulnerabilities, and defensive tooling all move monthly; a team whose knowledge is frozen at its last training budget is aging out of relevance in real time. That is why the reading list, the news sources, the podcasts, the NVD tracking, and the CTFs are checklist items rather than personality traits — the learning is institutional, scheduled, and pruned, not left to whoever happens to be curious.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| The mail server provably relays only for authorized domains and users, with consistent HELO, DNS, and PTR records. | Mail configuration is a solved, set-and-forget problem — reputation and records are re-checked, not remembered. |\n| Certificates, licenses, and security alerts route to role-based aliases and shared groups. | Individuals stop receiving operational mail — the function owns the mail; people fill the function. |\n| We honestly review whether running our own mail infrastructure is worth the overhead. | Everyone must migrate to a managed provider — the record demands the honest review, not a particular answer. |\n| DNS recursion is restricted, internal and external DNS are separated, and zone transfers are limited and verified. | Internal DNS data is classified as secret — it is simply not published without a reason. |\n| Passive DNS monitoring and sinkholing are considered, and sinkhole events are watched for infected hosts. | Every organization must run a sinkhole — considered means evaluated against our estate, with the decision recorded. |\n| DNSSEC is deployed only when benefits clearly outweigh complexity, operational risk, and amplification exposure. | DNSSEC is bad — it is a tool whose adoption must be earned by the threat model, not by the acronym. |\n| Nonstandard ports, renamed accounts, and quiet banners may supplement real controls. | Obscurity is worthless — it is a legitimate extra layer, and only ever that. |\n| The team's ongoing learning — sources, books, podcasts, NVD tracking — is scheduled, standing work. | Learning is an individual hobby — it is an institutional process with pruned, trusted sources. |\n\nConcretely: mail and DNS in my organization get the same review rigor as any production service — the Final Review in the Checklist tab is run, not skimmed — and the first question about any obscurity measure is *\"what real control is standing behind this?\"* If the answer is none, we have found a gap, not a defense.\n\n## Anti-Patterns\n\n- **The relay discovered by a blocklist.** The open relay nobody tested for, found by spammers first — and announced to the organization by weeks of bounced legitimate mail.\n- **The certificate that expired into a void.** The renewal notice faithfully delivered to an inbox deactivated eight months ago; the outage arrives precisely on schedule.\n- **The all-answering resolver.** Recursion open to the world — free infrastructure for amplification attacks and a standing invitation to cache abuse.\n- **The zone transfer to anyone who asks.** AXFR unrestricted, handing any curious client a complete, annotated map of the internal estate.\n- **The checkbox DNSSEC.** Signed zones deployed for the audit slide, keys never rotated, no monitoring — new fragility purchased in the name of appearing secure.\n- **The hidden-port fortress.** SSH on port 2222 standing in for patching and MFA — defeated by the second flag of a port scan and defended by nothing after that.\n- **The billboard label.** Systems and equipment named to advertise their function — `payroll-db-prod` narrating exactly where the crown jewels sit.\n- **The team frozen in its certification year.** No reading, no feeds, no CTFs — confidently defending the threat landscape as it stood when the last certificate was framed.\n\n## Related Records\n\n- [Secure Network Infrastructure](network-security.html) — the transport and perimeter this record's services ride on; egress and firewall discipline complements resolver and relay discipline.\n- [Logging and Monitoring](logging-and-monitoring.html) — passive DNS telemetry and sinkhole events feed the central detection estate defined there.\n- [Phishing Awareness and Response](phishing-response.html) — spam and phishing filtering is confirmed here as infrastructure; campaign detection and response live there.\n- [Vulnerability Management](vulnerability-management.html) — nothing internet-facing ships before vulnerability testing; the standing scan-and-patch pipeline lives there.\n- [OSINT and Purple Teaming](osint-purple-teaming.html) — exposed internal hostnames, revealing DNS records, and scanner-visible services are exactly what its sweep would find; this record closes them first.\n- [Creating a Security Program: Risk Before Tools](security-program.html) — the team-learning discipline here is the program-level investment in people made operational.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every mail and DNS service my organization operates or delegates, to every use of obscurity measures anywhere in the estate, and to the security team's standing learning process. I revisit it if deliverability or blocklist incidents recur (the provably-correct claim failing in practice), if an operational failure traces to mail routed to an individual (the continuity commitment failing), if the DNSSEC trade-off shifts materially for our threat model, or if an audit finds an obscurity measure standing where a control should be — which is a finding against the record's core test, not a tolerable exception.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition — Lee Brotherston, Amanda Berlin, and William F. Reyor III; the Extra Mile chapter, whose checklist (including its Final Review) this record distills.\n- **CISA** — the advisory and resource source the chapter names for standing threat awareness.\n- **NIST National Vulnerability Database** — the vulnerability-tracking reference the chapter names.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "The last mile of a security program is the unglamorous one — the services everyone depends on and nobody watches. In my organization, **email infrastructure is provably well-configured**, **operational mail survives personnel changes**, **DNS is operated as a security control**, obscurity is only ever an additional layer, and the security team keeps learning. The test: obscurity measures never stand in for patching, authentication, access control, and monitoring.\n\n**What changes**\n\n* **Mail correctness is proven, not assumed.** No open relay, relay restricted to authorized domains and users, HELO hostname and forward/reverse DNS consistent, blocklists and common misconfigurations checked, spam and phishing filtering confirmed — because deliverability is a security property, and the internet judges our mail by these records.\n* **Operational mail gets continuity engineering.** Certificates, licenses, renewals, and security alerts route to role-based aliases and shared groups instead of personal inboxes, so the function receives the mail and the function outlives the individual. Whether running our own mail infrastructure is worth the overhead is a reviewed decision, with a managed provider as the honest alternative.\n* **DNS is closed as a leak and wired as a sensor.** Recursion restricted, internal and external DNS separated, zone transfers limited to trusted servers and verified, records reviewed for disclosure — plus passive DNS monitoring and sinkholing considered, with sinkhole events watched as a self-reporting list of infected hosts.\n* **DNSSEC becomes an engineering decision.** Evaluated against complexity, operational risk, and DDoS-amplification exposure; deployed only when benefits clearly outweigh the burden — never for the appearance of security.\n* **Obscurity is kept in its place.** Nonstandard ports, renamed accounts, and quiet banners as supplements only; nothing internet-facing ships before vulnerability testing; hidden anything never substitutes for real controls.\n* **Team learning becomes institutional.** Books, reputable news sources, podcasts, CISA and NIST NVD tracking, CTFs — scheduled, curated, and periodically pruned.\n\n**What it costs**\n\n* Recurring review time on services that never page anyone — that quiet is precisely why the checks must be scheduled.\n* Continuity plumbing (aliases, groups, ownership reviews) that nobody thanks you for until the renewal that did not get missed.\n* Saying no to comforting theater: declining checkbox DNSSEC and hidden-port \"security\" requires explaining why less looks like more.\n\n**What we are not doing**\n\n* Not rebuilding the perimeter — transport and network hardening live in [Secure Network Infrastructure](network-security.html).\n* Not running phishing detection and response — filtering is confirmed here as infrastructure; the campaign response lives in [Phishing Awareness and Response](phishing-response.html).\n* Not duplicating the detection estate — DNS telemetry and sinkhole events feed [Logging and Monitoring](logging-and-monitoring.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full checklist including the chapter's Final Review. Grounded in the Extra Mile chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "5 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the extra-mile hardening of email and DNS, the boundaries on obscurity, the team's learning discipline, and the chapter's Final Review. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Email Server Security\n\n### Configuration\n\n- [ ] Confirm the mail server is **not configured as an open relay**\n- [ ] Restrict mail relay to authorized domains and users only\n- [ ] Verify the SMTP **HELO/EHLO hostname** correctly identifies the mail server\n- [ ] Ensure the server hostname matches the appropriate public DNS records\n- [ ] Check that the mail server has a valid **reverse DNS (PTR) record**\n- [ ] Confirm forward DNS and reverse DNS records are consistent\n- [ ] Check the mail server/IP against common email blocklists\n- [ ] Review other common mail-server misconfigurations with tools such as MXToolbox\n- [ ] Confirm spam and phishing filtering is enabled and properly configured\n\n### Email Administration\n\n- [ ] Use **role-based aliases** instead of relying entirely on individual employee accounts\n- [ ] Use group nesting where appropriate to simplify alert and licensing distribution\n- [ ] Route security alerts to shared groups rather than one person\n- [ ] Create shared aliases for functions such as licensing, certificates, and renewals\n- [ ] Make sure important operational mail continues to reach the correct team after personnel changes\n- [ ] Review whether operating an internal mail server is worth the administrative and security overhead\n- [ ] Consider a managed email provider if your organization cannot securely maintain its own mail infrastructure\n\n## 2. DNS Server Security\n\n### Recursion and Exposure\n\n- [ ] Disable **recursive DNS queries** on authoritative DNS servers that do not need recursion\n- [ ] Restrict recursive DNS access to authorized internal systems\n- [ ] Prevent public systems from unnecessarily querying internal DNS servers\n- [ ] Allow external-facing DNS queries only where required\n\n### Internal and External DNS\n\n- [ ] Separate **internal DNS** and **external DNS** services where practical\n- [ ] Configure internet-facing systems to use appropriate external resolvers\n- [ ] Keep internal-only hostnames and DNS information from being unnecessarily exposed\n\n### Zone Transfers\n\n- [ ] Restrict DNS **zone transfers (AXFR)** to trusted name servers only\n- [ ] Verify unauthorized systems cannot retrieve complete DNS zone information\n- [ ] Review DNS records for unnecessary disclosure of internal infrastructure\n\n### Passive DNS Monitoring\n\n- [ ] Consider implementing **passive DNS monitoring**\n- [ ] Collect DNS queries, responses, and errors for centralized analysis\n- [ ] Review DNS telemetry for newly registered or suspicious domains\n- [ ] Use DNS monitoring to support malware detection and incident investigation\n\n### DNS Sinkhole / RPZ\n\n- [ ] Consider deploying a **DNS sinkhole** for known malicious domains\n- [ ] Maintain or subscribe to a reliable malicious-domain list\n- [ ] Configure bad domains to return an error or non-routable response\n- [ ] Consider using **Response Policy Zone (RPZ)** records\n- [ ] Monitor sinkhole events for infected or compromised internal systems\n\n### DNSSEC\n\n- [ ] Evaluate DNSSEC carefully before deployment\n- [ ] Do not implement DNSSEC solely because it appears more secure\n- [ ] Account for the added infrastructure complexity and operational risk\n- [ ] Consider whether the additional DNSSEC response size could increase DDoS amplification exposure\n- [ ] Deploy DNSSEC only when its benefits clearly outweigh the added risk and management burden\n\n## 3. Security Through Obscurity\n\n### Useful Supplemental Measures\n\n- [ ] Consider placing administrative services on **nonstandard ports** when appropriate\n- [ ] Consider renaming default administrative accounts\n- [ ] Configure service banners so they do not unnecessarily reveal the operating system or software version\n- [ ] Treat obscurity measures only as an **additional layer**, never as the primary security control\n\n### Avoid\n\n- [ ] Do **not** assume changing ports makes a vulnerable service secure\n- [ ] Do **not** rely on blocking Shodan or other internet scanners as a security strategy\n- [ ] Do **not** label systems or equipment with overly descriptive names that reveal their function\n- [ ] Do **not** place an internet-facing device or service online before vulnerability testing\n- [ ] Do **not** depend on hidden names, ports, or services instead of proper patching, authentication, access control, and monitoring\n\n## 4. Ongoing Security Learning\n\n### Books\n\n- [ ] Review *Blue Team Handbook: Incident Response Edition*\n- [ ] Review *Building an Information Security Awareness Program*\n- [ ] Review *Complete Guide to Shodan*\n- [ ] Review *Designing and Building a Security Operations Center*\n- [ ] Review resources on ICS/SCADA security where relevant\n- [ ] Review resources on developing and implementing a security master plan\n\n### Blogs and Security News\n\n- [ ] Follow reputable security sources such as CISA, Krebs on Security, Mandiant, SANS Internet Storm Center, and similar organizations\n- [ ] Regularly review current threat intelligence and incident reports\n- [ ] Track newly disclosed vulnerabilities affecting technologies your organization uses\n\n### Podcasts\n\n- [ ] Subscribe to one or more trusted cybersecurity podcasts\n- [ ] Use podcasts to stay current on threat intelligence, defensive techniques, and security news\n\n### Useful Websites and Tools\n\n- [ ] Bookmark **CISA** resources\n- [ ] Bookmark the **NIST National Vulnerability Database**\n- [ ] Track upcoming security competitions or CTFs if useful for skill development\n- [ ] Maintain access to trusted malware-analysis and threat-intelligence resources\n- [ ] Keep OSINT tools and frameworks available for investigations\n- [ ] Maintain trusted vulnerability-testing and configuration-baseline references\n- [ ] Periodically review security bookmarks and remove outdated or untrusted sources\n\n## Final Review\n\n- [ ] Email servers are securely configured and not open relays\n- [ ] Mail DNS, reverse DNS, and hostname settings are correct\n- [ ] Critical email communication uses resilient role-based groups or aliases\n- [ ] DNS recursion is restricted\n- [ ] Internal and external DNS functions are appropriately separated\n- [ ] Zone transfers are limited to trusted systems\n- [ ] DNS activity is monitored for suspicious domains and behavior\n- [ ] DNS sinkholing is considered or implemented where appropriate\n- [ ] Security-through-obscurity techniques are never treated as primary controls\n- [ ] Internet-facing systems are tested before deployment\n- [ ] Security staff have an ongoing process for learning about new threats, vulnerabilities, and defensive techniques\n\nWith the Final Review green, the extra mile is walked — and the test running through the whole sequence holds: **no obscurity measure anywhere in the estate is standing in for patching, authentication, access control, or monitoring.**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "7 min listen"}, "blocks": [{"type": "markdown", "content": "## Why the Boring Chapter Comes Last\n\n**Ben:** Final record of the journal, and it's... mail server settings and DNS hygiene. After incident response, cloud hardening, purple teaming — the closer is PTR records? Explain the anticlimax.\n\n**Ana:** The chapter is called the Extra Mile for a reason: it's the distance between a solid program and a finished one. Mail and DNS are the two services with the worst ratio of importance to attention in any organization — every alert, invoice, certificate renewal, and login flow depends on them, and neither pages anyone while it's merely misconfigured. A wrong reverse-DNS record costs you deliverability for weeks before anyone connects the symptoms. An over-permissive resolver serves attackers silently for years. These systems don't announce their failures — which is exactly why their correctness has to be proven on a checklist instead of inferred from the absence of complaints.\n\n**Ben:** \"Proven\" meaning what, concretely, for mail?\n\n**Ana:** Three clusters. First, the relay: confirm — actually test — that the server is not an open relay, and that it relays only for authorized domains and users. Second, identity: the SMTP HELO hostname correctly names the server, the hostname matches public DNS, the PTR record is valid, forward and reverse agree. That chain of agreement is how the rest of the internet distinguishes my mail server from a spoofing attempt. Third, reputation: check the server and IP against blocklists, review common misconfigurations with standard tooling, and confirm spam and phishing filtering is actually on and configured.\n\n**Ben:** And if you get the relay wrong?\n\n**Ana:** Then someone else's attack launches on my reputation. An open relay becomes spam infrastructure within days of discovery, and the damage lands on my domain — blocklisted IPs, rejected legitimate mail, a reputation that takes months longer to rebuild than the config took to fix. Deliverability is a security property wearing an operations costume.\n\n## The Certificate That Emailed a Ghost\n\n**Ben:** The email administration section is stranger. Role-based aliases, group nesting — that's IT housekeeping, not security. Why is it in this record?\n\n**Ana:** Because mail routed to a person is a single point of failure with a notice period. The classic outage: a certificate renewal notice faithfully delivered, month after month, to an inbox that was deactivated when its owner left — then the certificate expires precisely on schedule and takes production with it. Role-based aliases and shared groups are continuity engineering: licensing, certificates, renewals, and security alerts reach a *function*, and the function outlives every individual who fills it. Routing a security alert to one person's inbox means your detection capability takes vacations.\n\n**Ben:** The chapter also asks whether you should run mail at all. Isn't that an odd thing for a hardening checklist to say?\n\n**Ana:** It's one of its most honest lines. Review whether operating an internal mail server is worth the administrative and security overhead — and if you can't securely maintain your own, use a managed provider. Running infrastructure you can't afford to run well isn't self-reliance; it's unmanaged risk with a hostname. The record demands the honest review, not a particular answer.\n\n## DNS: Close the Leak, Wire the Sensor\n\n**Ben:** On to DNS. Recursion restrictions, split internal and external DNS, zone-transfer limits — this reads like a nineties BIND manual. Do these attacks still matter?\n\n**Ana:** They matter because DNS sees everything, which makes it both a leak and a sensor. The leak side first: recursion open to the world makes you free infrastructure for amplification attacks; unrestricted zone transfers hand any curious client a complete annotated map of your estate — and the record has you verify that unauthorized systems actually can't pull the zone, not just believe it; internal hostnames exposed in public records narrate your infrastructure to anyone who asks. None of this is exotic. It's all one lazy default away.\n\n**Ben:** And the sensor side?\n\n**Ana:** Nearly every piece of malware resolves a name before it does anything else — command-and-control, staging, exfiltration. So the same ubiquity that makes DNS a leak makes it one of the cheapest detection surfaces you own. Passive DNS monitoring collects queries, responses, and errors for central analysis and flags newly registered or suspicious domains. A sinkhole — or RPZ records — answers known-malicious domains with an error or a non-routable response, and then the sinkhole log becomes a self-reporting list of infected internal machines. All of that telemetry feeds the estate in [Logging and Monitoring](logging-and-monitoring.html).\n\n**Ben:** Now the part that surprised me: the record is lukewarm on DNSSEC. Isn't more cryptography supposed to be automatically good in your world?\n\n**Ana:** This is the chapter refusing a checkbox, and I admire it. DNSSEC adds real infrastructure complexity and real operational risk — a botched key rollover takes your whole domain offline — and the larger signed responses can increase your DDoS-amplification exposure. The record's rule: evaluate carefully, never deploy it solely because it appears more secure, and deploy only when the benefits clearly outweigh the added risk and management burden for your actual threat model. Security decoration that adds fragility isn't security.\n\n## Obscurity in Its Place, and the Team That Keeps Learning\n\n**Ben:** Security through obscurity gets a section — and half of it is a list of \"do nots.\" I thought the official doctrine was that obscurity is worthless.\n\n**Ana:** The record is more precise than the slogan. Obscurity buys minutes; controls buy safety — and both halves are true. Moving administrative services to nonstandard ports, renaming default accounts, quieting service banners: legitimate supplements that cut scanner noise and slow opportunistic sweeps. The failure is promotion — the moment a hidden port is doing a control's job, you're one `nmap` flag away from undefended. Hence the do-nots: don't assume a changed port secures a vulnerable service, don't treat blocking Shodan as a strategy, don't label equipment with names that advertise function, don't put anything internet-facing online before vulnerability testing, and never depend on hidden names, ports, or services instead of patching, authentication, access control, and monitoring. That last one is the record's load-bearing test.\n\n**Ben:** And then the chapter ends with... a reading list. Books, blogs, podcasts, bookmarks. Why does a homework assignment belong in an operating record?\n\n**Ana:** Because a security team that stops learning is defending last year's threat model. Techniques, disclosed vulnerabilities, and tooling move monthly; a team frozen at its last certification year ages out of relevance in real time. The record makes learning institutional rather than personal: the named books, reputable sources like CISA, Krebs, Mandiant, and the SANS Internet Storm Center, vulnerability tracking against the technologies we actually run, podcasts, CTFs for skills — and, tellingly, a periodic prune of the bookmarks themselves. Even the learning sources get lifecycle management.\n\n**Ben:** And the whole thing closes with a Final Review that spans the chapter.\n\n**Ana:** Eleven lines, and it's the completion check for the journal's whole tour: relays closed, mail identity correct, critical mail on resilient aliases, recursion restricted, DNS split, transfers limited, DNS monitored, sinkholing considered, obscurity never primary, internet-facing systems tested before deployment, and the learning process alive. Run it, don't skim it.\n\n**Ben:** Then here's my concession, and it's about the whole record: the extra mile isn't extra at all. It's the quiet infrastructure everyone assumes and the honest habits nobody audits — prove your mail, split your DNS, keep obscurity as seasoning, and keep learning, because the systems that never page you are the ones that fail loudest in the end.\n\n**Ana:** That's the record — and the journal's closing bar. The glamorous chapters get the budget; the extra mile is where the program proves it was actually finished.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why the last, unglamorous mile — mail, DNS, obscurity in its place, and a team that keeps learning — decides whether the program is finished — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: a celebration around shiny security machines upstairs while Nadia peers into a basement at two dusty pipes labeled MAIL and DNS.](assets/images/the-extra-mile/comic-01-the-basement-pipes.jpeg)\n**Panel 1:** *The hook: the last mile is unglamorous — mail and DNS carry every alert, invoice, and login flow, and nobody watches them.*\n\n![Comic panel: rejected envelopes pile up under a crooked signpost while workers inside shrug, weeks crossed off a calendar.](assets/images/the-extra-mile/comic-02-the-quiet-failure.jpeg)\n**Panel 2:** *The problem: quiet failures — a wrong record or stale blocklist entry costs deliverability for weeks; these services never page anyone while merely misconfigured.*\n\n![Comic panel: a castle gate hidden behind a bush with no lock, found instantly by a burglar with a beeping scanner.](assets/images/the-extra-mile/comic-03-the-hidden-port-fortress.jpeg)\n**Panel 3:** *The wrong way: the hidden-port fortress — SSH on 2222 standing in for patching and MFA is one scan flag away from undefended.*\n\n![Comic panel: a meal with portions labeled Patch, Auth, Access, Monitor gets a tiny pinch from a shaker labeled Obscurity.](assets/images/the-extra-mile/comic-04-seasoning-not-the-meal.jpeg)\n**Panel 4:** *The principle: obscurity is only ever an additional layer — patching, authentication, access control, and monitoring are the meal; a plate of pure seasoning goes in the bin.*\n\n![Comic panel: a test parcel labeled NOT OURS is stamped DENIED at a mail counter where three matching ID cards hang.](assets/images/the-extra-mile/comic-05-provably-not-a-relay.jpeg)\n**Panel 5:** *Practice: email provably correct — no open relay (confirmed, not assumed), and HELO, forward DNS, and PTR agreeing so the internet can tell our server from a spoof.*\n\n![Comic panel: a cert-renewal envelope slides under a departed employee's dark door on one side and lands on a shared team desk on the other.](assets/images/the-extra-mile/comic-06-mail-to-a-function.jpeg)\n**Panel 6:** *Practice: continuity engineering — certificates, licenses, and alerts route to role-based aliases and shared groups, so the function outlives whoever fills it.*\n\n![Comic panel: Nadia closes a valve leaking a network map to an outside hand and mounts a listening sensor that flags an infected host.](assets/images/the-extra-mile/comic-07-dns-leak-and-sensor.jpeg)\n**Panel 7:** *Practice: DNS as a security control — recursion restricted, zones no longer leaking the estate's map, and the same ubiquity wired up as a sensor: the sinkhole log is a self-reporting list of infected machines.*\n\n![Comic panel: a balance scale weighs one shield token against a tangle of keys, a fragile clock, and a megaphone of oversized packets.](assets/images/the-extra-mile/comic-08-the-dnssec-scale.jpeg)\n**Panel 8:** *The trade-off: DNSSEC is a decision, not a virtue — complexity, botched-rollover risk, and amplification exposure on one pan; deploy only when the benefits clearly outweigh them.*\n\n![Comic panel: Nadia prunes bookmarks by a curated shelf, a teammate solves a CTF puzzle, the skyline shifts outside, Vera checks a final list.](assets/images/the-extra-mile/comic-09-the-team-keeps-learning.jpeg)\n**Panel 9:** *The closer: learning is standing work — books, trusted feeds, NVD tracking, CTFs, sources pruned — because a team that stops learning defends last year's threat model; and the Final Review is run, not skimmed.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

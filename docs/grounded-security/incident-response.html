@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Incident Response</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="compliance.html" title="Industry Compliance Standards and Frameworks">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="disaster-recovery.html" title="Disaster Recovery">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Response and Recovery</p>
+        <h1>Incident Response</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  9 min · <a class="spec-link" href="incident-response.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/incident-response/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/incident-response/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="compliance.html" title="Industry Compliance Standards and Frameworks">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="disaster-recovery.html" title="Disaster Recovery">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-INCIDENT-RESPONSE", "status": "draft:gray", "title": "Incident Response", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "incident-response", "timetoread": "9 min", "excerpt": "When my organization suspects a security incident, the response is a practiced discipline, not an improvisation. Preparation is finished before the incident starts — definitions, severity levels, roles, external contracts, and forensic tooling tested in peacetime; a suspected incident is escalated early rather than sat on over a possible false positive; declaration is a formal act that names an incident manager and starts the activity log; evidence is preserved before remediation destroys it; containment, eradication, and recovery are distinct gates, each confirmed rather than assumed; communications flow from one authoritative source; and no incident closes without a blameless review whose corrective actions have owners and deadlines. The test I hold the capability to: the engineer who suspects a compromise at 2 a.m. knows exactly whom to call — and is thanked for a false positive, never punished for escalating.", "tags": "security, incident response, forensics, evidence preservation, containment, eradication, recovery, postmortem, defensive security", "icon": "assets/icons/incident-response.png", "logo": "assets/images/incident-response/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["security", "incident response", "forensics", "evidence preservation", "containment", "eradication", "recovery", "postmortem", "defensive security"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: When my organization suspects a security incident, the response is a **practiced discipline, not an improvisation**. Preparation is finished before the incident starts: definitions, severity levels, declaration authority, roles, pre-signed external contracts, and forensic tooling tested in peacetime. **A suspected incident is escalated early** — a false positive costs minutes, a late escalation costs the investigation. **Declaration is a formal act**: an incident manager is named, the start time is recorded, and the activity log begins immediately. **Evidence is preserved before remediation destroys it**; investigation correlates logs, endpoints, disk, memory, and network into one timeline; **containment, eradication, and recovery are distinct gates**, each confirmed rather than assumed. Communications flow from **one authoritative source** that separates facts from assumptions, and no incident closes without a review whose corrective actions have owners and deadlines. The test I hold the capability to: **the engineer who suspects a compromise at 2 a.m. knows exactly whom to call — and is thanked for a false positive, never punished for escalating.**\n\n## Statement\n\nWhen a security incident is suspected, declared, or worked in my organization, this is the discipline I hold the response to.\n\n**Preparation is finished before the incident starts.**\n\n- **Definitions and thresholds exist in peacetime.** What qualifies as a security incident, the severity levels, the escalation thresholds, and who has the authority to declare an incident are all defined before anything burns — and incident response is integrated with the existing outage, support, and operational processes rather than bolted beside them.\n- **Everyone knows how to report.** Staff know how and when to report a suspected incident, and the standing instruction is to escalate early rather than delay over a possible false positive.\n- **Roles are cast in advance.** Who can act as incident manager, what technical responders own, who talks to management, who handles external communications, and where legal, compliance, HR, and PR sit are decided before they are needed — and contracts, NDAs, and SLAs with external incident-response specialists are signed before an incident, not during one.\n- **The technical floor is laid.** Centralized logging with retention long enough to support an investigation and protected from alteration by compromised systems; EDR/XDR/MDR coverage confirmed on critical systems; endpoint isolation, disk imaging, memory acquisition, and packet capture prepared; forensic tool access tested before it is needed; evidence-preservation and snapshot policies written down.\n\n**Declaration is a formal act, not a mood.**\n\n- A reported event is validated, its initial severity and scope determined, and the incident formally declared when escalation criteria are met. The team is notified, **an incident manager is assigned, the start time is recorded**, an incident record is created, and a detailed activity log begins immediately.\n\n**Management is coordinated, sustained, and quiet.**\n\n- A dedicated war room or secure channel is opened; **decision authority is explicit**; investigation and remediation tasks have named owners; updates run on a schedule through one person; and discussion through potentially compromised channels is limited.\n- Goals are set — protect people, systems, and data; stop attacker access; find persistence; scope what was touched, modified, or stolen; minimize unnecessary downtime; preserve evidence.\n- **Long incidents get shifts.** Prolonged responses run on responder rotations with clean handoffs and continuity of command — fatigue is a response risk, not a badge.\n\n**Evidence is preserved before remediation destroys it.**\n\n- Every significant action is recorded with who and when. Original logs are preserved before systems are modified; snapshots, memory captures, and forensic images are taken when appropriate; write-protection, hashes, and chain-of-custody documentation keep the evidence usable — technically and legally.\n\n**Investigation is multi-lens and converges on one timeline.**\n\n- Logs (OS, application, identity, network, SIEM), endpoint telemetry (processes, persistence, lateral movement), disk and file analysis, memory analysis, and network captures are collected and **correlated into a single timeline of the compromise** — including the gaps and unusual changes in logging that are themselves indicators.\n\n**Containment, eradication, and recovery are distinct gates.**\n\n- **Contain** deliberately: isolate endpoints, disable accounts, block indicators, restrict segments — after considering whether the action tips off the attacker and whether it breaks critical services, and with evidence preserved before anything destructive.\n- **Eradicate** completely: malware, persistence, unauthorized accounts, and malicious changes removed; exploited vulnerabilities patched; credentials reset and secrets rotated; **systems rebuilt where trust cannot be restored**; the same compromise hunted across the wider environment.\n- **Recover** verifiably: restore from trusted sources, validate integrity before production, reconnect gradually, monitor closely — and obtain explicit approval before declaring recovery complete.\n\n![Pipeline diagram of containment, eradication, and recovery as three sequential stages, each passing through an explicit confirmation gate before the incident closes.](assets/images/incident-response/three-gates-contain-eradicate-recover.jpeg)\n**Figure 1:** *Containment, eradication, and recovery are distinct gates — each confirmed rather than assumed before the incident moves on.*\n\n**Communications run from one authoritative source.**\n\n- Internally: regular, concise updates that clearly distinguish confirmed facts from assumptions, with major decisions documented. Externally: customer, partner, insurer, regulator, and law-enforcement notifications decided deliberately, coordinated with legal and communications, against contractual and regulatory deadlines, with every notification recorded.\n\n**Closure is explicit and the review is mandatory.**\n\n- The incident closes only when attacker access is removed, persistence eliminated, systems recovered, and recurrence monitoring in place — with the incident manager's approval and a recorded end time.\n- A lessons-learned session follows shortly after, once responders have recovered enough to be accurate: final timeline, root cause, attack vector, what worked, what did not, and process, technology, and training improvements — **every corrective action with an owner and a deadline, tracked through completion**, and an after-action report produced.\n\n## How to Read This\n\nThis record opens the **Response and Recovery** section of the journal — what my organization does when the program described in [Creating a Security Program: Risk Before Tools](security-program.html) meets a live adversary. It is grounded in the Incident Response chapter of the *Defensive Security Handbook* (Brotherston, Berlin, Reyor), read as an executive operating record: the bar the organization is held to, not a forensics manual. The full working checklist — preparation through final verification — lives in the **Checklist** tab; the management summary in the **TL;DR** tab; the conversation in the **Conversation** tab.\n\n## Rationale\n\n**Incidents are won in peacetime.** The chapter's checklist opens with three full sections of pre-incident preparation before any incident exists — definitions, roles, contracts, logging, tooling — and that placement is the message. During an incident, every undefined thing becomes a negotiation conducted under adrenaline: who declares, who decides, who speaks. A contract with an external forensics firm negotiated mid-breach costs days at exactly the moment hours matter. Preparation converts the incident from an open-ended crisis into the execution of a rehearsed plan, which is the only version of incident response that scales beyond the heroics of whoever happens to be awake.\n\n**Early escalation must be cheaper than silence.** The single most consequential line in the chapter is the preference for escalating a suspected incident early rather than delaying because of a possible false positive. Detection technology does not decide whether I learn about a compromise in hours or in months — the reporting culture does. If a false alarm embarrasses the reporter, people will sit on suspicions until they are certain, and certainty arrives long after containment mattered. So my organization prices the false positive at approximately zero and the late escalation as the expensive failure. The 2 a.m. test in the principle is cultural, not technical.\n\n![Balance scale showing a false positive costing minutes on the light side and a late escalation costing months of undetected compromise on the heavy side.](assets/images/incident-response/escalation-cost-asymmetry.jpeg)\n**Figure 2:** *The asymmetry behind the 2 a.m. test: a false positive costs minutes, a late escalation costs the investigation — so silence, not the false alarm, is priced as the failure.*\n\n**Declaration creates the clock and the command.** The formal act — declare, assign an incident manager, record the start time, open the log — looks bureaucratic and is the opposite. It creates a single thread of command in place of a swarm of well-meaning engineers each half-fixing things, and it starts the record that every later question depends on: regulators ask when we knew; insurers ask what we did; the postmortem asks what happened in what order. An incident nobody declared is an incident nobody managed.\n\n**Evidence discipline is the response's memory.** The strongest instinct in a breach is to fix it now — reimage the laptop, delete the account, reboot the server. Every one of those actions destroys evidence, and with it the answers to the questions that matter more than the fix: how they got in, what they touched, whether they are still here. That is why the record insists evidence is preserved *before* destructive remediation, why volatile memory is captured before shutdown, and why hashes and chain of custody are kept even when court seems unlikely — the option to involve law enforcement or insurers is only real if the evidence would survive scrutiny.\n\n![Timeline showing memory, disk image, and logs preserved into a sealed evidence vault before the compromised machine is wiped and rebuilt.](assets/images/incident-response/evidence-before-remediation.jpeg)\n**Figure 3:** *Evidence is preserved before remediation destroys it: memory, disk, and original logs go into a hash-verified vault before anything is wiped.*\n\n**Containment is a decision, not a reflex.** Isolating a machine, disabling an account, blocking an indicator — each action can tip off an attacker who then accelerates, destroys evidence, or detonates what they were staging. Each can also break a critical service in a way that costs more than the attacker has. The record therefore treats containment as a sequence of deliberate trade-offs made by someone with explicit authority — and it keeps monitoring after containment, because attackers with persistence treat your containment as their notification.\n\n**Eradication ends when the environment is clean, not when the alert clears.** Removing the malware that fired the alert while the attacker's second foothold survives converts one incident into two — and the second one starts with the attacker knowing your playbook. Hence the record's insistence on hunting the same compromise across the wider environment, rotating every exposed credential and secret, and rebuilding systems where trust cannot be restored. A rebuilt system is expensive; a system you merely hope is clean is more so.\n\n**One voice, facts separated from assumptions.** In every messy incident the second incident is the communications incident: three versions of status circulating, management repeating an assumption as fact, an external statement that has to be walked back. A single authoritative source of status, a named communicator, and the discipline of labeling what is confirmed versus what is suspected are cheap controls against an expensive failure mode — and externally, where notification deadlines are contractual and regulatory, they are not optional.\n\n**The postmortem is where the security program improves.** Detection gaps, coordination failures, missing runbooks, training needs — an incident surfaces in one week what an audit would take a year to find. The review is blameless and slightly delayed so responders can be accurate rather than defensive; its output is not a document but a tracked list of corrective actions with owners and deadlines. An incident whose lessons were not converted into changed controls will be rerun, at full price, by the next attacker.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Anyone who suspects an incident escalates early; false positives are welcomed. | Every escalation becomes a declared incident — validation and severity triage still happen. |\n| Declaration formally names an incident manager and starts the activity log. | The incident manager does the technical work — they command, coordinate, and communicate. |\n| Evidence is preserved before destructive remediation. | Response waits for forensics on every machine — preservation is proportionate to severity and legal need. |\n| Containment weighs attacker awareness and service impact before acting. | Containment is delayed until the picture is complete — protecting people, systems, and data comes first. |\n| Systems are rebuilt where trust cannot be restored. | Every touched system is reimaged — the standard is restored trust, evidenced, per system. |\n| One authoritative status source; facts labeled apart from assumptions. | Information is hoarded — updates are regular and scheduled, just single-sourced. |\n| Closure requires confirmed eradication, recovery, monitoring, and a review with tracked actions. | The review assigns blame — it assigns owners to fixes. |\n\nConcretely: every team in my organization can answer \"whom do you call when you suspect a compromise?\" without looking it up; every declared incident has a named incident manager and an activity log within the first hour; and no incident is closed until its after-action items have owners, deadlines, and a tracker entry someone will chase.\n\n## Anti-Patterns\n\n- **The heroic improvisation.** No definitions, no roles, no runbooks — every incident handled from scratch by whoever is loudest, with quality determined by who happened to be on call.\n- **The punished false positive.** An engineer escalates in good faith, gets mocked or interrogated, and the whole organization learns to sit on suspicions until they are undeniable — and unrecoverable.\n- **The wiped laptop.** The compromised machine is reimaged within the hour \"to be safe,\" taking with it the memory, disk artifacts, and logs that would have answered how the attacker got in and where else they are.\n- **The swarm without a commander.** Five engineers fixing five things in parallel, no incident manager, no log — actions collide, evidence evaporates, and afterwards nobody can reconstruct what was done.\n- **The tip-off containment.** Indicators blocked one by one as they are found, alerting the attacker mid-investigation; they rotate infrastructure, burn their noisy foothold, and keep the quiet one.\n- **The premature all-clear.** Recovery declared when the alert stops firing — no eradication verification, no recurrence monitoring — and the attacker's second foothold turns one incident into a worse sequel.\n- **Status by rumor.** No authoritative source, so three versions of the incident circulate; management repeats an assumption to a customer, and the correction costs more trust than the breach.\n- **The unread postmortem.** A lessons-learned document written, filed, and never converted into owned, deadlined corrective actions — the next incident replays this one with a new date.\n\n## Related Records\n\n- [Creating a Security Program: Risk Before Tools](security-program.html) — the program that funds, staffs, and governs this capability; incident response is its sharpest test.\n- [Disaster Recovery](disaster-recovery.html) — the neighboring discipline: when an incident (ransomware above all) destroys rather than infiltrates, response hands off to recovery.\n- [Phishing Awareness and Response](phishing-response.html) — the most common on-ramp to an incident; its report-fast culture is this record's escalation culture applied to everyone.\n- [Logging and Monitoring](logging-and-monitoring.html) — the telemetry this record's investigation phase presumes; retention and tamper-protection decisions are made there.\n- [Intrusion Detection and Prevention Systems](ids-ips.html) — a primary detection source feeding declaration, and the network evidence used in analysis.\n- [Endpoints](endpoints.html) — EDR coverage, isolation capability, and endpoint hygiene determine whether containment is a click or a scramble.\n- [Security Education](user-education.html) — the training that makes \"know how and when to report\" true for the whole organization, not just engineers.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every suspected or declared security incident in my organization, whatever the affected system. I revisit it if a real incident or exercise shows the escalation path failing the 2 a.m. test, if evidence preserved under these procedures fails legal or insurer scrutiny, if regulatory notification obligations change materially, or if post-incident reviews stop producing tracked corrective actions — a review that changes nothing is this record failing in practice.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, William F. Reyor III; O'Reilly) — the Incident Response chapter, whose checklist this record distills.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "When my organization suspects a security incident, the response is a **practiced discipline, not an improvisation**. Preparation — definitions, roles, external contracts, forensic tooling — is finished in peacetime; suspected incidents are escalated early; declaration formally names an incident manager and starts the activity log; evidence is preserved before remediation destroys it; containment, eradication, and recovery are distinct, confirmed gates; communications run from one authoritative source; and no incident closes without a review whose corrective actions have owners and deadlines. The test: the engineer who suspects a compromise at 2 a.m. knows exactly whom to call — and is thanked for a false positive, never punished for escalating.\n\n**What changes**\n\n* **Preparation moves ahead of the incident.** What qualifies as an incident, severity levels, declaration authority, incident-manager candidates, communication roles, and contracts with external responders are all settled before anything burns — and logging retention, EDR coverage, isolation methods, and forensic tool access are verified in peacetime.\n* **Escalation becomes cheap and fast.** Everyone knows how to report a suspicion, and the standing rule prefers an early false positive to a late certainty; the reporting culture, not the tooling, decides whether we learn of a breach in hours or months.\n* **Every incident gets a commander and a log.** Formal declaration assigns an incident manager, records the start time, and opens the activity log; a war room with explicit decision authority, task owners, a scheduled update cadence, and shifts for long incidents replaces the swarm.\n* **Evidence outranks the quick fix.** Original logs, snapshots, memory, and disk images are preserved — with hashes and chain of custody — before destructive remediation; investigation correlates logs, endpoints, disk, memory, and network into one timeline.\n* **Containment, eradication, and recovery are gated.** Containment weighs attacker awareness and service impact; eradication removes persistence, rotates every exposed secret, rebuilds where trust cannot be restored, and hunts the compromise environment-wide; recovery restores from trusted sources, monitors closely, and needs explicit approval.\n* **Every incident improves the program.** A blameless review shortly after closure produces a timeline, a root cause, and corrective actions with owners and deadlines, tracked to completion.\n\n**What it costs**\n\n* Standing peacetime investment: retained and tamper-protected logs, EDR coverage, pre-signed retainers with external specialists, and periodically tested forensic access.\n* Evidence discipline slows the most tempting quick fixes — deliberately.\n* Reviews, drills, and tabletop exercises are recurring work, not a one-time setup.\n\n**What we are not doing**\n\n* Not turning every escalation into a declared incident — validation and severity triage still gate declaration.\n* Not running disaster recovery here — when destruction outruns infiltration, this record hands off to [Disaster Recovery](disaster-recovery.html).\n* Not covering the phishing on-ramp in depth — the everyone-reports culture for that lives in [Phishing Awareness and Response](phishing-response.html), and the telemetry this record presumes lives in [Logging and Monitoring](logging-and-monitoring.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full lifecycle from preparation to final verification. Grounded in the Incident Response chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "9 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the incident lifecycle from pre-incident preparation through declaration, investigation, containment, eradication, recovery, and the post-incident review, ending with the final verification. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Pre-Incident Preparation\n\n### Processes and Escalation\n\n- [ ] Define what qualifies as a security incident\n- [ ] Establish severity levels and escalation thresholds\n- [ ] Define who has the authority to declare an incident\n- [ ] Identify the incident response contact or team\n- [ ] Integrate incident response with existing outage, support, and operational processes\n- [ ] Make sure staff know how and when to report a suspected incident\n- [ ] Prefer escalating a suspected incident early rather than delaying because of a possible false positive\n\n### Roles and Communications\n\n- [ ] Identify who may act as the incident manager\n- [ ] Define responsibilities for technical responders\n- [ ] Define who communicates with management and internal stakeholders\n- [ ] Define who handles external communications\n- [ ] Identify legal, compliance, HR, communications, and PR contacts where appropriate\n- [ ] Document contact information for external incident-response specialists or vendors\n- [ ] Put contracts, NDAs, and service-level agreements in place before an incident occurs\n\n### Technical Preparation\n\n- [ ] Ensure centralized logging or SIEM capabilities are available where possible\n- [ ] Confirm logs are retained long enough to support investigations\n- [ ] Protect logs from alteration by compromised systems\n- [ ] Confirm EDR/XDR/MDR coverage across critical systems\n- [ ] Prepare methods for endpoint isolation and containment\n- [ ] Document procedures for disk imaging and memory acquisition\n- [ ] Prepare packet-capture and network-monitoring capabilities where practical\n- [ ] Test access to forensic and analysis tools before they are needed\n- [ ] Establish procedures for preserving evidence and chain of custody\n- [ ] Define policies for taking system or virtual-machine snapshots during incidents\n\n## 2. Incident Declaration\n\n- [ ] Validate that the reported event may represent a security incident\n- [ ] Determine the initial severity and scope\n- [ ] Formally declare the incident when escalation criteria are met\n- [ ] Notify the incident-response team\n- [ ] Assign an incident manager\n- [ ] Record the incident start time\n- [ ] Create an incident record, ticket, case, or dedicated workspace\n- [ ] Begin a detailed activity log immediately\n\n## 3. Incident Management\n\n### Establish Coordination\n\n- [ ] Open a dedicated incident \"war room\" or secure collaboration channel\n- [ ] Start a conference or video call if responders are distributed\n- [ ] Define who is authorized to make operational decisions\n- [ ] Assign clear owners to investigation and remediation tasks\n- [ ] Establish a regular update schedule\n- [ ] Assign one person to communicate status to internal stakeholders\n- [ ] Limit unnecessary discussion of the incident through potentially compromised communication channels\n\n### Set Incident Goals\n\n- [ ] Identify the immediate objectives of the response\n- [ ] Prioritize protecting people, systems, and sensitive data\n- [ ] Stop or limit attacker access\n- [ ] Determine whether the attacker has established persistence\n- [ ] Identify affected systems, accounts, applications, and data\n- [ ] Determine what may have been modified, destroyed, or stolen\n- [ ] Minimize unnecessary downtime\n- [ ] Preserve evidence needed for technical or legal investigation\n\n### Plan for Sustained Operations\n\n- [ ] Estimate whether the incident may require a prolonged response\n- [ ] Create responder shifts for long-running incidents\n- [ ] Protect responders from fatigue\n- [ ] Ensure clean handoffs between shifts\n- [ ] Maintain continuity of command and documentation\n\n## 4. Evidence Preservation\n\n- [ ] Record every significant action taken during the incident\n- [ ] Record who performed each action and when\n- [ ] Preserve original logs before modifying affected systems\n- [ ] Copy relevant logs to a secure analysis location\n- [ ] Preserve command-line histories or terminal output where possible\n- [ ] Take system or VM snapshots when appropriate\n- [ ] Capture volatile memory before shutdown when appropriate\n- [ ] Create forensic disk images when deeper analysis is required\n- [ ] Use write-protection or forensic procedures to avoid modifying original evidence\n- [ ] Record hashes and other integrity information for collected evidence\n- [ ] Maintain chain-of-custody documentation when required\n\n## 5. Log Analysis\n\n- [ ] Collect operating-system logs\n- [ ] Collect application logs\n- [ ] Collect authentication and identity logs\n- [ ] Collect firewall, VPN, proxy, DNS, and network-device logs\n- [ ] Collect security-platform and SIEM alerts\n- [ ] Look for gaps or unusual changes in logging\n- [ ] Search for indicators of compromise\n- [ ] Correlate activity across multiple systems\n- [ ] Build a timeline of suspicious events\n- [ ] Preserve copies of important logs before further analysis\n- [ ] Use approved analysis tools, scripts, or command-line utilities as needed\n\n## 6. EDR / XDR / MDR Investigation\n\n- [ ] Review endpoint alerts associated with the incident\n- [ ] Identify suspicious processes and process trees\n- [ ] Review file creation, deletion, and modification events\n- [ ] Review network connections from affected endpoints\n- [ ] Identify suspicious user or service-account activity\n- [ ] Search other endpoints for matching indicators\n- [ ] Investigate signs of lateral movement\n- [ ] Investigate signs of persistence\n- [ ] Determine whether malware or attacker tools are present\n- [ ] Isolate compromised endpoints when appropriate\n- [ ] Use automated remediation only when its impact is understood\n- [ ] Preserve relevant endpoint telemetry before it expires\n\n## 7. Disk and File Analysis\n\n- [ ] Determine whether a full disk image is required\n- [ ] Capture the disk using an approved forensic-imaging method\n- [ ] Preserve the original image and analyze a working copy\n- [ ] Examine active and deleted files\n- [ ] Review filesystem metadata\n- [ ] Search unallocated or slack space where appropriate\n- [ ] Look for hidden files, rootkits, or suspicious artifacts\n- [ ] Build filesystem timelines\n- [ ] Recover deleted files when useful\n- [ ] Use file-recovery tools when a full forensic examination is unnecessary\n- [ ] Document all findings\n\n## 8. Memory Analysis\n\n- [ ] Capture RAM from affected systems when volatile evidence may be valuable\n- [ ] Use hypervisor-based memory capture for virtual systems where appropriate\n- [ ] Analyze memory for suspicious processes\n- [ ] Search for injected or malicious code\n- [ ] Look for credentials, encryption keys, network connections, and command history where legally and operationally appropriate\n- [ ] Identify memory-resident malware\n- [ ] Correlate memory findings with disk, endpoint, and network evidence\n- [ ] Preserve memory images for later analysis\n\n## 9. Network / PCAP Analysis\n\n- [ ] Collect available packet captures\n- [ ] Review IDS/IPS and network-monitoring alerts\n- [ ] Identify suspicious source and destination IP addresses\n- [ ] Identify unusual ports and protocols\n- [ ] Review DNS activity\n- [ ] Identify command-and-control traffic\n- [ ] Identify evidence of data exfiltration\n- [ ] Filter large captures into smaller investigation sets when needed\n- [ ] Analyze suspicious sessions and individual connections\n- [ ] Correlate network activity with endpoint and log evidence\n\n### Common Analysis Tools\n\n- [ ] Use `tcpdump` or equivalent tools for command-line packet inspection\n- [ ] Use Wireshark for detailed protocol and session analysis\n- [ ] Use TShark for command-line Wireshark analysis\n- [ ] Use IDS-style analysis tools such as Snort or Zeek where appropriate\n- [ ] Use trusted forensic toolkits or dedicated incident-response environments when required\n\n## 10. Containment\n\n- [ ] Identify the systems and accounts that must be contained first\n- [ ] Isolate compromised endpoints where appropriate\n- [ ] Disable or restrict compromised accounts\n- [ ] Block malicious IP addresses, domains, URLs, hashes, or other indicators where appropriate\n- [ ] Restrict affected network segments if necessary\n- [ ] Preserve evidence before destructive remediation whenever possible\n- [ ] Consider whether containment actions could alert the attacker\n- [ ] Confirm that containment has not unnecessarily disrupted critical services\n- [ ] Monitor for continued attacker activity after containment\n\n## 11. Eradication\n\n- [ ] Remove malware and attacker tools\n- [ ] Remove persistence mechanisms\n- [ ] Delete unauthorized accounts\n- [ ] Remove malicious scheduled tasks, services, startup items, or configuration changes\n- [ ] Patch exploited vulnerabilities\n- [ ] Correct security misconfigurations\n- [ ] Reset compromised passwords and credentials\n- [ ] Rotate exposed API keys, tokens, certificates, or secrets\n- [ ] Rebuild systems where trust cannot be restored\n- [ ] Hunt for the same compromise across the wider environment\n- [ ] Verify that all known attacker access paths have been closed\n\n## 12. Recovery\n\n- [ ] Restore affected systems from trusted sources\n- [ ] Validate system integrity before returning systems to production\n- [ ] Restore required data\n- [ ] Confirm security patches and configuration changes are in place\n- [ ] Reconnect systems gradually where appropriate\n- [ ] Monitor restored systems closely\n- [ ] Watch for recurring indicators of compromise\n- [ ] Confirm business services are functioning correctly\n- [ ] Obtain appropriate approval before declaring recovery complete\n\n## 13. Communications\n\n### Internal\n\n- [ ] Keep responders updated through the dedicated incident channel\n- [ ] Provide management with regular, concise status updates\n- [ ] Clearly distinguish confirmed facts from assumptions\n- [ ] Document major decisions and their owners\n- [ ] Maintain a single authoritative source of incident status\n\n### External\n\n- [ ] Determine whether customers, partners, insurers, regulators, or law enforcement must be contacted\n- [ ] Coordinate external messaging with legal and communications teams\n- [ ] Review contractual and regulatory notification deadlines\n- [ ] Avoid releasing unverified technical details\n- [ ] Keep a record of all external notifications and communications\n\n## 14. Incident Closure\n\n- [ ] Confirm that attacker access has been removed\n- [ ] Confirm persistence mechanisms have been eliminated\n- [ ] Confirm affected systems have been recovered\n- [ ] Confirm monitoring is in place for recurrence\n- [ ] Resolve or transfer remaining operational tasks\n- [ ] Record the incident end time\n- [ ] Obtain approval from the incident manager to close the active response\n\n## 15. Post-Incident Review\n\n- [ ] Schedule a lessons-learned or postmortem session shortly after the incident\n- [ ] Give responders enough time to recover and gather accurate information before the review\n- [ ] Build a final incident timeline\n- [ ] Document the root cause where it can be determined\n- [ ] Document the initial attack vector\n- [ ] Document the systems, accounts, and data affected\n- [ ] Identify what worked well\n- [ ] Identify what did not work well\n- [ ] Review delays, communication problems, and coordination issues\n- [ ] Review detection and monitoring gaps\n- [ ] Review the effectiveness of containment and recovery actions\n- [ ] Identify required process improvements\n- [ ] Identify required technology improvements\n- [ ] Identify required training\n- [ ] Update incident-response documentation\n- [ ] Update policies and procedures\n- [ ] Update detection rules and security controls\n- [ ] Conduct additional drills or tabletop exercises as needed\n- [ ] Assign owners and deadlines to corrective actions\n- [ ] Produce an after-action report\n- [ ] Track remediation items through completion\n\n## Final Verification\n\n- [ ] All evidence has been preserved appropriately\n- [ ] The incident timeline is complete\n- [ ] Technical findings have been documented\n- [ ] Required internal and external notifications are complete\n- [ ] Systems have been securely restored\n- [ ] Credentials and secrets have been rotated where necessary\n- [ ] Monitoring has been enhanced for identified threats\n- [ ] Lessons learned have been incorporated into procedures\n- [ ] Follow-up actions have owners and deadlines\n- [ ] The incident is formally closed\n\nWith the final verification green, the incident is closed the only way that counts: attacker access gone, evidence intact, notifications complete, and every lesson converted into an owned, deadlined change. The test running through the whole sequence: **would the engineer who suspects the next compromise at 2 a.m. escalate immediately — and be thanked for it?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "8 min listen"}, "blocks": [{"type": "markdown", "content": "## Why Response Is a Peacetime Investment\n\n**Ben:** Straight question first. We have monitoring, we have an on-call rotation, we have smart engineers. When something bad happens, they'll figure it out. Why does incident response need a record — isn't this just ops with higher stakes?\n\n**Ana:** Because \"they'll figure it out\" is exactly what this record refuses. Look at how the chapter's checklist opens: three full sections run before any incident exists. What qualifies as an incident, the severity levels, who has authority to declare one, who can be incident manager, who talks to management, who talks to the outside — plus the contracts and NDAs with external forensics firms, signed in advance. During a breach, every one of those undefined things becomes a negotiation conducted under adrenaline. A retainer negotiated mid-breach costs days at the exact moment hours matter.\n\n**Ben:** Signed contracts with responders we may never call. That's real money for a hypothetical.\n\n**Ana:** It's an insurance premium, and a small one next to the alternative. Same for the technical floor: logs centralized, retained long enough to investigate, and protected from alteration by the compromised systems themselves; EDR coverage confirmed; isolation, imaging, and memory-capture procedures written; forensic tool access tested before it's needed. Discovering during an incident that your logs rolled over last Tuesday is not a tooling failure — it's a preparation failure that no amount of talent fixes at 2 a.m.\n\n## The False Positive Is the Cheap Outcome\n\n**Ben:** The record says escalate early even if it's probably a false positive. In practice that means my security team drowns in noise from every nervous developer.\n\n**Ana:** That trade is the whole game, and the record prices it deliberately. A false positive costs minutes of triage — there's still validation and severity assessment before anything is declared, so a nervous ping doesn't summon the war room. A late escalation costs the investigation itself: the attacker's window extends from hours to months, and the evidence you needed expires quietly. Your detection stack does not decide which of those you get. Your reporting culture does.\n\n**Ben:** Hence the 2 a.m. test in the principle.\n\n**Ana:** Right, and notice it's a cultural test, not a technical one. The engineer who suspects a compromise knows exactly whom to call — and is thanked for a false positive. The moment one good-faith escalation gets mocked, the whole organization learns to sit on suspicions until they're certain. Certainty arrives long after containment mattered.\n\n**Ben:** Fine, someone escalates. Then what — everyone piles in?\n\n**Ana:** Then declaration, which is a formal act, not a mood. Validate the event, set initial severity, declare when the criteria are met, assign an incident manager, record the start time, open the record, start the activity log immediately. That looks bureaucratic and is the opposite: it replaces a swarm of well-meaning engineers each half-fixing things with a single thread of command, and it starts the record every later question depends on. Regulators ask when we knew. Insurers ask what we did. An incident nobody declared is an incident nobody managed.\n\n## The Evidence You Destroy Fixing Things\n\n**Ben:** Here's my strongest objection. A machine is compromised. Every instinct — and every SLA — says reimage it now. The record says stop and preserve evidence first. You're slowing the response down when speed matters most.\n\n**Ana:** I'm slowing down the *destructive* part, and only that. The wiped laptop is the classic anti-pattern: reimaged within the hour \"to be safe,\" taking with it the memory, disk artifacts, and logs that would have answered the three questions that matter more than the fix — how they got in, what they touched, and whether they're still here. Preserve first: original logs copied out, snapshots, volatile memory captured before shutdown when it's warranted, hashes and chain of custody kept. Then be as destructive as you like.\n\n**Ben:** Chain of custody? We're an engineering organization, not a courtroom.\n\n**Ana:** Until the incident is the one where legal, law enforcement, or your insurer is involved — and you don't know which one that is at hour zero. Evidence handled loosely is an option foreclosed. Handled properly, it's an option kept open at the cost of some discipline. And it's proportionate: the record says forensic imaging *when deeper analysis is required*, not a full workup on every phished inbox.\n\n**Ben:** And containment — surely that at least is a reflex. See attacker, block attacker.\n\n**Ana:** It's the opposite of a reflex; it's a decision with two failure modes. Block indicators one by one as you find them and you've notified the attacker mid-investigation — they rotate infrastructure, burn the noisy foothold, and keep the quiet one. Isolate too aggressively and you've broken a critical service the attacker never touched. So containment is sequenced by someone with explicit authority, weighing whether the action tips the attacker off and what it disrupts — and monitoring continues afterwards, because an attacker with persistence treats your containment as their notification.\n\n## Clean Means Clean, and One Voice\n\n**Ben:** Eradication. The alert stops firing, the malware's gone. Are we done?\n\n**Ana:** The alert clearing tells you the noisy foothold is gone. The record's standard is the environment is clean: persistence removed, unauthorized accounts deleted, exploited vulnerabilities patched, every exposed credential and secret rotated, and — the expensive one — systems rebuilt where trust cannot be restored. Then hunt the same compromise across the wider environment, because attackers rarely stop at one machine. Declaring victory on the first machine while the second foothold survives converts one incident into two, and the second one starts with the attacker knowing your playbook.\n\n**Ben:** That's the premature all-clear.\n\n**Ana:** And recovery gates against it: restore from trusted sources, validate integrity before production, reconnect gradually, monitor for recurring indicators, and get explicit approval before declaring recovery complete. \"It seems quiet\" is not a gate.\n\n**Ben:** You've also got a surprising amount of process around who says what. Status updates on a schedule, one communicator, facts labeled apart from assumptions. Why does a technical response need a press office?\n\n**Ana:** Because in every messy incident the second incident is the communications incident. Three versions of status circulate; management repeats an assumption to a customer as fact; the walk-back costs more trust than the breach. One authoritative source of status and the fact-versus-assumption discipline are cheap controls against that. Externally it's harder-edged: notification deadlines to regulators, insurers, and partners are contractual and legal, coordinated with counsel, with every notification recorded.\n\n## What Closure Actually Means\n\n**Ben:** Last stop. The systems are back, the customers are calm. Most teams write a postmortem doc, file it, and sprint back to the roadmap. What does this record demand?\n\n**Ana:** Closure has criteria: attacker access removed, persistence eliminated, systems recovered, recurrence monitoring in place, end time recorded, incident manager signs off. Then the review — blameless, and deliberately scheduled a beat later so responders can be accurate instead of defensive. Its output isn't a document; it's a tracked list: root cause, attack vector, detection gaps, coordination failures, and corrective actions each with an owner and a deadline, chased to completion. An incident is the most expensive audit you'll ever run — the review is how you collect what you paid for.\n\n**Ben:** And the unread postmortem is the anti-pattern: lessons written, nothing changed, and the next attacker reruns this incident with a new date.\n\n**Ana:** That's the one.\n\n**Ben:** All right. The concession, then: incident response isn't the plan you write for the bad day — it's the discipline you buy in peacetime so the bad day is execution instead of improvisation. And the whole thing hangs on one cultural fact: the person who suspects something says so immediately, because saying so is safe.\n\n**Ana:** That's the record. Preparation makes the response possible; the escalation culture makes it start in time; evidence discipline makes it answerable; and the review makes the next one cheaper. Everything else is checklist.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why incident response is a practiced discipline, not an improvisation — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: an engineer alone at night stares at a suspicious alert, phone in hand, wondering whom to call.](assets/images/incident-response/comic-01-two-a-m.jpeg)\n**Panel 1:** *The hook: 2 a.m., one engineer, one suspicious alert. Whether the organization learns about the compromise in hours or in months is decided right here.*\n\n![Comic panel: managers argue over who declares, decides, and speaks while alarms flash and engineers wait.](assets/images/incident-response/comic-02-negotiation-under-adrenaline.jpeg)\n**Panel 2:** *The problem: during an incident, every undefined thing becomes a negotiation under adrenaline — who declares, who decides, who talks to the outside. A contract negotiated mid-breach costs days when hours matter.*\n\n![Comic panel: an engineer reimages a laptop while ghostly footprints, keys, and a timeline evaporate behind him.](assets/images/incident-response/comic-03-the-wiped-laptop.jpeg)\n**Panel 3:** *The wrong way: the wiped laptop. The instinct to fix it now destroys the memory, disk artifacts, and logs that would have answered how the attacker got in — and whether they are still here.*\n\n![Comic panel: Vera and Nadia lay out a roles chart, signed contract, severity ladder, and tested toolbox on a calm day.](assets/images/incident-response/comic-04-won-in-peacetime.jpeg)\n**Panel 4:** *The principle: incidents are won in peacetime. Definitions, severity levels, declaration authority, roles, pre-signed external contracts, and tested forensic tooling — all finished before the incident starts.*\n\n![Comic panel: Nadia stamps DECLARED while a stopwatch starts, a responder gets an incident manager badge, and a log opens.](assets/images/incident-response/comic-05-declaration-starts-the-clock.jpeg)\n**Panel 5:** *Declaration is a formal act, not a mood: an incident manager is named, the start time is recorded, and the activity log begins immediately — one thread of command instead of a swarm.*\n\n![Comic panel: Nadia bags a laptop as evidence with a hash tag while stopping an engineer about to pull the plug.](assets/images/incident-response/comic-06-evidence-first.jpeg)\n**Panel 6:** *Evidence is preserved before remediation destroys it: original logs, memory captures, forensic images, hashes, and chain of custody — the response's memory, and the only version that survives legal scrutiny.*\n\n![Comic panel: a server trolley passes three gates labeled Contain, Eradicate, Recover, each checked by an inspector.](assets/images/incident-response/comic-07-three-gates.jpeg)\n**Panel 7:** *Three distinct gates, each confirmed rather than assumed: contain deliberately, eradicate until the environment is clean — rebuilding where trust cannot be restored — and recover verifiably, with explicit approval.*\n\n![Comic panel: a single communicator at a podium with FACTS and ASSUMPTIONS trays while crossed-out rumor bubbles fade behind.](assets/images/incident-response/comic-08-one-voice.jpeg)\n**Panel 8:** *Communications run from one authoritative source that labels facts apart from assumptions — because in every messy incident, the second incident is the communications incident.*\n\n![Comic panel: Nadia warmly shakes the hand of an engineer holding a FALSE POSITIVE report while Vera writes an owned action item.](assets/images/incident-response/comic-09-thanked-at-two-a-m.jpeg)\n**Panel 9:** *The closer: the 2 a.m. test is cultural, not technical — the engineer who escalates is thanked for a false positive, never punished, and no incident closes without corrective actions that carry owners and deadlines.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

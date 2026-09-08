@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Logging and Monitoring</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="osint-purple-teaming.html" title="OSINT and Purple Teaming">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="the-extra-mile.html" title="The Extra Mile">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Assess and Improve</p>
+        <h1>Logging and Monitoring</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  8 min · <a class="spec-link" href="logging-and-monitoring.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/logging-and-monitoring/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/logging-and-monitoring/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="osint-purple-teaming.html" title="OSINT and Purple Teaming">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="the-extra-mile.html" title="The Extra Mile">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-LOGGING-AND-MONITORING", "status": "draft:gray", "title": "Logging and Monitoring", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "logging-and-monitoring", "timetoread": "8 min", "excerpt": "Logging in my organization is not storage — it is our ability to answer questions during the worst hour. The SIEM is designed from risk backwards: coverage scope, compliance requirements, and highest-value systems first, use cases mapped to frameworks like MITRE ATT&CK, and collection that starts with high-value sources instead of hoarding everything. Logs are stored centrally under a Record of Authority; alerts are few, focused, and actionable; coverage follows the attacker's path across identity, endpoints, applications, cloud, databases, DNS, and the network; and detections are tested, not trusted — malicious behavior is reproduced in a controlled environment and the log and the alert are both confirmed. The test I hold the estate to: every alert that is enabled is one analysts know how to investigate — and every claimed detection has been proven to fire.", "tags": "security, logging, monitoring, SIEM, detection engineering, MITRE ATT&CK, Sigma, alerting, cloud logging, Sysmon", "icon": "assets/icons/logging-and-monitoring.png", "logo": "assets/images/logging-and-monitoring/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["security", "logging", "monitoring", "SIEM", "detection engineering", "MITRE ATT&CK", "Sigma", "alerting", "cloud logging", "Sysmon"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Logging in my organization is not storage — it is **our ability to answer questions during the worst hour**. The SIEM is **designed from risk backwards**: coverage scope, compliance requirements, and the highest-value systems come first, use cases are mapped to frameworks like MITRE ATT&CK, and **collection starts with high-value sources** instead of hoarding everything at any cost. **Logs are stored centrally** under a Record of Authority for location and retention; **alerts are few, focused, and actionable** — false positives tuned down, false negatives actively hunted; **coverage follows the attacker's path** across identity, endpoints, applications, cloud, databases, DNS, and the network; and **detections are tested, not trusted** — expected malicious behavior is reproduced in a controlled environment and both the log and the alert are confirmed. The test I hold the estate to: **every alert that is enabled is one analysts know how to investigate — and every claimed detection has been proven to fire.**\n\n## Statement\n\nWhen my organization builds and operates its detection estate, this is the bar it is held to.\n\n**The SIEM is designed from risk backwards.**\n\n- **Scope before signal.** The SIEM's coverage scope, the compliance requirements that shape logging, and the organization's highest-risk and highest-value systems are identified first; security scenarios and use cases the SIEM should detect are established and mapped to frameworks such as MITRE ATT&CK or the Cyber Kill Chain.\n- **Not every event is equally important.** Alert priorities are explicit; detection rules earn trust through proof-of-concept testing, and penetration tests or red-team exercises validate what the SIEM actually catches.\n- **Collection is deliberate.** A Record of Authority defines where logs are stored and for how long; logs are stored centrally, not only on the systems that generate them; the collect-everything-versus-collect-what-is-needed decision is made consciously against storage, indexing, transmission, and licensing costs; coverage starts with high-value sources and expands over time.\n\n![Diagram contrasting a SIEM designed from risks and use cases with a few high-value sources against a crossed-out collect-everything funnel producing noise and cost.](assets/images/logging-and-monitoring/risk-backwards-siem-design.jpeg)\n**Figure 1:** *Designed from risk backwards: scope, use cases, and high-value sources first — because collecting everything is a decision to find nothing.*\n\n**Alerting is tuned for action.**\n\n- Centralized logs are analyzed continuously with real-time or near-real-time alerts for the events that matter. We verify that expected events are actually being logged and tune operating-system logging where defaults fall short.\n- **False positives are tuned down; false negatives are hunted** by testing known suspicious behavior. Events are correlated across sources, enriched with threat intelligence, and the resulting alerts stay focused, useful, and actionable — with detection logic reviewed as the environment changes.\n\n**Coverage follows the attacker's path across the estate.**\n\n- **Windows endpoints** carry enhanced logging where required — process creation with command lines and parent processes, network connections correlated to processes, tamper detection on the logging service itself, persistence-related registry changes, and DNS queries tied to originating processes — forwarded to the SIEM, with advanced auditing standardized through Group Policy.\n- **Identity** is watched for failed-login bursts, password spraying, brute force, abnormal patterns, privileged-account logins, and authentication over insecure clear-text protocols — which are eliminated where possible.\n- **Applications** feed internet-facing logs into detection: excessive 4XX responses, URL enumeration, reconnaissance, and deviations from a baseline of normal services, processes, and open ports.\n- **Cloud** is logged under the shared-responsibility model: administrative and API activity captured and centralized across AWS, Azure, and GCP, retained appropriately, with alerts on unexpected configuration and access changes.\n- **Databases** are monitored for access to sensitive data, unusual users and query volumes, privileged activity, schema changes, privilege escalation, and possible bulk exfiltration.\n- **DNS, endpoints, sensors, and the perimeter** complete the picture: DNS queries tied to endpoints and checked for malicious domains, C2 patterns, and DGAs; EDR/XDR detections centralized; IDS/IPS events forwarded and tuned; operating-system baselines alerting on unexpected processes and shell activity; proxy and firewall logs watched for C2, tunneling, and abnormal connections; and account, group, and permission changes — especially privileged group additions — alerted on.\n\n**Detections are tested, not trusted.**\n\n- Alerts are tested internally on a regular basis: expected malicious behaviors are reproduced in a controlled environment, and both the log data and the resulting alert are confirmed. Repeatable tests are automated where practical; tabletop exercises surface missing detections.\n- **Logging audits are periodic and full**: every expected endpoint sending logs, current volume compared with historical baselines, unexpected changes investigated, every network ingress and egress point covered, newly deployed software evaluated for SIEM coverage, and detections retested after major configuration or infrastructure change.\n\n**Frameworks make coverage inspectable; maintenance keeps it true.**\n\n- Important detections are mapped to MITRE ATT&CK tactics and techniques, and ATT&CK is used to find coverage gaps. Threat models grow from the organization's most significant risks into use cases across access control, perimeter defense, intrusion detection, malware, application attacks, and resource integrity. Sigma is considered as a portable rule format — community rules customized locally, and **every imported or newly created rule tested before it is relied on**.\n- The SIEM is operated as a living system: configuration reviewed regularly, detections updated as systems and threats change, alerts retuned as normal behavior shifts, consistently noisy rules removed or fixed, retention and storage capacity reviewed, every change documented, coverage periodically reassessed against organizational risk — and **analysts know how to investigate every alert that is enabled**.\n\n## How to Read This\n\nThis record sits in the **Assess and Improve** section of the journal — it is the estate everything else reports into, and the precondition for [Incident Response](incident-response.html) being an investigation rather than an archaeology dig. It is grounded in the Logging and Monitoring chapter of the *Defensive Security Handbook*. The named instruments — Sysmon, CloudTrail, Sigma, the cloud providers' native services — are the chapter's concrete worked examples; my commitments hold at the capability level. The full working checklist lives in the **Checklist** tab; the **TL;DR** tab carries the management summary and the **Conversation** tab the dialog.\n\n## Rationale\n\n**Logs exist to answer the questions the incident will ask.** Who touched this host, what did that process spawn, where did the data go, when did the credential first appear — an incident is a stream of questions under time pressure, and the logging estate either answers them or it does not. That is why verification runs through this whole record: expected events *actually* logged, alerts *actually* generated, endpoints *actually* sending. Centralization is part of the same argument — attackers delete local logs, and a log that exists only on the compromised system is evidence held by the adversary.\n\n**Collecting everything is a decision to find nothing.** The chapter is unusually honest about cost: storage, indexing, transmission, and licensing all scale with volume, and analyst attention scales with none of them. Treating every event as equally important produces a SIEM that is expensive, slow, and unread. Designing from risk backwards — highest-value systems, explicit use cases, high-value sources first — buys the opposite: a smaller estate that answers real questions. The Record of Authority makes the trade-off inspectable: what we keep, where, and for how long is a written decision, not an accident of default settings.\n\n**An alert nobody can investigate is noise with a severity label.** The chapter's closing requirement — analysts know how to investigate every alert that is enabled — is the whole alerting philosophy in one line. Every enabled alert is a claim that someone will act on it; if no one can, the honest options are to fix the playbook or remove the alert. The same logic drives false-positive tuning and noisy-rule removal: alert fatigue is not an annoyance, it is the mechanism by which real intrusions go unread in a sea of ignored red.\n\n**Coverage follows the attacker's path, not the org chart.** The estate's breadth — identity, endpoints, applications, cloud, databases, DNS, perimeter, accounts and groups — mirrors how intrusions actually move: a phished credential, a process on an endpoint, a DNS lookup to C2, lateral movement over SMB, a privileged group addition, a bulk query against the database. Each domain in the coverage list is a place a real attack becomes visible; a gap in any one of them is a corridor an attacker can walk down unrecorded. DNS deserves its special place: nearly everything resolves a name first, which makes DNS telemetry one of the cheapest, widest sensors the organization owns.\n\n![Diagram of an attacker path crossing identity, endpoint, DNS, network, privileged groups, and database, each feeding telemetry to a central SIEM, with one broken feed leaving a blind corridor.](assets/images/logging-and-monitoring/attacker-path-coverage.jpeg)\n**Figure 2:** *Coverage follows the attacker's path, not the org chart — every domain is a place the intrusion becomes visible, and every gap is a corridor walked unrecorded.*\n\n**A detection that has never fired in a test is a hypothesis.** Between \"we forward those logs\" and \"we would catch that attack\" sits a chain of silent failure modes: the event not logged, the forwarder broken, the rule mistargeted, the alert routed nowhere. The only way to know the chain works is to pull it — reproduce the malicious behavior in a controlled environment, confirm the log, confirm the alert. This is also why the record insists on testing every imported Sigma rule before relying on it, and on retesting after major change: community rules encode someone else's environment, and yesterday's confirmed detection quietly dies in today's migration. [OSINT and Purple Teaming](osint-purple-teaming.html) runs this same discipline end to end with a live red team.\n\n![Chain diagram from reproduced malicious behavior through event logged, log forwarded, rule matched, and alert routed, with faint broken links showing silent failure modes a test exposes.](assets/images/logging-and-monitoring/detection-test-chain.jpeg)\n**Figure 3:** *The only way to know the chain works is to pull it: reproduce the behavior, confirm the log, confirm the alert — every untested link is a silent failure mode.*\n\n**Frameworks turn \"we monitor a lot\" into \"here is what we cannot see.\"** Mapping detections to MITRE ATT&CK converts a warm feeling about coverage into an explicit map with named holes. That map is what makes prioritization honest — the next detection built is the one covering the highest-risk uncovered technique, not the one that was easiest to write. Threat models grounded in the organization's actual significant risks keep the use-case catalog from becoming a generic vendor starter pack.\n\n**The SIEM decays by default.** Systems get added, software gets deployed, traffic patterns shift, threats evolve — and every one of those changes silently invalidates some detection or baseline. A SIEM tuned once at installation is a museum of the environment as it existed that quarter. The maintenance loop — regular configuration review, detections updated with new systems and threats, log-volume baselines watched, retention and capacity reviewed, changes documented — is not upkeep around the product; it *is* the product.\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| The SIEM is designed from risk backwards: scope, compliance, high-value systems, and explicit use cases first. | Buy a SIEM and point everything at it — tooling without design is cost without detection. |\n| Collection is deliberate and cost-aware, starting with high-value sources and expanding over time. | Collect everything forever — volume is a decision with a price, made consciously, not a default. |\n| Logs are stored centrally under a Record of Authority for location and retention. | Local logs are worthless — they are tuned and kept, but the copy the investigation relies on lives beyond the attacker's reach. |\n| Every enabled alert is one analysts know how to investigate. | More alerts mean more security — an uninvestigable alert is removed or given a playbook, not left to train people to ignore red. |\n| Detections are proven by reproducing malicious behavior and confirming the log and the alert. | Vendor and community rules can be trusted as shipped — every imported rule is tested against our environment first. |\n| Detection coverage is mapped to ATT&CK and gaps are named and prioritized. | ATT&CK coverage bingo is the goal — the map serves the organization's actual threat model, not completeness for its own sake. |\n| The SIEM is maintained: retuned, pruned, audited, documented, and reassessed against risk. | Monitoring is a project — it is an operated system that decays the moment attention stops. |\n\nConcretely: no detection ships in my organization until it has fired in a test, and the first question about any alert in the console is *\"what is the analyst supposed to do when this fires?\"* If there is no answer, the alert does not stay enabled.\n\n## Anti-Patterns\n\n- **The write-only SIEM.** Terabytes ingested, licensing paid, nothing read — a log warehouse mistaken for a detection capability.\n- **The thousand-alert morning.** Untuned rules training analysts to bulk-acknowledge; the real intrusion scrolls past in the noise it was guaranteed to drown in.\n- **The unproven detection.** A rule deployed from a blog post or community repo, never fired in a test, discovered broken during the incident it was meant to catch.\n- **The local-only log.** Evidence stored solely on the system the attacker owns — deleted in the first minutes of a competent intrusion.\n- **The coverage assumption.** \"We forward everything to the SIEM\" asserted without a logging audit — meanwhile a third of endpoints stopped sending months ago and nobody noticed the volume drop.\n- **The shared-responsibility surprise.** Cloud audit logging assumed to be someone else's job — administrative and API activity unlogged until the provider's default retention has already expired.\n- **The frozen baseline.** Detections tuned once at installation while the environment moved on — alerting confidently on the network of two years ago.\n- **The orphaned alert.** An alert that fires, is acknowledged, and goes nowhere, because no analyst was ever told what investigating it means.\n\n## Related Records\n\n- [Incident Response](incident-response.html) — this estate is what makes response an investigation instead of guesswork; response requirements shape what must be logged.\n- [OSINT and Purple Teaming](osint-purple-teaming.html) — the adversarial exercises that validate this estate end to end; its findings are this record's gap list.\n- [Intrusion Detection and Prevention Systems](ids-ips.html) — the network sensors whose events are forwarded, tuned, and correlated here.\n- [Cloud Infrastructure](cloud-infrastructure.html) — the hardening record for the cloud estate whose CloudTrail, Azure, and GCP telemetry this record centralizes.\n- [Endpoints](endpoints.html) — endpoint hardening and EDR live there; their detections and telemetry land here.\n- [Microsoft Windows Infrastructure](windows-infrastructure.html) — the Windows estate whose Sysmon and Group Policy auditing this record consumes.\n- [Authentication](authentication.html) — the identity controls whose failure modes — spraying, brute force, privileged misuse — this record watches for.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to the whole detection estate my organization operates — the SIEM, its log sources, its rules, and its maintenance loop. I revisit it if a logging audit or purple-team exercise finds coverage claims that do not survive testing (the tested-not-trusted discipline failing), if alert volume grows faster than analyst capacity to investigate (the actionability bar failing), or if the estate's cost trajectory forces a re-cut of the collection scope — which is done by redesigning from risk, not by silently dropping sources.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition — Lee Brotherston, Amanda Berlin, and William F. Reyor III; the Logging and Monitoring chapter, whose checklist this record distills.\n- **MITRE ATT&CK** — the tactic-and-technique framework the chapter names for mapping detections and finding coverage gaps.\n- **Sigma** — the portable detection-rule format the chapter names for sharing and customizing detections.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "Logging in my organization is not storage — it is **our ability to answer questions during the worst hour**. The SIEM is designed from risk backwards: scope, compliance, and highest-value systems first, use cases mapped to MITRE ATT&CK, collection starting with high-value sources instead of hoarding everything. Logs are central, alerts are few and actionable, coverage follows the attacker's path across the estate, and detections are tested, not trusted. The test: every enabled alert is one analysts know how to investigate — and every claimed detection has been proven to fire.\n\n**What changes**\n\n* **The SIEM gets a design, not just a license.** Coverage scope, compliance requirements, highest-risk systems, and explicit detection use cases come before ingestion; a Record of Authority fixes where logs live and how long they are retained; collection is cost-aware and expands from high-value sources outward.\n* **Alerting is tuned for action.** False positives tuned down, false negatives hunted by testing known suspicious behavior, events correlated across sources and enriched with threat intelligence — and every alert that stays enabled has an analyst who knows what investigating it means.\n* **Coverage becomes estate-wide.** Windows endpoint telemetry with the key process, network, registry, and DNS events; authentication monitoring for spraying, brute force, and privileged logins; application, cloud (AWS, Azure, GCP), database, DNS, endpoint-protection, IDS/IPS, operating-system, and proxy/firewall logs; and alerts on privileged group and account changes.\n* **Detections are proven, then re-proven.** Malicious behavior is reproduced in a controlled environment and both the log and the alert are confirmed; tabletops find missing detections; periodic logging audits check that endpoints are actually sending and volumes match baselines; detections are retested after major change.\n* **Coverage becomes inspectable.** Detections are mapped to ATT&CK so gaps have names; Sigma rules are customized and tested before trust; the SIEM is maintained as a living system — retuned, pruned, documented, and reassessed against risk.\n\n**What it costs**\n\n* Real money for storage, indexing, transmission, and licensing — which is exactly why collection scope is a designed decision, not a default.\n* Standing analyst and engineering time: detection testing, tuning, audits, and maintenance recur forever.\n* Discipline to remove alerts and rules that cannot be acted on — saying no to comforting noise.\n\n**What we are not doing**\n\n* Not collecting everything indefinitely — deliberate scope, reviewed retention.\n* Not building the sensors or hardening the systems — [Intrusion Detection and Prevention Systems](ids-ips.html) and the estate-hardening records own those; this record centralizes and watches their output.\n* Not running the adversarial end-to-end validation — that is [OSINT and Purple Teaming](osint-purple-teaming.html), whose findings feed this estate's gap list.\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full estate checklist. Grounded in the Logging and Monitoring chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "8 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — the full logging and monitoring estate, from SIEM design through estate-wide coverage to detection testing and ongoing maintenance. The Article tab carries the rationale and anti-patterns.*\n\n## 1. SIEM Planning and Design\n\n- [ ] Define the SIEM's coverage scope\n- [ ] Identify compliance requirements that affect logging\n- [ ] Identify the organization's highest-risk and highest-value systems\n- [ ] Establish security scenarios and use cases the SIEM should detect\n- [ ] Map likely attacks to frameworks such as MITRE ATT&CK or the Cyber Kill Chain\n- [ ] Determine which alerts should be prioritized\n- [ ] Avoid treating every possible event as equally important\n- [ ] Perform proof-of-concept testing before relying on detection rules\n- [ ] Conduct penetration tests or red-team exercises to validate SIEM detections\n- [ ] Create a Record of Authority (ROA) defining log storage locations and retention periods\n- [ ] Ensure logs are stored centrally rather than only on the systems that generate them\n- [ ] Determine whether to collect all available logs or only logs needed for security and operational objectives\n- [ ] Consider storage, indexing, transmission, and licensing costs when defining logging scope\n- [ ] Start with high-value log sources and expand coverage over time\n\n## 2. Log Analysis and Alerting\n\n- [ ] Continuously analyze centralized logs\n- [ ] Configure real-time or near-real-time alerts for important events\n- [ ] Verify that expected events are actually being logged\n- [ ] Tune default operating-system logging settings where necessary\n- [ ] Tune alert rules to reduce false positives\n- [ ] Check for false negatives by testing known suspicious behavior\n- [ ] Correlate events across multiple log sources\n- [ ] Use threat intelligence to enrich and prioritize detections\n- [ ] Keep alerts focused, useful, and actionable\n- [ ] Regularly review and update detection logic as the environment changes\n\n## 3. Windows and Sysmon\n\n- [ ] Deploy Sysmon where enhanced Windows endpoint logging is required\n- [ ] Select and maintain an appropriate Sysmon configuration\n- [ ] Verify Sysmon logs appear under `Applications and Services Logs → Microsoft → Windows → Sysmon`\n- [ ] Forward Sysmon events to the SIEM\n\n### Important Sysmon Events\n\n- [ ] Monitor **Event ID 1 – Process Creation**\n  - [ ] Record executable paths, command lines, users, hashes, parent processes, and signatures\n  - [ ] Alert on suspicious parent-child process relationships\n- [ ] Monitor **Event ID 3 – Network Connection Detected**\n  - [ ] Correlate outbound connections with the processes that created them\n  - [ ] Investigate unusual destination IPs, domains, ports, and protocols\n- [ ] Monitor **Event ID 4 – Sysmon Service State Changed**\n  - [ ] Alert when the Sysmon service is unexpectedly stopped or disabled\n- [ ] Monitor **Event ID 13 – Registry Value Set**\n  - [ ] Watch persistence-related registry locations such as Windows Run and RunOnce keys\n- [ ] Monitor **Event ID 22 – DNS Query**\n  - [ ] Associate DNS requests with originating processes\n  - [ ] Investigate suspicious domains, command-and-control infrastructure, and unusual DNS behavior\n\n## 4. Windows Group Policy and Auditing\n\n- [ ] Configure advanced Windows auditing through Group Policy\n- [ ] Enable authentication-related event logging\n- [ ] Confirm security-related Windows Event IDs are being forwarded to the SIEM\n- [ ] Standardize logging settings across domain systems\n- [ ] Review logging policies whenever new Windows systems are deployed\n\n## 5. Authentication Monitoring\n\n- [ ] Alert on repeated failed login attempts above an appropriate threshold\n- [ ] Investigate possible password spraying\n- [ ] Investigate brute-force authentication attempts\n- [ ] Identify abnormal authentication patterns\n- [ ] Monitor privileged-account logins\n- [ ] Detect authentication over insecure clear-text protocols such as HTTP or Telnet\n- [ ] Eliminate insecure authentication methods where possible\n\n## 6. Application Logs\n\n- [ ] Collect logs from internet-facing applications\n- [ ] Monitor excessive HTTP 4XX responses\n- [ ] Investigate repeated access attempts to unusual URLs\n- [ ] Look for URL enumeration and brute-force activity\n- [ ] Monitor repeated connection attempts with little or no valid transaction activity\n- [ ] Detect reconnaissance such as port scanning and service probing\n- [ ] Establish a baseline of normal applications, services, processes, and open ports\n- [ ] Alert on new or unauthorized services, processes, or ports\n\n## 7. Cloud Logging\n\n### General\n\n- [ ] Understand the cloud provider's shared-responsibility model\n- [ ] Ensure administrative and API activity is logged\n- [ ] Centralize cloud logs with the rest of the security monitoring environment\n- [ ] Retain cloud logs for an appropriate period\n- [ ] Alert on unexpected configuration and access changes\n\n### AWS\n\n- [ ] Enable and collect AWS CloudTrail logs\n- [ ] Monitor API caller identity, timestamps, and source IP addresses\n- [ ] Collect VPC Flow Logs\n- [ ] Use EventBridge where appropriate to capture and route events\n- [ ] Configure Amazon GuardDuty if threat-detection capabilities are required\n- [ ] Forward relevant AWS security logs into the SIEM\n\n### Microsoft Azure\n\n- [ ] Collect Azure Monitor telemetry\n- [ ] Collect Azure activity logs\n- [ ] Monitor Azure AD/identity sign-in activity\n- [ ] Collect Azure resource logs for relevant services\n- [ ] Configure Microsoft Defender for Cloud where appropriate\n- [ ] Forward Azure security events to the SIEM\n\n### Google Cloud Platform\n\n- [ ] Enable Cloud Logging\n- [ ] Collect audit logs\n- [ ] Configure alerts for relevant GCP events\n- [ ] Use Log Analytics or Log Router where appropriate\n- [ ] Configure Event Threat Detection where required\n- [ ] Forward important GCP logs to the SIEM or other central monitoring platform\n\n## 8. Database Monitoring\n\n- [ ] Log successful and attempted access to sensitive data\n- [ ] Identify users or applications accessing databases they do not normally use\n- [ ] Monitor database queries\n- [ ] Monitor database or table creation, copying, modification, and deletion\n- [ ] Closely monitor activity performed by privileged database users\n- [ ] Alert on activity outside established baselines\n- [ ] Detect possible bulk data exfiltration\n- [ ] Monitor repeated failed authentication attempts\n- [ ] Alert on unexpected privilege escalation\n- [ ] Investigate unusually large query volumes\n\n## 9. DNS Monitoring\n\n- [ ] Log DNS queries and responses\n- [ ] Preserve enough data to associate DNS activity with the correct endpoint\n- [ ] Monitor DNS traffic for malicious domains\n- [ ] Look for command-and-control activity\n- [ ] Detect malware using domain generation algorithms (DGAs)\n- [ ] Use endpoint DNS telemetry such as Sysmon where appropriate\n- [ ] Correlate DNS events with process, network, and endpoint logs\n\n## 10. Endpoint Protection\n\n- [ ] Forward EDR/XDR or endpoint protection logs to the SIEM\n- [ ] Monitor malware detections\n- [ ] Monitor suspicious file hashes and signatures\n- [ ] Monitor malicious or unusual endpoint behavior\n- [ ] Ensure endpoint solutions are properly tuned\n- [ ] Verify endpoint detections are included in centralized alerting\n\n## 11. IDS/IPS\n\n- [ ] Forward IDS/IPS events into centralized logging\n- [ ] Review high- and critical-severity alerts\n- [ ] Tune signatures and rules to reduce false positives\n- [ ] Avoid overwhelming analysts with low-value alerts\n- [ ] Retain lower-priority events when they may assist later investigations\n\n## 12. Operating-System Logs\n\n- [ ] Collect Windows endpoint and server logs\n- [ ] Collect Linux/Unix system logs\n- [ ] Establish normal operating-system baselines\n- [ ] Alert on unexpected processes\n- [ ] Monitor command-line activity\n- [ ] Monitor PowerShell activity on Windows\n- [ ] Monitor suspicious shell commands on Linux\n- [ ] Consider tools such as Sysmon, osquery, or OSSEC for additional endpoint visibility\n- [ ] Use file-integrity monitoring where required\n\n## 13. Proxy and Firewall Logs\n\n- [ ] Collect inbound and outbound connection logs\n- [ ] Investigate outbound connections to unexpected services\n- [ ] Monitor connections to unauthorized cloud-storage or messaging platforms\n- [ ] Alert on known command-and-control IP addresses and hostnames\n- [ ] Use blocklists carefully and recognize that they may be incomplete or outdated\n- [ ] Detect connections using unexpected ports or protocols\n- [ ] Look for unusually long-lasting connections\n- [ ] Monitor abnormal bandwidth usage\n- [ ] Investigate low-bandwidth, long-duration connections that may indicate tunneling\n\n## 14. User Accounts, Groups, and Permissions\n\n- [ ] Monitor use of default or shared accounts\n- [ ] Restrict default accounts where possible\n- [ ] Alert when default accounts are used unexpectedly\n- [ ] Monitor changes to privileged Active Directory groups\n- [ ] Alert on additions to Domain Admins, Enterprise Admins, and similar groups\n- [ ] Monitor creation of new local user accounts\n- [ ] Monitor additions to local administrator groups\n- [ ] Investigate unexpected privilege changes\n\n## 15. Detection Testing and Continuous Improvement\n\n- [ ] Test alerts internally on a regular basis\n- [ ] Reproduce expected malicious behaviors in a controlled environment\n- [ ] Confirm that each test generates the expected log data\n- [ ] Confirm that the SIEM generates the expected alert\n- [ ] Automate repeatable tests where practical\n- [ ] Conduct tabletop exercises\n- [ ] Use tabletop exercises to identify missing detections\n- [ ] Perform periodic full logging audits\n- [ ] Check that all expected endpoints are sending logs\n- [ ] Compare current log volume with historical baselines\n- [ ] Investigate unexpected increases or decreases in log volume\n- [ ] Verify that all network ingress and egress points are covered\n- [ ] Check whether newly deployed software should be sending logs to the SIEM\n- [ ] Retest detections after major configuration or infrastructure changes\n\n## 16. Detection Frameworks and Use Cases\n\n- [ ] Map important detections to **MITRE ATT&CK** tactics and techniques\n- [ ] Use ATT&CK to identify gaps in detection coverage\n- [ ] Create threat models based on the organization's most significant risks\n- [ ] Build detection use cases around access control\n- [ ] Build detection use cases around perimeter defense\n- [ ] Build detection use cases around intrusion detection\n- [ ] Build detection use cases around malware\n- [ ] Build detection use cases around application attacks\n- [ ] Build detection use cases around resource integrity\n- [ ] Consider using **Sigma** as a portable detection-rule format\n- [ ] Review community Sigma rules for useful baseline detections\n- [ ] Customize generic Sigma rules for the local environment\n- [ ] Test every imported or newly created rule before relying on it\n- [ ] Map detection rules to relevant ATT&CK techniques when possible\n\n## 17. Ongoing SIEM Maintenance\n\n- [ ] Review SIEM configuration regularly\n- [ ] Update detections when new systems are added\n- [ ] Update detections when new threats are identified\n- [ ] Retune alerts as normal network behavior changes\n- [ ] Remove or modify consistently noisy rules\n- [ ] Review log-retention requirements periodically\n- [ ] Confirm adequate storage capacity\n- [ ] Document changes to logging and detection configurations\n- [ ] Periodically reassess whether logging coverage matches organizational risk\n- [ ] Ensure analysts know how to investigate every alert that is enabled\n\nWith the estate designed, covered, tested, and maintained, the test running through the whole sequence never changes: **is every enabled alert one an analyst knows how to investigate — and has every claimed detection been proven to fire?**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "9 min listen"}, "blocks": [{"type": "markdown", "content": "## Storage or Capability\n\n**Ben:** Let me open with the CFO's question, because someone has to. We already pay for a SIEM. The logs go in, the dashboard is green, the auditor is happy. What exactly is this record adding beyond \"keep doing that, but with more ceremony\"?\n\n**Ana:** The record's opening claim is that what you just described might be storage, not capability. Logging exists to answer the questions an incident will ask — who touched this host, what did that process spawn, where did the data go — under time pressure, at three in the morning. A SIEM that ingests terabytes and answers none of those questions is a log warehouse with a security logo on it. The record's whole architecture follows from that: design from risk backwards, keep alerts actionable, and prove — don't assume — that detections fire.\n\n**Ben:** \"Design from risk backwards\" sounds like consulting language. What does it mean on a Tuesday?\n\n**Ana:** It means the first artifacts are not data pipelines. They're a coverage scope, the compliance requirements that constrain logging, a list of the organization's highest-risk and highest-value systems, and explicit use cases — the attacks the SIEM should detect, mapped to something like MITRE ATT&CK or the Cyber Kill Chain. Then collection follows the design: start with high-value log sources, expand over time. The chapter is refreshingly blunt that not every event is equally important — treating them as if they were is how you get a SIEM that is expensive, slow, and unread.\n\n**Ben:** But every incident retrospective ever written says \"if only we'd kept those logs.\" Doesn't collect-less mean answer-less later?\n\n**Ana:** That tension is real, and the record makes it a conscious decision instead of an accident. Storage, indexing, transmission, and licensing all scale with volume; analyst attention scales with none of them. So the collect-all-versus-collect-needed question gets decided deliberately, against cost, and written down — there's a Record of Authority defining where logs are stored and for how long. You can absolutely decide to keep more of something cheap and quiet. What you can't do is drift into a default and call it a strategy. And one thing is non-negotiable: logs are stored centrally, not only on the systems that generate them, because attackers delete local logs. Evidence that lives solely on the compromised host is evidence held by the adversary.\n\n## The Alert Someone Can Act On\n\n**Ben:** Alerting. Every SOC I've seen drowns. Hundreds of alerts a day, analysts bulk-acknowledging. Your record says \"keep alerts focused, useful, and actionable\" — everyone says that. What's the enforcement mechanism?\n\n**Ana:** The chapter's closing requirement, which I think is the sharpest line in it: analysts know how to investigate every alert that is enabled. That's a testable bar. Pick any alert in the console and ask, \"when this fires, what does the analyst do?\" No answer means the alert either gets a playbook or gets disabled. An alert nobody can investigate is noise with a severity label — and alert fatigue isn't an annoyance, it's the actual mechanism by which real intrusions scroll past unread.\n\n**Ben:** And the opposite failure? Quiet dashboards that are quiet because nothing is being detected?\n\n**Ana:** The record hunts both directions. False positives get tuned down — and consistently noisy rules get removed or fixed, not tolerated. False negatives get actively tested: reproduce known suspicious behavior and check whether anything noticed. Plus the audit layer — verify expected events are actually being logged, check all endpoints are sending, compare log volume against historical baselines. A volume drop nobody investigates usually means a third of the fleet silently stopped reporting months ago.\n\n## Following the Attacker's Path\n\n**Ben:** The coverage list is enormous — Windows internals, authentication, applications, three cloud providers, databases, DNS, EDR, IDS, proxies, account changes. Is this \"log everything\" sneaking back in through the side door?\n\n**Ana:** No — it's breadth of *domains*, not volume of everything. The list mirrors how an intrusion actually moves: a phished credential shows up in authentication logs, a payload as a process creation on an endpoint, its callout as a DNS query to a strange domain, lateral movement in network connections, escalation as an addition to Domain Admins, exfiltration as an unusually large database query and a long low-bandwidth outbound connection. Each domain is a place the attack becomes visible. A gap in any one of them is a corridor the attacker walks down unrecorded — every other camera can be perfect and you still lose the trail.\n\n**Ben:** You keep bringing up DNS. Why does name resolution deserve its own monitoring section?\n\n**Ana:** Because nearly everything an attacker does resolves a name first — command-and-control, exfiltration endpoints, staging domains. That makes DNS one of the cheapest, widest sensors the organization owns. The record wants queries and responses logged with enough context to tie them to the right endpoint, and endpoint telemetry that associates DNS requests with the originating process — checked for malicious domains, C2 patterns, and the algorithmically generated domains malware uses.\n\n**Ben:** And cloud? The providers log plenty on their own.\n\n**Ana:** They log — for their half of the shared-responsibility model, with their default retention, in their console. The record's requirements: understand that model, ensure administrative and API activity is actually logged, centralize cloud logs with the rest of the monitoring environment, retain them appropriately, and alert on unexpected configuration and access changes. The anti-pattern is discovering during an incident that the audit trail you assumed existed expired under a default setting nobody read.\n\n## Proving It Fires\n\n**Ben:** Now the part I find most suspicious: \"detections are tested, not trusted.\" You install a respected ruleset, the vendor tested it, the community tested it. Why is my team re-testing someone else's rules?\n\n**Ana:** Because community rules encode someone else's environment. Between \"we forward those logs\" and \"we would catch that attack\" sits a chain of silent failure modes — the event not logged because of a config default, the forwarder broken, the rule keyed to a path your systems don't use, the alert routed to a dead channel. The only way to know the chain works is to pull it: reproduce the malicious behavior in a controlled environment, confirm the log data appears, confirm the alert fires. The record applies that to every imported or newly created rule — Sigma rules included, which it otherwise likes as a portable format — and again after every major configuration or infrastructure change, because yesterday's confirmed detection quietly dies in today's migration.\n\n**Ben:** That's a lot of standing work. Reproduce behaviors, tabletops, full logging audits, retests...\n\n**Ana:** It is — and the record says to automate the repeatable tests where practical, which turns detection testing into something like CI for the SOC. The alternative isn't less work; it's the same discovery made during a real incident, at maximum cost. And this is where [OSINT and Purple Teaming](osint-purple-teaming.html) connects: that record runs the same discipline end to end with a live red team, and its findings — the technique that generated no alert, the logs too thin to investigate — are precisely this estate's gap list.\n\n**Ben:** Where does ATT&CK mapping fit? I've seen teams treat the matrix like a bingo card.\n\n**Ana:** The record uses it for one thing: turning \"we monitor a lot\" into \"here is what we cannot see.\" Map your important detections to tactics and techniques and the holes get names — then the next detection you build is the one covering the highest-risk uncovered technique, not the easiest one to write. The bingo-card failure is real, which is why the record anchors use cases in threat models built from the organization's actual significant risks, not in matrix completeness.\n\n## The Estate That Decays\n\n**Ben:** Last objection. Suppose we do all of it — designed, covered, tested. Are we done?\n\n**Ana:** The SIEM decays by default — that's the record's final argument. New systems get added, software gets deployed, traffic patterns shift, threats evolve, and each change silently invalidates some detection or baseline. A SIEM tuned once at installation is a museum of the environment as it existed that quarter. So maintenance is the product: configuration reviewed regularly, detections updated with new systems and new threats, alerts retuned as normal behavior changes, noisy rules pruned, retention and capacity reviewed, every change documented, and coverage periodically reassessed against organizational risk.\n\n**Ben:** All right. My concession: this record isn't about logging at all. It's about honesty — writing down what you chose to see, proving the alarm actually rings, and refusing to keep any alert you can't act on. The dashboards were never the point; the answers at three a.m. are.\n\n**Ana:** That's the record. Design from risk, centralize the evidence, keep the alerts human-sized, and test the whole chain — because the worst hour is the wrong time to find out the cameras were off.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why logging is the ability to answer questions during the worst hour, not storage — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: an incident room at 3 AM with question bubbles raining down over Nadia at a console while Vera asks if they can answer.](assets/images/logging-and-monitoring/comic-01-the-worst-hour.jpeg)\n**Panel 1:** *The hook: the worst hour — an incident is a stream of questions under time pressure, and the logging estate either answers them or it does not.*\n\n![Comic panel: Nadia with a tiny flashlight inside a colossal warehouse of unlabeled log boxes while a cash meter spins.](assets/images/logging-and-monitoring/comic-02-the-log-warehouse.jpeg)\n**Panel 2:** *The problem: the write-only SIEM — terabytes ingested, licensing paid, nothing read; collecting everything is a decision to find nothing.*\n\n![Comic panel: an exhausted analyst bulk-stamps a mountain of red alerts while one card with a burglar icon slides past unnoticed.](assets/images/logging-and-monitoring/comic-03-the-thousand-alert-morning.jpeg)\n**Panel 3:** *The wrong way: the thousand-alert morning — untuned rules train analysts to bulk-acknowledge, and the real intrusion drowns in ignored red.*\n\n![Comic panel: Vera places a crown-jewel gem on a map and draws cameras around it while Nadia pins a coverage grid with circled gaps.](assets/images/logging-and-monitoring/comic-04-risk-backwards.jpeg)\n**Panel 4:** *The principle: design from risk backwards — highest-value systems and explicit use cases first, mapped to a framework so the gaps have names.*\n\n![Comic panel: an intruder shreds local logs while a pneumatic tube whisks copies to a distant vault guarded by Nadia.](assets/images/logging-and-monitoring/comic-05-beyond-the-attackers-reach.jpeg)\n**Panel 5:** *Practice: centralize under a Record of Authority — attackers delete local logs, so the copy the investigation relies on lives beyond their reach, with location and retention written down.*\n\n![Comic panel: an intruder's footprint trail passes login, endpoint, DNS, cloud, and database stations, each watched by a lit camera.](assets/images/logging-and-monitoring/comic-06-the-attackers-path.jpeg)\n**Panel 6:** *Practice: coverage follows the attacker's path — identity, endpoints, applications, cloud, databases, DNS, and the perimeter each get a camera, because a gap in any one is an unrecorded corridor.*\n\n![Comic panel: Nadia triggers a mock attack in a glass lab while Vera checks off a log light and a ringing alert bell.](assets/images/logging-and-monitoring/comic-07-pull-the-alarm.jpeg)\n**Panel 7:** *Practice: tested, not trusted — a detection that has never fired in a test is a hypothesis, so the behavior is reproduced and both the log and the alert are confirmed.*\n\n![Comic panel: Nadia prunes a cobwebbed alert bell-flower and waters new sprouts while Vera records the changes.](assets/images/logging-and-monitoring/comic-08-the-decaying-garden.jpeg)\n**Panel 8:** *The upkeep: the SIEM decays by default — noisy rules pruned, detections updated with new systems and threats, retention and capacity reviewed, every change documented.*\n\n![Comic panel: an analyst answers a ringing alert with its chained playbook while an alert without a playbook lies in the bin.](assets/images/logging-and-monitoring/comic-09-what-happens-when-it-fires.jpeg)\n**Panel 9:** *The closer: the bar the estate is held to — every enabled alert is one analysts know how to investigate, and every claimed detection has been proven to fire.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

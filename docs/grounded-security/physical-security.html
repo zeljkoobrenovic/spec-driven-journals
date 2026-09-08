@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Physical Security</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="phishing-response.html" title="Phishing Awareness and Response">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="windows-infrastructure.html" title="Microsoft Windows Infrastructure">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Hardening the Estate</p>
+        <h1>Physical Security</h1>
+        <p class="byline">Željko Obrenović  ·  2026-08-22  ·  7 min · <a class="spec-link" href="physical-security.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/physical-security/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/physical-security/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Grounded Security</a><span class="nav-right"><a class="nav-prev" href="phishing-response.html" title="Phishing Awareness and Response">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="windows-infrastructure.html" title="Microsoft Windows Infrastructure">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"id": "SEC-PHYSICAL-SECURITY", "status": "draft:gray", "title": "Physical Security", "date": "2026-08-22", "author": "Željko Obrenović", "permalink": "physical-security", "timetoread": "7 min", "excerpt": "Physical access is a security boundary of the same rank as the network, and my organization defends it in layers. Secure areas are gated by real controls — locks, badges, biometrics, more than one of them where it matters; access is revoked as promptly as it is granted, with badges recovered, shared codes changed, and permissions reviewed on every role change; media is tracked like the data it carries; visitors and contractors are identified, escorted, and time-boxed; and every employee is trained that politeness does not override procedure. The test I hold the estate to: no single failed control — a held door, a cloned badge, a confident pretext — is enough to reach sensitive systems or data.", "tags": "physical security, access control, badges, tailgating, social engineering, secure media, datacenter security, visitors, defense in depth", "icon": "assets/icons/physical-security.png", "logo": "assets/images/physical-security/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": ["physical security", "access control", "badges", "tailgating", "social engineering", "secure media", "datacenter security", "visitors", "defense in depth"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **Status**: DRAFT\n>\n> **Principle**: Physical access is a security boundary of the same rank as the network, and my organization defends it the same way — **in layers, with revocation as disciplined as granting**. Secure areas sit behind real controls, and **highly sensitive areas behind more than one**; **badges, keys, and codes are recovered or changed the day someone leaves**; **media is tracked like the data it carries**; **visitors and contractors are identified, escorted, and time-boxed**; cameras are positioned to answer *who*, not just *when*; and every employee is trained that **politeness does not override procedure**. The test I hold the estate to: **no single failed control — a held door, a cloned badge, a confident pretext — is enough to reach sensitive systems or data**.\n\n## Statement\n\nThis is the physical-security bar I hold my organization to, from the front door to the server rack.\n\n**Access is controlled — and layered where it matters.**\n\n- **Secure and sensitive areas are restricted** with appropriate controls — locks, PIN pads, RFID/badge readers, biometrics, or guards — and **highly sensitive areas require more than one control**, not one good one.\n- **The workplace itself is defended**: screens lock when people step away, cable locks secure portable equipment where appropriate, a clear-desk policy is enforced, sensitive documents live in locked storage and die in shredders or locked shredding containers, and printers and their discard boxes stay free of sensitive output.\n- **Connection points are part of the perimeter**: network and telephone jacks are access-restricted, and unused jacks are disabled or require authentication before use.\n\n![Diagram of five nested physical security layers from site to rack, each with its own access control.](assets/images/physical-security/layered-physical-perimeters.jpeg)\n**Figure 1:** *Layered perimeters: every ring adds its own control, and highly sensitive areas sit behind more than one.*\n\n**Surveillance answers *who*, not just *when*.**\n\n- Cameras cover major entrances, exits, and high-risk rooms such as server rooms; they are **positioned to capture faces and to correlate badge use with the person using the badge**; they are mounted out of reach, protected from tampering, and their footage is actually reviewed — and correlated with badge-access logs — when something looks wrong.\n\n**Access is maintained, not just granted.**\n\n- Physical authentication controls are **audited regularly**: worn keypad buttons that reveal common codes are found and fixed; controls that expose authentication information are repaired or replaced.\n- **Departure is an event with a checklist**: badges, keys, and access devices are recovered immediately, permissions removed promptly, shared door and alarm codes changed when authorized personnel leave, and access reviewed on every role change. **Shared PINs do not guard highly sensitive areas.**\n\n**Media is tracked like the data it carries.**\n\n- Removable media is secured, stored locked, **labeled by data classification**, moved by secure courier when sensitive, tracked in location and status, released from secure areas only with approval, and every movement and transfer is recorded. Backup media is protected against loss and theft, and storage locations are inspected periodically.\n\n**Equipment rooms resist more than the front door.**\n\n- Server racks and cabinets lock; **rack keys are centrally controlled with logged checkout and return**; sensitive-room walls run floor to ceiling and suspended-ceiling routes are evaluated; routers, switches, and domain controllers in remote offices get secured too — a locked enclosure where a full rack is impractical — and protected spaces are designed for fire safety as well as security.\n\n**People at the perimeter are verified.**\n\n- **Visitors** sign in and out, are escorted to and from controlled areas, have their purpose verified before touching technology, and need employee approval before interacting with equipment or information.\n- **Contractors** are clearly identified on-site, show verified photo ID, work under access permissions defined in policy and limited to the areas their work requires, and their vetting and requests are confirmed before access is granted.\n- **Badges** visibly distinguish visitors from employees and contractors, expire with the visit, are returned at sign-out, and are disabled promptly when lost, stolen, or unreturned.\n\n**The human layer is trained, tested, and managed.**\n\n- Employees are trained on physical social engineering: **tailgating** (everyone authenticates individually; secure doors are not held for the unknown), **badge cloning** (badges can be copied — sensitive areas get a second factor), **malicious removable media** (unknown USB devices are never connected), and **pretexting** (repair staff, vendors, and delivery workers are verified; unusual requests are confirmed with a manager; nobody gets in solely for looking the part).\n- Physical security is **managed as an ongoing program**: coordinated between information security and facilities, included in internal assessments and penetration tests, reviewed periodically, with new threats identified and gaps corrected in a timely manner — **defense-in-depth, never a single control**.\n\n## How to Read This\n\nThis record opens the **Hardening the Estate** section of the journal — the systems themselves, starting with the layer that is easiest to forget because it has no dashboard. Where the Security Program section fixes the frame ([Creating a Security Program: Risk Before Tools](security-program.html), [Policies: What Must Be Achieved, in Writing](policies.html)), this record fixes the bar for the buildings, rooms, racks, and media the digital estate physically lives in; [Microsoft Windows Infrastructure](windows-infrastructure.html) and [Unix Application Servers](unix-servers.html) then harden what runs inside. It is grounded in the Physical Security chapter of the *Defensive Security Handbook* (Brotherston, Berlin, Reyor). The named mechanisms — badge readers, CCTV, rack keys, self-voiding visitor badges — are the worked example; my commitments hold at the capability level for any estate, from one office to many. The full working checklist lives in the **Checklist** tab, the management summary in the **TL;DR** tab, and the conversation in the **Conversation** tab.\n\n## Rationale\n\n**Physical access is root access.** Nearly every technical control this journal describes assumes the attacker is remote. Someone standing at the machine can boot from their own media, pull a drive, plug into an open jack, or photograph the papers on the desk — no exploit required. That is why this record sits at the front of the hardening section: an estate with hardened servers and an unlocked server room is hardened on paper. The clear-desk rule, the locked screen, the disabled jack, and the clean printer tray are not office etiquette; they are the physical equivalents of closing open ports.\n\n**Granting access is easy; revocation is the discipline.** Any organization can issue badges. The ones that stay secure are the ones where departure triggers the same rigor as arrival: badge recovered the same day, permissions removed promptly, shared door codes changed, access re-reviewed when roles change. Every skipped revocation compounds silently — a former employee's live badge is a standing credential nobody is watching. And a shared PIN cannot be revoked from one person at all, which is exactly why it does not guard anything highly sensitive: shared secrets have no offboarding.\n\n![Lifecycle diagram from access granting to departure, with a same-day revocation checklist and a warning branch showing an unrevoked live badge.](assets/images/physical-security/access-lifecycle-revocation.jpeg)\n**Figure 2:** *Granting is easy; revocation is the discipline — departure triggers a checklist, and every skipped step leaves a standing credential.*\n\n**Cameras are for correlation, not decoration.** A badge log proves a badge entered; it does not prove who carried it. Video positioned to capture faces — and to pair a face with a badge event — is what turns \"badge 4471 entered at 02:13\" into evidence. A camera mounted for coverage optics, never reviewed, or reachable by anyone with a ladder is a prop. The record therefore demands placement that answers *who*, tamper protection, and a working habit of reviewing footage against badge-access logs when investigating — which is also where this record hands off to [Incident Response](incident-response.html).\n\n**Media is data that walks.** A locked datacenter means little if backups, USB drives, and removable disks leave the building untracked. Classification labels, locked storage, approval before removal, secure couriers, and movement records give portable data the same chain of custody the racked data enjoys. The periodic inspection of storage locations is the audit that keeps the paper trail honest — [Asset Management and Documentation](asset-management.html) carries the broader inventory discipline this depends on.\n\n**Politeness is the attack surface.** Tailgating, pretexting, and the parking-lot USB stick all exploit the same thing: decent people defaulting to helpfulness. The chapter's most quotable instruction is that politeness should not override security procedures — holding the door, waving through the confident person in the branded polo, plugging in the promotional USB drive. Training has to make verification feel like professionalism rather than rudeness, and it has to be reinforced continuously with signs, reminders, and awareness work, because this control decays fastest. The broader curriculum lives in [Security Education](user-education.html); the in-person cousin of this attack is the subject of [Phishing Awareness and Response](phishing-response.html).\n\n**No single control survives contact — so the program layers them and tests them.** Badges get cloned; keypads wear down and reveal their codes; walls that stop at the suspended ceiling get climbed over. The record's answer is structural, not heroic: more than one control on highly sensitive areas, badge access combined with another factor where risk warrants it, regular audits of the controls themselves, and physical security included in penetration tests — the same adversarial verification the digital estate gets through [OSINT and Purple Teaming](osint-purple-teaming.html). Defense-in-depth is the closing line of the chapter's checklist because it is the design rule everything above it instantiates.\n\n![Two-panel comparison showing a single defeated control exposing the rack versus layered controls stopping the same intrusion at the next layer.](assets/images/physical-security/single-control-vs-layered.jpeg)\n**Figure 3:** *No single control survives contact: badges get cloned and walls get climbed, so sensitive areas layer controls and test them adversarially.*\n\n## What This Means in Practice\n\n| What this record says | What it does **not** say |\n| --- | --- |\n| Secure areas sit behind real controls; highly sensitive areas behind more than one. | Every office door needs a biometric lock — controls are proportionate to what the area holds. |\n| Badges, keys, and codes are recovered or changed the day someone leaves; access is reviewed on role change. | HR paperwork is enough — revocation is verified, not assumed. |\n| Cameras capture faces and correlate with badge logs, and footage is reviewed when investigating. | Surveillance is ambient monitoring of employees — it is an investigative and deterrent control. |\n| Removable media is labeled, locked, tracked, and moved with approval and records. | Removable media is banned — it is governed. |\n| Visitors and contractors are identified, escorted, time-boxed, and verified before touching anything. | Guests are treated as suspects — verification is a standard step, applied politely to everyone. |\n| Employees individually authenticate, challenge tailgaters, and verify pretexts, and are trained to. | The lobby desk owns physical security — every employee holds the boundary. |\n| Physical security is coordinated, tested in penetration tests, and reviewed as a program. | It is facilities' problem, or a one-time office fit-out. |\n\nConcretely: my organization runs physical security as a joint program between information security and facilities, with a named owner. Departures trigger same-day badge recovery and code changes; the badge and camera systems are audited on a schedule; and at least one assessment per cycle includes a physical component — someone actually tries the held door, the cloned badge, the confident pretext.\n\n## Anti-Patterns\n\n- **The lobby perimeter.** All the security budget at the front desk; once inside, every floor, room, and rack is open. One tailgate defeats the entire estate.\n- **The badge that never dies.** Departed employees and expired contractors with live badges because offboarding recovers the laptop but not the access — a standing credential with no owner.\n- **The decorative camera.** CCTV mounted for coverage optics: wrong angle for faces, reachable from a chair, footage never reviewed and never correlated with badge logs.\n- **The polite door-hold.** A culture where challenging an unbadged stranger feels rude — so nobody does, and the procedure exists only in the policy document.\n- **The shared PIN.** One code for the server room, known to everyone including several people who left last year, unchanged since installation — a secret with no offboarding.\n- **The parking-lot USB.** Found or promotional media plugged straight into a company device, because curiosity was never trained out and the ports were never restricted.\n- **The ceiling route.** A badge reader on the door and a suspended ceiling over the wall — the expensive control bypassed by the cheap gap nobody evaluated.\n- **The orphaned program.** Information security assumes facilities owns the doors; facilities assumes security does — audits, camera reviews, and threat updates belong to nobody.\n\n## Related Records\n\n- [Security Education](user-education.html) — the training layer this record depends on; tailgating, pretexting, and media awareness are its physical curriculum.\n- [Phishing Awareness and Response](phishing-response.html) — pretexting is phishing in person; the verify-before-you-act reflex is the same muscle.\n- [Asset Management and Documentation](asset-management.html) — media tracking and equipment security assume you know what media and equipment exist.\n- [Microsoft Windows Infrastructure](windows-infrastructure.html) — domain controllers are the estate's crown jewels; their racks, cages, and remote-office enclosures are this record applied.\n- [Incident Response](incident-response.html) — badge logs and camera footage are physical evidence; correlation happens inside the incident process.\n- [OSINT and Purple Teaming](osint-purple-teaming.html) — physical security is verified adversarially, in the same assessments that test everything else.\n- [Policies: What Must Be Achieved, in Writing](policies.html) — clear-desk, visitor, and contractor-access rules are written and enforced through the policy frame.\n\n## Scope and Revisiting\n\nThis record is `draft`. It applies to every facility where my organization keeps people, equipment, or data — offices, server rooms, and remote sites alike, proportionate to what each holds. I revisit it if a physical assessment or penetration test defeats a sensitive area with a single failed control (the defense-in-depth claim failing in practice), if the estate changes shape materially (a new datacenter, a move to co-working space, a shift to fully remote), or if badge, camera, or visitor-management technology changes enough that the worked examples no longer match the controls actually deployed.\n\n## Authoritative References\n\n- *Defensive Security Handbook*, 2nd edition (Lee Brotherston, Amanda Berlin, and William F. Reyor III) — the Physical Security chapter, whose checklist this record distills.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {"timetoread": "2 min read"}, "blocks": [{"type": "markdown", "content": "Physical access is a security boundary of the same rank as the network, and my organization defends it the same way — **in layers, with revocation as disciplined as granting**. Secure areas sit behind real controls and highly sensitive areas behind more than one; badges, keys, and codes are recovered or changed the day someone leaves; media is tracked like the data it carries; visitors and contractors are identified, escorted, and time-boxed; and every employee is trained that politeness does not override procedure. The test the estate is held to: no single failed control — a held door, a cloned badge, a confident pretext — is enough to reach sensitive systems or data.\n\n**What changes**\n\n* **Access becomes layered and maintained, not just installed.** Highly sensitive areas get more than one control; keypads, badges, and readers are audited on a schedule; departures trigger same-day badge recovery, prompt permission removal, and changed shared codes; role changes trigger access reviews. Shared PINs stop guarding anything highly sensitive. Racks lock, rack keys are centrally controlled and logged, and remote-office equipment gets secured enclosures.\n* **Surveillance becomes evidence, not decoration.** Cameras cover entrances and high-risk rooms, positioned to capture faces and correlate badge use with the person using the badge, protected from tampering — and footage is actually reviewed and correlated with badge logs when investigating.\n* **Media gets a chain of custody.** Removable and backup media is secured, locked away, labeled by classification, moved with approval and secure couriers, and every transfer is recorded; storage locations are inspected periodically.\n* **The perimeter extends to people.** Visitors sign in and out, are escorted, and need verified purpose and employee approval before touching anything; contractors show verified ID, are vetted, and work within policy-defined, area-limited access; badges visibly differ by type, expire with the visit, and are disabled promptly when lost.\n* **The human layer is trained against the classic plays.** Tailgating, badge cloning, malicious USB drops, and pretexting each get explicit training and controls — individual authentication at secure doors, second factors where cloning risk warrants it, restricted media ports, and verify-before-admitting as the standing reflex.\n* **Physical security runs as a program.** Information security and facilities coordinate it, penetration tests include it, policies are reviewed, new threats identified, and gaps corrected — defense-in-depth by design.\n\n**What it costs**\n\n* Escorting, sign-in, and verification add friction to every visit — accepted deliberately, because helpfulness at the door is the attack surface.\n* Badge audits, camera reviews, media records, and periodic control testing are standing work, not a one-time fit-out.\n* Training against tailgating and pretexting must recur; this control decays fastest.\n\n**What we are not doing**\n\n* Not putting biometric locks on every door — controls are proportionate to what each area holds.\n* Not banning removable media — governing it with classification, tracking, and approval.\n* Not treating this as facilities' problem alone — the program is jointly owned, and the broader training curriculum lives in [Security Education](user-education.html).\n\n*The Article tab carries the rationale and anti-patterns; the Checklist tab carries the full working checklist. Grounded in the Physical Security chapter of the* Defensive Security Handbook*.*\n"}]}, {"key": "checklist", "label": "Checklist", "meta": {"timetoread": "4 min read"}, "blocks": [{"type": "markdown", "content": "*The working checklist behind this record — physical access, surveillance, media, facilities, people, and the social-engineering defenses, end to end. The Article tab carries the rationale and anti-patterns.*\n\n## 1. Physical Access Controls\n\n- [ ] Restrict access to secure and sensitive areas\n- [ ] Use appropriate controls such as locks, PIN pads, RFID/badge readers, biometrics, or security guards\n- [ ] Require more than one security control for highly sensitive areas when appropriate\n- [ ] Ensure employees lock their computer screens when away from their desks\n- [ ] Use computer cable locks where appropriate\n- [ ] Enforce a clear-desk policy\n- [ ] Store sensitive documents in locked cabinets or other secure storage\n- [ ] Restrict access to network jacks, telephone jacks, and other connection points\n- [ ] Disable unused network jacks or require authentication before use\n- [ ] Keep printers, printer trays, and printer discard boxes free of sensitive information\n- [ ] Shred sensitive documents immediately or place them in locked shredding containers\n\n## 2. Video Surveillance\n\n- [ ] Install CCTV cameras at major entrances and exits\n- [ ] Monitor sensitive locations such as server rooms and other high-risk areas\n- [ ] Position cameras so they can clearly capture faces\n- [ ] Position cameras to help correlate badge use with the person using the badge\n- [ ] Protect cameras from tampering\n- [ ] Mount cameras out of easy reach\n- [ ] Use tamper-resistant enclosures where appropriate\n- [ ] Review surveillance footage when investigating suspicious events\n- [ ] Correlate video with badge-access logs and other evidence when possible\n\n## 3. Authentication and Access Maintenance\n\n- [ ] Regularly audit physical authentication controls\n- [ ] Inspect keypads for worn or damaged buttons that could reveal commonly used codes\n- [ ] Replace or repair security controls that expose authentication information\n- [ ] Immediately recover badges, keys, and other access devices from departing employees\n- [ ] Remove former employees' access permissions promptly\n- [ ] Change shared door or alarm codes when authorized personnel leave\n- [ ] Review access permissions whenever an employee changes roles\n- [ ] Avoid relying on shared PINs for highly sensitive areas\n\n## 4. Secure Media\n\n- [ ] Secure USB drives, removable hard drives, CDs, and other portable media\n- [ ] Restrict unauthorized access to sensitive information stored on removable media\n- [ ] Store sensitive media in locked locations when not in use\n- [ ] Secure backup media against loss or theft\n- [ ] Periodically inspect media-storage locations for security problems\n- [ ] Clearly label media according to its data classification\n- [ ] Maintain procedures for distributing media to internal and external users\n- [ ] Use secure couriers when transporting sensitive media\n- [ ] Track the location and status of sensitive media\n- [ ] Require approval before media is removed from secure areas\n- [ ] Maintain records of media movement and transfers\n\n## 5. Datacenter and Equipment Security\n\n- [ ] Use lockable server racks and cabinets\n- [ ] Keep rack keys in a secure, centrally controlled location\n- [ ] Log the checkout and return of rack keys\n- [ ] Prevent unauthorized access through walls, ceilings, or adjoining rooms\n- [ ] Ensure sensitive-room walls extend from floor to ceiling where needed\n- [ ] Evaluate access through suspended ceiling tiles and similar openings\n- [ ] Secure routers, switches, domain controllers, and other equipment in remote offices\n- [ ] Use locked equipment enclosures when a full server rack is impractical\n- [ ] Consider both physical security and fire-safety requirements when designing protected spaces\n\n## 6. Visitors\n\n- [ ] Require all visitors to sign in when entering\n- [ ] Require visitors to sign out when leaving\n- [ ] Record when visitors entered and exited\n- [ ] Record whom each visitor is meeting\n- [ ] Escort visitors to and from controlled areas\n- [ ] Verify a visitor's purpose before allowing access to technology or sensitive areas\n- [ ] Require employee approval before visitors interact with equipment or access information\n\n## 7. Contractors\n\n- [ ] Clearly identify contractors while they are on-site\n- [ ] Require and verify photo identification\n- [ ] Define contractor access permissions in organizational policy\n- [ ] Limit contractor access to areas required for their work\n- [ ] Confirm that contractor vetting or background-check requirements have been completed\n- [ ] Verify contractor requests before granting access to sensitive systems or locations\n\n## 8. Visitor and Contractor Badges\n\n- [ ] Issue badges that clearly distinguish visitors from employees and contractors\n- [ ] Limit visitor badges to the duration of the visit\n- [ ] Require badges to be returned when visitors sign out\n- [ ] Use automatically expiring or self-voiding badges when appropriate\n- [ ] Train employees to recognize legitimate badge types\n- [ ] Remain aware that badges can be copied or counterfeited\n- [ ] Report lost or stolen badges immediately\n- [ ] Disable lost, stolen, or unreturned badges promptly\n\n## 9. Physical Security Training\n\n- [ ] Train employees on physical as well as digital social-engineering risks\n- [ ] Teach employees not to allow unauthorized people into restricted areas\n- [ ] Reinforce that politeness should not override security procedures\n- [ ] Train employees to recognize suspicious behavior involving equipment, doors, badges, and media\n- [ ] Regularly reinforce physical-security expectations with signs, reminders, and awareness training\n\n## 10. Tailgating\n\n- [ ] Require each person to authenticate individually at restricted entrances\n- [ ] Do not hold secure doors open for unknown or unauthorized people\n- [ ] Challenge or report people who enter restricted areas without authenticating\n- [ ] Train employees to recognize tailgating and piggybacking attempts\n\n## 11. Badge Cloning\n\n- [ ] Educate employees that RFID and other access badges may be cloned\n- [ ] Require stronger authentication for highly sensitive areas\n- [ ] Periodically test badge-security controls\n- [ ] Investigate suspicious or duplicated badge activity\n- [ ] Combine badge access with another authentication method where risk warrants it\n\n## 12. Malicious Removable Media\n\n- [ ] Do not connect unknown USB drives or other removable media to company devices\n- [ ] Train employees to recognize malicious-media social-engineering tactics\n- [ ] Treat promotional or unexpectedly received USB devices as untrusted\n- [ ] Be suspicious of removable media intentionally left in public or employee areas\n- [ ] Restrict or disable removable-media ports where practical\n- [ ] Use endpoint controls to manage removable-media access when available\n\n## 13. Restricted Access and Pretexting\n\n- [ ] Verify the identity of repair personnel, delivery staff, vendors, and other service workers\n- [ ] Confirm that requested work is expected and authorized\n- [ ] Verify unusual requests with a manager or responsible department\n- [ ] Do not allow someone into a restricted area solely because they appear knowledgeable or appropriately dressed\n- [ ] Verify unexpected devices before connecting or installing them\n- [ ] Confirm that replacement equipment comes from a trusted source\n- [ ] Be cautious of fake work orders, shipping labels, return instructions, and similar pretexts\n\n## 14. Ongoing Physical Security Management\n\n- [ ] Coordinate physical-security activities between information security, facilities, and other responsible departments\n- [ ] Include physical security in internal assessments and penetration tests\n- [ ] Periodically review physical-security policies and procedures\n- [ ] Identify new physical threats and vulnerabilities\n- [ ] Correct identified security gaps in a timely manner\n- [ ] Apply defense-in-depth instead of relying on a single physical-security control\n\nWith the ongoing-management section running as a program — coordinated, tested, and reviewed — the estate is held to the test that runs through the whole checklist: **no single failed control is enough to reach sensitive systems or data.**\n"}]}, {"key": "dialog", "label": "Conversation", "meta": {"timetoread": "7 min listen"}, "blocks": [{"type": "markdown", "content": "## Why Doors Are in a Security Journal\n\n**Ben:** Straight question. This journal has records on Active Directory, cloud, IDS. Why is an engineering executive writing about door locks and visitor badges?\n\n**Ana:** Because physical access is root access. Nearly every technical record in this journal assumes the attacker is remote. Someone standing at the machine doesn't need an exploit — they can boot from their own media, pull a drive, plug into an open network jack, or photograph the papers on a desk. An estate with hardened servers and an unlocked server room is hardened on paper. That's why this record opens the Hardening the Estate section: it's the layer with no dashboard, so it's the layer that gets forgotten.\n\n**Ben:** But most of the checklist reads like office etiquette. Lock your screen, clear your desk, keep the printer tray clean. Is that really security?\n\n**Ana:** It's exactly security — those are the physical equivalents of closing open ports. The document on the desk, the page in the printer discard box, the live network jack in the empty meeting room: each one is an interface someone can read or connect to without authenticating. The record just applies the discipline we take for granted digitally. And it's layered deliberately: highly sensitive areas get more than one control, because the chapter's closing rule is defense-in-depth — never rely on a single physical control.\n\n**Ben:** Isn't a good badge system a single control that mostly works?\n\n**Ana:** Mostly, until it doesn't — and the record is explicit about how it doesn't. Badges get cloned; the chapter says so flatly and tells you to assume it. Keypads wear down until the four shiny buttons reveal the code. Walls stop at the suspended ceiling and someone goes over the top. So sensitive areas combine badge access with another factor, keypads get inspected, ceiling routes get evaluated, and the controls themselves get tested — physical security goes into penetration tests, same as everything else in [OSINT and Purple Teaming](osint-purple-teaming.html).\n\n## Revocation and the Badge That Never Dies\n\n**Ben:** The maintenance section feels bureaucratic. Audit keypads, recover badges, change codes. Where's the risk?\n\n**Ana:** In the asymmetry. Granting access is easy — any organization can issue badges. Revocation is the discipline that separates the secure ones. Every departure that doesn't same-day recover the badge, remove the permissions, and change the shared codes leaves a standing credential nobody is watching. A former employee's live badge is worse than a weak password: no one is monitoring for its use, and it looks legitimate on every log.\n\n**Ben:** And the shared PIN on the server room?\n\n**Ana:** That's the purest version of the problem. A shared secret has no offboarding — you can't revoke it from one person, you can only change it for everyone, which means in practice it never changes. That's why the record bans shared PINs from highly sensitive areas outright. It's also why role changes trigger access reviews: access accumulates silently unless something forces the question.\n\n**Ben:** Cameras, then. Every office has them. What does the record add?\n\n**Ana:** The word *correlate*. A badge log proves a badge entered at 02:13; it doesn't prove who carried it. The record wants cameras positioned to capture faces and to pair a face with a badge event — that's what turns a log line into evidence. And it wants footage actually reviewed when something looks wrong, correlated with badge-access logs inside the [Incident Response](incident-response.html) process. A camera at the wrong angle, reachable from a chair, never reviewed — that's a prop, not a control.\n\n## People, Politeness, and Pretexts\n\n**Ben:** Here's my real skepticism. Tailgating training, don't-hold-the-door rules — everyone nods in the session and holds the door the next morning. Human controls don't hold.\n\n**Ana:** They don't hold *by default*, which is different. The chapter's sharpest line is that politeness should not override security procedures — because politeness is precisely what the attacks exploit. Tailgating, the confident person in the branded polo with a fake work order, the promotional USB drive: all of them weaponize decent people defaulting to helpfulness. Training works when it reframes verification as professionalism rather than rudeness, and when it recurs — signs, reminders, awareness cycles — because this control decays fastest of all. The full curriculum lives in [Security Education](user-education.html); pretexting is just phishing in person, the same reflex [Phishing Awareness and Response](phishing-response.html) builds.\n\n**Ben:** And when the person at the door is legitimate — the printer technician, the delivery?\n\n**Ana:** Then verification costs them two minutes and nothing else. Identity checked, work order confirmed as expected and authorized, unusual requests escalated to a manager, unexpected devices verified before anything gets connected. Nobody gets into a restricted area solely for looking knowledgeable or appropriately dressed. Visitors sign in and out, get escorted, and need employee approval before touching equipment; contractors show verified photo ID, are vetted, and work within access limited to their job. Badges make status visible: visitor badges look different, expire with the visit, and get disabled promptly when lost or unreturned.\n\n**Ben:** The USB drop still feels like movie-plot stuff.\n\n**Ana:** It's one of the oldest working attacks there is, which is why the record doesn't rely on willpower alone. Training says treat found and promotional media as untrusted — and then endpoint controls restrict or disable removable-media ports where practical. Layers again: the human control backed by a technical one.\n\n## Media and the Program\n\n**Ben:** The media section — couriers, movement records, classification labels. Isn't that a lot of ceremony for USB sticks?\n\n**Ana:** It's chain of custody for data that walks. A locked datacenter means little if the backup tapes and removable drives leave the building untracked. Labeled by classification, locked when not in use, approval before removal, secure courier in transit, every movement recorded, storage locations inspected periodically. It leans on [Asset Management and Documentation](asset-management.html) — you can't track media you don't know exists.\n\n**Ben:** Last objection. In most companies this whole area falls between two stools — facilities owns doors, security owns firewalls, nobody owns the gap.\n\n**Ana:** The record names that as an anti-pattern — the orphaned program — and closes it structurally: physical security is coordinated between information security and facilities with a named owner, reviewed periodically, tested in assessments, with new threats identified and gaps corrected on a clock. It's a program, not a fit-out.\n\n**Ben:** So the concession is this: physical security isn't about better locks — it's about layers plus revocation plus people who verify. And the test is that no single failure — a held door, a cloned badge, a good story — gets anyone to the sensitive stuff.\n\n**Ana:** That's the record in one line. One failed control should be an inconvenience for the attacker, never a breach.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "Why a held door outranks a zero-day, and how the estate defends itself in layers — in nine panels.\n\n<!-- comic-style\n{\n  \"cast\": \"VERA: a calm, seasoned engineering executive, short gray-streaked hair, dark blazer over a plain t-shirt, carries a small black notebook. NADIA: a hands-on defensive-security lead, shoulder-length dark hair tied back, navy utility jacket over a plain shirt, an access badge on a lanyard, laptop with a padlock sticker under one arm.\",\n  \"style\": \"Clean two-tone explainer comic, thick ink outlines, flat colors with deep blue and green accents on a light background, generous white space, hand-lettered speech bubbles with SHORT readable text, no photorealism.\"\n}\n-->\n\n![Comic panel: Nadia shows Vera hardened-server dashboards while a stranger walks through an open server room door behind them.](assets/images/physical-security/comic-01-physical-access-is-root.jpeg)\n**Panel 1:** *The hook: physical access is root access — someone at the machine needs no exploit, so an unlocked server room hardens the estate on paper only.*\n\n![Comic panel: cutaway of a building with a fortified lobby but completely open floors above it, Nadia pointing upward.](assets/images/physical-security/comic-02-the-lobby-perimeter.jpeg)\n**Panel 2:** *The problem: the lobby perimeter — all the security budget at the front desk means one tailgate defeats the entire estate.*\n\n![Comic panel: an employee cheerfully holds a secure door open for a confident badge-less stranger in a branded polo.](assets/images/physical-security/comic-03-the-polite-door-hold.jpeg)\n**Panel 3:** *The wrong way: the polite door-hold — politeness becomes the attack surface when challenging a stranger feels rude.*\n\n![Comic panel: Vera presents concentric defense rings labeled badge, PIN, camera, escort around a server rack while Nadia takes notes.](assets/images/physical-security/comic-04-layers-not-one-lock.jpeg)\n**Panel 4:** *The principle: defend in layers — highly sensitive areas sit behind more than one control, so no single failed control reaches the data.*\n\n![Comic panel: Nadia ticks a departure checklist as a badge is returned, a keypad recoded, and a shared PIN note crossed out.](assets/images/physical-security/comic-05-revocation-is-the-discipline.jpeg)\n**Panel 5:** *Practice: granting access is easy, revocation is the discipline — badges recovered same day, shared codes changed, and shared PINs never guard sensitive rooms because shared secrets have no offboarding.*\n\n![Comic panel: Nadia connects a badge log entry to camera footage of a face on two side-by-side screens.](assets/images/physical-security/comic-06-cameras-answer-who.jpeg)\n**Panel 6:** *Practice: cameras are for correlation, not decoration — positioned to capture faces, protected from tampering, and reviewed against badge logs to turn an entry record into evidence.*\n\n![Comic panel: Nadia escorts a visitor with an expiring badge while a technician logs a labeled backup tape into a locked case.](assets/images/physical-security/comic-07-escorts-and-tracked-media.jpeg)\n**Panel 7:** *Practice: people and media at the perimeter — visitors and contractors are identified, escorted, and time-boxed, and removable media moves with classification labels, approvals, and a chain of custody.*\n\n![Comic panel: a penetration tester tries a held door, a cloned badge, and a courier pretext, each blocked, while Nadia records results.](assets/images/physical-security/comic-08-test-the-doors.jpeg)\n**Panel 8:** *The cost: the program is only real if it is exercised — controls are audited, and at least one assessment per cycle actually tries the held door, the cloned badge, the confident pretext.*\n\n![Comic panel: an intruder past one open door is stopped by a second locked barrier under a camera as an employee approaches.](assets/images/physical-security/comic-09-no-single-failed-control.jpeg)\n**Panel 9:** *The closer: the test the estate is held to — no single failed control, a held door, a cloned badge, or a confident pretext, is ever enough on its own.*\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>
