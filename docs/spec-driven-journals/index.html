@@ -321,6 +321,135 @@
         .empty-msg.show {
             display: block;
         }
+
+        nav.view-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 24px;
+            flex-wrap: wrap;
+        }
+
+        nav.view-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.view-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.view-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #visual[hidden] {
+            display: none;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 0 0 8px;
+        }
+
+        .visual-card {
+            display: block;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .visual-card.hidden {
+            display: none;
+        }
+
+        .visual-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+        }
+
+        .visual-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 18px;
+        }
+
+        .visual-toolbar button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 12px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .visual-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .visual-toolbar button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Expanded mode: one full-width image per row, uncropped; the image
+           links to the image file itself, the title links to the article. */
+        #visual.expanded .visual-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        #visual.expanded .visual-card img {
+            aspect-ratio: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        #visual.expanded .visual-card .visual-title {
+            font-size: 18px;
+        }
+
+        .visual-card .no-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--tag-bg, #f2f2f2);
+            border: 1px dashed var(--rule);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .visual-card .visual-title {
+            margin: 8px 2px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgb(23, 86, 169);
+        }
+
+        .visual-card:hover .visual-title {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -335,6 +464,10 @@
     </header>
 
     <div style="padding: 4px;">
+        <nav class="view-tabs" id="view-tabs" role="tablist">
+            <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
+            <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
+        </nav>
         <div class="status-filter" id="status-filter"></div>
         <div class="tag-filter" id="tag-filter"></div>
         <div class="search">
@@ -343,15 +476,19 @@
         </div>
 
         <div id="sections"></div>
+        <div id="visual" hidden></div>
         <p class="empty-msg" id="empty">No posts match your search.</p>
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Foundations", "description": "The philosophy behind writing durable organizational knowledge as markdown source, generated sites, and reviewable specs.", "posts": [{"id": "", "status": "", "title": "What Are Spec-Driven Journals?", "excerpt": "Spec-driven journals treat durable writing as structured source: each article is authored from a lightweight spec, published as static documentation, and kept readable by humans and AI agents.", "url": "what-are-spec-driven-journals.html", "icon": "assets/icons/what-are-spec-driven-journals.png", "tags": ["journals", "documentation", "specs", "static site"]}, {"id": "", "status": "", "title": "Journals as Source of Truth", "excerpt": "A spec-driven journal is useful because it separates canonical source from generated output: authors change markdown, specs, config, and assets, while generated HTML remains the review and publication surface.", "url": "journals-as-source-of-truth.html", "icon": "assets/icons/journals-as-source-of-truth.png", "tags": ["source of truth", "markdown", "git", "publishing"]}]}, {"title": "Authoring Model", "description": "How journals, posts, specs, assets, cross-links, and AI-mediated sessions fit together in day-to-day writing.", "posts": [{"id": "", "status": "", "title": "Anatomy of a Journal", "excerpt": "A journal is a small source tree: one config file, a posts folder, optional assets, and per-post folders that keep the article, its spec, and its media together.", "url": "anatomy-of-a-journal.html", "icon": "assets/icons/anatomy-of-a-journal.png", "tags": ["journal structure", "config", "posts", "front matter"]}, {"id": "", "status": "", "title": "Cross-Links, Assets, and Blocks", "excerpt": "Spec-driven journals stay navigable through stable cross-links, simple asset paths, generated clickable images, and a small set of custom block types for diagrams and visualizations.", "url": "cross-links-assets-and-blocks.html", "icon": "assets/icons/cross-links-assets-and-blocks.png", "tags": ["cross-links", "assets", "markdown", "rendering"]}, {"id": "", "status": "", "title": "Spec-Driven Authoring Workflow", "excerpt": "Spec-driven authoring is the practical workflow inside Spec-Driven Journals: state the intent in a sibling spec, draft the post from that contract, build the journal, inspect the generated page, and return fixes to source.", "url": "spec-driven-authoring-workflow.html", "icon": "assets/icons/spec-driven-authoring-workflow.png", "tags": ["authoring", "specs", "workflow", "review"]}, {"id": "", "status": "", "title": "AI-Mediated Journal Operations", "excerpt": "AI agents are useful journal collaborators when they treat the Spec-Driven Journals repository as source, read the local contract before editing, update specs before substantial posts, build scoped output, and leave a clear verification trail.", "url": "ai-mediated-journal-operations.html", "icon": "assets/icons/ai-mediated-journal-operations.png", "tags": ["ai agents", "authoring", "review", "operations"]}]}, {"title": "Implementation", "description": "How the generator turns source into static sites, and how to extend the system without losing its lightweight character.", "posts": [{"id": "", "status": "", "title": "Build Pipeline and Rendering Model", "excerpt": "The journal build is intentionally small: Python collects source into structured JSON payloads, templates embed those payloads, and browser-side JavaScript renders markdown, links, images, diagrams, and custom blocks.", "url": "build-pipeline-and-rendering-model.html", "icon": "assets/icons/build-pipeline-and-rendering-model.png", "tags": ["implementation", "build", "rendering", "static site"]}, {"id": "", "status": "", "title": "Extending and Maintaining the System", "excerpt": "Spec-driven journals can evolve safely when maintainers preserve the small build contract, keep source and generated output separate, add journals deliberately, and verify changes with scoped builds and rendered pages.", "url": "extending-and-maintaining-the-system.html", "icon": "assets/icons/extending-and-maintaining-the-system.png", "tags": ["maintenance", "extension", "build contracts", "start page"]}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Foundations", "description": "The philosophy behind writing durable organizational knowledge as markdown source, generated sites, and reviewable specs.", "posts": [{"id": "", "status": "", "title": "What Are Spec-Driven Journals?", "excerpt": "Spec-driven journals treat durable writing as structured source: each article is authored from a lightweight spec, published as static documentation, and kept readable by humans and AI agents.", "url": "what-are-spec-driven-journals.html", "icon": "assets/icons/what-are-spec-driven-journals.png", "logo": "assets/images/what-are-spec-driven-journals/logo.jpeg", "tags": ["journals", "documentation", "specs", "static site"]}, {"id": "", "status": "", "title": "Journals as Source of Truth", "excerpt": "A spec-driven journal is useful because it separates canonical source from generated output: authors change markdown, specs, config, and assets, while generated HTML remains the review and publication surface.", "url": "journals-as-source-of-truth.html", "icon": "assets/icons/journals-as-source-of-truth.png", "logo": "assets/images/journals-as-source-of-truth/logo.jpeg", "tags": ["source of truth", "markdown", "git", "publishing"]}]}, {"title": "Authoring Model", "description": "How journals, posts, specs, assets, cross-links, and AI-mediated sessions fit together in day-to-day writing.", "posts": [{"id": "", "status": "", "title": "Anatomy of a Journal", "excerpt": "A journal is a small source tree: one config file, a posts folder, optional assets, and per-post folders that keep the article, its spec, and its media together.", "url": "anatomy-of-a-journal.html", "icon": "assets/icons/anatomy-of-a-journal.png", "logo": "assets/images/anatomy-of-a-journal/logo.jpeg", "tags": ["journal structure", "config", "posts", "front matter"]}, {"id": "", "status": "", "title": "Cross-Links, Assets, and Blocks", "excerpt": "Spec-driven journals stay navigable through stable cross-links, simple asset paths, generated clickable images, and a small set of custom block types for diagrams and visualizations.", "url": "cross-links-assets-and-blocks.html", "icon": "assets/icons/cross-links-assets-and-blocks.png", "logo": "assets/images/cross-links-assets-and-blocks/logo.jpeg", "tags": ["cross-links", "assets", "markdown", "rendering"]}, {"id": "", "status": "", "title": "Spec-Driven Authoring Workflow", "excerpt": "Spec-driven authoring is the practical workflow inside Spec-Driven Journals: state the intent in a sibling spec, draft the post from that contract, build the journal, inspect the generated page, and return fixes to source.", "url": "spec-driven-authoring-workflow.html", "icon": "assets/icons/spec-driven-authoring-workflow.png", "logo": "assets/images/spec-driven-authoring-workflow/logo.jpeg", "tags": ["authoring", "specs", "workflow", "review"]}, {"id": "", "status": "", "title": "AI-Mediated Journal Operations", "excerpt": "AI agents are useful journal collaborators when they treat the Spec-Driven Journals repository as source, read the local contract before editing, update specs before substantial posts, build scoped output, and leave a clear verification trail.", "url": "ai-mediated-journal-operations.html", "icon": "assets/icons/ai-mediated-journal-operations.png", "logo": "assets/images/ai-mediated-journal-operations/logo.jpeg", "tags": ["ai agents", "authoring", "review", "operations"]}]}, {"title": "Implementation", "description": "How the generator turns source into static sites, and how to extend the system without losing its lightweight character.", "posts": [{"id": "", "status": "", "title": "Build Pipeline and Rendering Model", "excerpt": "The journal build is intentionally small: Python collects source into structured JSON payloads, templates embed those payloads, and browser-side JavaScript renders markdown, links, images, diagrams, and custom blocks.", "url": "build-pipeline-and-rendering-model.html", "icon": "assets/icons/build-pipeline-and-rendering-model.png", "logo": "assets/images/build-pipeline-and-rendering-model/logo.jpeg", "tags": ["implementation", "build", "rendering", "static site"]}, {"id": "", "status": "", "title": "Extending and Maintaining the System", "excerpt": "Spec-driven journals can evolve safely when maintainers preserve the small build contract, keep source and generated output separate, add journals deliberately, and verify changes with scoped builds and rendered pages.", "url": "extending-and-maintaining-the-system.html", "icon": "assets/icons/extending-and-maintaining-the-system.png", "logo": "assets/images/extending-and-maintaining-the-system/logo.jpeg", "tags": ["maintenance", "extension", "build contracts", "start page"]}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
         const root = document.getElementById('sections');
+        const visualRoot = document.getElementById('visual');
+        const tabList = document.getElementById('tab-list');
+        const tabVisual = document.getElementById('tab-visual');
         const empty = document.getElementById('empty');
         const hits = document.getElementById('hits');
         const tagFilter = document.getElementById('tag-filter');
@@ -514,45 +651,116 @@
             root.appendChild(sec);
         });
 
+        // Render the Visual Overview pane: same sections, but each post is a
+        // card showing its hero logo image (instead of the abstract). Cards
+        // carry the same data-* attributes so search/tag/status filters apply
+        // to both views.
+        const visualToolbar = el('div', {class: 'visual-toolbar'});
+        const expandBtn = el('button', {type: 'button', text: 'Expand images'});
+        visualToolbar.appendChild(expandBtn);
+        visualRoot.appendChild(visualToolbar);
+
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const grid = el('div', {class: 'visual-grid'});
+            section.posts.forEach(p => {
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                const card = el('a', {class: 'visual-card', href: p.url});
+                card.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                card.dataset.tags = tags.join('|').toLowerCase();
+                card.dataset.status = statusName.toLowerCase();
+                if (p.logo) {
+                    card.appendChild(el('img', {src: p.logo, alt: p.title, loading: 'lazy'}));
+                } else {
+                    card.appendChild(el('div', {class: 'no-logo', text: 'no image'}));
+                }
+                card.appendChild(el('p', {class: 'visual-title', text: p.title}));
+                grid.appendChild(card);
+            });
+            sec.appendChild(grid);
+            visualRoot.appendChild(sec);
+        });
+
+        // Expand toggle: full-width uncropped images, one per row. Clicking
+        // anywhere on a card opens the article in both modes.
+        let visualExpanded = false;
+        expandBtn.addEventListener('click', function () {
+            visualExpanded = !visualExpanded;
+            visualRoot.classList.toggle('expanded', visualExpanded);
+            expandBtn.classList.toggle('active', visualExpanded);
+            expandBtn.textContent = visualExpanded ? 'Compact grid' : 'Expand images';
+        });
+
+        // Tab switching between the article list and the visual overview.
+        // #visual in the URL hash deep-links the visual tab.
+        function selectView(visual) {
+            root.hidden = visual;
+            visualRoot.hidden = !visual;
+            tabList.classList.toggle('active', !visual);
+            tabVisual.classList.toggle('active', visual);
+            tabList.setAttribute('aria-selected', String(!visual));
+            tabVisual.setAttribute('aria-selected', String(visual));
+            const hash = visual ? '#visual' : '';
+            if (window.location.hash !== hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+            }
+        }
+
+        tabList.addEventListener('click', function () { selectView(false); });
+        tabVisual.addEventListener('click', function () { selectView(true); });
+        if (window.location.hash === '#visual') selectView(true);
+
         function applyFilters() {
             const q = qInput.value.trim().toLowerCase();
             let visibleCount = 0;
-            root.querySelectorAll('section.group').forEach(sec => {
-                let secVisible = false;
-                sec.querySelectorAll('li').forEach(li => {
-                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
-                    let matchTag = true;
-                    if (activeTags.size) {
-                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
-                        // any-match: post must carry at least one selected tag
-                        matchTag = false;
-                        for (const t of activeTags) {
-                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
-                                matchTag = true;
-                                break;
-                            }
+
+            function matchItem(item) {
+                const matchQ = !q || item.dataset.haystack.indexOf(q) !== -1;
+                let matchTag = true;
+                if (activeTags.size) {
+                    const itemTags = item.dataset.tags ? item.dataset.tags.split('|') : [];
+                    // any-match: post must carry at least one selected tag
+                    matchTag = false;
+                    for (const t of activeTags) {
+                        if (itemTags.indexOf(t.toLowerCase()) !== -1) {
+                            matchTag = true;
+                            break;
                         }
                     }
-                    let matchStatus = true;
-                    if (activeStatuses.size) {
-                        const liStatus = li.dataset.status || '';
-                        // any-match: post status must equal one of the selected statuses
-                        matchStatus = false;
-                        for (const s of activeStatuses) {
-                            if (liStatus === s.toLowerCase()) {
-                                matchStatus = true;
-                                break;
-                            }
+                }
+                let matchStatus = true;
+                if (activeStatuses.size) {
+                    const itemStatus = item.dataset.status || '';
+                    // any-match: post status must equal one of the selected statuses
+                    matchStatus = false;
+                    for (const s of activeStatuses) {
+                        if (itemStatus === s.toLowerCase()) {
+                            matchStatus = true;
+                            break;
                         }
                     }
-                    const match = matchQ && matchTag && matchStatus;
-                    li.classList.toggle('hidden', !match);
-                    if (match) {
-                        secVisible = true;
-                        visibleCount++;
-                    }
+                }
+                return matchQ && matchTag && matchStatus;
+            }
+
+            // Both views hold the same posts; count visibility once (list view)
+            // but toggle hidden state in both so tab switches stay filtered.
+            [root, visualRoot].forEach((pane, paneIdx) => {
+                pane.querySelectorAll('section.group').forEach(sec => {
+                    let secVisible = false;
+                    sec.querySelectorAll('li, .visual-card').forEach(item => {
+                        const match = matchItem(item);
+                        item.classList.toggle('hidden', !match);
+                        if (match) {
+                            secVisible = true;
+                            if (paneIdx === 0) visibleCount++;
+                        }
+                    });
+                    sec.classList.toggle('empty', !secVisible);
                 });
-                sec.classList.toggle('empty', !secVisible);
             });
             empty.classList.toggle('show', visibleCount === 0);
             hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)

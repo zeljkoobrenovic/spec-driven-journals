@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-08-13
+revised: 2026-08-20
 ---
 
 # Spec: Introduction
@@ -16,8 +16,11 @@ covering both the engineering of internal platforms (why they exist, the four
 pillars, the team, the product mindset, operations, planning, rearchitecting,
 stakeholders, success) and the strategy around platforms (understanding,
 strategy, design, organization, implementation, growth). Give the reader the
-map of the two sections, say where the material comes from (Camille Fournier
-and Ian Nowland's *Platform Engineering*; Gregor Hohpe's *Platform Strategy*),
+map of the three sections — the third being the Reference Implementation
+section, the model made concrete from the *Platform Engineer's Handbook*
+chapter checklists — say where the material comes from (Camille Fournier
+and Ian Nowland's *Platform Engineering*; Gregor Hohpe's *Platform Strategy*;
+the *Platform Engineer's Handbook*),
 and explain how to read the journal: article for the argument, Checklist tab
 for the runnable part.
 
@@ -34,10 +37,11 @@ the same sources.
 - [x] **The journal's charter is stated** — my platform operating model as
       records, not a book report; first person; each record names its
       revisiting conditions.
-- [x] **The two-book structure is explicit** — Platform Engineering
+- [x] **The three-source structure is explicit** — Platform Engineering
       (Fournier & Nowland) for building and running platforms, Platform
-      Strategy (Hohpe) for the strategic frame, and why the two belong in one
-      journal.
+      Strategy (Hohpe) for the strategic frame, the *Platform Engineer's
+      Handbook* for the concrete reference build, and why the three belong in
+      one journal.
 - [x] **The map lists every record** with `[[slug]]` cross-links by section.
 - [x] **The reading guide works for each audience** — platform leaders,
       platform engineers, application teams, executives.
@@ -81,14 +85,20 @@ the same sources.
     *Platform Engineering*.
   - `sources/checklists/platform-strategy/` — six chapter checklists from
     *Platform Strategy*.
+  - `sources/checklists/plaform-engineer-handbook/` — thirteen chapter
+    checklists from the *Platform Engineer's Handbook*.
 - **External**
   - Camille Fournier & Ian Nowland, *Platform Engineering: A Guide for
     Technical, Product, and People Leaders* (O'Reilly, 2024).
   - Gregor Hohpe, *Platform Strategy: Innovation Through Harmonization*
     (Leanpub, 2024).
+  - *The Platform Engineer's Handbook* — the chapter checklists behind the
+    Reference Implementation section.
 
 ## Changelog
 
+- **2026-08-20** — Visual layer refreshed for the three-section journal: Figure 2 journal map regenerated (three regions), comic panels 4, 5, and 8 regenerated (twenty-nine records, three books, three-region map). *(Željko, AI-mediated session)*
+- **2026-08-20** — Reference Implementation section added to the journal (13 records from the *Platform Engineer's Handbook* chapter checklists); intro updated: record count, three-source crediting, map, and reading paths. *(Željko, AI-mediated session)*
 - **2026-08-13** — Summary and dialog modalities added (Summary and Conversation tabs, Ana/Ben dialog cast). *(Željko, AI-mediated session)*
 - **2026-08-13** — Post-review fixes applied (see REVIEW.md). *(Željko, AI-mediated session)*
 - **2026-08-12** — Comics modality added (comics.md, Comic tab, shared VERA/KAI cast); 2 inline figures generated in the article. *(Željko, AI-mediated session)*

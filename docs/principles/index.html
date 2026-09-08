@@ -321,6 +321,135 @@
         .empty-msg.show {
             display: block;
         }
+
+        nav.view-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 24px;
+            flex-wrap: wrap;
+        }
+
+        nav.view-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.view-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.view-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #visual[hidden] {
+            display: none;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 0 0 8px;
+        }
+
+        .visual-card {
+            display: block;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .visual-card.hidden {
+            display: none;
+        }
+
+        .visual-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+        }
+
+        .visual-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 18px;
+        }
+
+        .visual-toolbar button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 12px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .visual-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .visual-toolbar button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Expanded mode: one full-width image per row, uncropped; the image
+           links to the image file itself, the title links to the article. */
+        #visual.expanded .visual-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        #visual.expanded .visual-card img {
+            aspect-ratio: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        #visual.expanded .visual-card .visual-title {
+            font-size: 18px;
+        }
+
+        .visual-card .no-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--tag-bg, #f2f2f2);
+            border: 1px dashed var(--rule);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .visual-card .visual-title {
+            margin: 8px 2px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgb(23, 86, 169);
+        }
+
+        .visual-card:hover .visual-title {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -335,6 +464,10 @@
     </header>
 
     <div style="padding: 4px;">
+        <nav class="view-tabs" id="view-tabs" role="tablist">
+            <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
+            <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
+        </nav>
         <div class="status-filter" id="status-filter"></div>
         <div class="tag-filter" id="tag-filter"></div>
         <div class="search">
@@ -343,15 +476,19 @@
         </div>
 
         <div id="sections"></div>
+        <div id="visual" hidden></div>
         <p class="empty-msg" id="empty">No posts match your search.</p>
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Design", "description": "How Organization systems should be shaped: small, evolutionary, decoupled, and standardized before they are diverged from.", "posts": [{"id": "ORG-PRIN-SMALL-AND-SIMPLE", "status": "draft:gray", "title": "Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)", "excerpt": "Prefer small, simple components over large, clever ones - but not too small and not too simple. Organization systems should be decomposed into pieces that one team can understand end-to-end, that one engineer can hold in their head, and that can be replaced without rewriting the platform around them. The opposite extreme - nanoservices, where every endpoint or function becomes its own service - replaces internal complexity with distributed complexity that often costs more than the monolith it was supposed to replace. The principle is not 'microservices for everything', and not 'split until it can't be split'; it is 'no piece bigger or smaller than it needs to be for what it actually does'.", "url": "small-and-simple.html", "icon": "assets/icons/small-and-simple.png", "tags": ["design", "simplicity", "modularity", "microservices", "nanoservices", "complexity"]}, {"id": "ORG-PRIN-EVOLUTIONARY-SYSTEMS", "status": "draft:gray", "title": "Design Principle: Evolutionary Systems", "excerpt": "Design Organization systems for change. The next change is closer and more probable than the next clean rewrite. Architectures should enable small, safe, incremental changes throughout their lifecycle, not optimise for a fixed end-state that will never quite arrive. This shows up as backwards-compatible contracts, additive schema changes, feature flags, well-defined seams, reversible deploys, and a strong bias against grand re-architectures. Evolutionary systems are how Organization makes long-term progress without big-bang risk.", "url": "evolutionary-systems.html", "icon": "assets/icons/evolutionary-systems.png", "tags": ["design", "evolution", "change", "refactoring", "fitness-functions"]}, {"id": "ORG-PRIN-SMARTS-IN-THE-NODES", "status": "draft:gray", "title": "Design Principle: Smarts in the Nodes, not the Network", "excerpt": "Put business logic, routing decisions, and orchestration inside the services that own the work, not in the messaging fabric, API gateway, service mesh, or BPM tool that connects them. Organization's integration backbone - Kafka via Amazon MSK, ECS networking, AWS-native components - should remain dumb pipes that move data reliably. Smart middleware feels powerful at first and becomes the most expensive, least owned part of the platform within two years.", "url": "smarts-in-the-nodes.html", "icon": "assets/icons/smarts-in-the-nodes.png", "tags": ["design", "decoupling", "messaging", "kafka", "integration", "choreography"]}, {"id": "ORG-PRIN-STANDARDIZE-BEFORE-DIVERGING", "status": "draft:gray", "title": "Design Principle: Standardize Before Diverging", "excerpt": "Adopt a default before allowing variation. Organization's backend on .NET, compute on ECS Fargate, messaging on MSK, cloud on AWS, and AI tooling on Claude Code are all defaults. Teams may diverge from a default by ADR, but they may not diverge by accident. The principle protects the cost compounding of a shared platform: a golden path is only valuable if most teams are on it. Variation has to earn its keep, not be granted by silence.", "url": "standardize-before-diverging.html", "icon": "assets/icons/standardize-before-diverging.png", "tags": ["design", "standardization", "golden-path", "exceptions", "governance"]}]}, {"title": "Operational", "description": "How Organization systems should run in production: ready before launch, cloud-native on AWS, and observable by default.", "posts": [{"id": "ORG-PRIN-PRODUCTION-READY", "status": "draft:gray", "title": "Operational Principle: Production Ready", "excerpt": "A service is not done when it works in staging. It is done when it is fit to run in production. That means observability, health checks, secrets handling, deploy and rollback, capacity, on-call ownership, runbooks, security defaults, and data-protection considerations are all in place before traffic flows. Production-readiness is a property of the *service*, validated against an explicit checklist, owned by the team that runs it. It is not a stage in a release plan.", "url": "production-ready.html", "icon": "assets/icons/production-ready.png", "tags": ["operations", "production", "sre", "on-call", "observability", "reliability"]}, {"id": "ORG-PRIN-CLOUD-NATIVE-ON-AWS", "status": "draft:gray", "title": "Operational Principle: Cloud Native on AWS", "excerpt": "Organization is an AWS company. Build cloud-native by default: managed services where they remove operational toil, AWS-native primitives where they fit, and self-managed alternatives only when there is a written reason. Cloud-native means stateless, horizontally scalable, deployable through automation, and observable through standard AWS interfaces. It does not mean serverless-everywhere, multi-cloud-just-in-case, or rebuilding what AWS already does well.", "url": "cloud-native-on-aws.html", "icon": "assets/icons/cloud-native-on-aws.png", "tags": ["cloud", "aws", "managed-services", "msk", "ecs", "fargate", "operations"]}, {"id": "ORG-PRIN-OBSERVABLE-BY-DEFAULT", "status": "draft:gray", "title": "Operational Principle: Observable by Default", "excerpt": "Every Organization service emits structured logs, useful metrics, and distributed traces from day one. Observability is not a feature added after an incident; it is a default property delivered by templates, libraries, and the platform. The goal is not dashboards; the goal is to answer 'what just happened, where, and why?' in minutes for any production system. Without observability, every other operational principle collapses into guesswork.", "url": "observable-by-default.html", "icon": "assets/icons/observable-by-default.png", "tags": ["operations", "observability", "logging", "metrics", "tracing", "slos"]}]}, {"title": "Organisation", "description": "How Organization organises decisions, inheritance, tooling choices, and capability ownership.", "posts": [{"id": "ORG-PRIN-DECISIONS-STAY-WITH-TEAMS", "status": "draft:gray", "title": "Organisation Principle: Decisions Stay with Teams", "excerpt": "Technical decisions at Organization are owned by the team that will operate the result. Centralised approval boards are not the model. Teams seek advice from the people most affected and most expert through an Advice Process, document the decision in an ADR, and remain accountable for the consequences. The Architecture Advisory Forum exists to make those conversations easier, not to approve work. Ownership of the decision is what makes the team accountable for the outcome.", "url": "decisions-stay-with-teams.html", "icon": "assets/icons/decisions-stay-with-teams.png", "tags": ["organisation", "advice-process", "ownership", "governance", "accountability", "adr"]}, {"id": "ORG-PRIN-INHERIT-THEN-SIMPLIFY", "status": "draft:gray", "title": "Organisation Principle: Inherit, Then Simplify", "excerpt": "Organization starts from AVIV Group's existing technology and tooling: AWS contract, account foundation, networking, web and mobile golden paths, and operating practices. These give a fast start, real scale, and a coherent baseline. The principle is to inherit deliberately, then simplify deliberately. Inheritance does not mean acceptance forever. Simplification does not mean a rewrite. Both happen in time-bounded steps, with each step justified by reduced complexity, lower cost, or clearer ownership.", "url": "inherit-then-simplify.html", "icon": "assets/icons/inherit-then-simplify.png", "tags": ["organisation", "inheritance", "simplification", "aviv-group", "platform", "modernization"]}, {"id": "ORG-PRIN-TOOLING-EXPLICIT-AND-REVERSIBLE", "status": "draft:gray", "title": "Organisation Principle: Tooling Decisions Are Explicit and Reversible", "excerpt": "Pick tools deliberately, write down why, plan how to leave. Organization's tooling decisions - Claude Code as the AI default, .NET as the backend default, ECS as compute, MSK as messaging - are dated and reviewable, not eternal. A reversible tooling decision is one whose context, scope, and exit path are explicit enough that the next review can compare evidence to a stated frame, not to taste.", "url": "tooling-explicit-and-reversible.html", "icon": "assets/icons/tooling-explicit-and-reversible.png", "tags": ["organisation", "tooling", "ai", "reversibility", "governance", "review-cadence"]}, {"id": "ORG-PRIN-CAPABILITIES-FOLLOW-OWNERSHIP", "status": "draft:gray", "title": "Organisation Principle: Capabilities Follow Ownership", "excerpt": "Every shared capability at Organization - service, library, platform, golden path, Skill, MCP server, subagent, CLAUDE.md fragment, runbook - belongs to a named owner with a real lifecycle. Capabilities without owners decay, drift, and quietly poison the platform. The principle is simple: if it can be used by another team, it has an owner, a lifecycle, and a decommissioning plan. Otherwise it should not exist as a shared thing.", "url": "capabilities-follow-ownership.html", "icon": "assets/icons/capabilities-follow-ownership.png", "tags": ["organisation", "ownership", "platform", "lifecycle", "capabilities", "skills", "mcp"]}]}, {"title": "Practices", "description": "How Organization writes things down, talks about them, encodes governance, and applies AI to engineering work.", "posts": [{"id": "ORG-PRIN-MARKDOWN-RECORDS-AS-CANONICAL", "status": "draft:gray", "title": "Practice Principle: Markdown Records as Canonical", "excerpt": "The canonical record of an Organization technical decision, strategy, or durable discussion is a markdown file in git. Slack threads, Google Docs, meeting notes, and wiki pages may support discussion, but the markdown record is the artifact other people will cite, search, link, and learn from in two years. Canonicality is what makes records trustworthy across time. Without it, the same decision is remembered in three different versions and acted on differently.", "url": "markdown-records-as-canonical.html", "icon": "assets/icons/markdown-records-as-canonical.png", "tags": ["practices", "documentation", "adr", "markdown", "git", "knowledge-management"]}, {"id": "ORG-PRIN-ADVICE-IN-PUBLIC", "status": "draft:gray", "title": "Practice Principle: Advice in Public", "excerpt": "Architecture advice happens in the open at Organization. Decisions are made by teams; the conversations supporting those decisions take place where many people can listen, contribute, and learn. The Architecture Advisory Forum is the standing venue, but the principle is broader: prefer ADRs over private memos, public PR reviews over private feedback, and shared forums over 1-1 escalations. Conversation is a learning multiplier; private advice serves one team, public advice serves the organisation.", "url": "advice-in-public.html", "icon": "assets/icons/advice-in-public.png", "tags": ["practices", "advice-process", "communication", "aaf", "learning-organisation", "transparency"]}, {"id": "ORG-PRIN-GOVERNANCE-AS-CODE", "status": "draft:gray", "title": "Practice Principle: Governance as Code", "excerpt": "Encode engineering standards, policies, and review rules as executable artifacts: CI checks, pre-commit hooks, IaC guardrails, Claude Code settings, CLAUDE.md fragments, Skills, MCP allowlists, and pull-request templates. Governance documented only in policy decks fails silently and gets discovered during incidents. Governance encoded in the platform fails loudly and gets fixed in pull requests. The principle is not 'no human review'; it is 'standards that can be enforced should be'.", "url": "governance-as-code.html", "icon": "assets/icons/governance-as-code.png", "tags": ["practices", "governance", "ci", "hooks", "claude-code", "policy", "automation"]}, {"id": "ORG-PRIN-AI-OUTPUT-MUST-BE-GOVERNED", "status": "draft:gray", "title": "Practice Principle: AI Output Must Be Governed", "excerpt": "AI-generated code, configuration, and documentation at Organization is treated as draft input. Human accountability does not move. Every AI change flows through the same engineering standards, reviews, tests, observability, and security gates as human work, plus AI-specific controls: scoped permission modes, hooks, secrets handling, approved tool registries, and audit trails. The principle is simple: AI accelerates engineering work; it does not relax engineering governance.", "url": "ai-output-must-be-governed.html", "icon": "assets/icons/ai-output-must-be-governed.png", "tags": ["practices", "ai", "claude-code", "governance", "policy", "accountability", "security"]}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Design", "description": "How Organization systems should be shaped: small, evolutionary, decoupled, and standardized before they are diverged from.", "posts": [{"id": "ORG-PRIN-SMALL-AND-SIMPLE", "status": "draft:gray", "title": "Design Principle: Small (and Not Too Small) and Simple (and Not Too Simple)", "excerpt": "Prefer small, simple components over large, clever ones - but not too small and not too simple. Organization systems should be decomposed into pieces that one team can understand end-to-end, that one engineer can hold in their head, and that can be replaced without rewriting the platform around them. The opposite extreme - nanoservices, where every endpoint or function becomes its own service - replaces internal complexity with distributed complexity that often costs more than the monolith it was supposed to replace. The principle is not 'microservices for everything', and not 'split until it can't be split'; it is 'no piece bigger or smaller than it needs to be for what it actually does'.", "url": "small-and-simple.html", "icon": "assets/icons/small-and-simple.png", "logo": "assets/images/small-and-simple/logo.jpeg", "tags": ["design", "simplicity", "modularity", "microservices", "nanoservices", "complexity"]}, {"id": "ORG-PRIN-EVOLUTIONARY-SYSTEMS", "status": "draft:gray", "title": "Design Principle: Evolutionary Systems", "excerpt": "Design Organization systems for change. The next change is closer and more probable than the next clean rewrite. Architectures should enable small, safe, incremental changes throughout their lifecycle, not optimise for a fixed end-state that will never quite arrive. This shows up as backwards-compatible contracts, additive schema changes, feature flags, well-defined seams, reversible deploys, and a strong bias against grand re-architectures. Evolutionary systems are how Organization makes long-term progress without big-bang risk.", "url": "evolutionary-systems.html", "icon": "assets/icons/evolutionary-systems.png", "logo": "assets/images/evolutionary-systems/logo.jpeg", "tags": ["design", "evolution", "change", "refactoring", "fitness-functions"]}, {"id": "ORG-PRIN-SMARTS-IN-THE-NODES", "status": "draft:gray", "title": "Design Principle: Smarts in the Nodes, not the Network", "excerpt": "Put business logic, routing decisions, and orchestration inside the services that own the work, not in the messaging fabric, API gateway, service mesh, or BPM tool that connects them. Organization's integration backbone - Kafka via Amazon MSK, ECS networking, AWS-native components - should remain dumb pipes that move data reliably. Smart middleware feels powerful at first and becomes the most expensive, least owned part of the platform within two years.", "url": "smarts-in-the-nodes.html", "icon": "assets/icons/smarts-in-the-nodes.png", "logo": "assets/images/smarts-in-the-nodes/logo.jpeg", "tags": ["design", "decoupling", "messaging", "kafka", "integration", "choreography"]}, {"id": "ORG-PRIN-STANDARDIZE-BEFORE-DIVERGING", "status": "draft:gray", "title": "Design Principle: Standardize Before Diverging", "excerpt": "Adopt a default before allowing variation. Organization's backend on .NET, compute on ECS Fargate, messaging on MSK, cloud on AWS, and AI tooling on Claude Code are all defaults. Teams may diverge from a default by ADR, but they may not diverge by accident. The principle protects the cost compounding of a shared platform: a golden path is only valuable if most teams are on it. Variation has to earn its keep, not be granted by silence.", "url": "standardize-before-diverging.html", "icon": "assets/icons/standardize-before-diverging.png", "logo": "assets/images/standardize-before-diverging/logo.jpeg", "tags": ["design", "standardization", "golden-path", "exceptions", "governance"]}]}, {"title": "Operational", "description": "How Organization systems should run in production: ready before launch, cloud-native on AWS, and observable by default.", "posts": [{"id": "ORG-PRIN-PRODUCTION-READY", "status": "draft:gray", "title": "Operational Principle: Production Ready", "excerpt": "A service is not done when it works in staging. It is done when it is fit to run in production. That means observability, health checks, secrets handling, deploy and rollback, capacity, on-call ownership, runbooks, security defaults, and data-protection considerations are all in place before traffic flows. Production-readiness is a property of the *service*, validated against an explicit checklist, owned by the team that runs it. It is not a stage in a release plan.", "url": "production-ready.html", "icon": "assets/icons/production-ready.png", "logo": "assets/images/production-ready/logo.jpeg", "tags": ["operations", "production", "sre", "on-call", "observability", "reliability"]}, {"id": "ORG-PRIN-CLOUD-NATIVE-ON-AWS", "status": "draft:gray", "title": "Operational Principle: Cloud Native on AWS", "excerpt": "Organization is an AWS company. Build cloud-native by default: managed services where they remove operational toil, AWS-native primitives where they fit, and self-managed alternatives only when there is a written reason. Cloud-native means stateless, horizontally scalable, deployable through automation, and observable through standard AWS interfaces. It does not mean serverless-everywhere, multi-cloud-just-in-case, or rebuilding what AWS already does well.", "url": "cloud-native-on-aws.html", "icon": "assets/icons/cloud-native-on-aws.png", "logo": "assets/images/cloud-native-on-aws/logo.jpeg", "tags": ["cloud", "aws", "managed-services", "msk", "ecs", "fargate", "operations"]}, {"id": "ORG-PRIN-OBSERVABLE-BY-DEFAULT", "status": "draft:gray", "title": "Operational Principle: Observable by Default", "excerpt": "Every Organization service emits structured logs, useful metrics, and distributed traces from day one. Observability is not a feature added after an incident; it is a default property delivered by templates, libraries, and the platform. The goal is not dashboards; the goal is to answer 'what just happened, where, and why?' in minutes for any production system. Without observability, every other operational principle collapses into guesswork.", "url": "observable-by-default.html", "icon": "assets/icons/observable-by-default.png", "logo": "assets/images/observable-by-default/logo.jpeg", "tags": ["operations", "observability", "logging", "metrics", "tracing", "slos"]}]}, {"title": "Organisation", "description": "How Organization organises decisions, inheritance, tooling choices, and capability ownership.", "posts": [{"id": "ORG-PRIN-DECISIONS-STAY-WITH-TEAMS", "status": "draft:gray", "title": "Organisation Principle: Decisions Stay with Teams", "excerpt": "Technical decisions at Organization are owned by the team that will operate the result. Centralised approval boards are not the model. Teams seek advice from the people most affected and most expert through an Advice Process, document the decision in an ADR, and remain accountable for the consequences. The Architecture Advisory Forum exists to make those conversations easier, not to approve work. Ownership of the decision is what makes the team accountable for the outcome.", "url": "decisions-stay-with-teams.html", "icon": "assets/icons/decisions-stay-with-teams.png", "logo": "assets/images/decisions-stay-with-teams/logo.jpeg", "tags": ["organisation", "advice-process", "ownership", "governance", "accountability", "adr"]}, {"id": "ORG-PRIN-INHERIT-THEN-SIMPLIFY", "status": "draft:gray", "title": "Organisation Principle: Inherit, Then Simplify", "excerpt": "Organization starts from AVIV Group's existing technology and tooling: AWS contract, account foundation, networking, web and mobile golden paths, and operating practices. These give a fast start, real scale, and a coherent baseline. The principle is to inherit deliberately, then simplify deliberately. Inheritance does not mean acceptance forever. Simplification does not mean a rewrite. Both happen in time-bounded steps, with each step justified by reduced complexity, lower cost, or clearer ownership.", "url": "inherit-then-simplify.html", "icon": "assets/icons/inherit-then-simplify.png", "logo": "assets/images/inherit-then-simplify/logo.jpeg", "tags": ["organisation", "inheritance", "simplification", "aviv-group", "platform", "modernization"]}, {"id": "ORG-PRIN-TOOLING-EXPLICIT-AND-REVERSIBLE", "status": "draft:gray", "title": "Organisation Principle: Tooling Decisions Are Explicit and Reversible", "excerpt": "Pick tools deliberately, write down why, plan how to leave. Organization's tooling decisions - Claude Code as the AI default, .NET as the backend default, ECS as compute, MSK as messaging - are dated and reviewable, not eternal. A reversible tooling decision is one whose context, scope, and exit path are explicit enough that the next review can compare evidence to a stated frame, not to taste.", "url": "tooling-explicit-and-reversible.html", "icon": "assets/icons/tooling-explicit-and-reversible.png", "logo": "assets/images/tooling-explicit-and-reversible/logo.jpeg", "tags": ["organisation", "tooling", "ai", "reversibility", "governance", "review-cadence"]}, {"id": "ORG-PRIN-CAPABILITIES-FOLLOW-OWNERSHIP", "status": "draft:gray", "title": "Organisation Principle: Capabilities Follow Ownership", "excerpt": "Every shared capability at Organization - service, library, platform, golden path, Skill, MCP server, subagent, CLAUDE.md fragment, runbook - belongs to a named owner with a real lifecycle. Capabilities without owners decay, drift, and quietly poison the platform. The principle is simple: if it can be used by another team, it has an owner, a lifecycle, and a decommissioning plan. Otherwise it should not exist as a shared thing.", "url": "capabilities-follow-ownership.html", "icon": "assets/icons/capabilities-follow-ownership.png", "logo": "assets/images/capabilities-follow-ownership/logo.jpeg", "tags": ["organisation", "ownership", "platform", "lifecycle", "capabilities", "skills", "mcp"]}]}, {"title": "Practices", "description": "How Organization writes things down, talks about them, encodes governance, and applies AI to engineering work.", "posts": [{"id": "ORG-PRIN-MARKDOWN-RECORDS-AS-CANONICAL", "status": "draft:gray", "title": "Practice Principle: Markdown Records as Canonical", "excerpt": "The canonical record of an Organization technical decision, strategy, or durable discussion is a markdown file in git. Slack threads, Google Docs, meeting notes, and wiki pages may support discussion, but the markdown record is the artifact other people will cite, search, link, and learn from in two years. Canonicality is what makes records trustworthy across time. Without it, the same decision is remembered in three different versions and acted on differently.", "url": "markdown-records-as-canonical.html", "icon": "assets/icons/markdown-records-as-canonical.png", "logo": "assets/images/markdown-records-as-canonical/logo.jpeg", "tags": ["practices", "documentation", "adr", "markdown", "git", "knowledge-management"]}, {"id": "ORG-PRIN-ADVICE-IN-PUBLIC", "status": "draft:gray", "title": "Practice Principle: Advice in Public", "excerpt": "Architecture advice happens in the open at Organization. Decisions are made by teams; the conversations supporting those decisions take place where many people can listen, contribute, and learn. The Architecture Advisory Forum is the standing venue, but the principle is broader: prefer ADRs over private memos, public PR reviews over private feedback, and shared forums over 1-1 escalations. Conversation is a learning multiplier; private advice serves one team, public advice serves the organisation.", "url": "advice-in-public.html", "icon": "assets/icons/advice-in-public.png", "logo": "assets/images/advice-in-public/logo.jpeg", "tags": ["practices", "advice-process", "communication", "aaf", "learning-organisation", "transparency"]}, {"id": "ORG-PRIN-GOVERNANCE-AS-CODE", "status": "draft:gray", "title": "Practice Principle: Governance as Code", "excerpt": "Encode engineering standards, policies, and review rules as executable artifacts: CI checks, pre-commit hooks, IaC guardrails, Claude Code settings, CLAUDE.md fragments, Skills, MCP allowlists, and pull-request templates. Governance documented only in policy decks fails silently and gets discovered during incidents. Governance encoded in the platform fails loudly and gets fixed in pull requests. The principle is not 'no human review'; it is 'standards that can be enforced should be'.", "url": "governance-as-code.html", "icon": "assets/icons/governance-as-code.png", "logo": "assets/images/governance-as-code/logo.jpeg", "tags": ["practices", "governance", "ci", "hooks", "claude-code", "policy", "automation"]}, {"id": "ORG-PRIN-AI-OUTPUT-MUST-BE-GOVERNED", "status": "draft:gray", "title": "Practice Principle: AI Output Must Be Governed", "excerpt": "AI-generated code, configuration, and documentation at Organization is treated as draft input. Human accountability does not move. Every AI change flows through the same engineering standards, reviews, tests, observability, and security gates as human work, plus AI-specific controls: scoped permission modes, hooks, secrets handling, approved tool registries, and audit trails. The principle is simple: AI accelerates engineering work; it does not relax engineering governance.", "url": "ai-output-must-be-governed.html", "icon": "assets/icons/ai-output-must-be-governed.png", "logo": "assets/images/ai-output-must-be-governed/logo.jpeg", "tags": ["practices", "ai", "claude-code", "governance", "policy", "accountability", "security"]}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
         const root = document.getElementById('sections');
+        const visualRoot = document.getElementById('visual');
+        const tabList = document.getElementById('tab-list');
+        const tabVisual = document.getElementById('tab-visual');
         const empty = document.getElementById('empty');
         const hits = document.getElementById('hits');
         const tagFilter = document.getElementById('tag-filter');
@@ -514,45 +651,116 @@
             root.appendChild(sec);
         });
 
+        // Render the Visual Overview pane: same sections, but each post is a
+        // card showing its hero logo image (instead of the abstract). Cards
+        // carry the same data-* attributes so search/tag/status filters apply
+        // to both views.
+        const visualToolbar = el('div', {class: 'visual-toolbar'});
+        const expandBtn = el('button', {type: 'button', text: 'Expand images'});
+        visualToolbar.appendChild(expandBtn);
+        visualRoot.appendChild(visualToolbar);
+
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const grid = el('div', {class: 'visual-grid'});
+            section.posts.forEach(p => {
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                const card = el('a', {class: 'visual-card', href: p.url});
+                card.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                card.dataset.tags = tags.join('|').toLowerCase();
+                card.dataset.status = statusName.toLowerCase();
+                if (p.logo) {
+                    card.appendChild(el('img', {src: p.logo, alt: p.title, loading: 'lazy'}));
+                } else {
+                    card.appendChild(el('div', {class: 'no-logo', text: 'no image'}));
+                }
+                card.appendChild(el('p', {class: 'visual-title', text: p.title}));
+                grid.appendChild(card);
+            });
+            sec.appendChild(grid);
+            visualRoot.appendChild(sec);
+        });
+
+        // Expand toggle: full-width uncropped images, one per row. Clicking
+        // anywhere on a card opens the article in both modes.
+        let visualExpanded = false;
+        expandBtn.addEventListener('click', function () {
+            visualExpanded = !visualExpanded;
+            visualRoot.classList.toggle('expanded', visualExpanded);
+            expandBtn.classList.toggle('active', visualExpanded);
+            expandBtn.textContent = visualExpanded ? 'Compact grid' : 'Expand images';
+        });
+
+        // Tab switching between the article list and the visual overview.
+        // #visual in the URL hash deep-links the visual tab.
+        function selectView(visual) {
+            root.hidden = visual;
+            visualRoot.hidden = !visual;
+            tabList.classList.toggle('active', !visual);
+            tabVisual.classList.toggle('active', visual);
+            tabList.setAttribute('aria-selected', String(!visual));
+            tabVisual.setAttribute('aria-selected', String(visual));
+            const hash = visual ? '#visual' : '';
+            if (window.location.hash !== hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+            }
+        }
+
+        tabList.addEventListener('click', function () { selectView(false); });
+        tabVisual.addEventListener('click', function () { selectView(true); });
+        if (window.location.hash === '#visual') selectView(true);
+
         function applyFilters() {
             const q = qInput.value.trim().toLowerCase();
             let visibleCount = 0;
-            root.querySelectorAll('section.group').forEach(sec => {
-                let secVisible = false;
-                sec.querySelectorAll('li').forEach(li => {
-                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
-                    let matchTag = true;
-                    if (activeTags.size) {
-                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
-                        // any-match: post must carry at least one selected tag
-                        matchTag = false;
-                        for (const t of activeTags) {
-                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
-                                matchTag = true;
-                                break;
-                            }
+
+            function matchItem(item) {
+                const matchQ = !q || item.dataset.haystack.indexOf(q) !== -1;
+                let matchTag = true;
+                if (activeTags.size) {
+                    const itemTags = item.dataset.tags ? item.dataset.tags.split('|') : [];
+                    // any-match: post must carry at least one selected tag
+                    matchTag = false;
+                    for (const t of activeTags) {
+                        if (itemTags.indexOf(t.toLowerCase()) !== -1) {
+                            matchTag = true;
+                            break;
                         }
                     }
-                    let matchStatus = true;
-                    if (activeStatuses.size) {
-                        const liStatus = li.dataset.status || '';
-                        // any-match: post status must equal one of the selected statuses
-                        matchStatus = false;
-                        for (const s of activeStatuses) {
-                            if (liStatus === s.toLowerCase()) {
-                                matchStatus = true;
-                                break;
-                            }
+                }
+                let matchStatus = true;
+                if (activeStatuses.size) {
+                    const itemStatus = item.dataset.status || '';
+                    // any-match: post status must equal one of the selected statuses
+                    matchStatus = false;
+                    for (const s of activeStatuses) {
+                        if (itemStatus === s.toLowerCase()) {
+                            matchStatus = true;
+                            break;
                         }
                     }
-                    const match = matchQ && matchTag && matchStatus;
-                    li.classList.toggle('hidden', !match);
-                    if (match) {
-                        secVisible = true;
-                        visibleCount++;
-                    }
+                }
+                return matchQ && matchTag && matchStatus;
+            }
+
+            // Both views hold the same posts; count visibility once (list view)
+            // but toggle hidden state in both so tab switches stay filtered.
+            [root, visualRoot].forEach((pane, paneIdx) => {
+                pane.querySelectorAll('section.group').forEach(sec => {
+                    let secVisible = false;
+                    sec.querySelectorAll('li, .visual-card').forEach(item => {
+                        const match = matchItem(item);
+                        item.classList.toggle('hidden', !match);
+                        if (match) {
+                            secVisible = true;
+                            if (paneIdx === 0) visibleCount++;
+                        }
+                    });
+                    sec.classList.toggle('empty', !secVisible);
                 });
-                sec.classList.toggle('empty', !secVisible);
             });
             empty.classList.toggle('show', visibleCount === 0);
             hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)

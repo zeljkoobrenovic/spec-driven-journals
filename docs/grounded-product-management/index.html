@@ -321,6 +321,135 @@
         .empty-msg.show {
             display: block;
         }
+
+        nav.view-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 24px;
+            flex-wrap: wrap;
+        }
+
+        nav.view-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.view-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.view-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #visual[hidden] {
+            display: none;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 0 0 8px;
+        }
+
+        .visual-card {
+            display: block;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .visual-card.hidden {
+            display: none;
+        }
+
+        .visual-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+        }
+
+        .visual-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 18px;
+        }
+
+        .visual-toolbar button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 12px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .visual-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .visual-toolbar button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Expanded mode: one full-width image per row, uncropped; the image
+           links to the image file itself, the title links to the article. */
+        #visual.expanded .visual-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        #visual.expanded .visual-card img {
+            aspect-ratio: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        #visual.expanded .visual-card .visual-title {
+            font-size: 18px;
+        }
+
+        .visual-card .no-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--tag-bg, #f2f2f2);
+            border: 1px dashed var(--rule);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .visual-card .visual-title {
+            margin: 8px 2px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgb(23, 86, 169);
+        }
+
+        .visual-card:hover .visual-title {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -330,11 +459,15 @@
         <p class="logo-credit">Image by ma_rish from iStock</p>
         <div style="padding: 4px;">
             <h1>Grounded Product Management</h1>
-            <p>Željko Obrenović's vision of how product management should work — durable operating principles for vision-led, outcome-driven product work, each grounded in a concrete working checklist. Informed by practice, by Ben Foster and Rajesh Nerlikar's &quot;Build What Matters&quot;, and by Marty Cagan's &quot;EMPOWERED&quot;.</p>
+            <p>Željko Obrenović's vision of how product management should work — durable operating principles for vision-led, outcome-driven product work, each grounded in a concrete working checklist. Informed by practice, by Ben Foster and Rajesh Nerlikar's &quot;Build What Matters&quot;, by Marty Cagan's &quot;EMPOWERED&quot;, and by John Cutler's &quot;The Beautiful Mess&quot;.</p>
         </div>
     </header>
 
     <div style="padding: 4px;">
+        <nav class="view-tabs" id="view-tabs" role="tablist">
+            <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
+            <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
+        </nav>
         <div class="status-filter" id="status-filter"></div>
         <div class="tag-filter" id="tag-filter"></div>
         <div class="search">
@@ -343,15 +476,19 @@
         </div>
 
         <div id="sections"></div>
+        <div id="visual" hidden></div>
         <p class="empty-msg" id="empty">No posts match your search.</p>
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Start Here", "description": "What this journal is, why an engineering executive writes down a product operating model, and how to read it.", "posts": [{"id": "PM-INTRODUCTION", "status": "draft:gray", "title": "Introduction", "excerpt": "This journal is my product-management operating model, written down: 14 records describing how I believe product decisions should be made — vision-led, outcome-driven, and executed by empowered teams. Each record is grounded in a chapter checklist from Foster and Nerlikar's Build What Matters or Cagan and Jones's EMPOWERED, and each states a commitment I am prepared to be held to. Start here for the map.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "tags": ["product management", "operating principles", "introduction", "vision-led", "empowered teams"]}]}, {"title": "Build What Matters", "description": "Vision-led product management, from Foster and Nerlikar's \\\"Build What Matters\\\": the dysfunctions that make product work drift, a customer-journey vision, a strategy that connects vision to work, key outcomes over outputs, a balanced roadmap, and the team and processes that deliver it.", "posts": [{"id": "PM-DYSFUNCTIONS", "status": "draft:gray", "title": "Product Dysfunctions", "excerpt": "I treat recurring product dysfunctions as diagnosable patterns, not personality problems. When the roadmap is driven by the loudest customer, the boldest opinion, or the fullest backlog, I name the dysfunction first — sales-led, visionary-led, consensus-driven, spreadsheet-led, or feature factory — and then I fix the operating system, not the people. The cure is always the same chain: target customer, key outcome, journey vision, strategy, roadmap.", "url": "dysfunctions.html", "icon": "assets/icons/dysfunctions.png", "tags": ["product management", "dysfunctions", "feature factory", "vision-led", "diagnosis"]}, {"id": "PM-CUSTOMER-JOURNEY-VISION", "status": "draft:gray", "title": "Customer Journey Vision", "excerpt": "I anchor product direction in a customer journey vision: a written story of how a specific customer's life works roughly three years from now. The vision describes their journey — from the trigger that starts their search through discovery, evaluation, trial, engagement, and retention — not our feature list. Every roadmap conversation starts from that story, and I validate it by asking whether an outsider can understand it, whether it inspires, and whether it is believable.", "url": "customer-journey-vision.html", "icon": "assets/icons/customer-journey-vision.png", "tags": ["product management", "product vision", "customer journey", "vision-led", "direction"]}, {"id": "PM-PRODUCT-STRATEGY", "status": "draft:gray", "title": "Product Strategy", "excerpt": "I treat product strategy as the bridge between the vision and the work. I define Point A and Point B, work backward from the end-state customer journey, run a gap analysis, and sequence the work under real financial, competitive, and technical constraints. Every milestone proves something and carries both business and customer KPIs — and the roadmap derives from the strategy, never the other way around.", "url": "product-strategy.html", "icon": "assets/icons/product-strategy.png", "tags": ["product management", "product strategy", "vision-led", "phasing", "trade-offs"]}, {"id": "PM-OUTCOMES", "status": "draft:gray", "title": "Outcomes", "excerpt": "I judge product work by key outcomes — measurable changes in customer and business reality — never by shipped output. Every initiative names the outcome it moves before it starts, in the customer's language, with a metric that survives a product redesign. Features shipped is a cost line; the outcome dial is the scoreboard.", "url": "outcomes.html", "icon": "assets/icons/outcomes.png", "tags": ["product management", "outcomes", "outputs", "metrics", "key results"]}, {"id": "PM-BALANCED-ROADMAP", "status": "draft:gray", "title": "Balanced Roadmap", "excerpt": "I treat the roadmap as an allocation decision before it is a ranking decision. Every item is classified as innovation, iteration, or operation, and I set the split between the three categories top-down — before any individual project is ranked. That allocation is what protects the vision from being eaten by escalations, and operation from being eaten by the vision.", "url": "balanced-roadmap.html", "icon": "assets/icons/balanced-roadmap.png", "tags": ["product management", "roadmap", "allocation", "vision progress", "balance"]}, {"id": "PM-RIGHT-TEAM", "status": "draft:gray", "title": "The Right Team", "excerpt": "I build the product team deliberately: the first product hire is a senior PM brought in at the right moment, not a premature VP. I evaluate candidates on product mindset with a real homework assignment, keep design a peer function rather than a PM subordinate, plan around explicit scaling ratios, and refuse to split product accountability into a telephone game. Then I give PMs the conditions to succeed — customer contact, delegated decisions, and a genuinely diverse team.", "url": "right-team.html", "icon": "assets/icons/right-team.png", "tags": ["product management", "product team", "PM role", "hiring", "triad"]}, {"id": "PM-RIGHT-PROCESSES", "status": "draft:gray", "title": "The Right Processes", "excerpt": "I run product management on a small set of processes that exist to serve outcomes, never as ceremony. Discovery and validation run continuously, prioritization derives from strategy rather than from the loudest voice, and every cadence is sized to the horizon it governs. When a process stops moving the outcome, I cut it.", "url": "right-processes.html", "icon": "assets/icons/right-processes.png", "tags": ["product management", "process", "discovery", "prioritization", "cadence"]}]}, {"title": "EMPOWERED", "description": "Empowered product teams and product leadership, from Cagan and Jones's \\\"EMPOWERED\\\": coaching as the first job of leaders, deliberate staffing, product vision and principles, team topology, product strategy, team objectives, and collaborating with the business.", "posts": [{"id": "PM-COACHING", "status": "draft:gray", "title": "Coaching", "excerpt": "I treat coaching as the first job of every product leader, including me. Ordinary people become extraordinary teams when someone develops them deliberately — with an honest skills assessment, a written coaching plan, and a weekly 1:1 spent on development rather than status. I coach for ownership of outcomes, not dependency on me, and I judge my own success by the growth of my people.", "url": "coaching.html", "icon": "assets/icons/coaching.png", "tags": ["product management", "coaching", "product leadership", "development", "one-on-ones"]}, {"id": "PM-STAFFING", "status": "draft:gray", "title": "Staffing", "excerpt": "I own staffing personally — recruiting, interviewing, onboarding, development, and promotion are my job as the hiring manager, not a req I file with HR. I hire competent people of character rather than waiting for unicorns, I close strong candidates within 24–48 hours, and I treat the first 90 days as a deliberate ramp toward earned autonomy. Extraordinary teams are built from ordinary people, staffed and coached seriously.", "url": "staffing.html", "icon": "assets/icons/staffing.png", "tags": ["product management", "staffing", "recruiting", "onboarding", "empowered teams"]}, {"id": "PM-PRODUCT-VISION-AND-PRINCIPLES", "status": "draft:gray", "title": "Product Vision and Principles", "excerpt": "I maintain one shared product vision — a customer-centric picture of the future, 3–10 years out — and I use it as the north star that product strategy, architecture, and team topology all steer by. I pair it with explicit product principles that decide the countless small trade-offs without escalation, including the ethical ones. And I treat the vision as a recruiting and leadership tool: inspiring enough to sell, honest enough to admit it is a reasoned leap of faith.", "url": "product-vision-and-principles.html", "icon": "assets/icons/product-vision-and-principles.png", "tags": ["product management", "product vision", "product principles", "north star", "empowered teams"]}, {"id": "PM-EMPOWERED-PRODUCT-STRATEGY", "status": "draft:gray", "title": "EMPOWERED Product Strategy", "excerpt": "I run product strategy as a loop of focus, insight, and action. I choose the few problems that truly matter — and say out loud what will not be prioritized — then do the hard work of generating real insights from data, customers, technology, and the market. I convert those insights into team objectives, not task lists, and I manage progress actively without ever telling an empowered team how to solve its problem.", "url": "empowered-product-strategy.html", "icon": "assets/icons/empowered-product-strategy.png", "tags": ["product management", "product strategy", "focus", "insights", "empowered teams"]}, {"id": "PM-TEAM-TOPOLOGY", "status": "draft:gray", "title": "Team Topology", "excerpt": "I treat team topology as an empowerment decision, not an org-chart by-product. I draw team boundaries so that every team owns something meaningful end to end, I split the work between platform teams that provide leverage and experience teams that own customer outcomes, and I align the boundaries with customers, business, and architecture. Then I keep the topology stable — and when it must change, I move responsibilities between intact teams, not people between teams.", "url": "team-topology.html", "icon": "assets/icons/team-topology.png", "tags": ["product management", "team topology", "empowerment", "ownership", "platform teams"]}, {"id": "PM-TEAM-OBJECTIVES", "status": "draft:gray", "title": "Team Objectives", "excerpt": "I assign teams problems to solve, not features to ship. Objectives flow from strategy with the context to act on them; key results are proposed by the team that has to deliver them; ambition is set explicitly, roof shot or moon shot. And the few high-integrity commitments we make are investigated first, tracked separately, and kept — because OKRs without empowerment are theater.", "url": "team-objectives.html", "icon": "assets/icons/team-objectives.png", "tags": ["product management", "team objectives", "OKRs", "empowerment", "commitments"]}, {"id": "PM-BUSINESS-COLLABORATION", "status": "draft:gray", "title": "Business Collaboration", "excerpt": "I run product's relationship with the business as a partnership of equals — not a ticket-taking service to stakeholders, and not an ivory tower above them. Strong product leaders and empowered teams are necessary but not sufficient: product succeeds inside a company context where the CEO, executives, and peers matter. Partnership is earned — by understanding the business's constraints, sharing context openly, evangelizing the vision, and keeping the commitments we make.", "url": "business-collaboration.html", "icon": "assets/icons/business-collaboration.png", "tags": ["product management", "stakeholders", "collaboration", "trust", "evangelism"]}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Start Here", "description": "What this journal is, why an engineering executive writes down a product operating model, and how to read it.", "posts": [{"id": "PM-INTRODUCTION", "status": "draft:gray", "title": "Introduction", "excerpt": "This journal is my product-management operating model, written down: 19 records describing how I believe product decisions should be made — vision-led, outcome-driven, executed by empowered teams, and run day to day on lanes, routines, and tempo. Each record is grounded in a chapter checklist from Foster and Nerlikar's Build What Matters, Cagan and Jones's EMPOWERED, or John Cutler's unfiltered operating takes, and each states a commitment I am prepared to be held to. Start here for the map.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "logo": "assets/images/introduction/logo.jpeg", "tags": ["product management", "operating principles", "introduction", "vision-led", "empowered teams"]}]}, {"title": "Build What Matters", "description": "Vision-led product management, from Foster and Nerlikar's \\\"Build What Matters\\\": the dysfunctions that make product work drift, a customer-journey vision, a strategy that connects vision to work, key outcomes over outputs, a balanced roadmap, and the team and processes that deliver it.", "posts": [{"id": "PM-DYSFUNCTIONS", "status": "draft:gray", "title": "Product Dysfunctions", "excerpt": "I treat recurring product dysfunctions as diagnosable patterns, not personality problems. When the roadmap is driven by the loudest customer, the boldest opinion, or the fullest backlog, I name the dysfunction first — sales-led, visionary-led, consensus-driven, spreadsheet-led, or feature factory — and then I fix the operating system, not the people. The cure is always the same chain: target customer, key outcome, journey vision, strategy, roadmap.", "url": "dysfunctions.html", "icon": "assets/icons/dysfunctions.png", "logo": "assets/images/dysfunctions/logo.jpeg", "tags": ["product management", "dysfunctions", "feature factory", "vision-led", "diagnosis"]}, {"id": "PM-CUSTOMER-JOURNEY-VISION", "status": "draft:gray", "title": "Customer Journey Vision", "excerpt": "I anchor product direction in a customer journey vision: a written story of how a specific customer's life works roughly three years from now. The vision describes their journey — from the trigger that starts their search through discovery, evaluation, trial, engagement, and retention — not our feature list. Every roadmap conversation starts from that story, and I validate it by asking whether an outsider can understand it, whether it inspires, and whether it is believable.", "url": "customer-journey-vision.html", "icon": "assets/icons/customer-journey-vision.png", "logo": "assets/images/customer-journey-vision/logo.jpeg", "tags": ["product management", "product vision", "customer journey", "vision-led", "direction"]}, {"id": "PM-PRODUCT-STRATEGY", "status": "draft:gray", "title": "Product Strategy", "excerpt": "I treat product strategy as the bridge between the vision and the work. I define Point A and Point B, work backward from the end-state customer journey, run a gap analysis, and sequence the work under real financial, competitive, and technical constraints. Every milestone proves something and carries both business and customer KPIs — and the roadmap derives from the strategy, never the other way around.", "url": "product-strategy.html", "icon": "assets/icons/product-strategy.png", "logo": "assets/images/product-strategy/logo.jpeg", "tags": ["product management", "product strategy", "vision-led", "phasing", "trade-offs"]}, {"id": "PM-OUTCOMES", "status": "draft:gray", "title": "Outcomes", "excerpt": "I judge product work by key outcomes — measurable changes in customer and business reality — never by shipped output. Every initiative names the outcome it moves before it starts, in the customer's language, with a metric that survives a product redesign. Features shipped is a cost line; the outcome dial is the scoreboard.", "url": "outcomes.html", "icon": "assets/icons/outcomes.png", "logo": "assets/images/outcomes/logo.jpeg", "tags": ["product management", "outcomes", "outputs", "metrics", "key results"]}, {"id": "PM-BALANCED-ROADMAP", "status": "draft:gray", "title": "Balanced Roadmap", "excerpt": "I treat the roadmap as an allocation decision before it is a ranking decision. Every item is classified as innovation, iteration, or operation, and I set the split between the three categories top-down — before any individual project is ranked. That allocation is what protects the vision from being eaten by escalations, and operation from being eaten by the vision.", "url": "balanced-roadmap.html", "icon": "assets/icons/balanced-roadmap.png", "logo": "assets/images/balanced-roadmap/logo.jpeg", "tags": ["product management", "roadmap", "allocation", "vision progress", "balance"]}, {"id": "PM-RIGHT-TEAM", "status": "draft:gray", "title": "The Right Team", "excerpt": "I build the product team deliberately: the first product hire is a senior PM brought in at the right moment, not a premature VP. I evaluate candidates on product mindset with a real homework assignment, keep design a peer function rather than a PM subordinate, plan around explicit scaling ratios, and refuse to split product accountability into a telephone game. Then I give PMs the conditions to succeed — customer contact, delegated decisions, and a genuinely diverse team.", "url": "right-team.html", "icon": "assets/icons/right-team.png", "logo": "assets/images/right-team/logo.jpeg", "tags": ["product management", "product team", "PM role", "hiring", "triad"]}, {"id": "PM-RIGHT-PROCESSES", "status": "draft:gray", "title": "The Right Processes", "excerpt": "I run product management on a small set of processes that exist to serve outcomes, never as ceremony. Discovery and validation run continuously, prioritization derives from strategy rather than from the loudest voice, and every cadence is sized to the horizon it governs. When a process stops moving the outcome, I cut it.", "url": "right-processes.html", "icon": "assets/icons/right-processes.png", "logo": "assets/images/right-processes/logo.jpeg", "tags": ["product management", "process", "discovery", "prioritization", "cadence"]}]}, {"title": "EMPOWERED", "description": "Empowered product teams and product leadership, from Cagan and Jones's \\\"EMPOWERED\\\": coaching as the first job of leaders, deliberate staffing, product vision and principles, team topology, product strategy, team objectives, and collaborating with the business.", "posts": [{"id": "PM-COACHING", "status": "draft:gray", "title": "Coaching", "excerpt": "I treat coaching as the first job of every product leader, including me. Ordinary people become extraordinary teams when someone develops them deliberately — with an honest skills assessment, a written coaching plan, and a weekly 1:1 spent on development rather than status. I coach for ownership of outcomes, not dependency on me, and I judge my own success by the growth of my people.", "url": "coaching.html", "icon": "assets/icons/coaching.png", "logo": "assets/images/coaching/logo.jpeg", "tags": ["product management", "coaching", "product leadership", "development", "one-on-ones"]}, {"id": "PM-STAFFING", "status": "draft:gray", "title": "Staffing", "excerpt": "I own staffing personally — recruiting, interviewing, onboarding, development, and promotion are my job as the hiring manager, not a req I file with HR. I hire competent people of character rather than waiting for unicorns, I close strong candidates within 24–48 hours, and I treat the first 90 days as a deliberate ramp toward earned autonomy. Extraordinary teams are built from ordinary people, staffed and coached seriously.", "url": "staffing.html", "icon": "assets/icons/staffing.png", "logo": "assets/images/staffing/logo.jpeg", "tags": ["product management", "staffing", "recruiting", "onboarding", "empowered teams"]}, {"id": "PM-PRODUCT-VISION-AND-PRINCIPLES", "status": "draft:gray", "title": "Product Vision and Principles", "excerpt": "I maintain one shared product vision — a customer-centric picture of the future, 3–10 years out — and I use it as the north star that product strategy, architecture, and team topology all steer by. I pair it with explicit product principles that decide the countless small trade-offs without escalation, including the ethical ones. And I treat the vision as a recruiting and leadership tool: inspiring enough to sell, honest enough to admit it is a reasoned leap of faith.", "url": "product-vision-and-principles.html", "icon": "assets/icons/product-vision-and-principles.png", "logo": "assets/images/product-vision-and-principles/logo.jpeg", "tags": ["product management", "product vision", "product principles", "north star", "empowered teams"]}, {"id": "PM-EMPOWERED-PRODUCT-STRATEGY", "status": "draft:gray", "title": "EMPOWERED Product Strategy", "excerpt": "I run product strategy as a loop of focus, insight, and action. I choose the few problems that truly matter — and say out loud what will not be prioritized — then do the hard work of generating real insights from data, customers, technology, and the market. I convert those insights into team objectives, not task lists, and I manage progress actively without ever telling an empowered team how to solve its problem.", "url": "empowered-product-strategy.html", "icon": "assets/icons/empowered-product-strategy.png", "logo": "assets/images/empowered-product-strategy/logo.jpeg", "tags": ["product management", "product strategy", "focus", "insights", "empowered teams"]}, {"id": "PM-TEAM-TOPOLOGY", "status": "draft:gray", "title": "Team Topology", "excerpt": "I treat team topology as an empowerment decision, not an org-chart by-product. I draw team boundaries so that every team owns something meaningful end to end, I split the work between platform teams that provide leverage and experience teams that own customer outcomes, and I align the boundaries with customers, business, and architecture. Then I keep the topology stable — and when it must change, I move responsibilities between intact teams, not people between teams.", "url": "team-topology.html", "icon": "assets/icons/team-topology.png", "logo": "assets/images/team-topology/logo.jpeg", "tags": ["product management", "team topology", "empowerment", "ownership", "platform teams"]}, {"id": "PM-TEAM-OBJECTIVES", "status": "draft:gray", "title": "Team Objectives", "excerpt": "I assign teams problems to solve, not features to ship. Objectives flow from strategy with the context to act on them; key results are proposed by the team that has to deliver them; ambition is set explicitly, roof shot or moon shot. And the few high-integrity commitments we make are investigated first, tracked separately, and kept — because OKRs without empowerment are theater.", "url": "team-objectives.html", "icon": "assets/icons/team-objectives.png", "logo": "assets/images/team-objectives/logo.jpeg", "tags": ["product management", "team objectives", "OKRs", "empowerment", "commitments"]}, {"id": "PM-BUSINESS-COLLABORATION", "status": "draft:gray", "title": "Business Collaboration", "excerpt": "I run product's relationship with the business as a partnership of equals — not a ticket-taking service to stakeholders, and not an ivory tower above them. Strong product leaders and empowered teams are necessary but not sufficient: product succeeds inside a company context where the CEO, executives, and peers matter. Partnership is earned — by understanding the business's constraints, sharing context openly, evangelizing the vision, and keeping the commitments we make.", "url": "business-collaboration.html", "icon": "assets/icons/business-collaboration.png", "logo": "assets/images/business-collaboration/logo.jpeg", "tags": ["product management", "stakeholders", "collaboration", "trust", "evangelism"]}]}, {"title": "Operating Takes", "description": "How the model runs day to day, from John Cutler's \\\"20 Unfiltered Operating Takes\\\" (The Beautiful Mess, TBM 435): durable outcome-oriented lanes instead of alignment pyramids, working small at a deliberate tempo, routines as the heartbeat, reading the shapes of work instead of templating them, and goals and questions as habits backed by causal models.", "posts": [{"id": "PM-LANES", "status": "draft:gray", "title": "Lanes", "excerpt": "I operate strategy at the lane level: each team carries a handful of durable, outcome-oriented lanes — a couple of metrics, a directional sense of the opportunity — and cranks on them week after week. Vision-to-tactics pyramids and label taxonomies are reporting views, not the work; the work happens in exactly one place, the front-line team, and the lanes are where I go to pressure-test it.", "url": "lanes.html", "icon": "assets/icons/lanes.png", "logo": "assets/images/lanes/logo.jpeg", "tags": ["product management", "strategy", "lanes", "north star", "metrics", "alignment"]}, {"id": "PM-WORKING-SMALL", "status": "draft:gray", "title": "Working Small", "excerpt": "It is far easier to teach a team that works small to think big than to teach a team that thinks big to work small — so a team that can deliver continuously, test assumptions, and keep risk-reduction tempo high is the asset I protect hardest. Cycles are forcing functions, not boxes to fill; estimates come in five coarse sizes; and real progress on big things can be sensed daily and weekly.", "url": "working-small.html", "icon": "assets/icons/working-small.png", "logo": "assets/images/working-small/logo.jpeg", "tags": ["product management", "working small", "cadence", "cycles", "estimation", "tempo"]}, {"id": "PM-ROUTINES", "status": "draft:gray", "title": "Routines", "excerpt": "Great products are built on routines — the collective habits, explicit or implicit, that make good work happen weekly. I bootstrap new teams with a V1 way of working instead of letting them theorize, hold the weekly ritual through the week-four collapse, anchor the work in artifacts we revisit rather than reinvent — and treat AI as a turbocharger of whatever habits, good or bad, we already have.", "url": "routines.html", "icon": "assets/icons/routines.png", "logo": "assets/images/routines/logo.jpeg", "tags": ["product management", "routines", "ways of working", "habits", "meetings", "ai"]}, {"id": "PM-SHAPES-OF-WORK", "status": "draft:gray", "title": "Shapes of Work", "excerpt": "Product work defies single templates: any honest shape exercise surfaces 5–8 distinct shapes of work — different risk profiles, experiment-friendliness, sizes, and blast radii. I read shape off each piece of work instead of flattening everything into one scheme, and I apply the same discipline to org design: a 'stable' team's durability is a claim to be re-earned, not a default — because the only unwind of a hardened org chart is layoffs.", "url": "shapes-of-work.html", "icon": "assets/icons/shapes-of-work.png", "logo": "assets/images/shapes-of-work/logo.jpeg", "tags": ["product management", "shapes of work", "templates", "launch tiers", "stable teams", "org design"]}, {"id": "PM-GOALS-AND-QUESTIONS", "status": "draft:gray", "title": "Goals and Questions", "excerpt": "Outcome-centricity is not a mindset — it is a built causal model linking what a team can influence this quarter to what moves the company over years, plus the conviction and storytelling the math cannot supply. What compounds is asking better questions, not having all the answers; goals are a habit, not a performance; and powerful ideas imperfectly measured beat perfect measures of weak ideas.", "url": "goals-and-questions.html", "icon": "assets/icons/goals-and-questions.png", "logo": "assets/images/goals-and-questions/logo.jpeg", "tags": ["product management", "outcomes", "goals", "causal models", "questions", "metrics"]}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
         const root = document.getElementById('sections');
+        const visualRoot = document.getElementById('visual');
+        const tabList = document.getElementById('tab-list');
+        const tabVisual = document.getElementById('tab-visual');
         const empty = document.getElementById('empty');
         const hits = document.getElementById('hits');
         const tagFilter = document.getElementById('tag-filter');
@@ -514,45 +651,116 @@
             root.appendChild(sec);
         });
 
+        // Render the Visual Overview pane: same sections, but each post is a
+        // card showing its hero logo image (instead of the abstract). Cards
+        // carry the same data-* attributes so search/tag/status filters apply
+        // to both views.
+        const visualToolbar = el('div', {class: 'visual-toolbar'});
+        const expandBtn = el('button', {type: 'button', text: 'Expand images'});
+        visualToolbar.appendChild(expandBtn);
+        visualRoot.appendChild(visualToolbar);
+
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const grid = el('div', {class: 'visual-grid'});
+            section.posts.forEach(p => {
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                const card = el('a', {class: 'visual-card', href: p.url});
+                card.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                card.dataset.tags = tags.join('|').toLowerCase();
+                card.dataset.status = statusName.toLowerCase();
+                if (p.logo) {
+                    card.appendChild(el('img', {src: p.logo, alt: p.title, loading: 'lazy'}));
+                } else {
+                    card.appendChild(el('div', {class: 'no-logo', text: 'no image'}));
+                }
+                card.appendChild(el('p', {class: 'visual-title', text: p.title}));
+                grid.appendChild(card);
+            });
+            sec.appendChild(grid);
+            visualRoot.appendChild(sec);
+        });
+
+        // Expand toggle: full-width uncropped images, one per row. Clicking
+        // anywhere on a card opens the article in both modes.
+        let visualExpanded = false;
+        expandBtn.addEventListener('click', function () {
+            visualExpanded = !visualExpanded;
+            visualRoot.classList.toggle('expanded', visualExpanded);
+            expandBtn.classList.toggle('active', visualExpanded);
+            expandBtn.textContent = visualExpanded ? 'Compact grid' : 'Expand images';
+        });
+
+        // Tab switching between the article list and the visual overview.
+        // #visual in the URL hash deep-links the visual tab.
+        function selectView(visual) {
+            root.hidden = visual;
+            visualRoot.hidden = !visual;
+            tabList.classList.toggle('active', !visual);
+            tabVisual.classList.toggle('active', visual);
+            tabList.setAttribute('aria-selected', String(!visual));
+            tabVisual.setAttribute('aria-selected', String(visual));
+            const hash = visual ? '#visual' : '';
+            if (window.location.hash !== hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+            }
+        }
+
+        tabList.addEventListener('click', function () { selectView(false); });
+        tabVisual.addEventListener('click', function () { selectView(true); });
+        if (window.location.hash === '#visual') selectView(true);
+
         function applyFilters() {
             const q = qInput.value.trim().toLowerCase();
             let visibleCount = 0;
-            root.querySelectorAll('section.group').forEach(sec => {
-                let secVisible = false;
-                sec.querySelectorAll('li').forEach(li => {
-                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
-                    let matchTag = true;
-                    if (activeTags.size) {
-                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
-                        // any-match: post must carry at least one selected tag
-                        matchTag = false;
-                        for (const t of activeTags) {
-                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
-                                matchTag = true;
-                                break;
-                            }
+
+            function matchItem(item) {
+                const matchQ = !q || item.dataset.haystack.indexOf(q) !== -1;
+                let matchTag = true;
+                if (activeTags.size) {
+                    const itemTags = item.dataset.tags ? item.dataset.tags.split('|') : [];
+                    // any-match: post must carry at least one selected tag
+                    matchTag = false;
+                    for (const t of activeTags) {
+                        if (itemTags.indexOf(t.toLowerCase()) !== -1) {
+                            matchTag = true;
+                            break;
                         }
                     }
-                    let matchStatus = true;
-                    if (activeStatuses.size) {
-                        const liStatus = li.dataset.status || '';
-                        // any-match: post status must equal one of the selected statuses
-                        matchStatus = false;
-                        for (const s of activeStatuses) {
-                            if (liStatus === s.toLowerCase()) {
-                                matchStatus = true;
-                                break;
-                            }
+                }
+                let matchStatus = true;
+                if (activeStatuses.size) {
+                    const itemStatus = item.dataset.status || '';
+                    // any-match: post status must equal one of the selected statuses
+                    matchStatus = false;
+                    for (const s of activeStatuses) {
+                        if (itemStatus === s.toLowerCase()) {
+                            matchStatus = true;
+                            break;
                         }
                     }
-                    const match = matchQ && matchTag && matchStatus;
-                    li.classList.toggle('hidden', !match);
-                    if (match) {
-                        secVisible = true;
-                        visibleCount++;
-                    }
+                }
+                return matchQ && matchTag && matchStatus;
+            }
+
+            // Both views hold the same posts; count visibility once (list view)
+            // but toggle hidden state in both so tab switches stay filtered.
+            [root, visualRoot].forEach((pane, paneIdx) => {
+                pane.querySelectorAll('section.group').forEach(sec => {
+                    let secVisible = false;
+                    sec.querySelectorAll('li, .visual-card').forEach(item => {
+                        const match = matchItem(item);
+                        item.classList.toggle('hidden', !match);
+                        if (match) {
+                            secVisible = true;
+                            if (paneIdx === 0) visibleCount++;
+                        }
+                    });
+                    sec.classList.toggle('empty', !secVisible);
                 });
-                sec.classList.toggle('empty', !secVisible);
             });
             empty.classList.toggle('show', visibleCount === 0);
             hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)

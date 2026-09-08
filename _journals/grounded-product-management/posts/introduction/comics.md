@@ -19,11 +19,11 @@ An engineering executive writes down what she believes about product — the fro
 ![Vera presents an exploded diagram of a record with a quote box, document body, and two tabs.](assets/images/introduction/comic-04-record-anatomy.jpeg)
 **Panel 4:** *The anatomy tour: every record ships a principle, an argument, a Checklist tab, and a Comic tab.*
 
-![Vera rests her hands on two annotated open books while Mila photographs them.](assets/images/introduction/comic-05-two-books.jpeg)
-**Panel 5:** *The sources: two books on the desk — borrowed grounding, openly credited, the commitment her own.*
+![Comic panel: Vera rests her hands on two annotated open books and a stack of newsletter pages while Mila photographs them.](assets/images/introduction/comic-05-three-sources.jpeg)
+**Panel 5:** *The sources: two books and a practitioner essay on the desk — borrowed grounding, openly credited, the commitment her own.*
 
-![Vera shows Mila two shelves of seven binders each, connected by pinned threads.](assets/images/introduction/comic-06-two-shelves.jpeg)
-**Panel 6:** *The map: two shelves of seven — one system described from two altitudes.*
+![Comic panel: Vera shows Mila three shelves of binders — seven, seven, and five — connected by pinned threads.](assets/images/introduction/comic-06-three-shelves.jpeg)
+**Panel 6:** *The map: three shelves — seven, seven, and five — one system described from three altitudes.*
 
 ![Vera taps her notebook while Mila holds up a tablet with a circled objection, both engaged.](assets/images/introduction/comic-07-hold-me-to-it.jpeg)
 **Panel 7:** *The contract: hold me to it — and arguing with it is a legitimate use.*

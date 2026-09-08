@@ -321,6 +321,135 @@
         .empty-msg.show {
             display: block;
         }
+
+        nav.view-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 24px;
+            flex-wrap: wrap;
+        }
+
+        nav.view-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.view-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.view-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #visual[hidden] {
+            display: none;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 0 0 8px;
+        }
+
+        .visual-card {
+            display: block;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .visual-card.hidden {
+            display: none;
+        }
+
+        .visual-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+        }
+
+        .visual-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 18px;
+        }
+
+        .visual-toolbar button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 12px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .visual-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .visual-toolbar button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Expanded mode: one full-width image per row, uncropped; the image
+           links to the image file itself, the title links to the article. */
+        #visual.expanded .visual-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        #visual.expanded .visual-card img {
+            aspect-ratio: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        #visual.expanded .visual-card .visual-title {
+            font-size: 18px;
+        }
+
+        .visual-card .no-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--tag-bg, #f2f2f2);
+            border: 1px dashed var(--rule);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .visual-card .visual-title {
+            margin: 8px 2px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgb(23, 86, 169);
+        }
+
+        .visual-card:hover .visual-title {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -335,6 +464,10 @@
     </header>
 
     <div style="padding: 4px;">
+        <nav class="view-tabs" id="view-tabs" role="tablist">
+            <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
+            <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
+        </nav>
         <div class="status-filter" id="status-filter"></div>
         <div class="tag-filter" id="tag-filter"></div>
         <div class="search">
@@ -343,15 +476,19 @@
         </div>
 
         <div id="sections"></div>
+        <div id="visual" hidden></div>
         <p class="empty-msg" id="empty">No posts match your search.</p>
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Architecture", "description": "Architectural principles and decisions that guide the design of our systems, and the forum that maintains them.", "posts": [{"id": "ORG-FOUND-ARCHITECTURE-ADVISORY-FORUM", "status": "draft:gray", "title": "Architecture Advisory Forum as a Standing Advice Ritual", "excerpt": "Organization will run a weekly Architecture Advisory Forum as the standing place for cross-team architecture advice. The forum does not approve or own decisions. It helps teams expose options early, improve ADRs, revisit decisions with evidence, and learn from shared engineering signals.", "url": "architecture-advisory-forum.html", "icon": "assets/icons/architecture-advisory-forum.png", "tags": ["architecture", "advice-process", "governance", "decision-making", "learning-organisation", "adr"]}]}, {"title": "Recoding Decisions", "description": "Architectural principles and decisions that guide the design of our systems, and the forum that maintains them.", "posts": [{"id": "ORG-FOUND-MARKDOWN-RECORDS", "status": "draft:gray", "title": "Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions", "excerpt": "Organization uses markdown records in git, published as a small static site, as the default home for durable technical writing: ADRs, strategies, principles, foundations, and discussion records. The markdown file is canonical; comments, meetings, Slack threads, and temporary docs are supporting context.", "url": "markdown-records.html", "icon": "assets/icons/markdown-records.png", "tags": ["documentation", "adr", "markdown", "git", "static-site", "technical-writing"]}, {"id": "ORG-FOUND-AI-MEDIATED-AUTHORING", "status": "draft:gray", "title": "AI-Mediated Authoring as the Default Way to Edit This Repository", "excerpt": "All substantive updates to this repository - new posts, edits, restructures, illustrations, and metadata changes - go through an AI coding agent such as Claude Code or Codex CLI rather than direct hand-editing of files. The agent is the mediator: authors describe intent, the agent performs the edit, the author reviews the diff. The workflow teaches authors to work through intent, context, review, and traceability rather than treating AI as autocomplete. Trivial fixes such as typos, broken links, or front-matter status flips may be hand-edited as long as they are noted in the pull request.", "url": "ai-mediated-authoring.html", "icon": "assets/icons/ai-mediated-authoring.png", "tags": ["ai", "authoring", "workflow", "claude-code", "codex", "governance", "documentation"]}, {"id": "ORG-FOUND-SPEC-DRIVEN-AUTHORING", "status": "draft:gray", "title": "Spec-Driven Authoring as a Lightweight Default for Posts", "excerpt": "Substantive posts in this repository are drafted against a short sibling spec.md before editing starts. The spec states intent, audience, success criteria, non-goals, open questions, decision log, sources, and changelog. It is a working contract for AI-mediated authoring and review, not a polished deliverable.", "url": "spec-driven-authoring.html", "icon": "assets/icons/spec-driven-authoring.png", "tags": ["spec-driven", "authoring", "workflow", "claude-code", "governance", "documentation"]}, {"id": "ORG-FOUND-CURATOR-ROLE", "status": "draft:gray", "title": "The Curator Role for Records, Principles, and Strategies", "excerpt": "Organization names a Curator role for the engineering record corpus. Curators have editorial authority over structure, metadata, links, lifecycle, and clarity, but they do not own the underlying decisions. Meaning changes still go back to decision owners and the Architecture Advisory Forum.", "url": "curator-role.html", "icon": "assets/icons/curator-role.png", "tags": ["foundations", "governance", "curator", "editorial", "adr", "architecture"]}]}, {"title": "Naming & Tagging", "description": "Shared naming and tagging conventions that keep the GitHub org, the AWS estate, and the package catalogue queryable and consistent. The same domain/system/component vocabulary travels across all three.", "posts": [{"id": "ORG-FOUND-GITHUB-NAMING-TAGGING", "status": "draft:gray", "title": "GitHub Naming and Tagging Conventions for Source Code", "excerpt": "Organization standardizes GitHub repository names, topics, branch names, commit messages, and release tags so the source-code estate is queryable by humans, automation, AI agents, and audit tooling.", "url": "github-naming-tagging.html", "icon": "assets/icons/github-naming-tagging.png", "tags": ["github", "naming", "tagging", "source-control", "conventions", "governance"]}, {"id": "ORG-FOUND-AWS-NAMING-TAGGING", "status": "draft:gray", "title": "AWS Account and Resource Naming and Tagging Conventions", "excerpt": "Organization standardizes AWS account names, resource names, and resource tags. Names help humans recognize resources; tags are authoritative for cost, ownership, compliance, automation, and inventory. Production enforcement is automated through AWS Organizations, tag policies, SCPs, and AWS Config rules.", "url": "aws-naming-tagging.html", "icon": "assets/icons/aws-naming-tagging.png", "tags": ["aws", "naming", "tagging", "cost-allocation", "governance", "cloud"]}, {"id": "ORG-FOUND-PACKAGE-NAMING-CONVENTIONS", "status": "draft:gray", "title": "Package Naming Conventions Across JVM, npm, Python, .NET, and OCI", "excerpt": "Organization uses one logical package name, <domain>-<system>-<component>, and maps it deterministically into JVM, npm, Python, .NET, and OCI package ecosystems. Internal artifacts publish to internal registries unless an explicit decision allows public publication.", "url": "package-naming-conventions.html", "icon": "assets/icons/package-naming-conventions.png", "tags": ["packages", "naming", "conventions", "jvm", "npm", "python", "dotnet", "oci", "registries"]}]}, {"title": "Ways of Working", "description": "Shared ways of working that keep the engineering organisation aligned and efficient, and provide a forum for continuous improvement of those ways of working.", "posts": [{"id": "ORG-FOUND-JIRA-WORKFLOW-STANDARDS", "status": "draft:gray", "title": "Jira as the Issue Tracker and a Unified Workflow Standard Across Teams", "excerpt": "Organization uses Jira as the standard engineering issue tracker and adopts four shared workflows: Epic, Spike, Story & Bug, and Task. The standard fixes the meaning of states and transitions across teams while leaving boards, priorities, estimation, and ceremonies team-owned.", "url": "jira-workflow-standards.html", "icon": "assets/icons/jira-workflow-standards.png", "tags": ["jira", "issue-tracking", "workflow", "process", "qa", "delivery"]}, {"id": "ORG-FOUND-ONE-PERCENT-IMPROVEMENTS", "status": "draft:gray", "title": "One Percent Improvements as a Weekly Engineering Habit", "excerpt": "Organization will adopt a lightweight weekly habit of making, recording, and sharing small engineering improvements. The goal is visible continuous progress that improves morale, plus meaningful long-term impact through the cumulative effect of many minor improvements.", "url": "one-percent-improvements.html", "icon": "assets/icons/one-percent-improvements.png", "tags": ["continuous-improvement", "kaizen", "engineering-culture", "morale", "learning-organisation", "weekly-ritual"]}]}, {"title": "Communities of Practice", "description": "Communities of practice that build and maintain shared understanding of how to do technical work at Organization, and provide a forum for continuous improvement of that shared understanding.", "posts": [{"id": "ORG-FOUND-BACKEND-GUILD", "status": "draft:gray", "title": "Backend Guild as a Cross-Team Community of Practice", "excerpt": "Organization will form a Backend Guild as a standing community of practice for backend and distributed systems engineers across teams, brands, and domains. The guild owns and refines golden paths for backend systems, shares lessons learned on a bi-weekly cadence, runs guild-specific sessions at Architecture Summits, and grows world-class experts through coordinated thought leadership. The guild is advisory and contributory, not a governance body: it gives feedback to the architecture group and Chief Architect, proposes new recommendations and decisions, and is open to every Aviver who wants to contribute. The guild operates with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).", "url": "backend-guild.html", "icon": "assets/icons/backend-guild.png", "tags": ["foundations", "guild", "backend", "distributed-systems", "golden-paths", "community-of-practice"]}, {"id": "ORG-FOUND-FRONTEND-GUILD", "status": "draft:gray", "title": "Frontend Guild as a Cross-Team Web Consortium", "excerpt": "Organization will form a Frontend Guild as a standing community of practice for web frontend engineers across teams, brands, and domains. The guild is the organisation-wide web consortium that enables and empowers teams around standards to ensure the long-term growth of the web ecosystem. It focuses on web frontend challenges first and uses them as an entry point to end-to-end concerns (backend, infrastructure, ...) where it makes sense. The guild is advisory and contributory: bi-weekly knowledge sharing, experimentation-first documentation, transparent recorded sessions, working groups, and coordinated external visibility. Mobile frontend is explicitly out of scope; a separate Mobile Guild handles it. The guild is provisioned with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).", "url": "frontend-guild.html", "icon": "assets/icons/frontend-guild.png", "tags": ["foundations", "guild", "frontend", "web", "community-of-practice", "design-system", "micro-frontends"]}, {"id": "ORG-FOUND-MOBILE-GUILD", "status": "draft:gray", "title": "Mobile Guild as a Cross-Team Mobile Consortium", "excerpt": "Organization will form a Mobile Guild as a standing community of practice for mobile engineers across teams, brands, and domains. The guild is the organisation-wide mobile consortium that enables and empowers teams around standards to ensure the long-term growth of the mobile ecosystem - native iOS and Android, cross-platform stacks where used, and mobile-specific shells. It focuses on mobile challenges first and uses them as an entry point to end-to-end concerns (backend, infrastructure, ...) where it makes sense. The guild is advisory and contributory: bi-weekly knowledge sharing, experimentation-first documentation, transparent recorded sessions, working groups, and coordinated external visibility. Web frontend is explicitly out of scope; a separate Frontend Guild handles it. The guild is provisioned with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).", "url": "mobile-guild.html", "icon": "assets/icons/mobile-guild.png", "tags": ["foundations", "guild", "mobile", "ios", "android", "community-of-practice", "design-system"]}, {"id": "ORG-FOUND-GENAI-GUILD", "status": "draft:gray", "title": "GenAI Guild as a Cross-Team Generative AI Consortium", "excerpt": "Organization will form a GenAI Guild as a standing community of practice to transform how the organisation leverages Generative AI - moving from ad-hoc experimentation to measurable productivity gains across the Product & Technology organisation. The guild operates through four pillars: Evangelization & Knowledge Sharing, Architecture & Standards, Research & Innovation, and Tooling & Licensing. It enables teams to harness GenAI effectively while maintaining security and compliance, mitigates Shadow AI risks through transparency and guidance, establishes frameworks that enable innovation rather than block it, and builds sustainable AI adoption at scale with measurable business impact. The guild is advisory and contributory, facilitated by the Architecture team and open to every Aviver. It is provisioned with dedicated Slack channels (open + volunteer), source code repositories, and an AWS account (or dedicated space) for experiments, agents, MCP servers, and reference implementations.", "url": "genai-guild.html", "icon": "assets/icons/genai-guild.png", "tags": ["foundations", "guild", "genai", "ai", "mcp", "agents", "community-of-practice", "shadow-ai"]}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Architecture", "description": "Architectural principles and decisions that guide the design of our systems, and the forum that maintains them.", "posts": [{"id": "ORG-FOUND-ARCHITECTURE-ADVISORY-FORUM", "status": "draft:gray", "title": "Architecture Advisory Forum as a Standing Advice Ritual", "excerpt": "Organization will run a weekly Architecture Advisory Forum as the standing place for cross-team architecture advice. The forum does not approve or own decisions. It helps teams expose options early, improve ADRs, revisit decisions with evidence, and learn from shared engineering signals.", "url": "architecture-advisory-forum.html", "icon": "assets/icons/architecture-advisory-forum.png", "logo": "assets/images/architecture-advisory-forum/logo.jpeg", "tags": ["architecture", "advice-process", "governance", "decision-making", "learning-organisation", "adr"]}]}, {"title": "Recoding Decisions", "description": "Architectural principles and decisions that guide the design of our systems, and the forum that maintains them.", "posts": [{"id": "ORG-FOUND-MARKDOWN-RECORDS", "status": "draft:gray", "title": "Markdown Records as the Default Format for Technical Decisions, Strategies, and Discussions", "excerpt": "Organization uses markdown records in git, published as a small static site, as the default home for durable technical writing: ADRs, strategies, principles, foundations, and discussion records. The markdown file is canonical; comments, meetings, Slack threads, and temporary docs are supporting context.", "url": "markdown-records.html", "icon": "assets/icons/markdown-records.png", "logo": "assets/images/markdown-records/logo.jpeg", "tags": ["documentation", "adr", "markdown", "git", "static-site", "technical-writing"]}, {"id": "ORG-FOUND-AI-MEDIATED-AUTHORING", "status": "draft:gray", "title": "AI-Mediated Authoring as the Default Way to Edit This Repository", "excerpt": "All substantive updates to this repository - new posts, edits, restructures, illustrations, and metadata changes - go through an AI coding agent such as Claude Code or Codex CLI rather than direct hand-editing of files. The agent is the mediator: authors describe intent, the agent performs the edit, the author reviews the diff. The workflow teaches authors to work through intent, context, review, and traceability rather than treating AI as autocomplete. Trivial fixes such as typos, broken links, or front-matter status flips may be hand-edited as long as they are noted in the pull request.", "url": "ai-mediated-authoring.html", "icon": "assets/icons/ai-mediated-authoring.png", "logo": "assets/images/ai-mediated-authoring/logo.jpeg", "tags": ["ai", "authoring", "workflow", "claude-code", "codex", "governance", "documentation"]}, {"id": "ORG-FOUND-SPEC-DRIVEN-AUTHORING", "status": "draft:gray", "title": "Spec-Driven Authoring as a Lightweight Default for Posts", "excerpt": "Substantive posts in this repository are drafted against a short sibling spec.md before editing starts. The spec states intent, audience, success criteria, non-goals, open questions, decision log, sources, and changelog. It is a working contract for AI-mediated authoring and review, not a polished deliverable.", "url": "spec-driven-authoring.html", "icon": "assets/icons/spec-driven-authoring.png", "logo": "assets/images/spec-driven-authoring/logo.jpeg", "tags": ["spec-driven", "authoring", "workflow", "claude-code", "governance", "documentation"]}, {"id": "ORG-FOUND-CURATOR-ROLE", "status": "draft:gray", "title": "The Curator Role for Records, Principles, and Strategies", "excerpt": "Organization names a Curator role for the engineering record corpus. Curators have editorial authority over structure, metadata, links, lifecycle, and clarity, but they do not own the underlying decisions. Meaning changes still go back to decision owners and the Architecture Advisory Forum.", "url": "curator-role.html", "icon": "assets/icons/curator-role.png", "logo": "assets/images/curator-role/logo.jpeg", "tags": ["foundations", "governance", "curator", "editorial", "adr", "architecture"]}]}, {"title": "Naming & Tagging", "description": "Shared naming and tagging conventions that keep the GitHub org, the AWS estate, and the package catalogue queryable and consistent. The same domain/system/component vocabulary travels across all three.", "posts": [{"id": "ORG-FOUND-GITHUB-NAMING-TAGGING", "status": "draft:gray", "title": "GitHub Naming and Tagging Conventions for Source Code", "excerpt": "Organization standardizes GitHub repository names, topics, branch names, commit messages, and release tags so the source-code estate is queryable by humans, automation, AI agents, and audit tooling.", "url": "github-naming-tagging.html", "icon": "assets/icons/github-naming-tagging.png", "logo": "assets/images/github-naming-tagging/logo.jpeg", "tags": ["github", "naming", "tagging", "source-control", "conventions", "governance"]}, {"id": "ORG-FOUND-AWS-NAMING-TAGGING", "status": "draft:gray", "title": "AWS Account and Resource Naming and Tagging Conventions", "excerpt": "Organization standardizes AWS account names, resource names, and resource tags. Names help humans recognize resources; tags are authoritative for cost, ownership, compliance, automation, and inventory. Production enforcement is automated through AWS Organizations, tag policies, SCPs, and AWS Config rules.", "url": "aws-naming-tagging.html", "icon": "assets/icons/aws-naming-tagging.png", "logo": "assets/images/aws-naming-tagging/logo.jpeg", "tags": ["aws", "naming", "tagging", "cost-allocation", "governance", "cloud"]}, {"id": "ORG-FOUND-PACKAGE-NAMING-CONVENTIONS", "status": "draft:gray", "title": "Package Naming Conventions Across JVM, npm, Python, .NET, and OCI", "excerpt": "Organization uses one logical package name, <domain>-<system>-<component>, and maps it deterministically into JVM, npm, Python, .NET, and OCI package ecosystems. Internal artifacts publish to internal registries unless an explicit decision allows public publication.", "url": "package-naming-conventions.html", "icon": "assets/icons/package-naming-conventions.png", "logo": "assets/images/package-naming-conventions/logo.jpeg", "tags": ["packages", "naming", "conventions", "jvm", "npm", "python", "dotnet", "oci", "registries"]}]}, {"title": "Ways of Working", "description": "Shared ways of working that keep the engineering organisation aligned and efficient, and provide a forum for continuous improvement of those ways of working.", "posts": [{"id": "ORG-FOUND-JIRA-WORKFLOW-STANDARDS", "status": "draft:gray", "title": "Jira as the Issue Tracker and a Unified Workflow Standard Across Teams", "excerpt": "Organization uses Jira as the standard engineering issue tracker and adopts four shared workflows: Epic, Spike, Story & Bug, and Task. The standard fixes the meaning of states and transitions across teams while leaving boards, priorities, estimation, and ceremonies team-owned.", "url": "jira-workflow-standards.html", "icon": "assets/icons/jira-workflow-standards.png", "logo": "assets/images/jira-workflow-standards/logo.jpeg", "tags": ["jira", "issue-tracking", "workflow", "process", "qa", "delivery"]}, {"id": "ORG-FOUND-ONE-PERCENT-IMPROVEMENTS", "status": "draft:gray", "title": "One Percent Improvements as a Weekly Engineering Habit", "excerpt": "Organization will adopt a lightweight weekly habit of making, recording, and sharing small engineering improvements. The goal is visible continuous progress that improves morale, plus meaningful long-term impact through the cumulative effect of many minor improvements.", "url": "one-percent-improvements.html", "icon": "assets/icons/one-percent-improvements.png", "logo": "assets/images/one-percent-improvements/logo.jpeg", "tags": ["continuous-improvement", "kaizen", "engineering-culture", "morale", "learning-organisation", "weekly-ritual"]}]}, {"title": "Communities of Practice", "description": "Communities of practice that build and maintain shared understanding of how to do technical work at Organization, and provide a forum for continuous improvement of that shared understanding.", "posts": [{"id": "ORG-FOUND-BACKEND-GUILD", "status": "draft:gray", "title": "Backend Guild as a Cross-Team Community of Practice", "excerpt": "Organization will form a Backend Guild as a standing community of practice for backend and distributed systems engineers across teams, brands, and domains. The guild owns and refines golden paths for backend systems, shares lessons learned on a bi-weekly cadence, runs guild-specific sessions at Architecture Summits, and grows world-class experts through coordinated thought leadership. The guild is advisory and contributory, not a governance body: it gives feedback to the architecture group and Chief Architect, proposes new recommendations and decisions, and is open to every Aviver who wants to contribute. The guild operates with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).", "url": "backend-guild.html", "icon": "assets/icons/backend-guild.png", "logo": "assets/images/backend-guild/logo.jpeg", "tags": ["foundations", "guild", "backend", "distributed-systems", "golden-paths", "community-of-practice"]}, {"id": "ORG-FOUND-FRONTEND-GUILD", "status": "draft:gray", "title": "Frontend Guild as a Cross-Team Web Consortium", "excerpt": "Organization will form a Frontend Guild as a standing community of practice for web frontend engineers across teams, brands, and domains. The guild is the organisation-wide web consortium that enables and empowers teams around standards to ensure the long-term growth of the web ecosystem. It focuses on web frontend challenges first and uses them as an entry point to end-to-end concerns (backend, infrastructure, ...) where it makes sense. The guild is advisory and contributory: bi-weekly knowledge sharing, experimentation-first documentation, transparent recorded sessions, working groups, and coordinated external visibility. Mobile frontend is explicitly out of scope; a separate Mobile Guild handles it. The guild is provisioned with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).", "url": "frontend-guild.html", "icon": "assets/icons/frontend-guild.png", "logo": "assets/images/frontend-guild/logo.jpeg", "tags": ["foundations", "guild", "frontend", "web", "community-of-practice", "design-system", "micro-frontends"]}, {"id": "ORG-FOUND-MOBILE-GUILD", "status": "draft:gray", "title": "Mobile Guild as a Cross-Team Mobile Consortium", "excerpt": "Organization will form a Mobile Guild as a standing community of practice for mobile engineers across teams, brands, and domains. The guild is the organisation-wide mobile consortium that enables and empowers teams around standards to ensure the long-term growth of the mobile ecosystem - native iOS and Android, cross-platform stacks where used, and mobile-specific shells. It focuses on mobile challenges first and uses them as an entry point to end-to-end concerns (backend, infrastructure, ...) where it makes sense. The guild is advisory and contributory: bi-weekly knowledge sharing, experimentation-first documentation, transparent recorded sessions, working groups, and coordinated external visibility. Web frontend is explicitly out of scope; a separate Frontend Guild handles it. The guild is provisioned with a dedicated Slack channel, source code repositories, and an AWS account (or a dedicated space in an existing account).", "url": "mobile-guild.html", "icon": "assets/icons/mobile-guild.png", "logo": "assets/images/mobile-guild/logo.jpeg", "tags": ["foundations", "guild", "mobile", "ios", "android", "community-of-practice", "design-system"]}, {"id": "ORG-FOUND-GENAI-GUILD", "status": "draft:gray", "title": "GenAI Guild as a Cross-Team Generative AI Consortium", "excerpt": "Organization will form a GenAI Guild as a standing community of practice to transform how the organisation leverages Generative AI - moving from ad-hoc experimentation to measurable productivity gains across the Product & Technology organisation. The guild operates through four pillars: Evangelization & Knowledge Sharing, Architecture & Standards, Research & Innovation, and Tooling & Licensing. It enables teams to harness GenAI effectively while maintaining security and compliance, mitigates Shadow AI risks through transparency and guidance, establishes frameworks that enable innovation rather than block it, and builds sustainable AI adoption at scale with measurable business impact. The guild is advisory and contributory, facilitated by the Architecture team and open to every Aviver. It is provisioned with dedicated Slack channels (open + volunteer), source code repositories, and an AWS account (or dedicated space) for experiments, agents, MCP servers, and reference implementations.", "url": "genai-guild.html", "icon": "assets/icons/genai-guild.png", "logo": "assets/images/genai-guild/logo.jpeg", "tags": ["foundations", "guild", "genai", "ai", "mcp", "agents", "community-of-practice", "shadow-ai"]}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
         const root = document.getElementById('sections');
+        const visualRoot = document.getElementById('visual');
+        const tabList = document.getElementById('tab-list');
+        const tabVisual = document.getElementById('tab-visual');
         const empty = document.getElementById('empty');
         const hits = document.getElementById('hits');
         const tagFilter = document.getElementById('tag-filter');
@@ -514,45 +651,116 @@
             root.appendChild(sec);
         });
 
+        // Render the Visual Overview pane: same sections, but each post is a
+        // card showing its hero logo image (instead of the abstract). Cards
+        // carry the same data-* attributes so search/tag/status filters apply
+        // to both views.
+        const visualToolbar = el('div', {class: 'visual-toolbar'});
+        const expandBtn = el('button', {type: 'button', text: 'Expand images'});
+        visualToolbar.appendChild(expandBtn);
+        visualRoot.appendChild(visualToolbar);
+
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const grid = el('div', {class: 'visual-grid'});
+            section.posts.forEach(p => {
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                const card = el('a', {class: 'visual-card', href: p.url});
+                card.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                card.dataset.tags = tags.join('|').toLowerCase();
+                card.dataset.status = statusName.toLowerCase();
+                if (p.logo) {
+                    card.appendChild(el('img', {src: p.logo, alt: p.title, loading: 'lazy'}));
+                } else {
+                    card.appendChild(el('div', {class: 'no-logo', text: 'no image'}));
+                }
+                card.appendChild(el('p', {class: 'visual-title', text: p.title}));
+                grid.appendChild(card);
+            });
+            sec.appendChild(grid);
+            visualRoot.appendChild(sec);
+        });
+
+        // Expand toggle: full-width uncropped images, one per row. Clicking
+        // anywhere on a card opens the article in both modes.
+        let visualExpanded = false;
+        expandBtn.addEventListener('click', function () {
+            visualExpanded = !visualExpanded;
+            visualRoot.classList.toggle('expanded', visualExpanded);
+            expandBtn.classList.toggle('active', visualExpanded);
+            expandBtn.textContent = visualExpanded ? 'Compact grid' : 'Expand images';
+        });
+
+        // Tab switching between the article list and the visual overview.
+        // #visual in the URL hash deep-links the visual tab.
+        function selectView(visual) {
+            root.hidden = visual;
+            visualRoot.hidden = !visual;
+            tabList.classList.toggle('active', !visual);
+            tabVisual.classList.toggle('active', visual);
+            tabList.setAttribute('aria-selected', String(!visual));
+            tabVisual.setAttribute('aria-selected', String(visual));
+            const hash = visual ? '#visual' : '';
+            if (window.location.hash !== hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+            }
+        }
+
+        tabList.addEventListener('click', function () { selectView(false); });
+        tabVisual.addEventListener('click', function () { selectView(true); });
+        if (window.location.hash === '#visual') selectView(true);
+
         function applyFilters() {
             const q = qInput.value.trim().toLowerCase();
             let visibleCount = 0;
-            root.querySelectorAll('section.group').forEach(sec => {
-                let secVisible = false;
-                sec.querySelectorAll('li').forEach(li => {
-                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
-                    let matchTag = true;
-                    if (activeTags.size) {
-                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
-                        // any-match: post must carry at least one selected tag
-                        matchTag = false;
-                        for (const t of activeTags) {
-                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
-                                matchTag = true;
-                                break;
-                            }
+
+            function matchItem(item) {
+                const matchQ = !q || item.dataset.haystack.indexOf(q) !== -1;
+                let matchTag = true;
+                if (activeTags.size) {
+                    const itemTags = item.dataset.tags ? item.dataset.tags.split('|') : [];
+                    // any-match: post must carry at least one selected tag
+                    matchTag = false;
+                    for (const t of activeTags) {
+                        if (itemTags.indexOf(t.toLowerCase()) !== -1) {
+                            matchTag = true;
+                            break;
                         }
                     }
-                    let matchStatus = true;
-                    if (activeStatuses.size) {
-                        const liStatus = li.dataset.status || '';
-                        // any-match: post status must equal one of the selected statuses
-                        matchStatus = false;
-                        for (const s of activeStatuses) {
-                            if (liStatus === s.toLowerCase()) {
-                                matchStatus = true;
-                                break;
-                            }
+                }
+                let matchStatus = true;
+                if (activeStatuses.size) {
+                    const itemStatus = item.dataset.status || '';
+                    // any-match: post status must equal one of the selected statuses
+                    matchStatus = false;
+                    for (const s of activeStatuses) {
+                        if (itemStatus === s.toLowerCase()) {
+                            matchStatus = true;
+                            break;
                         }
                     }
-                    const match = matchQ && matchTag && matchStatus;
-                    li.classList.toggle('hidden', !match);
-                    if (match) {
-                        secVisible = true;
-                        visibleCount++;
-                    }
+                }
+                return matchQ && matchTag && matchStatus;
+            }
+
+            // Both views hold the same posts; count visibility once (list view)
+            // but toggle hidden state in both so tab switches stay filtered.
+            [root, visualRoot].forEach((pane, paneIdx) => {
+                pane.querySelectorAll('section.group').forEach(sec => {
+                    let secVisible = false;
+                    sec.querySelectorAll('li, .visual-card').forEach(item => {
+                        const match = matchItem(item);
+                        item.classList.toggle('hidden', !match);
+                        if (match) {
+                            secVisible = true;
+                            if (paneIdx === 0) visibleCount++;
+                        }
+                    });
+                    sec.classList.toggle('empty', !secVisible);
                 });
-                sec.classList.toggle('empty', !secVisible);
             });
             empty.classList.toggle('show', visibleCount === 0);
             hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)

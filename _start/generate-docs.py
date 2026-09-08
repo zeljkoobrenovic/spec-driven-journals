@@ -12,9 +12,10 @@ The template uses three ``${placeholder}`` substitutions:
 - ``${apps}``               — the full apps.json content, embedded as JSON
                               so the page's inline JavaScript can read it.
 
-Icon assets under ``_start/_templates/icons/`` are mirrored into
-``docs/start/icons/`` so the template's ``icons/logo.png`` reference
-resolves at runtime.
+Asset folders under ``_start/_templates/`` (``icons/``, ``istock/``) are
+mirrored into ``docs/start/`` so the template's ``icons/logo.png`` and the
+config's ``istock/...`` references resolve at runtime. Missing folders are
+skipped.
 
 Standard-library only — matches the rest of the build tooling.
 """
@@ -29,7 +30,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 START_DIR = REPO_ROOT / "_start"
 TEMPLATE_FILE = START_DIR / "_templates" / "index.html"
-TEMPLATE_ICONS_DIR = START_DIR / "_templates" / "icons"
+TEMPLATE_ASSET_DIRS = ("icons", "istock")
 CONFIG_FILE = START_DIR / "_config" / "apps.json"
 OUT_DIR = REPO_ROOT / "docs" / "start"
 
@@ -77,7 +78,8 @@ def main() -> int:
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "index.html").write_text(html, encoding="utf-8")
-    _copy_icons(TEMPLATE_ICONS_DIR, OUT_DIR / "icons")
+    for asset_dir in TEMPLATE_ASSET_DIRS:
+        _copy_icons(START_DIR / "_templates" / asset_dir, OUT_DIR / asset_dir)
 
     rel_out = (OUT_DIR / "index.html").relative_to(REPO_ROOT)
     print(f"[built] _start -> {rel_out}")

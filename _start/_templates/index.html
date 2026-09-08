@@ -25,6 +25,12 @@
             color: grey;
         }
 
+        .group-description {
+            font-size: 78%;
+            margin: 2px 12px 0 12px;
+            color: #a8a8a8;
+        }
+
         .app {
             margin: 10px;
             padding-top: 10px;
@@ -48,6 +54,137 @@
             overflow: hidden;
             padding-left: 8px;
             padding-right: 8px;
+        }
+
+        .steps-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 12px 0;
+        }
+
+        .steps-flow .step-group {
+            margin: 0;
+            width: 100%;
+        }
+
+        .flow-start {
+            width: 64px;
+            height: 64px;
+            line-height: 64px;
+            border-radius: 50%;
+            background-color: #5009DC;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .flow-line {
+            width: 3px;
+            height: 36px;
+            background-color: #5009DC;
+        }
+
+        .step-group {
+            vertical-align: top;
+            display: flex;
+            align-items: flex-start;
+            border: 1px solid lightgrey;
+            border-radius: 6px;
+            margin: 8px auto;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f8f8f8;
+            text-align: left;
+            max-width: 980px;
+        }
+
+        .step-group-logo {
+            flex-shrink: 0;
+            width: 340px;
+            min-height: 340px;
+            object-fit: cover;
+            align-self: stretch;
+        }
+
+        .step-group-content {
+            flex: 1;
+            min-width: 0;
+            padding: 14px 18px;
+        }
+
+        .step-group-description {
+            font-size: 13px;
+            color: grey;
+            line-height: 19px;
+            margin: -4px 0 12px 0;
+        }
+
+        .step-group-title {
+            font-weight: bold;
+            font-size: 18px;
+            color: #5009DC;
+            margin-bottom: 10px;
+        }
+
+        .step {
+            display: flex;
+            margin: 10px 0;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+            border-radius: 50%;
+            background-color: #5009DC;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin-right: 12px;
+        }
+
+        .step-icons {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+            padding-left: 16px;
+            align-self: center;
+        }
+
+        .step-icon {
+            max-height: 42px;
+            max-width: 100px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .step-name {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+            line-height: 26px;
+        }
+
+        .step-how {
+            font-size: 12px;
+            font-weight: normal;
+            font-style: italic;
+            color: grey;
+            margin-left: 6px;
+        }
+
+        .step-description {
+            font-size: 13px;
+            color: grey;
+            line-height: 19px;
+            margin-top: 2px;
         }
 
         .source {
@@ -165,6 +302,7 @@
 <div id="tab_content"></div>
 
 <script>
+    console.log('start page template: v3 (steps support)');
     const apps = ${apps}.apps;
     const config = ${apps}.config;
     let tabNavigationHtml = '';
@@ -186,8 +324,8 @@
     // Pre-build a flat list with pre-lowercased fields for search
     const allApps = [];
     apps.forEach(tab => {
-        tab.apps.forEach(group => {
-            group.apps.forEach(app => {
+        (tab.apps || []).forEach(group => {
+            (group.apps || []).forEach(app => {
                 allApps.push({
                     app: app,
                     name: (app.name || '').toLowerCase(),
@@ -199,12 +337,9 @@
     });
 
     function renderAppCard(app) {
+        const newTab = !(config.openInNewTab === false || app.openInNewTab === false);
         let html = '<div class="app">';
-        if (config.openInNewTab === false || app.openInNewTab === false) {
-            html += '<a href="' + app.link + '">';
-        } else {
-            html += '<a target="_blank" href="' + app.link + '">';
-        }
+        html += '<a ' + (newTab ? 'target="_blank" ' : '') + 'href="' + app.link + '">';
         html += '<div style="height: 38px">';
         html += '<div class="name">' + app.name + '</div>';
         if (app.source) {
@@ -220,17 +355,81 @@
         return html;
     }
 
+    function renderStepGroup(stepGroup) {
+        const newTab = !(config.openInNewTab === false);
+        let html = '<div class="step-group">';
+        const groupLogo = stepGroup.logo || stepGroup.icon;
+        if (groupLogo) {
+            html += '<img class="step-group-logo" src="' + groupLogo + '">';
+        }
+        html += '<div class="step-group-content">';
+        const title = stepGroup.group || '';
+        if (stepGroup.link) {
+            html += '<a ' + (newTab ? 'target="_blank" ' : '') + 'href="' + stepGroup.link + '"><div class="step-group-title">' + title + '</div></a>';
+        } else {
+            html += '<div class="step-group-title">' + title + '</div>';
+        }
+        if (stepGroup.description) {
+            html += '<div class="step-group-description">' + stepGroup.description + '</div>';
+        }
+        (stepGroup.steps || []).forEach((step, index) => {
+            html += '<div class="step">';
+            html += '<div class="step-number">' + (index + 1) + '</div>';
+            html += '<div class="step-body">';
+            html += '<div class="step-name">' + (step.name || '');
+            if (step.how) {
+                html += '<span class="step-how">' + step.how + '</span>';
+            }
+            html += '</div>';
+            if (step.description) {
+                html += '<div class="step-description">' + step.description + '</div>';
+            }
+            html += '</div>';
+            const stepIcons = step.icons || (step.icon ? [step.icon] : []);
+            if (stepIcons.length) {
+                html += '<div class="step-icons">';
+                stepIcons.forEach(icon => {
+                    const isIconObject = icon !== null && typeof icon === 'object';
+                    const iconSrc = isIconObject ? icon.icon : icon;
+                    const iconImg = '<img class="step-icon" src="' + iconSrc + '">';
+                    if (isIconObject && icon.link) {
+                        html += '<a target="_blank" href="' + icon.link + '">' + iconImg + '</a>';
+                    } else {
+                        html += iconImg;
+                    }
+                });
+                html += '</div>';
+            }
+            html += '</div>';
+        });
+        html += '</div>';
+        html += '</div>';
+        return html;
+    }
+
     function renderTabs() {
         apps.forEach(tab => {
             let html = '';
-            tab.apps.forEach(group => {
+            (tab.apps || []).forEach(group => {
                 html += '<div class="group">';
                 html += '<div class="group-title">' + group.group + '</div>';
-                group.apps.forEach(app => {
+                if (group.description) {
+                    html += '<div class="group-description">' + group.description + '</div>';
+                }
+                (group.apps || []).forEach(app => {
                     html += renderAppCard(app);
                 });
                 html += '</div>';
             });
+            if (tab.steps && tab.steps.length) {
+                html += '<div class="steps-flow">';
+                html += '<div class="flow-start">START</div>';
+                tab.steps.forEach(stepGroup => {
+                    html += '<div class="flow-line"></div>';
+                    html += renderStepGroup(stepGroup);
+                });
+                html += '</div>';
+            }
             document.getElementById('content_' + tab.tab).innerHTML = html;
         });
     }

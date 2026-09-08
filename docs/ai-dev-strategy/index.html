@@ -321,6 +321,135 @@
         .empty-msg.show {
             display: block;
         }
+
+        nav.view-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 24px;
+            flex-wrap: wrap;
+        }
+
+        nav.view-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.view-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.view-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #visual[hidden] {
+            display: none;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 0 0 8px;
+        }
+
+        .visual-card {
+            display: block;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .visual-card.hidden {
+            display: none;
+        }
+
+        .visual-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+        }
+
+        .visual-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 18px;
+        }
+
+        .visual-toolbar button {
+            font: inherit;
+            font-size: 13px;
+            padding: 4px 12px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--fg);
+            cursor: pointer;
+        }
+
+        .visual-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .visual-toolbar button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Expanded mode: one full-width image per row, uncropped; the image
+           links to the image file itself, the title links to the article. */
+        #visual.expanded .visual-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        #visual.expanded .visual-card img {
+            aspect-ratio: auto;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        #visual.expanded .visual-card .visual-title {
+            font-size: 18px;
+        }
+
+        .visual-card .no-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: var(--tag-bg, #f2f2f2);
+            border: 1px dashed var(--rule);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .visual-card .visual-title {
+            margin: 8px 2px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgb(23, 86, 169);
+        }
+
+        .visual-card:hover .visual-title {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -335,6 +464,10 @@
     </header>
 
     <div style="padding: 4px;">
+        <nav class="view-tabs" id="view-tabs" role="tablist">
+            <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
+            <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
+        </nav>
         <div class="status-filter" id="status-filter"></div>
         <div class="tag-filter" id="tag-filter"></div>
         <div class="search">
@@ -343,15 +476,19 @@
         </div>
 
         <div id="sections"></div>
+        <div id="visual" hidden></div>
         <p class="empty-msg" id="empty">No posts match your search.</p>
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Framing", "description": "The strategy entry point, current-state problem, and principles that define what AI-assisted modernization must accomplish.", "posts": [{"id": "", "status": "", "title": "Introduction", "excerpt": "The AI development strategy is a modernization strategy first and a tooling strategy second. It uses agentic coding as a governed way to understand legacy systems, generate tests, apply standards, and move a fragmented estate toward a simpler AWS, ECS, and Kafka-based engineering model.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "tags": []}, {"id": "", "status": "", "title": "Current State and Problem", "excerpt": "The AI strategy starts from a difficult reality: three architecture paradigms, three repository ecosystems, hidden legacy behavior, and too much operational variation. This post defines the current-state problem, the target direction, the assumptions, and the baseline that must be collected.", "url": "current-state-and-problem.html", "icon": "assets/icons/current-state-and-problem.png", "tags": []}, {"id": "", "status": "", "title": "Strategic Principles for AI in Software Modernization", "excerpt": "Six principles for using agentic coding as a modernization accelerator: align AI with the target architecture, move incrementally, govern outputs, standardize before automation, choose tools explicitly, and manage agent capabilities as owned platform assets.", "url": "strategic-principles.html", "icon": "assets/icons/strategic-principles.png", "tags": []}]}, {"title": "Tooling Decision", "description": "Picking Claude Code as the default, why it matters, and how to enable it.", "posts": [{"id": "", "status": "", "title": "Tooling Decision: Claude Code as the Default", "excerpt": "The AI development strategy uses Claude Code as the 2026 default agentic coding tool. The decision is a dated operating default, not a permanent model ranking: alternatives remain available through documented exceptions and the default is reviewed after pilot evidence.", "url": "tooling-decision.html", "icon": "assets/icons/tooling-decision.png", "tags": []}, {"id": "", "status": "", "title": "Why Claude Code: The Capabilities That Matter", "excerpt": "An educational explanation of why Claude Code is the 2026 default: how its agentic loop, subagents, MCP, CLAUDE.md, Skills, hooks, and settings combine into one governed modernization surface.", "url": "claude-code-as-standard.html", "icon": "assets/icons/claude-code-as-standard.png", "tags": []}, {"id": "", "status": "", "title": "Claude Code Enablement", "excerpt": "The enablement stack that turns Claude Code from a selected tool into reusable engineering capability: repository instructions, Skills, MCP servers, subagents, hooks, registries, and lifecycle ownership.", "url": "claude-code-enablement.html", "icon": "assets/icons/claude-code-enablement.png", "tags": []}]}, {"title": "Workflows & Landscape", "description": "The target engineering model, the use-case portfolio, and how to apply both to specific legacy estates.", "posts": [{"id": "", "status": "", "title": "Target Engineering Model with Claude Code", "excerpt": "An educational four-layer model for agentic modernization: Claude Code as the developer surface, a modernization factory of subagents, Skills, and MCP servers, platform golden paths, and executable AI governance.", "url": "target-engineering-model.html", "icon": "assets/icons/target-engineering-model.png", "tags": []}, {"id": "", "status": "", "title": "Claude Code Use-Case Portfolio", "excerpt": "Six high-priority agentic coding workflows for modernization, each explained as a subagent-driven workflow with Skills, MCP servers, evidence expectations, and human accountability.", "url": "ai-use-case-portfolio.html", "icon": "assets/icons/ai-use-case-portfolio.png", "tags": []}, {"id": "", "status": "", "title": "Strategy by Current Landscape: .NET, Java, and Node.js Estates", "excerpt": "Three concrete, educational playbooks for applying agentic coding to the current landscape: a .NET/TFS monolith with SQL Server, Java/Kafka microservices on GitLab, and an overly complex Node.js serverless estate on GitHub.", "url": "strategy-by-landscape.html", "icon": "assets/icons/strategy-by-landscape.png", "tags": []}]}, {"title": "Execution", "description": "The operating model and rollout roadmap for turning strategy into reusable modernization capability.", "posts": [{"id": "", "status": "", "title": "Operating Model for AI Engineering Enablement", "excerpt": "An operating model for agentic coding: who owns Claude Code standards, who approves MCP servers, Skills, and subagents, who owns modernization workflows, and who remains accountable for production decisions.", "url": "operating-model.html", "icon": "assets/icons/operating-model.png", "tags": []}, {"id": "", "status": "", "title": "Roadmap for AI-Assisted Modernization", "excerpt": "A phased rollout plan for agentic modernization: establish policy and standards, teach teams the workflow, build reusable capabilities, scale adoption, and measure whether complexity is actually going down.", "url": "roadmap.html", "icon": "assets/icons/roadmap.png", "tags": []}]}, {"title": "Governance & Standards", "description": "Policy, engineering standards, and risks as executable Claude Code configuration.", "posts": [{"id": "", "status": "", "title": "Claude Code Policy for Software Development", "excerpt": "A practical policy for accountable agentic coding: human review, data classification, approved tools, permission modes, hooks, audit trails, and incident handling.", "url": "ai-policy.html", "icon": "assets/icons/ai-policy.png", "tags": []}, {"id": "", "status": "", "title": "Target Engineering Standards for Claude Code", "excerpt": "The repository, microservice, Kafka, and AWS standards that agentic coding tools should help teams follow — encoded in context files, Skills, subagents, templates, hooks, and CI so they are enforced early.", "url": "target-engineering-standards.html", "icon": "assets/icons/target-engineering-standards.png", "tags": []}, {"id": "", "status": "", "title": "Risks and Mitigations", "excerpt": "A practical risk model for agentic coding: vendor concentration, hallucinated changes, stale instructions, secret exposure, prompt and tool injection, over-automation, cost growth, and architectural drift.", "url": "risks-and-mitigations.html", "icon": "assets/icons/risks-and-mitigations.png", "tags": []}]}, {"title": "Appendix", "description": "Reference material for Claude Code context, memory, MCP, Skills, and subagents.", "posts": [{"id": "", "status": "", "title": "Reference: CLAUDE.md and Memory Details", "excerpt": "Detailed reference material for project, user, and organization-level CLAUDE.md files plus memory, written as practical context-management guidance for agentic coding.", "url": "claude-md-and-memory.html", "icon": "assets/icons/claude-md-and-memory.png", "tags": []}, {"id": "", "status": "", "title": "Reference: MCP, Skills, and Subagent Details", "excerpt": "Detailed reference material for MCP servers, Skills, and subagents, explaining how agentic tools reach systems, apply internal conventions, and run repeatable modernization workflows.", "url": "mcp-skills-subagents.html", "icon": "assets/icons/mcp-skills-subagents.png", "tags": []}]}, {"title": "Review", "description": "A thorough review of the strategy's content, flow, governance, and publication readiness.", "posts": [{"id": "", "status": "", "title": "Review of the AI Development Strategy by Codex", "excerpt": "A focused Codex review of the AI development strategy after the educational rewrite. Verdict: credible for controlled pilots, not yet ready as a binding enterprise standard until evidence, owners, controls, and cost baselines are real.", "url": "strategy-review-codex.html", "icon": "assets/icons/review-codex.png", "tags": []}, {"id": "", "status": "", "title": "Review of the AI Development Strategy by Claude", "excerpt": "A focused Claude review of the AI development strategy after the second improvement pass. The strategy is much clearer and ready for controlled execution, but still needs evidence, owners, controls, and pilot artifacts before enterprise promotion.", "url": "strategy-review-claude.html", "icon": "assets/icons/review-claude.png", "tags": []}, {"id": "", "status": "", "title": "Review of the AI Development Strategy by Gemini", "excerpt": "A direct review of the AI development strategy from the Gemini CLI perspective, followed by a critical assessment of the reviews provided by Claude and Codex.", "url": "review-gemini.html", "icon": "assets/icons/review-gemini.png", "tags": []}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Framing", "description": "The strategy entry point, current-state problem, and principles that define what AI-assisted modernization must accomplish.", "posts": [{"id": "", "status": "", "title": "Introduction", "excerpt": "The AI development strategy is a modernization strategy first and a tooling strategy second. It uses agentic coding as a governed way to understand legacy systems, generate tests, apply standards, and move a fragmented estate toward a simpler AWS, ECS, and Kafka-based engineering model.", "url": "introduction.html", "icon": "assets/icons/introduction.png", "logo": "assets/images/introduction/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Current State and Problem", "excerpt": "The AI strategy starts from a difficult reality: three architecture paradigms, three repository ecosystems, hidden legacy behavior, and too much operational variation. This post defines the current-state problem, the target direction, the assumptions, and the baseline that must be collected.", "url": "current-state-and-problem.html", "icon": "assets/icons/current-state-and-problem.png", "logo": "assets/images/current-state-and-problem/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Strategic Principles for AI in Software Modernization", "excerpt": "Six principles for using agentic coding as a modernization accelerator: align AI with the target architecture, move incrementally, govern outputs, standardize before automation, choose tools explicitly, and manage agent capabilities as owned platform assets.", "url": "strategic-principles.html", "icon": "assets/icons/strategic-principles.png", "logo": "assets/images/strategic-principles/logo.jpeg", "tags": []}]}, {"title": "Tooling Decision", "description": "Picking Claude Code as the default, why it matters, and how to enable it.", "posts": [{"id": "", "status": "", "title": "Tooling Decision: Claude Code as the Default", "excerpt": "The AI development strategy uses Claude Code as the 2026 default agentic coding tool. The decision is a dated operating default, not a permanent model ranking: alternatives remain available through documented exceptions and the default is reviewed after pilot evidence.", "url": "tooling-decision.html", "icon": "assets/icons/tooling-decision.png", "logo": "assets/images/tooling-decision/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Why Claude Code: The Capabilities That Matter", "excerpt": "An educational explanation of why Claude Code is the 2026 default: how its agentic loop, subagents, MCP, CLAUDE.md, Skills, hooks, and settings combine into one governed modernization surface.", "url": "claude-code-as-standard.html", "icon": "assets/icons/claude-code-as-standard.png", "logo": "assets/images/claude-code-as-standard/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Claude Code Enablement", "excerpt": "The enablement stack that turns Claude Code from a selected tool into reusable engineering capability: repository instructions, Skills, MCP servers, subagents, hooks, registries, and lifecycle ownership.", "url": "claude-code-enablement.html", "icon": "assets/icons/claude-code-enablement.png", "logo": "assets/images/claude-code-enablement/logo.jpeg", "tags": []}]}, {"title": "Workflows & Landscape", "description": "The target engineering model, the use-case portfolio, and how to apply both to specific legacy estates.", "posts": [{"id": "", "status": "", "title": "Target Engineering Model with Claude Code", "excerpt": "An educational four-layer model for agentic modernization: Claude Code as the developer surface, a modernization factory of subagents, Skills, and MCP servers, platform golden paths, and executable AI governance.", "url": "target-engineering-model.html", "icon": "assets/icons/target-engineering-model.png", "logo": "assets/images/target-engineering-model/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Claude Code Use-Case Portfolio", "excerpt": "Six high-priority agentic coding workflows for modernization, each explained as a subagent-driven workflow with Skills, MCP servers, evidence expectations, and human accountability.", "url": "ai-use-case-portfolio.html", "icon": "assets/icons/ai-use-case-portfolio.png", "logo": "assets/images/ai-use-case-portfolio/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Strategy by Current Landscape: .NET, Java, and Node.js Estates", "excerpt": "Three concrete, educational playbooks for applying agentic coding to the current landscape: a .NET/TFS monolith with SQL Server, Java/Kafka microservices on GitLab, and an overly complex Node.js serverless estate on GitHub.", "url": "strategy-by-landscape.html", "icon": "assets/icons/strategy-by-landscape.png", "logo": "assets/images/strategy-by-landscape/logo.jpeg", "tags": []}]}, {"title": "Execution", "description": "The operating model and rollout roadmap for turning strategy into reusable modernization capability.", "posts": [{"id": "", "status": "", "title": "Operating Model for AI Engineering Enablement", "excerpt": "An operating model for agentic coding: who owns Claude Code standards, who approves MCP servers, Skills, and subagents, who owns modernization workflows, and who remains accountable for production decisions.", "url": "operating-model.html", "icon": "assets/icons/operating-model.png", "logo": "assets/images/operating-model/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Roadmap for AI-Assisted Modernization", "excerpt": "A phased rollout plan for agentic modernization: establish policy and standards, teach teams the workflow, build reusable capabilities, scale adoption, and measure whether complexity is actually going down.", "url": "roadmap.html", "icon": "assets/icons/roadmap.png", "logo": "assets/images/roadmap/logo.jpeg", "tags": []}]}, {"title": "Governance & Standards", "description": "Policy, engineering standards, and risks as executable Claude Code configuration.", "posts": [{"id": "", "status": "", "title": "Claude Code Policy for Software Development", "excerpt": "A practical policy for accountable agentic coding: human review, data classification, approved tools, permission modes, hooks, audit trails, and incident handling.", "url": "ai-policy.html", "icon": "assets/icons/ai-policy.png", "logo": "assets/images/ai-policy/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Target Engineering Standards for Claude Code", "excerpt": "The repository, microservice, Kafka, and AWS standards that agentic coding tools should help teams follow — encoded in context files, Skills, subagents, templates, hooks, and CI so they are enforced early.", "url": "target-engineering-standards.html", "icon": "assets/icons/target-engineering-standards.png", "logo": "assets/images/target-engineering-standards/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Risks and Mitigations", "excerpt": "A practical risk model for agentic coding: vendor concentration, hallucinated changes, stale instructions, secret exposure, prompt and tool injection, over-automation, cost growth, and architectural drift.", "url": "risks-and-mitigations.html", "icon": "assets/icons/risks-and-mitigations.png", "logo": "assets/images/risks-and-mitigations/logo.jpeg", "tags": []}]}, {"title": "Appendix", "description": "Reference material for Claude Code context, memory, MCP, Skills, and subagents.", "posts": [{"id": "", "status": "", "title": "Reference: CLAUDE.md and Memory Details", "excerpt": "Detailed reference material for project, user, and organization-level CLAUDE.md files plus memory, written as practical context-management guidance for agentic coding.", "url": "claude-md-and-memory.html", "icon": "assets/icons/claude-md-and-memory.png", "logo": "assets/images/claude-md-and-memory/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Reference: MCP, Skills, and Subagent Details", "excerpt": "Detailed reference material for MCP servers, Skills, and subagents, explaining how agentic tools reach systems, apply internal conventions, and run repeatable modernization workflows.", "url": "mcp-skills-subagents.html", "icon": "assets/icons/mcp-skills-subagents.png", "logo": "assets/images/mcp-skills-subagents/logo.jpeg", "tags": []}]}, {"title": "Review", "description": "A thorough review of the strategy's content, flow, governance, and publication readiness.", "posts": [{"id": "", "status": "", "title": "Review of the AI Development Strategy by Codex", "excerpt": "A focused Codex review of the AI development strategy after the educational rewrite. Verdict: credible for controlled pilots, not yet ready as a binding enterprise standard until evidence, owners, controls, and cost baselines are real.", "url": "strategy-review-codex.html", "icon": "assets/icons/review-codex.png", "logo": "assets/images/review-codex/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Review of the AI Development Strategy by Claude", "excerpt": "A focused Claude review of the AI development strategy after the second improvement pass. The strategy is much clearer and ready for controlled execution, but still needs evidence, owners, controls, and pilot artifacts before enterprise promotion.", "url": "strategy-review-claude.html", "icon": "assets/icons/review-claude.png", "logo": null, "tags": []}, {"id": "", "status": "", "title": "Review of the AI Development Strategy by Gemini", "excerpt": "A direct review of the AI development strategy from the Gemini CLI perspective, followed by a critical assessment of the reviews provided by Claude and Codex.", "url": "review-gemini.html", "icon": "assets/icons/review-gemini.png", "logo": "assets/images/review-gemini/logo.jpeg", "tags": []}]}]}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
         const root = document.getElementById('sections');
+        const visualRoot = document.getElementById('visual');
+        const tabList = document.getElementById('tab-list');
+        const tabVisual = document.getElementById('tab-visual');
         const empty = document.getElementById('empty');
         const hits = document.getElementById('hits');
         const tagFilter = document.getElementById('tag-filter');
@@ -514,45 +651,116 @@
             root.appendChild(sec);
         });
 
+        // Render the Visual Overview pane: same sections, but each post is a
+        // card showing its hero logo image (instead of the abstract). Cards
+        // carry the same data-* attributes so search/tag/status filters apply
+        // to both views.
+        const visualToolbar = el('div', {class: 'visual-toolbar'});
+        const expandBtn = el('button', {type: 'button', text: 'Expand images'});
+        visualToolbar.appendChild(expandBtn);
+        visualRoot.appendChild(visualToolbar);
+
+        data.sections.forEach(section => {
+            const sec = el('section', {class: 'group'});
+            sec.appendChild(el('h2', {text: section.title}));
+            if (section.description) sec.appendChild(el('p', {class: 'group-desc', text: section.description}));
+            const grid = el('div', {class: 'visual-grid'});
+            section.posts.forEach(p => {
+                const tags = p.tags || [];
+                const statusName = p.status ? String(p.status).split(':')[0].trim() : '';
+                const card = el('a', {class: 'visual-card', href: p.url});
+                card.dataset.haystack = (p.title + ' ' + (p.excerpt || '') + ' ' + tags.join(' ') + ' ' + statusName).toLowerCase();
+                card.dataset.tags = tags.join('|').toLowerCase();
+                card.dataset.status = statusName.toLowerCase();
+                if (p.logo) {
+                    card.appendChild(el('img', {src: p.logo, alt: p.title, loading: 'lazy'}));
+                } else {
+                    card.appendChild(el('div', {class: 'no-logo', text: 'no image'}));
+                }
+                card.appendChild(el('p', {class: 'visual-title', text: p.title}));
+                grid.appendChild(card);
+            });
+            sec.appendChild(grid);
+            visualRoot.appendChild(sec);
+        });
+
+        // Expand toggle: full-width uncropped images, one per row. Clicking
+        // anywhere on a card opens the article in both modes.
+        let visualExpanded = false;
+        expandBtn.addEventListener('click', function () {
+            visualExpanded = !visualExpanded;
+            visualRoot.classList.toggle('expanded', visualExpanded);
+            expandBtn.classList.toggle('active', visualExpanded);
+            expandBtn.textContent = visualExpanded ? 'Compact grid' : 'Expand images';
+        });
+
+        // Tab switching between the article list and the visual overview.
+        // #visual in the URL hash deep-links the visual tab.
+        function selectView(visual) {
+            root.hidden = visual;
+            visualRoot.hidden = !visual;
+            tabList.classList.toggle('active', !visual);
+            tabVisual.classList.toggle('active', visual);
+            tabList.setAttribute('aria-selected', String(!visual));
+            tabVisual.setAttribute('aria-selected', String(visual));
+            const hash = visual ? '#visual' : '';
+            if (window.location.hash !== hash) {
+                history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+            }
+        }
+
+        tabList.addEventListener('click', function () { selectView(false); });
+        tabVisual.addEventListener('click', function () { selectView(true); });
+        if (window.location.hash === '#visual') selectView(true);
+
         function applyFilters() {
             const q = qInput.value.trim().toLowerCase();
             let visibleCount = 0;
-            root.querySelectorAll('section.group').forEach(sec => {
-                let secVisible = false;
-                sec.querySelectorAll('li').forEach(li => {
-                    const matchQ = !q || li.dataset.haystack.indexOf(q) !== -1;
-                    let matchTag = true;
-                    if (activeTags.size) {
-                        const liTags = li.dataset.tags ? li.dataset.tags.split('|') : [];
-                        // any-match: post must carry at least one selected tag
-                        matchTag = false;
-                        for (const t of activeTags) {
-                            if (liTags.indexOf(t.toLowerCase()) !== -1) {
-                                matchTag = true;
-                                break;
-                            }
+
+            function matchItem(item) {
+                const matchQ = !q || item.dataset.haystack.indexOf(q) !== -1;
+                let matchTag = true;
+                if (activeTags.size) {
+                    const itemTags = item.dataset.tags ? item.dataset.tags.split('|') : [];
+                    // any-match: post must carry at least one selected tag
+                    matchTag = false;
+                    for (const t of activeTags) {
+                        if (itemTags.indexOf(t.toLowerCase()) !== -1) {
+                            matchTag = true;
+                            break;
                         }
                     }
-                    let matchStatus = true;
-                    if (activeStatuses.size) {
-                        const liStatus = li.dataset.status || '';
-                        // any-match: post status must equal one of the selected statuses
-                        matchStatus = false;
-                        for (const s of activeStatuses) {
-                            if (liStatus === s.toLowerCase()) {
-                                matchStatus = true;
-                                break;
-                            }
+                }
+                let matchStatus = true;
+                if (activeStatuses.size) {
+                    const itemStatus = item.dataset.status || '';
+                    // any-match: post status must equal one of the selected statuses
+                    matchStatus = false;
+                    for (const s of activeStatuses) {
+                        if (itemStatus === s.toLowerCase()) {
+                            matchStatus = true;
+                            break;
                         }
                     }
-                    const match = matchQ && matchTag && matchStatus;
-                    li.classList.toggle('hidden', !match);
-                    if (match) {
-                        secVisible = true;
-                        visibleCount++;
-                    }
+                }
+                return matchQ && matchTag && matchStatus;
+            }
+
+            // Both views hold the same posts; count visibility once (list view)
+            // but toggle hidden state in both so tab switches stay filtered.
+            [root, visualRoot].forEach((pane, paneIdx) => {
+                pane.querySelectorAll('section.group').forEach(sec => {
+                    let secVisible = false;
+                    sec.querySelectorAll('li, .visual-card').forEach(item => {
+                        const match = matchItem(item);
+                        item.classList.toggle('hidden', !match);
+                        if (match) {
+                            secVisible = true;
+                            if (paneIdx === 0) visibleCount++;
+                        }
+                    });
+                    sec.classList.toggle('empty', !secVisible);
                 });
-                sec.classList.toggle('empty', !secVisible);
             });
             empty.classList.toggle('show', visibleCount === 0);
             hits.textContent = ' = ' + ((q || activeTags.size || activeStatuses.size)

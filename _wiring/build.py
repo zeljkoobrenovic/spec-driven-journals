@@ -418,8 +418,8 @@ def split_into_blocks(body: str):
 _MODALITIES = [
     # (key, tab label, sibling filename or None for index.md itself)
     ("index", "Article", None),
-    ("checklist", "Checklist", "checklist.md"),
     ("summary", "TL;DR", "summary.md"),
+    ("checklist", "Checklist", "checklist.md"),
     ("dialog", "Conversation", "dialog.md"),
     ("comics", "Comic", "comics.md"),
 ]
@@ -616,6 +616,7 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
                 "excerpt": meta.get("excerpt", ""),
                 "url": f"{slug}.html",
                 "icon": f"{icon_name}" if icon_name else None,
+                "logo": meta.get("logo") or None,
                 "tags": tags,
             })
 

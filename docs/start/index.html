@@ -25,6 +25,12 @@
             color: grey;
         }
 
+        .group-description {
+            font-size: 78%;
+            margin: 2px 12px 0 12px;
+            color: #a8a8a8;
+        }
+
         .app {
             margin: 10px;
             padding-top: 10px;
@@ -48,6 +54,137 @@
             overflow: hidden;
             padding-left: 8px;
             padding-right: 8px;
+        }
+
+        .steps-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 12px 0;
+        }
+
+        .steps-flow .step-group {
+            margin: 0;
+            width: 100%;
+        }
+
+        .flow-start {
+            width: 64px;
+            height: 64px;
+            line-height: 64px;
+            border-radius: 50%;
+            background-color: #5009DC;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .flow-line {
+            width: 3px;
+            height: 36px;
+            background-color: #5009DC;
+        }
+
+        .step-group {
+            vertical-align: top;
+            display: flex;
+            align-items: flex-start;
+            border: 1px solid lightgrey;
+            border-radius: 6px;
+            margin: 8px auto;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f8f8f8;
+            text-align: left;
+            max-width: 980px;
+        }
+
+        .step-group-logo {
+            flex-shrink: 0;
+            width: 340px;
+            min-height: 340px;
+            object-fit: cover;
+            align-self: stretch;
+        }
+
+        .step-group-content {
+            flex: 1;
+            min-width: 0;
+            padding: 14px 18px;
+        }
+
+        .step-group-description {
+            font-size: 13px;
+            color: grey;
+            line-height: 19px;
+            margin: -4px 0 12px 0;
+        }
+
+        .step-group-title {
+            font-weight: bold;
+            font-size: 18px;
+            color: #5009DC;
+            margin-bottom: 10px;
+        }
+
+        .step {
+            display: flex;
+            margin: 10px 0;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+            border-radius: 50%;
+            background-color: #5009DC;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin-right: 12px;
+        }
+
+        .step-icons {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+            padding-left: 16px;
+            align-self: center;
+        }
+
+        .step-icon {
+            max-height: 42px;
+            max-width: 100px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .step-name {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+            line-height: 26px;
+        }
+
+        .step-how {
+            font-size: 12px;
+            font-weight: normal;
+            font-style: italic;
+            color: grey;
+            margin-left: 6px;
+        }
+
+        .step-description {
+            font-size: 13px;
+            color: grey;
+            line-height: 19px;
+            margin-top: 2px;
         }
 
         .source {
@@ -147,7 +284,7 @@
 <body>
 <div style="margin-top: 10px"><img src="icons/logo.png" style="height: 164px; border: 1px solid lightgrey; border-radius: 20px; padding: 12px; margin: 8px;"></div>
 <div style="margin: 8px; margin-top: 0; font-size: 40px; color: #8c8c8c">My Journals</div>
-<div style="margin-bottom: 36px; font-size: 20px; color: #8c8c8c">Spec-driven journals on architecture decisions, templates, and supporting documents. Available free on <a href="https://github.com/zeljkoobrenovic/spec-driven-journals" targget="_blank">GitHub</a>.</div>
+<div style="margin-bottom: 36px; font-size: 20px; color: #8c8c8c">Spec-driven journals on architecture decisions, templates, and supporting documents. Available free on <a href="https://github.com/zeljkoobrenovic/spec-driven-journals" target="_blank">GitHub</a>.</div>
 
 <div style="margin: -10px; padding: 6px" id="search_container">
     <div style="margin-bottom: 30px; color: grey">
@@ -165,8 +302,9 @@
 <div id="tab_content"></div>
 
 <script>
-    const apps = {"config": {"openInNewTab": true, "enableSearch": true, "domainName": "My Journals", "domainDescription": "Spec-driven journals on architecture decisions, templates, and supporting documents. Available free on <a href=\"https://github.com/zeljkoobrenovic/spec-driven-journals\" targget=\"_blank\">GitHub</a>."}, "apps": [{"tab": "Focus", "apps": [{"group": "Playbooks", "apps": [{"name": "Grounded Engineering Executive", "link": "../grounded-engineering-executive/index.html", "icon": "icons/executive.png", "description": "my playbook for engineering executives", "source": ""}, {"name": "Grounded Product Management", "link": "../grounded-product-management/index.html", "icon": "icons/product-management.png", "description": "my playbook for product development", "source": ""}, {"name": "Grounded People Management Tools", "link": "../grounded-people-management-tools/index.html", "icon": "icons/people-management.png", "description": "my playbook for people development", "source": ""}, {"name": "Grounded Engineering Management", "link": "../grounded-engineering-management/index.html", "icon": "icons/engineering-management.png", "description": "my playbook for engineering development", "source": ""}]}, {"group": "Notes", "apps": [{"name": "Random AI Notes", "link": "../ai-notes/index.html", "icon": "icons/ai-notes.png", "description": "my random thoughts on AI in software development", "source": ""}]}, {"group": "Manuals", "apps": [{"name": "Spec-Driven<br>Product Architecture", "link": "../spec-driven-product-architecture/index.html", "icon": "icons/spec-driven-product-architecture.png", "description": "explaining spec-driven product architecture", "source": ""}, {"name": "Spec-Driven<br>Journals", "link": "../spec-driven-journals/index.html#insights", "icon": "icons/spec-driven-product-journal.png", "description": "explaining spec-driven journals", "source": ""}]}]}, {"tab": "Strategic Examples", "apps": [{"group": "decision logs", "apps": [{"name": "Example Strategic<br>AI Decisions", "link": "../ai-decisions-log/index.html", "icon": "icons/ai-decisions.png", "description": "strategic AI decision documents", "source": ""}, {"name": "Example Foundational<br>Tech Decisions", "link": "../foundations/index.html", "icon": "icons/foundations.png", "description": "foundational decision documents", "source": ""}]}, {"group": "org", "apps": [{"name": "Example Strategic<br>Org Design Decisions", "link": "../org-design/index.html", "icon": "icons/organization.png", "description": "strategic org decision documents", "source": ""}]}, {"group": "strategy & principles", "apps": [{"name": "Example Organization<br>Tech Strategy", "link": "../tech-strategy/index.html", "icon": "icons/strategy.png", "description": "overall tech strategy", "source": ""}, {"name": "Example Organization<br>Engineering Principles", "link": "../principles/index.html", "icon": "icons/principles.png", "description": "key engineering principles guiding our work", "source": ""}, {"name": "Example AI-Assisted<br>Dev Strategy", "link": "../ai-dev-strategy/index.html", "icon": "icons/ai-strategy.png", "description": "AI-assisted SDLC strategy", "source": ""}]}]}, {"tab": "Template Examples", "apps": [{"group": "ADRs", "apps": [{"name": "Educational<br>Documents", "link": "../documents/index.html", "icon": "icons/docs.png", "description": "educational articles", "source": ""}, {"name": "Templates", "link": "../adr-templates/index.html#insights", "icon": "icons/templates.png", "description": "ADR templates by people and orgs", "source": ""}, {"name": "Decisions Log Example", "link": "../decisions-log/index.html", "icon": "icons/decisions-log.png", "description": "example decision documents", "source": ""}, {"name": "MADR Decisions Log Example", "link": "../madr/index.html", "icon": "icons/madr.png", "description": "example decision documents", "source": ""}]}]}]}.apps;
-    const config = {"config": {"openInNewTab": true, "enableSearch": true, "domainName": "My Journals", "domainDescription": "Spec-driven journals on architecture decisions, templates, and supporting documents. Available free on <a href=\"https://github.com/zeljkoobrenovic/spec-driven-journals\" targget=\"_blank\">GitHub</a>."}, "apps": [{"tab": "Focus", "apps": [{"group": "Playbooks", "apps": [{"name": "Grounded Engineering Executive", "link": "../grounded-engineering-executive/index.html", "icon": "icons/executive.png", "description": "my playbook for engineering executives", "source": ""}, {"name": "Grounded Product Management", "link": "../grounded-product-management/index.html", "icon": "icons/product-management.png", "description": "my playbook for product development", "source": ""}, {"name": "Grounded People Management Tools", "link": "../grounded-people-management-tools/index.html", "icon": "icons/people-management.png", "description": "my playbook for people development", "source": ""}, {"name": "Grounded Engineering Management", "link": "../grounded-engineering-management/index.html", "icon": "icons/engineering-management.png", "description": "my playbook for engineering development", "source": ""}]}, {"group": "Notes", "apps": [{"name": "Random AI Notes", "link": "../ai-notes/index.html", "icon": "icons/ai-notes.png", "description": "my random thoughts on AI in software development", "source": ""}]}, {"group": "Manuals", "apps": [{"name": "Spec-Driven<br>Product Architecture", "link": "../spec-driven-product-architecture/index.html", "icon": "icons/spec-driven-product-architecture.png", "description": "explaining spec-driven product architecture", "source": ""}, {"name": "Spec-Driven<br>Journals", "link": "../spec-driven-journals/index.html#insights", "icon": "icons/spec-driven-product-journal.png", "description": "explaining spec-driven journals", "source": ""}]}]}, {"tab": "Strategic Examples", "apps": [{"group": "decision logs", "apps": [{"name": "Example Strategic<br>AI Decisions", "link": "../ai-decisions-log/index.html", "icon": "icons/ai-decisions.png", "description": "strategic AI decision documents", "source": ""}, {"name": "Example Foundational<br>Tech Decisions", "link": "../foundations/index.html", "icon": "icons/foundations.png", "description": "foundational decision documents", "source": ""}]}, {"group": "org", "apps": [{"name": "Example Strategic<br>Org Design Decisions", "link": "../org-design/index.html", "icon": "icons/organization.png", "description": "strategic org decision documents", "source": ""}]}, {"group": "strategy & principles", "apps": [{"name": "Example Organization<br>Tech Strategy", "link": "../tech-strategy/index.html", "icon": "icons/strategy.png", "description": "overall tech strategy", "source": ""}, {"name": "Example Organization<br>Engineering Principles", "link": "../principles/index.html", "icon": "icons/principles.png", "description": "key engineering principles guiding our work", "source": ""}, {"name": "Example AI-Assisted<br>Dev Strategy", "link": "../ai-dev-strategy/index.html", "icon": "icons/ai-strategy.png", "description": "AI-assisted SDLC strategy", "source": ""}]}]}, {"tab": "Template Examples", "apps": [{"group": "ADRs", "apps": [{"name": "Educational<br>Documents", "link": "../documents/index.html", "icon": "icons/docs.png", "description": "educational articles", "source": ""}, {"name": "Templates", "link": "../adr-templates/index.html#insights", "icon": "icons/templates.png", "description": "ADR templates by people and orgs", "source": ""}, {"name": "Decisions Log Example", "link": "../decisions-log/index.html", "icon": "icons/decisions-log.png", "description": "example decision documents", "source": ""}, {"name": "MADR Decisions Log Example", "link": "../madr/index.html", "icon": "icons/madr.png", "description": "example decision documents", "source": ""}]}]}]}.config;
+    console.log('start page template: v3 (steps support)');
+    const apps = {"config": {"openInNewTab": true, "enableSearch": true, "domainName": "My Journals", "domainDescription": "Spec-driven journals on architecture decisions, templates, and supporting documents. Available free on <a href=\"https://github.com/zeljkoobrenovic/spec-driven-journals\" target=\"_blank\">GitHub</a>."}, "apps": [{"tab": "Playbooks", "apps": [{"group": "Strategic", "description": "playbooks for setting direction: engineering leadership and product strategy", "apps": [{"name": "Grounded Engineering Executive", "link": "../grounded-engineering-executive/index.html", "icon": "icons/executive.png", "description": "my playbook for engineering executives", "source": ""}, {"name": "Grounded Product Management", "link": "../grounded-product-management/index.html", "icon": "icons/product-management.png", "description": "my playbook for product development", "source": ""}]}, {"group": "Management", "description": "playbooks for the day-to-day craft of managing people and engineering teams", "apps": [{"name": "Grounded People Management Tools", "link": "../grounded-people-management-tools/index.html", "icon": "icons/people-management.png", "description": "my playbook for people development", "source": ""}, {"name": "Grounded Engineering Management", "link": "../grounded-engineering-management/index.html", "icon": "icons/engineering-management.png", "description": "my playbook for engineering development", "source": ""}]}, {"group": "Tech Strategy", "description": "playbooks for technology strategy topics, starting with platforms", "apps": [{"name": "Grounded Platform Engineering", "link": "../grounded-platforms/index.html", "icon": "icons/grounded-platforms.png", "description": "my playbook for platform engineering", "source": ""}, {"name": "Grounded Defensive Security", "link": "../grounded-security/index.html", "icon": "icons/grounded-security.png", "description": "my playbook for platform engineering", "source": ""}]}]}, {"tab": "Notes", "apps": [{"group": "Notes", "description": "essays and running observations, less polished than the playbooks", "apps": [{"name": "Random AI Notes", "link": "../ai-notes/index.html", "icon": "icons/ai-notes.png", "description": "my random thoughts on AI in software development", "source": ""}]}, {"group": "Manuals", "description": "how the spec-driven method and the tooling behind these sites work", "apps": [{"name": "Spec-Driven<br>Product Architecture", "link": "../spec-driven-product-architecture/index.html", "icon": "icons/spec-driven-product-architecture.png", "description": "explaining spec-driven product architecture", "source": ""}, {"name": "Spec-Driven<br>Journals", "link": "../spec-driven-journals/index.html#insights", "icon": "icons/spec-driven-product-journal.png", "description": "explaining spec-driven journals", "source": ""}]}]}, {"tab": "Strategic Examples", "apps": [{"group": "decision logs", "description": "worked examples of strategic decision records: AI and foundational tech", "apps": [{"name": "Example Strategic<br>AI Decisions", "link": "../ai-decisions-log/index.html", "icon": "icons/ai-decisions.png", "description": "strategic AI decision documents", "source": ""}, {"name": "Example Foundational<br>Tech Decisions", "link": "../foundations/index.html", "icon": "icons/foundations.png", "description": "foundational decision documents", "source": ""}]}, {"group": "org", "description": "worked examples of organisation design decision records", "apps": [{"name": "Example Strategic<br>Org Design Decisions", "link": "../org-design/index.html", "icon": "icons/organization.png", "description": "strategic org decision documents", "source": ""}]}, {"group": "strategy & principles", "description": "worked examples of top-level strategy and principles documents", "apps": [{"name": "Example Organization<br>Tech Strategy", "link": "../tech-strategy/index.html", "icon": "icons/strategy.png", "description": "overall tech strategy", "source": ""}, {"name": "Example Organization<br>Engineering Principles", "link": "../principles/index.html", "icon": "icons/principles.png", "description": "key engineering principles guiding our work", "source": ""}, {"name": "Example AI-Assisted<br>Dev Strategy", "link": "../ai-dev-strategy/index.html", "icon": "icons/ai-strategy.png", "description": "AI-assisted SDLC strategy", "source": ""}]}]}, {"tab": "Template Examples", "apps": [{"group": "ADRs", "description": "ADR templates, guides, and example decision logs to copy from", "apps": [{"name": "Educational<br>Documents", "link": "../documents/index.html", "icon": "icons/docs.png", "description": "educational articles", "source": ""}, {"name": "Templates", "link": "../adr-templates/index.html#insights", "icon": "icons/templates.png", "description": "ADR templates by people and orgs", "source": ""}, {"name": "Decisions Log Example", "link": "../decisions-log/index.html", "icon": "icons/decisions-log.png", "description": "example decision documents", "source": ""}, {"name": "MADR Decisions Log Example", "link": "../madr/index.html", "icon": "icons/madr.png", "description": "example decision documents", "source": ""}]}]}]}.apps;
+    const config = {"config": {"openInNewTab": true, "enableSearch": true, "domainName": "My Journals", "domainDescription": "Spec-driven journals on architecture decisions, templates, and supporting documents. Available free on <a href=\"https://github.com/zeljkoobrenovic/spec-driven-journals\" target=\"_blank\">GitHub</a>."}, "apps": [{"tab": "Playbooks", "apps": [{"group": "Strategic", "description": "playbooks for setting direction: engineering leadership and product strategy", "apps": [{"name": "Grounded Engineering Executive", "link": "../grounded-engineering-executive/index.html", "icon": "icons/executive.png", "description": "my playbook for engineering executives", "source": ""}, {"name": "Grounded Product Management", "link": "../grounded-product-management/index.html", "icon": "icons/product-management.png", "description": "my playbook for product development", "source": ""}]}, {"group": "Management", "description": "playbooks for the day-to-day craft of managing people and engineering teams", "apps": [{"name": "Grounded People Management Tools", "link": "../grounded-people-management-tools/index.html", "icon": "icons/people-management.png", "description": "my playbook for people development", "source": ""}, {"name": "Grounded Engineering Management", "link": "../grounded-engineering-management/index.html", "icon": "icons/engineering-management.png", "description": "my playbook for engineering development", "source": ""}]}, {"group": "Tech Strategy", "description": "playbooks for technology strategy topics, starting with platforms", "apps": [{"name": "Grounded Platform Engineering", "link": "../grounded-platforms/index.html", "icon": "icons/grounded-platforms.png", "description": "my playbook for platform engineering", "source": ""}, {"name": "Grounded Defensive Security", "link": "../grounded-security/index.html", "icon": "icons/grounded-security.png", "description": "my playbook for platform engineering", "source": ""}]}]}, {"tab": "Notes", "apps": [{"group": "Notes", "description": "essays and running observations, less polished than the playbooks", "apps": [{"name": "Random AI Notes", "link": "../ai-notes/index.html", "icon": "icons/ai-notes.png", "description": "my random thoughts on AI in software development", "source": ""}]}, {"group": "Manuals", "description": "how the spec-driven method and the tooling behind these sites work", "apps": [{"name": "Spec-Driven<br>Product Architecture", "link": "../spec-driven-product-architecture/index.html", "icon": "icons/spec-driven-product-architecture.png", "description": "explaining spec-driven product architecture", "source": ""}, {"name": "Spec-Driven<br>Journals", "link": "../spec-driven-journals/index.html#insights", "icon": "icons/spec-driven-product-journal.png", "description": "explaining spec-driven journals", "source": ""}]}]}, {"tab": "Strategic Examples", "apps": [{"group": "decision logs", "description": "worked examples of strategic decision records: AI and foundational tech", "apps": [{"name": "Example Strategic<br>AI Decisions", "link": "../ai-decisions-log/index.html", "icon": "icons/ai-decisions.png", "description": "strategic AI decision documents", "source": ""}, {"name": "Example Foundational<br>Tech Decisions", "link": "../foundations/index.html", "icon": "icons/foundations.png", "description": "foundational decision documents", "source": ""}]}, {"group": "org", "description": "worked examples of organisation design decision records", "apps": [{"name": "Example Strategic<br>Org Design Decisions", "link": "../org-design/index.html", "icon": "icons/organization.png", "description": "strategic org decision documents", "source": ""}]}, {"group": "strategy & principles", "description": "worked examples of top-level strategy and principles documents", "apps": [{"name": "Example Organization<br>Tech Strategy", "link": "../tech-strategy/index.html", "icon": "icons/strategy.png", "description": "overall tech strategy", "source": ""}, {"name": "Example Organization<br>Engineering Principles", "link": "../principles/index.html", "icon": "icons/principles.png", "description": "key engineering principles guiding our work", "source": ""}, {"name": "Example AI-Assisted<br>Dev Strategy", "link": "../ai-dev-strategy/index.html", "icon": "icons/ai-strategy.png", "description": "AI-assisted SDLC strategy", "source": ""}]}]}, {"tab": "Template Examples", "apps": [{"group": "ADRs", "description": "ADR templates, guides, and example decision logs to copy from", "apps": [{"name": "Educational<br>Documents", "link": "../documents/index.html", "icon": "icons/docs.png", "description": "educational articles", "source": ""}, {"name": "Templates", "link": "../adr-templates/index.html#insights", "icon": "icons/templates.png", "description": "ADR templates by people and orgs", "source": ""}, {"name": "Decisions Log Example", "link": "../decisions-log/index.html", "icon": "icons/decisions-log.png", "description": "example decision documents", "source": ""}, {"name": "MADR Decisions Log Example", "link": "../madr/index.html", "icon": "icons/madr.png", "description": "example decision documents", "source": ""}]}]}]}.config;
     let tabNavigationHtml = '';
     let tabContentHtml = '';
     apps.forEach(tab => {
@@ -186,8 +324,8 @@
     // Pre-build a flat list with pre-lowercased fields for search
     const allApps = [];
     apps.forEach(tab => {
-        tab.apps.forEach(group => {
-            group.apps.forEach(app => {
+        (tab.apps || []).forEach(group => {
+            (group.apps || []).forEach(app => {
                 allApps.push({
                     app: app,
                     name: (app.name || '').toLowerCase(),
@@ -199,12 +337,9 @@
     });
 
     function renderAppCard(app) {
+        const newTab = !(config.openInNewTab === false || app.openInNewTab === false);
         let html = '<div class="app">';
-        if (config.openInNewTab === false || app.openInNewTab === false) {
-            html += '<a href="' + app.link + '">';
-        } else {
-            html += '<a target="_blank" href="' + app.link + '">';
-        }
+        html += '<a ' + (newTab ? 'target="_blank" ' : '') + 'href="' + app.link + '">';
         html += '<div style="height: 38px">';
         html += '<div class="name">' + app.name + '</div>';
         if (app.source) {
@@ -220,17 +355,81 @@
         return html;
     }
 
+    function renderStepGroup(stepGroup) {
+        const newTab = !(config.openInNewTab === false);
+        let html = '<div class="step-group">';
+        const groupLogo = stepGroup.logo || stepGroup.icon;
+        if (groupLogo) {
+            html += '<img class="step-group-logo" src="' + groupLogo + '">';
+        }
+        html += '<div class="step-group-content">';
+        const title = stepGroup.group || '';
+        if (stepGroup.link) {
+            html += '<a ' + (newTab ? 'target="_blank" ' : '') + 'href="' + stepGroup.link + '"><div class="step-group-title">' + title + '</div></a>';
+        } else {
+            html += '<div class="step-group-title">' + title + '</div>';
+        }
+        if (stepGroup.description) {
+            html += '<div class="step-group-description">' + stepGroup.description + '</div>';
+        }
+        (stepGroup.steps || []).forEach((step, index) => {
+            html += '<div class="step">';
+            html += '<div class="step-number">' + (index + 1) + '</div>';
+            html += '<div class="step-body">';
+            html += '<div class="step-name">' + (step.name || '');
+            if (step.how) {
+                html += '<span class="step-how">' + step.how + '</span>';
+            }
+            html += '</div>';
+            if (step.description) {
+                html += '<div class="step-description">' + step.description + '</div>';
+            }
+            html += '</div>';
+            const stepIcons = step.icons || (step.icon ? [step.icon] : []);
+            if (stepIcons.length) {
+                html += '<div class="step-icons">';
+                stepIcons.forEach(icon => {
+                    const isIconObject = icon !== null && typeof icon === 'object';
+                    const iconSrc = isIconObject ? icon.icon : icon;
+                    const iconImg = '<img class="step-icon" src="' + iconSrc + '">';
+                    if (isIconObject && icon.link) {
+                        html += '<a target="_blank" href="' + icon.link + '">' + iconImg + '</a>';
+                    } else {
+                        html += iconImg;
+                    }
+                });
+                html += '</div>';
+            }
+            html += '</div>';
+        });
+        html += '</div>';
+        html += '</div>';
+        return html;
+    }
+
     function renderTabs() {
         apps.forEach(tab => {
             let html = '';
-            tab.apps.forEach(group => {
+            (tab.apps || []).forEach(group => {
                 html += '<div class="group">';
                 html += '<div class="group-title">' + group.group + '</div>';
-                group.apps.forEach(app => {
+                if (group.description) {
+                    html += '<div class="group-description">' + group.description + '</div>';
+                }
+                (group.apps || []).forEach(app => {
                     html += renderAppCard(app);
                 });
                 html += '</div>';
             });
+            if (tab.steps && tab.steps.length) {
+                html += '<div class="steps-flow">';
+                html += '<div class="flow-start">START</div>';
+                tab.steps.forEach(stepGroup => {
+                    html += '<div class="flow-line"></div>';
+                    html += renderStepGroup(stepGroup);
+                });
+                html += '</div>';
+            }
             document.getElementById('content_' + tab.tab).innerHTML = html;
         });
     }
