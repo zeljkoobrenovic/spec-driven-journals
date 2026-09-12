@@ -18,11 +18,11 @@ One argument runs through all eight chapters. **Technology work becomes business
 
 ## What These Eight Chapters Do
 
-- **Chapter 10** sets out the chain itself, from roadmap item to revenue, and is the parent argument for everything after it.
-- **Chapters 11 and 12** cover the systems underneath: what engineering work the business case requires, and how an owner's valuation assumption reaches an architecture decision.
-- **Chapters 13 to 15** take three areas where claims are easy to make and hard to verify — infrastructure cost, security, and AI.
-- **Chapter 16** covers the constraint that defeats the others when ignored: the people, and how decisions move among them.
-- **Chapter 17** closes the part with acquisitions and separations, which stress all of the above at once, against a date someone else set.
+- [[pt-product-value]] sets out the chain itself, from roadmap item to revenue, and is the parent argument for everything after it.
+- [[pt-engineering-and-architecture]] and [[pt-valuation-and-design]] cover the systems underneath: what engineering work the business case requires, and how an owner's valuation assumption reaches an architecture decision.
+- [[pt-cloud-economics]], [[pt-security-and-resilience]] and [[pt-data-and-ai]] take three areas where claims are easy to make and hard to verify.
+- [[pt-people-and-operating-models]] covers the constraint that defeats the others when ignored: the people, and how decisions move among them.
+- [[pt-acquisitions-and-carveouts]] closes the part with acquisitions and separations, which stress all of the above at once, against a date someone else set.
 
 ## What You Should Be Able to Do
 

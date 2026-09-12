@@ -18,9 +18,9 @@ Owning a company and running it are separate acts, performed by different people
 
 ## What These Three Chapters Do
 
-- **Chapter 7** establishes who decides what, and argues for writing it down with names and thresholds before a disagreement makes it urgent.
-- **Chapter 8** asks what actually motivates each party — and who is left out of the alignment story entirely. It is the least comfortable chapter in the book, because the honest answer is that some interests do not reconcile.
-- **Chapter 9** turns both into something usable: how to judge an investor's behavior under pressure, before you are committed to them.
+- [[pt-governance]] establishes who decides what, and argues for writing it down with names and thresholds before a disagreement makes it urgent.
+- [[pt-incentives]] asks what actually motivates each party — and who is left out of the alignment story entirely. It is the least comfortable chapter in the book, because the honest answer is that some interests do not reconcile.
+- [[pt-investor-fit]] turns both into something usable: how to judge an investor's behavior under pressure, before you are committed to them.
 
 The order matters. You cannot assess incentives without knowing who holds which rights, and you cannot assess a partnership without understanding both.
 

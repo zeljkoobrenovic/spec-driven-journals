@@ -20,8 +20,8 @@ The name and the model are the author's. They are not established industry pract
 
 ## What These Two Chapters Do
 
-- **Chapter 22** applies product thinking to the firm's whole offering: who the customers actually are, who merely has to live with the result, and where the analogy becomes misleading. Its most useful section is the one about its own limits.
-- **Chapter 23** narrows to the part a technology leader could actually build — a small set of reusable services — and insists on the discipline that makes the idea falsifiable.
+- [[pt-investment-firm-as-product]] applies product thinking to the firm's whole offering: who the customers actually are, who merely has to live with the result, and where the analogy becomes misleading. Its most useful section is the one about its own limits.
+- [[pt-technology-capability-as-product]] narrows to the part a technology leader could actually build — a small set of reusable services — and insists on the discipline that makes the idea falsifiable.
 
 ## What You Should Be Able to Do
 

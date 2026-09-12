@@ -22,10 +22,10 @@ Two kinds of reader will want this part. If you work for a PE-owned company, it 
 
 They follow one ownership cycle in order, and each hands evidence to the next:
 
-- **Chapter 18** establishes the role: who employs it, how it differs from a CTO, and what it cannot do.
-- **Chapter 19** covers diligence — the investigation before the money moves — and argues it has failed if it changes no price, condition or plan.
-- **Chapter 20** covers the first hundred days, where diligence findings either become the company's own plan or quietly expire as someone else's report.
-- **Chapter 21** covers the long middle and the exit: the years most accounts skip, and what evidence survives the handover.
+- [[pt-technology-principal]] establishes the role: who employs it, how it differs from a CTO, and what it cannot do.
+- [[pt-diligence-and-thesis]] covers the investigation before the money moves, and argues it has failed if it changes no price, condition or plan.
+- [[pt-first-hundred-days]] covers the period where those findings either become the company's own plan or quietly expire as someone else's report.
+- [[pt-execution-and-exit]] covers the long middle and the exit: the years most accounts skip, and what evidence survives the handover.
 
 The handoffs between those chapters are where most of the value leaks away, which is why they are treated as a sequence rather than four separate topics.
 

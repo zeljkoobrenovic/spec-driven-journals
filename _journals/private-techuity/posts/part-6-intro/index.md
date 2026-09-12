@@ -18,11 +18,11 @@ Four cases, chosen for contrast rather than as a representative sample of privat
 
 ## What These Five Chapters Do
 
-- **Chapter 24** takes Hilton and Skype — the successes. Success is the harder case to read honestly, because a good outcome lends every earlier decision a glow it may not deserve.
-- **Chapter 25** takes Visma, which breaks the shape the others suggest: no single hold, no clean ending, and the closest case here to an ordinary software career.
-- **Chapter 26** takes Toys R Us, the failure. It is placed after the successes deliberately, because it shows what happens when the financing leaves no room to practise the disciplines the book has been recommending.
-- **Chapter 27** takes TeamSystem through four owners in succession, and asks what a quarter-century of acquisitions actually accumulates.
-- **Chapter 28** closes the book by setting the cases against the empirical research and asking what durable success would mean.
+- [[pt-hilton-and-skype]] takes the successes. Success is the harder case to read honestly, because a good outcome lends every earlier decision a glow it may not deserve.
+- [[pt-visma]] breaks the shape the others suggest: no single hold, no clean ending, and the closest case here to an ordinary software career.
+- [[pt-toys-r-us]] is the failure, placed after the successes deliberately: it shows what happens when the financing leaves no room to practise the disciplines the book has been recommending.
+- [[pt-teamsystem]] follows four owners in succession, and asks what a quarter-century of acquisitions actually accumulates.
+- [[pt-durable-value]] closes the book by setting the cases against the empirical research and asking what durable success would mean.
 
 ## What You Should Be Able to Do
 

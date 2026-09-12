@@ -16,7 +16,7 @@ A reader arriving at Part II in sequence, plus one dipping in from the contents 
 ## Success criteria
 
 - Say why the part exists and what its chapters do together, in under 400 words.
-- Walk the chapters in order, one line each, showing why that order.
+- Walk the chapters in order, one line each, showing why that order. Name each chapter by its linked title rather than a number, so the list survives renumbering.
 - State what the reader should be able to do by the end — and, where it matters, what the part will not give them.
 - Hand off to the next part in the closing line.
 
@@ -43,4 +43,5 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-13: Chapter walkthroughs changed from "**Chapter N** does X" to linked titles. Numbers were duplicated state that would silently rot if a chapter moved; the build renders link text from the target's title, so this stays correct automatically.
 - 2026-09-13: Created.

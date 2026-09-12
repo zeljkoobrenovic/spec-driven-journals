@@ -20,12 +20,12 @@ The answer is that the arguments you will need to make later are all financial a
 
 They build one mental model, in order, each chapter depending on the one before:
 
-- **Chapter 1** places private equity among the ways a company can be financed at all, and explains what public and private ownership mean.
-- **Chapter 2** opens a private equity arrangement up: the four entities inside it, and who is entitled to decide what.
-- **Chapter 3** is the money primer — revenue, earnings, cash, and how a business gets valued. Everything later assumes it.
-- **Chapter 4** follows a company's value out to the investor, and shows how much of the result technology never touches.
-- **Chapter 5** asks which kind of capital suits which business problem, since private equity is one option among several.
-- **Chapter 6** descends from the headline earnings figure to the money a company can actually spend — which is usually the answer to "why was my budget refused?"
+- [[pt-how-companies-get-money]] places private equity among the ways a company can be financed at all, and explains what public and private ownership mean.
+- [[pt-capital-and-ownership]] opens such an arrangement up: the four entities inside it, and who is entitled to decide what.
+- [[pt-valuation-and-architecture]] is the money primer — revenue, earnings, cash, and how a business gets valued. Everything later assumes it.
+- [[pt-return-mechanics]] follows a company's value out to the investor, and shows how much of the result technology never touches.
+- [[pt-investment-fit]] asks which kind of capital suits which business problem, since private equity is one option among several.
+- [[pt-cash-and-constraints]] descends from the headline earnings figure to the money a company can actually spend — usually the answer to "why was my budget refused?"
 
 ## What You Should Be Able to Do
 
