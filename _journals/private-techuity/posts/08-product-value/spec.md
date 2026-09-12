@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: Product Work Becomes Value Only Through a Changed Outcome
+# Spec: The Chain From Roadmap to Revenue Breaks Easily
 
 ## Intent
 
@@ -44,6 +44,8 @@ Evidence gaps and chapter-specific next research are tracked in the separate edi
 The supplied book brief establishes scope. Public citations appear in the article and bibliography. Private provenance is recorded separately in _research/input-reading.md and is excluded from the site configuration.
 
 ## Changelog
+
+- 2026-09-13: Retitled from "Product Work Becomes Value Only Through a Changed Outcome", which was abstract and turned on the vague phrase "changed outcome". The new title uses the chain metaphor the chapter is actually built on — its opening section and closing both turn on it. First heading changed to avoid duplicating the title; first KEY POINT reworded off the same vague phrase.
 
 - 2026-09-12: Explain financial concepts before their implications, connect valuation assumptions to business and technology choices, and add the author-requested KEY POINTS opening.
 

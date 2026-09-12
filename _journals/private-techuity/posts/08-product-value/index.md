@@ -1,8 +1,8 @@
 ---
-title: Product Work Becomes Value Only Through a Changed Outcome
+title: The Chain From Roadmap to Revenue Breaks Easily
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Trace product decisions through customer behavior to revenue, retention, margin, and cash, with explicit attribution limits.
+excerpt: "Trace a product decision through customer behavior to revenue, retention, margin and cash — and find the link where most value claims quietly break."
 permalink: pt-product-value
 timetoread: 7 min read
 status: draft:orange
@@ -11,7 +11,7 @@ tags: private equity, technology leadership, Part III
 
 > **KEY POINTS:**
 >
-> * **A feature creates value through a changed outcome.** Trace what customers or the company will do differently, and how that affects revenue, costs, cash or risk.
+> * **A feature is worth nothing until someone behaves differently.** Trace what customers or the company will actually do, then what that does to revenue, costs, cash or risk.
 > * **Released time is not automatically a cash saving.** Observe what happens to the capacity and include the investment and maintenance required to create it.
 > * **Valuation assumptions help identify the relevant work.** Future growth needs a credible route to adoption and scale; established earnings need a product the company can sustain.
 
@@ -23,7 +23,7 @@ This is the central translation problem for technology leadership under private 
 Investors ask for revenue growth, **retention** (keeping customers or their revenue), **margin** (a profit measure relative to revenue) or cash. Teams work on onboarding, reliability, workflows and delivery. The job is to connect the two without pretending every technical improvement can be priced to the euro.
 
 
-## A Chain With Several Places to Break
+## Where the Links Are, and Where They Snap
 
 What the owner is paying for shapes which link matters most. A thesis built on expansion needs evidence the product can win and serve more customers at acceptable cost; one built on established earnings needs evidence those earnings survive maintenance and reinvestment ([[pt-valuation-and-architecture]]). Both depend on a product that works.
 

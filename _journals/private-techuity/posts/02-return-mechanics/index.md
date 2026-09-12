@@ -126,7 +126,7 @@ Always identify gross versus net, fund versus investment, currency, valuation da
 
 “Our platform work created €30 million of enterprise value” is the sentence to avoid. Look back at what it would have to survive: the entry price someone else negotiated, the debt someone else arranged, and the multiple the market happened to offer on the day of sale. Engineering touched none of those.
 
-A defensible claim starts much lower down. **What changed, for which customers, at what cost, with what observed effect?** That chain is the subject of [[pt-product-value]]. The CFO can connect that to company economics. The investment team can judge what it means for valuation. Those are three different kinds of evidence, and compressing them into one confident number destroys the part that was actually earned.
+A defensible claim starts much lower down. **What changed, for which customers, at what cost, with what observed effect?** Tracing that chain is the subject of [[pt-product-value]]. The CFO can connect that to company economics. The investment team can judge what it means for valuation. Those are three different kinds of evidence, and compressing them into one confident number destroys the part that was actually earned.
 
 The return model is worth understanding precisely because it shows what technology does not control. It also prompts a better question than "how much value did we create?" — namely: **which improvements still make sense if the multiple falls and we own this company for eight years instead of five?**
 

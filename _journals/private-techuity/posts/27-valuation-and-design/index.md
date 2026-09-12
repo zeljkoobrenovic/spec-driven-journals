@@ -18,7 +18,7 @@ tags: private equity, technology leadership, Part III
 <br>
 [[pt-valuation-and-architecture]] established what a business might be worth and why the valuation method encodes an assumption. This chapter turns that assumption into work.
 
-It sits here, rather than beside the valuation primer, because the translation needs vocabulary Part I has not yet supplied: the value chain from [[pt-product-value]], the technical-debt and transition arguments from [[pt-engineering-and-architecture]], and the funding constraint from [[pt-cash-and-constraints]]. With those in hand, the connection from an owner's assumption to a design decision can be made concrete rather than asserted.
+It sits here, rather than beside the valuation primer, because the translation needs vocabulary Part I has not yet supplied: the roadmap-to-revenue chain from [[pt-product-value]], the technical-debt and transition arguments from [[pt-engineering-and-architecture]], and the funding constraint from [[pt-cash-and-constraints]]. With those in hand, the connection from an owner's assumption to a design decision can be made concrete rather than asserted.
 
 ## From Valuation Assumptions to Business Priorities
 
