@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What Is the Technology Principal Actually Responsible For?</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Private Techuity: Product and Engineering Leadership in Private Equity</a><span class="nav-right"><a class="nav-prev" href="pt-acquisitions-and-carveouts.html" title="What Should Be Integrated, and What Must Be Separated?">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="pt-diligence-and-thesis.html" title="What Should Technical Diligence Change About the Investment?">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IV — The Technology Principal’s work</p>
+        <h1>What Is the Technology Principal Actually Responsible For?</h1>
+        <p class="byline">Private Techuity working manuscript  ·  2026-09-12  ·  6 min read · <a class="spec-link" href="pt-technology-principal.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Private Techuity: Product and Engineering Leadership in Private Equity</a><span class="nav-right"><a class="nav-prev" href="pt-acquisitions-and-carveouts.html" title="What Should Be Integrated, and What Must Be Separated?">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="pt-diligence-and-thesis.html" title="What Should Technical Diligence Change About the Investment?">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "What Is the Technology Principal Actually Responsible For?", "date": "2026-09-12", "author": "Private Techuity working manuscript", "excerpt": "Ground the role in the supplied description while distinguishing a specific brief from universal authority or industry practice.", "permalink": "pt-technology-principal", "timetoread": "6 min read", "status": "draft:orange", "tags": "private equity, technology leadership, Part IV"}, "tags": ["private equity", "technology leadership", "Part IV"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **KEY POINTS:**\n>\n> * **The Principal connects investment assumptions with company capability.** The role helps people make better decisions across investigation, planning, execution and preparation for a sale.\n> * **Responsibility does not automatically confer authority.** The supplied role brief grounds this book, but each firm and engagement needs an explicit mandate.\n> * **Credibility runs in both directions.** Understand the investor’s economics and the company’s work, and judge support by the decisions and outcomes it improves.\n\n<br>\nAn **investment thesis** explains why an investment should create value, what must change in the business, and which assumptions must hold. A Technology Principal works at the boundary between that thesis and a company's ability to carry it out. The role becomes valuable when it improves the quality of decisions and helps the company build the capability those decisions require.\n\n**Sourcing** means finding and evaluating potential investments. **Technical due diligence** investigates a company’s product and technology before an investment decision. **Exit preparation** helps make the business and its evidence ready for a possible sale or other realization. These activities ask different questions even when they involve the same systems and people.\n\nThe supplied role description grounds this book in work across the investment lifecycle: market and sourcing input, technical diligence, advice to investment decision-makers, operational support, leadership recruitment, portfolio learning, and preparation for sale. It also explicitly includes AI and nearshoring support and the ability to influence resources outside the role's control. The brief is a private, undated two-page source; this chapter generalizes its responsibilities and does not reproduce employer-specific details. [P01: supplied role brief](pt-bibliography.html)\n\nThat is a specific role brief. It does not establish that every firm uses the title the same way, gives the role the same resources, or delegates company decisions to it.\n\n## A Role With Several Customers and One Limited Calendar\n\nThe investment partner needs a judgment about technology's relevance to the investment. The deal team needs material questions resolved within a timetable. The investment committee needs assumptions and conditions it can act on. The CEO and CTO need support that fits the business. The board needs outcome evidence. The exit team needs an account a buyer can examine.\n\nServing these needs requires translation, but translation alone is insufficient. The Principal must sometimes inspect technical evidence, participate in a difficult operating decision, or help deliver a bounded intervention. At other times, the most useful act is to bring in a specialist or decline work that company leadership can do better.\n\nThe supplied brief's breadth creates a capacity problem. One person cannot be deeply involved in every deal and every portfolio initiative at once. Prioritization is part of the role, not a personal productivity issue to solve by attending more meetings.\n\n## Distinguish Responsibilities From Authority\n\n| Work grounded in the brief | Practical contribution | Boundary to establish |\n| --- | --- | --- |\n| Sourcing and market input | Test technology opportunity and disruption | Investment selection remains with authorized decision-makers |\n| Technical diligence | Identify material strengths, risks, costs, and unknowns | Evidence scope and recommendation authority |\n| Portfolio operational support | Help management resolve constraints and implement changes | Company ownership of budgets, people, and operations |\n| Leadership and specialist access | Shape roles, assess fit, connect expertise | Hiring authority, confidentiality, and provider interests |\n| Portfolio education and learning | Help peers exchange useful practice | Participation burden and information-sharing limits |\n| Exit preparation | Maintain credible capability and outcome evidence | Approval of buyer disclosures and unresolved issues |\n\nThe table is an interpretation of the brief, not an employment contract. The role needs an agreed mandate that states where it advises, where it delivers, and where it has formal authority. If asked to act as an interim executive, that should become an explicit assignment with the appropriate accountability and support.\n\n## Credibility Has Two Directions\n\nCompany teams need to believe the Principal understands technical work and will represent its constraints accurately. Investment professionals need to believe the Principal can distinguish material risks from preferences and connect technology to economics.\n\nThese forms of credibility reinforce each other when the factual account is consistent. They conflict when the Principal tells the investment team a confident transformation story and tells engineers privately that the targets are unrealistic. The role cannot remain trusted through incompatible narratives.\n\nA useful judgment includes the evidence, confidence, practical options, and what would change the recommendation. It can be concise without hiding uncertainty. “The current platform can support the planned customer volume, but enterprise onboarding remains dependent on three specialists” is more useful than either a reassuring maturity score or a long list of technologies.\n\n## Hands-On Support Should Have an End\n\nThe role brief includes practical help, so a purely observational posture would miss part of the intended job. A Principal might work with a CTO to unblock a deployment problem, help shape a product operating model, or coordinate an integration specialist.\n\nEach intervention should begin with the company outcome, a sponsor, a scope, and an exit condition. The receiving team should know what it will own afterward. If the Principal becomes the only person who can keep the program moving, the intervention needs redesign or a formal change of role.\n\nThere are situations where temporary dependence is reasonable: a crisis, an unexpected leadership departure, or a complex transition. It becomes a problem when it is unrecognized and therefore unfunded, ungoverned, or impossible to end.\n\n## Allocate Attention by Materiality and Additional Contribution\n\nA practical portfolio view can rate issues along two dimensions: consequence for the investment or company, and the additional contribution the Principal can make. A major issue may need specialist leadership rather than the Principal's direct delivery. A smaller recurring issue may justify a reusable tool if it consumes substantial company effort across the portfolio.\n\nIn a fictional month, the Principal has 20 available working days. A live diligence needs six, two bounded interventions need eight, portfolio reviews need three, and learning and preparation need three. There is no spare capacity for an unplanned ten-day integration. The response must change priorities, obtain help, or revise scope. The arithmetic should be visible to the people requesting the work.\n\n## What Good Performance Looks Like\n\nActivity measures help manage workload: diligence engagements, meetings, and interventions. They do not establish value. More useful evidence includes a material assumption corrected before investment, a company owner accepting a feasible plan, a constraint resolved, and an intervention the company can sustain independently.\n\nEconomic contribution should be qualified. A Principal may help reduce onboarding effort, but the resulting growth also depends on the product, sales, implementation teams, market conditions, and funding. Taking sole credit undermines both accuracy and trust.\n\nThe Productscapes hypothesis in [How Can Technology Support Become a Better Product?](pt-technology-capability-as-product.html) adds another possibility: judge the role partly by the repeatable capability it leaves behind. Can future engagements use better questions, clearer evidence, and appropriate specialist support without relying on one person's memory?\n\nThe role's purpose is therefore both immediate and developmental. It helps a company make the next difficult decision while improving the firm's ability to support similar decisions later. The following chapters turn that responsibility into work across diligence, the first 100 days, execution, and exit.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {}, "blocks": [{"type": "markdown", "content": "The Technology Principal described in this manuscript helps investment and company teams make better technology-dependent decisions. The role spans an investment lifecycle, but its formal authority depends on the firm and the particular engagement.\n\nThe supplied private role description includes pipeline support, technical diligence, advice to investment professionals, practical operating projects, leadership and staffing, portfolio learning, AI strategy, and exit preparation. [P01: supplied role brief](pt-bibliography.html) This grounds the book's perspective. It is one brief, not evidence that every firm organizes the role in the same way.\n\n**Responsibility for useful advice is different from authority to direct a company.** The Principal can assess a risk, recommend a response, support execution, and track evidence without becoming the CEO, CTO, or board. Clarify who decides, funds, implements, and receives confidential information. Explicit authority becomes particularly important when a recommendation comes from someone associated with the owner.\n\nCredibility requires fluency in both investment and operating work. Investors need to understand how a technology finding changes a thesis, timing, price, or required capital. Company teams need help that respects customer commitments and the practical difficulty of implementation. Neither audience is well served by a generic maturity score or an unqualified assurance that a platform will scale.\n\nThe role also needs a capacity model. Deal work can be urgent; operating work depends on continuity. If every day is preallocated, the advertised support may disappear when a transaction arrives. Make trade-offs and escalation visible, and use specialists where the work exceeds the Principal's competence or available time.\n\nJudge contribution through decisions improved, findings accepted into action, interventions that achieve useful outcomes, and capability left with the company. Avoid counting meetings or claiming the full increase in enterprise value as the role's personal result.\n\nA practical engagement charter names the question, sponsor, company owner, scope, information boundaries, output, time commitment, and handoff. The strongest version of the role leaves executives better able to make and execute decisions, while giving investors a more accurate understanding of what the business can accomplish and what it will cost.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "<!-- comic-style\n{\n  \"cast\": \"MORGAN: a thoughtful Technology Principal with short dark hair and a green jacket. ALEX: a practical CTO with curly hair and blue rolled-up sleeves. SAM: a CFO with round glasses and an amber cardigan. All are fictional; none represents a person in a real case.\",\n  \"style\": \"Clean editorial explainer comic, dark ink outlines, restrained green, blue, and amber accents on warm white, generous space, readable short speech bubbles, expressive people and simple physical metaphors. No photorealism, logos, dense charts, or title text. Keep the same character appearances throughout the journal.\"\n}\n-->\n\n**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.\n\n<!-- comic-panel\n{\n  \"id\": \"01-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/15-technology-principal/comic-01-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 1 of an explainer comic. Morgan stands between an investment discussion and a company workshop. Use one speech bubble with the exact words: \\\"Which decision needs my help?\\\" Convey: The role connects investment assumptions with operating reality.\",\n  \"alt\": \"Comic panel: morgan stands between an investment discussion and a company workshop.\",\n  \"caption\": \"The role connects investment assumptions with operating reality.\"\n}\n-->\n\n**Panel 1:** The role connects investment assumptions with operating reality.\n\n*Scene:* Morgan stands between an investment discussion and a company workshop.\n\n*Dialogue:* “Which decision needs my help?”\n\n<!-- comic-panel\n{\n  \"id\": \"02-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/15-technology-principal/comic-02-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 2 of an explainer comic. Alex asks Morgan to approve a product roadmap. Use one speech bubble with the exact words: \\\"Who owns this decision?\\\" Convey: Useful support does not automatically grant executive authority.\",\n  \"alt\": \"Comic panel: alex asks Morgan to approve a product roadmap.\",\n  \"caption\": \"Useful support does not automatically grant executive authority.\"\n}\n-->\n\n**Panel 2:** Useful support does not automatically grant executive authority.\n\n*Scene:* Alex asks Morgan to approve a product roadmap.\n\n*Dialogue:* “Who owns this decision?”\n\n<!-- comic-panel\n{\n  \"id\": \"03-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/15-technology-principal/comic-03-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 3 of an explainer comic. Sam requests the economic effect of a technical finding. Use one speech bubble with the exact words: \\\"How does this change the thesis?\\\" Convey: Translate technology evidence into investment consequences.\",\n  \"alt\": \"Comic panel: sam requests the economic effect of a technical finding.\",\n  \"caption\": \"Translate technology evidence into investment consequences.\"\n}\n-->\n\n**Panel 3:** Translate technology evidence into investment consequences.\n\n*Scene:* Sam requests the economic effect of a technical finding.\n\n*Dialogue:* “How does this change the thesis?”\n\n<!-- comic-panel\n{\n  \"id\": \"04-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/15-technology-principal/comic-04-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 4 of an explainer comic. Morgan sees urgent deal work collide with a company commitment. Use one speech bubble with the exact words: \\\"Our capacity has a limit.\\\" Convey: Credible support requires explicit trade-offs and specialist access.\",\n  \"alt\": \"Comic panel: morgan sees urgent deal work collide with a company commitment.\",\n  \"caption\": \"Credible support requires explicit trade-offs and specialist access.\"\n}\n-->\n\n**Panel 4:** Credible support requires explicit trade-offs and specialist access.\n\n*Scene:* Morgan sees urgent deal work collide with a company commitment.\n\n*Dialogue:* “Our capacity has a limit.”\n\n<!-- comic-panel\n{\n  \"id\": \"05-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/15-technology-principal/comic-05-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 5 of an explainer comic. Alex takes ownership of a better decision record. Use one speech bubble with the exact words: \\\"Can we sustain this ourselves?\\\" Convey: Support should leave capability with company leaders.\",\n  \"alt\": \"Comic panel: alex takes ownership of a better decision record.\",\n  \"caption\": \"Support should leave capability with company leaders.\"\n}\n-->\n\n**Panel 5:** Support should leave capability with company leaders.\n\n*Scene:* Alex takes ownership of a better decision record.\n\n*Dialogue:* “Can we sustain this ourselves?”\n\n<!-- comic-panel\n{\n  \"id\": \"06-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/15-technology-principal/comic-06-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 6 of an explainer comic. The three agree scope, information boundaries, and a handoff. Use one speech bubble with the exact words: \\\"Make the engagement explicit.\\\" Convey: A Principal's mandate depends on the firm and the particular work.\",\n  \"alt\": \"Comic panel: the three agree scope, information boundaries, and a handoff.\",\n  \"caption\": \"A Principal's mandate depends on the firm and the particular work.\"\n}\n-->\n\n**Panel 6:** A Principal's mandate depends on the firm and the particular work.\n\n*Scene:* The three agree scope, information boundaries, and a handoff.\n\n*Dialogue:* “Make the engagement explicit.”\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

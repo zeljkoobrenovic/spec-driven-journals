@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What Can Visma Teach About Repeated Software Ownership?</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Private Techuity: Product and Engineering Leadership in Private Equity</a><span class="nav-right"><a class="nav-prev" href="pt-hilton-and-skype.html" title="What Do Two Successful Exits Actually Demonstrate?">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="pt-toys-r-us.html" title="What Happens When Reinvention Meets Financial Constraint?">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VI — Durable value, success, and failure</p>
+        <h1>What Can Visma Teach About Repeated Software Ownership?</h1>
+        <p class="byline">Private Techuity working manuscript  ·  2026-09-12  ·  9 min read · <a class="spec-link" href="pt-visma.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Private Techuity: Product and Engineering Leadership in Private Equity</a><span class="nav-right"><a class="nav-prev" href="pt-hilton-and-skype.html" title="What Do Two Successful Exits Actually Demonstrate?">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="pt-toys-r-us.html" title="What Happens When Reinvention Meets Financial Constraint?">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "What Can Visma Teach About Repeated Software Ownership?", "date": "2026-09-12", "author": "Private Techuity working manuscript", "excerpt": "Examine software investment, acquisition-led growth, autonomy, secondary transactions, financial definitions, and incomplete realization evidence.", "permalink": "pt-visma", "timetoread": "9 min read", "status": "draft:orange", "tags": "private equity, technology leadership, Part VI"}, "tags": ["private equity", "technology leadership", "Part VI"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **KEY POINTS:**\n>\n> * **Repeated ownership can combine continuity and investor turnover.** A long relationship with a manager does not establish one unchanged fund investment or a fully realized return.\n> * **Shared capabilities need deliberate boundaries.** Local knowledge and common support may complement each other, but their costs and customer outcomes need evidence.\n> * **Reconcile financial definitions before interpreting improvement.** The annual reports explain the different 2024 earnings presentations; a changed adjustment does not create additional cash.\n\n<br>\nVisma is useful because it complicates the idea that private equity ownership must involve a single short hold followed by a complete exit. It also provides an unusually relevant setting for product and engineering leaders: a group of business-software companies combining product development, acquisitions, and repeated changes in its investor base.\n\nThis case uses a historical operating window through 2024 and a December 2023 secondary transaction. The 2025 annual report, consulted in September 2026, helps reconcile a later presentation of the 2024 earnings measure. This is not a claim about the latest ownership or trading outcome. The evidence is largely company- and investor-supplied, so operational claims and implied causality require qualification.\n\nFor readers starting with this case, **EBITDA** means earnings before interest, taxes, depreciation and amortization. It excludes financing, tax and specified asset-accounting charges. **Adjusted EBITDA** applies further stated exclusions. Neither measure is the cash remaining after every obligation. [How Does Company Valuation Shape Technology Decisions?](pt-valuation-and-architecture.html) explains the terms and their relationship to company valuation.\n\n## The Ownership and Strategic Context\n\nVisma's December 2023 announcement describes a secondary sale valuing the company at €19 billion, with new investors and additional investment from existing shareholders. It says Hg would continue with a majority stake and refers to an investment relationship beginning in 2006. The announcement also describes a focus on standardized SaaS products after divestments of non-core activities. [S30: Visma 2023 transaction](https://www.visma.com/newsroom/visma-attracts-new-investors-for-further-international-expansion-in-a-transaction-valuing-the-company-at-eur-19-billion-59703d9f)\n\nThe distinction between a secondary sale and new company funding is essential. Money used to purchase an existing shareholder's stake does not automatically fund product development. Continued involvement by a manager does not necessarily mean the same fund has held the same exposure unchanged for the entire period.\n\nThe public announcement supports continuity of a sponsor relationship alongside investor turnover. It does not provide the complete fund-by-fund history needed to calculate realized net returns, follow every retained interest, or assess conflicts in every transaction. The €19 billion valuation is not cash distributed to all investors.\n\n## The Visible Operating Model\n\nIn its March 2025 account of 2024, Visma describes substantial local autonomy supported by shared infrastructure and knowledge. It reports 33 acquisitions during 2024 and says it spends close to 20% of revenue on product development. Those are company-reported descriptions and measures, not independently verified proof of the model's effectiveness. [S32: Visma annual-report announcement](https://www.visma.com/newsroom/visma-releases-annual-and-sustainability-reports-for-2024-7f5c9f37)\n\nThe proposed mechanism is attractive: retain local product and market knowledge while sharing capabilities that would be expensive to assemble separately. That resembles the boundaries examined in [What Should Be Integrated, and What Must Be Separated?](pt-acquisitions-and-carveouts.html) and the support-product hypothesis in [How Can Technology Support Become a Better Product?](pt-technology-capability-as-product.html).\n\nBut resemblance does not validate Productscapes. A group owning operating businesses has different authority and economics from an investment manager offering support across separate portfolio companies. Visma's scale and accumulated capabilities may also be very different from those of a smaller sponsor.\n\nThe practical question is which decisions are local, which are shared, and how the combination improves customer outcomes after coordination costs. “Autonomy” can describe useful accountability or insufficient integration. “Shared capability” can describe valuable expertise or an expensive central service. The label alone cannot decide.\n\n## Read the Financial Definitions Before Comparing Results\n\nThe Q4 2024 report gives full-year revenue of €2,804 million and EBITDA of €893 million. For Q4 it reports 13.6% revenue growth and 10.0% organic growth. It reports net debt / EBITDA of 2.5× and describes debt facilities maturing in 2028. These are figures and definitions at that reporting point, not current financing terms. [S31: Visma Q4 2024 report](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f4589_Visma%202024%20Q4.pdf)\n\nThe report defines organic growth using constant currency and includes acquired companies in both the reporting and comparison periods. It defines its free cash flow before tax and after specified development and asset investment. Its ARR means **annualized repeatable revenue**, including both contractual recurrence and certain repeatable transaction revenue. [S31: Visma Q4 2024 report](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f4589_Visma%202024%20Q4.pdf)\n\nThose definitions are consequential. “Organic” does not mean simply subtracting the revenue acquired during the year. A before-tax free-cash-flow measure is not the same as cash available after every obligation. Repeatable transaction revenue is not identical to contracted subscription revenue.\n\nThe investor webpage, inspected in September 2026, presents a 2024 figure of €904 million under a heading referring to adjusted EBITDA. [S33: Visma financials page](https://www.visma.com/investors/financials) The annual reports explain the difference. The 2024 report's EBITDA is €892.646 million. The 2025 report's reconciliation adds €11.665 million of acquisition-related expenses to that prior-year figure, producing €904.311 million of adjusted EBITDA. Rounded to whole millions, these are the €893 million and €904 million presentations. [S43: Visma 2024 annual report, pp. 50 and 52](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f460b_Visma-Annual-Report-2024.pdf) [S44: Visma 2025 annual report, p. 96](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69bb9fc407e856cb8d6f7726_Visma%20Annual%20Report%202025.pdf)\n\n| Bridge for the same 2024 period | € million |\n| --- | ---: |\n| EBITDA in the 2024 annual report | 892.646 |\n| Add acquisition-related expenses in the later reconciliation | 11.665 |\n| Adjusted EBITDA for 2024 in the 2025 annual report | 904.311 |\n\nThis resolves the numerical gap. The later number is a differently defined earnings measure for the same year, not evidence that an additional €11.665 million of business improvement subsequently occurred in 2024. Nor does the adjustment itself create cash.\n\n## What an Acquisition Expense Means to the Strategy\n\nThe reconciliation creates a better question than whether one headline is correct and the other wrong. Which measure helps answer the decision at hand?\n\nAn adjusted measure can help examine earnings before the expense of particular transactions. That can be useful when comparing the operating businesses. A cash plan for a group that intends to keep acquiring companies must also account for the money and people needed to execute that strategy. Costs can be exceptional for one transaction while recurring across a continuing program.\n\nThis is an analytical distinction, not a finding that the reported adjustment is inappropriate. The expense's relevance depends on the question. A comparison of existing products, a forecast of group cash, a loan calculation and a buyer's valuation may each require a different definition. The definitions should be explicit and reconciled rather than silently carried from one conversation to another.\n\nTechnology creates a similar measurement problem. An integration team can be charged to a central acquisition program while local product margins exclude its cost. That may help local accountability, but a decision to expand the program still needs the total cost. Conversely, assigning all central costs to a newly acquired product immediately can make a useful transition look unviable before its benefits arrive. These are possible reporting designs, not assertions about Visma's internal allocations.\n\nThe Principal and CFO should agree on a short description attached to each important measure:\n\n- **Business included:** the whole group, a segment, an acquired company, or a defined product cohort.\n- **Period:** the dates covered and whether comparative acquisitions or disposals are treated consistently.\n- **Calculation:** which expenses, transactions and currency effects are included or excluded.\n- **Decision:** the question the measure helps answer, and the obligations it leaves outside the calculation.\n- **Evidence:** the source version and the reconciliation needed to reproduce it.\n\nThat discipline also protects architectural decisions. A consolidation that improves a local cost ratio while adding more expense to the shared platform has not yet demonstrated a group saving. An experiment that lowers current earnings while creating a valuable future product is not automatically a failed investment. The relevant case connects the whole transition to customer outcomes and cash over time.\n\nThe reconciliation therefore improves this living case in two ways: it closes a specific factual uncertainty and makes the decision framework more precise. Resolving a reporting difference is progress; it does not resolve the separate causal question of how much shared technology capability contributed to the company's results.\n\n## What the Evidence Supports About Technology\n\nThe disclosed combination of software investment, recurring or repeatable revenue, and acquisition activity is consistent with a business building and purchasing software capability over time. It challenges the simplistic claim that PE ownership necessarily eliminates product investment.\n\nIt does not show how much of growth came from better products rather than acquisitions, pricing, market demand, or customer mix. Even an organic-growth measure does not isolate the effect of engineering. Nor does spending on development establish whether that spending was effective.\n\nA stronger causal assessment would connect individual product changes to customer adoption, retention, effort saved, and contribution economics. It would examine failed initiatives, discontinued products, and the costs imposed by migrations. It would also compare the results of shared support with plausible alternatives.\n\nThe group's public technology examples are useful leads for that next investigation. This draft does not elevate launch announcements or management descriptions of customer time savings into independently verified outcomes.\n\n## Employees, Customers, and Acquired Companies\n\nLocal autonomy may preserve founder knowledge and product focus. Shared capabilities may help employees develop and give customers access to stronger services. These are plausible benefits that require participant evidence.\n\nAcquisition and product transition can also create losses: duplicated work, changed responsibilities, pricing changes, or the retirement of a product customers depend on. Aggregate group growth cannot establish that every acquired business or customer cohort benefited.\n\nThe consulted material does not provide a consistent independent series of employee outcomes, customer migration costs, or the experiences of companies that fit the model poorly. Those gaps are especially important because a successful aggregate can conceal unsuccessful components.\n\n## A Useful Example With a Clear Boundary\n\nVisma supports a narrower, more defensible conclusion than “private equity makes software companies better.” It shows a publicly described model combining sustained software investment, acquisition, shared support, local discretion, and repeated investor transactions. The reported results justify serious investigation of that model.\n\nIts transferable lesson is to inspect the **level at which reuse creates value**. Shared security expertise might travel well across products; a single customer workflow might not. Common financial definitions might help comparison; a uniform engineering ratio might obscure it.\n\nThe unresolved question is how much this operating design contributes after selection, acquisitions, financing, and market conditions are considered. That question should shape the next revision rather than be filled with a confident explanation the public evidence cannot support.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {}, "blocks": [{"type": "markdown", "content": "Visma offers a relevant setting for examining repeated software ownership, acquisitions, local autonomy and shared capabilities. The case focuses on operating evidence through 2024, with a later annual report used to reconcile the presentation of that year’s earnings. It is not a current valuation update.\n\nThe December 2023 company announcement described a secondary transaction valuing the business at €19 billion. [S30: Visma 2023 transaction](https://www.visma.com/newsroom/visma-attracts-new-investors-for-further-international-expansion-in-a-transaction-valuing-the-company-at-eur-19-billion-59703d9f) A secondary sale transfers existing ownership; it does not automatically finance new product development. A long relationship with one manager also does not establish that a single fund held an unchanged investment throughout.\n\nVisma describes local entrepreneurship alongside shared infrastructure, knowledge, product investment and acquisitions. [S32: Visma annual-report announcement](https://www.visma.com/newsroom/visma-releases-annual-and-sustainability-reports-for-2024-7f5c9f37) This makes the operating model worth investigating. It does not isolate the effect of any one component from acquisitions, pricing, demand, financing or selection.\n\n**Read the financial definitions before comparing performance.** EBITDA means earnings before interest, taxes, depreciation and amortization. Adjusted EBITDA makes further specified exclusions. Visma’s historical free-cash-flow measure is before tax, and its annualized repeatable revenue includes certain transaction revenue. Treating the measures as universally standardized would misstate the evidence.\n\nThe apparent difference between the earlier rounded €893 million and later €904 million earnings figures for 2024 is now reconciled. The 2025 annual report adds acquisition-related expenses to the earlier EBITDA figure. The full article shows the exact bridge. [S43: Visma 2024 annual report](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f460b_Visma-Annual-Report-2024.pdf) [S44: Visma 2025 annual report, p. 96](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69bb9fc407e856cb8d6f7726_Visma%20Annual%20Report%202025.pdf) This is a changed measure of the same year, not additional operating improvement or newly created cash.\n\nAn adjustment can help examine underlying operations, while a cash plan for continuing acquisitions must include the cost of executing them. Agree which businesses, period, exclusions and decision each measure concerns. Apply the same discipline to technology support: moving cost between a product and a shared service does not itself create a group saving.\n\nThe transferable question is where reuse creates value without losing useful local knowledge and accountability. The Productscapes hypothesis resembles parts of this model, but resemblance is not validation. Independent customer, employee and acquired-company evidence remains a material gap, as does the contribution of shared technology support to the overall results.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "<!-- comic-style\n{\n  \"cast\": \"MORGAN: a thoughtful Technology Principal with short dark hair and a green jacket. ALEX: a practical CTO with curly hair and blue rolled-up sleeves. SAM: a CFO with round glasses and an amber cardigan. All are fictional; none represents a person in a real case.\",\n  \"style\": \"Clean editorial explainer comic, dark ink outlines, restrained green, blue, and amber accents on warm white, generous space, readable short speech bubbles, expressive people and simple physical metaphors. No photorealism, logos, dense charts, or title text. Keep the same character appearances throughout the journal.\"\n}\n-->\n\n**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.\n\n<!-- comic-panel\n{\n  \"id\": \"01-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/22-visma/comic-01-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 1 of an explainer comic. The fictional team reads a historical Visma report. Use one speech bubble with the exact words: \\\"Which period are we examining?\\\" Convey: The case uses the 2024 reporting period, not a current valuation claim.\",\n  \"alt\": \"Comic panel: the fictional team reads a historical Visma report.\",\n  \"caption\": \"The case uses the 2024 reporting period, not a current valuation claim.\"\n}\n-->\n\n**Panel 1:** The case uses the 2024 reporting period, not a current valuation claim.\n\n*Scene:* The fictional team reads a historical Visma report.\n\n*Dialogue:* “Which period are we examining?”\n\n<!-- comic-panel\n{\n  \"id\": \"02-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/22-visma/comic-02-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 2 of an explainer comic. Morgan places several fund folders beside one long manager relationship. Use one speech bubble with the exact words: \\\"A manager is not one fund.\\\" Convey: Repeated ownership can involve different entry prices, vehicles, and realizations.\",\n  \"alt\": \"Comic panel: morgan places several fund folders beside one long manager relationship.\",\n  \"caption\": \"Repeated ownership can involve different entry prices, vehicles, and realizations.\"\n}\n-->\n\n**Panel 2:** Repeated ownership can involve different entry prices, vehicles, and realizations.\n\n*Scene:* Morgan places several fund folders beside one long manager relationship.\n\n*Dialogue:* “A manager is not one fund.”\n\n<!-- comic-panel\n{\n  \"id\": \"03-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/22-visma/comic-03-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 3 of an explainer comic. Alex views autonomous products with selected shared services. Use one speech bubble with the exact words: \\\"Where should support be shared?\\\" Convey: Local entrepreneurship and common capabilities require deliberate boundaries.\",\n  \"alt\": \"Comic panel: alex views autonomous products with selected shared services.\",\n  \"caption\": \"Local entrepreneurship and common capabilities require deliberate boundaries.\"\n}\n-->\n\n**Panel 3:** Local entrepreneurship and common capabilities require deliberate boundaries.\n\n*Scene:* Alex views autonomous products with selected shared services.\n\n*Dialogue:* “Where should support be shared?”\n\n<!-- comic-panel\n{\n  \"id\": \"04-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/22-visma/comic-04-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 4 of an explainer comic. Sam reads the footnote below a financial measure. Use one speech bubble with the exact words: \\\"Definitions change the comparison.\\\" Convey: Repeatable revenue, organic growth, and free cash flow need their stated definitions.\",\n  \"alt\": \"Comic panel: sam reads the footnote below a financial measure.\",\n  \"caption\": \"Repeatable revenue, organic growth, and free cash flow need their stated definitions.\"\n}\n-->\n\n**Panel 4:** Repeatable revenue, organic growth, and free cash flow need their stated definitions.\n\n*Scene:* Sam reads the footnote below a financial measure.\n\n*Dialogue:* “Definitions change the comparison.”\n\n<!-- comic-panel\n{\n  \"id\": \"05-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/22-visma/comic-05-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 5 of an explainer comic. Sam joins two differently presented earnings figures with the annual-report reconciliation. Use one speech bubble with the exact words: \\\"The adjustment explains the difference.\\\" Convey: The annual reports reconcile the 2024 figures through acquisition-related expenses; the changed measure does not create additional cash.\",\n  \"alt\": \"Comic panel: sam joins two differently presented earnings figures with the annual-report reconciliation.\",\n  \"caption\": \"The annual reports reconcile the 2024 figures through acquisition-related expenses; the changed measure does not create additional cash.\"\n}\n-->\n\n**Panel 5:** The annual reports reconcile the 2024 figures through acquisition-related expenses; the changed measure does not create additional cash.\n\n*Scene:* Sam joins two differently presented earnings figures with the annual-report reconciliation.\n\n*Dialogue:* “The adjustment explains the difference.”\n\n<!-- comic-panel\n{\n  \"id\": \"06-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/22-visma/comic-06-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 6 of an explainer comic. The team separates company claims from observed financial results. Use one speech bubble with the exact words: \\\"What would establish the mechanism?\\\" Convey: The operating model is relevant; its incremental causal contribution remains uncertain.\",\n  \"alt\": \"Comic panel: the team separates company claims from observed financial results.\",\n  \"caption\": \"The operating model is relevant; its incremental causal contribution remains uncertain.\"\n}\n-->\n\n**Panel 6:** The operating model is relevant; its incremental causal contribution remains uncertain.\n\n*Scene:* The team separates company claims from observed financial results.\n\n*Dialogue:* “What would establish the mechanism?”\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

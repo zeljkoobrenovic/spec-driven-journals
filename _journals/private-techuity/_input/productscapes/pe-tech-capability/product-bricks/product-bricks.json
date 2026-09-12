@@ -1,0 +1,3343 @@
+{
+  "metadata": {
+    "domainId": "pe-tech-capability",
+    "title": "Technology Value Creation Capabilities",
+    "description": "Proposed ownable capabilities across Invest, Align, Accelerate, Learn, Scale, and Exit. Configured workflows and human expertise can implement these modules; invest is a model priority, not a deployment claim."
+  },
+  "rootGroups": [
+    {
+      "name": "Invest",
+      "subGroups": [
+        {
+          "name": "Market and Investment Thesis",
+          "bricks": [
+            {
+              "id": "mktl",
+              "name": "Technology Market Lens",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Versioned market and customer-value hypotheses, technology characteristics, AI moat opportunities and substitution threats, source dates, and reasons to pursue or stop.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-mktl-view",
+                      "name": "Market thesis canvas",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Versioned market and customer-value hypotheses, technology characteristics, AI moat opportunities and substitution threats, source dates, and reasons to pursue or stop.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-mktl-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-mktl-contract",
+                      "name": "Technology Market Lens evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-mktl-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-mktl-record",
+                      "name": "Technology Market Lens record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Versioned market and customer-value hypotheses, technology characteristics, AI moat opportunities and substitution threats, source dates, and reasons to pursue or stop."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-mktl-exchange",
+                      "name": "Technology Market Lens controlled exchange",
+                      "type": "integration",
+                      "description": "Proposed permissioned import/export or assisted handoff to Public company, market, and customer research sources. Provider, contract, and API availability remain unverified.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-mktl-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-market-lenses",
+                  "moduleIds": [
+                    "module-mktl-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Public company, market, and customer research sources",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or authorized human handoff",
+                  "description": "Role-based design assumption; no deployed integration or unrestricted company data access is asserted.",
+                  "sourceModuleId": "module-mktl-exchange"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "mktl.png"
+            },
+            {
+              "id": "tths",
+              "name": "Technology Investment Thesis",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Technology advantage, main constraint, value-creation opportunity, leadership, AI opportunity/threat, required investment and timing, expected business outcome, and exit story. Scenarios preserve assumptions and unknowns.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-tths-view",
+                      "name": "One-page technology thesis",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Technology advantage, main constraint, value-creation opportunity, leadership, AI opportunity/threat, required investment and timing, expected business outcome, and exit story. Scenarios preserve assumptions and unknowns.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-tths-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-tths-contract",
+                      "name": "Technology Investment Thesis evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-tths-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "stateless-service",
+                  "modules": [
+                    {
+                      "id": "module-tths-rules",
+                      "name": "Thesis scenario assembly",
+                      "type": "stateless-service",
+                      "description": "Assemble the selected seven-dimension findings and economic scenarios into the one-page contract without deciding on behalf of the investment team. This module owns no durable state.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-tths-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-tths-record",
+                      "name": "Technology Investment Thesis record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Technology advantage, main constraint, value-creation opportunity, leadership, AI opportunity/threat, required investment and timing, expected business outcome, and exit story. Scenarios preserve assumptions and unknowns."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "tass",
+                  "moduleId": "module-tass-contract",
+                  "sourceModuleId": "module-tths-contract",
+                  "type": "context",
+                  "description": "Uses Technology Investment Assessment through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-investment-theses",
+                  "moduleIds": [
+                    "module-tths-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-assessment-findings",
+                  "moduleIds": [
+                    "module-tths-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Investment Assessment."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "tths.png"
+            }
+          ]
+        },
+        {
+          "name": "Technology Diligence",
+          "bricks": [
+            {
+              "id": "tass",
+              "name": "Technology Investment Assessment",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Findings across Product, Architecture, Engineering, Data & AI, Security & resilience, Organization, and Economics. Each ties a thesis question to evidence, confidence, impact, investment needs, and unresolved information.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-tass-view",
+                      "name": "Seven-dimension assessment workbench",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Findings across Product, Architecture, Engineering, Data & AI, Security & resilience, Organization, and Economics. Each ties a thesis question to evidence, confidence, impact, investment needs, and unresolved information.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-tass-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-tass-contract",
+                      "name": "Technology Investment Assessment evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-tass-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-tass-record",
+                      "name": "Technology Investment Assessment record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Findings across Product, Architecture, Engineering, Data & AI, Security & resilience, Organization, and Economics. Each ties a thesis question to evidence, confidence, impact, investment needs, and unresolved information."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-tass-exchange",
+                      "name": "Technology Investment Assessment controlled exchange",
+                      "type": "integration",
+                      "description": "Proposed permissioned import/export or assisted handoff to Authorized company evidence room and specialist assessment exports. Provider, contract, and API availability remain unverified.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-tass-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "mktl",
+                  "moduleId": "module-mktl-contract",
+                  "sourceModuleId": "module-tass-contract",
+                  "type": "context",
+                  "description": "Uses Technology Market Lens through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "gate",
+                  "moduleId": "module-gate-contract",
+                  "sourceModuleId": "module-tass-contract",
+                  "type": "context",
+                  "description": "Uses Company Evidence Access through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-assessment-findings",
+                  "moduleIds": [
+                    "module-tass-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-market-lenses",
+                  "moduleIds": [
+                    "module-tass-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Market Lens."
+                },
+                {
+                  "assetId": "evidence-access-grants",
+                  "moduleIds": [
+                    "module-tass-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Company Evidence Access."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Authorized company evidence room and specialist assessment exports",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or authorized human handoff",
+                  "description": "Role-based design assumption; no deployed integration or unrestricted company data access is asserted.",
+                  "sourceModuleId": "module-tass-exchange"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "tass.png"
+            }
+          ]
+        },
+        {
+          "name": "Decision and Commitment",
+          "bricks": [
+            {
+              "id": "icad",
+              "name": "Technology Decision Advice",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Decision-ready options and technology recommendation with dissent, uncertainty, conditions, authority, evidence tests, and review checkpoints. The committee retains the investment decision.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-icad-view",
+                      "name": "Committee recommendation and condition record",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Decision-ready options and technology recommendation with dissent, uncertainty, conditions, authority, evidence tests, and review checkpoints. The committee retains the investment decision.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-icad-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-icad-contract",
+                      "name": "Technology Decision Advice evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-icad-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-icad-record",
+                      "name": "Technology Decision Advice record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Decision-ready options and technology recommendation with dissent, uncertainty, conditions, authority, evidence tests, and review checkpoints. The committee retains the investment decision."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-icad-exchange",
+                      "name": "Technology Decision Advice controlled exchange",
+                      "type": "integration",
+                      "description": "Proposed permissioned import/export or assisted handoff to Fund investment committee records. Provider, contract, and API availability remain unverified.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-icad-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "tths",
+                  "moduleId": "module-tths-contract",
+                  "sourceModuleId": "module-icad-contract",
+                  "type": "context",
+                  "description": "Uses Technology Investment Thesis through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-decision-conditions",
+                  "moduleIds": [
+                    "module-icad-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-investment-theses",
+                  "moduleIds": [
+                    "module-icad-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Investment Thesis."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Fund investment committee records",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or authorized human handoff",
+                  "description": "Role-based design assumption; no deployed integration or unrestricted company data access is asserted.",
+                  "sourceModuleId": "module-icad-exchange"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "icad.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Align",
+      "subGroups": [
+        {
+          "name": "Company Priorities",
+          "bricks": [
+            {
+              "id": "plan",
+              "name": "Technology 100-Day Plan",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Management-accepted priorities with diligence finding and thesis references, owner, baseline, outcome test, investment decision, due checkpoint, and disposition of lower-priority findings. Urgent material risks retain escalation.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-plan-view",
+                      "name": "Three-to-five priority board",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Management-accepted priorities with diligence finding and thesis references, owner, baseline, outcome test, investment decision, due checkpoint, and disposition of lower-priority findings. Urgent material risks retain escalation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-plan-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-plan-contract",
+                      "name": "Technology 100-Day Plan evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-plan-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "stateless-service",
+                  "modules": [
+                    {
+                      "id": "module-plan-rules",
+                      "name": "Priority selection support",
+                      "type": "stateless-service",
+                      "description": "Compose finding impact and capacity constraints into candidate priorities; only management can accept the three to five selected moves. This module owns no durable state.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-plan-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-plan-record",
+                      "name": "Technology 100-Day Plan record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Management-accepted priorities with diligence finding and thesis references, owner, baseline, outcome test, investment decision, due checkpoint, and disposition of lower-priority findings. Urgent material risks retain escalation."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "tass",
+                  "moduleId": "module-tass-contract",
+                  "sourceModuleId": "module-plan-contract",
+                  "type": "context",
+                  "description": "Uses Technology Investment Assessment through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "tths",
+                  "moduleId": "module-tths-contract",
+                  "sourceModuleId": "module-plan-contract",
+                  "type": "context",
+                  "description": "Uses Technology Investment Thesis through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "icad",
+                  "moduleId": "module-icad-contract",
+                  "sourceModuleId": "module-plan-contract",
+                  "type": "context",
+                  "description": "Uses Technology Decision Advice through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-priorities",
+                  "moduleIds": [
+                    "module-plan-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-assessment-findings",
+                  "moduleIds": [
+                    "module-plan-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Investment Assessment."
+                },
+                {
+                  "assetId": "technology-investment-theses",
+                  "moduleIds": [
+                    "module-plan-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Investment Thesis."
+                },
+                {
+                  "assetId": "technology-decision-conditions",
+                  "moduleIds": [
+                    "module-plan-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Decision Advice."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "plan.png"
+            }
+          ]
+        },
+        {
+          "name": "Outcome Accountability",
+          "bricks": [
+            {
+              "id": "vtrk",
+              "name": "Technology Value Scorecard",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Versioned adoption, company outcome, and enterprise-value contribution records tied to priority and intervention IDs, baseline, period, cost, finance review, confidence, attribution limits, and next decision. Estimated risk reduction is distinct from realized EBITDA.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-vtrk-view",
+                      "name": "Company outcome and contribution scorecard",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Versioned adoption, company outcome, and enterprise-value contribution records tied to priority and intervention IDs, baseline, period, cost, finance review, confidence, attribution limits, and next decision. Estimated risk reduction is distinct from realized EBITDA.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-vtrk-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-vtrk-contract",
+                      "name": "Technology Value Scorecard evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-vtrk-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "stateless-service",
+                  "modules": [
+                    {
+                      "id": "module-vtrk-rules",
+                      "name": "Contribution reconciliation",
+                      "type": "stateless-service",
+                      "description": "Compare approved baseline and outcome periods, costs, and company finance reviews without double counting or converting risk estimates into profit. This module owns no durable state.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-vtrk-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-vtrk-record",
+                      "name": "Technology Value Scorecard record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Versioned adoption, company outcome, and enterprise-value contribution records tied to priority and intervention IDs, baseline, period, cost, finance review, confidence, attribution limits, and next decision. Estimated risk reduction is distinct from realized EBITDA."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "plan",
+                  "moduleId": "module-plan-contract",
+                  "sourceModuleId": "module-vtrk-contract",
+                  "type": "context",
+                  "description": "Uses Technology 100-Day Plan through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "pmet",
+                  "moduleId": "module-pmet-contract",
+                  "sourceModuleId": "module-vtrk-contract",
+                  "type": "context",
+                  "description": "Uses Portfolio Measurement Contracts through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-value-contributions",
+                  "moduleIds": [
+                    "module-vtrk-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-priorities",
+                  "moduleIds": [
+                    "module-vtrk-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology 100-Day Plan."
+                },
+                {
+                  "assetId": "portfolio-measurements",
+                  "moduleIds": [
+                    "module-vtrk-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Portfolio Measurement Contracts."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "vtrk.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Accelerate",
+      "subGroups": [
+        {
+          "name": "Leadership Partnership",
+          "bricks": [
+            {
+              "id": "ctoc",
+              "name": "CTO Partnership",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Agreed cadence, what changed, hardest decision, blocked initiative, support request, next experiment, and CTO-confirmed usefulness. Confidential notes are separated from explicitly agreed management or board escalations.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-ctoc-view",
+                      "name": "CTO decision clinic",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Agreed cadence, what changed, hardest decision, blocked initiative, support request, next experiment, and CTO-confirmed usefulness. Confidential notes are separated from explicitly agreed management or board escalations.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-ctoc-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-ctoc-contract",
+                      "name": "CTO Partnership evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-ctoc-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-ctoc-record",
+                      "name": "CTO Partnership record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Agreed cadence, what changed, hardest decision, blocked initiative, support request, next experiment, and CTO-confirmed usefulness. Confidential notes are separated from explicitly agreed management or board escalations."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "plan",
+                  "moduleId": "module-plan-contract",
+                  "sourceModuleId": "module-ctoc-contract",
+                  "type": "context",
+                  "description": "Uses Technology 100-Day Plan through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "gate",
+                  "moduleId": "module-gate-contract",
+                  "sourceModuleId": "module-ctoc-contract",
+                  "type": "context",
+                  "description": "Uses Company Evidence Access through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "expt",
+                  "moduleId": "module-expt-contract",
+                  "sourceModuleId": "module-ctoc-contract",
+                  "type": "context",
+                  "description": "Uses Technology Expert Network through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "cto-partnership-records",
+                  "moduleIds": [
+                    "module-ctoc-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-priorities",
+                  "moduleIds": [
+                    "module-ctoc-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology 100-Day Plan."
+                },
+                {
+                  "assetId": "evidence-access-grants",
+                  "moduleIds": [
+                    "module-ctoc-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Company Evidence Access."
+                },
+                {
+                  "assetId": "technology-expert-engagements",
+                  "moduleIds": [
+                    "module-ctoc-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Expert Network."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "ctoc.png"
+            },
+            {
+              "id": "ctla",
+              "name": "CTO Assessment",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Role-context diagnostic, leadership evidence and gaps, suitable benchmark or explicit absence, development/succession decision framework, and recommended actions. Assess role requirements, not personality rankings.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-ctla-view",
+                      "name": "Leadership capability review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Role-context diagnostic, leadership evidence and gaps, suitable benchmark or explicit absence, development/succession decision framework, and recommended actions. Assess role requirements, not personality rankings.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-ctla-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-ctla-contract",
+                      "name": "CTO Assessment evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-ctla-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-ctla-record",
+                      "name": "CTO Assessment record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Role-context diagnostic, leadership evidence and gaps, suitable benchmark or explicit absence, development/succession decision framework, and recommended actions. Assess role requirements, not personality rankings."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "plan",
+                  "moduleId": "module-plan-contract",
+                  "sourceModuleId": "module-ctla-contract",
+                  "type": "context",
+                  "description": "Uses Technology 100-Day Plan through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "gate",
+                  "moduleId": "module-gate-contract",
+                  "sourceModuleId": "module-ctla-contract",
+                  "type": "context",
+                  "description": "Uses Company Evidence Access through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-ctla-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-leadership-assessments",
+                  "moduleIds": [
+                    "module-ctla-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-priorities",
+                  "moduleIds": [
+                    "module-ctla-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology 100-Day Plan."
+                },
+                {
+                  "assetId": "evidence-access-grants",
+                  "moduleIds": [
+                    "module-ctla-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Company Evidence Access."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-ctla-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "ctla.png"
+            },
+            {
+              "id": "hire",
+              "name": "CTO Hiring",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Role diagnostic, relevant candidate-market comparison, evidence-based assessment and hiring decision framework, recommended search/onboarding actions, candidate consent, and company decision ownership. Includes CTO and VP Engineering needs.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-hire-view",
+                      "name": "Technology leadership search brief",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Role diagnostic, relevant candidate-market comparison, evidence-based assessment and hiring decision framework, recommended search/onboarding actions, candidate consent, and company decision ownership. Includes CTO and VP Engineering needs.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-hire-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-hire-contract",
+                      "name": "CTO Hiring evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-hire-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-hire-record",
+                      "name": "CTO Hiring record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Role diagnostic, relevant candidate-market comparison, evidence-based assessment and hiring decision framework, recommended search/onboarding actions, candidate consent, and company decision ownership. Includes CTO and VP Engineering needs."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-hire-exchange",
+                      "name": "CTO Hiring controlled exchange",
+                      "type": "integration",
+                      "description": "Proposed permissioned import/export or assisted handoff to Company-approved recruitment and candidate communication systems. Provider, contract, and API availability remain unverified.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-hire-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "ctla",
+                  "moduleId": "module-ctla-contract",
+                  "sourceModuleId": "module-hire-contract",
+                  "type": "context",
+                  "description": "Uses CTO Assessment through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "orgd",
+                  "moduleId": "module-orgd-contract",
+                  "sourceModuleId": "module-hire-contract",
+                  "type": "context",
+                  "description": "Uses Technology Organization Design through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "expt",
+                  "moduleId": "module-expt-contract",
+                  "sourceModuleId": "module-hire-contract",
+                  "type": "context",
+                  "description": "Uses Technology Expert Network through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "gate",
+                  "moduleId": "module-gate-contract",
+                  "sourceModuleId": "module-hire-contract",
+                  "type": "context",
+                  "description": "Uses Company Evidence Access through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-hire-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-hiring-cases",
+                  "moduleIds": [
+                    "module-hire-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-leadership-assessments",
+                  "moduleIds": [
+                    "module-hire-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from CTO Assessment."
+                },
+                {
+                  "assetId": "technology-organization-decisions",
+                  "moduleIds": [
+                    "module-hire-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Organization Design."
+                },
+                {
+                  "assetId": "technology-expert-engagements",
+                  "moduleIds": [
+                    "module-hire-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Expert Network."
+                },
+                {
+                  "assetId": "evidence-access-grants",
+                  "moduleIds": [
+                    "module-hire-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Company Evidence Access."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-hire-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Company-approved recruitment and candidate communication systems",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or authorized human handoff",
+                  "description": "Role-based design assumption; no deployed integration or unrestricted company data access is asserted.",
+                  "sourceModuleId": "module-hire-exchange"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "hire.png"
+            }
+          ]
+        },
+        {
+          "name": "Product and Delivery Accelerators",
+          "bricks": [
+            {
+              "id": "aioa",
+              "name": "AI Opportunity Assessment",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Diagnostic across product value, productivity, and disruption; comparable benchmark or explicit absence; decision framework; recommended experiment; task quality, total cost, customer value, and stop/scale outcome evidence.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-aioa-view",
+                      "name": "AI opportunity and experiment canvas",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Diagnostic across product value, productivity, and disruption; comparable benchmark or explicit absence; decision framework; recommended experiment; task quality, total cost, customer value, and stop/scale outcome evidence.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-aioa-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-aioa-contract",
+                      "name": "AI Opportunity Assessment evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-aioa-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-aioa-record",
+                      "name": "AI Opportunity Assessment record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Diagnostic across product value, productivity, and disruption; comparable benchmark or explicit absence; decision framework; recommended experiment; task quality, total cost, customer value, and stop/scale outcome evidence."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "tths",
+                  "moduleId": "module-tths-contract",
+                  "sourceModuleId": "module-aioa-contract",
+                  "type": "context",
+                  "description": "Uses Technology Investment Thesis through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "pmet",
+                  "moduleId": "module-pmet-contract",
+                  "sourceModuleId": "module-aioa-contract",
+                  "type": "context",
+                  "description": "Uses Portfolio Measurement Contracts through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-aioa-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "ai-opportunity-experiments",
+                  "moduleIds": [
+                    "module-aioa-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-investment-theses",
+                  "moduleIds": [
+                    "module-aioa-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Investment Thesis."
+                },
+                {
+                  "assetId": "portfolio-measurements",
+                  "moduleIds": [
+                    "module-aioa-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Portfolio Measurement Contracts."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-aioa-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "aioa.png"
+            },
+            {
+              "id": "enge",
+              "name": "Engineering Effectiveness",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Diagnostic of delivery flow, quality, support load, and organization constraints; context-qualified benchmark; decision options; recommended actions and accepted outcome tests. Activity counts do not prove productivity.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-enge-view",
+                      "name": "Delivery flow and quality diagnostic",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Diagnostic of delivery flow, quality, support load, and organization constraints; context-qualified benchmark; decision options; recommended actions and accepted outcome tests. Activity counts do not prove productivity.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-enge-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-enge-contract",
+                      "name": "Engineering Effectiveness evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-enge-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-enge-record",
+                      "name": "Engineering Effectiveness record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Diagnostic of delivery flow, quality, support load, and organization constraints; context-qualified benchmark; decision options; recommended actions and accepted outcome tests. Activity counts do not prove productivity."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "pmet",
+                  "moduleId": "module-pmet-contract",
+                  "sourceModuleId": "module-enge-contract",
+                  "type": "context",
+                  "description": "Uses Portfolio Measurement Contracts through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "benc",
+                  "moduleId": "module-benc-contract",
+                  "sourceModuleId": "module-enge-contract",
+                  "type": "context",
+                  "description": "Uses Contextual Portfolio Benchmarks through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-enge-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "engineering-effectiveness-diagnostics",
+                  "moduleIds": [
+                    "module-enge-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "portfolio-measurements",
+                  "moduleIds": [
+                    "module-enge-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Portfolio Measurement Contracts."
+                },
+                {
+                  "assetId": "portfolio-benchmark-cohorts",
+                  "moduleIds": [
+                    "module-enge-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Contextual Portfolio Benchmarks."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-enge-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "enge.png"
+            },
+            {
+              "id": "prod",
+              "name": "Product/Technology Alignment",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Diagnostic of roadmap fit with company strategy, customer evidence and capacity; relevant benchmark; decision framework for priority and build/buy choices; recommended outcome slices and acceptance criteria.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-prod-view",
+                      "name": "Outcome roadmap and tradeoff canvas",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Diagnostic of roadmap fit with company strategy, customer evidence and capacity; relevant benchmark; decision framework for priority and build/buy choices; recommended outcome slices and acceptance criteria.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-prod-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-prod-contract",
+                      "name": "Product/Technology Alignment evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-prod-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-prod-record",
+                      "name": "Product/Technology Alignment record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Diagnostic of roadmap fit with company strategy, customer evidence and capacity; relevant benchmark; decision framework for priority and build/buy choices; recommended outcome slices and acceptance criteria."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "plan",
+                  "moduleId": "module-plan-contract",
+                  "sourceModuleId": "module-prod-contract",
+                  "type": "context",
+                  "description": "Uses Technology 100-Day Plan through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "enge",
+                  "moduleId": "module-enge-contract",
+                  "sourceModuleId": "module-prod-contract",
+                  "type": "context",
+                  "description": "Uses Engineering Effectiveness through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-prod-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "product-technology-alignment",
+                  "moduleIds": [
+                    "module-prod-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-priorities",
+                  "moduleIds": [
+                    "module-prod-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology 100-Day Plan."
+                },
+                {
+                  "assetId": "engineering-effectiveness-diagnostics",
+                  "moduleIds": [
+                    "module-prod-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Engineering Effectiveness."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-prod-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "prod.png"
+            }
+          ]
+        },
+        {
+          "name": "Technology Economics Accelerators",
+          "bricks": [
+            {
+              "id": "near",
+              "name": "Nearshore Builder",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Capability/location/model diagnostic, comparable delivery evidence, fully loaded economics and coordination tradeoffs, decision framework, and recommended pilot with company-owned quality criteria.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-near-view",
+                      "name": "Nearshore model and economics comparison",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Capability/location/model diagnostic, comparable delivery evidence, fully loaded economics and coordination tradeoffs, decision framework, and recommended pilot with company-owned quality criteria.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-near-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-near-contract",
+                      "name": "Nearshore Builder evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-near-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-near-record",
+                      "name": "Nearshore Builder record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Capability/location/model diagnostic, comparable delivery evidence, fully loaded economics and coordination tradeoffs, decision framework, and recommended pilot with company-owned quality criteria."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "enge",
+                  "moduleId": "module-enge-contract",
+                  "sourceModuleId": "module-near-contract",
+                  "type": "context",
+                  "description": "Uses Engineering Effectiveness through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "orgd",
+                  "moduleId": "module-orgd-contract",
+                  "sourceModuleId": "module-near-contract",
+                  "type": "context",
+                  "description": "Uses Technology Organization Design through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "benc",
+                  "moduleId": "module-benc-contract",
+                  "sourceModuleId": "module-near-contract",
+                  "type": "context",
+                  "description": "Uses Contextual Portfolio Benchmarks through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-near-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "nearshore-operating-decisions",
+                  "moduleIds": [
+                    "module-near-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "engineering-effectiveness-diagnostics",
+                  "moduleIds": [
+                    "module-near-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Engineering Effectiveness."
+                },
+                {
+                  "assetId": "technology-organization-decisions",
+                  "moduleIds": [
+                    "module-near-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Organization Design."
+                },
+                {
+                  "assetId": "portfolio-benchmark-cohorts",
+                  "moduleIds": [
+                    "module-near-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Contextual Portfolio Benchmarks."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-near-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "near.png"
+            },
+            {
+              "id": "clou",
+              "name": "Cloud Economics",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Diagnostic of allocated spend, workload drivers, commitments, and service quality; comparable benchmark; optimize/retain/replatform decision framework; recommended actions with net savings and reliability tests.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-clou-view",
+                      "name": "Cloud unit-economics review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Diagnostic of allocated spend, workload drivers, commitments, and service quality; comparable benchmark; optimize/retain/replatform decision framework; recommended actions with net savings and reliability tests.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-clou-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-clou-contract",
+                      "name": "Cloud Economics evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-clou-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-clou-record",
+                      "name": "Cloud Economics record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Diagnostic of allocated spend, workload drivers, commitments, and service quality; comparable benchmark; optimize/retain/replatform decision framework; recommended actions with net savings and reliability tests."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "pmet",
+                  "moduleId": "module-pmet-contract",
+                  "sourceModuleId": "module-clou-contract",
+                  "type": "context",
+                  "description": "Uses Portfolio Measurement Contracts through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "benc",
+                  "moduleId": "module-benc-contract",
+                  "sourceModuleId": "module-clou-contract",
+                  "type": "context",
+                  "description": "Uses Contextual Portfolio Benchmarks through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-clou-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "cloud-economics-assessments",
+                  "moduleIds": [
+                    "module-clou-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "portfolio-measurements",
+                  "moduleIds": [
+                    "module-clou-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Portfolio Measurement Contracts."
+                },
+                {
+                  "assetId": "portfolio-benchmark-cohorts",
+                  "moduleIds": [
+                    "module-clou-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Contextual Portfolio Benchmarks."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-clou-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "clou.png"
+            }
+          ]
+        },
+        {
+          "name": "Material Risk Accelerators",
+          "bricks": [
+            {
+              "id": "cybr",
+              "name": "Cyber Readiness",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Business-exposure diagnostic, relevant evidence comparison, treatment/accept/transfer/defer decision framework, and recommended controls verified by recovery or remediation tests. Assessment advice does not run company incident response.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-cybr-view",
+                      "name": "Material cyber and resilience decisions",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Business-exposure diagnostic, relevant evidence comparison, treatment/accept/transfer/defer decision framework, and recommended controls verified by recovery or remediation tests. Assessment advice does not run company incident response.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-cybr-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-cybr-contract",
+                      "name": "Cyber Readiness evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-cybr-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-cybr-record",
+                      "name": "Cyber Readiness record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Business-exposure diagnostic, relevant evidence comparison, treatment/accept/transfer/defer decision framework, and recommended controls verified by recovery or remediation tests. Assessment advice does not run company incident response."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "tass",
+                  "moduleId": "module-tass-contract",
+                  "sourceModuleId": "module-cybr-contract",
+                  "type": "context",
+                  "description": "Uses Technology Investment Assessment through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "plan",
+                  "moduleId": "module-plan-contract",
+                  "sourceModuleId": "module-cybr-contract",
+                  "type": "context",
+                  "description": "Uses Technology 100-Day Plan through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-cybr-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-risk-treatments",
+                  "moduleIds": [
+                    "module-cybr-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-assessment-findings",
+                  "moduleIds": [
+                    "module-cybr-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Investment Assessment."
+                },
+                {
+                  "assetId": "technology-priorities",
+                  "moduleIds": [
+                    "module-cybr-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology 100-Day Plan."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-cybr-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "cybr.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Learn",
+      "subGroups": [
+        {
+          "name": "Portfolio Intelligence",
+          "bricks": [
+            {
+              "id": "pmet",
+              "name": "Portfolio Measurement Contracts",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Company-approved aggregate measures with unit, denominator, period, baseline, scope, owner, confidence, and import provenance. Covers cloud/revenue, engineering headcount/ARR, release frequency, support burden, AI, onboarding, and nearshore outcomes.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-pmet-view",
+                      "name": "Measurement definition and provenance review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Company-approved aggregate measures with unit, denominator, period, baseline, scope, owner, confidence, and import provenance. Covers cloud/revenue, engineering headcount/ARR, release frequency, support burden, AI, onboarding, and nearshore outcomes.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-pmet-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-pmet-contract",
+                      "name": "Portfolio Measurement Contracts evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-pmet-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-pmet-worker",
+                      "name": "Evidence import staging",
+                      "type": "daemon",
+                      "description": "Stage approved aggregate files, check definitions and provenance, and surface rejected records for review.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-pmet-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-pmet-record",
+                      "name": "Portfolio Measurement Contracts record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Company-approved aggregate measures with unit, denominator, period, baseline, scope, owner, confidence, and import provenance. Covers cloud/revenue, engineering headcount/ARR, release frequency, support burden, AI, onboarding, and nearshore outcomes."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-pmet-exchange",
+                      "name": "Portfolio Measurement Contracts controlled exchange",
+                      "type": "integration",
+                      "description": "Proposed permissioned import/export or assisted handoff to Company-approved engineering, cloud, finance, support, and onboarding exports. Provider, contract, and API availability remain unverified.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-pmet-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "gate",
+                  "moduleId": "module-gate-contract",
+                  "sourceModuleId": "module-pmet-contract",
+                  "type": "context",
+                  "description": "Uses Company Evidence Access through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "portfolio-measurements",
+                  "moduleIds": [
+                    "module-pmet-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "evidence-access-grants",
+                  "moduleIds": [
+                    "module-pmet-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Company Evidence Access."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Company-approved engineering, cloud, finance, support, and onboarding exports",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or authorized human handoff",
+                  "description": "Role-based design assumption; no deployed integration or unrestricted company data access is asserted.",
+                  "sourceModuleId": "module-pmet-exchange"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "pmet.png"
+            },
+            {
+              "id": "benc",
+              "name": "Contextual Portfolio Benchmarks",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Cohort definitions and approved aggregates preserving business model, scale, maturity, acquisition stage, period, and metric compatibility. Record exclusions and sample limitations; withhold small or incompatible comparisons.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-benc-view",
+                      "name": "Comparable cohort explorer",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Cohort definitions and approved aggregates preserving business model, scale, maturity, acquisition stage, period, and metric compatibility. Record exclusions and sample limitations; withhold small or incompatible comparisons.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-benc-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-benc-contract",
+                      "name": "Contextual Portfolio Benchmarks evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-benc-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "stateless-service",
+                  "modules": [
+                    {
+                      "id": "module-benc-rules",
+                      "name": "Cohort eligibility checks",
+                      "type": "stateless-service",
+                      "description": "Apply period, definition, cohort compatibility, and minimum disclosure rules before computing permitted comparisons. This module owns no durable state.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-benc-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-benc-record",
+                      "name": "Contextual Portfolio Benchmarks record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Cohort definitions and approved aggregates preserving business model, scale, maturity, acquisition stage, period, and metric compatibility. Record exclusions and sample limitations; withhold small or incompatible comparisons."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "pmet",
+                  "moduleId": "module-pmet-contract",
+                  "sourceModuleId": "module-benc-contract",
+                  "type": "context",
+                  "description": "Uses Portfolio Measurement Contracts through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "gate",
+                  "moduleId": "module-gate-contract",
+                  "sourceModuleId": "module-benc-contract",
+                  "type": "context",
+                  "description": "Uses Company Evidence Access through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "portfolio-benchmark-cohorts",
+                  "moduleIds": [
+                    "module-benc-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "portfolio-measurements",
+                  "moduleIds": [
+                    "module-benc-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Portfolio Measurement Contracts."
+                },
+                {
+                  "assetId": "evidence-access-grants",
+                  "moduleIds": [
+                    "module-benc-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Company Evidence Access."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "benc.png"
+            }
+          ]
+        },
+        {
+          "name": "Reusable Expertise",
+          "bricks": [
+            {
+              "id": "play",
+              "name": "Reusable Accelerator Library",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Versioned diagnostic, benchmark eligibility, decision framework, recommended actions, evidence requirements, limitations, and lessons for each accelerator. Retain unsuccessful hypotheses and company-specific adaptation notes.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-play-view",
+                      "name": "Minimum viable accelerator catalog",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Versioned diagnostic, benchmark eligibility, decision framework, recommended actions, evidence requirements, limitations, and lessons for each accelerator. Retain unsuccessful hypotheses and company-specific adaptation notes.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-play-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-play-contract",
+                      "name": "Reusable Accelerator Library evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-play-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-play-record",
+                      "name": "Reusable Accelerator Library record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Versioned diagnostic, benchmark eligibility, decision framework, recommended actions, evidence requirements, limitations, and lessons for each accelerator. Retain unsuccessful hypotheses and company-specific adaptation notes."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "benc",
+                  "moduleId": "module-benc-contract",
+                  "sourceModuleId": "module-play-contract",
+                  "type": "context",
+                  "description": "Uses Contextual Portfolio Benchmarks through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-play-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "portfolio-benchmark-cohorts",
+                  "moduleIds": [
+                    "module-play-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Contextual Portfolio Benchmarks."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "play.png"
+            },
+            {
+              "id": "comm",
+              "name": "Portfolio CTO Community",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Opt-in peer topics, suitable introductions, shared learning sessions, consented sanitized cases, follow-up usefulness, and confidentiality choices. Membership is not permission to access another company evidence.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-comm-view",
+                      "name": "Peer exchange and case library",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Opt-in peer topics, suitable introductions, shared learning sessions, consented sanitized cases, follow-up usefulness, and confidentiality choices. Membership is not permission to access another company evidence.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-comm-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-comm-contract",
+                      "name": "Portfolio CTO Community evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-comm-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-comm-record",
+                      "name": "Portfolio CTO Community record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Opt-in peer topics, suitable introductions, shared learning sessions, consented sanitized cases, follow-up usefulness, and confidentiality choices. Membership is not permission to access another company evidence."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-comm-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "gate",
+                  "moduleId": "module-gate-contract",
+                  "sourceModuleId": "module-comm-contract",
+                  "type": "context",
+                  "description": "Uses Company Evidence Access through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "portfolio-peer-learning",
+                  "moduleIds": [
+                    "module-comm-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-comm-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                },
+                {
+                  "assetId": "evidence-access-grants",
+                  "moduleIds": [
+                    "module-comm-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Company Evidence Access."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "comm.png"
+            },
+            {
+              "id": "expt",
+              "name": "Technology Expert Network",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Expertise, references, availability, conflict checks, scope, cost decision, access boundary, and accepted engagement outcome for security, AI, cloud, product, diligence, recruiting, and nearshore support. No supplier is assumed contracted.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-expt-view",
+                      "name": "Expert fit and engagement directory",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Expertise, references, availability, conflict checks, scope, cost decision, access boundary, and accepted engagement outcome for security, AI, cloud, product, diligence, recruiting, and nearshore support. No supplier is assumed contracted.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-expt-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-expt-contract",
+                      "name": "Technology Expert Network evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-expt-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-expt-record",
+                      "name": "Technology Expert Network record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Expertise, references, availability, conflict checks, scope, cost decision, access boundary, and accepted engagement outcome for security, AI, cloud, product, diligence, recruiting, and nearshore support. No supplier is assumed contracted."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "gate",
+                  "moduleId": "module-gate-contract",
+                  "sourceModuleId": "module-expt-contract",
+                  "type": "context",
+                  "description": "Uses Company Evidence Access through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-expert-engagements",
+                  "moduleIds": [
+                    "module-expt-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "evidence-access-grants",
+                  "moduleIds": [
+                    "module-expt-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Company Evidence Access."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "expt.png"
+            }
+          ]
+        },
+        {
+          "name": "Trusted Evidence Exchange",
+          "bricks": [
+            {
+              "id": "gate",
+              "name": "Company Evidence Access",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Purpose, company/fund context, audience, grant, expiry/revocation, consent where applicable, approved disclosure scope, and access audit trail. Coaching and candidate records have narrower access than general company outcomes.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-gate-view",
+                      "name": "Company scope and disclosure approvals",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Purpose, company/fund context, audience, grant, expiry/revocation, consent where applicable, approved disclosure scope, and access audit trail. Coaching and candidate records have narrower access than general company outcomes.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-gate-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-gate-contract",
+                      "name": "Company Evidence Access evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-gate-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-gate-record",
+                      "name": "Company Evidence Access record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Purpose, company/fund context, audience, grant, expiry/revocation, consent where applicable, approved disclosure scope, and access audit trail. Coaching and candidate records have narrower access than general company outcomes."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-gate-exchange",
+                      "name": "Company Evidence Access controlled exchange",
+                      "type": "integration",
+                      "description": "Proposed permissioned import/export or assisted handoff to Organization identity provider and company evidence access controls. Provider, contract, and API availability remain unverified.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-gate-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [],
+              "dataDependencies": [
+                {
+                  "assetId": "evidence-access-grants",
+                  "moduleIds": [
+                    "module-gate-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Organization identity provider and company evidence access controls",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or authorized human handoff",
+                  "description": "Role-based design assumption; no deployed integration or unrestricted company data access is asserted.",
+                  "sourceModuleId": "module-gate-exchange"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "gate.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Scale",
+      "subGroups": [
+        {
+          "name": "Acquisition Integration",
+          "bricks": [
+            {
+              "id": "mint",
+              "name": "M&A Tech Integration",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Platform/team/data integration diagnostic, comparable integration cases, retain/connect/consolidate decision framework, recommended staged actions, dependencies, continuity needs, costs, and business acceptance evidence.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-mint-view",
+                      "name": "Integration choice and acceptance board",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Platform/team/data integration diagnostic, comparable integration cases, retain/connect/consolidate decision framework, recommended staged actions, dependencies, continuity needs, costs, and business acceptance evidence.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-mint-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-mint-contract",
+                      "name": "M&A Tech Integration evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-mint-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-mint-record",
+                      "name": "M&A Tech Integration record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Platform/team/data integration diagnostic, comparable integration cases, retain/connect/consolidate decision framework, recommended staged actions, dependencies, continuity needs, costs, and business acceptance evidence."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "tass",
+                  "moduleId": "module-tass-contract",
+                  "sourceModuleId": "module-mint-contract",
+                  "type": "context",
+                  "description": "Uses Technology Investment Assessment through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "pltf",
+                  "moduleId": "module-pltf-contract",
+                  "sourceModuleId": "module-mint-contract",
+                  "type": "context",
+                  "description": "Uses Portfolio Company Platform Strategy through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "orgd",
+                  "moduleId": "module-orgd-contract",
+                  "sourceModuleId": "module-mint-contract",
+                  "type": "context",
+                  "description": "Uses Technology Organization Design through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-mint-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-integration-cases",
+                  "moduleIds": [
+                    "module-mint-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-assessment-findings",
+                  "moduleIds": [
+                    "module-mint-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Investment Assessment."
+                },
+                {
+                  "assetId": "company-platform-decisions",
+                  "moduleIds": [
+                    "module-mint-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Portfolio Company Platform Strategy."
+                },
+                {
+                  "assetId": "technology-organization-decisions",
+                  "moduleIds": [
+                    "module-mint-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Organization Design."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-mint-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "mint.png"
+            }
+          ]
+        },
+        {
+          "name": "Platform and Organization",
+          "bricks": [
+            {
+              "id": "pltf",
+              "name": "Portfolio Company Platform Strategy",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Company-owned platform choices testing customer capability, architecture constraints, integration paths, migration risk, cost, reversibility, and evidence for retain/connect/consolidate decisions. No portfolio-wide stack mandate.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-pltf-view",
+                      "name": "Company platform option comparison",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Company-owned platform choices testing customer capability, architecture constraints, integration paths, migration risk, cost, reversibility, and evidence for retain/connect/consolidate decisions. No portfolio-wide stack mandate.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-pltf-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-pltf-contract",
+                      "name": "Portfolio Company Platform Strategy evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-pltf-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-pltf-record",
+                      "name": "Portfolio Company Platform Strategy record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Company-owned platform choices testing customer capability, architecture constraints, integration paths, migration risk, cost, reversibility, and evidence for retain/connect/consolidate decisions. No portfolio-wide stack mandate."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "tths",
+                  "moduleId": "module-tths-contract",
+                  "sourceModuleId": "module-pltf-contract",
+                  "type": "context",
+                  "description": "Uses Technology Investment Thesis through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "prod",
+                  "moduleId": "module-prod-contract",
+                  "sourceModuleId": "module-pltf-contract",
+                  "type": "context",
+                  "description": "Uses Product/Technology Alignment through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "clou",
+                  "moduleId": "module-clou-contract",
+                  "sourceModuleId": "module-pltf-contract",
+                  "type": "context",
+                  "description": "Uses Cloud Economics through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "company-platform-decisions",
+                  "moduleIds": [
+                    "module-pltf-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-investment-theses",
+                  "moduleIds": [
+                    "module-pltf-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Investment Thesis."
+                },
+                {
+                  "assetId": "product-technology-alignment",
+                  "moduleIds": [
+                    "module-pltf-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Product/Technology Alignment."
+                },
+                {
+                  "assetId": "cloud-economics-assessments",
+                  "moduleIds": [
+                    "module-pltf-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Cloud Economics."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "pltf.png"
+            },
+            {
+              "id": "orgd",
+              "name": "Technology Organization Design",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Company-context decision records for product/technology responsibilities, leadership capacity, team interactions, succession, nearshore integration, and acquisition transition. Headcounts and reporting lines require company approval.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-orgd-view",
+                      "name": "Responsibility and capacity design",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Company-context decision records for product/technology responsibilities, leadership capacity, team interactions, succession, nearshore integration, and acquisition transition. Headcounts and reporting lines require company approval.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-orgd-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-orgd-contract",
+                      "name": "Technology Organization Design evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-orgd-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-orgd-record",
+                      "name": "Technology Organization Design record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Company-context decision records for product/technology responsibilities, leadership capacity, team interactions, succession, nearshore integration, and acquisition transition. Headcounts and reporting lines require company approval."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "ctla",
+                  "moduleId": "module-ctla-contract",
+                  "sourceModuleId": "module-orgd-contract",
+                  "type": "context",
+                  "description": "Uses CTO Assessment through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "plan",
+                  "moduleId": "module-plan-contract",
+                  "sourceModuleId": "module-orgd-contract",
+                  "type": "context",
+                  "description": "Uses Technology 100-Day Plan through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-organization-decisions",
+                  "moduleIds": [
+                    "module-orgd-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-leadership-assessments",
+                  "moduleIds": [
+                    "module-orgd-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from CTO Assessment."
+                },
+                {
+                  "assetId": "technology-priorities",
+                  "moduleIds": [
+                    "module-orgd-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology 100-Day Plan."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "orgd.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Exit",
+      "subGroups": [
+        {
+          "name": "Technology Readiness",
+          "bricks": [
+            {
+              "id": "xred",
+              "name": "Exit Readiness",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Readiness diagnostic covering leadership, engineering, architecture, roadmap, debt, cyber, AI, unit economics, key-person risk, IP, and M&A; buyer-context benchmark, gap decisions, recommended actions, and explicit unresolved issues.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-xred-view",
+                      "name": "Buyer readiness review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Readiness diagnostic covering leadership, engineering, architecture, roadmap, debt, cyber, AI, unit economics, key-person risk, IP, and M&A; buyer-context benchmark, gap decisions, recommended actions, and explicit unresolved issues.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-xred-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-xred-contract",
+                      "name": "Exit Readiness evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-xred-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-xred-worker",
+                      "name": "Readiness checkpoint reminders",
+                      "type": "daemon",
+                      "description": "Flag stale readiness evidence and due owner decisions; reminders are not completion evidence.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-xred-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-xred-record",
+                      "name": "Exit Readiness record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Readiness diagnostic covering leadership, engineering, architecture, roadmap, debt, cyber, AI, unit economics, key-person risk, IP, and M&A; buyer-context benchmark, gap decisions, recommended actions, and explicit unresolved issues."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "tths",
+                  "moduleId": "module-tths-contract",
+                  "sourceModuleId": "module-xred-contract",
+                  "type": "context",
+                  "description": "Uses Technology Investment Thesis through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "vtrk",
+                  "moduleId": "module-vtrk-contract",
+                  "sourceModuleId": "module-xred-contract",
+                  "type": "context",
+                  "description": "Uses Technology Value Scorecard through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "cybr",
+                  "moduleId": "module-cybr-contract",
+                  "sourceModuleId": "module-xred-contract",
+                  "type": "context",
+                  "description": "Uses Cyber Readiness through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "mint",
+                  "moduleId": "module-mint-contract",
+                  "sourceModuleId": "module-xred-contract",
+                  "type": "context",
+                  "description": "Uses M&A Tech Integration through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "play",
+                  "moduleId": "module-play-contract",
+                  "sourceModuleId": "module-xred-contract",
+                  "type": "context",
+                  "description": "Uses Reusable Accelerator Library through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-exit-readiness",
+                  "moduleIds": [
+                    "module-xred-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-investment-theses",
+                  "moduleIds": [
+                    "module-xred-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Investment Thesis."
+                },
+                {
+                  "assetId": "technology-value-contributions",
+                  "moduleIds": [
+                    "module-xred-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Value Scorecard."
+                },
+                {
+                  "assetId": "technology-risk-treatments",
+                  "moduleIds": [
+                    "module-xred-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Cyber Readiness."
+                },
+                {
+                  "assetId": "technology-integration-cases",
+                  "moduleIds": [
+                    "module-xred-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from M&A Tech Integration."
+                },
+                {
+                  "assetId": "accelerator-playbooks",
+                  "moduleIds": [
+                    "module-xred-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Reusable Accelerator Library."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "xred.png"
+            }
+          ]
+        },
+        {
+          "name": "Approved Value Evidence",
+          "bricks": [
+            {
+              "id": "evdc",
+              "name": "Technology Evidence and Narrative",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability. Traceable claims and source references across the investment thesis, interventions, outcomes, exit story, and LP capability proposition. Record audience, company permission, approval, redaction, version, unresolved gaps, and questions.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-evdc-view",
+                      "name": "Approved technology claim and buyer response workspace",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Traceable claims and source references across the investment thesis, interventions, outcomes, exit story, and LP capability proposition. Record audience, company permission, approval, redaction, version, unresolved gaps, and questions.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-evdc-contract",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-evdc-contract",
+                      "name": "Technology Evidence and Narrative evidence contract",
+                      "type": "backoffice-interface",
+                      "description": "Permissioned intake, reviewer decision, and controlled export for this capability. A configured form and assisted handoff can implement the contract before any API is built.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-evdc-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-evdc-record",
+                      "name": "Technology Evidence and Narrative record",
+                      "type": "stateful-service",
+                      "description": "Proposed durable logical record: Traceable claims and source references across the investment thesis, interventions, outcomes, exit story, and LP capability proposition. Record audience, company permission, approval, redaction, version, unresolved gaps, and questions."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-evdc-exchange",
+                      "name": "Technology Evidence and Narrative controlled exchange",
+                      "type": "integration",
+                      "description": "Proposed permissioned import/export or assisted handoff to Approved buyer data room and manager investor-reporting process. Provider, contract, and API availability remain unverified.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-evdc-record",
+                            "type": "uses",
+                            "description": "Uses the versioned capability record under its access and reviewer boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "vtrk",
+                  "moduleId": "module-vtrk-contract",
+                  "sourceModuleId": "module-evdc-contract",
+                  "type": "context",
+                  "description": "Uses Technology Value Scorecard through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "xred",
+                  "moduleId": "module-xred-contract",
+                  "sourceModuleId": "module-evdc-contract",
+                  "type": "context",
+                  "description": "Uses Exit Readiness through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "tths",
+                  "moduleId": "module-tths-contract",
+                  "sourceModuleId": "module-evdc-contract",
+                  "type": "context",
+                  "description": "Uses Technology Investment Thesis through its scoped evidence contract."
+                },
+                {
+                  "targetBrickId": "gate",
+                  "moduleId": "module-gate-contract",
+                  "sourceModuleId": "module-evdc-contract",
+                  "type": "context",
+                  "description": "Uses Company Evidence Access through its scoped evidence contract."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "approved-technology-claims",
+                  "moduleIds": [
+                    "module-evdc-record"
+                  ],
+                  "role": "own",
+                  "description": "Authoritative logical capability record in the proposal; original company evidence retains its source authority."
+                },
+                {
+                  "assetId": "technology-value-contributions",
+                  "moduleIds": [
+                    "module-evdc-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Value Scorecard."
+                },
+                {
+                  "assetId": "technology-exit-readiness",
+                  "moduleIds": [
+                    "module-evdc-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Exit Readiness."
+                },
+                {
+                  "assetId": "technology-investment-theses",
+                  "moduleIds": [
+                    "module-evdc-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Technology Investment Thesis."
+                },
+                {
+                  "assetId": "evidence-access-grants",
+                  "moduleIds": [
+                    "module-evdc-contract"
+                  ],
+                  "role": "read",
+                  "description": "Uses the minimum relevant approved context from Company Evidence Access."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Approved buyer data room and manager investor-reporting process",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or authorized human handoff",
+                  "description": "Role-based design assumption; no deployed integration or unrestricted company data access is asserted.",
+                  "sourceModuleId": "module-evdc-exchange"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "icon": "evdc.png"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

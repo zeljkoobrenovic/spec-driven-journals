@@ -1,0 +1,145 @@
+{
+  "domainId": "venture-capital-and-private-equity",
+  "updated": "2026-09-08",
+  "description": "Role-level value exchanges. Legal fund, holding-company, manager, and portfolio-company entities remain distinct in financial records; arrows do not imply personal receipt of funds.",
+  "relationTypes": [
+    {
+      "id": "commercial",
+      "name": "Commercial",
+      "color": "#2563eb",
+      "description": "Partnership and service agreements."
+    },
+    {
+      "id": "operational",
+      "name": "Operational",
+      "color": "#059669",
+      "description": "Accountable work and support handoffs."
+    },
+    {
+      "id": "financial",
+      "name": "Financial",
+      "color": "#d97706",
+      "description": "Capital obligations and cash flows through the relevant legal entities."
+    },
+    {
+      "id": "information",
+      "name": "Information",
+      "color": "#7c3aed",
+      "description": "Permissioned evidence, decisions, and reporting."
+    }
+  ],
+  "relations": [
+    {
+      "id": "founder-context",
+      "from": "fndr",
+      "to": "invt",
+      "type": "information",
+      "name": "Explains the desired ownership transition",
+      "description": "The founder shares objectives and authorized evidence with the investment representative; evidence access does not create a financing commitment.",
+      "streamIds": [
+        "select-and-close-buyout"
+      ]
+    },
+    {
+      "id": "growth-capital-case",
+      "from": "grow",
+      "to": "invt",
+      "type": "information",
+      "name": "Presents a milestone and financing need",
+      "description": "The growth founder supplies an operating case and negotiates rights and alternatives subject to the relevant fund mandate.",
+      "streamIds": [
+        "fund-growth-milestone",
+        "manage-follow-on"
+      ]
+    },
+    {
+      "id": "fund-commitment",
+      "from": "lpin",
+      "to": "invt",
+      "type": "financial",
+      "name": "Commits to a fund represented by the manager",
+      "description": "Role-level relationship: accepted capital commitments and calls belong to the legal fund and administrator, not to an individual investment professional.",
+      "streamIds": [
+        "commit-to-fund"
+      ]
+    },
+    {
+      "id": "capital-to-company",
+      "from": "invt",
+      "to": "mgmt",
+      "type": "financial",
+      "name": "Coordinates approved company financing",
+      "description": "The manager representative coordinates capital deployed by the relevant investment vehicle; seller proceeds, company cash, debt, and reserve plans are separate.",
+      "streamIds": [
+        "select-and-close-buyout",
+        "manage-follow-on"
+      ]
+    },
+    {
+      "id": "owner-support",
+      "from": "invt",
+      "to": "mgmt",
+      "type": "operational",
+      "name": "Coordinates the active ownership partnership",
+      "description": "Investment and operating colleagues connect management to support and governance within the agreed company decision rights.",
+      "streamIds": [
+        "deliver-value-creation",
+        "acquire-and-integrate"
+      ]
+    },
+    {
+      "id": "company-evidence",
+      "from": "mgmt",
+      "to": "invt",
+      "type": "information",
+      "name": "Provides agreed company performance evidence",
+      "description": "Management supplies company-scoped reporting and material issue updates; it does not grant blanket access to all company customer data.",
+      "streamIds": [
+        "govern-and-protect-value",
+        "report-and-distribute"
+      ]
+    },
+    {
+      "id": "investor-information",
+      "from": "invt",
+      "to": "lpin",
+      "type": "information",
+      "name": "Provides reviewed fund information through responsible service teams",
+      "description": "The manager relationship is serviced by finance, administrators, and authorized portals; reports identify the vehicle and investor calculation basis.",
+      "streamIds": [
+        "report-and-distribute"
+      ]
+    },
+    {
+      "id": "cash-to-investor",
+      "from": "invt",
+      "to": "lpin",
+      "type": "financial",
+      "name": "Coordinates approved fund distributions",
+      "description": "Role-level relationship: distributions flow from the legal fund through authorized banking and administration processes, not personally from the investment professional.",
+      "streamIds": [
+        "report-and-distribute"
+      ]
+    },
+    {
+      "id": "founder-handover",
+      "from": "fndr",
+      "to": "mgmt",
+      "type": "operational",
+      "name": "Agrees continuing responsibilities or succession",
+      "description": "A founder may remain in management or leave under an agreed handover; the personas represent different decision contexts and can be the same person.",
+      "streamIds": [
+        "select-and-close-buyout",
+        "realize-and-transfer"
+      ]
+    }
+  ],
+  "media": [
+    {
+      "type": "image",
+      "src": "media/relations-overview.png",
+      "title": "How the customers of venture-capital-and-private-equity relate to each other",
+      "alt": "Illustrated relationship map of the customer roles in the venture-capital-and-private-equity domain."
+    }
+  ]
+}

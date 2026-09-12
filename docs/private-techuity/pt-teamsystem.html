@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What Does a Software Buy-and-Build Actually Build?</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">Private Techuity: Product and Engineering Leadership in Private Equity</a><span class="nav-right"><a class="nav-prev" href="pt-toys-r-us.html" title="What Happens When Reinvention Meets Financial Constraint?">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="pt-durable-value.html" title="What Would Count as Durable Success?">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VI — Durable value, success, and failure</p>
+        <h1>What Does a Software Buy-and-Build Actually Build?</h1>
+        <p class="byline">Private Techuity working manuscript  ·  2026-09-12  ·  11 min read · <a class="spec-link" href="pt-teamsystem.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">Private Techuity: Product and Engineering Leadership in Private Equity</a><span class="nav-right"><a class="nav-prev" href="pt-toys-r-us.html" title="What Happens When Reinvention Meets Financial Constraint?">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="pt-durable-value.html" title="What Would Count as Durable Success?">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "What Does a Software Buy-and-Build Actually Build?", "date": "2026-09-12", "author": "Private Techuity working manuscript", "excerpt": "Follow TeamSystem through successive owners, product and acquisition work, partial realization, and financial measures that answer different questions.", "permalink": "pt-teamsystem", "timetoread": "11 min read", "status": "draft:orange", "tags": "private equity, technology leadership, Part VI"}, "tags": ["private equity", "technology leadership", "Part VI"], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **KEY POINTS:**\n>\n> * **Successive owners face different investment problems.** A company’s development continues, while entry prices, financing and the improvements already achieved change the next owner’s task.\n> * **Growth and earnings need comparable definitions.** Acquisition timing, constructed full-year comparisons and expense adjustments can change the apparent result.\n> * **Examine what the group is accumulating.** Products and useful capability can grow alongside integration demands and financial obligations; customer and employee outcomes require separate evidence.\n\n<br>\nA software group can grow, continue developing products, report a substantial adjusted operating profit, and report a statutory loss in the same year. Understanding that combination requires several questions: what changed in the operating business, what was acquired, how the investment was financed, and which costs each measure includes.\n\nTeamSystem makes those questions concrete. This case follows selected evidence from its development as a regional Italian software company in 2000 through its 2017 reporting period. It examines successive ownership episodes, not one continuous investment by an interchangeable “private equity” owner. It is not an assessment of the company's current value or every subsequent ownership period.\n\nThe sources have different strengths. Investor accounts explain their stated ambitions and reported realizations. Company financial statements expose operating measures, investment and financing. Neither supplies a controlled experiment identifying the effect of a particular architecture or management intervention.\n\n## From a Regional Company to a Different Ownership Problem\n\nPalamon describes the business it backed in June 2000 as founder-led, with about 28,000 clients and 200 employees. Its account emphasizes national expansion, a new senior management team, and investment in research, development and IT. It describes a December 2004 sale to Bain Capital, by which time revenue was €58 million and employment exceeded 450. These are retrospective sponsor claims. The webpage's summary field gives a conflicting exit year; its narrative and Bain's later account support 2004. [S45: Palamon TeamSystem case](https://www.palamon.com/teamsystem) [S47: TeamSystem sale announcement](https://www.hgcapitaltrust.com/news-insights/news/archive/12072015)\n\nThe early setting is useful for leaders in smaller software businesses. National expansion changes more than sales coverage. A founder may no longer be able to resolve every product exception, customer dispute, recruitment decision and investment priority personally. Developing management capacity can therefore be part of product value creation: it changes the organization's ability to make and carry out decisions.\n\nThat is an interpretation of the proposed mechanism, not proof that each recruitment caused the observed growth. Headcount growth also does not establish improved employee experience. More people can represent successful expansion, acquired businesses, duplicated work, or several effects together. The record would need employee and acquisition detail to distinguish them.\n\nBy August 2010, the ownership proposition had changed. HgCapital announced an agreement to acquire a majority stake at an enterprise value of €565 million, described as 11.3 times fiscal 2010 EBITDA. The announcement emphasized business software used by accountants and smaller companies, recurring demand, and opportunities for organic growth and acquisitions. It anticipated completion in September; these were announced terms, not a closing statement. [S46: TeamSystem acquisition announcement](https://www.hgcapitaltrust.com/news-insights/news/archive/08032010)\n\n**Enterprise value** is the value assigned to the operating business before the bridge to shareholders' claims. **EBITDA** means earnings before interest, taxes, depreciation and amortization. It is an earnings measure that leaves out financing, tax and specified accounting charges; it does not show the cash remaining after all obligations. A multiple such as 11.3× expresses the price as a number of years' worth of that annual earnings measure, without promising that investors will actually receive those earnings as cash.\n\nThe distinction matters here. Software supporting customers' recurring administrative work may offer attractive repeat demand. But the seller can already charge for that attraction in the entry price. A good company does not automatically become a good investment at every price. [How Does Company Valuation Shape Technology Decisions?](pt-valuation-and-architecture.html) develops that connection between valuation assumptions and the work a company must perform.\n\n## What the Reported Interventions Could Have Changed\n\nHgCapital's March 2016 results presentation attributes several initiatives to its involvement: product strategy, pricing, financial reporting, cash collection, and the acquisition process. It links a 2013 bond refinancing to financing flexibility and reports eleven acquisitions during the ownership period. This is the sponsor's account of its contribution. [S48: HgCapital Trust 2015 results, p. 14](https://www.hgcapitaltrust.com/~/media/Files/H/Hgcapital-Trust-V2/documents/investors/financial-calendar/hgcapitaltrust-dec-2015-general.pdf)\n\nThese interventions can work through different mechanisms. Better reporting can expose a problem without solving it. Faster collection can release cash without changing a product. Pricing can increase revenue while either improving or damaging the customer relationship. Acquisitions can add capability immediately while creating integration work that continues for years.\n\nFor a Technology Principal, the useful task is to reconstruct the chain between an intervention and its intended result:\n\n| Proposed intervention | Possible business mechanism | Evidence that would test it |\n| --- | --- | --- |\n| Change the product portfolio | Concentrate investment on valuable customer work | Adoption, retention and contribution for affected customer groups; discontinued commitments |\n| Change pricing or packaging | Charge for useful value or reduce costly exceptions | Customer response, support burden, cancellations and collection, as well as booked revenue |\n| Improve billing and collection | Reduce disputed invoices and time until payment | Dispute causes and actual collection times, separated from one-off recovery of old balances |\n| Acquire another software business | Add customers, domain knowledge or functionality | Acquisition-adjusted growth, integration costs and outcomes for existing and acquired customers |\n\nThis table is the manuscript's assessment framework. It does not assert that TeamSystem measured these exact outcomes or that every initiative succeeded.\n\nThe connection to Productscapes is limited but useful. A repeated need such as acquisition assessment or billing diagnosis might justify a reusable support service. The existence of such projects does not establish that a centralized platform was necessary, that companies could freely decline help, or that the support was worth its full cost. Those remain tests for [How Can Technology Support Become a Better Product?](pt-technology-capability-as-product.html).\n\n## A Partial Exit Has a Cash Part and a Valuation Part\n\nIn December 2015, HgCapital announced an agreement to sell TeamSystem to Hellman & Friedman while retaining a minority interest. The March 2016 presentation subsequently described the transaction as completed and reported £39 million of cash proceeds to HgCapital Trust plus a retained stake valued at £6.1 million. It presented a 1.8× investment return. [S47: TeamSystem sale announcement](https://www.hgcapitaltrust.com/news-insights/news/archive/12072015) [S48: HgCapital Trust 2015 results, p. 14](https://www.hgcapitaltrust.com/~/media/Files/H/Hgcapital-Trust-V2/documents/investors/financial-calendar/hgcapitaltrust-dec-2015-general.pdf)\n\nThe £45.1 million combined figure therefore contains two different things: money received and an interest still exposed to future results. Calling all of it realized cash would remove the remaining risk from the story. Nor does the presentation reconstruct every fee, capital contribution and distribution needed to calculate a net return for an ultimate investor.\n\nPalamon reports a 4.1× return for its earlier ownership episode. [S45: Palamon TeamSystem case](https://www.palamon.com/teamsystem) These reported multiples do not rank the two owners' operating skill. They concern different entry prices, dates, ownership positions and stages of development. A fair comparison would also need complete cash flows and a consistent treatment of retained value. A sequence of owners can each help a company develop while experiencing very different investment economics.\n\nFor management, a secondary buyout creates another distinction: the company continues, but the new shareholder's investment starts at a new price. Earlier operational progress is part of the asset the buyer purchases. It cannot simply be counted again as new value creation. The incoming thesis needs its own credible future improvements and investment capacity.\n\n## Read the 2017 Accounts Through Three Different Measures\n\nTeamSystem Holding's 2017 consolidated report provides a useful financial cross-section. The amounts below are millions of euros; “total revenue” includes other operating income. Adjusted EBITDA is the company's adjusted measure, while the loss is the consolidated statutory result. [S49: TeamSystem 2017 report, PDF pp. 11, 23 and 45](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)\n\n| 2017 measure | € million | Question it helps answer |\n| --- | ---: | --- |\n| Total revenue | 315.977 | What activity was recognized in this consolidated reporting period? |\n| Adjusted EBITDA | 113.010 | What earnings result from the company's specified exclusions? |\n| Consolidated net loss | −56.788 | What result remains after the income statement's financing, tax and other charges? |\n\nThe positive adjusted measure and the statutory loss can coexist because they count different things. They should be reconciled, not used as competing slogans. A loss alone does not establish that customers received worse software. Adjusted EBITDA alone does not establish that the ownership structure leaves enough cash for reinvestment.\n\n**Comparability adds another complication.** The 2016 statutory income statement included operations from the March acquisition date, not a full comparable calendar year. Management also supplied a pro forma comparison: a constructed full-year presentation with specified acquisition assumptions. Its 2016 total revenue was €290.143 million, compared with €229.395 million in the statutory presentation. Against the pro forma base, 2017 growth was 8.9%. [S49: TeamSystem 2017 report, PDF pp. 10–11 and 23](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)\n\nSimply dividing the two statutory totals would produce about 37.7% growth. That arithmetic is correct but the comparison is unsuitable for describing a full year's operating improvement. Even the 8.9% comparison is not an isolated measure of organic growth: changes in the businesses included still matter.\n\nThe practical lesson reaches directly into engineering reporting. If a new acquisition adds both revenue and engineers, revenue per engineer may move without any change in delivery effectiveness. If a product is consolidated partway through a year, annual support costs and annual revenue may cover different intervals. The finance and technology teams need a shared definition of the business and period being compared before discussing productivity.\n\n## Investment Continues, but Its Classification Matters\n\nThe report records €13.385 million of capitalized development in 2017 and an €1.866 million IT integration and transformation adjustment in its EBITDA reconciliation. It also describes an additional €80 million secured-note issue, part of whose proceeds repaid a €20 million parent loan. These are evidence of investment, integration expenditure and financing activity, not measurements of the resulting customer benefit. [S49: TeamSystem 2017 report, PDF pp. 9, 11 and 14–15](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)\n\nCapitalizing qualifying development records it as an asset to be charged over time rather than expensing all of it immediately. The cash still has to be paid. The accounting distinction is explained in [Why Can a Profitable Company Still Run Out of Room?](pt-cash-and-constraints.html); the disclosed capitalized amount is not a measure of all research and development effort.\n\nSimilarly, an integration cost can be excluded from an adjusted earnings presentation while remaining a real requirement of the acquisition strategy. Calling an expense exceptional at one subsidiary does not establish that similar expenses will disappear across a group that keeps buying companies.\n\nThis creates a demanding question for the investment thesis: what spending is required to sustain the model itself? If growth relies on acquisitions, the plan needs capacity to evaluate, integrate and support them. If customer retention relies on continuing development, the cash model needs that investment. A comparison that removes both burdens may describe a convenient earnings subtotal while overstating the cash the strategy can release.\n\nThat concern is a question to investigate, not a finding of improper accounting. Disclosed adjustments can help readers understand results, especially after an ownership change. Their usefulness depends on keeping the reconciliation visible and choosing the right measure for each decision. Visma supplies a complementary, precisely reconciled example in [What Can Visma Teach About Repeated Software Ownership?](pt-visma.html).\n\n## What Remains Unknown About Customers and Employees\n\nThe consulted records support a history of expansion, ownership transactions, investment and financial change. They provide much less independent evidence about the people using and building the products.\n\nA customer can renew because the software is valuable, because switching is difficult, or because both are true. Revenue retention alone cannot distinguish those situations. A fuller account would examine migration effort, reliability, support responsiveness, pricing changes and the availability of credible alternatives. The importance of the customer workflow makes these questions more consequential, not less.\n\nFor employees, aggregate growth does not reveal how responsibilities, workload, professional development or bargaining power changed. An acquisition program can create opportunities while also creating duplication and uncertainty. The case needs evidence from affected teams rather than an assumption that financial growth settles the question.\n\nThese limitations prevent a verdict that every ownership episode created durable mutual benefit. They also prevent the opposite shortcut: treating leverage or a statutory loss as proof that all operating development was illusory. The company, investors and individual stakeholders require separate assessments.\n\n## How a Principal Could Use This Case\n\nUse the history to challenge an acquisition-led software thesis before it becomes a list of projects. Ask the investment team which improvements the entry price already assumes. Ask the CFO which earnings definition matters to valuation, which cash flows fund the plan, and which costs recur across successive acquisitions. Ask product and engineering leaders which customer capabilities the next acquisition adds and what existing work it displaces.\n\nThen agree on a few observations that can change the plan: customer migration failures, acquired products that do not fit, savings that remain unreleased, or an integration team whose workload exceeds capacity. A thesis that cannot be revised in response to such evidence is not being managed as a hypothesis.\n\nTeamSystem's transferable lesson is to examine what a software group is accumulating. It may accumulate useful products, domain knowledge, customers and reusable capabilities. It can also accumulate obligations, integration demands and measurement inconsistencies. The work of a Technology Principal is to make those differences visible while there is still time to act on them.\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {}, "blocks": [{"type": "markdown", "content": "TeamSystem helps explain how a software group can expand, invest in products, report positive adjusted earnings and report a statutory loss at the same time. This case examines selected evidence from 2000 through 2017; it is not a current company valuation or a verdict on every later ownership period.\n\nPalamon’s retrospective describes a regional, founder-led Italian business developing through national expansion, management recruitment and investment. Later owners entered at different prices and stages of development. These are distinct investment episodes, even though the company’s history continues. The sources do not support treating all owners as one actor with a single plan.\n\nHgCapital’s account describes work on product strategy, pricing, reporting, cash collection and acquisitions. Those activities can affect different outcomes. Product work may improve adoption; collection work can release cash; acquisitions can add capabilities while creating integration demands. The public accounts identify interventions more securely than their separate causal contributions.\n\nThe March 2016 results presentation reported a completed partial exit, including cash proceeds and a retained interest for HgCapital Trust. [S48: HgCapital Trust 2015 results, p. 14](https://www.hgcapitaltrust.com/~/media/Files/H/Hgcapital-Trust-V2/documents/investors/financial-calendar/hgcapitaltrust-dec-2015-general.pdf) A retained valuation remains exposed to future results. A headline investment multiple does not reconstruct an ultimate investor’s net cash return.\n\n**Financial comparisons need a consistent business and period.** The 2017 company report compares a full year with a constructed full-year 2016 presentation because the statutory prior period began at the acquisition date. It also distinguishes adjusted EBITDA from the statutory result. EBITDA means earnings before interest, taxes, depreciation and amortization; further adjustments exclude additional specified costs. These measures answer different questions and must be reconciled. [S49: TeamSystem 2017 consolidated report](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)\n\nDevelopment recorded as an asset still consumes cash. An integration expense excluded from an earnings measure can still be necessary to a strategy that keeps buying companies. Ask what recurring investment the operating model requires before treating adjusted earnings as money available for distribution.\n\nFor a Technology Principal, the case suggests a disciplined conversation about which improvements the entry price already assumes, what each acquisition adds, and how integration capacity will be funded and measured. Customer migration, reliability and employee experience need evidence beyond group growth. The strongest lesson concerns what the group accumulates: useful products and knowledge, but also obligations, dependencies and continuing work.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "<!-- comic-style\n{\n  \"cast\": \"MORGAN: a thoughtful Technology Principal with short dark hair and a green jacket. ALEX: a practical CTO with curly hair and blue rolled-up sleeves. SAM: a CFO with round glasses and an amber cardigan. All are fictional; none represents a person in a real case.\",\n  \"style\": \"Clean editorial explainer comic, dark ink outlines, restrained green, blue, and amber accents on warm white, generous space, readable short speech bubbles, expressive people and simple physical metaphors. No photorealism, logos, dense charts, or title text. Keep the same character appearances throughout the journal.\"\n}\n-->\n\n**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. Case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions and qualifications.\n\n<!-- comic-panel\n{\n  \"id\": \"01-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/25-teamsystem/comic-01-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 1 of an explainer comic. Morgan reads a historical TeamSystem file with successive ownership folders. Use one speech bubble with the exact words: \\\"Each owner starts somewhere different.\\\" Convey: The case follows selected evidence from 2000 through 2017, not a current valuation or one continuous investor position.\",\n  \"alt\": \"Comic panel: Morgan reads a historical TeamSystem file with successive ownership folders.\",\n  \"caption\": \"The case follows selected evidence from 2000 through 2017, not a current valuation or one continuous investor position.\"\n}\n-->\n\n**Panel 1:** The case follows selected evidence from 2000 through 2017, not a current valuation or one continuous investor position.\n\n*Scene:* Morgan reads a historical TeamSystem file with successive ownership folders.\n\n*Dialogue:* “Each owner starts somewhere different.”\n\n<!-- comic-panel\n{\n  \"id\": \"02-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/25-teamsystem/comic-02-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 2 of an explainer comic. Alex follows product, pricing and collection notes toward different customer and business questions. Use one speech bubble with the exact words: \\\"Which intervention changed which outcome?\\\" Convey: Reported projects identify possible mechanisms; they do not isolate the contribution of each change.\",\n  \"alt\": \"Comic panel: Alex follows product, pricing and collection notes toward different customer and business questions.\",\n  \"caption\": \"Reported projects identify possible mechanisms; they do not isolate the contribution of each change.\"\n}\n-->\n\n**Panel 2:** Reported projects identify possible mechanisms; they do not isolate the contribution of each change.\n\n*Scene:* Alex follows product, pricing and collection notes toward different customer and business questions.\n\n*Dialogue:* “Which intervention changed which outcome?”\n\n<!-- comic-panel\n{\n  \"id\": \"03-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/25-teamsystem/comic-03-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 3 of an explainer comic. Sam separates received cash from a retained ownership certificate. Use one speech bubble with the exact words: \\\"This part remains invested.\\\" Convey: A partial exit combines realized cash and continuing exposure. A retained valuation is not a cash distribution.\",\n  \"alt\": \"Comic panel: Sam separates received cash from a retained ownership certificate.\",\n  \"caption\": \"A partial exit combines realized cash and continuing exposure. A retained valuation is not a cash distribution.\"\n}\n-->\n\n**Panel 3:** A partial exit combines realized cash and continuing exposure. A retained valuation is not a cash distribution.\n\n*Scene:* Sam separates received cash from a retained ownership certificate.\n\n*Dialogue:* “This part remains invested.”\n\n<!-- comic-panel\n{\n  \"id\": \"04-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/25-teamsystem/comic-04-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 4 of an explainer comic. Sam aligns a short accounting calendar with a constructed full-year comparison. Use one speech bubble with the exact words: \\\"Are these periods comparable?\\\" Convey: Acquisition timing and the businesses included can change apparent growth without establishing an operating improvement.\",\n  \"alt\": \"Comic panel: Sam aligns a short accounting calendar with a constructed full-year comparison.\",\n  \"caption\": \"Acquisition timing and the businesses included can change apparent growth without establishing an operating improvement.\"\n}\n-->\n\n**Panel 4:** Acquisition timing and the businesses included can change apparent growth without establishing an operating improvement.\n\n*Scene:* Sam aligns a short accounting calendar with a constructed full-year comparison.\n\n*Dialogue:* “Are these periods comparable?”\n\n<!-- comic-panel\n{\n  \"id\": \"05-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/25-teamsystem/comic-05-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 5 of an explainer comic. Alex carries development and integration work past an adjusted earnings board. Use one speech bubble with the exact words: \\\"The work still needs funding.\\\" Convey: Removing a cost from an earnings measure does not remove it from a continuing investment strategy.\",\n  \"alt\": \"Comic panel: Alex carries development and integration work past an adjusted earnings board.\",\n  \"caption\": \"Removing a cost from an earnings measure does not remove it from a continuing investment strategy.\"\n}\n-->\n\n**Panel 5:** Removing a cost from an earnings measure does not remove it from a continuing investment strategy.\n\n*Scene:* Alex carries development and integration work past an adjusted earnings board.\n\n*Dialogue:* “The work still needs funding.”\n\n<!-- comic-panel\n{\n  \"id\": \"06-scene\",\n  \"status\": \"pending\",\n  \"asset\": \"assets/images/25-teamsystem/comic-06-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 6 of an explainer comic. The team adds customer and employee records to an incomplete case file. Use one speech bubble with the exact words: \\\"What capability will remain?\\\" Convey: Assess products, knowledge and financial obligations together; independent stakeholder and causal evidence remains incomplete.\",\n  \"alt\": \"Comic panel: The team adds customer and employee records to an incomplete case file.\",\n  \"caption\": \"Assess products, knowledge and financial obligations together; independent stakeholder and causal evidence remains incomplete.\"\n}\n-->\n\n**Panel 6:** Assess products, knowledge and financial obligations together; independent stakeholder and causal evidence remains incomplete.\n\n*Scene:* The team adds customer and employee records to an incomplete case file.\n\n*Dialogue:* “What capability will remain?”\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

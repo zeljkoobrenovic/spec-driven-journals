@@ -1,0 +1,164 @@
+{
+  "domainId": "pe-tech-capability",
+  "relationTypes": [
+    {
+      "id": "operational",
+      "name": "Operational",
+      "description": "Directed handoffs and support requests."
+    },
+    {
+      "id": "information",
+      "name": "Information",
+      "description": "Scoped decision and outcome evidence."
+    },
+    {
+      "id": "financial",
+      "name": "Financial",
+      "description": "Investment requests and approved funding conditions; no transfer of cash is modeled."
+    }
+  ],
+  "relations": [
+    {
+      "id": "invp-deal-operational",
+      "from": "invp",
+      "to": "deal",
+      "type": "operational",
+      "name": "Scope the technology case",
+      "description": "The partner supplies thesis assumptions and decision priorities.",
+      "streamIds": [
+        "discover-thesis",
+        "diagnose-technology"
+      ]
+    },
+    {
+      "id": "deal-icmt-information",
+      "from": "deal",
+      "to": "icmt",
+      "type": "information",
+      "name": "Present technology recommendation",
+      "description": "The team supplies the concise thesis, evidence, and open conditions.",
+      "streamIds": [
+        "decide-investment"
+      ]
+    },
+    {
+      "id": "icmt-ceoo-financial",
+      "from": "icmt",
+      "to": "ceoo",
+      "type": "financial",
+      "name": "Communicate approved technology conditions",
+      "description": "Investment conditions inform company funding and ownership priorities; company budgets retain their own approvals.",
+      "streamIds": [
+        "align-first-100-days"
+      ]
+    },
+    {
+      "id": "deal-ctpo-operational",
+      "from": "deal",
+      "to": "ctpo",
+      "type": "operational",
+      "name": "Accept the diligence handoff",
+      "description": "The CTO receives finding context and accepts company-owned next decisions.",
+      "streamIds": [
+        "align-first-100-days"
+      ]
+    },
+    {
+      "id": "ceoo-ctpo-operational",
+      "from": "ceoo",
+      "to": "ctpo",
+      "type": "operational",
+      "name": "Agree company technology outcomes",
+      "description": "CEO and CTO align priorities, capacity, investment, and outcome tests.",
+      "streamIds": [
+        "align-first-100-days",
+        "partner-with-cto"
+      ]
+    },
+    {
+      "id": "ctpo-ceoo-information",
+      "from": "ctpo",
+      "to": "ceoo",
+      "type": "information",
+      "name": "Report company progress",
+      "description": "The CTO reports agreed outcomes and asks for decisions while keeping coaching notes private.",
+      "streamIds": [
+        "review-value-creation"
+      ]
+    },
+    {
+      "id": "ceoo-brdd-information",
+      "from": "ceoo",
+      "to": "brdd",
+      "type": "information",
+      "name": "Review technology value and exposure",
+      "description": "Management provides company outcome evidence and material exceptions.",
+      "streamIds": [
+        "review-value-creation"
+      ]
+    },
+    {
+      "id": "brdd-ceoo-operational",
+      "from": "brdd",
+      "to": "ceoo",
+      "type": "operational",
+      "name": "Return oversight decisions",
+      "description": "The board gives decisions and follow-up conditions without taking over execution.",
+      "streamIds": [
+        "review-value-creation"
+      ]
+    },
+    {
+      "id": "ctpo-extt-information",
+      "from": "ctpo",
+      "to": "extt",
+      "type": "information",
+      "name": "Provide approved technology evidence",
+      "description": "The CTO supplies reviewed company readiness evidence through authorized disclosure.",
+      "streamIds": [
+        "prepare-technology-exit"
+      ]
+    },
+    {
+      "id": "extt-invp-information",
+      "from": "extt",
+      "to": "invp",
+      "type": "information",
+      "name": "Explain the technology exit story",
+      "description": "The exit team shares substantiated claims and unresolved buyer concerns.",
+      "streamIds": [
+        "prepare-technology-exit"
+      ]
+    },
+    {
+      "id": "invp-lpin-information",
+      "from": "invp",
+      "to": "lpin",
+      "type": "information",
+      "name": "Share approved operating capability evidence",
+      "description": "The manager shares qualified, permissioned operating evidence through its investor-reporting process.",
+      "streamIds": [
+        "demonstrate-operating-capability"
+      ]
+    },
+    {
+      "id": "lpin-invp-information",
+      "from": "lpin",
+      "to": "invp",
+      "type": "information",
+      "name": "Request capability evidence",
+      "description": "Allocator questions inform an approved response; they do not grant access to raw company or coaching data.",
+      "streamIds": [
+        "demonstrate-operating-capability"
+      ]
+    }
+  ],
+  "media": [
+    {
+      "type": "image",
+      "src": "media/relations-overview.png",
+      "title": "How the customers of pe-tech-capability relate to each other",
+      "alt": "Illustrated relationship map of the customer roles in the pe-tech-capability domain."
+    }
+  ]
+}

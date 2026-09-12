@@ -1,0 +1,3500 @@
+{
+  "metadata": {
+    "domainId": "venture-capital-and-private-equity",
+    "title": "Investment Partnership Capabilities",
+    "description": "Proposed business-support architecture, not a discovered Vortex software inventory. Bricks are logical capabilities deliverable through configured tools, provider services, and accountable human workflows. Invest status denotes model priority.",
+    "modelVersion": "1.0"
+  },
+  "rootGroups": [
+    {
+      "name": "Investment Lifecycle",
+      "subGroups": [
+        {
+          "name": "Relationships and qualification",
+          "bricks": [
+            {
+              "id": "orig",
+              "name": "Founder Relationships and Origination",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Manage permissioned founder and advisor relationships, introductions, source context, and stage-specific next decisions.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-orig-view",
+                      "name": "Relationship and introduction board",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Manage permissioned founder and advisor relationships, introductions, source context, and stage-specific next decisions.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-orig-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-orig-api",
+                      "name": "Founder Relationships and Origination Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-orig-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-orig-state",
+                      "name": "Founder Relationships and Origination Record",
+                      "type": "stateful-service",
+                      "description": "Maintains origination pipeline with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-orig-adapter",
+                      "name": "Founder Relationships and Origination Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Deal CRM and authorized referral channels. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-orig-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [],
+              "dataDependencies": [
+                {
+                  "assetId": "origination-pipeline",
+                  "moduleIds": [
+                    "module-orig-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Deal CRM and authorized referral channels",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-orig-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "About Vortex",
+                      "link": "https://vortexcp.com/about-us/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "fitf",
+              "name": "Mandate and Opportunity Fit",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Assess an opportunity against the selected vehicle, strategy, geography, business maturity, and ownership mandate; retain reasons to decline.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-fitf-view",
+                      "name": "Mandate and fit review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Assess an opportunity against the selected vehicle, strategy, geography, business maturity, and ownership mandate; retain reasons to decline.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-fitf-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-fitf-api",
+                      "name": "Mandate and Opportunity Fit Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-fitf-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "stateless-service",
+                  "modules": [
+                    {
+                      "id": "module-fitf-analysis",
+                      "name": "Mandate and Opportunity Fit Analysis",
+                      "type": "stateless-service",
+                      "description": "Compare opportunity attributes with versioned mandate rules without making an investment decision.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-fitf-api",
+                            "type": "uses",
+                            "description": "Consumes an authorized input snapshot; owns no durable state."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-fitf-state",
+                      "name": "Mandate and Opportunity Fit Record",
+                      "type": "stateful-service",
+                      "description": "Maintains fund mandates with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "orig",
+                  "moduleId": "module-orig-api",
+                  "sourceModuleId": "module-fitf-state",
+                  "type": "context",
+                  "description": "Mandate and Opportunity Fit uses reviewed founder relationships and origination evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "fund-mandates",
+                  "moduleIds": [
+                    "module-fitf-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "origination-pipeline",
+                  "moduleIds": [
+                    "module-fitf-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed founder relationships and origination record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Sustainability and fund-specific disclosures",
+                      "link": "https://vortexcp.com/sustainability/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Evidence and decisions",
+          "bricks": [
+            {
+              "id": "room",
+              "name": "Diligence Evidence Exchange",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Exchange permissioned diligence and exit evidence with document versions, provenance, access expiry, and reviewer questions.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-room-view",
+                      "name": "Evidence index and question workspace",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Exchange permissioned diligence and exit evidence with document versions, provenance, access expiry, and reviewer questions.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-room-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-room-api",
+                      "name": "Diligence Evidence Exchange Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-room-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-room-worker",
+                      "name": "Diligence Evidence Exchange Review Worker",
+                      "type": "message-consumer",
+                      "description": "Track evidence requests and expiry without treating a reminder as completion.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-room-state",
+                            "type": "uses",
+                            "description": "Records processing results and exceptions for human review."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-room-state",
+                      "name": "Diligence Evidence Exchange Record",
+                      "type": "stateful-service",
+                      "description": "Maintains diligence evidence with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-room-adapter",
+                      "name": "Diligence Evidence Exchange Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Virtual data rooms and advisor document exchanges. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-room-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "iamx",
+                  "moduleId": "module-iamx-api",
+                  "sourceModuleId": "module-room-state",
+                  "type": "context",
+                  "description": "Diligence Evidence Exchange uses reviewed access boundaries and audit evidence evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "diligence-evidence",
+                  "moduleIds": [
+                    "module-room-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "access-audit-records",
+                  "moduleIds": [
+                    "module-room-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed access boundaries and audit evidence record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Virtual data rooms and advisor document exchanges",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-room-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Vortex partners with 1TIS and TravelSpirit to accelerate growth",
+                      "link": "https://vortexcp.com/news/travel-software/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "ddil",
+              "name": "Investment Diligence Cases",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Record financial, commercial, legal, technical, and sustainability workstream findings; separate evidence from management assumptions and unresolved risks.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-ddil-view",
+                      "name": "Diligence case review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Record financial, commercial, legal, technical, and sustainability workstream findings; separate evidence from management assumptions and unresolved risks.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-ddil-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-ddil-api",
+                      "name": "Investment Diligence Cases Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-ddil-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-ddil-state",
+                      "name": "Investment Diligence Cases Record",
+                      "type": "stateful-service",
+                      "description": "Maintains diligence cases with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-ddil-adapter",
+                      "name": "Investment Diligence Cases Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Authorized legal, financial, and commercial diligence providers. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-ddil-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "room",
+                  "moduleId": "module-room-api",
+                  "sourceModuleId": "module-ddil-state",
+                  "type": "context",
+                  "description": "Investment Diligence Cases uses reviewed diligence evidence exchange evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "tech",
+                  "moduleId": "module-tech-api",
+                  "sourceModuleId": "module-ddil-state",
+                  "type": "context",
+                  "description": "Investment Diligence Cases uses reviewed technology and ai value review evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "esgg",
+                  "moduleId": "module-esgg-api",
+                  "sourceModuleId": "module-ddil-state",
+                  "type": "context",
+                  "description": "Investment Diligence Cases uses reviewed fund-specific sustainability stewardship evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "diligence-cases",
+                  "moduleIds": [
+                    "module-ddil-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "diligence-evidence",
+                  "moduleIds": [
+                    "module-ddil-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed diligence evidence exchange record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "technology-assessments",
+                  "moduleIds": [
+                    "module-ddil-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed technology and ai value review record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "sustainability-indicators",
+                  "moduleIds": [
+                    "module-ddil-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed fund-specific sustainability stewardship record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Authorized legal, financial, and commercial diligence providers",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-ddil-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Sustainability and fund-specific disclosures",
+                      "link": "https://vortexcp.com/sustainability/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "icmt",
+              "name": "Investment Decisions and Conflicts",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Preserve authorized investment decisions, dissent, conflicts, fund allocation, conditions, and reapproval after material changes.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-icmt-view",
+                      "name": "Committee decision and condition register",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Preserve authorized investment decisions, dissent, conflicts, fund allocation, conditions, and reapproval after material changes.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-icmt-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-icmt-api",
+                      "name": "Investment Decisions and Conflicts Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-icmt-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-icmt-state",
+                      "name": "Investment Decisions and Conflicts Record",
+                      "type": "stateful-service",
+                      "description": "Maintains investment decisions with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "fitf",
+                  "moduleId": "module-fitf-api",
+                  "sourceModuleId": "module-icmt-state",
+                  "type": "context",
+                  "description": "Investment Decisions and Conflicts uses reviewed mandate and opportunity fit evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "ddil",
+                  "moduleId": "module-ddil-api",
+                  "sourceModuleId": "module-icmt-state",
+                  "type": "context",
+                  "description": "Investment Decisions and Conflicts uses reviewed investment diligence cases evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "term",
+                  "moduleId": "module-term-api",
+                  "sourceModuleId": "module-icmt-state",
+                  "type": "context",
+                  "description": "Investment Decisions and Conflicts uses reviewed capital structure and terms evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "capt",
+                  "moduleId": "module-capt-api",
+                  "sourceModuleId": "module-icmt-state",
+                  "type": "context",
+                  "description": "Investment Decisions and Conflicts uses reviewed ownership and follow-on reserves evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "investment-decisions",
+                  "moduleIds": [
+                    "module-icmt-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "fund-mandates",
+                  "moduleIds": [
+                    "module-icmt-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed mandate and opportunity fit record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "diligence-cases",
+                  "moduleIds": [
+                    "module-icmt-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed investment diligence cases record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "transaction-terms",
+                  "moduleIds": [
+                    "module-icmt-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed capital structure and terms record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "ownership-reserves",
+                  "moduleIds": [
+                    "module-icmt-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed ownership and follow-on reserves record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Sustainability and fund-specific disclosures",
+                      "link": "https://vortexcp.com/sustainability/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Capital and execution",
+          "bricks": [
+            {
+              "id": "term",
+              "name": "Capital Structure and Terms",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Version financing scenarios that separate company cash, seller proceeds, leverage, dilution, investor rights, and downside choices.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-term-view",
+                      "name": "Capital and terms scenario review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Version financing scenarios that separate company cash, seller proceeds, leverage, dilution, investor rights, and downside choices.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-term-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-term-api",
+                      "name": "Capital Structure and Terms Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-term-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "stateless-service",
+                  "modules": [
+                    {
+                      "id": "module-term-analysis",
+                      "name": "Capital Structure and Terms Analysis",
+                      "type": "stateless-service",
+                      "description": "Calculate scenario cash needs and ownership effects from explicit instruments and assumptions; human reviewers approve the interpretation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-term-api",
+                            "type": "uses",
+                            "description": "Consumes an authorized input snapshot; owns no durable state."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-term-state",
+                      "name": "Capital Structure and Terms Record",
+                      "type": "stateful-service",
+                      "description": "Maintains transaction terms with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-term-adapter",
+                      "name": "Capital Structure and Terms Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Company capitalization records and lender/advisor models. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-term-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "capt",
+                  "moduleId": "module-capt-api",
+                  "sourceModuleId": "module-term-state",
+                  "type": "context",
+                  "description": "Capital Structure and Terms uses reviewed ownership and follow-on reserves evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "transaction-terms",
+                  "moduleIds": [
+                    "module-term-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "ownership-reserves",
+                  "moduleIds": [
+                    "module-term-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed ownership and follow-on reserves record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Company capitalization records and lender/advisor models",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-term-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "About Vortex",
+                      "link": "https://vortexcp.com/about-us/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "clos",
+              "name": "Transaction Closing Coordination",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Coordinate signed conditions, legal entity identifiers, authorization, funding confirmation, and management handover; preserve failed or deferred closing states.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-clos-view",
+                      "name": "Closing conditions and settlement checklist",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Coordinate signed conditions, legal entity identifiers, authorization, funding confirmation, and management handover; preserve failed or deferred closing states.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-clos-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-clos-api",
+                      "name": "Transaction Closing Coordination Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-clos-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-clos-worker",
+                      "name": "Transaction Closing Coordination Review Worker",
+                      "type": "message-consumer",
+                      "description": "Check due conditions and collect confirmation references; never initiate an autonomous money transfer.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-clos-state",
+                            "type": "uses",
+                            "description": "Records processing results and exceptions for human review."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-clos-state",
+                      "name": "Transaction Closing Coordination Record",
+                      "type": "stateful-service",
+                      "description": "Maintains closing records with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-clos-adapter",
+                      "name": "Transaction Closing Coordination Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Transaction counsel, notaries where applicable, signing services, and authorized settlement parties. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-clos-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "icmt",
+                  "moduleId": "module-icmt-api",
+                  "sourceModuleId": "module-clos-state",
+                  "type": "context",
+                  "description": "Transaction Closing Coordination uses reviewed investment decisions and conflicts evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "term",
+                  "moduleId": "module-term-api",
+                  "sourceModuleId": "module-clos-state",
+                  "type": "context",
+                  "description": "Transaction Closing Coordination uses reviewed capital structure and terms evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "cash",
+                  "moduleId": "module-cash-api",
+                  "sourceModuleId": "module-clos-state",
+                  "type": "context",
+                  "description": "Transaction Closing Coordination uses reviewed fund cash and distribution control evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "iamx",
+                  "moduleId": "module-iamx-api",
+                  "sourceModuleId": "module-clos-state",
+                  "type": "context",
+                  "description": "Transaction Closing Coordination uses reviewed access boundaries and audit evidence evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "closing-records",
+                  "moduleIds": [
+                    "module-clos-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "investment-decisions",
+                  "moduleIds": [
+                    "module-clos-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed investment decisions and conflicts record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "transaction-terms",
+                  "moduleIds": [
+                    "module-clos-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed capital structure and terms record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "fund-cash-ledger",
+                  "moduleIds": [
+                    "module-clos-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed fund cash and distribution control record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "access-audit-records",
+                  "moduleIds": [
+                    "module-clos-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed access boundaries and audit evidence record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Transaction counsel, notaries where applicable, signing services, and authorized settlement parties",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-clos-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Vortex partners with 1TIS and TravelSpirit to accelerate growth",
+                      "link": "https://vortexcp.com/news/travel-software/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "capt",
+              "name": "Ownership and Follow-on Reserves",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Maintain a reconciled view of stakes, instrument rights, fund allocations, and conditional follow-on reserves without replacing authoritative legal registers.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-capt-view",
+                      "name": "Ownership and reserve register",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Maintain a reconciled view of stakes, instrument rights, fund allocations, and conditional follow-on reserves without replacing authoritative legal registers.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-capt-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-capt-api",
+                      "name": "Ownership and Follow-on Reserves Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-capt-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-capt-state",
+                      "name": "Ownership and Follow-on Reserves Record",
+                      "type": "stateful-service",
+                      "description": "Maintains ownership reserves with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-capt-adapter",
+                      "name": "Ownership and Follow-on Reserves Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Company share registers and fund-administrator ownership records. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-capt-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [],
+              "dataDependencies": [
+                {
+                  "assetId": "ownership-reserves",
+                  "moduleIds": [
+                    "module-capt-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Company share registers and fund-administrator ownership records",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-capt-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Vortex investment portfolio",
+                      "link": "https://vortexcp.com/investments/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Realization",
+          "bricks": [
+            {
+              "id": "exit",
+              "name": "Exit Readiness and Buyer Process",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Manage readiness, buyer fit, sale-versus-hold cases, controlled disclosure, deferred proceeds, and lessons from the realized outcome.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-exit-view",
+                      "name": "Exit readiness and buyer review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Manage readiness, buyer fit, sale-versus-hold cases, controlled disclosure, deferred proceeds, and lessons from the realized outcome.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-exit-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-exit-api",
+                      "name": "Exit Readiness and Buyer Process Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-exit-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-exit-state",
+                      "name": "Exit Readiness and Buyer Process Record",
+                      "type": "stateful-service",
+                      "description": "Maintains exit cases with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-exit-adapter",
+                      "name": "Exit Readiness and Buyer Process Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Exit advisors and authorized buyer diligence systems. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-exit-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "perf",
+                  "moduleId": "module-perf-api",
+                  "sourceModuleId": "module-exit-state",
+                  "type": "context",
+                  "description": "Exit Readiness and Buyer Process uses reviewed portfolio performance evidence evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "valu",
+                  "moduleId": "module-valu-api",
+                  "sourceModuleId": "module-exit-state",
+                  "type": "context",
+                  "description": "Exit Readiness and Buyer Process uses reviewed valuation review and attribution evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "capt",
+                  "moduleId": "module-capt-api",
+                  "sourceModuleId": "module-exit-state",
+                  "type": "context",
+                  "description": "Exit Readiness and Buyer Process uses reviewed ownership and follow-on reserves evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "room",
+                  "moduleId": "module-room-api",
+                  "sourceModuleId": "module-exit-state",
+                  "type": "context",
+                  "description": "Exit Readiness and Buyer Process uses reviewed diligence evidence exchange evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "exit-cases",
+                  "moduleIds": [
+                    "module-exit-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "portfolio-performance",
+                  "moduleIds": [
+                    "module-exit-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed portfolio performance evidence record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "valuation-records",
+                  "moduleIds": [
+                    "module-exit-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed valuation review and attribution record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "ownership-reserves",
+                  "moduleIds": [
+                    "module-exit-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed ownership and follow-on reserves record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "diligence-evidence",
+                  "moduleIds": [
+                    "module-exit-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed diligence evidence exchange record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Exit advisors and authorized buyer diligence systems",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-exit-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Peasy — realized investment case",
+                      "link": "https://vortexcp.com/investment/peasy/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Portfolio Value Creation",
+      "subGroups": [
+        {
+          "name": "Strategy and commercial progress",
+          "bricks": [
+            {
+              "id": "plan",
+              "name": "Value Creation Planning",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Agree a limited set of company-specific outcomes, baselines, owners, resources, milestones, and stop/continue decisions with management.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-plan-view",
+                      "name": "Company value-plan workspace",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Agree a limited set of company-specific outcomes, baselines, owners, resources, milestones, and stop/continue decisions with management.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-plan-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-plan-api",
+                      "name": "Value Creation Planning Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-plan-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-plan-state",
+                      "name": "Value Creation Planning Record",
+                      "type": "stateful-service",
+                      "description": "Maintains value creation plans with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "perf",
+                  "moduleId": "module-perf-api",
+                  "sourceModuleId": "module-plan-state",
+                  "type": "context",
+                  "description": "Value Creation Planning uses reviewed portfolio performance evidence evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "govn",
+                  "moduleId": "module-govn-api",
+                  "sourceModuleId": "module-plan-state",
+                  "type": "context",
+                  "description": "Value Creation Planning uses reviewed board governance and action tracking evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "value-creation-plans",
+                  "moduleIds": [
+                    "module-plan-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "portfolio-performance",
+                  "moduleIds": [
+                    "module-plan-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed portfolio performance evidence record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "governance-decisions",
+                  "moduleIds": [
+                    "module-plan-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed board governance and action tracking record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "About Vortex",
+                      "link": "https://vortexcp.com/about-us/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "gtmx",
+              "name": "Commercial Acceleration",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Coordinate pricing, positioning, sales, marketing, and market-entry interventions with explicit costs, cohort definitions, and customer guardrails.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-gtmx-view",
+                      "name": "Commercial intervention review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Coordinate pricing, positioning, sales, marketing, and market-entry interventions with explicit costs, cohort definitions, and customer guardrails.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-gtmx-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-gtmx-api",
+                      "name": "Commercial Acceleration Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-gtmx-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-gtmx-state",
+                      "name": "Commercial Acceleration Record",
+                      "type": "stateful-service",
+                      "description": "Maintains commercial experiments with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-gtmx-adapter",
+                      "name": "Commercial Acceleration Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Portfolio-company CRM, billing, and marketing exports shared by agreement. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-gtmx-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "plan",
+                  "moduleId": "module-plan-api",
+                  "sourceModuleId": "module-gtmx-state",
+                  "type": "context",
+                  "description": "Commercial Acceleration uses reviewed value creation planning evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "perf",
+                  "moduleId": "module-perf-api",
+                  "sourceModuleId": "module-gtmx-state",
+                  "type": "context",
+                  "description": "Commercial Acceleration uses reviewed portfolio performance evidence evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "commercial-experiments",
+                  "moduleIds": [
+                    "module-gtmx-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "value-creation-plans",
+                  "moduleIds": [
+                    "module-gtmx-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed value creation planning record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "portfolio-performance",
+                  "moduleIds": [
+                    "module-gtmx-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed portfolio performance evidence record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Portfolio-company CRM, billing, and marketing exports shared by agreement",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-gtmx-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Vortex Capital Partners — homepage",
+                      "link": "https://vortexcp.com/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Leadership and combinations",
+          "bricks": [
+            {
+              "id": "lead",
+              "name": "Leadership and Expert Network",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Match leadership gaps and specialist needs to qualified experts, track introductions, and share approved peer learning without pooling sensitive company data.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-lead-view",
+                      "name": "Leadership and expert request board",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Match leadership gaps and specialist needs to qualified experts, track introductions, and share approved peer learning without pooling sensitive company data.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-lead-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-lead-api",
+                      "name": "Leadership and Expert Network Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-lead-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-lead-state",
+                      "name": "Leadership and Expert Network Record",
+                      "type": "stateful-service",
+                      "description": "Maintains leadership network with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-lead-adapter",
+                      "name": "Leadership and Expert Network Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Executive-search providers and consented specialist networks. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-lead-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "plan",
+                  "moduleId": "module-plan-api",
+                  "sourceModuleId": "module-lead-state",
+                  "type": "context",
+                  "description": "Leadership and Expert Network uses reviewed value creation planning evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "iamx",
+                  "moduleId": "module-iamx-api",
+                  "sourceModuleId": "module-lead-state",
+                  "type": "context",
+                  "description": "Leadership and Expert Network uses reviewed access boundaries and audit evidence evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "leadership-network",
+                  "moduleIds": [
+                    "module-lead-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "value-creation-plans",
+                  "moduleIds": [
+                    "module-lead-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed value creation planning record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "access-audit-records",
+                  "moduleIds": [
+                    "module-lead-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed access boundaries and audit evidence record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Executive-search providers and consented specialist networks",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-lead-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "CEO-day 2026",
+                      "link": "https://vortexcp.com/news/ceo-day-2026/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "addo",
+              "name": "Add-on Acquisition Development",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Develop add-on targets against a portfolio-company thesis and integration capacity, distinguishing platform investments from add-on opportunities.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-addo-view",
+                      "name": "Add-on thesis and target pipeline",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Develop add-on targets against a portfolio-company thesis and integration capacity, distinguishing platform investments from add-on opportunities.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-addo-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-addo-api",
+                      "name": "Add-on Acquisition Development Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-addo-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-addo-state",
+                      "name": "Add-on Acquisition Development Record",
+                      "type": "stateful-service",
+                      "description": "Maintains acquisition pipeline with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-addo-adapter",
+                      "name": "Add-on Acquisition Development Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Authorized M&A advisors and company-provided target research. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-addo-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "orig",
+                  "moduleId": "module-orig-api",
+                  "sourceModuleId": "module-addo-state",
+                  "type": "context",
+                  "description": "Add-on Acquisition Development uses reviewed founder relationships and origination evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "plan",
+                  "moduleId": "module-plan-api",
+                  "sourceModuleId": "module-addo-state",
+                  "type": "context",
+                  "description": "Add-on Acquisition Development uses reviewed value creation planning evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "capt",
+                  "moduleId": "module-capt-api",
+                  "sourceModuleId": "module-addo-state",
+                  "type": "context",
+                  "description": "Add-on Acquisition Development uses reviewed ownership and follow-on reserves evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "acquisition-pipeline",
+                  "moduleIds": [
+                    "module-addo-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "origination-pipeline",
+                  "moduleIds": [
+                    "module-addo-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed founder relationships and origination record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "value-creation-plans",
+                  "moduleIds": [
+                    "module-addo-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed value creation planning record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "ownership-reserves",
+                  "moduleIds": [
+                    "module-addo-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed ownership and follow-on reserves record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Authorized M&A advisors and company-provided target research",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-addo-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Vortex partners with 1TIS and TravelSpirit to accelerate growth",
+                      "link": "https://vortexcp.com/news/travel-software/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "inte",
+              "name": "Acquisition Integration",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Coordinate day-one continuity, decision rights, product and system dependencies, and verified acquisition benefits under company management.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-inte-view",
+                      "name": "Integration dependency and benefits board",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Coordinate day-one continuity, decision rights, product and system dependencies, and verified acquisition benefits under company management.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-inte-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-inte-api",
+                      "name": "Acquisition Integration Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-inte-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-inte-worker",
+                      "name": "Acquisition Integration Review Worker",
+                      "type": "message-consumer",
+                      "description": "Track due integration dependencies and unresolved service risks.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-inte-state",
+                            "type": "uses",
+                            "description": "Records processing results and exceptions for human review."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-inte-state",
+                      "name": "Acquisition Integration Record",
+                      "type": "stateful-service",
+                      "description": "Maintains integration plans with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-inte-adapter",
+                      "name": "Acquisition Integration Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Portfolio-company project, service, and finance systems. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-inte-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "clos",
+                  "moduleId": "module-clos-api",
+                  "sourceModuleId": "module-inte-state",
+                  "type": "context",
+                  "description": "Acquisition Integration uses reviewed transaction closing coordination evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "plan",
+                  "moduleId": "module-plan-api",
+                  "sourceModuleId": "module-inte-state",
+                  "type": "context",
+                  "description": "Acquisition Integration uses reviewed value creation planning evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "tech",
+                  "moduleId": "module-tech-api",
+                  "sourceModuleId": "module-inte-state",
+                  "type": "context",
+                  "description": "Acquisition Integration uses reviewed technology and ai value review evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "perf",
+                  "moduleId": "module-perf-api",
+                  "sourceModuleId": "module-inte-state",
+                  "type": "context",
+                  "description": "Acquisition Integration uses reviewed portfolio performance evidence evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "integration-plans",
+                  "moduleIds": [
+                    "module-inte-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "closing-records",
+                  "moduleIds": [
+                    "module-inte-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed transaction closing coordination record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "value-creation-plans",
+                  "moduleIds": [
+                    "module-inte-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed value creation planning record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "technology-assessments",
+                  "moduleIds": [
+                    "module-inte-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed technology and ai value review record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "portfolio-performance",
+                  "moduleIds": [
+                    "module-inte-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed portfolio performance evidence record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Portfolio-company project, service, and finance systems",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-inte-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Peasy — realized investment case",
+                      "link": "https://vortexcp.com/investment/peasy/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Technology and Stewardship",
+      "subGroups": [
+        {
+          "name": "Technology and information boundaries",
+          "bricks": [
+            {
+              "id": "tech",
+              "name": "Technology and AI Value Review",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Assess product and architecture constraints, technology cost, cybersecurity exposure, and AI opportunities against the business thesis; specialists propose evidence-backed interventions.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-tech-view",
+                      "name": "Technology assessment and roadmap review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Assess product and architecture constraints, technology cost, cybersecurity exposure, and AI opportunities against the business thesis; specialists propose evidence-backed interventions.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-tech-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-tech-api",
+                      "name": "Technology and AI Value Review Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-tech-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-tech-state",
+                      "name": "Technology and AI Value Review Record",
+                      "type": "stateful-service",
+                      "description": "Maintains technology assessments with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-tech-adapter",
+                      "name": "Technology and AI Value Review Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Authorized technical diligence and portfolio-company engineering evidence. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-tech-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [],
+              "dataDependencies": [
+                {
+                  "assetId": "technology-assessments",
+                  "moduleIds": [
+                    "module-tech-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Authorized technical diligence and portfolio-company engineering evidence",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-tech-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "CEO-day 2026",
+                      "link": "https://vortexcp.com/news/ceo-day-2026/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "iamx",
+              "name": "Access Boundaries and Audit Evidence",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Maintain company/fund access boundaries, role approvals, expiry, exportability, and auditable evidence of who accessed or changed sensitive records.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-iamx-view",
+                      "name": "Access review and audit console",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Maintain company/fund access boundaries, role approvals, expiry, exportability, and auditable evidence of who accessed or changed sensitive records.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-iamx-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-iamx-api",
+                      "name": "Access Boundaries and Audit Evidence Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-iamx-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-iamx-worker",
+                      "name": "Access Boundaries and Audit Evidence Review Worker",
+                      "type": "message-consumer",
+                      "description": "Review expired grants and surface anomalous access for an accountable operator.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-iamx-state",
+                            "type": "uses",
+                            "description": "Records processing results and exceptions for human review."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-iamx-state",
+                      "name": "Access Boundaries and Audit Evidence Record",
+                      "type": "stateful-service",
+                      "description": "Maintains access audit records with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-iamx-adapter",
+                      "name": "Access Boundaries and Audit Evidence Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Enterprise identity providers and contracted workspace audit exports. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-iamx-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [],
+              "dataDependencies": [
+                {
+                  "assetId": "access-audit-records",
+                  "moduleIds": [
+                    "module-iamx-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Enterprise identity providers and contracted workspace audit exports",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-iamx-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": []
+            }
+          ]
+        },
+        {
+          "name": "Governance and sustainability",
+          "bricks": [
+            {
+              "id": "govn",
+              "name": "Board Governance and Action Tracking",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Record company board actions, reserved matters, authority boundaries, escalations, and evidence of completed management actions.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-govn-view",
+                      "name": "Board agenda and decision tracker",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Record company board actions, reserved matters, authority boundaries, escalations, and evidence of completed management actions.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-govn-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-govn-api",
+                      "name": "Board Governance and Action Tracking Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-govn-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-govn-worker",
+                      "name": "Board Governance and Action Tracking Review Worker",
+                      "type": "message-consumer",
+                      "description": "Track action due dates and escalation decisions.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-govn-state",
+                            "type": "uses",
+                            "description": "Records processing results and exceptions for human review."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-govn-state",
+                      "name": "Board Governance and Action Tracking Record",
+                      "type": "stateful-service",
+                      "description": "Maintains governance decisions with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-govn-adapter",
+                      "name": "Board Governance and Action Tracking Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Company secretarial records and authorized board-document systems. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-govn-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "perf",
+                  "moduleId": "module-perf-api",
+                  "sourceModuleId": "module-govn-state",
+                  "type": "context",
+                  "description": "Board Governance and Action Tracking uses reviewed portfolio performance evidence evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "governance-decisions",
+                  "moduleIds": [
+                    "module-govn-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "portfolio-performance",
+                  "moduleIds": [
+                    "module-govn-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed portfolio performance evidence record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Company secretarial records and authorized board-document systems",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-govn-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "About Vortex",
+                      "link": "https://vortexcp.com/about-us/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "esgg",
+              "name": "Fund-specific Sustainability Stewardship",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Apply vehicle-specific exclusions and materiality reviews; capture relevant company indicators, estimated-data flags, governance findings, and remediation evidence.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-esgg-view",
+                      "name": "Fund and company stewardship review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Apply vehicle-specific exclusions and materiality reviews; capture relevant company indicators, estimated-data flags, governance findings, and remediation evidence.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-esgg-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-esgg-api",
+                      "name": "Fund-specific Sustainability Stewardship Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-esgg-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-esgg-worker",
+                      "name": "Fund-specific Sustainability Stewardship Review Worker",
+                      "type": "message-consumer",
+                      "description": "Collect periodic indicator evidence and flag missing or estimated inputs.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-esgg-state",
+                            "type": "uses",
+                            "description": "Records processing results and exceptions for human review."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-esgg-state",
+                      "name": "Fund-specific Sustainability Stewardship Record",
+                      "type": "stateful-service",
+                      "description": "Maintains sustainability indicators with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-esgg-adapter",
+                      "name": "Fund-specific Sustainability Stewardship Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Portfolio-company sustainability questionnaires and authorized specialist evidence. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-esgg-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "perf",
+                  "moduleId": "module-perf-api",
+                  "sourceModuleId": "module-esgg-state",
+                  "type": "context",
+                  "description": "Fund-specific Sustainability Stewardship uses reviewed portfolio performance evidence evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "sustainability-indicators",
+                  "moduleIds": [
+                    "module-esgg-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "portfolio-performance",
+                  "moduleIds": [
+                    "module-esgg-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed portfolio performance evidence record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Portfolio-company sustainability questionnaires and authorized specialist evidence",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-esgg-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Sustainability and fund-specific disclosures",
+                      "link": "https://vortexcp.com/sustainability/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fund and Investor Services",
+      "subGroups": [
+        {
+          "name": "Evidence and valuation",
+          "bricks": [
+            {
+              "id": "perf",
+              "name": "Portfolio Performance Evidence",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Reconcile company operating evidence by reporting period, currency, perimeter, organic/acquired cohorts, definition version, and source; expose late corrections.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-perf-view",
+                      "name": "Portfolio performance review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Reconcile company operating evidence by reporting period, currency, perimeter, organic/acquired cohorts, definition version, and source; expose late corrections.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-perf-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-perf-api",
+                      "name": "Portfolio Performance Evidence Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-perf-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-perf-worker",
+                      "name": "Portfolio Performance Evidence Review Worker",
+                      "type": "message-consumer",
+                      "description": "Ingest approved exports into a staged review queue with provenance and reconciliation checks.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-perf-state",
+                            "type": "uses",
+                            "description": "Records processing results and exceptions for human review."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-perf-state",
+                      "name": "Portfolio Performance Evidence Record",
+                      "type": "stateful-service",
+                      "description": "Maintains portfolio performance with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-perf-adapter",
+                      "name": "Portfolio Performance Evidence Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Portfolio-company financial and operating reporting exports. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-perf-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [],
+              "dataDependencies": [
+                {
+                  "assetId": "portfolio-performance",
+                  "moduleIds": [
+                    "module-perf-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Portfolio-company financial and operating reporting exports",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-perf-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "About Vortex",
+                      "link": "https://vortexcp.com/about-us/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "valu",
+              "name": "Valuation Review and Attribution",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Prepare a valuation evidence package with methods, inputs, challenge, approval, and realized/unrealized attribution for each reporting date.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-valu-view",
+                      "name": "Valuation challenge and attribution review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Prepare a valuation evidence package with methods, inputs, challenge, approval, and realized/unrealized attribution for each reporting date.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-valu-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-valu-api",
+                      "name": "Valuation Review and Attribution Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-valu-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "stateless-service",
+                  "modules": [
+                    {
+                      "id": "module-valu-analysis",
+                      "name": "Valuation Review and Attribution Analysis",
+                      "type": "stateless-service",
+                      "description": "Produce valuation sensitivities and return bridges on an explicit cash-flow basis; do not automatically publish or approve marks.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-valu-api",
+                            "type": "uses",
+                            "description": "Consumes an authorized input snapshot; owns no durable state."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-valu-state",
+                      "name": "Valuation Review and Attribution Record",
+                      "type": "stateful-service",
+                      "description": "Maintains valuation records with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-valu-adapter",
+                      "name": "Valuation Review and Attribution Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Fund administrators, authorized valuation advisors, and permitted market-data sources. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-valu-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "perf",
+                  "moduleId": "module-perf-api",
+                  "sourceModuleId": "module-valu-state",
+                  "type": "context",
+                  "description": "Valuation Review and Attribution uses reviewed portfolio performance evidence evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "capt",
+                  "moduleId": "module-capt-api",
+                  "sourceModuleId": "module-valu-state",
+                  "type": "context",
+                  "description": "Valuation Review and Attribution uses reviewed ownership and follow-on reserves evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "cash",
+                  "moduleId": "module-cash-api",
+                  "sourceModuleId": "module-valu-state",
+                  "type": "context",
+                  "description": "Valuation Review and Attribution uses reviewed fund cash and distribution control evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "valuation-records",
+                  "moduleIds": [
+                    "module-valu-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "portfolio-performance",
+                  "moduleIds": [
+                    "module-valu-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed portfolio performance evidence record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "ownership-reserves",
+                  "moduleIds": [
+                    "module-valu-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed ownership and follow-on reserves record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "fund-cash-ledger",
+                  "moduleIds": [
+                    "module-valu-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed fund cash and distribution control record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Fund administrators, authorized valuation advisors, and permitted market-data sources",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-valu-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "ILPA Performance Template",
+                      "link": "https://ilpa.org/industry-guidance/templates-standards-model-documents/ilpa-templates-hub/ilpa-performance-template/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Investor commitments and cash",
+          "bricks": [
+            {
+              "id": "subs",
+              "name": "Investor Admission and Commitments",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Coordinate investor authority and admission evidence, versioned vehicle terms, accepted commitments, and reporting preferences with the responsible administrator.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-subs-view",
+                      "name": "Investor admission and commitment review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Coordinate investor authority and admission evidence, versioned vehicle terms, accepted commitments, and reporting preferences with the responsible administrator.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-subs-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-subs-api",
+                      "name": "Investor Admission and Commitments Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-subs-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-subs-state",
+                      "name": "Investor Admission and Commitments Record",
+                      "type": "stateful-service",
+                      "description": "Maintains investor commitments with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-subs-adapter",
+                      "name": "Investor Admission and Commitments Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Fund administrator admission and investor-verification workflows. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-subs-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "iamx",
+                  "moduleId": "module-iamx-api",
+                  "sourceModuleId": "module-subs-state",
+                  "type": "context",
+                  "description": "Investor Admission and Commitments uses reviewed access boundaries and audit evidence evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "investor-commitments",
+                  "moduleIds": [
+                    "module-subs-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "access-audit-records",
+                  "moduleIds": [
+                    "module-subs-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed access boundaries and audit evidence record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Fund administrator admission and investor-verification workflows",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-subs-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Vortex Capital Partners — homepage",
+                      "link": "https://vortexcp.com/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "cash",
+              "name": "Fund Cash and Distribution Control",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Reconcile calls, contributions, investment funding, fees, expenses, approved distribution entitlements, and bank settlement across the correct legal entities.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-cash-view",
+                      "name": "Cash reconciliation and exception review",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Reconcile calls, contributions, investment funding, fees, expenses, approved distribution entitlements, and bank settlement across the correct legal entities.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-cash-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-cash-api",
+                      "name": "Fund Cash and Distribution Control Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-cash-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-cash-worker",
+                      "name": "Fund Cash and Distribution Control Review Worker",
+                      "type": "message-consumer",
+                      "description": "Import settlement evidence and surface unmatched items; payment release stays with authorized banking users.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-cash-state",
+                            "type": "uses",
+                            "description": "Records processing results and exceptions for human review."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-cash-state",
+                      "name": "Fund Cash and Distribution Control Record",
+                      "type": "stateful-service",
+                      "description": "Maintains fund cash ledger with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-cash-adapter",
+                      "name": "Fund Cash and Distribution Control Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Fund administrators and banks through approved statements or verified interfaces. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-cash-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "subs",
+                  "moduleId": "module-subs-api",
+                  "sourceModuleId": "module-cash-state",
+                  "type": "context",
+                  "description": "Fund Cash and Distribution Control uses reviewed investor admission and commitments evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "fund-cash-ledger",
+                  "moduleIds": [
+                    "module-cash-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "investor-commitments",
+                  "moduleIds": [
+                    "module-cash-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed investor admission and commitments record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Fund administrators and banks through approved statements or verified interfaces",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-cash-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": []
+            }
+          ]
+        },
+        {
+          "name": "Investor communications",
+          "bricks": [
+            {
+              "id": "lprp",
+              "name": "Investor Reporting and Service",
+              "type": "full-stack",
+              "status": "invest",
+              "description": "Proposed capability: Compile approved, versioned investor packages and notices, track contractual delivery and inquiries, and coordinate publication through external portals.",
+              "layers": [
+                {
+                  "layer": "ui",
+                  "modules": [
+                    {
+                      "id": "module-lprp-view",
+                      "name": "Investor reporting and inquiry workspace",
+                      "type": "web-component",
+                      "description": "Proposed configured workspace surface. Compile approved, versioned investor packages and notices, track contractual delivery and inquiries, and coordinate publication through external portals.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-lprp-api",
+                            "type": "uses",
+                            "description": "Reads or submits the authorized business workflow."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "interfaces",
+                  "modules": [
+                    {
+                      "id": "module-lprp-api",
+                      "name": "Investor Reporting and Service Interface",
+                      "type": "api",
+                      "description": "Proposed permissioned workflow contract; may be a configured form or export-backed adapter instead of a custom API.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-lprp-state",
+                            "type": "uses",
+                            "description": "Reads or updates the versioned business record under the responsible reviewer."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "worker",
+                  "modules": [
+                    {
+                      "id": "module-lprp-worker",
+                      "name": "Investor Reporting and Service Review Worker",
+                      "type": "message-consumer",
+                      "description": "Schedule review, delivery confirmation, and inquiry follow-up without inventing portal capabilities.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-lprp-state",
+                            "type": "uses",
+                            "description": "Records processing results and exceptions for human review."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "layer": "service",
+                  "modules": [
+                    {
+                      "id": "module-lprp-state",
+                      "name": "Investor Reporting and Service Record",
+                      "type": "stateful-service",
+                      "description": "Maintains investor report packages with version, actor, authority, legal-entity context, and a reviewable state history."
+                    }
+                  ]
+                },
+                {
+                  "layer": "integration",
+                  "modules": [
+                    {
+                      "id": "module-lprp-adapter",
+                      "name": "Investor Reporting and Service Evidence Adapter",
+                      "type": "integration",
+                      "description": "Proposed import/export or assisted handoff to Fundrbird Investor Portal and CSC Investment Room: public links observed; proposed export/coordination interfaces are unverified. Vendor choice, contracts, and interface availability require confirmation.",
+                      "dependencies": {
+                        "modules": [
+                          {
+                            "moduleId": "module-lprp-state",
+                            "type": "uses",
+                            "description": "Stages evidence and reconciliation results; preserves the external authority boundary."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "brickDependencies": [
+                {
+                  "targetBrickId": "valu",
+                  "moduleId": "module-valu-api",
+                  "sourceModuleId": "module-lprp-state",
+                  "type": "context",
+                  "description": "Investor Reporting and Service uses reviewed valuation review and attribution evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "cash",
+                  "moduleId": "module-cash-api",
+                  "sourceModuleId": "module-lprp-state",
+                  "type": "context",
+                  "description": "Investor Reporting and Service uses reviewed fund cash and distribution control evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "subs",
+                  "moduleId": "module-subs-api",
+                  "sourceModuleId": "module-lprp-state",
+                  "type": "context",
+                  "description": "Investor Reporting and Service uses reviewed investor admission and commitments evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "esgg",
+                  "moduleId": "module-esgg-api",
+                  "sourceModuleId": "module-lprp-state",
+                  "type": "context",
+                  "description": "Investor Reporting and Service uses reviewed fund-specific sustainability stewardship evidence within its own authority boundary."
+                },
+                {
+                  "targetBrickId": "iamx",
+                  "moduleId": "module-iamx-api",
+                  "sourceModuleId": "module-lprp-state",
+                  "type": "context",
+                  "description": "Investor Reporting and Service uses reviewed access boundaries and audit evidence evidence within its own authority boundary."
+                }
+              ],
+              "dataDependencies": [
+                {
+                  "assetId": "investor-report-packages",
+                  "moduleIds": [
+                    "module-lprp-state"
+                  ],
+                  "role": "own",
+                  "description": "Accountable business record for this capability; legal registers, administrator books, and bank records retain their external authority."
+                },
+                {
+                  "assetId": "valuation-records",
+                  "moduleIds": [
+                    "module-lprp-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed valuation review and attribution record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "fund-cash-ledger",
+                  "moduleIds": [
+                    "module-lprp-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed fund cash and distribution control record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "investor-commitments",
+                  "moduleIds": [
+                    "module-lprp-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed investor admission and commitments record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "sustainability-indicators",
+                  "moduleIds": [
+                    "module-lprp-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed fund-specific sustainability stewardship record through its owning capability; no duplicate system of record."
+                },
+                {
+                  "assetId": "access-audit-records",
+                  "moduleIds": [
+                    "module-lprp-state"
+                  ],
+                  "role": "read",
+                  "description": "Uses the reviewed access boundaries and audit evidence record through its owning capability; no duplicate system of record."
+                }
+              ],
+              "externalSystemsThisBrickDependsOn": [
+                {
+                  "system": "Fundrbird Investor Portal and CSC Investment Room: public links observed; proposed export/coordination interfaces are unverified",
+                  "type": "evidence-exchange",
+                  "interface": "Proposed controlled import/export or verified workflow handoff",
+                  "description": "Role-based design assumption. Publicly observed provider names do not establish API availability or internal implementation.",
+                  "sourceModuleId": "module-lprp-adapter"
+                }
+              ],
+              "externalSystemsDependingOnThisBrick": [],
+              "links": [
+                {
+                  "group": "Business context",
+                  "description": "Source supports the business context, not the proposed technical implementation.",
+                  "links": [
+                    {
+                      "label": "Vortex Capital Partners — homepage",
+                      "link": "https://vortexcp.com/",
+                      "description": "Public research basis; see the domain brief for assumptions and scope."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

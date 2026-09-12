@@ -1,0 +1,1002 @@
+{
+  "metadata": {
+    "domainId": "venture-capital-and-private-equity",
+    "title": "Investment Partnership Data Assets",
+    "description": "Proposed logical data and governance design. Stores, residency, retention, and provider interfaces are unverified; no actual private records are included.",
+    "modelVersion": "1.0"
+  },
+  "rootGroups": [
+    {
+      "name": "Investment Lifecycle",
+      "subGroups": [
+        {
+          "name": "Relationships and qualification",
+          "assets": [
+            {
+              "id": "origination-pipeline",
+              "name": "Origination Pipeline",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Founder objectives, consented contacts, advisor introductions, relationship history, and qualification stage.",
+              "classification": "confidential",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Founder objectives, consented contacts, advisor introductions, relationship history, and qualification stage.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "case-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Founder Relationships and Origination evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "investment-partnerships",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain active relationships under an agreed purpose; review dormant contacts and honor applicable deletion or restriction decisions.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "fund-mandates",
+              "name": "Fund Mandates",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Vehicle-specific investment strategy, exclusions, geography, ownership boundaries, mandate version, and approval authority.",
+              "classification": "confidential",
+              "personalDataLevel": "none",
+              "dataSubjects": [],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Vehicle-specific investment strategy, exclusions, geography, ownership boundaries, mandate version, and approval authority.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "case-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Mandate and Opportunity Fit evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "investment-partnerships",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain each operative mandate and historical versions needed to explain decisions under that version.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Evidence and decisions",
+          "assets": [
+            {
+              "id": "diligence-evidence",
+              "name": "Diligence Evidence",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Evidence manifest, document versions, origin, authorized recipients, expiry, and access restrictions; sensitive documents remain segregated.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Evidence manifest, document versions, origin, authorized recipients, expiry, and access restrictions; sensitive documents remain segregated.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "controlled-documents",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Diligence Evidence Exchange evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "investment-partnerships",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Apply case-specific access expiry and agreed document retention; legal holds override routine disposal where applicable.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "diligence-cases",
+              "name": "Diligence Cases",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Diligence workstreams, findings, assumptions, severity, advisor conclusions, reviewer acceptance, and unresolved conditions.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Diligence workstreams, findings, assumptions, severity, advisor conclusions, reviewer acceptance, and unresolved conditions.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "case-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Investment Diligence Cases evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "investment-partnerships",
+              "stewardTeamIds": [
+                "technology-enablement",
+                "governance-stewardship"
+              ],
+              "derivedFromAssetIds": [
+                "diligence-evidence",
+                "technology-assessments",
+                "sustainability-indicators"
+              ],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain accepted and declined case evidence under the agreed investment-record schedule with restricted access.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "investment-decisions",
+              "name": "Investment Decisions",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Decision rationale, fund allocation, conflicts, conditions, authority, dissent, and the frozen evidence version.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Decision rationale, fund allocation, conflicts, conditions, authority, dissent, and the frozen evidence version.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "case-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Investment Decisions and Conflicts evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "investment-partnerships",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [
+                "diligence-cases",
+                "fund-mandates",
+                "transaction-terms"
+              ],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Preserve decision history and changes for the applicable fund and investment-record schedule.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Capital and execution",
+          "assets": [
+            {
+              "id": "transaction-terms",
+              "name": "Transaction Terms",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Scenario terms, instrument economics, ownership and dilution calculations, debt conditions, seller proceeds, and company sources and uses.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Scenario terms, instrument economics, ownership and dilution calculations, debt conditions, seller proceeds, and company sources and uses.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "financial-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Capital Structure and Terms evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "investment-partnerships",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain approved and executed scenario versions with supporting agreements and explanations of material differences.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "closing-records",
+              "name": "Closing Records",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Signed conditions, entity identity, approval evidence, funds-flow instructions, independent verification references, settlement confirmation, and failed/deferred states.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Signed conditions, entity identity, approval evidence, funds-flow instructions, independent verification references, settlement confirmation, and failed/deferred states.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "controlled-documents",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Transaction Closing Coordination evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "investment-partnerships",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain transaction and settlement evidence under the applicable agreement and accounting schedule; protect payment details separately.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "ownership-reserves",
+              "name": "Ownership Reserves",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Investment vehicle, company, instrument, legal ownership, voting/economic rights, reserve allocation, currency, effective date, and reconciliation status.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Investment vehicle, company, instrument, legal ownership, voting/economic rights, reserve allocation, currency, effective date, and reconciliation status.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "financial-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Ownership and Follow-on Reserves evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "investment-partnerships",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Preserve historical ownership and reserve decisions across the investment lifecycle and subsequent reconciliation period.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Realization",
+          "assets": [
+            {
+              "id": "exit-cases",
+              "name": "Exit Cases",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Readiness gaps, buyer permissions, sale and hold scenarios, conditions, escrow or earn-out schedules, and realized-outcome lessons.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Readiness gaps, buyer permissions, sale and hold scenarios, conditions, escrow or earn-out schedules, and realized-outcome lessons.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "case-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Exit Readiness and Buyer Process evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "investment-partnerships",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Expire bidder access promptly; retain transaction and consideration records under the agreed lifecycle schedule.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Portfolio Value Creation",
+      "subGroups": [
+        {
+          "name": "Strategy and commercial progress",
+          "assets": [
+            {
+              "id": "value-creation-plans",
+              "name": "Value Creation Plans",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Company outcome hypotheses, baselines, milestones, resources, sponsor, acceptance criteria, and continue/change/stop decisions.",
+              "classification": "confidential",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Company outcome hypotheses, baselines, milestones, resources, sponsor, acceptance criteria, and continue/change/stop decisions.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "case-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Value Creation Planning evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "portfolio-support",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain the history needed to evaluate interventions; archive superseded plans without losing the initial baseline.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "commercial-experiments",
+              "name": "Commercial Experiments",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Approved aggregated commercial experiment design, cost, pricing and segment choices, cohort definitions, outcome observations, and guardrail results.",
+              "classification": "confidential",
+              "personalDataLevel": "none",
+              "dataSubjects": [],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Approved aggregated commercial experiment design, cost, pricing and segment choices, cohort definitions, outcome observations, and guardrail results.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "management-data",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Commercial Acceleration evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "portfolio-support",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Keep comparable intervention evidence for the approved learning period; avoid collecting identifiable company customer records by default.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Leadership and combinations",
+          "assets": [
+            {
+              "id": "leadership-network",
+              "name": "Leadership Network",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Consented expert capabilities, introductions, critical-role requirements, recruitment status, and approved peer-learning material; no blanket talent pool sharing.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Consented expert capabilities, introductions, critical-role requirements, recruitment status, and approved peer-learning material; no blanket talent pool sharing.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "case-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Leadership and Expert Network evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "portfolio-support",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Review candidate and expert retention by purpose and consent/contract context; restrict access to recruitment-sensitive material.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "acquisition-pipeline",
+              "name": "Acquisition Pipeline",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Target identity, relationship source, strategic fit, integration capacity, priority, target-company context, and owner-approved next decision.",
+              "classification": "confidential",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Target identity, relationship source, strategic fit, integration capacity, priority, target-company context, and owner-approved next decision.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "case-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Add-on Acquisition Development evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "portfolio-support",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Review stale targets and advisor-supplied information; preserve the rationale for pursued or declined combinations as appropriate.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "integration-plans",
+              "name": "Integration Plans",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Company integration owners, day-one dependencies, customer-continuity constraints, costs, milestones, and benefit verification.",
+              "classification": "confidential",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Company integration owners, day-one dependencies, customer-continuity constraints, costs, milestones, and benefit verification.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "case-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Acquisition Integration evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "portfolio-support",
+              "stewardTeamIds": [
+                "investment-partnerships"
+              ],
+              "derivedFromAssetIds": [
+                "value-creation-plans",
+                "closing-records"
+              ],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain integration decisions and benefits evidence through the approved post-acquisition review window.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Technology and Stewardship",
+      "subGroups": [
+        {
+          "name": "Technology and information boundaries",
+          "assets": [
+            {
+              "id": "technology-assessments",
+              "name": "Technology Assessments",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Company-specific technology findings, source references, risk severity, product dependencies, AI hypotheses, roadmap options, and remediation acceptance.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Company-specific technology findings, source references, risk severity, product dependencies, AI hypotheses, roadmap options, and remediation acceptance.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "controlled-documents",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Technology and AI Value Review evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "technology-enablement",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Use a restricted technical-evidence schedule; security findings and code access require narrower permissions than general investment summaries.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "access-audit-records",
+              "name": "Access Audit Records",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Subject, authorized company/fund scope, grant basis, approver, expiry, record access, export events, and review decisions.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Subject, authorized company/fund scope, grant basis, approver, expiry, record access, export events, and review decisions.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "access-logs",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Access Boundaries and Audit Evidence evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "technology-enablement",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Set the access-audit retention schedule with information owners; support holds, access revocation, and evidenced disposal.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Governance and sustainability",
+          "assets": [
+            {
+              "id": "governance-decisions",
+              "name": "Governance Decisions",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Company board agenda, reserved-matter boundaries, decisions, accountable owners, due dates, escalations, and closure evidence.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Company board agenda, reserved-matter boundaries, decisions, accountable owners, due dates, escalations, and closure evidence.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "case-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Board Governance and Action Tracking evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "governance-stewardship",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Preserve formal decisions under the applicable corporate-record schedule; routine working notes may have shorter approved retention.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "sustainability-indicators",
+              "name": "Sustainability Indicators",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Fund/company materiality, exclusions and due-diligence conclusions, indicator definition, period, measured/estimated flag, evidence source, and action plan.",
+              "classification": "confidential",
+              "personalDataLevel": "none",
+              "dataSubjects": [],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Fund/company materiality, exclusions and due-diligence conclusions, indicator definition, period, measured/estimated flag, evidence source, and action plan.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "management-data",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Fund-specific Sustainability Stewardship evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "governance-stewardship",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain disclosure evidence and methodology versions for the applicable vehicle reporting schedule; use aggregated workforce indicators where sufficient.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fund and Investor Services",
+      "subGroups": [
+        {
+          "name": "Evidence and valuation",
+          "assets": [
+            {
+              "id": "portfolio-performance",
+              "name": "Portfolio Performance",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Company reporting period, currency, business perimeter, organic/acquired cohorts, KPI definitions, source exports, reconciliations, and restatement versions.",
+              "classification": "confidential",
+              "personalDataLevel": "none",
+              "dataSubjects": [],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Company reporting period, currency, business perimeter, organic/acquired cohorts, KPI definitions, source exports, reconciliations, and restatement versions.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "management-data",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Portfolio Performance Evidence evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "fund-finance",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Keep historical performance and definition versions needed to explain decisions and reports; minimize underlying personal data.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "valuation-records",
+              "name": "Valuation Records",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Investment and fund valuation date, method, inputs, sensitivities, reviewer challenge, approval, cash-flow basis, and realized/unrealized attribution.",
+              "classification": "restricted",
+              "personalDataLevel": "none",
+              "dataSubjects": [],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Investment and fund valuation date, method, inputs, sensitivities, reviewer challenge, approval, cash-flow basis, and realized/unrealized attribution.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "financial-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Valuation Review and Attribution evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "fund-finance",
+              "stewardTeamIds": [
+                "investment-partnerships"
+              ],
+              "derivedFromAssetIds": [
+                "portfolio-performance",
+                "fund-cash-ledger",
+                "ownership-reserves"
+              ],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain approved and superseded valuation evidence with report versions and the applicable audit schedule.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Investor commitments and cash",
+          "assets": [
+            {
+              "id": "investor-commitments",
+              "name": "Investor Commitments",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Investor entity, authorized representatives, relevant admission evidence references, accepted commitment, vehicle, currency, terms version, and communication preferences.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Investor entity, authorized representatives, relevant admission evidence references, accepted commitment, vehicle, currency, terms version, and communication preferences.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "financial-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Investor Admission and Commitments evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "fund-finance",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Apply the confirmed investor and fund-administration schedule; avoid duplicating sensitive identity documents already held by the responsible provider.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            },
+            {
+              "id": "fund-cash-ledger",
+              "name": "Fund Cash Ledger",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Legal entity, investor/fund/investment level, transaction date, currency, purpose, amount, fee/carry classification, approved entitlement, bank reference, and reconciliation state.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Legal entity, investor/fund/investment level, transaction date, currency, purpose, amount, fee/carry classification, approved entitlement, bank reference, and reconciliation state.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "financial-records",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Fund Cash and Distribution Control evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "fund-finance",
+              "stewardTeamIds": [],
+              "derivedFromAssetIds": [],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain financial evidence under the confirmed accounting and fund schedule; mask bank details outside authorized finance workflows.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Investor communications",
+          "assets": [
+            {
+              "id": "investor-report-packages",
+              "name": "Investor Report Packages",
+              "kind": "logical-object",
+              "description": "Proposed logical data asset. Approved report version, applicable investor/vehicle, valuation basis, disclosures, notices, publication evidence, recipient entitlement, and inquiry resolution.",
+              "classification": "restricted",
+              "personalDataLevel": "personal",
+              "dataSubjects": [
+                "Authorized founders, investors, management, staff, advisors, or experts as relevant to this record"
+              ],
+              "legalTags": [],
+              "securityCriticality": "high",
+              "accessScope": "Only authorized users within the relevant company, investment, and fund scope; separate approvals for finance, personal, and technical evidence.",
+              "businessMeaning": "Approved report version, applicable investor/vehicle, valuation basis, disclosures, notices, publication evidence, recipient entitlement, and inquiry resolution.",
+              "status": "planned",
+              "stores": [
+                {
+                  "storeId": "controlled-documents",
+                  "role": "system-of-record"
+                }
+              ],
+              "interfaces": [
+                {
+                  "type": "workflow",
+                  "name": "Investor Reporting and Service evidence contract",
+                  "description": "Proposed permissioned record and controlled import/export boundary; no production API is claimed."
+                }
+              ],
+              "ownerTeamId": "fund-finance",
+              "stewardTeamIds": [
+                "governance-stewardship"
+              ],
+              "derivedFromAssetIds": [
+                "valuation-records",
+                "fund-cash-ledger",
+                "sustainability-indicators",
+                "investor-commitments"
+              ],
+              "governance": {
+                "retention": "Proposed policy pending record-owner confirmation: Retain report versions and service correspondence with the supporting fund record; revoke access when entitlement ends.",
+                "residency": "Unverified. Select and document contractual storage and transfer locations before implementation.",
+                "sharingPolicy": "Share only the minimum authorized company/fund evidence under applicable agreements. No automatic access across competing portfolio companies or funds. Legal applicability and schedules remain to be confirmed."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stores": [
+    {
+      "id": "case-records",
+      "name": "Investment and Company Workflow Records",
+      "kind": "operational-database",
+      "description": "Proposed configured case-management records partitioned by company and fund; not an observed installation.",
+      "technology": "Unselected configured workflow/CRM storage",
+      "status": "planned",
+      "classification": "restricted"
+    },
+    {
+      "id": "controlled-documents",
+      "name": "Controlled Evidence Documents",
+      "kind": "document-store",
+      "description": "Proposed permissioned document storage with version history and separate technical, legal, investor, and closing access scopes.",
+      "technology": "Unselected document-management or data-room provider",
+      "status": "planned",
+      "classification": "restricted"
+    },
+    {
+      "id": "financial-records",
+      "name": "Reconciled Fund and Ownership Records",
+      "kind": "operational-database",
+      "description": "Proposed financial record set reconciled to administrator books, banks, and legal registers, which remain authoritative for their respective records.",
+      "technology": "Approved administrator system plus controlled reconciliation records; vendor unverified",
+      "status": "planned",
+      "classification": "restricted"
+    },
+    {
+      "id": "management-data",
+      "name": "Approved Portfolio Evidence",
+      "kind": "analytical-store",
+      "description": "Proposed period-based reporting snapshots and approved aggregated intervention data with company/fund access boundaries.",
+      "technology": "Unselected reporting storage or governed files",
+      "status": "planned",
+      "classification": "confidential"
+    },
+    {
+      "id": "access-logs",
+      "name": "Access and Change Evidence",
+      "kind": "audit-log",
+      "description": "Proposed access and change records collected from contracted identity and workspace providers with controlled review and retention.",
+      "technology": "Unselected append-only audit facility",
+      "status": "planned",
+      "classification": "restricted"
+    }
+  ]
+}

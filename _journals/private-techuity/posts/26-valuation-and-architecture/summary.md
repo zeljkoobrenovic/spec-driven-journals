@@ -1,0 +1,15 @@
+Valuation estimates what a business or ownership interest is worth at a particular date. It influences technology priorities through assumptions about the business’s future, not by mechanically choosing an architecture.
+
+Begin with the financial quantities. Revenue records sales but does not show their cost. Net profit includes costs but can differ because of tax rates, borrowing or asset-accounting charges, even when operations are equally effective. EBITDA means earnings before interest, taxes, depreciation and amortization. Depreciation and amortization spread the cost of certain assets across accounting periods. Excluding these items helps compare operating earnings across different ownership and financing arrangements. The costs still matter to value and cash, so EBITDA supplements net profit and cash flow. Adjusted EBITDA makes further specified exclusions that need a reconciliation.
+
+Enterprise value concerns the operating business. In a simplified calculation, subtract net debt to reach equity value. A higher valuation does not automatically put more money in the company’s bank account.
+
+There are three useful valuation approaches to understand. Market comparisons use prices and financial ratios from comparable businesses or transactions. Discounted cash flow estimates the present value of future cash generation, accounting for timing and risk. Asset-based valuation examines underlying assets and obligations. Their usefulness depends on the business and evidence; the IPEV guidelines explain these methods and their limitations. [S52: IPEV valuation guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
+
+A revenue multiple and an earnings multiple can express the same price. In the article’s fictional example, a €60 million enterprise value equals both three times €20 million revenue and fifteen times €4 million EBITDA. Growth is a characteristic influencing the assumptions, not a separate valuation method.
+
+**Translate those assumptions into business capabilities.** A growth thesis may require faster experiments, easier onboarding or expansion into new markets. Architectural flexibility can help, but an elaborate redesign may delay the learning it was meant to enable. A thesis emphasizing established earnings may favor lower operating cost and dependable service. It still needs product investment and resilience to sustain those earnings.
+
+Both perspectives need a funded transition. Include the cost of implementation, parallel operation, maintenance and the delay before benefits arrive. Count released staff time as capacity until evidence shows how it becomes cash or additional output. Avoid counting the same future saving both through an earnings multiple and through its discounted cash value.
+
+The practical sequence is valuation assumption, business requirement, technical options, transition funding and review evidence. Choose the smallest credible intervention that supports the company’s work, and test whether it remains sensible under slower growth, a lower sale multiple or longer ownership.
