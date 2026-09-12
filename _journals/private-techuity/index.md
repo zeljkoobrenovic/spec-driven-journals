@@ -17,7 +17,7 @@ This book helps experienced technical leaders understand those mechanisms and ac
 
 ## A Living First Draft
 
-This is a substantial first manuscript, researched and drafted on September 12, 2026, rather than a finished commercial book. It contains 28 connected chapters, shorter adaptations, worked examples, practical tools, a glossary, and an evidence guide. Chapters are designed to be read independently and then connected through the book's argument.
+This is a substantial first manuscript, researched and drafted on September 12, 2026, rather than a finished commercial book. It contains 28 connected chapters, each part opening with a short introduction,, shorter adaptations, worked examples, practical tools, a glossary, and an evidence guide. Chapters are designed to be read independently and then connected through the book's argument.
 
 The current case spine includes Hilton, Skype, Visma, Toys R Us and TeamSystem, complemented by empirical research on buyouts and healthcare ownership and by technology experiments. These cases were selected for explanatory contrasts and usable evidence. They are not a representative sample of private equity, and the manuscript still needs independent customer and employee evidence, more lower mid-market software engagements, growth-investment cases and carve-outs. TeamSystem adds a European software history beginning at a smaller regional-company scale; it does not make every later ownership period a lower mid-market case.
 
@@ -47,6 +47,7 @@ If financial terms are unfamiliar, start at the beginning: [[pt-how-companies-ge
 
 Start with how companies are financed at all, then ownership, valuation, returns, investment fit and cash.
 
+- [[pt-part-1]] — part introduction
 - **1.** [[pt-how-companies-get-money]]
 - **2.** [[pt-capital-and-ownership]]
 - **3.** [[pt-valuation-and-architecture]]
@@ -58,6 +59,7 @@ Start with how companies are financed at all, then ownership, valuation, returns
 
 Turn ownership into explicit decisions, incentives, and a partnership that can withstand disagreement.
 
+- [[pt-part-2]] — part introduction
 - **7.** [[pt-governance]]
 - **8.** [[pt-incentives]]
 - **9.** [[pt-investor-fit]]
@@ -66,6 +68,7 @@ Turn ownership into explicit decisions, incentives, and a partnership that can w
 
 Connect interventions to customers, economics, risk, and the capabilities needed to execute.
 
+- [[pt-part-3]] — part introduction
 - **10.** [[pt-product-value]]
 - **11.** [[pt-engineering-and-architecture]]
 - **12.** [[pt-valuation-and-design]]
@@ -79,6 +82,7 @@ Connect interventions to customers, economics, risk, and the capabilities needed
 
 Carry evidence from sourcing and diligence through company-owned action, learning, and exit.
 
+- [[pt-part-4]] — part introduction
 - **18.** [[pt-technology-principal]]
 - **19.** [[pt-diligence-and-thesis]]
 - **20.** [[pt-first-hundred-days]]
@@ -88,6 +92,7 @@ Carry evidence from sourcing and diligence through company-owned action, learnin
 
 Develop Productscapes as a testable service model while examining power, boundaries, and evidence.
 
+- [[pt-part-5]] — part introduction
 - **22.** [[pt-investment-firm-as-product]]
 - **23.** [[pt-technology-capability-as-product]]
 
@@ -95,6 +100,7 @@ Develop Productscapes as a testable service model while examining power, boundar
 
 Compare outcomes and ask what survives beyond a favorable investment result.
 
+- [[pt-part-6]] — part introduction
 - **24.** [[pt-hilton-and-skype]]
 - **25.** [[pt-visma]]
 - **26.** [[pt-toys-r-us]]
