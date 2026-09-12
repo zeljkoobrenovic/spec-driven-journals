@@ -1,5 +1,5 @@
 ---
-title: How Should Leaders Value Security and Resilience?
+title: Security Is an Investment Under Uncertainty, Not a Cost
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Treat risk reduction as a governed investment under uncertainty, distinct from booked profit or an absence of incidents.
@@ -20,31 +20,33 @@ Security is often asked to justify itself through a loss that has not occurred. 
 
 A better approach treats security and resilience as decisions under uncertainty. The company identifies material failure scenarios, the controls and response capabilities that matter, the investment required, and who accepts the remaining risk. Some obligations must be met regardless of a simplified financial model.
 
+Every other chapter in this part argues for work that produces a benefit. This one argues for work whose success looks like nothing happening — which is why it needs its own way of being valued, and why its number must never be added to earnings.
+
 NIST's Cybersecurity Framework 2.0, published in February 2024, organizes outcomes around Govern, Identify, Protect, Detect, Respond, and Recover. It explicitly avoids prescribing one implementation for every organization. [S17: NIST CSF 2.0](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) That makes it a useful reference for consistent questions while leaving room for company-specific answers.
 
-## Begin With What Must Continue Working
+## Begin With What Must Keep Working
 
-A software company may depend on accurate billing, access to customer records, trustworthy releases, and the ability to restore a service. A retailer may depend on payments, inventory, and order fulfillment. The security discussion should begin with these business functions and the people affected by failure.
+Larkspur's customers are maintenance businesses that dispatch engineers each morning. If the scheduling service is unavailable at 6am, vans do not leave. That, not the CVE count, is where the security discussion starts: the business functions customers depend on, and the people affected when they fail. A retailer's equivalents are payments, inventory and fulfillment.
 
 For each critical function, ask what interruption, corruption, or unauthorized access would mean. How long can the business continue without it? Which customers face material harm? Which contracts, laws, or insurance conditions need specialist interpretation? What manual alternatives exist, and have they been tested?
 
 An asset inventory is useful when it supports those questions. An inventory that counts systems without identifying their role in critical work can create an impression of completeness while missing the most consequential dependency.
 
-## Evidence Has Different Strengths
+## A Policy, a Config and a Test Are Different Proofs
 
 A policy describes intended behavior. A configuration record describes a state at a point in time. A test shows what happened under particular conditions. An independent assessment can add another perspective but has a defined scope. None alone proves that the company will withstand every incident.
 
-Consider backups. Evidence that backups run successfully is different from evidence that the company can restore the complete service, with usable data, within the required period. A restore test may reveal missing credentials, incompatible versions, or undocumented dependencies. The lesson is to test the operating outcome, not merely the presence of a control.
+Larkspur's diligence found that backups had run without error for three years, and that no one had attempted a full restore in that time. When the team tried, it took eleven hours and stopped twice: a credential no current employee held, and a database version no longer available. Backups running is evidence about backups. Restoring the service is evidence about the business. Test the operating outcome, not the presence of a control.
 
-Similarly, a certification can be relevant evidence but should be read for entity, system, period, and exclusions. Treating a certification as a universal substitute for diligence mistakes an assurance artifact for the entire risk profile.
+A certification deserves the same reading — for entity, system, period and exclusions. A certificate says one system passed one set of tests on one date. It is not a statement about the whole company today.
 
-## Risk Economics Without Invented Profit
+## Put a Number on Risk Without Faking a Profit
 
-A fictional annual scenario has a 5% probability of a €4 million loss. The expected loss is €200,000. A proposed control is estimated to reduce the probability to 2%, making the modelled expected loss €80,000. The difference is €120,000 before control costs.
+Suppose a prolonged Larkspur outage would cost €4 million in contractual credits, remediation and lost customers, and the team estimates a 5% annual chance of one. The expected loss is €200,000 a year. A proposed control is estimated to cut the probability to 2%, leaving €80,000 — a €120,000 difference, before what the control costs.
 
-This is an illustration of a method, not an empirical estimate. If the probabilities are weak guesses, the result inherits their weakness. If losses are correlated or the company cannot survive a severe event, a simple expected value may be an inadequate decision rule. A small probability of catastrophic harm is not automatically acceptable because an average looks affordable.
+The method is only as good as the two guesses inside it. If the probabilities are weak, so is the answer; state them as ranges and say what evidence would narrow them. And expected value is the wrong rule where losses are correlated or a severe event would end the company: **a 2% chance of not surviving is not made acceptable by an affordable-looking average.**
 
-Use ranges and explain what evidence would narrow them. State which scenarios the control addresses and which remain. Above all, do not add the €120,000 to realized EBITDA. It is a modelled change in risk exposure, not a booked operating gain.
+State which scenarios the control addresses and which remain. Above all, do not add the €120,000 to realized EBITDA. It is a modelled change in risk exposure, not a booked operating gain.
 
 ## Security Work Needs an Owner and Funding
 
@@ -58,11 +60,11 @@ Some findings may affect transaction conditions, price, insurance, or whether th
 
 An incident can require simultaneous technical work, customer communication, legal judgment, financial decisions, and coordination with the owner. A response plan should name the decision process before urgency compresses it.
 
-A practical exercise can test a plausible scenario: a critical service cannot be trusted, the cause is uncertain, a major customer needs an answer, and restoration may erase evidence. The exercise should reveal who can decide, which specialists are available, and how the team communicates uncertainty. It should not be staged merely to demonstrate that a plan exists.
+A practical exercise can test a plausible scenario. Larkspur's: the scheduling service is returning wrong engineer assignments, nobody yet knows why, the largest customer wants an answer within the hour, and restoring from backup may destroy the evidence needed to find the cause. The exercise should reveal who can decide, which specialists are available, and how the team communicates uncertainty. It should not be staged merely to demonstrate that a plan exists.
 
 Legal notification deadlines, sector requirements, and contractual duties vary and can change. In a live incident, the organization needs current advice for its jurisdictions and facts. This chapter supplies the operating questions; it does not substitute a universal deadline.
 
-## Portfolio Support Can Increase or Reduce Concentration Risk
+## Shared Support Can Spread Risk or Concentrate It
 
 A shared specialist network and tested response process can give small companies access to scarce expertise. A common identity provider, administrator, or integration mechanism can also create a shared dependency. The support design should examine the new concentration it introduces.
 
@@ -70,4 +72,6 @@ Portfolio-level visibility does not require unrestricted access to customer data
 
 Exit preparation should preserve the same discipline. Describe improvements with dates and test evidence. Disclose material unresolved issues through the appropriate process. An orderly data room is helpful; it is not equivalent to a resilient product.
 
-The durable outcome is a company that can make better security decisions, detect and respond to failures, and continue serving customers within understood limits. That capability can support value without being converted into a fictional profit figure.
+The outcome worth funding is a company that notices failures, responds to them, and keeps serving customers inside limits it has actually tested. That is worth real money. It still should not be written into the earnings as if it were profit.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

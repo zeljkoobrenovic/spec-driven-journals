@@ -1,34 +1,34 @@
 ---
-title: How Does Company Valuation Shape Technology Decisions?
+title: A Valuation Is an Estimate, Not a Fact
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Learn revenue, EBITDA and cash first, then connect valuation approaches to business priorities, architectural flexibility, cost efficiency and investment choices.
+excerpt: "The plain-language money primer: revenue, EBITDA and cash, then how a business gets valued and why the method matters."
 permalink: pt-valuation-and-architecture
-timetoread: 15 min read
+timetoread: 8 min read
 status: draft:orange
-tags: private equity, valuation, architecture, Part I
+tags: private equity, valuation, technology leadership, Part I
 ---
 
 > **KEY POINTS:**
 >
 > * **Learn revenue, earnings and cash before interpreting value.** Each answers a different question. An earnings subtotal does not establish the cash available for a technology investment.
-> * **A valuation method organizes assumptions about the business.** Market comparisons, future cash flows and asset values offer different perspectives; growth and profitability matter across them.
-> * **Translate assumptions into capabilities before choosing architecture.** Examine flexibility, cost, reliability and transition funding together. Growth does not remove cost discipline, and earnings targets do not remove the need to reinvest.
+> * **A valuation is an estimate, not a lookup.** The same company can be worth different amounts to a reporting investor, a negotiating buyer and a lender — all correct, for different purposes.
+> * **The method encodes an assumption about where value comes from.** Comparable prices, future cash, or separable assets each imply something different — and that assumption is what eventually reaches your roadmap.
 
 <br>
-A CTO proposes simplifying the platform to reduce its operating cost. A product leader proposes making it easier to launch products in new markets. Both proposals could be sensible. Which should receive the next six months of investment depends partly on what the business is trying to become and what its owners believe makes it valuable.
+"The company is worth €60 million." It sounds like a fact, the way a bank balance is a fact. It is not. It is somebody's estimate, made on a particular day, for a particular purpose — and a different person with a different purpose would produce a different number for the same company.
 
-That does not mean a financial ratio chooses the architecture. It means the architecture has economic consequences: it changes the cost of serving customers, the speed and safety of change, the investment required to grow, and the risk that promised results will not arrive.
+That matters to you because those estimates decide what gets funded. They are built from three quantities that get used interchangeably in conversation and mean quite different things: **revenue**, **earnings** and **cash**. Confusing them is how a technology leader ends up arguing for a budget that does not exist, or conceding one that does.
 
-To connect these decisions, begin with four different quantities: revenue, earnings, cash and value. Then examine the valuation method and the business assumptions behind it. Only then translate those assumptions into technology priorities.
+This is the book's money primer, and the chapter the others assume. [[pt-return-mechanics]] cannot explain an investor return without it; [[pt-cash-and-constraints]] cannot explain why a profitable company refuses to fund a migration; [[pt-valuation-and-design]] cannot connect either to architecture. If one chapter here is worth reading twice, it is this one.
 
-## Revenue, Earnings and Cash Are Different
+## Revenue, Earnings and Cash Are Three Different Things
 
 **Revenue** is the income a business recognizes from selling its products or services during a period. It is not necessarily cash received during that period: a customer might pay later, or pay in advance for a service delivered over time.
 
 **Profit**, also called earnings, is what remains after the costs included in a particular profit measure. There are several measures because readers want to answer different questions. A measure of operating performance and a measure of the final result for shareholders include different costs.
 
-### Why Introduce EBITDA?
+### EBITDA Strips Out Financing, Tax and Asset History
 
 Revenue shows the scale of sales but leaves out their cost: two companies with identical revenue can have very different operating economics. **Net profit**, the final profit after all income-statement charges, includes those costs but also reflects borrowing, income taxes and asset-accounting charges. Income-tax rates can differ between countries, so higher net profit need not mean that a company serves customers more efficiently.
 
@@ -58,19 +58,21 @@ To understand **cash flow**, we must also examine when customers pay, when suppl
 
 An **adjusted EBITDA** measure adds further specified exclusions to an earnings calculation. Some may improve comparability; others may remove costs that the business will keep incurring. Always request the reconciliation and ask what the measure is intended to explain. The Visma and TeamSystem cases show why the adjective “adjusted” matters.
 
-## Value Is an Estimate About the Business, Not Another Earnings Subtotal
+## A Valuation Is an Estimate, Not a Number You Look Up
 
 **Valuation** estimates what a business or an ownership interest is worth at a particular date, for a particular purpose. A negotiated acquisition price, an investor's estimate for reporting, and a buyer's maximum affordable price answer related but different questions. A technology budget should not treat them as interchangeable facts.
 
-**Enterprise value**, often abbreviated EV, concerns the operating business. **Equity value** concerns shareholders' interests after accounting for other claims. In the book's simplified bridge:
+**Enterprise value**, often abbreviated EV, is what the operating business is worth, before asking who has a claim on it. **Equity value** is what is left for shareholders once the lenders are paid. In the book's simplified bridge:
 
 **Equity value = enterprise value − net debt.**
 
-Net debt is debt minus the cash included in the calculation. If enterprise value is €60 million and net debt is €20 million, equity value is €40 million before other claims and transaction adjustments. A higher company valuation does not put the difference into the company's bank account. The ownership chapter explains why.
+**Net debt** is borrowings minus the cash the business holds. A company that owes €25 million to lenders and holds €5 million in the bank has net debt of €20 million: a buyer inherits the loans but also gets the bank balance, so only the difference changes what the shares are worth.
+
+If enterprise value is €60 million and net debt is €20 million, equity value is €40 million, before other claims and transaction adjustments. A higher company valuation does not put the difference into the company's bank account. [[pt-capital-and-ownership]] explains why.
 
 Valuation methods organize evidence and assumptions; they do not eliminate judgment. The December 2025 IPEV guidelines distinguish the valuation basis, the technique used, and inputs such as EBITDA. Their focus is fair-value reporting for private investments, rather than prescribing a company's strategy or a negotiated deal price. [S52: IPEV valuation guidelines, introduction and section 3](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
-## Three Main Ways to Approach Valuation
+## Three Ways to Put a Number on a Business
 
 The methods below offer a practical orientation. They can be used together, and their usefulness depends on the company and the available evidence. IPEV discusses earnings and revenue multiples, discounted cash flows, and net assets, emphasizing appropriate inputs and comparability. [S52: IPEV valuation guidelines, sections 3.2–3.9](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
@@ -114,53 +116,11 @@ For a software company, adding up historical development expenditure is not a su
 
 The technology implications concern separability and continuity. Who controls the product rights? Can the service operate without its current parent? What shared systems, people and contracts would need replacing? These questions become especially concrete in a carve-out, where a business is separated from a larger organization. [[pt-acquisitions-and-carveouts]] examines that work.
 
-## From Valuation Assumptions to Business Priorities
+## What to Carry Forward
 
-The next step is to translate an investor's explanation of value into an operating hypothesis. “We are valued on growth” is incomplete. Growth in which customers, products or markets? With what retention, contribution and future investment? “We are valued on EBITDA” is also incomplete. Which year's earnings, under which adjustments, and how will the company sustain them?
+Three things survive this chapter. Revenue, earnings and cash are different quantities, and an earnings measure is not a spending budget. A valuation is an estimate made at a date for a purpose, not a fact you can look up. And the method behind a valuation encodes an assumption about what makes the business valuable — growth, repeatable earnings, or separable assets.
 
-If much of the valuation depends on future expansion, management may place greater weight on learning quickly, entering markets, onboarding customers and changing the offering. The company may accept lower current earnings to build those capabilities, provided the cost, funding and evidence justify that choice.
+That last point is where technology enters. An investor who is paying for growth is buying a different future from one paying for steady earnings, and those futures ask different things of a product and its architecture. [[pt-valuation-and-design]] makes that translation, in Part III, once the operating chapters have supplied the vocabulary it needs. [[pt-return-mechanics]] comes first, and shows how company value becomes an investor return.
 
-If much of the valuation depends on established, repeatable earnings, management may place greater weight on cost to serve, reliable operations, support efficiency and predictable investment. A project that releases real recurring cash can be attractive. A project that only improves a reported ratio while increasing future failures or customer losses can undermine the valuation assumption itself.
+*Unfamiliar terms are defined in the [[pt-glossary]].*
 
-Neither priority removes the other. A growth plan with deteriorating unit economics may need cost work urgently. An earnings-focused company whose product is becoming obsolete may need experimentation urgently. The useful distinction is which business uncertainty or constraint currently matters most.
-
-## From Business Priorities to Architecture Choices
-
-The following connections are the manuscript's analysis, not findings that a valuation method has caused a particular architecture in every company.
-
-| Business priority implied by the thesis | Architectural capabilities worth examining | Trade-off to evaluate |
-| --- | --- | --- |
-| Learn which products or markets can grow | Isolated changes, configurable workflows, feature flags, reliable deployment and experiment measurement | Flexibility costs effort; elaborate infrastructure can slow the learning it was meant to enable. |
-| Serve more customers without proportional cost growth | Automated onboarding, capacity management, appropriate tenant isolation and cost visibility | Sharing resources may lower unit cost while increasing coordination or failure exposure. |
-| Improve sustainable earnings and cash generation | Remove duplicate systems, simplify operations, automate repetitive work and retire unused infrastructure | Savings depend on a completed transition; cutting resilience or development can damage future earnings. |
-| Combine acquisitions or prepare a separation | Clear product boundaries, reliable interfaces, portable data and explicit shared-service dependencies | Integration can improve the customer offer but reduce local flexibility and complicate a later separation. |
-
-A growth-oriented company might need modular boundaries because teams must change a few parts of the product independently. That does not automatically require microservices. A modular application with one deployment can be cheaper and easier for its team to operate. Separately deployed services become an option when their specific independence is worth the additional operational work.
-
-An earnings-oriented company might consolidate infrastructure or remove overlapping tools. That does not justify a blanket preference for the lowest immediate cost. A reliable managed service can cost more on an invoice while reducing the total work needed to operate the product. Conversely, a commitment that lowers this year's hosting price may limit the ability to shrink or change later.
-
-Architectural flexibility is therefore a choice about which changes to make easier, at what cost. Efficient architecture is a choice about the total resources needed to deliver an acceptable outcome. Both require a view of the company's future work.
-
-## A Small Investment Can Look Different Through Each Lens
-
-Consider fictional Larkspur, which sells workflow software. Its customer onboarding requires repeated manual setup. A proposed change costs an additional €200,000 in cash now and is expected to avoid €100,000 of annual external setup costs after a one-year implementation. Assume those payments really can be avoided; releasing employee time alone would need a different calculation.
-
-An earnings discussion can examine the recurring cost reduction and its effect on the relevant earnings measure. A cash discussion must include the initial payment, the year's wait and the timing of savings. A growth discussion asks whether easier onboarding also removes a constraint on selling and serving more customers. An architecture discussion asks which configuration or integration boundaries would deliver the improvement without a much larger rewrite.
-
-These are complementary views of one proposal. The first €100,000 annual saving would arrive during the second year, not immediately after approval. At this simplified rate, cumulative undiscounted savings would recover the €200,000 outlay after two full years of savings, about three years after the initial investment. That is a **simple payback** calculation; it ignores tax, discounting, timing within each year and uncertainty.
-
-A multiple-based illustration can be tempting: at an unchanged 10× EBITDA multiple, €100,000 of additional annual EBITDA corresponds to €1 million of enterprise value. But that is a sensitivity calculation, not an independently established project value. It assumes the saving is sustainable, the relevant EBITDA definition reflects it, the multiple remains unchanged and other effects do not offset it. The initial investment also affects cash and potentially net debt. Adding both that €1 million and the present value of the same future savings would double-count the benefit.
-
-If Larkspur cannot fund the first year, the project may be economically attractive and currently infeasible. It could phase the work, seek funding, or choose another intervention. Valuation does not remove the financing constraint.
-
-## Agree on the Decision Before Choosing the Design
-
-A useful conversation among the CEO, CFO, product leader, CTO and Technology Principal should establish five things:
-
-1. **The value assumption:** which customer, earnings, cash or risk outcome matters, and why it matters to the investment thesis.
-2. **The operating requirement:** what the company must do differently to achieve it.
-3. **The technical options:** the smallest credible interventions, their dependencies and the capability they preserve or sacrifice.
-4. **The funded transition:** spending, people, disruption and downside cash needs before benefits arrive.
-5. **The review evidence:** what would justify expansion, revision or stopping the work.
-
-For architecture proposals, those answers belong in the decision record, alongside the technical reasoning. The design should remain defensible if growth is slower, the valuation multiple falls, or ownership lasts longer than planned. [[pt-engineering-and-architecture]] applies this discipline to technical debt and engineering effectiveness; [[pt-return-mechanics]] shows how company value becomes an investor return.

@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: How Does Company Valuation Shape Technology Decisions?
+# Spec: A Valuation Is an Estimate, Not a Fact
 
 ## Intent
 
@@ -41,6 +41,8 @@ Test the explanations with a technical reader new to finance. Add an independent
 S06–S07 for earnings and development-accounting distinctions; S52 for IPEV's December 2025 valuation guidelines; S53 for Damodaran's growth-company value drivers. Calculations and architecture examples are fictional teaching examples.
 
 ## Changelog
+
+- 2026-09-13: Readability pass after the Part III split. Intro rewritten (352 → 157 words): the old hook opened on a CTO/product-leader architecture choice, which no longer belongs to this chapter, and is replaced by "'The company is worth €60 million' sounds like a fact. It is not." Third KEY POINT, tags, summary.md and comic panels 4–6 all realigned from architecture to valuation, since that material now lives in [[pt-valuation-and-design]].
 
 - 2026-09-12: Add the author's requested rationale for introducing EBITDA, including tax, financing and asset-accounting differences; keep the explanation compact and align shorter adaptations.
 - 2026-09-12: Specification written before the new article and adaptations.

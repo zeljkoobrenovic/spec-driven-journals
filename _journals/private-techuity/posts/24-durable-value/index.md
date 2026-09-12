@@ -1,5 +1,5 @@
 ---
-title: What Would Count as Durable Success?
+title: Durable Success Is What Remains After the Investors Leave
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Synthesize empirical counterevidence, distribution of gains and losses, post-exit outcomes, and conditions for a defensible ownership strategy.
@@ -19,6 +19,8 @@ tags: private equity, technology leadership, Part VI
 Durable success means that a company can continue creating useful outcomes after the immediate intervention and, where relevant, after the owner exits. It includes economic viability, the ability to reinvest, operational capability, and the distribution of benefits and burdens.
 
 This definition is the manuscript's proposed evaluative standard. It is deliberately broader than investor return. It does not assume that every stakeholder benefits from every decision or that a difficult restructuring is always avoidable.
+
+This is the final chapter, and it does what the four cases cannot do individually: sets them against the empirical research, asks who gained and who bore the cost, and states the conditions under which the whole arrangement is defensible. Everything earlier in the book describes how ownership works. This chapter asks whether it worked.
 
 The central argument is conditional: private equity can support durable product and technology value when the investment thesis, financing, governance, and company capabilities fit together. It can undermine that value when returns depend on exhausting capabilities, transferring unrecognized costs, or maintaining assumptions the evidence has invalidated.
 
@@ -50,7 +52,7 @@ This is useful because it makes the next ownership period an object of study. It
 
 The Skype case makes a related temporal point. A valuable sale and later product retirement can both be true without one event providing a complete causal explanation of the other. The lesson is to keep the observation window explicit.
 
-## A Success Account With Several Columns
+## Success for Whom?
 
 | Perspective | Evidence of progress | A question that can overturn the story |
 | --- | --- | --- |
@@ -62,7 +64,7 @@ The Skype case makes a related temporal point. A valuable sale and later product
 
 These columns are not an additive score. A gain for one group does not mathematically offset harm to another. Some decisions involve genuine trade-offs that governance must make explicit.
 
-## Conditions Worth Testing
+## What a Durable Plan Looks Like
 
 A durable ownership plan begins with a credible customer and business thesis. It prices the investment needed to execute that thesis and leaves room for plausible downside conditions. It assigns decisions clearly and allows inconvenient evidence to change the plan.
 
@@ -78,4 +80,6 @@ They cannot control the capital markets, remove every conflict, or guarantee tha
 
 The Productscapes concept earns its place if it helps that work. Its test is whether the investment partnership and technology capability become more useful, more accountable, and better able to learn. Attractive maps and extensive service catalogues are insufficient.
 
-This manuscript should evolve in the same way. Retain hypotheses, record failed explanations, improve cases with independent evidence, and revisit claims after exits. The book's lasting contribution can be a disciplined way to reason about ownership and technology when neither optimism nor suspicion is an adequate substitute for understanding.
+Durable value is what remains when the investors have gone: a company that can still serve its customers, fund its own future, and meet what it owes. A good exit is evidence about one of those and proof of none. The discipline this book argues for is simply to keep asking which — and to accept that neither enthusiasm about private equity nor suspicion of it is a substitute for looking.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

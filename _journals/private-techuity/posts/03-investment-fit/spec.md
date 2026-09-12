@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: Which Kind of Capital Fits This Company?
+# Spec: Capital Should Fit the Company's Problem
 
 ## Intent
 
@@ -44,6 +44,8 @@ Evidence gaps and chapter-specific next research are tracked in the separate edi
 The supplied book brief establishes scope. Public citations appear in the article and bibliography. Private provenance is recorded separately in _research/input-reading.md and is excluded from the site configuration.
 
 ## Changelog
+
+- 2026-09-13: Readability pass. Intro tightened 119 → 104 words and cut from three overlapping paragraphs to two — paragraphs 1 and 2 had both argued "capital should fit the problem." Closing no longer restates the opening; it now ends on the question to ask instead. Last surviving question heading made declarative. Added the chapter's only figure (€4m vs €1m of interest against €10m EBITDA, consistent with the bridge in [[pt-cash-and-constraints]]), since reviewers noted this chapter sat between two numeric chapters with no arithmetic of its own.
 
 - 2026-09-12: Add the author-requested ai-notes KEY POINTS opening; preserve article-specific conclusions and caveats.
 

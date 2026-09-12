@@ -1,5 +1,5 @@
 ---
-title: Why Can a Profitable Company Still Run Out of Room?
+title: A Profitable Company Can Still Run Out of Cash
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Understand why positive earnings can coexist with too little cash for the company’s technology plan.
@@ -16,17 +16,15 @@ tags: private equity, technology leadership, Part I
 > * **Accounting does not remove the cost of work.** Recording development as an asset changes its earnings treatment; the company still pays for it.
 
 <br>
-The board sees a growing measure of operating earnings. The engineering team is told there is no money for an essential migration. Both observations can be true.
+The board sees a growing measure of operating earnings. The engineering team is told there is no money for an essential migration. Both are true at once, and the gap between them is where most technology budget arguments are actually lost.
 
-The measure is **EBITDA: earnings before interest, taxes, depreciation and amortization**. Depreciation and amortization allocate the cost of certain assets across accounting periods. By leaving these charges, financing costs and tax out of the earnings calculation, EBITDA provides a particular view of performance. It does not remove the need to pay interest, settle taxes, replace assets, fund software development, or finance working capital. The SEC also distinguishes EBITDA from measures with additional adjustments, which should be labeled accordingly. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures)
+[[pt-valuation-and-architecture]] distinguished earnings from cash in principle. This chapter turns that into a line-by-line descent from the headline number to the money a company can actually spend — the single most useful financial tool a technology leader can learn, because it converts "technology needs investment" into a conversation about timing, competing obligations and financial room.
 
-The bridge between reported performance and available cash is one of the most useful financial tools a Technology Principal can learn. It turns “technology needs investment” into a discussion about timing, competing obligations, and financial room.
+Two terms carry the example. **Capital expenditure** is spending recorded as an asset rather than a cost of the year — equipment, or software development that qualifies. **Working capital** is money tied up in trading: customers who have not paid yet, stock on the shelf, less what the company itself still owes suppliers. Growth makes it larger, not smaller, because you pay to serve customers before they pay you.
 
-Two other terms help read the example. **Capital expenditure** is spending recorded as an asset, such as equipment or qualifying software development. **Working capital** concerns resources tied up in day-to-day trading, such as customer receivables and inventory, partly financed by amounts owed to suppliers. Growth can consume cash if customers pay after the company has paid to serve them. Neither an earnings target nor a valuation increase supplies that missing cash.
+## From Earnings to the Cash You Can Actually Spend
 
-## A Cash Bridge You Can Challenge
-
-The following is a fictional annual planning example, in millions of euros. It is a simplified management model rather than a statutory cash-flow statement. EBITDA already includes expensed payroll and ordinary operating costs; capitalized development is listed separately to avoid pretending that those cash payments have disappeared.
+Take Larkspur, the fictional scheduling-software company from [[pt-investment-fit]], now a few years past its buyout and carrying the borrowing that funded it. Its annual planning example follows, in millions of euros. This is a simplified management model rather than a statutory cash-flow statement. EBITDA already includes expensed payroll and ordinary operating costs; capitalized development is listed separately to avoid pretending those cash payments have disappeared.
 
 | Cash bridge | €m |
 | --- | ---: |
@@ -39,31 +37,42 @@ The following is a fictional annual planning example, in millions of euros. It i
 | Required debt principal repayment | −1.5 |
 | Remaining cash before other movements | 0.5 |
 
-A €1 million initiative needs a funding decision even though EBITDA is €10 million. It might displace another investment, require borrowing or equity, or be staged over time. Calling the constraint short-term thinking does not resolve it. Neither does declaring the initiative unaffordable without examining whether it protects future cash.
+Larkspur's engineering leader wants €1 million for the onboarding automation. EBITDA — operating earnings before interest, tax and the asset-accounting charges — is €10 million. **After everything the business is already committed to, €0.5 million is left.** The initiative might displace another investment, require borrowing or equity, or be staged over time. Calling the constraint short-term thinking does not resolve it. Neither does declaring the initiative unaffordable without examining whether it protects future cash.
 
-Working capital is money tied up in the operating cycle. A company can recognize revenue before collecting invoices, or pay suppliers before customers pay it. Annual subscription prepayments can produce cash before the associated revenue is recognized. These timing differences can be economically helpful while still creating future service obligations.
+The working-capital line is the one engineers most often miss. Larkspur grew, so more customers owed it money at year end than at the start — about €1 million more invoiced but not yet collected. That is real cash, earned and unavailable, and growth made it larger rather than smaller.
+
+More generally, working capital is money tied up in the operating cycle. A company can recognize revenue before collecting invoices, or pay suppliers before customers pay it. Annual subscription prepayments work the other way and produce cash before the revenue is recognized. These timing differences can be economically helpful while still creating future service obligations.
 
 ## Debt Changes the Consequences of Being Wrong
 
-Interest is a cost of borrowing. Principal repayment returns the borrowed amount. A maturity date can require refinancing even if ordinary interest payments have been made. Covenants are contractual conditions; some test financial ratios, while others restrict actions. Their definitions and consequences must be read in the actual financing documents.
+Interest is a cost of borrowing. Principal repayment returns the borrowed amount. A maturity date can require **refinancing** — replacing the loan with a new one — even if every interest payment has been made on time.
 
-A simple downside scenario illustrates the operating significance. Suppose €60 million of floating-rate debt costs 6% annually: interest is €3.6 million. At 9%, it becomes €5.4 million. The €1.8 million difference can consume more cash than an entire technology initiative. If EBITDA also falls, the company faces simultaneous pressure from weaker earnings and higher financing costs. This is arithmetic under stated assumptions, not a forecast of interest rates.
+**Covenants** are contractual conditions attached to borrowing. A common one caps net debt at a multiple of EBITDA, say 5×. If EBITDA falls far enough that the ratio breaches the cap, the lender gains rights it did not have the day before: it can charge fees, impose conditions, block spending, or demand repayment. **This is why one bad quarter can freeze a migration budget that was approved in the last one.** Exact definitions and consequences live in the financing documents, and they vary.
+
+A simple downside scenario illustrates the operating significance. Suppose a company carries €60 million of **floating-rate debt** — borrowing whose interest rate moves with the market, so the cost can rise without anything changing inside the business. At 6% annually, interest is €3.6 million. At 9%, it becomes €5.4 million. (These are round numbers for the rate illustration, not Larkspur's €4.0 million above.) The €1.8 million difference can consume more cash than an entire technology initiative. If EBITDA also falls, the company faces simultaneous pressure from weaker earnings and higher financing costs. This is arithmetic under stated assumptions, not a forecast of interest rates.
 
 A lender's leverage calculation may use a different EBITDA definition from management's operating report. An anticipated acquisition synergy might be permitted in one calculation but remain absent from actual cash generation. Leaders should know both the contractual measure and a conservative view of the business's ability to pay.
 
 This is why a technical value-creation plan should include a downside funding path. Which work continues during a revenue miss? Which commitments cannot be unwound? What is the latest date to act before a dependency becomes a crisis? A roadmap without these answers assumes a financial environment the company may not have.
 
-## Accounting Can Change the Picture Without Changing the Work
+## Accounting Changes the Picture, Not the Work
 
 Under IAS 38, research expenditure is expensed; development expenditure that meets specified criteria is recognized as an intangible asset. The accounting treatment depends on the facts and applicable standards. It is not a discretionary device for meeting an EBITDA target. [S07: IAS 38 overview](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/)
 
-In a fictional illustration, two otherwise identical presentations contain €1 million of development cash spending. One recognizes it as an expense; the other properly capitalizes eligible development. Before subsequent amortization, the EBITDA presentation differs, but the cash payment is the same. A technology leader who reports an EBITDA improvement should ask whether the work became more effective, whether accounting changed, or both.
+Take Larkspur's €1 million of development spending, presented two ways:
+
+| | Expensed | Capitalized |
+| --- | ---: | ---: |
+| EBITDA | 9.0 | 10.0 |
+| Cash paid out | −1.0 | −1.0 |
+
+The same engineers did the same work and the same €1 million left the bank. Only the earnings presentation moved — by a full million, before later amortization. A technology leader who reports an EBITDA improvement should ask whether the work became more effective, whether accounting changed, or both.
 
 The point is not that capitalization is suspicious. It is that useful performance comparisons reconcile the policy and include the cash needed to sustain the product. A company investing responsibly can look weaker on a short-period earnings measure than a company deferring necessary work.
 
-Adjusted earnings require a similar discipline. Separating an unusual restructuring charge can help analysis. Repeatedly excluding the costs of recurring acquisitions can obscure the economics of a business whose strategy depends on recurring acquisitions. Maintain a reconciliation, examine recurrence, and ask what expenditure the next owner will still need.
+Adjusted earnings require a similar discipline; the SEC distinguishes plain EBITDA from measures carrying further adjustments, which need their own label and reconciliation. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures) Separating an unusual restructuring charge can help analysis. Repeatedly excluding the costs of recurring acquisitions can obscure the economics of a business whose strategy depends on recurring acquisitions. Maintain a reconciliation, examine recurrence, and ask what expenditure the next owner will still need.
 
-## Financial Efficiency and Operating Resilience
+## Efficiency and Resilience Pull Against Each Other
 
 Debt can make an attractive acquisition possible and sharpen attention to cash. It can also reduce the capacity to withstand surprises. The evidence does not justify assuming that sponsor ownership always removes financial support: Bernstein, Lerner, and Mezzanotti found greater investment and financing inflows among PE-backed companies relative to peers during the 2008 crisis in their study, with stronger effects when sponsors had more resources. That is evidence of a conditional support mechanism, not a promise of rescue. [S10: Bernstein et al., crisis study](https://www.nber.org/system/files/working_papers/w23626/w23626.pdf)
 
@@ -79,4 +88,6 @@ A useful proposal can offer a minimum continuity option, a staged improvement, a
 
 The question becomes: which plan gives the company the strongest feasible ability to serve customers and meet its obligations? That is more demanding than maximizing an earnings measure. It is also a much stronger basis for arguing that technology deserves investment.
 
-For examples of the same distinction at company scale, see [[pt-visma]] and [[pt-toys-r-us]].
+A company can be profitable on every measure the board reviews and still have no money for the migration it needs. That is not short-termism or obstruction — it is interest, tax, capital spending, working capital and repayment, in that order, before anything reaches engineering. Learn the bridge and you can argue about the right thing. For the same distinction at company scale, see [[pt-visma]] and [[pt-toys-r-us]].
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

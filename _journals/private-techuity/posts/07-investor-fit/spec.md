@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: How Can Leaders Assess an Investor Partnership?
+# Spec: Judge an Investor by Their Behavior Under Pressure
 
 ## Intent
 

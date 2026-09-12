@@ -1,5 +1,5 @@
 ---
-title: What Should Be Integrated, and What Must Be Separated?
+title: A Transaction Changes Ownership Before It Changes Operations
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Explain buy-and-build, integration choices, transition services, separation costs, dependencies, and customer continuity.
@@ -20,7 +20,9 @@ An acquisition can add customers and products immediately. It does not immediate
 
 For product and engineering leaders, both situations create the same underlying challenge: define which capabilities must work across a new boundary, who owns them, and what transition makes that possible. The transaction date is a change in ownership. Operational readiness is a separate condition.
 
-## What Is the Acquisition Thesis?
+This chapter closes Part III because it stresses everything in it at once. An acquisition or separation tests the product logic, the architecture, the cost model, the security posture and the organization simultaneously — and does so against a date someone else set. [[pt-teamsystem]] shows what accumulates when that is done repeatedly.
+
+## Start With the Acquisition Thesis
 
 A **buy-and-build** strategy uses a company as a base for further acquisitions. The proposed value may come from distribution, product breadth, capabilities, purchasing, overhead, or consolidation of fragmented markets. It can also depend partly on valuation differences between the platform and smaller acquisitions. That financial mechanism must be distinguished from **operating synergy**, a benefit created by combining activities, such as lowering a shared cost or improving the customer offering.
 
@@ -41,7 +43,7 @@ These are design options, not maturity levels. A company can sensibly choose dif
 
 The Skype case in [[pt-hilton-and-skype]] shows why ownership of essential technology can be a transaction issue. Its pre-sale filings describe the settlement and acquisition of core intellectual property alongside product and infrastructure investment. [S27: Skype registration filing](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm) The lesson is to inspect the capability boundary, not just the source code.
 
-## Integration Consumes the Capacity It Promises to Improve
+## Integration Consumes the Capacity It Promises to Free
 
 The same engineers may be needed to deliver the current roadmap, maintain service, support due diligence for the next acquisition, and integrate the last one. A value-creation plan that allocates their time independently to every initiative creates fictional capacity.
 
@@ -55,7 +57,7 @@ A division can rely on a parent for identity, networks, finance systems, procure
 
 A **transition services agreement**, or TSA, can provide temporary access to services after separation. Its scope, price, duration, service levels, and exit conditions need examination. A TSA buys time; it does not perform the separation.
 
-The technology plan should distinguish Day 1 continuity, the move to independent operation, and later improvement. Trying to optimize every system before separation can put continuity at risk. Conversely, reproducing the parent's setup without questioning its cost can create a permanently expensive business.
+The technology plan should distinguish **Day 1** continuity — the first day of separate ownership —, the move to independent operation, and later improvement. Trying to optimize every system before separation can put continuity at risk. Conversely, reproducing the parent's setup without questioning its cost can create a permanently expensive business.
 
 In a fictional example, a division's allocated IT cost is €400,000 a year. Standalone operations require €700,000, plus €300,000 of separation work. The acquisition model must account for the €300,000 recurring difference and the one-time investment. Describing the division's historical margin without that bridge would overstate the resources available to the new company.
 
@@ -75,4 +77,6 @@ Finance should reconcile acquired earnings, organic change, one-time costs, and 
 
 The Principal's role is to make the transition feasible and the claims inspectable. They can bring patterns and specialists across acquisitions, but each company still needs an accountable owner and a coherent operating plan.
 
-A successful acquisition leaves customers with useful products and the combined business with capabilities it can sustain. A successful carve-out leaves a company able to operate independently. The legal completion matters; neither outcome follows from it automatically.
+Signing is a date. Integration and separation are years. The deal is done when customers still have a product that works and the company can run it without the seller on the phone — not when the lawyers file.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

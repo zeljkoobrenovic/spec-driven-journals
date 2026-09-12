@@ -1,5 +1,5 @@
 ---
-title: What Must the Organization Be Able to Do?
+title: Capability Includes How People Decide and Coordinate
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Connect leadership, talent, nearshoring, decision flow, and organizational health to sustainable execution.
@@ -18,9 +18,11 @@ tags: private equity, technology leadership, Part III
 <br>
 A company buys a new delivery tool, adopts a new architecture, and recruits engineers in a lower-cost location. Six months later, decisions still wait for the founder, priorities still change every week, and the same two people resolve every production problem.
 
-The company has changed its resources without changing the operating constraints. Technology capability includes the organization's ability to decide, coordinate, learn, and sustain the work. Those abilities need to be part of the investment case.
+The company has changed its resources without changing the operating constraints. Technology capability includes the organization's ability to decide, coordinate, learn, and sustain the work.
 
-## Design Around the Work
+The preceding chapters costed systems, infrastructure, risk and AI. This one covers the constraint that defeats all four when it is ignored: the people and the way decisions move among them. An investment case that funds the work without funding the capacity to do it has not been completed.
+
+## Follow One Piece of Work Through the Company
 
 Start with the customer and operating work the company needs to perform. Who learns about customer needs? Who decides priorities? Who can release a change? Who supports it? Who resolves conflicts across product boundaries?
 
@@ -28,7 +30,7 @@ An organization chart can show reporting lines while concealing these dependenci
 
 A deliberate review step may prevent expensive mistakes. An unclear decision boundary may cause avoidable delay. Distinguishing the two is more useful than announcing that the organization needs more autonomy or more control.
 
-## Leadership Assessment Should Follow the Company's Needs
+## Assess the Job Before You Assess the Leader
 
 A leader who built an early product may need support to lead a larger organization. A leader with large-company experience may introduce processes a small business cannot afford. Neither background establishes fit by itself.
 
@@ -36,7 +38,7 @@ Describe the required work: product judgment, technical direction, operational r
 
 The supplied role brief emphasizes technical credibility, commercial understanding, people planning, and influence where resources are outside the role's direct control. [P01: supplied role brief](pt-bibliography.html) For the Principal, this means helping design leadership conditions as well as assessing individuals.
 
-## The Economics of Nearshoring and Offshoring
+## Cheaper Locations Do Not Automatically Save Money
 
 Nearshoring and offshoring refer to locating work in other countries, with “near” generally describing some geographic, time-zone, or cultural proximity. Those labels do not determine the delivery model. A company can hire employees, use a supplier, establish a captive center, or combine arrangements.
 
@@ -46,7 +48,7 @@ In a fictional case, replacing €1 million of annual external development with 
 
 A more important question is whether the work can be transferred coherently. If every decision depends on a small group elsewhere, lower hourly cost may come with more waiting and rework. A bounded product or service responsibility, adequate context, and a clear escalation path can matter more than geography.
 
-## Preserve Knowledge During Change
+## Preserve the Knowledge Only a Few People Hold
 
 Knowledge is not fully captured in code or documentation. It includes why a customer behaves differently, which migration failed before, and which operational symptoms precede a problem. Restructuring can remove this knowledge before a replacement team knows it is missing.
 
@@ -70,10 +72,12 @@ A group selling separate niche products may benefit from shared finance definiti
 
 The Principal can facilitate this design but should avoid becoming the permanent coordinator of every dependency. If the company requires the Principal at every planning meeting, the intervention may have created reliance rather than capability.
 
-## Make the People Plan Part of the Value Plan
+## The People Plan Belongs in the Value Plan
 
 For every material initiative, identify the skills, leadership time, and operating capacity required. Distinguish hiring from capability: a vacancy filled does not mean a new team can perform independently. Include the period of learning in the economic and delivery plan.
 
 When cost reduction is necessary, state what work will stop and which risks remain. When growth requires more capacity, explain the customer demand and constraints that justify it. When a leader needs development, define the support and evidence of progress.
 
-A durable organizational intervention leaves people better able to make and carry out the company's decisions. It may involve difficult changes. Its quality should be judged through the resulting capability and the treatment of affected people, not the neatness of the new organization chart.
+A reorganization is easy to draw and hard to judge. The test is not whether the new chart is tidier, but whether decisions that used to stall now get made — and how the people affected were treated on the way there. Both parts of that sentence matter.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

@@ -1,5 +1,5 @@
 ---
-title: How Does Support Stay Useful Through Ownership and Exit?
+title: Useful Support Changes Decisions, Through to Exit
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Develop ongoing intervention, portfolio collaboration, confidential coaching, and credible exit evidence.
@@ -20,9 +20,11 @@ An **exit** is a sale or other arrangement through which an investor realizes so
 
 A Technology Principal should help the company make progress without turning every concern into a permanent central program. The working pattern needs to distinguish oversight, coaching, specialist delivery, and preparation for a future buyer.
 
+This chapter covers the long middle that the diligence and hundred-day literature usually skips — the years between the plan and the sale — and then the sale itself. It closes Part IV by asking what evidence survives the handover, which is the same question [[pt-durable-value]] later asks of the whole arrangement.
+
 ## A Regular Conversation With a Purpose
 
-The Productscapes input proposes a CTO partnership organized around what changed, the hardest decision, a blocked initiative, and the help needed. This is a reasonable starting hypothesis for a recurring conversation. Its frequency and format should be agreed with the CTO and adjusted to the company's situation.
+The Productscapes hypothesis proposes a CTO partnership organized around what changed, the hardest decision, a blocked initiative, and the help needed. This is a reasonable starting hypothesis for a recurring conversation. Its frequency and format should be agreed with the CTO and adjusted to the company's situation.
 
 A meeting is useful if it improves a decision, resolves a constraint, or provides information needed for legitimate oversight. If neither participant can explain what it changes, reconsider the cadence. Attendance is evidence of participation, not evidence of trust or value.
 
@@ -36,7 +38,7 @@ If the company lacks a specialist, obtain one under an agreed scope. If manageme
 
 An escalation should state the decision required, the latest useful decision date, and the consequences of delay. “The program is red” is insufficient. The recipient needs to know what action would change the outcome and who will carry it out.
 
-## Portfolio Collaboration Is a Service to Participants
+## Portfolio Collaboration Must Earn Its Time
 
 A peer community can provide experience and access that a company would struggle to assemble alone. It can also become an event series organized around the manager's need to demonstrate activity.
 
@@ -76,4 +78,6 @@ The firm's learning should not stop at the sale. Where public evidence or author
 
 This is not a demand for indefinite control over a former portfolio company. It is a discipline of checking the durability claims made during ownership. Later deterioration does not automatically prove that the prior owner failed; market conditions and subsequent decisions matter. Later success does not prove that every prior intervention was necessary.
 
-The Principal's long-term contribution is an operating practice that can revise its beliefs. Useful support should leave a stronger company and a better-informed firm, with the evidence to distinguish what it knows from what it hopes was true.
+The contribution that lasts is a way of working that can admit it was wrong. Keep the evidence that would show it — otherwise, a few years on, nobody can tell what the firm learned from what it merely hoped.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

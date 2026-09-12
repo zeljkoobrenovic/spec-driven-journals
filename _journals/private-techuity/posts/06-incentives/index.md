@@ -1,5 +1,5 @@
 ---
-title: What Do Incentives Really Align?
+title: Shared Ownership Does Not Create Identical Interests
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Examine what management ownership pays for, how rights differ, and whose interests remain outside the arrangement.
@@ -18,6 +18,8 @@ tags: private equity, technology leadership, Part II
 <br>
 “We are all shareholders now” can describe a useful common interest. It can also conceal very different risks, rights, and time horizons.
 
+[[pt-governance]] established who may decide. This chapter asks what makes them want to, and who is left out of that calculation entirely. It is the book's most uncomfortable chapter, because the honest answer is that some interests do not reconcile.
+
 An executive may have most of their wealth and future employment tied to one company. A fund holds several investments. The manager earns fees and may receive **carried interest**, a contractual share of investment profits. Employees without equity can bear reorganization costs without sharing directly in an exit. Customers can depend on a product long after the investor has sold.
 
 Alignment is therefore a design problem, not a property automatically conferred by ownership. Start by asking which behavior an incentive rewards, when it rewards it, and who bears the consequences if the behavior harms someone else.
@@ -32,7 +34,7 @@ In a fictional example, a manager is promised 5% of a pool that participates onl
 
 Ask for scenarios covering a weak exit, a good exit, a refinancing, an additional acquisition funded with equity, and departure before exit. Ask which assumptions change the answer. A percentage without a **waterfall**, the order and formula for allocating proceeds, and a dilution explanation is incomplete information.
 
-## Carry and Company Equity Operate at Different Levels
+## Your Shares and the Fund's Carry Are Two Separate Bets
 
 Company management equity rewards an outcome in a particular company under its own terms. Fund carry is allocated under the fund's profit-sharing arrangements. A successful company can sit within a disappointing fund, and fund economics can differ from what an executive experiences.
 
@@ -50,7 +52,7 @@ The proposed remedy is a small set of connected measures with explicit guardrail
 
 A compensation plan also needs to distinguish outcomes people can influence from conditions they cannot control. It is reasonable for owners to care about exit value. It is much less useful to treat a general fall in market multiples as conclusive evidence that the engineering organization failed.
 
-## Leadership Changes Need a Hypothesis
+## A Leadership Change Needs a Hypothesis
 
 Changing a CTO can be necessary when the company's needs have changed or leadership is ineffective. It can also be a convenient explanation for an unrealistic investment plan. Before recommending replacement, identify the required capability and the evidence of the gap.
 
@@ -58,7 +60,7 @@ Can the leader make sound decisions but lacks product management support? Is del
 
 This is not an argument against accountability. It is an argument for a testable account of what new leadership would change. Recruitment then follows a role design rather than a search for someone willing to repeat the plan more confidently.
 
-## Making Conflicts Discussable
+## Make Bad News Reportable Early
 
 A reporting culture should reward early discovery of a failed assumption. That requires more than asking for transparency. If every admission leads immediately to blame, participants learn to report activity and defer interpretation.
 
@@ -72,4 +74,6 @@ Employees may value stable work, development, fair treatment, and a viable compa
 
 A proposed decision record should therefore include the expected distribution of benefits and burdens. A price increase can improve margin while reducing affordability. A platform consolidation can reduce costs while forcing customers into an inferior migration. Such a decision needs an explicit justification and mitigation, not a claim that enterprise value makes everyone better off.
 
-Better incentives make productive behavior more likely. They cannot guarantee that private returns and stakeholder welfare coincide. The durable-success test in [[pt-durable-value]] keeps that unresolved tension visible throughout the ownership period.
+Better incentives make good behavior more likely. They do not make the interests identical, and no equity plan ever will. Say plainly who gains and who bears the cost of a decision; [[pt-durable-value]] keeps that question open for the whole ownership period.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

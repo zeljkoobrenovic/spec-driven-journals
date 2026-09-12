@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Should Be Integrated, and What Must Be Separated?
+# Spec: A Transaction Changes Ownership Before It Changes Operations
 
 ## Intent
 

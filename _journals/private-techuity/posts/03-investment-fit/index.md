@@ -1,5 +1,5 @@
 ---
-title: Which Kind of Capital Fits This Company?
+title: Capital Should Fit the Company's Problem
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Distinguish venture, growth, buyouts, carve-outs, turnarounds, and alternatives using business needs rather than a mandatory maturity ladder.
@@ -16,11 +16,11 @@ tags: private equity, technology leadership, Part I
 > * **Readiness belongs to the plan and the partnership.** A company can need a revised transaction, a different investor or a different operating plan.
 
 <br>
-The phrase “the next stage is private equity” suggests that every successful company travels along the same financing route. It does not. A profitable specialist business, a rapidly growing product company, a neglected division, and a distressed retailer can all attract private capital for different reasons.
+“The next stage is private equity.” The phrase implies a ladder every successful company climbs in order. There is no ladder. A profitable specialist business, a fast-growing product company, a neglected division and a distressed retailer all attract private capital — for entirely different reasons, on entirely different terms.
 
-Capital should fit the problem the company and its owners need to solve. That problem may be growth, succession, liquidity, separation, restructuring, or a combination. An investment label is useful only after those needs are understood.
+What decides the right arrangement is the problem to be solved: growth, succession, liquidity, separation, restructuring, or some combination. The label comes last. [[pt-how-companies-get-money]] sketched the alternatives; this chapter tells them apart, so you can locate your own company among them. It is also the last chapter before the book narrows to buyouts for good.
 
-## Business Needs Before Investor Categories
+## Start With the Work, Not the Investor Category
 
 A founder may want personal liquidity while the company has no need for new cash. Another founder may want to retain control and fund expansion. An executive team may need to build independent operations after leaving a corporate parent. A lender might demand a restructuring before additional product investment is possible.
 
@@ -37,13 +37,13 @@ These situations differ along several dimensions: uncertainty about demand, pred
 
 Venture capital is part of private equity in the broad asset-class sense. In everyday conversation, “VC versus PE” often compares venture investing with buyouts. This manuscript uses the narrower buyout meaning only when the context makes it clear.
 
-## A Fictional Company at Three Different Moments
+## The Right Capital Changes as the Company Changes
 
 Consider Larkspur, a fictional company selling scheduling software to maintenance businesses. At one moment it has promising interviews and a prototype. It does not know whether enough customers will pay. Debt with fixed repayments would place a time constraint on uncertain learning. Equity might suit the risk better, but only if the potential outcome fits the investor's return expectations. Funding through consulting income or customer prepayments could also be sensible.
 
 At another moment, Larkspur has a repeatable product and a backlog of implementation work. Growth investment might fund onboarding automation and commercial expansion. The important question is whether demand is the bottleneck or whether the company is already selling more than it can deliver. More salespeople can worsen an implementation constraint.
 
-At a third moment, the founder wants to retire. Larkspur generates cash and has a capable management team. A buyout could support succession and provide ownership continuity. It could also introduce borrowing that competes with a needed product transition. The same software can therefore be part of a sound or fragile transaction depending on financing and governance.
+At a third moment, the founder wants to retire. Larkspur generates cash and has a capable management team. A buyout could fund the succession and keep the business intact — and the same transaction could introduce borrowing that competes directly with a product transition the company still needs. **The arithmetic decides which.** A deal whose interest payments consume €4 million of €10 million in operating earnings leaves a different company from one that consumes €1 million, even though both are described as "a buyout." [[pt-cash-and-constraints]] follows that money down to what is actually left. The same software can be part of a sound or a fragile transaction, depending on the financing and governance around it.
 
 These are alternative situations, not a prescribed chronology. A business may remain founder-owned indefinitely, accept a minority investor, sell to a strategic buyer, become employee-owned, or return to different forms of ownership. The options available depend on circumstances and jurisdiction.
 
@@ -55,7 +55,7 @@ Similarly, a founder retaining shares does not mean the founder retains the same
 
 For technology planning, request the relevant decision boundaries in understandable language. Who approves material hiring? Who funds a product transition if the original plan proves wrong? Which decisions need board or shareholder consent? Legal advisers should resolve contractual interpretation; the operating team still needs to know how to work within the resulting boundaries.
 
-## Fit Includes the Investor's Own Constraints
+## The Investor Has Constraints Too
 
 A fund may understand an industry well but have insufficient capacity for follow-on funding. It may have the right capital but little practical support. It may have operating experts whose experience comes from companies much larger than the target. These are hypotheses to test through specific evidence, not conclusions to infer from a brand.
 
@@ -63,10 +63,12 @@ The survey by Gompers, Kaplan, and Mukharlyamov asked 79 private equity investor
 
 For an experienced leader, investor fit is therefore a two-sided assessment. Can the company plausibly meet the investment expectations without damaging its economic engine? Can this investor supply the capital, decisions, and support required when the plan encounters difficulty?
 
-## A Better Conversation About Readiness
+## Readiness Is a Better Question Than Ambition
 
 Rather than asking whether the company is ready for PE, ask what must be true for the proposed arrangement to work. Demand must support the growth plan. The organization must be able to absorb change. The financing must leave room for the required investment and a credible downside. The owners must agree on control and time horizons.
 
-The answer can be that the transaction should change, that the plan should change, or that the company should choose a different route. Private equity is one ownership mechanism. Its suitability follows from the work to be done and the risks to be carried, not from a company's ambition to look like the next company in a funding sequence.
+Any of three answers can be correct: the transaction should change, the plan should change, or the company should stay as it is. A business that decides against outside ownership has not failed a test — it has answered the question.
 
-The cash test follows in [[pt-cash-and-constraints]]. The practical partnership assessment appears in [[pt-investor-fit]].
+So the useful question is never "are we ready for private equity?" It is **"what work must this business do next, and which owner makes that work possible?"** The cash test follows in [[pt-cash-and-constraints]]; the partnership assessment in [[pt-investor-fit]].
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

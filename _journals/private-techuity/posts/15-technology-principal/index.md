@@ -1,5 +1,5 @@
 ---
-title: What Is the Technology Principal Actually Responsible For?
+title: The Technology Principal Works for the Owner
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Ground the role in the supplied description while distinguishing a specific brief from universal authority or industry practice.
@@ -16,15 +16,25 @@ tags: private equity, technology leadership, Part IV
 > * **Credibility runs in both directions.** Understand the investor’s economics and the company’s work, and judge support by the decisions and outcomes it improves.
 
 <br>
-An **investment thesis** explains why an investment should create value, what must change in the business, and which assumptions must hold. A Technology Principal works at the boundary between that thesis and a company's ability to carry it out. The role becomes valuable when it improves the quality of decisions and helps the company build the capability those decisions require.
+**A Technology Principal is employed by the investment firm — the owner — not by any of the companies it owns.** They sit on the investor's payroll and the investor's side of the table. That single fact explains most of what follows, including the uncomfortable parts.
 
-**Sourcing** means finding and evaluating potential investments. **Technical due diligence** investigates a company’s product and technology before an investment decision. **Exit preparation** helps make the business and its evidence ready for a possible sale or other realization. These activities ask different questions even when they involve the same systems and people.
+The contrast with a CTO is sharp:
 
-The supplied role description grounds this book in work across the investment lifecycle: market and sourcing input, technical diligence, advice to investment decision-makers, operational support, leadership recruitment, portfolio learning, and preparation for sale. It also explicitly includes AI and nearshoring support and the ability to influence resources outside the role's control. The brief is a private, undated two-page source; this chapter generalizes its responsibilities and does not reproduce employer-specific details. [P01: supplied role brief](pt-bibliography.html)
+| | CTO | Technology Principal |
+| --- | --- | --- |
+| Works for | One company | The investment firm |
+| Has | Budget, staff, systems | Neither, in any company |
+| Covers | One business, continuously | Many, in bounded episodes |
+| Judged by | Product and platform outcomes | Decisions improved, capability left behind |
 
-That is a specific role brief. It does not establish that every firm uses the title the same way, gives the role the same resources, or delegates company decisions to it.
+No budget, no engineers, no production systems anywhere in the portfolio: influence is the whole instrument. That is a real limit — the role cannot own a roadmap or treat company revenue as its own contribution. It also carries power the title understates, because when the owner controls a company's leadership, a CTO's participation in "voluntary" support is not entirely voluntary, and praise for it is not evidence that it worked.
+
+Parts I to III described this arrangement from inside a company. Part IV changes seats, and this chapter establishes whose job it is before the next three follow it through diligence, the first hundred days, and the exit. The role brief behind it spans that whole lifecycle — one firm's brief, not a universal job definition. [P01: supplied role brief](pt-bibliography.html)
+
 
 ## A Role With Several Customers and One Limited Calendar
+
+Three terms describe the work. An **investment thesis** explains why an investment should create value, what must change, and which assumptions must hold. **Sourcing** is finding and evaluating potential investments. **Technical due diligence** investigates a company's product and technology before the decision is made. The Principal's job is to test the thesis against what a company can actually do — before the money moves, and repeatedly afterwards.
 
 The investment partner needs a judgment about technology's relevance to the investment. The deal team needs material questions resolved within a timetable. The investment committee needs assumptions and conditions it can act on. The CEO and CTO need support that fits the business. The board needs outcome evidence. The exit team needs an account a buyer can examine.
 
@@ -32,7 +42,7 @@ Serving these needs requires translation, but translation alone is insufficient.
 
 The supplied brief's breadth creates a capacity problem. One person cannot be deeply involved in every deal and every portfolio initiative at once. Prioritization is part of the role, not a personal productivity issue to solve by attending more meetings.
 
-## Distinguish Responsibilities From Authority
+## Being Responsible Is Not the Same as Being Allowed to Decide
 
 | Work grounded in the brief | Practical contribution | Boundary to establish |
 | --- | --- | --- |
@@ -45,7 +55,7 @@ The supplied brief's breadth creates a capacity problem. One person cannot be de
 
 The table is an interpretation of the brief, not an employment contract. The role needs an agreed mandate that states where it advises, where it delivers, and where it has formal authority. If asked to act as an interim executive, that should become an explicit assignment with the appropriate accountability and support.
 
-## Credibility Has Two Directions
+## Credibility Runs in Two Directions
 
 Company teams need to believe the Principal understands technical work and will represent its constraints accurately. Investment professionals need to believe the Principal can distinguish material risks from preferences and connect technology to economics.
 
@@ -61,7 +71,7 @@ Each intervention should begin with the company outcome, a sponsor, a scope, and
 
 There are situations where temporary dependence is reasonable: a crisis, an unexpected leadership departure, or a complex transition. It becomes a problem when it is unrecognized and therefore unfunded, ungoverned, or impossible to end.
 
-## Allocate Attention by Materiality and Additional Contribution
+## Spend Attention Where You Add What Others Cannot
 
 A practical portfolio view can rate issues along two dimensions: consequence for the investment or company, and the additional contribution the Principal can make. A major issue may need specialist leadership rather than the Principal's direct delivery. A smaller recurring issue may justify a reusable tool if it consumes substantial company effort across the portfolio.
 
@@ -75,4 +85,6 @@ Economic contribution should be qualified. A Principal may help reduce onboardin
 
 The Productscapes hypothesis in [[pt-technology-capability-as-product]] adds another possibility: judge the role partly by the repeatable capability it leaves behind. Can future engagements use better questions, clearer evidence, and appropriate specialist support without relying on one person's memory?
 
-The role's purpose is therefore both immediate and developmental. It helps a company make the next difficult decision while improving the firm's ability to support similar decisions later. The following chapters turn that responsibility into work across diligence, the first 100 days, execution, and exit.
+The job is to help a company make its next hard decision well, and to leave the firm better at helping the next company. A Principal who is indispensable has failed at the second half. The following chapters turn that into work across diligence, the first 100 days, execution and exit.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Happens When Reinvention Meets Financial Constraint?
+# Spec: Toys R Us: Out of Time, Not Out of Ideas
 
 ## Intent
 

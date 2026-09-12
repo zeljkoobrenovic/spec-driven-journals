@@ -1,5 +1,5 @@
 ---
-title: How Can Technology Support Become a Better Product?
+title: Build Reusable Support Around Recurring Decisions
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Develop a testable capability model with service boundaries, adoption, outcomes, costs, authority, learning, and retirement criteria.
@@ -18,11 +18,13 @@ tags: private equity, technology leadership, Part V
 <br>
 A firm can have excellent technical people and still provide inconsistent technology support. Different deals may receive different questions. Findings from the pre-investment investigation may be lost after the transaction completes. Portfolio leaders may not know what help is available. Lessons may remain in one person's memory.
 
-The Productscapes input proposes a **Technology Value Creation Platform** to address this problem: a repeatable operating capability delivered through people, decision artifacts, specialist access, and supporting tools. It proposes the Technology Principal as its product leader. These are design hypotheses, not descriptions of an implemented firm-wide system. [P02: Productscapes hypothesis](pt-bibliography.html)
+The Productscapes hypothesis proposes a **Technology Value Creation Platform** to address this problem: a repeatable operating capability delivered through people, decision artifacts, specialist access, and supporting tools. It proposes the Technology Principal as its product leader. These are design hypotheses, not descriptions of an implemented firm-wide system. [P02: Productscapes hypothesis](pt-bibliography.html)
+
+[[pt-investment-firm-as-product]] applied product thinking to the firm's whole offering. This chapter narrows to the part a technology leader could actually build, and insists on the discipline that makes the idea falsifiable: small services, honest measures of whether they helped, and a willingness to retire them.
 
 The value of the idea lies in making the support offering understandable, accountable, and capable of learning. Its risk lies in building a catalogue and infrastructure before establishing that companies need the services.
 
-## Three Levels Must Stay Separate
+## Firm, Support Function and Company Are Three Different Things
 
 The investment firm manages capital and ownership relationships. The technology-support capability helps investment and company teams make and carry out decisions. Portfolio companies develop and operate the products their customers buy.
 
@@ -45,7 +47,7 @@ These areas overlap through ownership. Learning does not wait until acceleration
 
 ## Make an Accelerator Small Enough to Use
 
-The input suggests reusable accelerators for areas including AI, engineering effectiveness, leadership, cloud economics, nearshoring, integration, security, and exit readiness. A useful initial version contains a diagnostic, a relevant comparison where available, a decision framework, possible actions, and a way to review the outcome.
+The Productscapes hypothesis suggests reusable accelerators for areas including AI, engineering effectiveness, leadership, cloud economics, nearshoring, integration, security, and exit readiness. A useful initial version contains a diagnostic, a relevant comparison where available, a decision framework, possible actions, and a way to review the outcome.
 
 Take cloud economics. The accelerator might help a CTO and CFO define a service unit, reconcile cost, identify one opportunity, and decide whether to implement it. It does not need a large portal or a universal target percentage. If no comparable benchmark exists, it should say so.
 
@@ -53,7 +55,7 @@ Every accelerator needs a use boundary and a retirement rule. Which companies is
 
 Without these questions, a library can accumulate confident but stale advice. Reuse lowers effort only when the reused material remains appropriate.
 
-## Measure Adoption Carefully
+## Adoption Is a Signal, Not a Verdict
 
 Voluntary requests, repeated use, and earlier involvement in decisions can indicate that participants find the capability useful. They can also reflect owner pressure, limited alternatives, or a need for approval. Adoption is therefore a signal to interpret, not a success verdict.
 
@@ -77,10 +79,12 @@ Preserve definitions and context. Use small cohorts to generate questions rather
 
 A database is justified when repeated decisions need it and simpler records no longer suffice. Before then, a small set of well-maintained decision and outcome records may be the better product. Building technical infrastructure too early can divert capacity from the service the infrastructure is meant to support.
 
-## A Testable Development Path
+## Start Small, and Be Willing to Retire It
 
 Begin with one or two recurring decisions and a small number of willing company partners. Establish the cost of current work and what improvement would look like. Deliver the service manually where practical. Record mistakes, declined requests, and limits alongside successes.
 
 Expand only when there is evidence of useful outcomes and sustainable delivery capacity. A Principal should be able to say that a proposed accelerator was retired because it did not help. That is a product-learning outcome, not an admission that the entire concept failed.
 
-The strongest version of Productscapes is an operating discipline: understand users and affected stakeholders, make the service promise explicit, preserve authority, test contribution, and improve from evidence. If it becomes a diagram of everything the firm could do, it has lost the decision focus that made it valuable.
+The strongest version of Productscapes is small: a few services that people choose to use, with an honest account of whether they helped. The weakest version is a diagram of everything the firm could offer. Being able to retire an accelerator that did not work is the clearest evidence the discipline is real.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

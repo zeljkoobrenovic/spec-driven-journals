@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Do Two Successful Exits Actually Demonstrate?
+# Spec: Two Successful Exits, Two Different Explanations
 
 ## Intent
 

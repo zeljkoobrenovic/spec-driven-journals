@@ -1,5 +1,5 @@
 ---
-title: What Do Two Successful Exits Actually Demonstrate?
+title: Two Successful Exits, Two Different Explanations
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Compare Hilton and Skype using public transaction and operating evidence while separating investor outcomes from causal technology claims.
@@ -20,9 +20,11 @@ Hilton and Skype demonstrate that private equity-backed ownership can end in a v
 
 Hilton combines operating expansion, technology-enabled distribution, a severe downturn, and debt restructuring over a long period. Skype combines a corporate separation, resolution of a core intellectual-property problem, product investment, and a strategic buyer over a much shorter period. Neither can be reduced to “technology modernization created the return.”
 
+Part VI tests the preceding chapters against real companies. These two come first because they are the successes, and because success is the harder case to read honestly: when the outcome is good, every decision along the way acquires a retrospective glow it may not deserve.
+
 The cases below distinguish documented events, interested accounts, and the manuscript's interpretation. Complete fund cash flows and independent evaluations of each technology intervention were not available in the consulted material.
 
-## Hilton: A Financing and Operating Story
+## Hilton: What Happens When You Buy at the Top?
 
 Blackstone’s 2007 acquisition of Hilton was a large **leveraged take-private**: buying a publicly traded company into private ownership using substantial borrowing. A retrospective account in Private Equity International, hosted by Blackstone, describes a $26 billion transaction, a downturn-related writedown, additional capital, room expansion, debt restructuring, a 2013 initial public offering (IPO), a sale of shares onto a public market, and final exit in 2018. This is an industry award account and should be treated as a favorable retrospective, not an independent causal evaluation. [S25: PEI Hilton retrospective](https://www.blackstone.com/wp-content/uploads/sites/2/2019/03/pei_blackstone_hilton.pdf)
 
@@ -34,7 +36,7 @@ A Technology Principal examining such a business would need to connect the platf
 
 These questions differ from asking whether the company has a modern architecture. A central system can be valuable because it coordinates a commercial network, even when parts of the technology are mature. Conversely, a platform's scale can create a consequential concentration risk that should be governed.
 
-### What the Exit Establishes
+### What $14 Billion Does and Does Not Establish
 
 In its second-quarter 2018 investor call, Blackstone reported completing the Hilton exit, generating approximately 3.1 times investors' capital and $14 billion of profit. These are sponsor-reported realized investment figures, not independently reconstructed net returns for limited partners (LPs), the investors in a fund. [S24: Blackstone 2018 investor call](https://ir.blackstone.com/files/doc_events/BLACKSTONE-Second-Quarter-2018-Earnings-Investor-Call.pdf)
 
@@ -44,7 +46,7 @@ The reported outcome supports describing the engagement as a major investor succ
 
 The 2013 company filing also notes that its owned and leased portfolio's trailing adjusted EBITDA was still below 2008 levels at the point discussed. [S23: Hilton registration filing](https://www.sec.gov/Archives/edgar/data/1585689/000119312513364703/d593452ds1.htm) This is a useful counterweight to a smooth transformation narrative. Different parts of a business can recover at different rates, even when the overall investment eventually performs well.
 
-### Alternative Explanations and Stakeholders
+### Was It the Technology, the Timing, or the Terms?
 
 A hotel business is exposed to travel demand and economic conditions. The purchase period, downturn, subsequent recovery, financing decisions, and ability to remain invested all belong in the explanation. The consulted evidence does not establish a counterfactual showing what Hilton would have achieved under a different owner with different financing.
 
@@ -54,7 +56,7 @@ Employee and customer consequences also require separate investigation. A larger
 
 The transferable lesson is the interaction of **operating capability and financial room**. Technology work needs time and funding to matter. Financing changes can preserve that time, while commercial systems can support a business model whose value is broader than the software itself. Neither lesson licenses the assumption that a highly leveraged company will always receive support through a downturn.
 
-## Skype: Independence, Intellectual Property, and a Strategic Buyer
+## Skype: What If You Do Not Own Your Own Technology?
 
 In November 2009, eBay announced completion of a sale valuing Skype at $2.75 billion. A Silver Lake-led investor group controlled approximately 70%, while eBay retained approximately 30%. eBay reported receiving cash and a buyer note and also participating in part of the debt financing. The transaction therefore cannot be understood simply as one buyer paying cash for 100% of a debt-free company. [S26: eBay Skype sale announcement](https://investors.ebayinc.com/investor-news/press-release-details/2009/EBay-Inc-Completes-Sale-of-Skype/default.aspx)
 
@@ -62,7 +64,7 @@ The later Skype registration statement describes acquisition of core peer-to-pee
 
 The core diligence lesson is unusually concrete. A product can function for customers while the rights to technology essential to its operation remain a material ownership issue. Code quality and scale testing would not, by themselves, resolve that investment risk.
 
-### What Changed in the Product and Business?
+### What Changed in the Product and Business
 
 The filing reports 2010 net revenue of about $860 million, adjusted EBITDA of about $264 million, and a net loss of about $7 million. It describes ambitions to grow paid use, broaden enterprise adoption, and develop additional monetization. These measures and plans should not be confused: a strategy statement is not an achieved outcome, and adjusted EBITDA is not net income. [S27: Skype registration filing](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm)
 
@@ -76,7 +78,7 @@ Microsoft announced the $8.5 billion acquisition agreement in May 2011 and annou
 
 Dividing $8.5 billion by $2.75 billion does not calculate Silver Lake's fund return. The two transaction values sit above different ownership stakes, financing claims, costs, and cash flows. A proper calculation would need those items and their dates. The reported sale clearly indicates a major valuation increase and realized liquidity, while the exact net return remains outside this case's verified evidence.
 
-### What Happened After Exit Matters, With Limits
+### The Afterlife, and Its Limits
 
 Microsoft retired Skype in May 2025 and directed users toward alternatives including Teams Free. [S29: Microsoft Skype retirement](https://support.microsoft.com/en-us/skype/22ccebb6-0cf9-4e1d-916f-aaf978e1b129) That event belongs in the product's history. It does not retroactively prove that the 2009–2011 ownership period destroyed value, nor does the successful 2011 sale prove that users were served well indefinitely afterward.
 
@@ -97,4 +99,6 @@ For customers, migration is a real consequence even when a buyer considers produ
 
 The lessons are mechanisms to investigate, not instructions to imitate. Hilton does not show that every company should build a central platform. Skype does not show that every carve-out will attract a strategic premium. Both show that technology becomes investment-relevant through its relationship to business capability, ownership rights, financing, and a buyer's needs.
 
-For a Technology Principal, the strongest case-study question is therefore not “What did the winner do?” It is “Which mechanism appears supported, what conditions enabled it, and what evidence would we need before applying it here?”
+Both companies were sold at a profit, and neither profit has a single cause. Hilton had eleven years and a recovering market; Skype had a buyer who wanted it for strategic reasons and had to buy back its own core technology first. The useful question is never "what did the winner do?" but "which mechanism was at work, what made it possible, and does any of that hold here?"
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

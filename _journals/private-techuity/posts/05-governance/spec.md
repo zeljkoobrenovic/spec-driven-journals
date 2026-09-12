@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: Who Gets to Decide After the Deal?
+# Spec: Decide Who Decides, Before You Disagree
 
 ## Intent
 

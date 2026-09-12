@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Do Incentives Really Align?
+# Spec: Shared Ownership Does Not Create Identical Interests
 
 ## Intent
 

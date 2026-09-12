@@ -1,5 +1,5 @@
 ---
-title: What Would Make an AI Investment Worth Owning?
+title: An AI Strategy Contains Three Different Investment Questions
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Compare product value, internal productivity, disruption, data rights, and date-specific experimental evidence.
@@ -20,7 +20,9 @@ An AI strategy can contain three very different investment questions. Can AI imp
 
 Combining these into a single adoption target obscures the economics. A company can use AI extensively without creating value, create value through a narrow use case, or face disruption even if its own experiments work well.
 
-The Technology Principal should help separate the questions and attach each to evidence, cost, and a decision. The analysis in this chapter is dated September 2026; the cited experiments describe particular earlier tools and populations.
+AI earns a separate chapter not because the economics are new — [[pt-product-value]] already supplies those — but because the evidence is unusually unstable and the pressure to commit is unusually high. The discipline here is mostly about dating your evidence and resisting the conversion of saved hours into promised cash.
+
+The Technology Principal, the owner's technology adviser (see [[pt-technology-principal]]), should help separate the questions and attach each to evidence, cost, and a decision. The analysis in this chapter is dated September 2026; the cited experiments describe particular earlier tools and populations.
 
 ## Start With the Customer's Work
 
@@ -30,7 +32,7 @@ The evaluation should compare the complete workflow with the current alternative
 
 Model cost per successful outcome rather than cost per model request alone. Include evaluation, human review, data preparation, monitoring, support, and fallback operations. A low inference bill can coexist with expensive failures and a weak product proposition.
 
-## Data Can Be an Asset, a Constraint, or a Liability
+## Data Can Be an Asset, a Constraint or a Liability
 
 A large dataset does not automatically create defensibility. Ask whether the company has rights to use it for the proposed purpose, whether it represents the relevant population, and whether its quality and update process support the task. Customer trust and contractual restrictions can matter as much as technical availability.
 
@@ -38,7 +40,7 @@ Separate access from ownership and training rights from other processing rights.
 
 NIST's 2024 Generative AI Profile identifies risks and suggested management actions across the AI lifecycle. It is a voluntary framework reference, not evidence that a particular product is compliant or effective. [S18: NIST generative AI profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf) Its practical contribution here is to make evaluation and risk management part of the product investment rather than an afterthought.
 
-## Productivity Evidence Needs Its Experimental Conditions
+## Productivity Evidence Comes With Its Conditions
 
 A 2023 controlled experiment by Peng and colleagues asked developers to build a JavaScript HTTP server. Participants with GitHub Copilot completed that defined task 55.8% faster. The result supports a claim about that experimental task; it does not establish an equivalent reduction in a company's engineering budget. [S19: Peng et al., Copilot experiment](https://arxiv.org/abs/2302.06590)
 
@@ -48,7 +50,7 @@ In February 2026, METR reported that its later experiment had serious selection 
 
 These studies are not competing universal laws. Their differences show why context, task selection, tool version, and outcome definition belong in an investment decision. A favorable coding result is also only one part of delivery: product decisions, review, testing, integration, release, and customer adoption can become the limiting steps.
 
-## Run a Company Experiment That Can Change a Decision
+## Run an Experiment That Can Change a Decision
 
 Define the proposed economic mechanism before buying licenses or promising savings. Perhaps the company wants to reduce time spent on routine support responses, accelerate a specific migration, or improve the quality of product discovery. Different goals need different measures.
 
@@ -64,7 +66,7 @@ Suppose, fictionally, an intervention saves 1,000 hours of recurring work a quar
 
 The investment case should state which route is intended. Announcing an engineering reduction before demonstrating the mechanism can remove the expertise needed to capture any benefit and evaluate the output. That is an execution risk to test, not a claim that staffing can never change.
 
-## Assess the Threat to the Existing Product
+## Assess the Threat to the Product You Already Sell
 
 AI might make a feature easier for competitors to reproduce, reduce the customer's need for a workflow, or shift value toward a different interface. These are scenario hypotheses. They require customer evidence and a view of switching costs, distribution, trust, and the full task being performed.
 
@@ -72,4 +74,6 @@ A product's advantage may lie in reliable execution, specialized knowledge, regu
 
 The Principal's market work should therefore test both opportunity and substitution. What would a new entrant need to replace the product's useful outcome? What would customers lose or gain? Which experiments can the company run before a threat becomes an urgent revenue problem?
 
-AI investment becomes worth owning when it creates a dependable capability with a credible economic path, an accountable operating model, and evidence that survives changes in tools. Adoption is an input. The company's ability to create and retain customer value remains the outcome.
+The AI investments worth owning are the ones still defensible when the tool changes, the vendor reprices, and the demo is two years old. Counting seats is not evidence of any of that. Ask instead what a customer can now do that they could not do before, and what it costs to keep it working.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

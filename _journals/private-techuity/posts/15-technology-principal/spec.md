@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Is the Technology Principal Actually Responsible For?
+# Spec: The Technology Principal Works for the Owner
 
 ## Intent
 

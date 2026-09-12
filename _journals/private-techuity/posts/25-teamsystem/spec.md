@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Does a Software Buy-and-Build Actually Build?
+# Spec: TeamSystem: What a Buy-and-Build Actually Accumulates
 
 ## Intent
 

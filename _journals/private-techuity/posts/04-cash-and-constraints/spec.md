@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: Why Can a Profitable Company Still Run Out of Room?
+# Spec: A Profitable Company Can Still Run Out of Cash
 
 ## Intent
 
@@ -44,6 +44,8 @@ Evidence gaps and chapter-specific next research are tracked in the separate edi
 The supplied book brief establishes scope. Public citations appear in the article and bibliography. Private provenance is recorded separately in _research/input-reading.md and is excluded from the site configuration.
 
 ## Changelog
+
+- 2026-09-13: Readability pass. Intro cut 260 → 166 words (five paragraphs to three): removed the full EBITDA re-definition, which [[pt-valuation-and-architecture]] now teaches, keeping only a clause at first use in the body. The SEC non-GAAP citation moved to the adjusted-earnings paragraph, where it argues something. summary.md rewritten around Larkspur's actual bridge figures rather than describing that a bridge exists.
 
 - 2026-09-12: Explain financial concepts before their implications, connect valuation assumptions to business and technology choices, and add the author-requested KEY POINTS opening.
 

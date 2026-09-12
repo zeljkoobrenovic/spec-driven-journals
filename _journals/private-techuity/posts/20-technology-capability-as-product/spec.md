@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: How Can Technology Support Become a Better Product?
+# Spec: Build Reusable Support Around Recurring Decisions
 
 ## Intent
 

@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Should Technical Diligence Change About the Investment?
+# Spec: Diligence Should Change the Investment, or It Was Reading
 
 ## Intent
 

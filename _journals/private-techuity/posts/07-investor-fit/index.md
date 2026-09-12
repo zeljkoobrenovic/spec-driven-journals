@@ -1,5 +1,5 @@
 ---
-title: How Can Leaders Assess an Investor Partnership?
+title: Judge an Investor by Their Behavior Under Pressure
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Provide practical reference questions, evidence requests, warning signs, and responses during an engagement.
@@ -16,9 +16,11 @@ tags: private equity, technology leadership, Part II
 > * **Reassess fit during ownership.** A changing business or financing position can require a different relationship, operating plan or level of support.
 
 <br>
-Investor fit is easiest to describe when business is good and hardest to observe when it matters. Every prospective partner can describe its patience, expertise, and respect for management. A useful assessment asks for behavior under pressure.
+Ines, Larkspur's CEO, has two term sheets on her desk. Both investors describe themselves as patient, operationally expert and respectful of management. Neither description is a lie, and neither is evidence. Investor fit is easiest to describe when business is good and hardest to observe when it matters, so a useful assessment asks for behavior under pressure.
 
-The purpose is not to discover a universally good investor. It is to determine whether a particular partnership can support this company's work, constraints, and risks. The same firm can be a strong fit for one situation and a poor fit for another.
+The purpose is not to find a universally good investor. It is to find out whether this partnership can support what Larkspur actually has to do next: automate onboarding, enter a second country, and replace a retiring founder's judgement. The same firm can be a strong fit for one situation and a poor fit for another.
+
+This chapter closes Part II by turning its two preceding arguments into something you can use in a room: if authority and incentives determine how ownership behaves, these are the questions that reveal how a particular investor will behave before you are committed to them.
 
 ## Begin With the Work the Company Needs
 
@@ -28,18 +30,20 @@ For each decision, identify what the owner would need to contribute: capital, ex
 
 A firm can advertise a broad support platform. KKR Capstone, for example, describes capabilities across growth, digital work, operations, and external experts. Such descriptions establish the services a firm says it can offer; they do not establish availability, effectiveness, or suitability for a specific company. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone) The assessment must move from the brochure to a concrete engagement.
 
-## Ask for Difficult References
+## Ask for the Difficult References
 
 References selected only from enthusiastic current CEOs provide a restricted view. Where access is available and appropriate, seek former executives, leaders of companies that missed their plans, and leaders who declined or ended a proposed intervention. Explain the questions in advance and respect confidentiality.
 
-| Question | Evidence it seeks |
-| --- | --- |
-| Describe a plan that proved wrong. What changed afterward? | Ability to revise an investment thesis |
-| When did the investor fund additional work during a miss? | Conditional capital support and its limits |
-| What happened when management disagreed with an operating expert? | Actual decision rights |
-| Which support did you stop using, and why? | Freedom to reject low-value help |
-| What did you report that the investor did not want to hear? | Response to inconvenient evidence |
-| What remained unfinished at exit? | Willingness to disclose inherited obligations |
+| Question | Evidence it seeks | A concerning answer sounds like |
+| --- | --- | --- |
+| Describe a plan that proved wrong. What changed afterward? | Ability to revise an investment thesis | "The plan was fine, execution was the problem." |
+| When did the investor fund additional work during a miss? | Conditional capital support and its limits | "It never came up." |
+| What happened when management disagreed with an operating expert? | Actual decision rights | "We aligned pretty quickly." |
+| Which support did you stop using, and why? | Freedom to reject low-value help | "We used everything they offered." |
+| What did you report that the investor did not want to hear? | Response to inconvenient evidence | A long pause, then a process answer. |
+| What remained unfinished at exit? | Willingness to disclose inherited obligations | "Nothing material." |
+
+The concerning answers share a shape: they describe a relationship with no friction in it. Every real ownership period produces disagreement, a missed number and a declined offer of help. A reference who cannot recall any is describing a brochure.
 
 A single difficult story is not a verdict. Look for repeated mechanisms and consider alternative explanations. A dismissed executive may have an understandable grievance. A successful CEO may attribute too much to the current owner. Both can still provide concrete observations worth checking.
 
@@ -51,7 +55,7 @@ A reasonable answer can be modest. A small firm might offer one experienced oper
 
 Do not confuse advice with funding. A recommendation to modernize a platform is incomplete until the company has the capacity and money to do it. Nor should promised procurement savings be counted before fees, commitments, migration costs, and service effects have been understood.
 
-## Examine the Financing and Time Horizon
+## Ask How Long the Money Is Staying
 
 Request a comprehensible account of the transaction's use of proceeds and the company's post-deal obligations. Which money reaches the business? What are the debt maturities and material restrictions? What financial scenario funds the product plan? What happens if growth arrives a year later?
 
@@ -67,12 +71,14 @@ Other warning signs include direct instructions to staff that bypass executives,
 
 Some practices that initially feel uncomfortable can be productive. A new owner may insist on cash reporting, challenge a favored project, or question whether an executive's capabilities fit the company's needs. The distinction is whether the challenge uses evidence, produces a legitimate decision, and recognizes consequences. Discomfort alone does not distinguish discipline from interference.
 
-## During Ownership, Assess the Relationship Again
+## Fit Is Not Settled at Signing
 
-Fit is not settled at signing. People change, the company changes, and the original thesis may fail. A periodic partnership review should ask what support created value, what burden it imposed, and which expectations need revision.
+People change, the company changes, and the original thesis may fail. A periodic partnership review should ask what support created value, what burden it imposed, and which expectations need revision.
 
 If a problem emerges, start with a concrete decision rather than a generalized complaint. Document the competing objectives and the evidence. Offer feasible options. Identify the proper forum. Ask for a decision and record its consequences. If the disagreement concerns a material obligation or contractual right, involve the relevant qualified advisers.
 
 The Principal can help translate these conversations but cannot make every conflict disappear. Sometimes the owner wants a risk the executive considers unacceptable. Sometimes the executive's preferred strategy no longer fits the available capital. Honest disagreement may reveal that a role or partnership should change.
 
-The best evidence of fit is the ability to handle that moment with clarity. A mutually useful ownership relationship does not require identical preferences. It requires enough shared purpose, explicit authority, and willingness to face evidence for the company to make difficult decisions well.
+Fit is not agreement. It is what happens the first time you disagree and something expensive is riding on it. A partnership works if that conversation reaches a real decision, everyone knows who made it, and the evidence was allowed in the room.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

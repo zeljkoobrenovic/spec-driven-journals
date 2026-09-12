@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Must the Organization Be Able to Do?
+# Spec: Capability Includes How People Decide and Coordinate
 
 ## Intent
 

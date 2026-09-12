@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: How Does Product Work Become Business Value?
+# Spec: Product Work Becomes Value Only Through a Changed Outcome
 
 ## Intent
 

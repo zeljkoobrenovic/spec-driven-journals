@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: How Does a Private Equity Investment Make Money?
+# Spec: The Company Improved and the Investor Was Disappointed
 
 ## Intent
 

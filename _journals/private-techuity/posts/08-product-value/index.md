@@ -1,5 +1,5 @@
 ---
-title: How Does Product Work Become Business Value?
+title: Product Work Becomes Value Only Through a Changed Outcome
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Trace product decisions through customer behavior to revenue, retention, margin, and cash, with explicit attribution limits.
@@ -16,15 +16,16 @@ tags: private equity, technology leadership, Part III
 > * **Valuation assumptions help identify the relevant work.** Future growth needs a credible route to adoption and scale; established earnings need a product the company can sustain.
 
 <br>
-A roadmap item is not a unit of business value. It is a proposed change in the product or the way it is delivered. Its value depends on what customers do differently and what those differences mean economically.
+A roadmap item is not a unit of business value. It is a proposed change to the product, and its value depends entirely on what customers do differently afterwards — and what that difference is worth.
 
-This is the central translation problem for product and engineering leadership under private equity. Investors may ask for revenue growth, retention, margin, or cash. Teams work on onboarding, reliability, workflows, architecture, and delivery. Here, **retention** means keeping customers or their revenue; **margin** expresses a defined profit measure relative to revenue. A useful plan connects those business results to the work without pretending that every technical improvement can be priced precisely.
+This is the central translation problem for technology leadership under private equity, and the reason this chapter opens Part III. Parts I and II established what owners want and who decides. Every remaining chapter here — engineering, infrastructure, security, AI, people, acquisitions — is a specific case of the translation set out now.
 
-The valuation context changes the emphasis of this conversation. A thesis built on future expansion needs evidence that the product can win and serve more customers at acceptable cost. A thesis built on established earnings needs evidence that those earnings can persist after maintenance and reinvestment. Both depend on a useful product. [[pt-valuation-and-architecture]] explains these priorities before mapping them to design choices.
+Investors ask for revenue growth, **retention** (keeping customers or their revenue), **margin** (a profit measure relative to revenue) or cash. Teams work on onboarding, reliability, workflows and delivery. The job is to connect the two without pretending every technical improvement can be priced to the euro.
 
-In the examples below, **contribution** means the revenue from an activity minus the costs assigned to delivering it under a stated calculation. It is not automatically net company profit. Define the cost boundary before comparing initiatives.
 
 ## A Chain With Several Places to Break
+
+What the owner is paying for shapes which link matters most. A thesis built on expansion needs evidence the product can win and serve more customers at acceptable cost; one built on established earnings needs evidence those earnings survive maintenance and reinvestment ([[pt-valuation-and-architecture]]). Both depend on a product that works.
 
 Consider the fictional Larkspur onboarding initiative. New customers require substantial engineering help before they can use the scheduling product. The investment hypothesis is that reusable configuration will shorten implementation, reduce effort, and allow more customers to become productive.
 
@@ -44,7 +45,9 @@ Each arrow is a hypothesis. Faster implementation may not increase sales if dema
 
 The diagram should therefore guide investigation, not become a decorative proof of causality.
 
-## Name the Value Mechanism
+## Six Ways Product Work Turns Into Money
+
+One term recurs below. **Contribution** is the revenue from an activity minus the costs assigned to delivering it, under a stated calculation — not automatically net company profit. Define the cost boundary before comparing initiatives.
 
 | Mechanism | Example intervention | Evidence to seek |
 | --- | --- | --- |
@@ -57,7 +60,7 @@ The diagram should therefore guide investigation, not become a decorative proof 
 
 These mechanisms overlap, but their financial effects should not simply be added. Earlier billing can accelerate cash without increasing lifetime contract revenue. A retained customer may already be included in a revenue forecast. An acquisition benefit can appear both in cost savings and in the acquired company's earnings measure unless reconciled.
 
-## A Small Economic Model
+## The Arithmetic, Worked Through
 
 Assume, fictionally, that Larkspur performs 100 implementations a year. Each uses 80 hours of work at a fully loaded planning cost of €75 per hour: €600,000 of annual capacity. An intervention reduces effort to 50 hours, making the modelled capacity requirement €375,000. The difference is €225,000, or 3,000 hours.
 
@@ -67,7 +70,7 @@ Suppose the initiative costs €180,000 to build and €30,000 annually to maint
 
 A decision-ready proposal therefore includes a **conversion plan**: how a technical improvement becomes customer value and then a business outcome, with someone accountable for each transition.
 
-## Product Strategy Determines Whether Efficiency Matters
+## Efficiency Only Matters If the Product Is Right
 
 A company can efficiently build features that customers do not need. It can reduce infrastructure cost for a product whose market is shrinking. It can improve delivery speed while commercial teams promise incompatible custom work. Product strategy decides where capability should be applied.
 
@@ -87,7 +90,7 @@ A claim can be useful without proving sole causation. “The intervention plausi
 
 Visma provides a useful reality check in [[pt-visma]]. Its disclosures describe product investment alongside acquisitions and growth. [S32: Visma annual-report announcement](https://www.visma.com/newsroom/visma-releases-annual-and-sustainability-reports-for-2024-7f5c9f37) That is evidence of activity and aggregate performance, while the incremental product-value question still requires customer and intervention-level evidence. Treat an encouraging company story as the beginning of that investigation.
 
-## Preserve the Future Product
+## Protect the Product You Have Not Built Yet
 
 A margin improvement that depends on postponing necessary maintenance carries a future bill. A retention result that relies on customers being unable to leave can be fragile. A faster release process that degrades reliability transfers costs to users and support teams.
 
@@ -95,4 +98,6 @@ For each major intervention, choose a few indicators that could reveal damage. F
 
 The Technology Principal's distinctive contribution is to keep the whole chain discussable. They can help investors understand why a technical dependency matters and help company teams understand why a customer outcome must translate into economics. The work succeeds when those connections improve decisions, including the decision to stop an initiative whose value hypothesis no longer holds.
 
-The supporting measurement tools are in [[pt-toolkit]]. Engineering and infrastructure choices follow in [[pt-engineering-and-architecture]] and [[pt-cloud-economics]].
+A roadmap item becomes business value only by surviving every link in the chain: the change ships, customers behave differently, and the difference reaches revenue, retention or cost. Most claims break at a link nobody checked. Name the link you are relying on. The measurement tools are in [[pt-toolkit]]; engineering and infrastructure choices follow in [[pt-engineering-and-architecture]] and [[pt-cloud-economics]].
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Should the First 100 Days Accomplish?
+# Spec: The First 100 Days Establish a Funded Plan
 
 ## Intent
 

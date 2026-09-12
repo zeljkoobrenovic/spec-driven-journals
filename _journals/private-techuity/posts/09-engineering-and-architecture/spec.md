@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: Which Engineering Improvements Are Worth Funding?
+# Spec: Fund the Engineering the Business Case Requires
 
 ## Intent
 

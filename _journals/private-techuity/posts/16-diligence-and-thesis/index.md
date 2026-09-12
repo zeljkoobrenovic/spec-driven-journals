@@ -1,5 +1,5 @@
 ---
-title: What Should Technical Diligence Change About the Investment?
+title: Diligence Should Change the Investment, or It Was Reading
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Investigate whether the product and technology can deliver the business assumptions behind the investment.
@@ -20,6 +20,8 @@ tags: private equity, technology leadership, Part IV
 
 This does not mean every diligence must find a reason to change the deal. It can confirm an important assumption. The requirement is to identify which assumption was tested, what evidence supports it, and what uncertainty remains.
 
+This is the first of three chapters following the ownership cycle in order: diligence before the money moves, [[pt-first-hundred-days]] just after, and [[pt-execution-and-exit]] through to the sale. Each hands evidence to the next, and the handoffs are where most of the value leaks away.
+
 The supplied role brief includes sourcing input and advice to investment decision-makers as well as technical diligence. [P01: supplied role brief](pt-bibliography.html) The work should therefore begin before a **data room**, the controlled collection of information shared for a transaction, is opened: what makes technology relevant to this market and this investment?
 
 ## Start With an Investment Question
@@ -32,9 +34,9 @@ Market sensing also needs a falsifiable question. “AI is transforming vertical
 
 Valuation tells the reviewer where an unsupported assumption could matter financially. If a revenue-based comparison assumes rapid expansion, investigate whether architecture and implementation capacity permit that expansion. If an earnings-based comparison assumes stable costs, investigate the development, support and reliability spending required to sustain them. The same codebase can support one plan and constrain another; the distinction needs evidence, not a different generic architecture score.
 
-## Seven Dimensions, Connected to the Thesis
+## Seven Things to Examine, Each Tied to the Thesis
 
-The Productscapes input proposes seven assessment dimensions. They are useful as a coverage check when each remains attached to the investment question.
+The Productscapes hypothesis proposes seven assessment dimensions. They are useful as a coverage check when each remains attached to the investment question.
 
 | Dimension | A material question | Evidence beyond an interview |
 | --- | --- | --- |
@@ -68,18 +70,20 @@ A recommendation can support proceeding, proceeding with revised economics, proc
 
 ## A One-Page Thesis Needs Supporting Evidence
 
-The Productscapes proposal calls for a concise Technology Investment Thesis. A useful page can state the technology advantage, main constraint, required investment, leadership needs, AI opportunity or threat, expected business outcome, and material uncertainties.
+The Productscapes hypothesis calls for a concise Technology Investment Thesis. A useful page can state the technology advantage, main constraint, required investment, leadership needs, AI opportunity or threat, expected business outcome, and material uncertainties.
 
 Conciseness works only when readers can inspect the basis. Keep links to findings, scenario assumptions, source dates, and specialist assessments. A one-page summary should not replace the evidence any more than a product dashboard replaces customer research.
 
 Include the downside. If the main improvement takes twice as long, can the company still operate within its financing? If the new product fails, which investments remain useful? If the current CTO leaves, which assumptions become invalid?
 
-## The Most Important Handoff Is Acceptance
+## Diligence Ends When Management Accepts the Findings
 
 At completion, review the material findings with the people who will own the business plan. Some management teams cannot participate fully before closing; record that limitation and make post-close confirmation explicit. A company owner accepting a priority is different from an adviser depositing a report.
 
 Carry finding identifiers into the first 100-day plan and later outcome reviews. When new evidence changes the interpretation, retain the original reasoning and explain the revision. This allows the firm to learn whether diligence identified the right questions and whether its recommendations were feasible.
 
-The purpose of continuity is not to hold management permanently to a pre-deal document. It is to make changes in understanding visible. The strongest diligence outcome may be a revised investment thesis that is less exciting and much more credible.
+The purpose of continuity is not to hold management permanently to a pre-deal document. It is to make changes in understanding visible.
 
-The handoff becomes the focus of [[pt-first-hundred-days]]. A reusable finding record and committee summary are provided in [[pt-toolkit]].
+Diligence that changes no price, no condition and no plan was expensive reading. The strongest outcome may be a revised thesis that is less exciting and much more credible. The handoff becomes the focus of [[pt-first-hundred-days]]; reusable records are in [[pt-toolkit]].
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

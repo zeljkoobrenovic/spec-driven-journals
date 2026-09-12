@@ -67,17 +67,17 @@
   "status": "pending",
   "asset": "assets/images/26-valuation-and-architecture/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex connects a customer onboarding obstacle to a small configurable module. Use one speech bubble with the exact words: \"What must become easier?\" Convey: A growth thesis may justify flexibility that speeds learning and onboarding; unnecessary complexity can slow both.",
-  "alt": "Comic panel: Alex connects a customer onboarding obstacle to a small configurable module.",
-  "caption": "A growth thesis may justify flexibility that speeds learning and onboarding; unnecessary complexity can slow both."
+  "prompt": "Panel 4 of an explainer comic. Sam holds one price tag while Alex measures it with two different rulers. Use one speech bubble with the exact words: \"Same price. Different ruler.\" Convey: The same company can be 3x revenue or 15x EBITDA. Two ways of stating one price, not two companies.",
+  "alt": "Comic panel: Sam holds one price tag while Alex measures it with two different rulers.",
+  "caption": "The same company can be 3x revenue or 15x EBITDA. Two ways of stating one price, not two companies."
 }
 -->
 
-**Panel 4:** A growth thesis may justify flexibility that speeds learning and onboarding; unnecessary complexity can slow both.
+**Panel 4:** The same company can be 3x revenue or 15x EBITDA. Two ways of stating one price, not two companies.
 
-*Scene:* Alex connects a customer onboarding obstacle to a small configurable module.
+*Scene:* Sam holds one price tag while Alex measures it with two different rulers.
 
-*Dialogue:* “What must become easier?”
+*Dialogue:* “Same price. Different ruler.”
 
 <!-- comic-panel
 {
@@ -85,17 +85,17 @@
   "status": "pending",
   "asset": "assets/images/26-valuation-and-architecture/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Sam and Alex inspect duplicate systems beside a recovery backup. Use one speech bubble with the exact words: \"Which costs can safely disappear?\" Convey: An earnings priority may favor simplification and lower cost, while still requiring product investment and resilience.",
-  "alt": "Comic panel: Sam and Alex inspect duplicate systems beside a recovery backup.",
-  "caption": "An earnings priority may favor simplification and lower cost, while still requiring product investment and resilience."
+  "prompt": "Panel 5 of an explainer comic. Two calculators on a table show 60 and 48 for the same business. Use one speech bubble with the exact words: \"Which assumption is wrong?\" Convey: Assumed multiples disagree: 3x on revenue gives 60, 12x on EBITDA gives 48. The gap is the useful part.",
+  "alt": "Comic panel: Two calculators on a table show 60 and 48 for the same business.",
+  "caption": "Assumed multiples disagree: 3x on revenue gives 60, 12x on EBITDA gives 48. The gap is the useful part."
 }
 -->
 
-**Panel 5:** An earnings priority may favor simplification and lower cost, while still requiring product investment and resilience.
+**Panel 5:** Assumed multiples disagree: 3x on revenue gives 60, 12x on EBITDA gives 48. The gap is the useful part.
 
-*Scene:* Sam and Alex inspect duplicate systems beside a recovery backup.
+*Scene:* Two calculators on a table show 60 and 48 for the same business.
 
-*Dialogue:* “Which costs can safely disappear?”
+*Dialogue:* “Which assumption is wrong?”
 
 <!-- comic-panel
 {
@@ -103,14 +103,14 @@
   "status": "pending",
   "asset": "assets/images/26-valuation-and-architecture/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team lays a funded transition path between the current product and a customer outcome. Use one speech bubble with the exact words: \"Fund the path to the outcome.\" Convey: Move from valuation assumptions to business capabilities, technical options, transition funding and evidence. No ratio chooses the architecture.",
-  "alt": "Comic panel: The team lays a funded transition path between the current product and a customer outcome.",
-  "caption": "Move from valuation assumptions to business capabilities, technical options, transition funding and evidence. No ratio chooses the architecture."
+  "prompt": "Panel 6 of an explainer comic. Morgan writes a date and a purpose beside a number on a whiteboard. Use one speech bubble with the exact words: \"Whose estimate, and for what?\" Convey: A valuation is an estimate made on a date for a purpose. It is not a fact you can look up.",
+  "alt": "Comic panel: Morgan writes a date and a purpose beside a number on a whiteboard.",
+  "caption": "A valuation is an estimate made on a date for a purpose. It is not a fact you can look up."
 }
 -->
 
-**Panel 6:** Move from valuation assumptions to business capabilities, technical options, transition funding and evidence. No ratio chooses the architecture.
+**Panel 6:** A valuation is an estimate made on a date for a purpose. It is not a fact you can look up.
 
-*Scene:* The team lays a funded transition path between the current product and a customer outcome.
+*Scene:* Morgan writes a date and a purpose beside a number on a whiteboard.
 
-*Dialogue:* “Fund the path to the outcome.”
+*Dialogue:* “Whose estimate, and for what?”

@@ -1,5 +1,5 @@
 ---
-title: Who Gets to Decide After the Deal?
+title: Decide Who Decides, Before You Disagree
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Explain decision rights, boards, investment and operating teams, escalation, and constructive challenge.
@@ -16,39 +16,53 @@ tags: private equity, technology leadership, Part II
 > * **Reporting should improve decisions.** Use consistent evidence to expose trade-offs and changing assumptions rather than create a parallel management hierarchy.
 
 <br>
-A Technology Principal tells a CTO that the company should move to a different cloud provider. The CTO hears an instruction from the owner. The Principal believes it was a suggestion. The CEO learns about the conversation after an engineering team has started planning the migration.
+A Technology Principal — a technology leader working for the investment firm, the owner, rather than for the company — tells a CTO that the company should move to a different cloud provider. The CTO hears an instruction from the owner. The Principal believes it was a suggestion. The CEO finds out after an engineering team has started planning the migration.
 
-No one needs bad intentions for this arrangement to fail. The failure is that influence has been exercised without making the decision process explicit. Ownership intensifies the ambiguity: a suggestion from someone close to the investment partner can carry more weight than their formal job description suggests.
+Nobody needed bad intentions for that to go wrong. Influence was exercised without anyone making the decision process explicit, and ownership amplifies the ambiguity: a remark from someone close to the investment partner carries more weight than their job title suggests. **Governance** is simply the arrangement that settles this in advance — who decides, who oversees, who is accountable.
 
-**Governance** is the arrangement for making decisions, overseeing them and holding people accountable. Good governance makes authority clear before a consequential disagreement. This chapter offers an operating design, not a statement of the legal duties of directors in every jurisdiction.
+Part I followed the money. Part II follows the authority, and this chapter comes first because every later disagreement — about incentives, about a rewrite, about a cost target — assumes somebody knows who is entitled to settle it. What follows is an operating design, not a statement of directors' legal duties in any particular jurisdiction.
 
-## Separate the Forums
+
+## Each Forum Decides Something Different
 
 The investment team develops and evaluates the investment case. A fund's investment committee makes investment decisions within its mandate. Operating professionals can contribute expertise and help companies execute. The company's board oversees matters within its authority, while executives lead the business. Lenders can have contractual rights that affect what any of these actors can do.
 
-The survey of private equity investors by Gompers and colleagues documents attention to governance, financing, and value creation; it does not establish a uniform organization chart. [S04: PE practitioner survey](https://www.nber.org/papers/w21133) KKR's public description of Capstone similarly places operating support in collaboration with investment teams, boards, and company management. This establishes a stated delivery model, not proof that every intervention succeeds. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone)
+The survey of private equity investors by Gompers and colleagues documents attention to governance, financing, and value creation; it does not establish a uniform organization chart. [S04: PE practitioner survey](https://www.nber.org/papers/w21133) KKR's public description of Capstone, its in-house operating-support team, similarly places operating support in collaboration with investment teams, boards, and company management. This establishes a stated delivery model, not proof that every intervention succeeds. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone)
 
 For an individual engagement, replace the generic diagram with actual names and rights. Who recommends? Who decides? Who implements? Who supplies money? Who receives information? Who can escalate? One person may play several roles, but the roles still need to be distinguished.
 
-## A Decision-Rights Record
+## Write Down Who Decides What
 
 The following is a proposed pattern to adapt to actual company documents. It is not an assertion that a Technology Principal has these rights.
 
 | Decision | Company contribution | Principal's possible contribution | Approval to verify |
 | --- | --- | --- | --- |
-| Product priorities within an agreed budget | Product leader and CTO recommend; CEO resolves major trade-offs | Challenge assumptions and supply evidence | Executive delegation and any reserved matters |
+| Product priorities within an agreed budget | Product leader and CTO recommend; CEO resolves major trade-offs | Challenge assumptions and supply evidence | Executive delegation and any reserved matters (decisions the shareholder must approve) |
 | Material technology investment | Management prepares options and financial case | Test technical feasibility and delivery dependencies | Board, shareholder, or financing approvals where required |
 | CTO appointment | CEO defines need and process | Help assess candidates and context | Actual appointment authority |
 | Cyber incident response | Designated incident leaders act under the response plan | Provide specialist access and ownership context | Emergency and disclosure protocols |
 | Acquisition integration | Executives own the company integration plan | Assess sequencing, capacity, and reusable support | Transaction and operating governance |
 
-A useful record also names a response time. An escalation route that takes six weeks is inadequate for a financing deadline or service failure. Conversely, treating every architectural disagreement as an emergency prevents company leadership from exercising judgment.
+That pattern is still generic. Filled in for Larkspur, the onboarding-automation decision looks like this:
 
-## Productive Challenge Requires a Decision
+| | Larkspur's actual answer |
+| --- | --- |
+| Decision | Spend €1 million automating customer onboarding |
+| Who recommends | Priya, VP Product, with Alex, the CTO |
+| Who resolves trade-offs | Ines, the CEO |
+| Principal's contribution | Test whether the 80-hour implementation figure holds across customer types; supply comparable onboarding patterns |
+| Whose approval is needed | Board, because the amount exceeds the CEO's €500,000 delegation |
+| Response time | Two weeks — the budget cycle closes at month end |
 
-Imagine management proposes a rewrite because the current system is difficult to change. The board asks how it supports growth. Management answers that modern technology is necessary. The exchange produces heat but little information.
+Names and thresholds make the record usable. "Management recommends, the board approves" tells Alex nothing about whom to call on a Tuesday, or by when.
 
-A better challenge asks for the constrained business outcome: which customer need cannot be served, how frequently the constraint occurs, and what it costs. The CTO can compare a focused change, a staged replacement, and the full rewrite. The CFO can compare cash profiles. The board can then decide whether to fund an option and accept its risks.
+A useful record therefore names a response time. An escalation route that takes six weeks is inadequate for a financing deadline or service failure. Treating every architectural disagreement as an emergency has the opposite failure: it prevents company leadership from exercising judgment.
+
+## Challenge the Outcome, Not the Design
+
+Alex proposes rewriting Larkspur's scheduling engine because it is difficult to change. The board asks how that supports growth. Alex answers that the current stack is dated. The exchange produces heat but little information.
+
+A better challenge asks for the constrained business outcome: which customer need cannot be served, how often the constraint bites, and what it costs. Alex can then compare a focused change, a staged replacement and the full rewrite. The CFO can compare their cash profiles against the €0.5 million the business actually has spare ([[pt-cash-and-constraints]]). The board can decide whether to fund an option and accept its risks.
 
 The board has not become an architecture committee. It has required the connection between an investment and the business plan to be made explicit. The technical team retains responsibility for explaining feasible choices and their consequences.
 
@@ -76,6 +90,6 @@ A leader should be able to say: “We can deliver the cost target, but not the c
 
 The difficult boundary is confidentiality. Coaching cannot carry an unlimited promise of secrecy if a material issue requires escalation under the engagement's obligations. Agree those boundaries early. Explain what information will be shared, with whom, and why; do not turn routine coaching into an undisclosed assessment channel.
 
-Governance is useful when it allows disagreement to reach a legitimate decision, with consequences understood. It fails when authority is obscured, bad news is delayed, or executives remain accountable for choices they were never allowed to make.
+Good governance is not the absence of disagreement. It is disagreement that reaches a decision someone is accountable for, fast enough to matter. It fails when nobody will say who decides, when bad news is slowed down, and when executives are held to choices someone else made. The incentives behind those behaviors are examined in [[pt-incentives]]; the Principal's operating charter in [[pt-technology-principal]].
 
-The incentives behind these behaviors are examined in [[pt-incentives]]. The role-specific operating charter is developed in [[pt-technology-principal]].
+*Unfamiliar terms are defined in the [[pt-glossary]].*

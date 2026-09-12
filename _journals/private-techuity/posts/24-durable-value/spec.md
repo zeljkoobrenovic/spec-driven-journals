@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Would Count as Durable Success?
+# Spec: Durable Success Is What Remains After the Investors Leave
 
 ## Intent
 

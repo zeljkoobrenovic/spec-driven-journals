@@ -61,6 +61,19 @@ For the step-by-step introduction and fictional examples, read [[pt-valuation-an
 | Management rollover | Management or selling owners retain or reinvest an economic interest in the new ownership arrangement. It is separate from any additional incentive award. |
 | Management equity | Company-level ownership or economic rights held by executives, subject to the plan's terms. A quoted percentage alone is insufficient to determine payout. |
 
+| Sponsor | Everyday industry word for the investment firm that owns or is acquiring a company. Same actor as the manager; the cases use "sponsor" because the sources do. |
+| Assumption of debt | A buyer taking on the seller's existing borrowings as part of a transaction. The headline share price is then not the full cost of the acquisition. |
+| Restructuring (debt) | Renegotiating borrowings — extending dates, changing rates, exchanging or writing off amounts owed. It can reduce debt without the company repaying it in cash. |
+| Writedown / impairment | Recording an asset or investment at a lower value than before. It reflects a revised estimate, not a cash payment. |
+| Chapter 11 / liquidation | Under US law, Chapter 11 lets a company keep trading while it reorganizes its debts; liquidation sells the assets and closes the business. Entering Chapter 11 and failing to emerge are different outcomes. |
+| Dividend recapitalization | Borrowing new money in the company in order to pay a distribution to its owners. The owners receive cash; the company keeps the debt. |
+| Collateral | Assets pledged to a lender, which the lender can claim if the borrower defaults. Available borrowing often depends on what remains unpledged. |
+| Share | A unit of ownership in a company. A thousand shares issued and ten held is one percent of the company. |
+| Public company | A company whose shares anyone can buy or sell through a stock exchange. Owners are numerous, anonymous and changing; results are reported publicly on a fixed schedule. |
+| Private company | A company whose shares are not traded on an exchange, held instead by identifiable people or institutions. Most companies are private. |
+| Stock exchange | A regulated marketplace where shares in public companies are bought and sold, and where a visible price is set continuously by buyers and sellers. |
+| Initial public offering (IPO) | The first sale of a company's shares to the public, making it a public company and usually raising money in the process. |
+| Capital structure | The mix of customer funding, borrowing and ownership capital financing a business. It determines how much can go wrong before parties outside the company gain rights inside it. |
 ## Money, Returns, and Accounting
 
 | Term | Meaning in this manuscript |
@@ -73,7 +86,7 @@ For the step-by-step introduction and fictional examples, read [[pt-valuation-an
 | Adjusted EBITDA | EBITDA modified by specified adjustments. Examine the reconciliation, recurring nature of excluded costs, and consistency between periods. |
 | Valuation multiple | A ratio relating value to a defined financial measure, such as EV/EBITDA. Different accounting definitions, business mix, and growth expectations affect comparability. |
 | Multiple expansion / compression | An increase or decrease in the valuation ratio. It can reflect markets, buyers, business characteristics, or several factors; it is not automatically an operational effect. |
-| MOIC | Multiple of invested capital: investment value and/or proceeds divided by contributed capital on a specified basis. Label realized versus residual components and gross versus net treatment. |
+| MOIC | Multiple of invested capital: proceeds divided by the money put in. Put in €40 and receive €110, and MOIC is 2.75×. It ignores how long the money was tied up. Label realized versus residual, and gross versus net. |
 | IRR | Internal rate of return: the discount rate making the net present value of dated cash flows zero. It depends on timing, can be problematic for some cash-flow patterns, and is not the same as a simple average annual profit. |
 | DPI / RVPI / TVPI | Distributions to paid-in capital; residual value to paid-in capital; total value to paid-in capital. With consistent definitions, TVPI = DPI + RVPI. Residual valuations are not cash distributions. |
 | Gross / net return | A return before or after specified fees, expenses, and allocations. Always name the investor layer and inclusions; the words alone do not ensure comparability. |
@@ -89,6 +102,10 @@ For the step-by-step introduction and fictional examples, read [[pt-valuation-an
 | ARR | Often annual recurring revenue in software reporting. Definitions vary. Visma's case uses **annualized repeatable revenue**, which includes a transaction-revenue component; do not substitute one definition for the other. [S31: Visma Q4 2024 report](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f4589_Visma%202024%20Q4.pdf) |
 | Gross / net revenue retention | Revenue retained from a starting customer cohort, excluding expansion for gross retention and including expansion for net retention, under explicitly defined contraction, churn, currency, and period rules. |
 
+| Net debt / EBITDA (leverage ratio) | Borrowings divided by annual operating earnings — the usual shorthand for how indebted a company is. Visma reports 2.5×; Toys "R" Us carried roughly 6.8× before filing. Higher means less room for error. |
+| Statutory accounts / statutory result | The figures a company is legally required to report under the applicable accounting standards, as opposed to an adjusted measure it defines itself. |
+| Distributions (to investors) | Money paid out of an investment to its owners — from a sale, refinancing or dividend. Distinct from a valuation increase, which pays nobody. |
+| Gross / net return | Gross is measured before the manager's fees and carried interest; net is what the fund's investors actually keep. The two can differ substantially. |
 ## Operating Decisions and Evidence
 
 | Term | Meaning in this manuscript |

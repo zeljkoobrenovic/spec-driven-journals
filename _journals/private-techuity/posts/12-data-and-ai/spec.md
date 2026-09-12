@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Would Make an AI Investment Worth Owning?
+# Spec: An AI Strategy Contains Three Different Investment Questions
 
 ## Intent
 

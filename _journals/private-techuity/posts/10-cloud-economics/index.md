@@ -1,5 +1,5 @@
 ---
-title: When Is a Lower Technology Bill an Improvement?
+title: A Smaller Bill Is Not Always an Improvement
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Evaluate unit economics, cloud commitments, service quality, and realized versus theoretical savings.
@@ -20,6 +20,8 @@ A cloud bill falls by 20%. Has the company improved?
 
 Perhaps unused resources were removed. Perhaps traffic fell because customers left. Perhaps spending moved into another account. Perhaps a large upfront commitment lowered the monthly invoice while increasing long-term exposure. The number is a starting observation, not a conclusion.
 
+Infrastructure gets its own chapter because it is where cost claims are easiest to make and hardest to verify. It is also the first place an owner looks. The discipline here — unit economics, a realization record, a protected service level — is the model for how any claimed saving in this part should be examined.
+
 **Unit economics** means examining revenue or cost for a meaningful unit of activity, such as a completed transaction or customer account. FinOps is the practice of managing technology's financial value through collaboration among engineering, finance and business teams. The FinOps Foundation's unit-economics guidance connects technology costs to organizational outcomes and distinguishes resource efficiency from business unit measures. [S16: FinOps unit economics](https://www.finops.org/framework/capabilities/unit-economics/) For a private equity-owned company, this provides a useful bridge between infrastructure work and the cash and margin questions discussed in [[pt-cash-and-constraints]].
 
 ## Choose a Unit That Explains the Business
@@ -32,23 +34,23 @@ Now imagine the bill instead falls to €80,000 because transaction volume falls
 
 These simple examples show why a cost target should be attached to a service and demand assumption. They do not establish that all infrastructure costs vary proportionately with usage.
 
-## Separate Usage, Rates, and Architecture
+## Separate Usage, Rates and Architecture
 
 Infrastructure improvement can come from using fewer resources for the same work, paying a different rate, or changing how the product performs the work. These mechanisms have different risks.
 
-Removing genuinely unused resources can yield relatively direct savings. Rightsizing needs evidence about peaks and service requirements. Rate commitments can be valuable when demand is predictable, but flexibility has an economic value too. Architectural change can improve efficiency while introducing migration, reliability, and maintenance costs.
+Removing genuinely unused resources can yield relatively direct savings. **Rightsizing** — matching provisioned capacity to actual demand — needs evidence about peaks and service requirements. Rate commitments can be valuable when demand is predictable, but flexibility has an economic value too. Architectural change can improve efficiency while introducing migration, reliability, and maintenance costs.
 
 Do not count the same saving twice. If rightsizing reduces the volume eligible for a discounted commitment, the two headline opportunities are not necessarily additive. A model should apply changes in a stated order and calculate the combined result.
 
-## A Commitment Is a Financing-Like Decision
+## A Multi-Year Commitment Is a Financing Decision
 
 A fictional service needs €50,000 of resources each month at flexible rates. A commitment promises a discount but obliges the company to pay for capacity over a fixed period. The correct comparison includes plausible demand paths, alternative architectures, acquisition plans, and the possibility of selling or separating the business.
 
-A discount on unused capacity is still an expense. A commitment that cannot transfer on a carve-out can become a stranded cost. A contract that makes switching expensive can be reasonable, but the loss of flexibility should be visible when it is approved.
+A discount on unused capacity is still an expense. A commitment that cannot transfer on a carve-out can become a **stranded cost**: one the company still owes but no longer benefits from. A contract that makes switching expensive can be reasonable, but the loss of flexibility should be visible when it is approved.
 
 The Technology Principal should bring procurement and finance into the technical discussion early. Engineering understands usage and migration feasibility. Finance understands payment timing and accounting. Procurement and legal specialists interpret commercial terms. None of those views is sufficient by itself.
 
-## Savings Need a Realization Record
+## Prove the Saving Actually Arrived
 
 Before a cost initiative starts, define the baseline, what would have happened without the initiative, and which spending is included. Distinguish three quantities:
 
@@ -74,6 +76,8 @@ Cloud cost as a percentage of revenue mixes technical efficiency, pricing, produ
 
 A useful cohort preserves business model, scale, workload, geography, accounting treatment, and the services included. Even then, a small portfolio offers limited statistical confidence. A company may spend more because its product performs more valuable work or because it is inefficient. Diagnosis must distinguish the two.
 
-The Productscapes proposal treats portfolio intelligence as a potential source of learning. Cloud economics is a good place to test that hypothesis because there are concrete costs and repeated decisions. Start with a few comparable services, show companies the benefit of participation, and measure the reporting burden.
+**Productscapes** is the name this book gives to its own working hypothesis, developed in [[pt-investment-firm-as-product]]: that an investment firm's offering, and its technology support, can be designed and tested the way a product is. It is the author's coinage, not established industry practice. It treats portfolio intelligence as a potential source of learning. Cloud economics is a good place to test that hypothesis because there are concrete costs and repeated decisions. Start with a few comparable services, show companies the benefit of participation, and measure the reporting burden.
 
-A successful cost intervention leaves the company with a better understanding of its service economics and a repeatable way to manage them. The lower bill matters. The capability to make the next cost decision well matters after the Principal has moved to another engagement.
+The lower bill matters. What matters more is that the team can now explain what a customer costs to serve, and will still be able to next year, after the Principal has moved on. A one-off cut that nobody can repeat is a saving with an expiry date.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

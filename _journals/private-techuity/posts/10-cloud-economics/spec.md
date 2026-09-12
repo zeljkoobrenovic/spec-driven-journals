@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: When Is a Lower Technology Bill an Improvement?
+# Spec: A Smaller Bill Is Not Always an Improvement
 
 ## Intent
 

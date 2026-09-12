@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: What Can Visma Teach About Repeated Software Ownership?
+# Spec: Visma: Continuity of Manager Is Not Continuity of Money
 
 ## Intent
 

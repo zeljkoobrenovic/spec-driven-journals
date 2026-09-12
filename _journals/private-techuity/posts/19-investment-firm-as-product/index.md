@@ -1,5 +1,5 @@
 ---
-title: Can an Investment Partnership Be Understood as a Product?
+title: "An Investment Partnership as a Product: A Hypothesis"
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Develop the Productscapes hypothesis across customers, users, payers, legal vehicles, and affected stakeholders; examine its limits.
@@ -18,7 +18,9 @@ tags: private equity, technology leadership, Part V
 <br>
 Product thinking asks who needs something, what progress they seek, how value is delivered, and how the offering improves through feedback. Those questions can illuminate private equity. They can also conceal its most important conflicts if everyone is casually called a customer.
 
-The Productscapes material supplied for this book proposes an investment partnership as a product: a repeatable combination of capital, ownership work, expertise, and eventual realization. This is the author's starting hypothesis. The manuscript develops it as an analytical model, not as evidence that an investment firm is literally a software product or that the model has been validated in practice. [P02: Productscapes hypothesis](pt-bibliography.html)
+Parts I to IV described how ownership works and how a Principal operates inside it. Part V asks a different kind of question: could that support be designed deliberately rather than improvised per deal? It is the most speculative part of the book, and it is labelled as such — a hypothesis with tests, not a finding.
+
+**Productscapes** is this book's name for the author's own hypothesis: that an investment partnership can be treated as a product — a repeatable combination of capital, ownership work, expertise and eventual realization. The name and the model are the author's, not established industry practice. This chapter develops it as an analytical tool, not as evidence that a firm is literally a software product or that the model works in practice. [P02: Productscapes hypothesis](pt-bibliography.html)
 
 ## Identify the Offerings Before the Customers
 
@@ -26,9 +28,9 @@ The manager's offering to a **limited partner (LP)**, an investor in a particula
 
 Those relationships share capabilities but have different contracts, economics, and success conditions. The internal investment workbench is another layer: tools and processes used by professionals to deliver the offering. It should not be confused with what an LP or company is buying.
 
-This separation is the strongest feature of the input. It prevents portfolio-company revenue from becoming manager revenue in the model and prevents a valuation from becoming cash returned to investors.
+This separation is the hypothesis's strongest feature. It prevents portfolio-company revenue from becoming manager revenue in the model and prevents a valuation from becoming cash returned to investors.
 
-## Customer, User, Payer, and Stakeholder
+## Customer, User, Payer and Stakeholder Are Not the Same
 
 | Participant | Relationship to the offering | Why the distinction matters |
 | --- | --- | --- |
@@ -43,7 +45,7 @@ These roles can overlap. They should not be collapsed. Calling an employee an in
 
 The product model is therefore a map of relationships, not a claim that every relationship is a market exchange among equally powerful parties.
 
-## What Capabilities Constitute the Product?
+## The Capabilities That Make Up the Product
 
 The investment partnership can be represented through capabilities such as mandate definition, sourcing, assessment, transaction execution, financing, governance, operating support, reporting, and realization. These are functions delivered through people, agreements, and systems. A named capability does not imply a new software application or a separately staffed team.
 
@@ -51,7 +53,7 @@ The model becomes useful when it reveals a handoff that fails. Diligence might i
 
 Product thinking asks whether the offering fulfills its promise at these points. It encourages a service owner to understand user needs, prioritize scarce capacity, and test improvements. It also makes the cost of delivering the offering visible.
 
-## External Evidence Supports Plausibility, Not Validation
+## Outside Evidence Shows Plausibility, Not Proof
 
 The SEC describes active ownership and several relationships through which managers, funds, and portfolio companies can have conflicting interests. [S01: SEC investor guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) KKR's stated Capstone model includes collaboration and practical support across investment and company teams. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone) These observations make a capability-based view plausible. Neither demonstrates that adopting Productscapes improves returns or company outcomes.
 
@@ -77,4 +79,6 @@ Compare with a plausible alternative: a simpler operating review, an external ad
 
 The hypothesis is supported when the model repeatedly helps people make better decisions and deliver useful outcomes at an acceptable cost. It should be revised if it creates bureaucracy, obscures authority, or produces attractive maps without changing the work.
 
-The distinctive contribution is therefore conditional: product thinking can improve the design of an investment partnership when it preserves legal and economic boundaries, accounts for power, and treats evidence as a constraint. The next chapter applies this discipline to technology support itself.
+Product thinking helps here only while it keeps saying who owes what to whom, who can say no, and what would prove the model wrong. Drop any of the three and it becomes a diagram that flatters the firm. The next chapter applies the same discipline to technology support itself.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

@@ -1,5 +1,5 @@
 ---
-title: What Should the First 100 Days Accomplish?
+title: The First 100 Days Establish a Funded Plan
 date: 2026-09-12
 author: Private Techuity working manuscript
 excerpt: Turn diligence into company-owned priorities, funding, baselines, sequencing, and outcome tests.
@@ -20,6 +20,8 @@ The first 100 days are not enough to transform a company. They are enough to est
 
 The number is a planning convention, not a scientifically established period after which value creation succeeds or fails. Its usefulness comes from a clear early horizon. The danger is treating the calendar as a reason to rush poorly understood changes.
 
+[[pt-diligence-and-thesis]] produced findings while the company was still being bought. This chapter is where those findings either become the company's own plan or quietly expire as someone else's report. That transfer, not the hundred days, is the real subject.
+
 ## Confirm the Plan With the People Who Will Deliver It
 
 **Due diligence**, the investigation supporting an investment decision, takes place with incomplete information and a transaction timetable. After closing, management can test assumptions more directly and involve people who were absent from the deal process. Some findings will strengthen; others will change.
@@ -28,15 +30,15 @@ Begin by reviewing the investment thesis and material findings with company lead
 
 If a required investment was omitted from **underwriting**, the financial and risk assessment used to justify the deal, make the funding issue explicit. Do not pass it to the CTO as a delivery challenge and leave the financial model unchanged. If a major risk was underestimated, escalate it through the agreed governance even when that is uncomfortable immediately after acquisition.
 
-## Select a Few Priorities Without Losing Material Risks
+## Few Priorities, Without Losing the Material Risks
 
-The Productscapes proposal suggests three to five important early moves. That is a useful design constraint for attention, not a universal optimum. A company in distress or a carve-out with a hard separation date may need a different structure.
+The Productscapes hypothesis suggests three to five important early moves. That is a useful design constraint for attention, not a universal optimum. A company in distress or a carve-out with a hard separation date may need a different structure.
 
 A priority should have a business outcome, a company owner, an accepted scope, funding, capacity, and a review date. “Improve engineering” is not sufficiently specific. “Demonstrate a repeatable release path for the core service, with recovery evidence and an agreed baseline” is closer to something management can accept and inspect.
 
 Unselected findings remain visible. A limited priority list is not permission to defer a material security or liquidity issue without a decision. Distinguish active priorities, accepted risks, monitored conditions, and later opportunities.
 
-## A Fictional First-Period Plan
+## A First-Period Plan, Worked Through
 
 Larkspur's investment thesis depends on faster customer onboarding and a broader product market. Diligence also identifies dependence on two specialists and limited evidence that the service can be restored completely.
 
@@ -56,7 +58,7 @@ Map these dependencies before promising parallel delivery. Estimate the capacity
 
 Separate no-regret actions from conditional investments. Correcting an exposed operational weakness may be worthwhile under several strategies. A large product replacement may depend on evidence that the target segment is attractive. Fund the next learning step when it can materially improve the larger decision.
 
-## Establish Measurement Before the Story Becomes Fixed
+## Measure Before the Story Hardens
 
 Early baselines are imperfect. Document their weaknesses rather than waiting for a perfect dashboard. Define the population, period, and data source; preserve the original version when definitions improve.
 
@@ -72,10 +74,12 @@ A short engagement charter can state how often the Principal will meet managemen
 
 Hands-on support can build credibility when it resolves a real constraint. It can also overload teams if every owner-sponsored expert arrives with a new assessment and action list. Coordinate interventions through company leadership and one capacity view.
 
-## Review the Plan, Not Just Its Completion Rate
+## Review the Plan, Not Its Completion Rate
 
 At the end of the period, ask what was learned and what the company can now do. Which assumptions survived? Which outcomes improved? Which dependencies remain? What should be stopped, continued, or funded differently?
 
 Completing every planned task is not necessarily success if the tasks addressed the wrong constraint. Revising a major assumption can be a valuable outcome even when it reduces the original growth forecast. The review should reward better judgment rather than the preservation of the transaction story.
 
-The first 100 days succeed when ownership begins with accepted priorities, realistic funding, clear authority, and an evidence trail that can evolve. Those foundations support the longer work in [[pt-execution-and-exit]].
+A hundred days is not enough to fix a company. It is enough to find out whether the people who must deliver the plan believe it, whether the money for it exists, and who is allowed to decide. Getting those three wrong is expensive for years. [[pt-execution-and-exit]] takes up the longer work.
+
+*Unfamiliar terms are defined in the [[pt-glossary]].*

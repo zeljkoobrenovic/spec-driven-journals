@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: How Should Leaders Value Security and Resilience?
+# Spec: Security Is an Investment Under Uncertainty, Not a Cost
 
 ## Intent
 

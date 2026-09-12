@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: How Does Support Stay Useful Through Ownership and Exit?
+# Spec: Useful Support Changes Decisions, Through to Exit
 
 ## Intent
 

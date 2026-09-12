@@ -3,7 +3,7 @@ status: draft
 revised: 2026-09-12
 ---
 
-# Spec: Can an Investment Partnership Be Understood as a Product?
+# Spec: An Investment Partnership as a Product: A Hypothesis
 
 ## Intent
 
