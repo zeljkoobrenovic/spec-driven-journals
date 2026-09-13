@@ -5,7 +5,9 @@
 }
 -->
 
-**Comic.** Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+**Comic.** Product and engineering leaders rarely choose the investor but inherit the choice. The panels compare capital arrangements to show how each one sets the expected pace, the tolerable loss and whether the plan is judged against a sale or continued ownership.
+
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {

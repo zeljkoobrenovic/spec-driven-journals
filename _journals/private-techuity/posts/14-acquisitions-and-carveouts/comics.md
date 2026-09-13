@@ -5,7 +5,9 @@
 }
 -->
 
-**Comic.** Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+**Comic.** Acquisitions and carve-outs are usually investor decisions, agreed on the investor’s timetable and priced on assumptions the operating team may not have been asked about. The panels follow what happens after the transaction date, when those assumptions become operating obligations.
+
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {

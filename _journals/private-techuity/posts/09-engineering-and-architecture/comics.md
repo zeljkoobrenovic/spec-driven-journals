@@ -5,7 +5,9 @@
 }
 -->
 
-**Comic.** Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+**Comic.** In normal operations, engineering constraints are handled as they arise. The panels show what changes when an investment case fixes the destination and timetable in advance: the engineering leader has to test whether the promised plan is feasible and say what it would cost to make it so.
+
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {

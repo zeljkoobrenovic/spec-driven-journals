@@ -5,7 +5,9 @@
 }
 -->
 
-**Comic.** Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+**Comic.** An informal decision process can work under a founder. The panels show what an outside investor adds, from board seats and approval thresholds to advisers whose suggestions sound like instructions, and why the consequences of misreading them land on product and engineering teams.
+
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {

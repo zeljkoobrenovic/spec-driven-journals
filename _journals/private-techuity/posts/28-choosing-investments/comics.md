@@ -5,7 +5,9 @@
 }
 -->
 
-**Comic.** Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+**Comic.** Investor ownership changes the choice of what to fund in two ways: the financing limits the cash and capacity available, and the investor’s expected result gives some options a priority the company’s own view might not. The panels show how to choose without the plan being overruled or unfunded.
+
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
