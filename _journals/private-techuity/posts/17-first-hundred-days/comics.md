@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/17-first-hundred-days/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex receives a large slide deck labeled with a hundred-day calendar. Use one speech bubble with the exact words: \"What can we actually accomplish?\" Convey: The planning period is a convention, not a universal delivery timetable.",
-  "alt": "Comic panel: alex receives a large slide deck labeled with a hundred-day calendar.",
-  "caption": "The planning period is a convention, not a universal delivery timetable."
+  "prompt": "Panel 1 of an explainer comic. Alex receives a large slide deck labeled with a hundred-day calendar. Use one speech bubble with the exact words: \"What can we actually accomplish?\" Convey: The first hundred days provide a planning horizon after a purchase, rather than a deadline to finish every transformation.",
+  "alt": "Comic panel: Alex receives a large slide deck labeled with a hundred-day calendar.",
+  "caption": "The first hundred days provide a planning horizon after a purchase, rather than a deadline to finish every transformation."
 }
 -->
 
-**Panel 1:** The planning period is a convention, not a universal delivery timetable.
+**Panel 1:** The first hundred days provide a planning horizon after a purchase, rather than a deadline to finish every transformation.
 
 *Scene:* Alex receives a large slide deck labeled with a hundred-day calendar.
 
@@ -31,17 +31,17 @@
   "status": "pending",
   "asset": "assets/images/17-first-hundred-days/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan listens to company teams before adding initiatives. Use one speech bubble with the exact words: \"What has changed since diligence?\" Convey: Validate the current situation and existing commitments.",
-  "alt": "Comic panel: morgan listens to company teams before adding initiatives.",
-  "caption": "Validate the current situation and existing commitments."
+  "prompt": "Panel 2 of an explainer comic. Morgan listens to company teams before adding initiatives. Use one speech bubble with the exact words: \"What did the investigation miss?\" Convey: Recheck the findings from the pre-investment investigation with the people who will do the work.",
+  "alt": "Comic panel: Morgan listens to company teams before adding initiatives.",
+  "caption": "Recheck the findings from the pre-investment investigation with the people who will do the work."
 }
 -->
 
-**Panel 2:** Validate the current situation and existing commitments.
+**Panel 2:** Recheck the findings from the pre-investment investigation with the people who will do the work.
 
 *Scene:* Morgan listens to company teams before adding initiatives.
 
-*Dialogue:* “What has changed since diligence?”
+*Dialogue:* “What did the investigation miss?”
 
 <!-- comic-panel
 {
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/17-first-hundred-days/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam places three fictional priorities beside limited team capacity. Use one speech bubble with the exact words: \"What must wait for these?\" Convey: An initiative portfolio requires explicit resource trade-offs.",
-  "alt": "Comic panel: sam places three fictional priorities beside limited team capacity.",
-  "caption": "An initiative portfolio requires explicit resource trade-offs."
+  "prompt": "Panel 3 of an explainer comic. Sam places three fictional priorities beside limited team capacity. Use one speech bubble with the exact words: \"What must wait for these?\" Convey: Choose priorities that fit available people and money. Record what other work must wait.",
+  "alt": "Comic panel: Sam places three fictional priorities beside limited team capacity.",
+  "caption": "Choose priorities that fit available people and money. Record what other work must wait."
 }
 -->
 
-**Panel 3:** An initiative portfolio requires explicit resource trade-offs.
+**Panel 3:** Choose priorities that fit available people and money. Record what other work must wait.
 
 *Scene:* Sam places three fictional priorities beside limited team capacity.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/17-first-hundred-days/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex connects an onboarding improvement to a knowledge dependency. Use one speech bubble with the exact words: \"Sequence the necessary work.\" Convey: Dependencies can determine when a growth ambition becomes feasible.",
-  "alt": "Comic panel: alex connects an onboarding improvement to a knowledge dependency.",
-  "caption": "Dependencies can determine when a growth ambition becomes feasible."
+  "prompt": "Panel 4 of an explainer comic. Alex connects an onboarding improvement to a knowledge dependency. Use one speech bubble with the exact words: \"Sequence the necessary work.\" Convey: A dependency is something that must happen first. Plan these steps before promising several improvements at once.",
+  "alt": "Comic panel: Alex connects an onboarding improvement to a knowledge dependency.",
+  "caption": "A dependency is something that must happen first. Plan these steps before promising several improvements at once."
 }
 -->
 
-**Panel 4:** Dependencies can determine when a growth ambition becomes feasible.
+**Panel 4:** A dependency is something that must happen first. Plan these steps before promising several improvements at once.
 
 *Scene:* Alex connects an onboarding improvement to a knowledge dependency.
 
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/17-first-hundred-days/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. The team records a baseline, owner, and review condition. Use one speech bubble with the exact words: \"How will we recognize progress?\" Convey: Activity completion needs an outcome interpretation.",
-  "alt": "Comic panel: the team records a baseline, owner, and review condition.",
-  "caption": "Activity completion needs an outcome interpretation."
+  "prompt": "Panel 5 of an explainer comic. The team records a baseline, owner, and review condition. Use one speech bubble with the exact words: \"How will we recognize progress?\" Convey: A baseline records the starting situation. Agree who owns each result and what evidence would justify changing the plan.",
+  "alt": "Comic panel: The team records a baseline, owner, and review condition.",
+  "caption": "A baseline records the starting situation. Agree who owns each result and what evidence would justify changing the plan."
 }
 -->
 
-**Panel 5:** Activity completion needs an outcome interpretation.
+**Panel 5:** A baseline records the starting situation. Agree who owns each result and what evidence would justify changing the plan.
 
 *Scene:* The team records a baseline, owner, and review condition.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/17-first-hundred-days/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Morgan replaces a finished-plan trophy with a revised decision. Use one speech bubble with the exact words: \"What did we learn?\" Convey: The period should leave a company-owned plan able to adapt.",
-  "alt": "Comic panel: morgan replaces a finished-plan trophy with a revised decision.",
-  "caption": "The period should leave a company-owned plan able to adapt."
+  "prompt": "Panel 6 of an explainer comic. Morgan replaces a finished-plan trophy with a revised decision. Use one speech bubble with the exact words: \"What did we learn?\" Convey: The early period should leave a funded plan that company leaders understand and can adapt as they learn.",
+  "alt": "Comic panel: Morgan replaces a finished-plan trophy with a revised decision.",
+  "caption": "The early period should leave a funded plan that company leaders understand and can adapt as they learn."
 }
 -->
 
-**Panel 6:** The period should leave a company-owned plan able to adapt.
+**Panel 6:** The early period should leave a funded plan that company leaders understand and can adapt as they learn.
 
 *Scene:* Morgan replaces a finished-plan trophy with a revised decision.
 

@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/08-product-value/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex presents a faster onboarding workflow. Use one speech bubble with the exact words: \"What changes for the customer?\" Convey: Start with the user's experience and the business constraint.",
-  "alt": "Comic panel: alex presents a faster onboarding workflow.",
-  "caption": "Start with the user's experience and the business constraint."
+  "prompt": "Panel 1 of an explainer comic. Alex presents a faster onboarding workflow. Use one speech bubble with the exact words: \"What changes for the customer?\" Convey: Onboarding is the setup needed before a customer can use the product. Start by identifying what the proposed change makes easier.",
+  "alt": "Comic panel: Alex presents a faster onboarding workflow.",
+  "caption": "Onboarding is the setup needed before a customer can use the product. Start by identifying what the proposed change makes easier."
 }
 -->
 
-**Panel 1:** Start with the user's experience and the business constraint.
+**Panel 1:** Onboarding is the setup needed before a customer can use the product. Start by identifying what the proposed change makes easier.
 
 *Scene:* Alex presents a faster onboarding workflow.
 
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/08-product-value/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. A customer reaches a usable product with fewer handoffs. Use one speech bubble with the exact words: \"They reach value sooner.\" Convey: An intervention needs an observable behavioral or operating mechanism.",
-  "alt": "Comic panel: a customer reaches a usable product with fewer handoffs.",
-  "caption": "An intervention needs an observable behavioral or operating mechanism."
+  "prompt": "Panel 2 of an explainer comic. A customer reaches a usable product with fewer handoffs. Use one speech bubble with the exact words: \"They reach value sooner.\" Convey: Fewer setup steps may help customers begin useful work sooner. Check whether that result actually occurs.",
+  "alt": "Comic panel: A customer reaches a usable product with fewer handoffs.",
+  "caption": "Fewer setup steps may help customers begin useful work sooner. Check whether that result actually occurs."
 }
 -->
 
-**Panel 2:** An intervention needs an observable behavioral or operating mechanism.
+**Panel 2:** Fewer setup steps may help customers begin useful work sooner. Check whether that result actually occurs.
 
 *Scene:* A customer reaches a usable product with fewer handoffs.
 
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/08-product-value/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam sees freed hours but unchanged payroll. Use one speech bubble with the exact words: \"Capacity is not cash yet.\" Convey: The financial effect depends on how released capacity is used.",
-  "alt": "Comic panel: sam sees freed hours but unchanged payroll.",
-  "caption": "The financial effect depends on how released capacity is used."
+  "prompt": "Panel 3 of an explainer comic. Sam sees freed hours but unchanged payroll. Use one speech bubble with the exact words: \"Capacity is not cash yet.\" Convey: Freed staff time is capacity for other work. If payroll and other spending remain unchanged, it is not yet a cash saving.",
+  "alt": "Comic panel: Sam sees freed hours but unchanged payroll.",
+  "caption": "Freed staff time is capacity for other work. If payroll and other spending remain unchanged, it is not yet a cash saving."
 }
 -->
 
-**Panel 3:** The financial effect depends on how released capacity is used.
+**Panel 3:** Freed staff time is capacity for other work. If payroll and other spending remain unchanged, it is not yet a cash saving.
 
 *Scene:* Sam sees freed hours but unchanged payroll.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/08-product-value/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Morgan separates product change from a pricing change. Use one speech bubble with the exact words: \"What else changed this quarter?\" Convey: Attribution needs alternatives, cohort context, and timing.",
-  "alt": "Comic panel: morgan separates product change from a pricing change.",
-  "caption": "Attribution needs alternatives, cohort context, and timing."
+  "prompt": "Panel 4 of an explainer comic. Morgan separates product change from a pricing change. Use one speech bubble with the exact words: \"What else changed this quarter?\" Convey: To judge the effect of the change, compare similar customers and examine other changes, such as a new price.",
+  "alt": "Comic panel: Morgan separates product change from a pricing change.",
+  "caption": "To judge the effect of the change, compare similar customers and examine other changes, such as a new price."
 }
 -->
 
-**Panel 4:** Attribution needs alternatives, cohort context, and timing.
+**Panel 4:** To judge the effect of the change, compare similar customers and examine other changes, such as a new price.
 
 *Scene:* Morgan separates product change from a pricing change.
 
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/08-product-value/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex adds implementation and ongoing costs to the proposal. Use one speech bubble with the exact words: \"Count the whole intervention.\" Convey: Gross benefit is not net economic contribution.",
-  "alt": "Comic panel: alex adds implementation and ongoing costs to the proposal.",
-  "caption": "Gross benefit is not net economic contribution."
+  "prompt": "Panel 5 of an explainer comic. Alex adds implementation and ongoing costs to the proposal. Use one speech bubble with the exact words: \"Count the whole intervention.\" Convey: Include the money and effort needed to build, introduce and maintain the improvement before claiming a net benefit.",
+  "alt": "Comic panel: Alex adds implementation and ongoing costs to the proposal.",
+  "caption": "Include the money and effort needed to build, introduce and maintain the improvement before claiming a net benefit."
 }
 -->
 
-**Panel 5:** Gross benefit is not net economic contribution.
+**Panel 5:** Include the money and effort needed to build, introduce and maintain the improvement before claiming a net benefit.
 
 *Scene:* Alex adds implementation and ongoing costs to the proposal.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/08-product-value/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team reviews customer outcomes beside financial evidence. Use one speech bubble with the exact words: \"Now the value claim is testable.\" Convey: A credible bridge explains the mechanism and its limits.",
-  "alt": "Comic panel: the team reviews customer outcomes beside financial evidence.",
-  "caption": "A credible bridge explains the mechanism and its limits."
+  "prompt": "Panel 6 of an explainer comic. The team reviews customer outcomes beside financial evidence. Use one speech bubble with the exact words: \"Now the value claim is testable.\" Convey: Connect the technical change, the customer result and the business effect. State which connections the evidence supports and which remain uncertain.",
+  "alt": "Comic panel: The team reviews customer outcomes beside financial evidence.",
+  "caption": "Connect the technical change, the customer result and the business effect. State which connections the evidence supports and which remain uncertain."
 }
 -->
 
-**Panel 6:** A credible bridge explains the mechanism and its limits.
+**Panel 6:** Connect the technical change, the customer result and the business effect. State which connections the evidence supports and which remain uncertain.
 
 *Scene:* The team reviews customer outcomes beside financial evidence.
 

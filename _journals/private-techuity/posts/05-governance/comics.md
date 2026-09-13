@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,17 +13,17 @@
   "status": "pending",
   "asset": "assets/images/05-governance/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Morgan suggests a change; Alex hears a giant command echo. Use one speech bubble with the exact words: \"Is that advice or instruction?\" Convey: An owner's representative can exert influence beyond formal authority.",
-  "alt": "Comic panel: morgan suggests a change; Alex hears a giant command echo.",
-  "caption": "An owner's representative can exert influence beyond formal authority."
+  "prompt": "Panel 1 of an explainer comic. Alex receives a suggestion from Morgan while Sam compares the old and new decision map. Use one speech bubble with the exact words: \"Which decisions have actually changed?\" Convey: Investment can change authority, priorities and accountability. A suggestion from someone close to the new owner can sound like an instruction.",
+  "alt": "Comic panel: Alex receives a suggestion from Morgan while Sam compares the old and new decision map.",
+  "caption": "Investment can change authority, priorities and accountability. A suggestion from someone close to the new owner can sound like an instruction."
 }
 -->
 
-**Panel 1:** An owner's representative can exert influence beyond formal authority.
+**Panel 1:** Investment can change authority, priorities and accountability. A suggestion from someone close to the new owner can sound like an instruction.
 
-*Scene:* Morgan suggests a change; Alex hears a giant command echo.
+*Scene:* Alex receives a suggestion from Morgan while Sam compares the old and new decision map.
 
-*Dialogue:* “Is that advice or instruction?”
+*Dialogue:* “Which decisions have actually changed?”
 
 <!-- comic-panel
 {
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/05-governance/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam draws separate chairs for management and board. Use one speech bubble with the exact words: \"Name the decision-maker.\" Convey: Oversight, executive decisions, and operating support have different responsibilities.",
-  "alt": "Comic panel: sam draws separate chairs for management and board.",
-  "caption": "Oversight, executive decisions, and operating support have different responsibilities."
+  "prompt": "Panel 2 of an explainer comic. Sam draws separate chairs for management and board. Use one speech bubble with the exact words: \"Name the decision-maker.\" Convey: Governance sets out who decides, who oversees and who is responsible. Company leaders and advisers can have different roles.",
+  "alt": "Comic panel: Sam draws separate chairs for management and board.",
+  "caption": "Governance sets out who decides, who oversees and who is responsible. Company leaders and advisers can have different roles."
 }
 -->
 
-**Panel 2:** Oversight, executive decisions, and operating support have different responsibilities.
+**Panel 2:** Governance sets out who decides, who oversees and who is responsible. Company leaders and advisers can have different roles.
 
 *Scene:* Sam draws separate chairs for management and board.
 
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/05-governance/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex asks Morgan to explain a business constraint. Use one speech bubble with the exact words: \"Show me the consequence.\" Convey: Productive challenge connects a proposal to outcomes and feasible alternatives.",
-  "alt": "Comic panel: alex asks Morgan to explain a business constraint.",
-  "caption": "Productive challenge connects a proposal to outcomes and feasible alternatives."
+  "prompt": "Panel 3 of an explainer comic. Alex asks Morgan to explain a business constraint. Use one speech bubble with the exact words: \"Show me the consequence.\" Convey: A useful challenge asks what business problem the proposal solves and what other options could address it.",
+  "alt": "Comic panel: Alex asks Morgan to explain a business constraint.",
+  "caption": "A useful challenge asks what business problem the proposal solves and what other options could address it."
 }
 -->
 
-**Panel 3:** Productive challenge connects a proposal to outcomes and feasible alternatives.
+**Panel 3:** A useful challenge asks what business problem the proposal solves and what other options could address it.
 
 *Scene:* Alex asks Morgan to explain a business constraint.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/05-governance/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. A decision card circulates without finding its owner. Use one speech bubble with the exact words: \"Who can act before Friday?\" Convey: A process needs practical response times as well as nominal roles.",
-  "alt": "Comic panel: a decision card circulates without finding its owner.",
-  "caption": "A process needs practical response times as well as nominal roles."
+  "prompt": "Panel 4 of an explainer comic. A decision card circulates without finding its owner. Use one speech bubble with the exact words: \"Who can act before Friday?\" Convey: A decision process needs someone authorized to act before the relevant deadline, as well as a name on an organization chart.",
+  "alt": "Comic panel: A decision card circulates without finding its owner.",
+  "caption": "A decision process needs someone authorized to act before the relevant deadline, as well as a name on an organization chart."
 }
 -->
 
-**Panel 4:** A process needs practical response times as well as nominal roles.
+**Panel 4:** A decision process needs someone authorized to act before the relevant deadline, as well as a name on an organization chart.
 
 *Scene:* A decision card circulates without finding its owner.
 
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/05-governance/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Morgan and Alex agree an information-sharing boundary. Use one speech bubble with the exact words: \"What will be shared?\" Convey: Clarify confidentiality and escalation before a sensitive conversation.",
-  "alt": "Comic panel: morgan and Alex agree an information-sharing boundary.",
-  "caption": "Clarify confidentiality and escalation before a sensitive conversation."
+  "prompt": "Panel 5 of an explainer comic. Morgan and Alex agree an information-sharing boundary. Use one speech bubble with the exact words: \"What will be shared?\" Convey: Escalation means taking an issue to someone who can act. Agree what information must be shared before a sensitive conversation.",
+  "alt": "Comic panel: Morgan and Alex agree an information-sharing boundary.",
+  "caption": "Escalation means taking an issue to someone who can act. Agree what information must be shared before a sensitive conversation."
 }
 -->
 
-**Panel 5:** Clarify confidentiality and escalation before a sensitive conversation.
+**Panel 5:** Escalation means taking an issue to someone who can act. Agree what information must be shared before a sensitive conversation.
 
 *Scene:* Morgan and Alex agree an information-sharing boundary.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/05-governance/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team records a decision and its accepted trade-offs. Use one speech bubble with the exact words: \"Now accountability is possible.\" Convey: Authority, resources, and responsibility need to fit together.",
-  "alt": "Comic panel: the team records a decision and its accepted trade-offs.",
-  "caption": "Authority, resources, and responsibility need to fit together."
+  "prompt": "Panel 6 of an explainer comic. The team records a decision and its accepted trade-offs. Use one speech bubble with the exact words: \"Now accountability is possible.\" Convey: Record the decision, the responsible person, the resources and the consequences accepted.",
+  "alt": "Comic panel: The team records a decision and its accepted trade-offs.",
+  "caption": "Record the decision, the responsible person, the resources and the consequences accepted."
 }
 -->
 
-**Panel 6:** Authority, resources, and responsibility need to fit together.
+**Panel 6:** Record the decision, the responsible person, the resources and the consequences accepted.
 
 *Scene:* The team records a decision and its accepted trade-offs.
 

@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/13-people-and-operating-models/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex studies an organization chart while work waits nearby. Use one speech bubble with the exact words: \"Where does the work actually stop?\" Convey: A reporting structure does not reveal every operating constraint.",
-  "alt": "Comic panel: alex studies an organization chart while work waits nearby.",
-  "caption": "A reporting structure does not reveal every operating constraint."
+  "prompt": "Panel 1 of an explainer comic. Alex studies an organization chart while work waits nearby. Use one speech bubble with the exact words: \"Where does the work actually stop?\" Convey: An operating model describes how teams, responsibilities and decisions are arranged. Follow actual work to see where that arrangement causes delays.",
+  "alt": "Comic panel: Alex studies an organization chart while work waits nearby.",
+  "caption": "An operating model describes how teams, responsibilities and decisions are arranged. Follow actual work to see where that arrangement causes delays."
 }
 -->
 
-**Panel 1:** A reporting structure does not reveal every operating constraint.
+**Panel 1:** An operating model describes how teams, responsibilities and decisions are arranged. Follow actual work to see where that arrangement causes delays.
 
 *Scene:* Alex studies an organization chart while work waits nearby.
 
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/13-people-and-operating-models/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan follows a request to one overloaded expert. Use one speech bubble with the exact words: \"Knowledge has become a dependency.\" Convey: Capacity includes context and scarce expertise, not just headcount.",
-  "alt": "Comic panel: morgan follows a request to one overloaded expert.",
-  "caption": "Capacity includes context and scarce expertise, not just headcount."
+  "prompt": "Panel 2 of an explainer comic. Morgan follows a request to one overloaded expert. Use one speech bubble with the exact words: \"Knowledge has become a dependency.\" Convey: Capacity includes knowledge and context. If every difficult question needs one expert, adding people may not remove the delay.",
+  "alt": "Comic panel: Morgan follows a request to one overloaded expert.",
+  "caption": "Capacity includes knowledge and context. If every difficult question needs one expert, adding people may not remove the delay."
 }
 -->
 
-**Panel 2:** Capacity includes context and scarce expertise, not just headcount.
+**Panel 2:** Capacity includes knowledge and context. If every difficult question needs one expert, adding people may not remove the delay.
 
 *Scene:* Morgan follows a request to one overloaded expert.
 
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/13-people-and-operating-models/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam compares salary savings with transition obligations. Use one speech bubble with the exact words: \"What is the full operating cost?\" Convey: Coordination and knowledge transfer can change a location decision.",
-  "alt": "Comic panel: sam compares salary savings with transition obligations.",
-  "caption": "Coordination and knowledge transfer can change a location decision."
+  "prompt": "Panel 3 of an explainer comic. Sam compares salary savings with transition obligations. Use one speech bubble with the exact words: \"What is the full operating cost?\" Convey: A lower wage bill can be offset by recruitment, coordination, training and the cost of moving work between teams.",
+  "alt": "Comic panel: Sam compares salary savings with transition obligations.",
+  "caption": "A lower wage bill can be offset by recruitment, coordination, training and the cost of moving work between teams."
 }
 -->
 
-**Panel 3:** Coordination and knowledge transfer can change a location decision.
+**Panel 3:** A lower wage bill can be offset by recruitment, coordination, training and the cost of moving work between teams.
 
 *Scene:* Sam compares salary savings with transition obligations.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/13-people-and-operating-models/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex considers a leadership change beside unclear authority. Use one speech bubble with the exact words: \"Which conditions would also change?\" Convey: Assess a leader within the system in which they must operate.",
-  "alt": "Comic panel: alex considers a leadership change beside unclear authority.",
-  "caption": "Assess a leader within the system in which they must operate."
+  "prompt": "Panel 4 of an explainer comic. Alex considers a leadership change beside unclear authority. Use one speech bubble with the exact words: \"Which conditions would also change?\" Convey: Before replacing a leader, examine the authority, resources and priorities around the role as well as the person’s decisions.",
+  "alt": "Comic panel: Alex considers a leadership change beside unclear authority.",
+  "caption": "Before replacing a leader, examine the authority, resources and priorities around the role as well as the person’s decisions."
 }
 -->
 
-**Panel 4:** Assess a leader within the system in which they must operate.
+**Panel 4:** Before replacing a leader, examine the authority, resources and priorities around the role as well as the person’s decisions.
 
 *Scene:* Alex considers a leadership change beside unclear authority.
 
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/13-people-and-operating-models/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Employees point out a recurring handoff failure. Use one speech bubble with the exact words: \"Listen where the work happens.\" Convey: Employee evidence can reveal costs that a dashboard misses.",
-  "alt": "Comic panel: employees point out a recurring handoff failure.",
-  "caption": "Employee evidence can reveal costs that a dashboard misses."
+  "prompt": "Panel 5 of an explainer comic. Employees point out a recurring handoff failure. Use one speech bubble with the exact words: \"Listen where the work happens.\" Convey: Ask employees about repeated delays and lost information. Their observations may explain what a report misses.",
+  "alt": "Comic panel: Employees point out a recurring handoff failure.",
+  "caption": "Ask employees about repeated delays and lost information. Their observations may explain what a report misses."
 }
 -->
 
-**Panel 5:** Employee evidence can reveal costs that a dashboard misses.
+**Panel 5:** Ask employees about repeated delays and lost information. Their observations may explain what a report misses.
 
 *Scene:* Employees point out a recurring handoff failure.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/13-people-and-operating-models/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team funds a transition and checks customer continuity. Use one speech bubble with the exact words: \"Can this organization sustain the plan?\" Convey: An operating model should support present performance and future capability.",
-  "alt": "Comic panel: the team funds a transition and checks customer continuity.",
-  "caption": "An operating model should support present performance and future capability."
+  "prompt": "Panel 6 of an explainer comic. The team funds a transition and checks customer continuity. Use one speech bubble with the exact words: \"Can this organization sustain the plan?\" Convey: A useful organization can deliver now and keep learning. Fund the transition and assess its effects on both customers and employees.",
+  "alt": "Comic panel: The team funds a transition and checks customer continuity.",
+  "caption": "A useful organization can deliver now and keep learning. Fund the transition and assess its effects on both customers and employees."
 }
 -->
 
-**Panel 6:** An operating model should support present performance and future capability.
+**Panel 6:** A useful organization can deliver now and keep learning. Fund the transition and assess its effects on both customers and employees.
 
 *Scene:* The team funds a transition and checks customer continuity.
 

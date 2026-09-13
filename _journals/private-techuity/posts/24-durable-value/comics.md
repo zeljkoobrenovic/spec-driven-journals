@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/24-durable-value/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Morgan receives an attractive exit-price chart and opens more folders. Use one speech bubble with the exact words: \"What else counts as success?\" Convey: The book proposes an explicit standard beyond one investor result.",
-  "alt": "Comic panel: morgan receives an attractive exit-price chart and opens more folders.",
-  "caption": "The book proposes an explicit standard beyond one investor result."
+  "prompt": "Panel 1 of an explainer comic. Morgan receives an attractive exit-price chart and opens more folders. Use one speech bubble with the exact words: \"What else counts as success?\" Convey: Durable value means the ability to keep producing useful outcomes over time. A favorable investor sale is only one part of that assessment.",
+  "alt": "Comic panel: Morgan receives an attractive exit-price chart and opens more folders.",
+  "caption": "Durable value means the ability to keep producing useful outcomes over time. A favorable investor sale is only one part of that assessment."
 }
 -->
 
-**Panel 1:** The book proposes an explicit standard beyond one investor result.
+**Panel 1:** Durable value means the ability to keep producing useful outcomes over time. A favorable investor sale is only one part of that assessment.
 
 *Scene:* Morgan receives an attractive exit-price chart and opens more folders.
 
@@ -31,17 +31,17 @@
   "status": "pending",
   "asset": "assets/images/24-durable-value/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam compares different buyout types in historical research. Use one speech bubble with the exact words: \"The effects are heterogeneous.\" Convey: A sample estimate is not a forecast for every company.",
-  "alt": "Comic panel: sam compares different buyout types in historical research.",
-  "caption": "A sample estimate is not a forecast for every company."
+  "prompt": "Panel 2 of an explainer comic. Sam compares different buyout types in historical research. Use one speech bubble with the exact words: \"Different groups had different results.\" Convey: Research results describe the groups and periods studied. Different types of buyout can have different outcomes; an average does not predict every company.",
+  "alt": "Comic panel: Sam compares different buyout types in historical research.",
+  "caption": "Research results describe the groups and periods studied. Different types of buyout can have different outcomes; an average does not predict every company."
 }
 -->
 
-**Panel 2:** A sample estimate is not a forecast for every company.
+**Panel 2:** Research results describe the groups and periods studied. Different types of buyout can have different outcomes; an average does not predict every company.
 
 *Scene:* Sam compares different buyout types in historical research.
 
-*Dialogue:* “The effects are heterogeneous.”
+*Dialogue:* “Different groups had different results.”
 
 <!-- comic-panel
 {
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/24-durable-value/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex reads patient-outcome evidence beside financial performance. Use one speech bubble with the exact words: \"These outcomes deserve separate evidence.\" Convey: Stakeholder welfare cannot be inferred from profits or selected quality measures.",
-  "alt": "Comic panel: alex reads patient-outcome evidence beside financial performance.",
-  "caption": "Stakeholder welfare cannot be inferred from profits or selected quality measures."
+  "prompt": "Panel 3 of an explainer comic. Alex reads patient-outcome evidence beside financial performance. Use one speech bubble with the exact words: \"These outcomes deserve separate evidence.\" Convey: Stakeholders are people affected by a company. Research on patient outcomes shows why their welfare needs evidence separate from financial performance.",
+  "alt": "Comic panel: Alex reads patient-outcome evidence beside financial performance.",
+  "caption": "Stakeholders are people affected by a company. Research on patient outcomes shows why their welfare needs evidence separate from financial performance."
 }
 -->
 
-**Panel 3:** Stakeholder welfare cannot be inferred from profits or selected quality measures.
+**Panel 3:** Stakeholders are people affected by a company. Research on patient outcomes shows why their welfare needs evidence separate from financial performance.
 
 *Scene:* Alex reads patient-outcome evidence beside financial performance.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/24-durable-value/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Morgan follows obligations beyond the ownership handoff. Use one speech bubble with the exact words: \"What happens after exit?\" Convey: A sale can transfer unfinished work and future costs.",
-  "alt": "Comic panel: morgan follows obligations beyond the ownership handoff.",
-  "caption": "A sale can transfer unfinished work and future costs."
+  "prompt": "Panel 4 of an explainer comic. Morgan follows obligations beyond the ownership handoff. Use one speech bubble with the exact words: \"What happens after exit?\" Convey: A sale can leave the next owner with unfinished work, customer commitments and future costs. Follow those consequences too.",
+  "alt": "Comic panel: Morgan follows obligations beyond the ownership handoff.",
+  "caption": "A sale can leave the next owner with unfinished work, customer commitments and future costs. Follow those consequences too."
 }
 -->
 
-**Panel 4:** A sale can transfer unfinished work and future costs.
+**Panel 4:** A sale can leave the next owner with unfinished work, customer commitments and future costs. Follow those consequences too.
 
 *Scene:* Morgan follows obligations beyond the ownership handoff.
 
@@ -85,15 +85,15 @@
   "status": "pending",
   "asset": "assets/images/24-durable-value/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. The team connects thesis, financing, governance, and execution. Use one speech bubble with the exact words: \"Do these conditions fit together?\" Convey: Durable value depends on the coherence of the ownership and operating plan.",
-  "alt": "Comic panel: the team connects thesis, financing, governance, and execution.",
-  "caption": "Durable value depends on the coherence of the ownership and operating plan."
+  "prompt": "Panel 5 of an explainer comic. The team connects investment expectations, funding, decision rights and company work. Use one speech bubble with the exact words: \"Do these conditions fit together?\" Convey: The investment expectations, financing, decision rights and company capabilities need to fit together. The book proposes this as a test, not a guarantee.",
+  "alt": "Comic panel: The team connects investment expectations, funding, decision rights and company work.",
+  "caption": "The investment expectations, financing, decision rights and company capabilities need to fit together. The book proposes this as a test, not a guarantee."
 }
 -->
 
-**Panel 5:** Durable value depends on the coherence of the ownership and operating plan.
+**Panel 5:** The investment expectations, financing, decision rights and company capabilities need to fit together. The book proposes this as a test, not a guarantee.
 
-*Scene:* The team connects thesis, financing, governance, and execution.
+*Scene:* The team connects investment expectations, funding, decision rights and company work.
 
 *Dialogue:* “Do these conditions fit together?”
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/24-durable-value/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex keeps an evidence notebook open beside the manuscript. Use one speech bubble with the exact words: \"What would change our judgment?\" Convey: A living book should improve through contradiction, new evidence, and experience.",
-  "alt": "Comic panel: alex keeps an evidence notebook open beside the manuscript.",
-  "caption": "A living book should improve through contradiction, new evidence, and experience."
+  "prompt": "Panel 6 of an explainer comic. Alex keeps an evidence notebook open beside the manuscript. Use one speech bubble with the exact words: \"What would change our judgment?\" Convey: Apply the ideas to one real decision, keep the evidence and revise the plan when the results challenge its assumptions.",
+  "alt": "Comic panel: Alex keeps an evidence notebook open beside the manuscript.",
+  "caption": "Apply the ideas to one real decision, keep the evidence and revise the plan when the results challenge its assumptions."
 }
 -->
 
-**Panel 6:** A living book should improve through contradiction, new evidence, and experience.
+**Panel 6:** Apply the ideas to one real decision, keep the evidence and revise the plan when the results challenge its assumptions.
 
 *Scene:* Alex keeps an evidence notebook open beside the manuscript.
 

@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/06-incentives/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex admires an equity percentage on an offer sheet. Use one speech bubble with the exact words: \"What does this actually pay?\" Convey: A percentage requires the plan's definitions, thresholds, and conditions.",
-  "alt": "Comic panel: alex admires an equity percentage on an offer sheet.",
-  "caption": "A percentage requires the plan's definitions, thresholds, and conditions."
+  "prompt": "Panel 1 of an explainer comic. Alex admires an equity percentage on an offer sheet. Use one speech bubble with the exact words: \"What does this actually pay?\" Convey: An ownership percentage does not establish a payment. The agreement may include thresholds and conditions that must be met first.",
+  "alt": "Comic panel: Alex admires an equity percentage on an offer sheet.",
+  "caption": "An ownership percentage does not establish a payment. The agreement may include thresholds and conditions that must be met first."
 }
 -->
 
-**Panel 1:** A percentage requires the plan's definitions, thresholds, and conditions.
+**Panel 1:** An ownership percentage does not establish a payment. The agreement may include thresholds and conditions that must be met first.
 
 *Scene:* Alex admires an equity percentage on an offer sheet.
 
@@ -31,15 +31,15 @@
   "status": "pending",
   "asset": "assets/images/06-incentives/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam points to a hurdle beneath an outcome waterfall. Use one speech bubble with the exact words: \"Read the distribution rules.\" Convey: Management equity and fund carried interest are different arrangements.",
-  "alt": "Comic panel: sam points to a hurdle beneath an outcome waterfall.",
-  "caption": "Management equity and fund carried interest are different arrangements."
+  "prompt": "Panel 2 of an explainer comic. Sam points to a payment threshold in a share agreement. Use one speech bubble with the exact words: \"Read the distribution rules.\" Convey: Company leaders’ shares and the investment manager’s profit share follow different rules. A payment waterfall sets the order and calculation of payments.",
+  "alt": "Comic panel: Sam points to a payment threshold in a share agreement.",
+  "caption": "Company leaders’ shares and the investment manager’s profit share follow different rules. A payment waterfall sets the order and calculation of payments."
 }
 -->
 
-**Panel 2:** Management equity and fund carried interest are different arrangements.
+**Panel 2:** Company leaders’ shares and the investment manager’s profit share follow different rules. A payment waterfall sets the order and calculation of payments.
 
-*Scene:* Sam points to a hurdle beneath an outcome waterfall.
+*Scene:* Sam points to a payment threshold in a share agreement.
 
 *Dialogue:* “Read the distribution rules.”
 
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/06-incentives/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. A team races a metric while customers wait nearby. Use one speech bubble with the exact words: \"The measure changed our behavior.\" Convey: An incentive can reward a reported result while missing the intended outcome.",
-  "alt": "Comic panel: a team races a metric while customers wait nearby.",
-  "caption": "An incentive can reward a reported result while missing the intended outcome."
+  "prompt": "Panel 3 of an explainer comic. A team races a metric while customers wait nearby. Use one speech bubble with the exact words: \"The measure changed our behavior.\" Convey: An incentive is a reward or consequence that influences behavior. A target can encourage a reported result while damaging customer service.",
+  "alt": "Comic panel: A team races a metric while customers wait nearby.",
+  "caption": "An incentive is a reward or consequence that influences behavior. A target can encourage a reported result while damaging customer service."
 }
 -->
 
-**Panel 3:** An incentive can reward a reported result while missing the intended outcome.
+**Panel 3:** An incentive is a reward or consequence that influences behavior. A target can encourage a reported result while damaging customer service.
 
 *Scene:* A team races a metric while customers wait nearby.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/06-incentives/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Morgan places an exit calendar beside a longer product commitment. Use one speech bubble with the exact words: \"Whose horizon governs this choice?\" Convey: Different time horizons can create real conflicts.",
-  "alt": "Comic panel: morgan places an exit calendar beside a longer product commitment.",
-  "caption": "Different time horizons can create real conflicts."
+  "prompt": "Panel 4 of an explainer comic. Morgan places an exit calendar beside a longer product commitment. Use one speech bubble with the exact words: \"Whose horizon governs this choice?\" Convey: An investor planning a sale and a team supporting a longer customer commitment can reasonably care about different dates.",
+  "alt": "Comic panel: Morgan places an exit calendar beside a longer product commitment.",
+  "caption": "An investor planning a sale and a team supporting a longer customer commitment can reasonably care about different dates."
 }
 -->
 
-**Panel 4:** Different time horizons can create real conflicts.
+**Panel 4:** An investor planning a sale and a team supporting a longer customer commitment can reasonably care about different dates.
 
 *Scene:* Morgan places an exit calendar beside a longer product commitment.
 
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/06-incentives/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Employees carry transition boxes while investors review returns. Use one speech bubble with the exact words: \"Who carries these costs?\" Convey: Economic gains and operating burdens are not automatically shared.",
-  "alt": "Comic panel: employees carry transition boxes while investors review returns.",
-  "caption": "Economic gains and operating burdens are not automatically shared."
+  "prompt": "Panel 5 of an explainer comic. Employees carry transition boxes while investors review returns. Use one speech bubble with the exact words: \"Who carries these costs?\" Convey: Employees may bear transition costs without receiving a share of the investment gain. Record who benefits and who carries the burden.",
+  "alt": "Comic panel: Employees carry transition boxes while investors review returns.",
+  "caption": "Employees may bear transition costs without receiving a share of the investment gain. Record who benefits and who carries the burden."
 }
 -->
 
-**Panel 5:** Economic gains and operating burdens are not automatically shared.
+**Panel 5:** Employees may bear transition costs without receiving a share of the investment gain. Record who benefits and who carries the burden.
 
 *Scene:* Employees carry transition boxes while investors review returns.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/06-incentives/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team adds quality and future obligations to the review. Use one speech bubble with the exact words: \"Make the trade-off visible.\" Convey: Better incentives help; they do not eliminate the need for judgment.",
-  "alt": "Comic panel: the team adds quality and future obligations to the review.",
-  "caption": "Better incentives help; they do not eliminate the need for judgment."
+  "prompt": "Panel 6 of an explainer comic. The team adds quality and future obligations to the review. Use one speech bubble with the exact words: \"Make the trade-off visible.\" Convey: Pair financial targets with evidence of customer outcomes and future capability. Rewards still require judgment about their effects.",
+  "alt": "Comic panel: The team adds quality and future obligations to the review.",
+  "caption": "Pair financial targets with evidence of customer outcomes and future capability. Rewards still require judgment about their effects."
 }
 -->
 
-**Panel 6:** Better incentives help; they do not eliminate the need for judgment.
+**Panel 6:** Pair financial targets with evidence of customer outcomes and future capability. Rewards still require judgment about their effects.
 
 *Scene:* The team adds quality and future obligations to the review.
 

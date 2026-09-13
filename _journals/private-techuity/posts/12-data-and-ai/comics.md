@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/12-data-and-ai/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex receives an AI tool beside three different work problems. Use one speech bubble with the exact words: \"Which outcome are we buying?\" Convey: Customer products, internal workflows, and disruption need separate hypotheses.",
-  "alt": "Comic panel: alex receives an AI tool beside three different work problems.",
-  "caption": "Customer products, internal workflows, and disruption need separate hypotheses."
+  "prompt": "Panel 1 of an explainer comic. Alex receives an AI tool beside three different work problems. Use one speech bubble with the exact words: \"Which outcome are we buying?\" Convey: Artificial intelligence, or AI, can classify, predict or generate from learned patterns. Separate customer uses, internal work and possible competitive threats.",
+  "alt": "Comic panel: Alex receives an AI tool beside three different work problems.",
+  "caption": "Artificial intelligence, or AI, can classify, predict or generate from learned patterns. Separate customer uses, internal work and possible competitive threats."
 }
 -->
 
-**Panel 1:** Customer products, internal workflows, and disruption need separate hypotheses.
+**Panel 1:** Artificial intelligence, or AI, can classify, predict or generate from learned patterns. Separate customer uses, internal work and possible competitive threats.
 
 *Scene:* Alex receives an AI tool beside three different work problems.
 
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/12-data-and-ai/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan compares two experiments in visibly different settings. Use one speech bubble with the exact words: \"These studies ask different questions.\" Convey: Do not generalize one productivity result across all tools and work.",
-  "alt": "Comic panel: morgan compares two experiments in visibly different settings.",
-  "caption": "Do not generalize one productivity result across all tools and work."
+  "prompt": "Panel 2 of an explainer comic. Morgan compares two experiments in visibly different settings. Use one speech bubble with the exact words: \"These studies ask different questions.\" Convey: A productivity experiment describes particular people, tasks and tools. Its result is not a universal staffing rule.",
+  "alt": "Comic panel: Morgan compares two experiments in visibly different settings.",
+  "caption": "A productivity experiment describes particular people, tasks and tools. Its result is not a universal staffing rule."
 }
 -->
 
-**Panel 2:** Do not generalize one productivity result across all tools and work.
+**Panel 2:** A productivity experiment describes particular people, tasks and tools. Its result is not a universal staffing rule.
 
 *Scene:* Morgan compares two experiments in visibly different settings.
 
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/12-data-and-ai/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam checks a calendar beside an updated research note. Use one speech bubble with the exact words: \"The evidence has a date.\" Convey: Changing tools and participation can alter what an experiment tells us.",
-  "alt": "Comic panel: sam checks a calendar beside an updated research note.",
-  "caption": "Changing tools and participation can alter what an experiment tells us."
+  "prompt": "Panel 3 of an explainer comic. Sam checks a calendar beside an updated research note. Use one speech bubble with the exact words: \"The evidence has a date.\" Convey: Check the dates and participation conditions. Changing tools or participants can change what a study tells us.",
+  "alt": "Comic panel: Sam checks a calendar beside an updated research note.",
+  "caption": "Check the dates and participation conditions. Changing tools or participants can change what a study tells us."
 }
 -->
 
-**Panel 3:** Changing tools and participation can alter what an experiment tells us.
+**Panel 3:** Check the dates and participation conditions. Changing tools or participants can change what a study tells us.
 
 *Scene:* Sam checks a calendar beside an updated research note.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/12-data-and-ai/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex reviews a plausible output containing a subtle error. Use one speech bubble with the exact words: \"Review is part of the work.\" Convey: Count correction, evaluation, integration, and quality costs.",
-  "alt": "Comic panel: alex reviews a plausible output containing a subtle error.",
-  "caption": "Count correction, evaluation, integration, and quality costs."
+  "prompt": "Panel 4 of an explainer comic. Alex reviews a plausible output containing a subtle error. Use one speech bubble with the exact words: \"Review is part of the work.\" Convey: Include checking, correcting and using the output when measuring time, cost and quality.",
+  "alt": "Comic panel: Alex reviews a plausible output containing a subtle error.",
+  "caption": "Include checking, correcting and using the output when measuring time, cost and quality."
 }
 -->
 
-**Panel 4:** Count correction, evaluation, integration, and quality costs.
+**Panel 4:** Include checking, correcting and using the output when measuring time, cost and quality.
 
 *Scene:* Alex reviews a plausible output containing a subtle error.
 
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/12-data-and-ai/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. A data folder stops at a permission boundary. Use one speech bubble with the exact words: \"Can this data go there?\" Convey: Technical access does not establish rights or acceptable risk.",
-  "alt": "Comic panel: a data folder stops at a permission boundary.",
-  "caption": "Technical access does not establish rights or acceptable risk."
+  "prompt": "Panel 5 of an explainer comic. A data folder stops at a permission boundary. Use one speech bubble with the exact words: \"Can this data go there?\" Convey: Being technically able to access data does not establish permission to use it for a new purpose.",
+  "alt": "Comic panel: A data folder stops at a permission boundary.",
+  "caption": "Being technically able to access data does not establish permission to use it for a new purpose."
 }
 -->
 
-**Panel 5:** Technical access does not establish rights or acceptable risk.
+**Panel 5:** Being technically able to access data does not establish permission to use it for a new purpose.
 
 *Scene:* A data folder stops at a permission boundary.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/12-data-and-ai/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team defines a local comparison and expansion condition. Use one speech bubble with the exact words: \"Test before scaling the promise.\" Convey: Scale useful evidence, with costs and uncertainty visible.",
-  "alt": "Comic panel: the team defines a local comparison and expansion condition.",
-  "caption": "Scale useful evidence, with costs and uncertainty visible."
+  "prompt": "Panel 6 of an explainer comic. The team defines a local comparison and expansion condition. Use one speech bubble with the exact words: \"Test before scaling the promise.\" Convey: Test the complete workflow locally. Expand only when useful results, costs and remaining uncertainty justify the decision.",
+  "alt": "Comic panel: The team defines a local comparison and expansion condition.",
+  "caption": "Test the complete workflow locally. Expand only when useful results, costs and remaining uncertainty justify the decision."
 }
 -->
 
-**Panel 6:** Scale useful evidence, with costs and uncertainty visible.
+**Panel 6:** Test the complete workflow locally. Expand only when useful results, costs and remaining uncertainty justify the decision.
 
 *Scene:* The team defines a local comparison and expansion condition.
 

@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-12
+revised: 2026-09-13
 ---
 
-# Spec: How a Company Is Financed Decides Who You Answer To
+# Spec: How Companies Get Money
 
 ## Intent
 
@@ -11,15 +11,17 @@ Give a reader with no finance background the map that the rest of Part I assumes
 
 ## Audience
 
-Experienced product and engineering leaders, assumed to know nothing about company finance. Explicitly skippable for readers who already know what a share and an exchange are; the article says so in its second paragraph.
+Readers learning private equity, company finance, and technology leadership from scratch, including product and engineering practitioners. Assume no prior knowledge of specialist financial or technical vocabulary.
 
 ## Success criteria
 
-- Explain the four sources of business money in terms a reader can hold: customers, lenders, owners, asset sales.
+- Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
+- Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
+- Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
+- Explain four common sources of business money in terms a reader can hold: customers, lenders, owners, asset sales.
 - Define share, stock exchange, IPO, public company and private company in passing, without a glossary detour.
-- State plainly that most companies are private and public ones are the visible minority.
-- Locate private equity among the alternatives, and name the two features that drive the rest of the book: the borrowing and the deadline.
-- End on why the structure decides which funding argument will work — the reader's own question.
+- Locate private equity among the alternatives, and explain that this book focuses on controlling investments often involving borrowing and an intended later sale.
+- Connect the source of money to the company’s obligations, then lead into the organizations involved in a private equity investment.
 
 ## Non-goals
 
@@ -31,8 +33,7 @@ Article, TL;DR, comic storyboard (artwork pending).
 
 ## Open questions
 
-- Is the "skim to the last section" invitation in paragraph two right, or does it license readers to miss the public/private contrast that Part VI's cases rely on?
-- Should the four-doors framing recur later in the book, or is one appearance enough?
+None for this revision. Four common cash sources are an orientation, not an exhaustive classification; definitions appear in the chapter.
 
 ## Decision log
 
@@ -41,8 +42,9 @@ Article, TL;DR, comic storyboard (artwork pending).
 
 ## Sources
 
-No external citations. The chapter defines general business-finance vocabulary rather than making factual claims about particular firms, funds or markets; sourced material begins in Chapter 2.
+Investor.gov introductions to stocks, public companies and private equity; SBA grant guidance; Damodaran on capital structure. See linked sources in the article and bibliography.
 
 ## Changelog
 
+- 2026-09-13: Revise for readers starting from scratch; define terms before use, explain reasoning steps, and connect the configured chapter sequence.
 - 2026-09-12: Created.

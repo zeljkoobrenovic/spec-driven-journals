@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/01-capital-and-ownership/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex sees a large acquisition announcement beside an empty project budget. Use one speech bubble with the exact words: \"Where is our investment budget?\" Convey: A purchase price does not tell the operating company what it can spend.",
-  "alt": "Comic panel: alex sees a large acquisition announcement beside an empty project budget.",
-  "caption": "A purchase price does not tell the operating company what it can spend."
+  "prompt": "Panel 1 of an explainer comic. Alex sees a large acquisition announcement beside an empty project budget. Use one speech bubble with the exact words: \"Where is our investment budget?\" Convey: A purchase announcement does not establish how much new cash the company receives.",
+  "alt": "Comic panel: Alex sees a large acquisition announcement beside an empty project budget.",
+  "caption": "A purchase announcement does not establish how much new cash the company receives."
 }
 -->
 
-**Panel 1:** A purchase price does not tell the operating company what it can spend.
+**Panel 1:** A purchase announcement does not establish how much new cash the company receives.
 
 *Scene:* Alex sees a large acquisition announcement beside an empty project budget.
 
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/01-capital-and-ownership/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam places four separate folders on a table. Use one speech bubble with the exact words: \"These are different entities.\" Convey: The manager, fund, acquisition vehicle, and company have different obligations.",
-  "alt": "Comic panel: sam places four separate folders on a table.",
-  "caption": "The manager, fund, acquisition vehicle, and company have different obligations."
+  "prompt": "Panel 2 of an explainer comic. Sam places four separate folders on a table. Use one speech bubble with the exact words: \"These are different entities.\" Convey: The investment firm manages a fund, a pool of investors’ money. A holding company can own the operating business. These organizations have separate obligations.",
+  "alt": "Comic panel: Sam places four separate folders on a table.",
+  "caption": "The investment firm manages a fund, a pool of investors’ money. A holding company can own the operating business. These organizations have separate obligations."
 }
 -->
 
-**Panel 2:** The manager, fund, acquisition vehicle, and company have different obligations.
+**Panel 2:** The investment firm manages a fund, a pool of investors’ money. A holding company can own the operating business. These organizations have separate obligations.
 
 *Scene:* Sam places four separate folders on a table.
 
@@ -49,15 +49,15 @@
   "status": "pending",
   "asset": "assets/images/01-capital-and-ownership/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Morgan watches an LP answer a capital-call envelope. Use one speech bubble with the exact words: \"Committed does not mean transferred.\" Convey: Fund commitments and actual cash payments occur at different times.",
-  "alt": "Comic panel: morgan watches an LP answer a capital-call envelope.",
-  "caption": "Fund commitments and actual cash payments occur at different times."
+  "prompt": "Panel 3 of an explainer comic. Morgan watches a fund investor read a request to supply promised money. Use one speech bubble with the exact words: \"Committed does not mean transferred.\" Convey: A commitment is a promise to supply money. A capital call requests payment from an investor in the fund.",
+  "alt": "Comic panel: Morgan watches a fund investor read a request to supply promised money.",
+  "caption": "A commitment is a promise to supply money. A capital call requests payment from an investor in the fund."
 }
 -->
 
-**Panel 3:** Fund commitments and actual cash payments occur at different times.
+**Panel 3:** A commitment is a promise to supply money. A capital call requests payment from an investor in the fund.
 
-*Scene:* Morgan watches an LP answer a capital-call envelope.
+*Scene:* Morgan watches a fund investor read a request to supply promised money.
 
 *Dialogue:* “Committed does not mean transferred.”
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/01-capital-and-ownership/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex follows a payment toward a selling shareholder. Use one speech bubble with the exact words: \"The seller receives this payment.\" Convey: An ownership transfer may provide liquidity without funding company operations.",
-  "alt": "Comic panel: alex follows a payment toward a selling shareholder.",
-  "caption": "An ownership transfer may provide liquidity without funding company operations."
+  "prompt": "Panel 4 of an explainer comic. Alex follows a payment toward a selling shareholder. Use one speech bubble with the exact words: \"The seller receives this payment.\" Convey: Buying an existing shareholder’s shares pays that seller. It does not directly fund the company’s product work.",
+  "alt": "Comic panel: Alex follows a payment toward a selling shareholder.",
+  "caption": "Buying an existing shareholder’s shares pays that seller. It does not directly fund the company’s product work."
 }
 -->
 
-**Panel 4:** An ownership transfer may provide liquidity without funding company operations.
+**Panel 4:** Buying an existing shareholder’s shares pays that seller. It does not directly fund the company’s product work.
 
 *Scene:* Alex follows a payment toward a selling shareholder.
 
@@ -85,15 +85,15 @@
   "status": "pending",
   "asset": "assets/images/01-capital-and-ownership/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Sam holds two agreements with different payment waterfalls. Use one speech bubble with the exact words: \"Which agreement governs this payment?\" Convey: Fees, carried interest, and management equity belong to distinct arrangements.",
-  "alt": "Comic panel: sam holds two agreements with different payment waterfalls.",
-  "caption": "Fees, carried interest, and management equity belong to distinct arrangements."
+  "prompt": "Panel 5 of an explainer comic. Sam holds two agreements showing different payment orders. Use one speech bubble with the exact words: \"Which agreement governs this payment?\" Convey: A management fee pays for managing investments. Carried interest is a share of investment profits. Company executives’ shares follow a separate agreement.",
+  "alt": "Comic panel: Sam holds two agreements showing different payment orders.",
+  "caption": "A management fee pays for managing investments. Carried interest is a share of investment profits. Company executives’ shares follow a separate agreement."
 }
 -->
 
-**Panel 5:** Fees, carried interest, and management equity belong to distinct arrangements.
+**Panel 5:** A management fee pays for managing investments. Carried interest is a share of investment profits. Company executives’ shares follow a separate agreement.
 
-*Scene:* Sam holds two agreements with different payment waterfalls.
+*Scene:* Sam holds two agreements showing different payment orders.
 
 *Dialogue:* “Which agreement governs this payment?”
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/01-capital-and-ownership/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The three trace a proposed initiative to its budget owner. Use one speech bubble with the exact words: \"Now we can plan the work.\" Convey: Follow cash and authority before promising technology support.",
-  "alt": "Comic panel: the three trace a proposed initiative to its budget owner.",
-  "caption": "Follow cash and authority before promising technology support."
+  "prompt": "Panel 6 of an explainer comic. The three trace a proposed initiative to its budget owner. Use one speech bubble with the exact words: \"Now we can plan the work.\" Convey: Before promising support, identify who receives the cash, who may spend it and which obligations it must cover.",
+  "alt": "Comic panel: The three trace a proposed initiative to its budget owner.",
+  "caption": "Before promising support, identify who receives the cash, who may spend it and which obligations it must cover."
 }
 -->
 
-**Panel 6:** Follow cash and authority before promising technology support.
+**Panel 6:** Before promising support, identify who receives the cash, who may spend it and which obligations it must cover.
 
 *Scene:* The three trace a proposed initiative to its budget owner.
 

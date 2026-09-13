@@ -2,7 +2,7 @@
 title: Capability Includes How People Decide and Coordinate
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Connect leadership, talent, nearshoring, decision flow, and organizational health to sustainable execution.
+excerpt: "Examine how roles, decisions, skills and working relationships affect the company’s ability to deliver its technology plans."
 permalink: pt-people-and-operating-models
 timetoread: 6 min read
 status: draft:orange
@@ -18,7 +18,7 @@ tags: private equity, technology leadership, Part III
 <br>
 A company buys a new delivery tool, adopts a new architecture, and recruits engineers in a lower-cost location. Six months later, decisions still wait for the founder, priorities still change every week, and the same two people resolve every production problem.
 
-The company has changed its resources without changing the operating constraints. Technology capability includes the organization's ability to decide, coordinate, learn, and sustain the work.
+The company has changed its resources while leaving the delays in decisions unresolved. An **operating model** is the arrangement of responsibilities, teams and processes through which work gets done. **Capability** means what that arrangement enables people to do reliably.
 
 The preceding chapters costed systems, infrastructure, risk and AI. This one covers the constraint that defeats all four when it is ignored: the people and the way decisions move among them. An investment case that funds the work without funding the capacity to do it has not been completed.
 
@@ -40,11 +40,11 @@ The supplied role brief emphasizes technical credibility, commercial understandi
 
 ## Cheaper Locations Do Not Automatically Save Money
 
-Nearshoring and offshoring refer to locating work in other countries, with “near” generally describing some geographic, time-zone, or cultural proximity. Those labels do not determine the delivery model. A company can hire employees, use a supplier, establish a captive center, or combine arrangements.
+Nearshoring and offshoring refer to locating work in other countries, with “near” generally describing some geographic, time-zone, or cultural proximity. Those labels do not determine the delivery model. A company can hire employees, use a supplier, establish its own development office, or combine arrangements.
 
-A wage comparison is only one input. Include recruitment, management, onboarding, travel, knowledge transfer, supplier margin, legal and employment arrangements, attrition, rework, and the period of overlapping teams. Also consider the time needed before a new team can own useful outcomes.
+A wage comparison is only one input. Include recruitment, management, onboarding, travel, knowledge transfer, supplier margin, legal and employment arrangements, employee departures, work that must be redone, and the period of overlapping teams. Also consider the time needed before a new team can own useful outcomes.
 
-In a fictional case, replacing €1 million of annual external development with a €650,000 team appears to save €350,000. If the transition costs €250,000 and recurring coordination and specialist support cost another €150,000 a year, steady-state savings fall to €200,000 before any quality or delivery effects. First-year cash may be worse. The numbers illustrate the model, not a benchmark for a location.
+In a fictional case, replacing €1 million of annual external development with a €650,000 team appears to save €350,000. If the transition costs €250,000 and recurring coordination and specialist support cost another €150,000 a year, annual savings after the transition fall to €200,000 before any quality or delivery effects. First-year cash may be worse. The numbers illustrate the model, not a benchmark for a location.
 
 A more important question is whether the work can be transferred coherently. If every decision depends on a small group elsewhere, lower hourly cost may come with more waiting and rework. A bounded product or service responsibility, adequate context, and a clear escalation path can matter more than geography.
 
@@ -60,13 +60,13 @@ A document delivered is not the same as capability transferred. The receiving te
 
 Overload, persistent vacancies, loss of key people, and repeated priority changes can weaken the company's ability to deliver. These are not merely cultural preferences to discuss after financial targets have been met. They can affect the feasibility of the targets themselves.
 
-DORA's 2024 report associates unstable priorities with poorer productivity and greater burnout in its survey analysis. [S15: DORA 2024 report](https://dora.dev/research/2024/dora-report/) The practical implication is to investigate the source of instability and its consequences, not to infer a precise financial loss from a survey relationship.
+**DORA**, a research program studying software delivery and organizational performance, associates unstable priorities with poorer productivity and greater burnout in its 2024 survey analysis. [S15: DORA 2024 report](https://dora.dev/research/2024/dora-report/) The practical implication is to investigate the source of instability and its consequences, not to infer a precise financial loss from a survey relationship.
 
-Choose measures that help management act: dependence on particular individuals, unplanned work, sustained on-call burden, time to fill material roles, and the team's understanding of priorities. Use qualitative evidence alongside counts. A company can meet a hiring target while failing to retain the knowledge or trust needed for effective work.
+Choose measures that help management act: dependence on particular individuals, unplanned work, a sustained burden from being available to respond to service problems outside normal hours, time to fill material roles, and the team's understanding of priorities. Use qualitative evidence alongside counts. A company can meet a hiring target while failing to retain the knowledge or trust needed for effective work.
 
 ## Standardization and Autonomy Both Need Boundaries
 
-Autonomy without clear outcomes can fragment the company. Standardization without a value case can suppress local knowledge and create a central queue. The right design depends on where coordination creates value.
+**Autonomy** gives teams room to make their own decisions. Without clear outcomes and boundaries, it can fragment the company. Standardization without a value case can suppress local knowledge and create a central queue. The right design depends on where coordination creates value.
 
 A group selling separate niche products may benefit from shared finance definitions, recruiting access, and security expectations while retaining local product decisions. A company promising one integrated workflow may need stronger product and technical coordination. The operating model should follow that promise.
 
@@ -78,6 +78,6 @@ For every material initiative, identify the skills, leadership time, and operati
 
 When cost reduction is necessary, state what work will stop and which risks remain. When growth requires more capacity, explain the customer demand and constraints that justify it. When a leader needs development, define the support and evidence of progress.
 
-A reorganization is easy to draw and hard to judge. The test is not whether the new chart is tidier, but whether decisions that used to stall now get made — and how the people affected were treated on the way there. Both parts of that sentence matter.
+Evaluate an organizational change through the work people can now carry out: decisions made, responsibilities understood and knowledge transferred. Include the cost of transition and the treatment of people affected by it.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+Acquisitions and separations put these organizational and technical requirements under pressure together. The next chapter examines how to plan those changes: [[pt-acquisitions-and-carveouts]].

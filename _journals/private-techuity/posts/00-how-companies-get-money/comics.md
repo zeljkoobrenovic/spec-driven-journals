@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,17 +13,17 @@
   "status": "pending",
   "asset": "assets/images/00-how-companies-get-money/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex stands before four labelled doors: CUSTOMERS, LENDERS, OWNERS, SELLING SOMETHING. Use one speech bubble with the exact words: \"Only four doors?\" Convey: Every euro entering a business comes through one of four doors.",
-  "alt": "Comic panel: alex stands before four labelled doors: CUSTOMERS, LENDERS, OWNERS, SELLING SOMETHING.",
-  "caption": "Every euro entering a business comes through one of four doors."
+  "prompt": "Panel 1 of an explainer comic. Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards. Use one speech bubble with the exact words: \"What comes with the money?\" Convey: Customers, loans, owners and asset sales are four common sources of company cash. Each brings different obligations; other sources, such as eligible grants, also exist.",
+  "alt": "Comic panel: Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards.",
+  "caption": "Customers, loans, owners and asset sales are four common sources of company cash. Each brings different obligations; other sources, such as eligible grants, also exist."
 }
 -->
 
-**Panel 1:** Every euro entering a business comes through one of four doors.
+**Panel 1:** Customers, loans, owners and asset sales are four common sources of company cash. Each brings different obligations; other sources, such as eligible grants, also exist.
 
-*Scene:* Alex stands before four labelled doors: CUSTOMERS, LENDERS, OWNERS, SELLING SOMETHING.
+*Scene:* Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards.
 
-*Dialogue:* "Only four doors?"
+*Dialogue:* “What comes with the money?”
 
 <!-- comic-panel
 {
@@ -31,17 +31,17 @@
   "status": "pending",
   "asset": "assets/images/00-how-companies-get-money/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam holds a coin marked CUSTOMER in one hand and three IOU notes in the other. Use one speech bubble with the exact words: \"Only one of these is really ours.\" Convey: Customer money never has to be repaid. Everything else is somebody's claim.",
-  "alt": "Comic panel: sam holds a coin marked CUSTOMER in one hand and three IOU notes in the other.",
-  "caption": "Customer money never has to be repaid. Everything else is somebody's claim."
+  "prompt": "Panel 2 of an explainer comic. Sam traces one payment to a company issuing shares and another to a founder selling existing shares. Use one speech bubble with the exact words: \"Who receives this payment?\" Convey: A share is a unit of ownership. Buying new shares can fund the company; buying a founder’s existing shares pays the founder.",
+  "alt": "Comic panel: Sam traces one payment to a company issuing shares and another to a founder selling existing shares.",
+  "caption": "A share is a unit of ownership. Buying new shares can fund the company; buying a founder’s existing shares pays the founder."
 }
 -->
 
-**Panel 2:** Customer money never has to be repaid. Everything else is somebody's claim.
+**Panel 2:** A share is a unit of ownership. Buying new shares can fund the company; buying a founder’s existing shares pays the founder.
 
-*Scene:* Sam holds a coin marked CUSTOMER in one hand and three IOU notes in the other.
+*Scene:* Sam traces one payment to a company issuing shares and another to a founder selling existing shares.
 
-*Dialogue:* "Only one of these is really ours."
+*Dialogue:* “Who receives this payment?”
 
 <!-- comic-panel
 {
@@ -49,17 +49,17 @@
   "status": "pending",
   "asset": "assets/images/00-how-companies-get-money/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. A vast crowd of faceless strangers holds tiny share certificates outside an exchange building. Use one speech bubble with the exact words: \"Who do I even talk to?\" Convey: A public company's owners are strangers who change constantly.",
-  "alt": "Comic panel: a vast crowd of faceless strangers holds tiny share certificates outside an exchange building.",
-  "caption": "A public company's owners are strangers who change constantly."
+  "prompt": "Panel 3 of an explainer comic. Morgan shows two investors trading a share through an exchange while the company account remains separate. Use one speech bubble with the exact words: \"The seller gets the money.\" Convey: A stock exchange is a market for trading shares. Investors buying existing shares normally pay the seller, rather than the company.",
+  "alt": "Comic panel: Morgan shows two investors trading a share through an exchange while the company account remains separate.",
+  "caption": "A stock exchange is a market for trading shares. Investors buying existing shares normally pay the seller, rather than the company."
 }
 -->
 
-**Panel 3:** A public company's owners are strangers who change constantly.
+**Panel 3:** A stock exchange is a market for trading shares. Investors buying existing shares normally pay the seller, rather than the company.
 
-*Scene:* A vast crowd of faceless strangers holds tiny share certificates outside an exchange building.
+*Scene:* Morgan shows two investors trading a share through an exchange while the company account remains separate.
 
-*Dialogue:* "Who do I even talk to?"
+*Dialogue:* “The seller gets the money.”
 
 <!-- comic-panel
 {
@@ -67,17 +67,17 @@
   "status": "pending",
   "asset": "assets/images/00-how-companies-get-money/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. A quarterly clock looms over Alex, who holds a roadmap stretching well past it. Use one speech bubble with the exact words: \"It pays off in year two.\" Convey: Quarterly reporting shortens the horizon a long project must survive.",
-  "alt": "Comic panel: a quarterly clock looms over Alex, who holds a roadmap stretching well past it.",
-  "caption": "Quarterly reporting shortens the horizon a long project must survive."
+  "prompt": "Panel 4 of an explainer comic. Alex places a company report, a share-price chart and a bank balance side by side. Use one speech bubble with the exact words: \"These tell us different things.\" Convey: Public companies publish financial information under the rules that apply to them. A public share price and reported profit are different from available cash.",
+  "alt": "Comic panel: Alex places a company report, a share-price chart and a bank balance side by side.",
+  "caption": "Public companies publish financial information under the rules that apply to them. A public share price and reported profit are different from available cash."
 }
 -->
 
-**Panel 4:** Quarterly reporting shortens the horizon a long project must survive.
+**Panel 4:** Public companies publish financial information under the rules that apply to them. A public share price and reported profit are different from available cash.
 
-*Scene:* A quarterly clock looms over Alex, who holds a roadmap stretching well past it.
+*Scene:* Alex places a company report, a share-price chart and a bank balance side by side.
 
-*Dialogue:* "It pays off in year two."
+*Dialogue:* “These tell us different things.”
 
 <!-- comic-panel
 {
@@ -85,17 +85,17 @@
   "status": "pending",
   "asset": "assets/images/00-how-companies-get-money/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Three people sit at a small table with a name card in front of each. Use one speech bubble with the exact words: \"At least I know who they are.\" Convey: A private company's owners can be named and sat down with.",
-  "alt": "Comic panel: three people sit at a small table with a name card in front of each.",
-  "caption": "A private company's owners can be named and sat down with."
+  "prompt": "Panel 5 of an explainer comic. Three owners review their private company’s decision agreement with Alex. Use one speech bubble with the exact words: \"Who may approve the work?\" Convey: A private company’s shares do not trade on a public stock market. Its owners and decision rules still need to be understood.",
+  "alt": "Comic panel: Three owners review their private company’s decision agreement with Alex.",
+  "caption": "A private company’s shares do not trade on a public stock market. Its owners and decision rules still need to be understood."
 }
 -->
 
-**Panel 5:** A private company's owners can be named and sat down with.
+**Panel 5:** A private company’s shares do not trade on a public stock market. Its owners and decision rules still need to be understood.
 
-*Scene:* Three people sit at a small table with a name card in front of each.
+*Scene:* Three owners review their private company’s decision agreement with Alex.
 
-*Dialogue:* "At least I know who they are."
+*Dialogue:* “Who may approve the work?”
 
 <!-- comic-panel
 {
@@ -103,14 +103,14 @@
   "status": "pending",
   "asset": "assets/images/00-how-companies-get-money/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Morgan places a single chess piece on a board, beside a fuse marked with years. Use one speech bubble with the exact words: \"One owner. And a deadline.\" Convey: Private equity: a fund, borrowed money, control, and a planned sale.",
-  "alt": "Comic panel: morgan places a single chess piece on a board, beside a fuse marked with years.",
-  "caption": "Private equity: a fund, borrowed money, control, and a planned sale."
+  "prompt": "Panel 6 of an explainer comic. Morgan traces a fund’s investment to a company, beside its loan payments and a possible later sale. Use one speech bubble with the exact words: \"How does this affect our budget?\" Convey: Private equity firms manage pools of investment money called funds. A buyout purchases control; borrowing and a planned later sale can affect company budgets.",
+  "alt": "Comic panel: Morgan traces a fund’s investment to a company, beside its loan payments and a possible later sale.",
+  "caption": "Private equity firms manage pools of investment money called funds. A buyout purchases control; borrowing and a planned later sale can affect company budgets."
 }
 -->
 
-**Panel 6:** Private equity: a fund, borrowed money, control, and a planned sale.
+**Panel 6:** Private equity firms manage pools of investment money called funds. A buyout purchases control; borrowing and a planned later sale can affect company budgets.
 
-*Scene:* Morgan places a single chess piece on a board, beside a fuse marked with years.
+*Scene:* Morgan traces a fund’s investment to a company, beside its loan payments and a possible later sale.
 
-*Dialogue:* "One owner. And a deadline."
+*Dialogue:* “How does this affect our budget?”

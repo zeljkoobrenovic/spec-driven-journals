@@ -2,7 +2,7 @@
 title: "TeamSystem: What a Buy-and-Build Actually Accumulates"
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Follow TeamSystem through successive owners, product and acquisition work, partial realization, and financial measures that answer different questions.
+excerpt: "Follow successive owners and acquisitions, then distinguish reported earnings, cash received and estimated investment value."
 permalink: pt-teamsystem
 timetoread: 11 min read
 status: draft:orange
@@ -16,23 +16,27 @@ tags: private equity, technology leadership, Part VI
 > * **Examine what the group is accumulating.** Products and useful capability can grow alongside integration demands and financial obligations; customer and employee outcomes require separate evidence.
 
 <br>
-A software group can grow, continue developing products, report a substantial adjusted operating profit, and report a statutory loss in the same year. Understanding that combination requires several questions: what changed in the operating business, what was acquired, how the investment was financed, and which costs each measure includes.
+TeamSystem provides business software, including products used by accountants and smaller companies. Its history raises a useful question: how can a software group grow, continue developing products, report positive adjusted earnings and still report a loss under the accounting rules it must follow? Understanding that combination requires several questions: what changed in the operating business, what was acquired, how the investment was financed, and which costs each measure includes.
 
-TeamSystem makes those questions concrete, and it is the case that most directly tests [[pt-acquisitions-and-carveouts]]: a quarter-century of buying software companies, seen through four owners in succession. It follows selected evidence from a regional Italian software company in 2000 through its 2017 reporting period. It examines successive ownership episodes, not one continuous investment by an interchangeable “private equity” owner, and it is not an assessment of the company's current value.
+TeamSystem makes those questions concrete, and it is the case that most directly tests [[pt-acquisitions-and-carveouts]]: successive purchases of software businesses across four major ownership episodes in the period examined. It follows selected evidence from a regional Italian software company in 2000 through its 2017 reporting period. It examines successive ownership episodes, not one continuous investment by an interchangeable “private equity” owner, and it is not an assessment of the company's current value.
+
+A **buy-and-build** strategy expands a group through further acquisitions. **Statutory results** follow the applicable reporting rules; **adjusted results** modify a measure by specified additions or exclusions. We will keep those distinctions visible as we follow ownership, operating initiatives and the 2017 financial statements.
 
 The sources have different strengths. Investor accounts explain their stated ambitions and reported realizations. Company financial statements expose operating measures, investment and financing. Neither supplies a controlled experiment identifying the effect of a particular architecture or management intervention.
 
+This case’s main leadership question is what successive acquisitions leave the company responsible for. Follow the investor expectations, the capabilities added, the work and obligations accumulated, and the outcomes the evidence can establish. That complements Visma’s focus on shared capability and local responsibility.
+
 ## From a Regional Company to a Different Ownership Problem
 
-Palamon describes the business it backed in June 2000 as founder-led, with about 28,000 clients and 200 employees. Its account emphasizes national expansion, a new senior management team, and investment in research, development and IT. It describes a December 2004 sale to Bain Capital, by which time revenue was €58 million and employment exceeded 450. These are retrospective sponsor claims. The webpage's summary field gives a conflicting exit year; its narrative and Bain's later account support 2004. [S45: Palamon TeamSystem case](https://www.palamon.com/teamsystem) [S47: TeamSystem sale announcement](https://www.hgcapitaltrust.com/news-insights/news/archive/12072015)
+Palamon describes the business it backed in June 2000 as founder-led, with about 28,000 clients and 200 employees. Its account emphasizes national expansion, a new senior management team, and investment in research, development and information technology. It describes a December 2004 sale to Bain Capital, by which time revenue was €58 million and employment exceeded 450. These are retrospective sponsor claims. The webpage's summary field gives a conflicting exit year; its narrative and Bain's later account support 2004. [S45: Palamon TeamSystem case](https://www.palamon.com/teamsystem) [S47: TeamSystem sale announcement](https://www.hgcapitaltrust.com/news-insights/news/archive/12072015)
 
 The early setting is useful for leaders in smaller software businesses. National expansion changes more than sales coverage. A founder may no longer be able to resolve every product exception, customer dispute, recruitment decision and investment priority personally. Developing management capacity can therefore be part of product value creation: it changes the organization's ability to make and carry out decisions.
 
 That is an interpretation of the proposed mechanism, not proof that each recruitment caused the observed growth. Headcount growth also does not establish improved employee experience. More people can represent successful expansion, acquired businesses, duplicated work, or several effects together. The record would need employee and acquisition detail to distinguish them.
 
-By August 2010, the ownership proposition had changed. HgCapital announced an agreement to acquire a majority stake at an enterprise value of €565 million, described as 11.3 times fiscal 2010 EBITDA. The announcement emphasized business software used by accountants and smaller companies, recurring demand, and opportunities for organic growth and acquisitions. It anticipated completion in September; these were announced terms, not a closing statement. [S46: TeamSystem acquisition announcement](https://www.hgcapitaltrust.com/news-insights/news/archive/08032010)
+**Enterprise value** estimates the value of the operating business. **EBITDA** is earnings before interest, taxes, depreciation and amortization; it leaves out several costs and cash obligations. A **multiple** expresses one figure relative to another: 11.3× EBITDA means the price equals 11.3 times the stated annual earnings measure. It does not promise that investors receive that amount of cash each year.
 
-**Enterprise value** is the value assigned to the operating business before the bridge to shareholders' claims. **EBITDA** means earnings before interest, taxes, depreciation and amortization. It is an earnings measure that leaves out financing, tax and specified accounting charges; it does not show the cash remaining after all obligations. A multiple such as 11.3× expresses the price as a number of years' worth of that annual earnings measure, without promising that investors will actually receive those earnings as cash.
+With those definitions in place, consider the next ownership change. By August 2010, the ownership proposition had changed. HgCapital announced an agreement to acquire a majority stake at an enterprise value of €565 million, described as 11.3 times fiscal 2010 EBITDA. The announcement emphasized business software used by accountants and smaller companies, recurring demand, and opportunities for organic growth and acquisitions. It anticipated completion in September; these were announced terms, not a closing statement. [S46: TeamSystem acquisition announcement](https://www.hgcapitaltrust.com/news-insights/news/archive/08032010)
 
 The distinction matters here. Software supporting customers' recurring administrative work may offer attractive repeat demand. But the seller can already charge for that attraction in the entry price. A good company does not automatically become a good investment at every price. [[pt-valuation-and-architecture]] develops that connection between valuation assumptions and the work a company must perform.
 
@@ -63,7 +67,7 @@ The £45.1 million combined figure therefore contains two different things: mone
 
 Palamon reports a 4.1× return for its earlier ownership episode. [S45: Palamon TeamSystem case](https://www.palamon.com/teamsystem) These reported multiples do not rank the two owners' operating skill. They concern different entry prices, dates, ownership positions and stages of development. A fair comparison would also need complete cash flows and a consistent treatment of retained value. A sequence of owners can each help a company develop while experiencing very different investment economics.
 
-For management, a secondary buyout creates another distinction: the company continues, but the new shareholder's investment starts at a new price. Earlier operational progress is part of the asset the buyer purchases. It cannot simply be counted again as new value creation. The incoming thesis needs its own credible future improvements and investment capacity.
+A **secondary buyout** transfers a business between private equity ownership arrangements. For management, it creates another distinction: the company continues, but the new shareholder's investment starts at a new price. Earlier operational progress is part of the asset the buyer purchases. It cannot simply be counted again as new value creation. The incoming thesis needs its own credible future improvements and investment capacity.
 
 ## Profitable and Loss-Making in the Same Year
 
@@ -75,7 +79,9 @@ TeamSystem Holding's 2017 consolidated report provides a useful financial cross-
 | Adjusted EBITDA | 113.010 | What earnings result from the company's specified exclusions? |
 | Consolidated net loss | −56.788 | What result remains after the income statement's financing, tax and other charges? |
 
-Roughly €170 million separates the +€113 million and the −€57 million. It went to the charges adjusted EBITDA leaves out: interest on the acquisition borrowing, amortization of intangibles created when the company was bought, and the costs excluded as exceptional. **The same year, counted two defensible ways, supports either "a profitable software group" or "a loss-making one."** That is the lesson: ask which charges a measure omits before accepting what it implies.
+The gap is about €169.8 million: €113.010 million minus a loss of €56.788 million. To explain it, follow the report’s reconciliation and income statement through the excluded expenses, asset-accounting charges, financing and tax items. The gap is not itself a cash payment to one recipient.
+
+The two numbers answer different questions. Adjusted EBITDA describes an intermediate earnings measure; the statutory loss describes the final reported result after the relevant income-statement items. Use the measure appropriate to the question and keep the reconciliation available.
 
 The two can coexist because they count different things, and they should be reconciled rather than used as competing slogans. A loss alone does not establish that customers received worse software. Adjusted EBITDA alone does not establish that the ownership structure leaves enough cash for reinvestment.
 
@@ -87,7 +93,7 @@ The practical lesson reaches directly into engineering reporting. If a new acqui
 
 ## Investment Continues, but Its Classification Matters
 
-The report records about €13.4 million of capitalized development in 2017 and a €1.9 million IT integration and transformation adjustment in its EBITDA reconciliation. It also describes an additional €80 million secured-note issue, part of whose proceeds repaid a €20 million parent loan. These are evidence of investment, integration expenditure and financing activity, not measurements of the resulting customer benefit. [S49: TeamSystem 2017 report, PDF pp. 9, 11 and 14–15](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)
+The report records about €13.4 million of capitalized development in 2017 and a €1.9 million information-technology integration and transformation adjustment in its EBITDA reconciliation. It also describes an additional €80 million **secured-note issue**, borrowing through debt securities backed by specified security, part of whose proceeds repaid a €20 million parent loan. These are evidence of investment, integration expenditure and financing activity, not measurements of the resulting customer benefit. [S49: TeamSystem 2017 report, PDF pp. 9, 11 and 14–15](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)
 
 Capitalizing qualifying development records it as an asset to be charged over time rather than expensing all of it immediately. The cash still has to be paid. The accounting distinction is explained in [[pt-cash-and-constraints]]; the disclosed capitalized amount is not a measure of all research and development effort.
 
@@ -107,12 +113,12 @@ For employees, aggregate growth does not reveal how responsibilities, workload, 
 
 These limitations prevent a verdict that every ownership episode created durable mutual benefit. They also prevent the opposite shortcut: treating leverage or a statutory loss as proof that all operating development was illusory. The company, investors and individual stakeholders require separate assessments.
 
-## How a Principal Could Use This Case
+## What Company Leaders Can Take From This Case
 
-Use the history to challenge an acquisition-led software thesis before it becomes a list of projects. Ask the investment team which improvements the entry price already assumes. Ask the CFO which earnings definition matters to valuation, which cash flows fund the plan, and which costs recur across successive acquisitions. Ask product and engineering leaders which customer capabilities the next acquisition adds and what existing work it displaces.
+Use the history to challenge an acquisition-led software thesis before it becomes a list of projects. Ask the investment team which improvements the entry price already assumes. Ask the CFO which earnings definition matters to valuation, which cash flows fund the plan, and which costs recur across successive acquisitions. As product and technology leaders, explain which customer capabilities the next acquisition adds and what existing work it displaces.
 
 Then agree on a few observations that can change the plan: customer migration failures, acquired products that do not fit, savings that remain unreleased, or an integration team whose workload exceeds capacity. A thesis that cannot be revised in response to such evidence is not being managed as a hypothesis.
 
-Ask what the group is accumulating. Products, customers and domain knowledge are one kind of pile. Integration debt, financing obligations and three incompatible ways of counting growth are another. Both grow quietly, and only one of them shows up in the adjusted earnings.
+Repeated acquisitions can add products, customers and knowledge while also adding integration work, continuing costs and borrowing. Track both developments with consistent definitions. A larger group and a higher earnings figure alone do not establish better outcomes for every acquired company or customer.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+The final chapter brings the cases together with wider research. It asks what a lasting improvement would mean for each group affected: [[pt-durable-value]].

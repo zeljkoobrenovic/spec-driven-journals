@@ -1,86 +1,75 @@
 ---
-title: How a Company Is Financed Decides Who You Answer To
+title: "How Companies Get Money"
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: "Before any private equity: the four places a business gets money, what public and private ownership mean, and why the difference decides who you answer to."
+excerpt: "Learn how customers, borrowing and ownership provide money, and why each source creates different expectations."
 permalink: pt-how-companies-get-money
-timetoread: 7 min read
+timetoread: 6 min read
 status: draft:orange
 tags: private equity, technology leadership, Part I
 ---
 
 > **KEY POINTS:**
 >
-> * **There are only four places money comes from.** Customers, lenders, owners, or a sale of part of the business. Everything else is a variation on those four.
-> * **Public and private ownership are different jobs for a technology leader.** Public means anyone can buy a share and the company reports to everyone quarterly. Private means a few identifiable owners you can be in a room with.
-> * **Private equity is one kind of private owner.** Professional investors who buy companies with a fund, usually using borrowed money, intending to sell within a few years. That combination is what the rest of this book is about.
+> * **Where money comes from affects what the company must do in return.** Customers expect a product or service, lenders expect repayment, and owners receive ownership rights.
+> * **Buying a share means buying part of a company.** Whether those shares trade publicly affects how ownership changes and what information is published.
+> * **Private equity brings professional investors into company ownership.** This book mainly examines purchases that give investors control of a company, often using borrowing and planning for a later sale.
 
 <br>
-Most engineering leaders have a working theory of where the money comes from. Customers pay us, some of that becomes salaries, and occasionally someone senior says there is budget or there is not. That theory is correct and much too small. It cannot explain why a profitable company freezes hiring, why a well-funded one refuses to replace a failing system, or why the answer to the same request changes when the owner changes.
+A company needs cash to pay people, buy supplies and develop its products. Customers may eventually cover those costs, but the company can need money before they pay. Someone must fund that gap.
 
-This chapter builds the bigger picture, in plain terms, before any private equity appears — the ground floor the rest of Part I stands on. If you already know what a share and a stock exchange are, skim to the last section.
+**Financing** means arranging the money a business needs. The source matters because each arrangement brings different costs, expectations and rights. This chapter starts with those basic differences. You do not need a finance background to follow it.
 
-## Money Enters a Business Through Four Doors
+## Four Common Ways Cash Reaches a Business
 
-Every euro, without exception.
+Imagine a small company that sells scheduling software. It needs €100,000 to finish the product and pay its staff. Consider four ways it might obtain that cash.
 
-**Customers.** They buy the product. This is the only source that does not have to be repaid or bought back, which makes it the most valuable money in the business. Everything else is somebody's claim.
+**Customer payments.** Customers pay for the software, perhaps before a full year's service has been delivered. The company must provide what it promised and may have refund obligations. After paying the costs of serving customers, it can use any remaining cash to help fund further work.
 
-**Lenders.** A bank or other lender provides cash and you repay it with interest, on a schedule, whether or not the quarter went well. Lenders do not own any part of the company and generally cannot tell it what to build. They can, however, attach conditions — and if those conditions are broken, they gain rights quickly. Debt is the cheapest money while things go well and the least forgiving when they do not.
+**Borrowing.** A lender, such as a bank, provides a loan. Here, **debt** means borrowing that must be repaid. The amount borrowed is the **principal**; **interest** is the charge for using that money. The loan agreement sets repayment dates and other conditions. A loan does not ordinarily give the lender company shares, but its conditions can restrict company decisions.
 
-**Owners.** Someone buys a piece of the company itself. They are not repaid on a schedule; they make their money if the company becomes more valuable, or receives a share of its profits. In exchange, they own a share of every future decision. Owners bear more risk than lenders and, in return, get a say.
+**Money from owners.** A founder or another investor contributes money in exchange for ownership. **Equity** means an ownership interest. Unlike a loan, it generally has no fixed repayment schedule. The owner can gain if the investment becomes more valuable, and can lose the money invested.
 
-**Selling something.** A building, a product line, a division. This raises cash once and leaves the business smaller.
+**Selling an asset.** An **asset** is something the company owns or controls that can provide economic benefit, such as equipment or a business division. Selling an unused building raises cash once. Selling a product line also gives up the future income and capabilities associated with it.
 
-A **share** is simply a unit of ownership. If a company has issued a thousand shares and you hold ten, you own one percent of it. Shares are how ownership is counted, transferred and argued over.
+These are four common routes, not an exhaustive list. **Grants**, awards of money for specified purposes, can fund eligible activities under specific conditions. The US Small Business Administration describes grants for areas such as scientific research and development. [S56: SBA grant overview](https://www.sba.gov/loans/additional-funding-opportunities/grants/)
 
-The mix of those four is a company's **capital structure**, and it is not a finance-department detail. It determines how much can go wrong before someone outside the company starts making decisions inside it.
+The useful habit is to ask two questions together: how much cash arrives, and what obligation or ownership change comes with it?
 
-## Public Means Anyone Can Buy a Share
+## What a Share Represents
 
-A **public company** is one whose shares anyone can buy or sell through a **stock exchange** — a regulated marketplace where prices are set by whoever is currently willing to buy and sell. If you have a pension, you very likely own small pieces of hundreds of public companies without knowing their names.
+A **share** is a unit of company ownership. If a company has 1,000 identical shares and you own 10, you own 1% of those shares. Different classes of shares can have different voting and payment rights, so the percentage is only the starting point.
 
-Becoming public is called an **initial public offering**, or IPO: the company sells shares to the public for the first time, usually raising money in the process.
+Owners are also called **shareholders**. They may receive **dividends**, payments made to shareholders under the company's arrangements, or receive money by selling their shares. Neither payment nor an increase in the share price is guaranteed. Investor.gov explains these basic features and the differences between share classes. [S54: Investor.gov stock basics](https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks)
 
-Being public has consequences a technology leader feels directly:
+There is a crucial difference between buying newly issued shares and buying existing ones. If an investor buys new shares from the company, the company receives the money. If the investor buys a founder's existing shares, the founder receives it. Both change ownership; only the first directly supplies new company funding.
 
-- **The owners are strangers, and they change constantly.** Nobody can convene them. The board represents them.
-- **Everything is disclosed.** Public companies publish audited results on a fixed schedule, typically quarterly. Competitors, customers and candidates all read them.
-- **There is a price on the screen every second**, and it moves on news, rumour and mood. A quarter that misses expectations is visible to everyone immediately.
-- **That visibility shapes time horizons.** A project that depresses earnings for six quarters before paying off is harder to defend when the scoreboard updates every ninety days.
+The mix of debt and equity used to finance the business is its **capital structure**. Customer receipts are part of its cash flows, rather than a third category alongside debt and equity in that definition. [S57: Damodaran, capital structure](https://people.stern.nyu.edu/adamodar/pdfiles/cf2E/capstru.pdf)
 
-A **private company** has none of that. Its shares are not traded on an exchange; they are held by a few identifiable people or institutions — founders, families, employees, or professional investors. There is no public price. Reporting obligations are far lighter. And decisions happen in a room whose occupants you can name.
+## Public and Private Ownership
 
-**Most companies in the world are private.** Public companies are the visible minority.
+A **stock exchange** is an organized market where investors buy and sell shares. A **publicly traded company** has shares available for public trading. In this book, “public company” usually refers to that familiar arrangement; legal public-reporting categories can be broader.
 
-## Private Equity Is One Kind of Private Owner
+An **initial public offering**, or **IPO**, is a company's first public offering of shares. It may raise money for the company, allow existing shareholders to sell, or do both. Afterward, investors trading existing shares normally pay one another; each trade does not put fresh cash into the business.
 
-Now the term can be placed precisely. **Private equity** means ownership stakes in companies that are not traded on a public exchange — "private" as opposed to public markets, "equity" meaning ownership rather than lending.
+Public companies disclose financial information under the rules that apply to them. For example, US domestic public companies generally file annual and quarterly reports. Annual financial statements are **audited**, examined by an independent accountant who gives an opinion on them. Quarterly statements are generally unaudited. Disclosure does not mean every business detail is public. [S55: Investor.gov public-company reporting](https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/public-companies)
 
-In everyday use it means something narrower: professional investment firms that raise a pool of money from large institutions, buy whole companies with it, usually borrow a substantial part of the purchase price, hold each company for a few years, and then sell. That specific combination — **a fund, borrowed money, control, and a planned sale** — is what this book is about.
+A **private company** does not have shares traded on a public stock market. Its owners might include founders, families, employees or investment funds. It can still have many owners, complex ownership arrangements and significant reporting obligations. Private ownership alone tells you little about how patient or involved those owners will be.
 
-Where it sits among the alternatives:
+In either setting, a **board of directors** oversees the company within its authority, and executives manage the business. Which decisions each can make depends on the relevant rules and agreements. Part II will examine those responsibilities.
 
-| If a company wants… | It might use… | Who ends up with a say |
-| --- | --- | --- |
-| Cash without giving up ownership | A bank loan | Lenders, through conditions |
-| Money to grow, with risk shared | New owners (venture or growth investors) | A minority shareholder |
-| To be owned by the public | An IPO | Thousands of strangers, via a board |
-| A single professional owner, and a founder paid out | **Private equity** | One firm, with control and a deadline |
-| Nothing to change | Its own profits | Nobody new |
+## Where Private Equity Fits
 
-The last row deserves emphasis. **Taking on an investor is a choice, not a stage of growth**, and funding a business from its own profits is a legitimate strategy rather than a failure to raise money. [[pt-investment-fit]] works through which situations suit which arrangement.
+In broad terms, **private equity** means equity investment in businesses outside public stock markets. In everyday business discussion, it often refers to investment firms that manage **funds**: pools of investors' money used to make investments. The US **Securities and Exchange Commission (SEC)**, a financial-market regulator, describes both controlling investments in established businesses and minority investments in growing companies. [S01: SEC private equity guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity)
 
-Two features of private equity matter more than any other for the chapters ahead. **The borrowing** means a company can be bought partly with debt that the company's own cash flows then service — which is why ownership can change how much money is available for engineering without anything about the product changing. **The deadline** means the owner intends to sell, usually within three to seven years, because the fund itself has an end date. An owner with a deadline is not a worse owner, but they are a different one, and you will feel it in which projects get funded.
+This book focuses mainly on **buyouts**, purchases that give the buyer control of a company. A buyout financed partly with substantial debt is a **leveraged buyout**. The borrowing is arranged within the acquisition structure, and cash generated by the business may be needed to meet its payments.
 
-## The Structure Decides Which Argument Will Work
+That creates two questions for a technology leader. How much cash remains for product and engineering work after financing obligations? How long does the owner expect to hold the investment before selling it? The planned sale is called an **exit**. Its timing is an expectation, not a guaranteed deadline; the company holding period and the fund's overall life are different.
 
-Because the question you actually care about — can we fund this work? — is answered somewhere in this structure, and usually not by your budget line.
+Other arrangements serve other needs. A company may borrow without changing its shareholders, accept investment that leaves the founder in control, sell to another operating business, or fund development from cash it generates itself. [[pt-investment-fit]] will compare these choices after we have learned how ownership and returns work.
 
-A public company may decline a two-year platform investment because of how it lands in quarterly earnings. A private-equity-owned company may decline the same investment because interest payments consume the cash first. A founder-owned company may approve it on conviction, and then be unable to pay for it. The engineering merits were identical in all three cases.
+## Carry the Funding Question Into the Next Chapter
 
-Knowing which kind of company you work for, and what its owners need and when, tells you which argument will work — and which is a waste of everyone's afternoon.
+A technology proposal needs both a useful outcome and a way to pay for the work. Understanding financing helps you discuss the timing, obligations and decisions behind that funding.
 
-The next chapter takes the private equity arrangement apart to see exactly where the money sits and who is allowed to decide what.
-
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+When you hear an investment announcement, begin by asking who receives the money. Then ask which company or investor can decide how it is used. The next chapter follows those questions through a private equity arrangement: [[pt-capital-and-ownership]].

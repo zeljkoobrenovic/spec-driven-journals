@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,17 +13,17 @@
   "status": "pending",
   "asset": "assets/images/15-technology-principal/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Morgan stands between an investment discussion and a company workshop. Use one speech bubble with the exact words: \"Which decision needs my help?\" Convey: The role connects investment assumptions with operating reality.",
-  "alt": "Comic panel: morgan stands between an investment discussion and a company workshop.",
-  "caption": "The role connects investment assumptions with operating reality."
+  "prompt": "Panel 1 of an explainer comic. Alex asks Morgan to label the purpose of the meeting before they discuss the product plan. Use one speech bubble with the exact words: \"Which job are you doing here?\" Convey: The Technology Principal is the investment firm’s technology adviser in this book. Company leaders should establish whether the assignment concerns assessment, advice or delivery.",
+  "alt": "Comic panel: Alex asks Morgan to label the purpose of the meeting before they discuss the product plan.",
+  "caption": "The Technology Principal is the investment firm’s technology adviser in this book. Company leaders should establish whether the assignment concerns assessment, advice or delivery."
 }
 -->
 
-**Panel 1:** The role connects investment assumptions with operating reality.
+**Panel 1:** The Technology Principal is the investment firm’s technology adviser in this book. Company leaders should establish whether the assignment concerns assessment, advice or delivery.
 
-*Scene:* Morgan stands between an investment discussion and a company workshop.
+*Scene:* Alex asks Morgan to label the purpose of the meeting before they discuss the product plan.
 
-*Dialogue:* “Which decision needs my help?”
+*Dialogue:* “Which job are you doing here?”
 
 <!-- comic-panel
 {
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/15-technology-principal/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Alex asks Morgan to approve a product roadmap. Use one speech bubble with the exact words: \"Who owns this decision?\" Convey: Useful support does not automatically grant executive authority.",
-  "alt": "Comic panel: alex asks Morgan to approve a product roadmap.",
-  "caption": "Useful support does not automatically grant executive authority."
+  "prompt": "Panel 2 of an explainer comic. Alex asks Morgan to approve a product roadmap. Use one speech bubble with the exact words: \"Who owns this decision?\" Convey: Working for the owner does not automatically authorize the adviser to approve a company’s product priorities or spending.",
+  "alt": "Comic panel: Alex asks Morgan to approve a product roadmap.",
+  "caption": "Working for the owner does not automatically authorize the adviser to approve a company’s product priorities or spending."
 }
 -->
 
-**Panel 2:** Useful support does not automatically grant executive authority.
+**Panel 2:** Working for the owner does not automatically authorize the adviser to approve a company’s product priorities or spending.
 
 *Scene:* Alex asks Morgan to approve a product roadmap.
 
@@ -49,17 +49,17 @@
   "status": "pending",
   "asset": "assets/images/15-technology-principal/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam requests the economic effect of a technical finding. Use one speech bubble with the exact words: \"How does this change the thesis?\" Convey: Translate technology evidence into investment consequences.",
-  "alt": "Comic panel: sam requests the economic effect of a technical finding.",
-  "caption": "Translate technology evidence into investment consequences."
+  "prompt": "Panel 3 of an explainer comic. Alex places a three-week pricing-change example beside Morgan’s investment assumptions. Use one speech bubble with the exact words: \"Here is what our team can demonstrate.\" Convey: Build a shared account of the company’s capabilities and the investor’s assumptions. Explain the evidence, constraints and feasible alternatives.",
+  "alt": "Comic panel: Alex places a three-week pricing-change example beside Morgan’s investment assumptions.",
+  "caption": "Build a shared account of the company’s capabilities and the investor’s assumptions. Explain the evidence, constraints and feasible alternatives."
 }
 -->
 
-**Panel 3:** Translate technology evidence into investment consequences.
+**Panel 3:** Build a shared account of the company’s capabilities and the investor’s assumptions. Explain the evidence, constraints and feasible alternatives.
 
-*Scene:* Sam requests the economic effect of a technical finding.
+*Scene:* Alex places a three-week pricing-change example beside Morgan’s investment assumptions.
 
-*Dialogue:* “How does this change the thesis?”
+*Dialogue:* “Here is what our team can demonstrate.”
 
 <!-- comic-panel
 {
@@ -67,17 +67,17 @@
   "status": "pending",
   "asset": "assets/images/15-technology-principal/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Morgan sees urgent deal work collide with a company commitment. Use one speech bubble with the exact words: \"Our capacity has a limit.\" Convey: Credible support requires explicit trade-offs and specialist access.",
-  "alt": "Comic panel: morgan sees urgent deal work collide with a company commitment.",
-  "caption": "Credible support requires explicit trade-offs and specialist access."
+  "prompt": "Panel 4 of an explainer comic. Sam and Alex compare company capacity with Morgan’s commitments to several investments. Use one speech bubble with the exact words: \"What can we each commit?\" Convey: Check the adviser’s availability and the company resources needed. Relevant advice does not automatically supply delivery capacity.",
+  "alt": "Comic panel: Sam and Alex compare company capacity with Morgan’s commitments to several investments.",
+  "caption": "Check the adviser’s availability and the company resources needed. Relevant advice does not automatically supply delivery capacity."
 }
 -->
 
-**Panel 4:** Credible support requires explicit trade-offs and specialist access.
+**Panel 4:** Check the adviser’s availability and the company resources needed. Relevant advice does not automatically supply delivery capacity.
 
-*Scene:* Morgan sees urgent deal work collide with a company commitment.
+*Scene:* Sam and Alex compare company capacity with Morgan’s commitments to several investments.
 
-*Dialogue:* “Our capacity has a limit.”
+*Dialogue:* “What can we each commit?”
 
 <!-- comic-panel
 {
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/15-technology-principal/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex takes ownership of a better decision record. Use one speech bubble with the exact words: \"Can we sustain this ourselves?\" Convey: Support should leave capability with company leaders.",
-  "alt": "Comic panel: alex takes ownership of a better decision record.",
-  "caption": "Support should leave capability with company leaders."
+  "prompt": "Panel 5 of an explainer comic. Alex takes ownership of a better decision record. Use one speech bubble with the exact words: \"Can we sustain this ourselves?\" Convey: Useful support leaves company leaders better able to decide and carry out the work.",
+  "alt": "Comic panel: Alex takes ownership of a better decision record.",
+  "caption": "Useful support leaves company leaders better able to decide and carry out the work."
 }
 -->
 
-**Panel 5:** Support should leave capability with company leaders.
+**Panel 5:** Useful support leaves company leaders better able to decide and carry out the work.
 
 *Scene:* Alex takes ownership of a better decision record.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/15-technology-principal/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The three agree scope, information boundaries, and a handoff. Use one speech bubble with the exact words: \"Make the engagement explicit.\" Convey: A Principal's mandate depends on the firm and the particular work.",
-  "alt": "Comic panel: the three agree scope, information boundaries, and a handoff.",
-  "caption": "A Principal's mandate depends on the firm and the particular work."
+  "prompt": "Panel 6 of an explainer comic. The three agree scope, information boundaries, and a handoff. Use one speech bubble with the exact words: \"Make the engagement explicit.\" Convey: Agree the assignment’s purpose, authority, resources, information access and ending. These depend on the firm and the work.",
+  "alt": "Comic panel: The three agree scope, information boundaries, and a handoff.",
+  "caption": "Agree the assignment’s purpose, authority, resources, information access and ending. These depend on the firm and the work."
 }
 -->
 
-**Panel 6:** A Principal's mandate depends on the firm and the particular work.
+**Panel 6:** Agree the assignment’s purpose, authority, resources, information access and ending. These depend on the firm and the work.
 
 *Scene:* The three agree scope, information boundaries, and a handoff.
 

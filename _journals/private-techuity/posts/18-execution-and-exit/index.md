@@ -1,30 +1,30 @@
 ---
-title: Useful Support Changes Decisions, Through to Exit
+title: "Lead Through Ownership and Prepare the Next Handover"
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Develop ongoing intervention, portfolio collaboration, confidential coaching, and credible exit evidence.
+excerpt: "Review the plan as conditions change, use support where it helps and prepare evidence the next owner can examine and use."
 permalink: pt-execution-and-exit
 timetoread: 6 min read
 status: draft:orange
-tags: private equity, technology leadership, Part IV
+tags: private equity, technology leadership, Part V
 ---
 
 > **KEY POINTS:**
 >
-> * **Useful support changes decisions during ownership.** Separate oversight, coaching and delivery, and revisit engagements as company needs change.
-> * **Prepare evidence throughout the ownership period.** A future buyer needs consistent definitions, operating records and a credible account of remaining obligations.
-> * **An attractive sale should leave a capable business.** Avoid improving the final presentation by postponing essential work, and learn from what happens after the handoff.
+> * **Review the plan as the company changes.** Ongoing support should help resolve decisions, develop capability and address important problems.
+> * **Keep evidence throughout ownership.** Record the starting situation, actual costs, observed results and remaining work.
+> * **Prepare a business the next owner can understand and operate.** Sale preparation should make both improvements and unresolved obligations visible.
 
 <br>
-An **exit** is a sale or other arrangement through which an investor realizes some or all of its investment. Preparation for it should make the company understandable while protecting its ability to operate afterward. During a transaction, attention is concentrated. During ownership, the challenge is continuity: maintaining useful support as company priorities change, people move, and the next deal competes for the owner's time.
+The early ownership plan is agreed. Over the following years, customers change, projects encounter delays and leaders leave or take on new responsibilities. Useful support needs to adapt with the company.
 
-A Technology Principal should help the company make progress without turning every concern into a permanent central program. The working pattern needs to distinguish oversight, coaching, specialist delivery, and preparation for a future buyer.
+Your responsibility as a company leader is to keep the operating plan credible as conditions change. The **Technology Principal**, the investment firm’s technology adviser, can help through oversight, coaching or a specific delivery assignment. Use the agreements from Part IV to establish which contribution is needed and who can make the resulting decisions.
 
-This chapter covers the long middle that the diligence and hundred-day literature usually skips — the years between the plan and the sale — and then the sale itself. It closes Part IV by asking what evidence survives the handover, which is the same question [[pt-durable-value]] later asks of the whole arrangement.
+[[pt-first-hundred-days]] established a funded plan. This chapter follows regular reviews, escalation and shared learning, then shows how the resulting evidence helps prepare for an **exit**: a sale or other arrangement through which an investor receives value from some or all of its holding.
 
 ## A Regular Conversation With a Purpose
 
-The Productscapes hypothesis proposes a CTO partnership organized around what changed, the hardest decision, a blocked initiative, and the help needed. This is a reasonable starting hypothesis for a recurring conversation. Its frequency and format should be agreed with the CTO and adjusted to the company's situation.
+As the company’s product or technology leader, use regular investor conversations to explain what changed, the hardest decision, a blocked initiative and the help needed. Agree a frequency and format that fit the company’s situation. Bring a decision or a useful evidence update, rather than preparing a separate presentation simply because a meeting is scheduled.
 
 A meeting is useful if it improves a decision, resolves a constraint, or provides information needed for legitimate oversight. If neither participant can explain what it changes, reconsider the cadence. Attendance is evidence of participation, not evidence of trust or value.
 
@@ -32,9 +32,11 @@ Separate the operational discussion from the board narrative while maintaining c
 
 ## Escalate Through a Defined Path
 
-An initiative can fail because its hypothesis is wrong, because execution is weak, or because its dependencies were not supplied. Those require different responses. The Principal should help diagnose the cause before proposing more governance or replacing a leader.
+**Escalation** means taking an issue to someone with the authority or resources to resolve it. It should identify a decision, rather than merely announce a problem.
 
-If the company lacks a specialist, obtain one under an agreed scope. If management cannot resolve competing priorities, take the decision to the proper forum. If the economics no longer support the plan, revise it. If risk exceeds the agreed tolerance, escalate with evidence and options.
+An initiative can fail because its hypothesis is wrong, because execution is weak, or because its dependencies were not supplied. Those require different responses. Explain which cause the evidence supports before proposing additional oversight, resources or a leadership change. Ask the adviser for help testing that explanation when useful.
+
+If the company lacks a specialist, make a specific request for one under an agreed scope. If management cannot resolve competing priorities, take the decision to the proper forum. If the economics no longer support the plan, revise it. If risk exceeds the agreed tolerance, escalate with evidence and options.
 
 An escalation should state the decision required, the latest useful decision date, and the consequences of delay. “The program is red” is insufficient. The recipient needs to know what action would change the outcome and who will carry it out.
 
@@ -60,13 +62,13 @@ For a cloud initiative, retain the baseline, implemented changes, demand adjustm
 
 A company can improve a short-period earnings presentation by delaying investment or classifying recurring work as exceptional. It can make a roadmap look orderly by excluding difficult customer commitments. Such choices can increase the burden inherited by the next owner.
 
-The Principal should test whether the exit account describes a maintainable business. What spending is required to sustain current performance? What would a new owner discover after the reporting date? Which results depend on temporary incentives, unpaid work, or key people who may leave?
+Company leaders should test whether the sale account describes a business the next owner can maintain. What spending is required to sustain current performance? What would a new owner discover after the reporting date? Which results depend on temporary incentives, unpaid work, or key people who may leave?
 
 This does not mean all work must be complete before a sale. Buyers can accept and price unfinished transitions. The requirement is that material obligations and assumptions are represented accurately through the proper disclosure process.
 
 ## A Sale Is Not Always the End of Ownership Work
 
-An IPO can create a route to liquidity without immediately selling the investor's entire holding. A secondary sale can move ownership to another investor. A continuation transaction can move an asset between vehicles associated with the same manager, creating questions about price, conflicts, and which investors receive cash or retain exposure. ILPA's principles discuss GP-led secondary transactions as a governance issue. [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
+An **initial public offering (IPO)** makes shares available through a first public offering; an existing investor may still retain shares afterward. A **secondary sale** transfers an existing investment interest to another investor. A **continuation transaction** can move an investment into a new vehicle associated with the same manager. In each case, identify who receives cash and who continues to own an interest. A continuation transaction also requires attention to price and possible conflicts between participants. The Institutional Limited Partners Association (ILPA) discusses these manager-led transfers as a governance issue in its principles. [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
 
 Do not infer realized fund performance from a transaction announcement. Follow the actual proceeds, retained interests, costs, and distribution dates. The return mechanics in [[pt-return-mechanics]] still apply, even when a company is described as an exit success.
 
@@ -74,10 +76,10 @@ The cases show why this distinction matters. Hilton’s sponsor described its fi
 
 ## Learn After the Handoff
 
-The firm's learning should not stop at the sale. Where public evidence or authorized access permits, revisit whether the company sustained its capabilities and whether the buyer experienced the promised benefits and disclosed obligations.
+A handover is an opportunity for both company leaders and the investor to learn. Where public evidence or authorized access permits, revisit whether the company sustained its capabilities and whether the buyer experienced the promised benefits and disclosed obligations.
 
-This is not a demand for indefinite control over a former portfolio company. It is a discipline of checking the durability claims made during ownership. Later deterioration does not automatically prove that the prior owner failed; market conditions and subsequent decisions matter. Later success does not prove that every prior intervention was necessary.
+Any involvement after a handover needs an agreed role and appropriate access. It is a discipline of checking the durability claims made during ownership. Later deterioration does not automatically prove that the prior owner failed; market conditions and subsequent decisions matter. Later success does not prove that every prior intervention was necessary.
 
-The contribution that lasts is a way of working that can admit it was wrong. Keep the evidence that would show it — otherwise, a few years on, nobody can tell what the firm learned from what it merely hoped.
+A consistent record makes it possible to learn from the full ownership period: what was expected, what was tried, what happened and what still needs work. It supports the next decision even when the earlier plan proved wrong.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+Part V has followed the company leader through investigation, early planning, ongoing ownership and handover. Part VI now uses real company histories to examine what those decisions can leave behind: [[pt-part-6]] and [[pt-hilton-and-skype]].

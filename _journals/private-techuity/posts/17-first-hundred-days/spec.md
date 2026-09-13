@@ -1,20 +1,23 @@
 ---
 status: draft
-revised: 2026-09-12
+revised: 2026-09-13
 ---
 
 # Spec: The First 100 Days Establish a Funded Plan
 
 ## Intent
 
-Turn diligence into company-owned priorities, funding, baselines, sequencing, and outcome tests. Answer the title question as an independently readable article in Part IV of a connected book.
+Help company leaders establish and own a feasible early plan after investment, using evidence, funding, capacity and agreed investor support. Place the chapter in the ownership-cycle part.
 
 ## Audience
 
-Experienced product and engineering leaders learning private equity; a developing Technology Principal needs both economic understanding and usable judgment.
+Readers learning private equity, company finance, and technology leadership from scratch, including product and engineering practitioners. Assume no prior knowledge of specialist financial or technical vocabulary.
 
 ## Success criteria
 
+- Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
+- Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
+- Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
@@ -45,6 +48,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-13: Apply the agreed company-leader perspective, private-equity focus with wider applications, and revised part structure.
+- 2026-09-13: Revise for readers starting from scratch; define terms before use, explain reasoning steps, and connect the configured chapter sequence.
 - 2026-09-12: Add the author-requested ai-notes KEY POINTS opening; preserve article-specific conclusions and caveats.
-
 - 2026-09-12: Initial spec, status draft; supports a substantial first manuscript and later evidence-led revision.

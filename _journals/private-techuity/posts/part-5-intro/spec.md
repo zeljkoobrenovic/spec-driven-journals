@@ -3,18 +3,19 @@ status: accepted
 revised: 2026-09-13
 ---
 
-# Spec: A Hypothesis, Clearly Labelled as One
+# Spec: Leading Through the Ownership Cycle
 
 ## Intent
 
-Warn the reader that this part is speculative and the model is the author's own coinage, before they meet it.
+Follow the company leader through the investigation before a transaction, the first hundred days, ongoing ownership and preparation for sale; explain how earlier parts support each stage.
 
 ## Audience
 
-A reader arriving at Part V in sequence, plus one dipping in from the contents page who needs to know whether this part is the one they want.
+Readers learning private equity, company finance, and technology leadership from scratch, including product and engineering practitioners. Assume no prior knowledge of specialist financial or technical vocabulary.
 
 ## Success criteria
 
+- Orient a beginner using ordinary language, briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary.
 - Say why the part exists and what its chapters do together, in under 400 words.
 - Walk the chapters in order, one line each, showing why that order. Name each chapter by its linked title rather than a number, so the list survives renumbering.
 - State what the reader should be able to do by the end — and, where it matters, what the part will not give them.
@@ -30,7 +31,7 @@ Article only. These are short orientation pieces; a TL;DR of a 400-word introduc
 
 ## Open questions
 
-- Should these be numbered chapters rather than unnumbered openers? Currently unnumbered, so that chapter numbers 1–28 and the reading-guide routes stay stable.
+None for the agreed part structure. Introductions remain unnumbered; chapter reading positions follow the configuration, and existing permalinks remain stable.
 
 ## Decision log
 
@@ -43,5 +44,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-13: Apply the agreed company-leader perspective, private-equity focus with wider applications, and revised part structure.
+- 2026-09-13: Revise for readers starting from scratch; define terms before use, explain reasoning steps, and connect the configured chapter sequence.
 - 2026-09-13: Chapter walkthroughs changed from "**Chapter N** does X" to linked titles. Numbers were duplicated state that would silently rot if a chapter moved; the build renders link text from the target's title, so this stays correct automatically.
 - 2026-09-13: Created.

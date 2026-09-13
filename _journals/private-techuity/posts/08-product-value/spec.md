@@ -1,20 +1,23 @@
 ---
 status: draft
-revised: 2026-09-12
+revised: 2026-09-13
 ---
 
 # Spec: The Chain From Roadmap to Revenue Breaks Easily
 
 ## Intent
 
-Trace product decisions through customer behavior to revenue, retention, margin, and cash, with explicit attribution limits. Answer the title question as an independently readable article in Part III of a connected book.
+Explain how a selected company investment becomes customer and business outcomes. Follow the new investment-selection chapter without repeating its portfolio-of-work prioritization task.
 
 ## Audience
 
-Experienced product and engineering leaders learning private equity; a developing Technology Principal needs both economic understanding and usable judgment.
+Readers learning private equity, company finance, and technology leadership from scratch, including product and engineering practitioners. Assume no prior knowledge of specialist financial or technical vocabulary.
 
 ## Success criteria
 
+- Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
+- Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
+- Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
@@ -45,8 +48,8 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-13: Apply the agreed company-leader perspective, private-equity focus with wider applications, and revised part structure.
+- 2026-09-13: Revise for readers starting from scratch; define terms before use, explain reasoning steps, and connect the configured chapter sequence.
 - 2026-09-13: Retitled from "Product Work Becomes Value Only Through a Changed Outcome", which was abstract and turned on the vague phrase "changed outcome". The new title uses the chain metaphor the chapter is actually built on — its opening section and closing both turn on it. First heading changed to avoid duplicating the title; first KEY POINT reworded off the same vague phrase.
-
 - 2026-09-12: Explain financial concepts before their implications, connect valuation assumptions to business and technology choices, and add the author-requested KEY POINTS opening.
-
 - 2026-09-12: Initial spec, status draft; supports a substantial first manuscript and later evidence-led revision.

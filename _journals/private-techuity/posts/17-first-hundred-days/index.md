@@ -2,29 +2,29 @@
 title: The First 100 Days Establish a Funded Plan
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Turn diligence into company-owned priorities, funding, baselines, sequencing, and outcome tests.
+excerpt: "Turn the pre-purchase investigation into agreed priorities, funding, responsibilities and a realistic sequence of work."
 permalink: pt-first-hundred-days
 timetoread: 6 min read
 status: draft:orange
-tags: private equity, technology leadership, Part IV
+tags: private equity, technology leadership, Part V
 ---
 
 > **KEY POINTS:**
 >
-> * **Use the early period to establish a funded plan.** The hundred-day convention is an organizing horizon, not evidence that every transformation should finish within it.
+> * **Use the early period to establish a funded plan.** The first hundred days help leaders organize early work; major changes may take longer.
 > * **Recheck assumptions with the people doing the work.** The transaction process leaves gaps; company knowledge and new evidence should change priorities when necessary.
 > * **Sequence dependencies before adding projects.** Agree on capacity, baselines and review decisions so that apparent progress does not conceal an infeasible plan.
 
 <br>
-The first 100 days are not enough to transform a company. They are enough to establish whether the new owner and company leadership can turn an investment thesis into a funded, realistic operating plan.
+The first 100 days are not enough to transform a company. The period provides a practical horizon for the new owner and company leadership to establish a funded, realistic **operating plan**: what the business will do, who will do it and what resources it requires.
 
 The number is a planning convention, not a scientifically established period after which value creation succeeds or fails. Its usefulness comes from a clear early horizon. The danger is treating the calendar as a reason to rush poorly understood changes.
 
-[[pt-diligence-and-thesis]] produced findings while the company was still being bought. This chapter is where those findings either become the company's own plan or quietly expire as someone else's report. That transfer, not the hundred days, is the real subject.
+[[pt-diligence-and-thesis]] produced findings while the company was still being bought. This chapter explains how those findings become the company’s own plan. We first confirm the assumptions, select a manageable set of priorities, check their dependencies and establish how progress will be judged.
 
 ## Confirm the Plan With the People Who Will Deliver It
 
-**Due diligence**, the investigation supporting an investment decision, takes place with incomplete information and a transaction timetable. After closing, management can test assumptions more directly and involve people who were absent from the deal process. Some findings will strengthen; others will change.
+**Due diligence**, the investigation supporting an investment decision, takes place with incomplete information and a transaction timetable. After **closing**, when the transaction legally completes, management can test assumptions more directly and involve people who were absent from the deal process. Some findings will strengthen; others will change.
 
 Begin by reviewing the investment thesis and material findings with company leadership. Which outcomes matter? What was assumed about customers, technology, leadership, and funding? What new evidence changes those assumptions? The purpose is shared understanding, not a ceremony in which management endorses an already fixed plan.
 
@@ -32,7 +32,7 @@ If a required investment was omitted from **underwriting**, the financial and ri
 
 ## Few Priorities, Without Losing the Material Risks
 
-The Productscapes hypothesis suggests three to five important early moves. That is a useful design constraint for attention, not a universal optimum. A company in distress or a carve-out with a hard separation date may need a different structure.
+A starting proposal is to select three to five important early moves. That is a useful design constraint for attention, not a universal optimum. A company in distress or a carve-out with a hard separation date may need a different structure.
 
 A priority should have a business outcome, a company owner, an accepted scope, funding, capacity, and a review date. “Improve engineering” is not sufficiently specific. “Demonstrate a repeatable release path for the core service, with recovery evidence and an agreed baseline” is closer to something management can accept and inspect.
 
@@ -56,21 +56,21 @@ A product improvement may require trustworthy data. A new team may require an ex
 
 Map these dependencies before promising parallel delivery. Estimate the capacity of shared specialists and management. Include the work required to keep the company operating. A plan that uses the same people twice is not ambitious; its resource arithmetic is incomplete.
 
-Separate no-regret actions from conditional investments. Correcting an exposed operational weakness may be worthwhile under several strategies. A large product replacement may depend on evidence that the target segment is attractive. Fund the next learning step when it can materially improve the larger decision.
+Separate actions useful under several plausible plans from investments that depend on an assumption still being tested. Correcting an exposed operational weakness may be worthwhile under several strategies. A large product replacement may depend on evidence that the target segment is attractive. Fund the next learning step when it can materially improve the larger decision.
 
 ## Measure Before the Story Hardens
 
-Early baselines are imperfect. Document their weaknesses rather than waiting for a perfect dashboard. Define the population, period, and data source; preserve the original version when definitions improve.
+A **baseline** is the starting measurement used to judge later changes. Early baselines are imperfect. Document their weaknesses rather than waiting for a perfect dashboard. Define the population, period, and data source; preserve the original version when definitions improve.
 
 For onboarding, measure effort and customer time separately. A process can use fewer internal hours while leaving the customer waiting longer. For delivery, distinguish work started, released, and used. For costs, distinguish identified savings from realized expenditure.
 
-The CFO and operating owners should agree on how economic claims will be reconciled. This helps prevent a successful local initiative from being counted repeatedly across the value-creation plan. It also protects useful improvements that create capacity or reduce risk without immediately appearing in profit.
+The **chief financial officer (CFO)** and the leaders responsible for the work should agree on how economic claims will be reconciled. This helps prevent a successful local initiative from being counted repeatedly across the value-creation plan. It also protects useful improvements that create capacity or reduce risk without immediately appearing in profit.
 
-## The Principal's Early Relationship Matters
+## Agree How Investor Support Will Help
 
-The Principal should ask what the company needs help deciding and delivering. They should also explain what the investment team expects and where uncertainty remains. Quietly gathering information for an unannounced executive assessment can damage the trust needed for the work.
+As a company leader, identify the decisions and delivery gaps where investor support would help. Ask the technology adviser to explain what the investment team expects and where uncertainty remains. Make the purpose of any assessment clear to the people involved, including whether it concerns an operating problem, leadership development or formal performance evaluation.
 
-A short engagement charter can state how often the Principal will meet management, what information is shared with the board, and how material concerns are escalated. Confidential coaching and formal performance evaluation should have understandable boundaries.
+Use the **engagement charter**, the short support agreement developed in [[pt-making-support-work]], to establish the adviser’s time, the company’s contribution, information shared with the board and how important concerns reach the right decision-maker. Confidential coaching and formal performance evaluation should have understandable boundaries.
 
 Hands-on support can build credibility when it resolves a real constraint. It can also overload teams if every owner-sponsored expert arrives with a new assessment and action list. Coordinate interventions through company leadership and one capacity view.
 
@@ -80,6 +80,6 @@ At the end of the period, ask what was learned and what the company can now do. 
 
 Completing every planned task is not necessarily success if the tasks addressed the wrong constraint. Revising a major assumption can be a valuable outcome even when it reduces the original growth forecast. The review should reward better judgment rather than the preservation of the transaction story.
 
-A hundred days is not enough to fix a company. It is enough to find out whether the people who must deliver the plan believe it, whether the money for it exists, and who is allowed to decide. Getting those three wrong is expensive for years. [[pt-execution-and-exit]] takes up the longer work.
+The early period should leave a plan whose owners understand the work, whose funding and capacity are credible, and whose assumptions can be reviewed. Completing a list of tasks is only useful if those tasks help establish the required outcomes.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+The next chapter follows that plan through the longer ownership period and preparation for a sale: [[pt-execution-and-exit]].

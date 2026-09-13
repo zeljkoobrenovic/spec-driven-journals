@@ -1,4 +1,4 @@
-Assess an investor through its behavior under pressure and its ability to support this company's work. Statements about patience, expertise, and management autonomy need concrete evidence before they become planning assumptions.
+Assess an investor through its behavior under pressure and its ability to support this company’s work. Use the questions both when comparing prospective investors and when reviewing an ownership arrangement already chosen. Statements about patience, expertise, and company leaders’ freedom to decide need concrete evidence before they become planning assumptions.
 
 Begin with the company's next difficult decisions. Identify the capital, skills, access, hiring support, governance, or time the owner would need to provide. This converts a broad operating-support promise into a specific capability requirement.
 
@@ -6,9 +6,9 @@ Seek references that include difficulty as well as success. Ask about a failed p
 
 **Make the support offer reviewable.** Name the people available, their relevant experience, the engagement scope, funding, company owner, and stop conditions. A modest service with credible capacity may fit better than a large catalogue whose experts are unavailable. Public operating-team descriptions are evidence of stated offerings, not proof of suitability. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone)
 
-Examine the financing alongside the support. What cash reaches the company? Which obligations follow? How does the product plan perform if growth is slower, the transition takes longer, or the exit multiple falls? Distinguish committed capital from expectations of future help.
+Examine the financing alongside the support. What cash reaches the company? Which obligations follow? How does the product plan perform if growth is slower, the transition takes longer, or buyers offer a lower price relative to the company’s earnings? Distinguish committed capital from expectations of future help.
 
-Warning signs include avoiding downside scenarios, imposing benchmarks without comparable companies, changing definitions to preserve a favorable narrative, and issuing instructions that bypass executives. These warrant investigation rather than an automatic allegation. Challenging a project or requiring cash reporting can be productive even when uncomfortable.
+Warning signs include avoiding downside scenarios, imposing targets from other businesses without checking that the companies are comparable, changing definitions to preserve a favorable narrative, and issuing instructions that bypass executives. These warrant investigation rather than an automatic allegation. Challenging a project or requiring cash reporting can be productive even when uncomfortable.
 
 Fit also changes during ownership. Review what support helped, what burden it imposed, and which expectations need revision. When conflict emerges, describe the actual decision, evidence, feasible options, proper forum, and consequences of delay.
 

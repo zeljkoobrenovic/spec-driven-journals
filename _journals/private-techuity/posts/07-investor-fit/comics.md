@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/07-investor-fit/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex reviews an investor presentation full of capability promises. Use one speech bubble with the exact words: \"Who actually provides this support?\" Convey: A broad offering needs evidence of relevant availability and execution.",
-  "alt": "Comic panel: alex reviews an investor presentation full of capability promises.",
-  "caption": "A broad offering needs evidence of relevant availability and execution."
+  "prompt": "Panel 1 of an explainer comic. Alex reviews an investor presentation full of capability promises. Use one speech bubble with the exact words: \"Who actually provides this support?\" Convey: A promise of support needs available people, relevant experience and time to do the work.",
+  "alt": "Comic panel: Alex reviews an investor presentation full of capability promises.",
+  "caption": "A promise of support needs available people, relevant experience and time to do the work."
 }
 -->
 
-**Panel 1:** A broad offering needs evidence of relevant availability and execution.
+**Panel 1:** A promise of support needs available people, relevant experience and time to do the work.
 
 *Scene:* Alex reviews an investor presentation full of capability promises.
 
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/07-investor-fit/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan asks for a story about a difficult engagement. Use one speech bubble with the exact words: \"Tell us about a disagreement.\" Convey: Reference questions should examine behavior under pressure.",
-  "alt": "Comic panel: morgan asks for a story about a difficult engagement.",
-  "caption": "Reference questions should examine behavior under pressure."
+  "prompt": "Panel 2 of an explainer comic. Morgan asks for a story about a difficult engagement. Use one speech bubble with the exact words: \"Tell us about a disagreement.\" Convey: Ask for examples of how the investor handled a missed plan, disagreement or request for further help.",
+  "alt": "Comic panel: Morgan asks for a story about a difficult engagement.",
+  "caption": "Ask for examples of how the investor handled a missed plan, disagreement or request for further help."
 }
 -->
 
-**Panel 2:** Reference questions should examine behavior under pressure.
+**Panel 2:** Ask for examples of how the investor handled a missed plan, disagreement or request for further help.
 
 *Scene:* Morgan asks for a story about a difficult engagement.
 
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/07-investor-fit/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam reviews a downside cash scenario with the investor. Use one speech bubble with the exact words: \"What happens if growth slows?\" Convey: Fit includes financing and willingness to revise expectations.",
-  "alt": "Comic panel: sam reviews a downside cash scenario with the investor.",
-  "caption": "Fit includes financing and willingness to revise expectations."
+  "prompt": "Panel 3 of an explainer comic. Sam reviews a downside cash scenario with the investor. Use one speech bubble with the exact words: \"What happens if growth slows?\" Convey: Fit includes the money available when results disappoint and the process for revising the plan.",
+  "alt": "Comic panel: Sam reviews a downside cash scenario with the investor.",
+  "caption": "Fit includes the money available when results disappoint and the process for revising the plan."
 }
 -->
 
-**Panel 3:** Fit includes financing and willingness to revise expectations.
+**Panel 3:** Fit includes the money available when results disappoint and the process for revising the plan.
 
 *Scene:* Sam reviews a downside cash scenario with the investor.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/07-investor-fit/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex considers declining an offered intervention. Use one speech bubble with the exact words: \"Can we say this does not fit?\" Convey: The response to refusal reveals something about the relationship.",
-  "alt": "Comic panel: alex considers declining an offered intervention.",
-  "caption": "The response to refusal reveals something about the relationship."
+  "prompt": "Panel 4 of an explainer comic. Alex considers declining an offered intervention. Use one speech bubble with the exact words: \"Can we say this does not fit?\" Convey: Ask what happens if company leaders decline a proposed service. Their answer helps explain how much choice they have.",
+  "alt": "Comic panel: Alex considers declining an offered intervention.",
+  "caption": "Ask what happens if company leaders decline a proposed service. Their answer helps explain how much choice they have."
 }
 -->
 
-**Panel 4:** The response to refusal reveals something about the relationship.
+**Panel 4:** Ask what happens if company leaders decline a proposed service. Their answer helps explain how much choice they have.
 
 *Scene:* Alex considers declining an offered intervention.
 
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/07-investor-fit/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. A warning light appears beside repeated unexplained reversals. Use one speech bubble with the exact words: \"Look for a pattern.\" Convey: One event needs context; repeated contradictions deserve investigation.",
-  "alt": "Comic panel: a warning light appears beside repeated unexplained reversals.",
-  "caption": "One event needs context; repeated contradictions deserve investigation."
+  "prompt": "Panel 5 of an explainer comic. A warning light appears beside repeated unexplained reversals. Use one speech bubble with the exact words: \"Look for a pattern.\" Convey: One difficult event needs context. Repeated unexplained contradictions call for further investigation.",
+  "alt": "Comic panel: A warning light appears beside repeated unexplained reversals.",
+  "caption": "One difficult event needs context. Repeated unexplained contradictions call for further investigation."
 }
 -->
 
-**Panel 5:** One event needs context; repeated contradictions deserve investigation.
+**Panel 5:** One difficult event needs context. Repeated unexplained contradictions call for further investigation.
 
 *Scene:* A warning light appears beside repeated unexplained reversals.
 
@@ -103,14 +103,14 @@
   "status": "pending",
   "asset": "assets/images/07-investor-fit/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team records expectations before starting work. Use one speech bubble with the exact words: \"Make the partnership concrete.\" Convey: Clear boundaries, evidence, and commitments improve the chance of a useful engagement.",
-  "alt": "Comic panel: the team records expectations before starting work.",
-  "caption": "Clear boundaries, evidence, and commitments improve the chance of a useful engagement."
+  "prompt": "Panel 6 of an explainer comic. Alex and Sam review the existing owner’s support promises against the company’s current needs. Use one speech bubble with the exact words: \"What can we improve in this partnership?\" Convey: Assess the partnership before depending on support and review it during ownership. The questions also help leaders working with an investor already chosen.",
+  "alt": "Comic panel: Alex and Sam review the existing owner’s support promises against the company’s current needs.",
+  "caption": "Assess the partnership before depending on support and review it during ownership. The questions also help leaders working with an investor already chosen."
 }
 -->
 
-**Panel 6:** Clear boundaries, evidence, and commitments improve the chance of a useful engagement.
+**Panel 6:** Assess the partnership before depending on support and review it during ownership. The questions also help leaders working with an investor already chosen.
 
-*Scene:* The team records expectations before starting work.
+*Scene:* Alex and Sam review the existing owner’s support promises against the company’s current needs.
 
-*Dialogue:* “Make the partnership concrete.”
+*Dialogue:* “What can we improve in this partnership?”

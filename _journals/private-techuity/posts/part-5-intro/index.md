@@ -1,34 +1,31 @@
 ---
-title: "A Hypothesis, Clearly Labelled as One"
+title: "Leading Through the Ownership Cycle"
 date: 2026-09-13
 author: Private Techuity working manuscript
-excerpt: "The book's most speculative part: two chapters developing Productscapes, the author's own hypothesis, with the tests that would show it wrong."
+excerpt: "Navigate the investigation before an investment, the first hundred days, ongoing ownership and preparation for a sale."
 permalink: pt-part-5
 timetoread: 2 min read
 status: draft:orange
 tags: private equity, part introduction, Part V
 ---
 
-> **Part V in one line:** a hypothesis, clearly labelled as one — that an investment firm's support could be designed like a product rather than improvised per deal.
+> **Part V in one line:** navigate the investigation before an investment, the first hundred days, ongoing ownership and preparation for a sale.
 
 <br>
-This is the most speculative part of the book, and it is worth saying so plainly before you start.
+An investment changes more than the ownership record on a particular day. Company leaders may help investigate the business before the deal, establish an early plan, revise it during ownership and later explain the company to another prospective owner.
 
-Parts I to IV describe how private equity ownership works and how a technology adviser operates inside it. Those chapters rest on public sources, worked examples and reasoning you can check. Part V does something different: it develops **Productscapes**, the author's own hypothesis, which proposes that an investment partnership — and the technology support inside it — can be designed and tested the way a product is.
+We call that sequence the **ownership cycle**. It is a way to organize the work, rather than a fixed timetable every company must follow. A further investment can change expectations without replacing the owner; a planned sale may take longer than expected.
 
-The name and the model are the author's. They are not established industry practice, and no evidence here shows that adopting them improves returns or company outcomes.
+The earlier parts explain the money, the decisions, the work worth funding and the support available. This part brings those subjects together from the company leader’s side of the table.
 
-## What These Two Chapters Do
+## The Learning Path
 
-- [[pt-investment-firm-as-product]] applies product thinking to the firm's whole offering: who the customers actually are, who merely has to live with the result, and where the analogy becomes misleading. Its most useful section is the one about its own limits.
-- [[pt-technology-capability-as-product]] narrows to the part a technology leader could actually build — a small set of reusable services — and insists on the discipline that makes the idea falsifiable.
+- [[pt-diligence-and-thesis]] examines **due diligence**, the investigation that informs an investment decision. It explains how to present evidence, challenge unsupported assumptions and carry findings into the plan.
+- [[pt-first-hundred-days]] establishes priorities with credible funding, team capacity and responsibilities after the transaction completes.
+- [[pt-execution-and-exit]] follows the longer period of delivery and revision, then preparation for an **exit**, a sale or other transaction through which an investor receives value from its holding.
 
-## What You Should Be Able to Do
+Each stage changes the questions you need to answer. Before investment, the emphasis is on what the company can support and what remains uncertain. Early ownership turns that account into commitments. Later reviews test whether the commitments still make sense. Sale preparation asks whether another owner can understand and sustain the resulting business.
 
-By the end of Part V you should be able to judge the hypothesis rather than adopt it. The tests are stated: does a proposed change improve a decision someone actually faces, at a cost worth paying, for participants who could have declined it?
+By the end, you should be able to carry the same evidence through those stages, make a specific request when the plan needs to change and prepare a handover that includes unfinished work.
 
-Read this part sceptically. Product thinking helps here only while it keeps saying who owes what to whom, who can say no, and what would prove the model wrong. Drop any of the three and it becomes a diagram that flatters the firm — which the chapters themselves say more than once.
-
-Part VI then leaves hypothesis behind and tests the whole book against four real companies.
-
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+Begin with [[pt-diligence-and-thesis]]. Part VI then tests these ways of thinking against historical company situations.

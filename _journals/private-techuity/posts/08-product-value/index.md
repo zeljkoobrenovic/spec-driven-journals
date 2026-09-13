@@ -2,71 +2,72 @@
 title: The Chain From Roadmap to Revenue Breaks Easily
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: "Trace a product decision through customer behavior to revenue, retention, margin and cash — and find the link where most value claims quietly break."
+excerpt: "Trace a product change through customer behavior to business results, and test each step before claiming a benefit."
 permalink: pt-product-value
-timetoread: 7 min read
+timetoread: 8 min read
 status: draft:orange
 tags: private equity, technology leadership, Part III
 ---
 
 > **KEY POINTS:**
 >
-> * **A feature is worth nothing until someone behaves differently.** Trace what customers or the company will actually do, then what that does to revenue, costs, cash or risk.
-> * **Released time is not automatically a cash saving.** Observe what happens to the capacity and include the investment and maintenance required to create it.
-> * **Valuation assumptions help identify the relevant work.** Future growth needs a credible route to adoption and scale; established earnings need a product the company can sustain.
+> * **Explain what the change enables.** A feature, a more reliable service or a simpler process needs a connection to useful customer or business outcomes.
+> * **Distinguish freed time from money saved.** If the same people are still paid, less effort may create capacity for other work without reducing spending.
+> * **Check the full chain of results.** Include implementation cost, continuing maintenance and other changes that could explain the outcome.
 
 <br>
-A roadmap item is not a unit of business value. It is a proposed change to the product, and its value depends entirely on what customers do differently afterwards — and what that difference is worth.
+A product team proposes making customer setup faster. That sounds useful, but what is the benefit? Customers might start using the product sooner. Staff might serve more customers. The company might collect payment earlier. Each possibility needs a different piece of evidence.
 
-This is the central translation problem for technology leadership under private equity, and the reason this chapter opens Part III. Parts I and II established what owners want and who decides. Every remaining chapter here — engineering, infrastructure, security, AI, people, acquisitions — is a specific case of the translation set out now.
+A **product roadmap** sets out intended product changes and priorities. A roadmap item describes work; its business case explains the useful result expected from that work. In this chapter, we follow one item from the proposed change to its possible financial effect.
 
-Investors ask for revenue growth, **retention** (keeping customers or their revenue), **margin** (a profit measure relative to revenue) or cash. Teams work on onboarding, reliability, workflows and delivery. The job is to connect the two without pretending every technical improvement can be priced to the euro.
+The example uses Larkspur, a fictional company selling scheduling software. **Onboarding** is the setup and help required before a customer can use that software successfully. The **value mechanism** is the sequence by which a change to onboarding produces a benefit.
 
+[[pt-choosing-investments]] compared competing uses of money and team capacity. We now examine a selected product change more closely: how could the work produce a useful customer and business result? Later chapters apply the same reasoning to engineering, costs, security, artificial intelligence and people.
 
-## Where the Links Are, and Where They Snap
+## Follow the Steps From Change to Outcome
 
-What the owner is paying for shapes which link matters most. A thesis built on expansion needs evidence the product can win and serve more customers at acceptable cost; one built on established earnings needs evidence those earnings survive maintenance and reinvestment ([[pt-valuation-and-architecture]]). Both depend on a product that works.
+An **investment thesis** explains why the owner expects the investment to succeed. It helps identify which result matters most. A thesis built on expansion needs evidence the product can win and serve more customers at acceptable cost; one built on established earnings needs evidence those earnings survive maintenance and reinvestment ([[pt-valuation-and-architecture]]). Both depend on a product that works.
 
-Consider the fictional Larkspur onboarding initiative. New customers require substantial engineering help before they can use the scheduling product. The investment hypothesis is that reusable configuration will shorten implementation, reduce effort, and allow more customers to become productive.
+Consider the fictional Larkspur onboarding initiative. New customers require substantial engineering help before they can use the scheduling product. **Reusable configuration** means settings and setup steps that can serve several customers, reducing the need for custom work each time. The investment hypothesis is that reusable configuration will shorten implementation, reduce effort, and allow more customers to become productive.
 
 The proposed chain is:
 
 ---begin mermaid---
 flowchart LR
   A[Reusable configuration] --> B[Less implementation effort]
-  B --> C[More customers activated]
-  C --> D[Earlier billing and useful adoption]
-  D --> E[Revenue, retention, and cash]
+  B --> C[More customers ready to use the product]
+  C --> D[Earlier billing and useful product use]
+  D --> E[Sales, customers staying, and cash]
   A --> F[Development and maintenance cost]
   F --> E
 ---end mermaid---
 
-Each arrow is a hypothesis. Faster implementation may not increase sales if demand is weak. Earlier billing may not improve retention if customers do not receive value. Reduced effort may free staff capacity without reducing cash expenditure. A configuration feature may create maintenance obligations that absorb part of the benefit.
+Each arrow is a hypothesis. Faster implementation may not increase sales if demand is weak. Earlier billing may not help keep customers if they do not receive value. Reduced effort may free staff capacity without reducing cash expenditure. A configuration feature may create maintenance obligations that absorb part of the benefit.
 
-The diagram should therefore guide investigation, not become a decorative proof of causality.
+Read each arrow as a question to test. For example, if engineering effort falls but customer activation stays unchanged, examine what else is keeping customers waiting.
 
-## Six Ways Product Work Turns Into Money
+## Six Kinds of Benefit to Examine
 
-One term recurs below. **Contribution** is the revenue from an activity minus the costs assigned to delivering it, under a stated calculation — not automatically net company profit. Define the cost boundary before comparing initiatives.
+Three terms help distinguish the benefits. **Retention** means keeping customers or their revenue over a stated period. **Margin** is a specified profit measure divided by revenue. **Contribution** is revenue from an activity less the costs included in serving it; say which costs are included, because this is not necessarily the company’s final profit.
 
 | Mechanism | Example intervention | Evidence to seek |
 | --- | --- | --- |
-| Revenue growth | Remove a product constraint in an attractive segment | Eligible pipeline, conversion, usage, incremental contribution |
-| Retention | Improve a workflow associated with customer failure | Cohort renewal, reasons for loss, customer outcomes |
+| Revenue growth | Remove a product constraint in an attractive segment | Potential customers the change can help, actual purchases, usage and additional contribution |
+| Retention | Improve a workflow associated with customer failure | Renewals in comparable customer groups, reasons for leaving and useful customer outcomes |
 | Margin | Reduce manual implementation or service effort | Effort per unit, quality, fully loaded delivery costs |
-| Cash generation | Shorten contract-to-activation and collection | Billing milestones, receivables, actual cash receipts |
+| Cash generation | Shorten contract-to-activation and collection | When invoices can be issued, unpaid invoices and actual cash received |
 | Risk reduction | Improve recoverability of a critical service | Tested controls, exposure scenarios, recovery performance |
-| Strategic flexibility | Separate a product boundary needed for expansion | Feasible options, exercise costs, time to respond |
+| Strategic flexibility | Separate a product boundary needed for expansion | New choices made possible, the cost of using them and the time required |
 
 These mechanisms overlap, but their financial effects should not simply be added. Earlier billing can accelerate cash without increasing lifetime contract revenue. A retained customer may already be included in a revenue forecast. An acquisition benefit can appear both in cost savings and in the acquired company's earnings measure unless reconciled.
 
 ## The Arithmetic, Worked Through
 
-Assume, fictionally, that Larkspur performs 100 implementations a year. Each uses 80 hours of work at a fully loaded planning cost of €75 per hour: €600,000 of annual capacity. An intervention reduces effort to 50 hours, making the modelled capacity requirement €375,000. The difference is €225,000, or 3,000 hours.
+For this **separate, smaller pilot example**, assume Larkspur performs 100 customer implementations a year. We are testing the benefit of one reusable setup step, not costing the entire €1 million program discussed earlier. Each uses 80 hours of work at a **fully loaded planning cost** of €75 per hour, including pay and the employment overheads included in this model: €600,000 of annual capacity. An intervention reduces effort to 50 hours, making the modelled capacity requirement €375,000. The difference is €225,000, or 3,000 hours.
 
 That is a capacity estimate. If staffing and external invoices remain unchanged, cash has not fallen by €225,000. The company could use the capacity to serve more customers, reduce overtime, improve quality, or eventually avoid hiring. Each outcome has a different economic interpretation.
 
-Suppose the initiative costs €180,000 to build and €30,000 annually to maintain. It would be misleading to report €225,000 of recurring profit without showing those costs and whether the capacity was converted into an economic result. It would also be misleading to dismiss the work because payroll did not immediately fall. Serving additional profitable demand can be the more valuable use of the freed capacity.
+Suppose this pilot costs €180,000 to build and €30,000 annually to maintain. It would be misleading to report €225,000 of recurring profit without showing those costs and whether the capacity was converted into an economic result. It would also be misleading to dismiss the work because payroll did not immediately fall. Serving additional profitable demand can be the more valuable use of the freed capacity.
 
 A decision-ready proposal therefore includes a **conversion plan**: how a technical improvement becomes customer value and then a business outcome, with someone accountable for each transition.
 
@@ -78,15 +79,15 @@ Begin with the customers and segments the company intends to serve. What progres
 
 Under ownership pressure, product management can become an intake process for investor, sales, and acquisition requests. The remedy is not to reject those voices. It is to apply a consistent economic and customer test. A requested feature should carry a hypothesis about demand and contribution, not just the name of the executive who requested it.
 
-DORA's 2024 research emphasizes user focus and stable priorities in its account of software performance. Its survey-based relationships provide useful direction, but they do not establish the monetary value of a specific company's roadmap. [S15: DORA 2024 report](https://dora.dev/research/2024/dora-report/)
+**DORA**, a research program studying software delivery and organizational performance, emphasizes user focus and stable priorities in its 2024 account of software performance. Its survey-based relationships provide useful direction, but they do not establish the monetary value of a specific company's roadmap. [S15: DORA 2024 report](https://dora.dev/research/2024/dora-report/)
 
-## Measurement Without False Attribution
+## Check Whether the Change Explains the Result
 
-Establish the baseline before implementation when feasible. Define the population, period, exclusions, and cost basis. Preserve raw counts alongside percentages. A retention improvement among enterprise customers can disappear when customer mix changes, and an aggregate average can conceal deterioration in the segment the strategy depends on.
+A **baseline** records the starting situation used for comparison. Establish it before implementation when feasible. Define which customers are included, the time period, exclusions and how costs are calculated. A **cohort** is a defined group tracked over time, such as customers starting in the same quarter. Preserve raw counts alongside percentages. A retention improvement among enterprise customers can disappear when customer mix changes, and an aggregate average can conceal deterioration in the segment the strategy depends on.
 
 Where practical, compare a staged rollout with a comparable group. If that is not possible, document the timing and competing explanations: price changes, new sales incentives, acquisitions, seasonality, or a different customer mix. Use interviews to explain mechanisms, but do not treat an enthusiastic testimonial as a financial calculation.
 
-A claim can be useful without proving sole causation. “The intervention plausibly contributed to lower onboarding effort, with these measurements and limitations” is stronger than an unsupported precise attribution. Finance review should check consistency and double counting; it cannot create a counterfactual that was never measured.
+A claim can be useful without proving sole causation. “The intervention plausibly contributed to lower onboarding effort, with these measurements and limitations” is stronger than an unsupported precise attribution. **Attribution** means assigning a result to its cause; **contribution** here means a qualified claim that the change helped. This causal use of “contribution” differs from the financial measure introduced above. A **counterfactual** is an estimate of what would have happened without the change. Finance can check the calculation, but it cannot supply a missing comparison merely by reviewing the numbers.
 
 Visma provides a useful reality check in [[pt-visma]]. Its disclosures describe product investment alongside acquisitions and growth. [S32: Visma annual-report announcement](https://www.visma.com/newsroom/visma-releases-annual-and-sustainability-reports-for-2024-7f5c9f37) That is evidence of activity and aggregate performance, while the incremental product-value question still requires customer and intervention-level evidence. Treat an encouraging company story as the beginning of that investigation.
 
@@ -98,6 +99,6 @@ For each major intervention, choose a few indicators that could reveal damage. F
 
 The Technology Principal's distinctive contribution is to keep the whole chain discussable. They can help investors understand why a technical dependency matters and help company teams understand why a customer outcome must translate into economics. The work succeeds when those connections improve decisions, including the decision to stop an initiative whose value hypothesis no longer holds.
 
-A roadmap item becomes business value only by surviving every link in the chain: the change ships, customers behave differently, and the difference reaches revenue, retention or cost. Most claims break at a link nobody checked. Name the link you are relying on. The measurement tools are in [[pt-toolkit]]; engineering and infrastructure choices follow in [[pt-engineering-and-architecture]] and [[pt-cloud-economics]].
+For each proposal, explain the change, the capability it enables, the result expected and the cost of achieving it. Then identify the evidence needed at each step. Useful benefits include service continuity and reduced exposure to harm as well as growth and savings.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+The next question is what the underlying software and engineering team must be able to do to deliver that change. We examine it in [[pt-engineering-and-architecture]].

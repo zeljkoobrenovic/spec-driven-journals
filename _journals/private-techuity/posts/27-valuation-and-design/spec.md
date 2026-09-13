@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-12
+revised: 2026-09-13
 ---
 
 # Spec: From Valuation Assumptions to Architecture Choices
@@ -11,10 +11,13 @@ Translate an investor's explanation of value into an operating hypothesis, and t
 
 ## Audience
 
-Experienced product and engineering leaders who have read the Part I primer and the earlier Part III operating chapters.
+Readers learning private equity, company finance, and technology leadership from scratch, including product and engineering practitioners. Assume no prior knowledge of specialist financial or technical vocabulary.
 
 ## Success criteria
 
+- Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
+- Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
+- Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Show why "we are valued on growth" and "we are valued on EBITDA" are incomplete as instructions, and what questions complete them.
 - Map growth and earnings priorities to architectural capabilities and their trade-offs, without prescribing microservices for growth or cost-cutting for earnings.
 - Carry the Larkspur €200,000 onboarding example through four lenses — earnings, cash, growth, architecture — and show they can disagree legitimately.
@@ -23,7 +26,7 @@ Experienced product and engineering leaders who have read the Part I primer and 
 
 ## Non-goals
 
-A valuation method (that is Chapter 2's job), current market multiples, or an algorithm deriving architecture from a financial ratio.
+A valuation method (that is the financial valuation primer’s job), current market multiples, or an algorithm deriving architecture from a financial ratio.
 
 ## Modalities
 
@@ -44,4 +47,5 @@ Inherits the IPEV valuation guidance cited in [[pt-valuation-and-architecture]].
 
 ## Changelog
 
+- 2026-09-13: Revise for readers starting from scratch; define terms before use, explain reasoning steps, and connect the configured chapter sequence.
 - 2026-09-12 — Created by splitting Chapter 2; content moved unchanged apart from a new opening that names its prerequisites, a revised closing hand-off, and Larkspur product wording aligned to "scheduling software".

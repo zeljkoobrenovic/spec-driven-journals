@@ -1,7 +1,11 @@
 # Private Techuity — Manuscript Workspace
 
-Start reading at [the book index](index.md). The maintained chapters and reference pages are in `posts/`; `config.yaml` integrates them with the repository's journal build.
+Start with [the purpose and reading guide](posts/reading-guide/index.md) or [the book index](index.md). The maintained chapters and references live in `posts/`; `config.yaml` defines their published order.
 
-The accepted working title is **Private Techuity: Product and Engineering Leadership in Private Equity**. This is a living manuscript, now incorporating a second research and accessibility pass. Each of the 26 chapters has a Full Article, TL;DR, and comic storyboard. Comic artwork is pending. Specs state intent; `_research/` holds private provenance, evidence gaps, validation, and continuation notes and is excluded from site content. Original `_input/` material is preserved.
+The current working title is **Private Techuity: Product and Engineering Leadership in Private Equity**. A practical guide to leading product and technology under private equity ownership, with lessons for working effectively with investors across other ownership models.
 
-For revision, use [the research and editorial index](_research/README.md). For evidence, use [the public bibliography](posts/bibliography/index.md). See [validation and status](_research/validation.md) for delivered counts and checks.
+The manuscript contains **29 main chapters in six parts and two optional appendix essays**. All 31 have an article, a 300–500-word summary and a six-panel comic storyboard; artwork is pending. Six part introductions, an appendix introduction and four reference or guide pages bring the published total to 42 pages, each with a companion specification.
+
+[STRUCTURE.md](STRUCTURE.md) records this structural revision. [PLAN.md](PLAN.md) retains the separate discussion of possible title and positioning changes. Existing folder names and permalinks remain stable; chapter numbers refer to reading positions, not folder numbers.
+
+For sources, use [the public bibliography](posts/bibliography/index.md). The private `_research/` directory preserves provenance and historical research and validation notes; its earlier delivery counts describe their dated revisions. `_input/` material remains private and is excluded from the site.

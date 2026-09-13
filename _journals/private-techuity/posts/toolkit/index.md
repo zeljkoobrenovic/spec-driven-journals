@@ -3,7 +3,7 @@ title: Practical Tools for Ownership and Technology Decisions
 date: 2026-09-12
 permalink: pt-toolkit
 status: draft:orange
-excerpt: Reusable records for diligence, engagement, value plans, measurement, and handoffs.
+excerpt: "Practical records for checking an investment, planning support, measuring results and handing work to its next owner."
 ---
 
 > **KEY POINTS:**
@@ -13,7 +13,21 @@ excerpt: Reusable records for diligence, engagement, value plans, measurement, a
 > * **Review outcomes and revise the plan.** Keep baselines, assumptions and reasons for stopping or changing an intervention visible.
 
 <br>
-These are **proposed working tools**, designed from the book's argument and the author's Productscapes hypotheses. They have not been validated as a universal operating standard. Start with the smallest record that improves a real decision, and remove fields that impose work without changing understanding or accountability.
+These are **proposed working tools** for company leaders applying the book’s financial, decision and support concepts. Some also serve readers designing support services in the optional appendix. They have not been validated as a universal operating standard. Start with the smallest record that improves a real decision, and remove fields that impose work without changing understanding or accountability.
+
+You do not need to fill in every tool. Choose the record for the decision in front of you:
+
+| Your immediate question | Start with |
+| --- | --- |
+| Who receives the investment money, and who can approve the work? | Tool 1: ownership and decision map |
+| What should we check before an investment? | Tools 2–3: investment explanation and findings |
+| What exactly will the adviser help us do? | Tool 4: support agreement |
+| Can we fund and deliver this improvement? | Tool 5: initiative record; Tool 11 for the financial-to-design connection |
+| Which combination of improvements should we fund? | Tool 12: investment choices and capacity |
+| Did the work help? | Tools 6–7: results record and a small set of measures |
+| Are we choosing an investor, combining businesses or preparing for a sale? | Tools 8, 9 or 10 respectively |
+
+An **initiative** is a defined piece of improvement work. A **baseline** records the starting situation. A **dependency** is something required before other work can proceed. A **material finding** is important enough to affect a decision. A record’s “owner” means the person responsible for the work or decision, unless it explicitly refers to a shareholder.
 
 Use the same finding or initiative identifier through related records. Restrict distribution according to the engagement and company permissions. A filled template does not establish that its claims are true: preserve dates, definitions, evidence links, and disagreement.
 
@@ -24,19 +38,19 @@ Use before translating an ownership announcement into an operating promise. See 
 | Field | Record |
 | --- | --- |
 | Operating company and relevant entities | Names, ownership relationships, and which entity holds the relevant cash, debt, contract, or asset |
-| Manager, fund, and other owners | Distinguish organization, vehicle, fund vintage where known, and minority interests |
+| Manager, fund, and other owners | Distinguish organization, vehicle, the fund’s starting period where known, and minority interests |
 | Business need and investment thesis | The company problem and the investor outcome being pursued |
-| Cash destination | New company capital, seller liquidity, refinancing, fees, or another purpose |
+| Cash destination | New company capital, cash paid to selling owners, refinancing, fees, or another purpose |
 | Decision in front of us | A concrete choice, deadline, and consequence of delay |
 | Authority | Who recommends, decides, implements, funds, is informed, and can escalate |
-| Financing constraints | Relevant cash timing, covenants, debt service, maturity, and downside funding |
+| Financing constraints | Payment timing, loan conditions, required financing payments, repayment dates and funding if the plan disappoints |
 | Unknowns | Evidence needed, owner, and date before commitment |
 
 The acceptance test is whether each consequential assumption has an identifiable source or a clearly labeled gap. A Principal's presence in a meeting is not the authority field.
 
 ## 2. Write a One-Page Technology Thesis
 
-Use during sourcing and diligence, then revise with company leadership after closing. See [[pt-diligence-and-thesis]].
+Use when investigating a proposed investment, then revise with the company leaders responsible for the plan after the transaction completes. See [[pt-diligence-and-thesis]].
 
 **Company and date:** [fill in]. **Investment context:** [control, growth, carve-out, other]. **Decision and owner:** [fill in].
 
@@ -63,20 +77,20 @@ The seven dimensions are a coverage aid: product, architecture, engineering, dat
 | Finding ID / dimension | Stable identifier and relevant dimension(s) |
 | Claim and scope | What is being claimed, for which product, system, customer cohort, or period |
 | Evidence and access | Documents, observations, interviews, sample selection, dates, and access limits |
-| Epistemic status | Observation, reported assertion, inference, hypothesis, or unknown |
+| Kind of claim | What we observed, what someone reported, what we infer, what we propose to test, or what remains unknown |
 | Business consequence | Effect on the thesis, customers, cost, cash, risk, timing, or strategic options |
 | Alternatives | Other explanations and evidence that would distinguish them |
-| Confidence / materiality | State each separately, with reasons rather than an unexplained color |
-| Disposition | Investment implication, required condition, funded initiative, accepted residual risk, or further investigation |
+| Confidence / importance | How strong is the evidence, and how much could the issue affect the decision? Explain each separately. |
+| Agreed response | Investment implication, required condition, funded initiative, accepted residual risk, or further investigation |
 | Company handoff | Named recipient, acceptance date, resources, and next evidence check |
 
 **Example of a better finding formulation, fictional:** “Three observed onboarding engagements required the same specialist's manual configuration. We have not established how representative these engagements are. The sales-growth thesis requires higher throughput, so investigate the dependency before assuming that additional bookings become timely revenue.” This is stronger than “architecture maturity: amber” because it exposes the economic assumption and evidence limit.
 
-## 4. Agree a Principal Engagement Charter
+## 4. Agree an Investor Support Engagement
 
-Use when the role moves between investor advice, company support, and oversight. See [[pt-technology-principal]] and [[pt-execution-and-exit]].
+Use when agreeing a specific source of investor support. See [[pt-investor-support]], [[pt-making-support-work]] and [[pt-technology-principal]].
 
-Record the question, expected useful output, investor sponsor, company owner, participants, scope, exclusions, and end date. Name the Principal's authority and the company's decision-maker. Define the time commitment, specialist budget, availability during deal peaks, and escalation path if resources change.
+Record the question, expected useful output, investor sponsor, company owner, participants, scope, exclusions, and end date. Name the adviser’s or specialist’s authority and the company’s decision-maker. Define the time commitment, specialist budget, availability during deal peaks, and escalation path if resources change.
 
 Specify information access and permitted recipients. Distinguish confidential coaching from work that feeds a governance report. Explain which material matters require escalation and through what process. Agree how the company can challenge, revise, or end the support.
 
@@ -100,7 +114,21 @@ Use for a first-100-days plan or later intervention. See [[pt-first-hundred-days
 | Review / stop / expand conditions | Observable evidence and authority to act on it |
 | Accepted obligations | Risks, customer commitments, and future costs remaining after completion |
 
-A portfolio of records must still fit total company capacity. Adding realistic estimates to each initiative does not make their sum feasible.
+A brief fictional example shows the level of detail to start with:
+
+| Field | Larkspur’s smaller onboarding pilot |
+| --- | --- |
+| Problem | Each new customer requires repeated manual setup before using the scheduling product. |
+| Proposed change | Test one reusable setup step with a comparable group of customers. |
+| Starting measurement | The teaching model assumes 100 implementations a year at 80 hours each. Confirm whether the actual customer records support that assumption. |
+| Intended result | Test whether effort falls toward 50 hours without increasing customer waiting, errors or support work. |
+| Funding to examine | The separate pilot example assumes €180,000 to build and €30,000 a year to maintain; approval still needs a funding source. |
+| Responsibility and review | Name one responsible company leader, agree the team’s capacity and set a review date before expanding. |
+| Financial limit | Fewer hours are capacity; count cash savings only when spending is actually reduced or avoided. |
+
+The example comes from [[pt-product-value]]. It is a smaller alternative to the earlier €1 million program, not additional spending already approved alongside it.
+
+A collection of records must still fit total company capacity. Adding realistic estimates to each initiative does not make their sum feasible.
 
 ## 6. Keep an Outcome and Contribution Ledger
 
@@ -112,7 +140,7 @@ Record the original baseline and its definition; the intervention and actual cos
 
 **Financial bridge:** Which line or cash flow changed? Is it gross or net of implementation and ongoing cost? Is it observed, annualized, projected, or realized? Which accounting definitions and currency are used? Has finance reconciled the claim? Have benefits already been counted elsewhere?
 
-**Causal assessment:** What comparison is available? What competing explanations remain? Is the claim attribution, qualified contribution, or simply an association? State confidence and what evidence would improve it.
+**Explanation of the result:** What comparison is available? What competing explanations remain? Does the evidence support saying the work caused the result, helped alongside other changes, or only happened at the same time? State confidence and what evidence would improve it.
 
 **Valuation implication, if used:** Show the assumptions separately, including earnings basis, multiple, financing, timing, and uncertainty. Do not add a speculative equity-value estimate to realized cost savings as if they were independent benefits.
 
@@ -166,7 +194,7 @@ Distinguish an exit announcement, closing, partial realization, and completed in
 
 The acceptance test is whether the next decision-maker can examine the business without relying on the previous owner's narrative. A useful handoff explains both what improved and what still requires judgment.
 
-## Valuation-to-Architecture Conversation
+## 11. Connect Valuation to Architecture
 
 Use this companion to the decision record when a financial target is driving a technology proposal. Start with [[pt-valuation-and-architecture]] for the underlying terms.
 
@@ -179,3 +207,23 @@ Use this companion to the decision record when a financial target is driving a t
 | Outcome and limits | What observable result justifies the work, what might offset it, and what triggers revision? |
 
 A valuation ratio is context for this conversation. It does not replace the customer, operating and technical evidence needed to choose the design.
+
+
+## 12. Compare Investment Choices and Capacity
+
+Use before approving a combination of projects. See [[pt-choosing-investments]]. This record complements the individual initiative record in Tool 5: each project can be feasible on its own while the combination is not.
+
+| Field | Record |
+| --- | --- |
+| Decision and period | The combination of work being chosen, the planning period and the person authorized to decide |
+| Required commitments | Existing customer, operating or other obligations, and the minimum result the company has agreed to provide |
+| Available money | Cash that can be committed after existing obligations; distinguish new funding from money paid to selling owners |
+| Available team capacity | People, skills and time available after current work; identify specialists shared across proposals |
+| Options | Expected result, evidence, cash, team time, dependencies, continuing cost and the consequence of delay for each option |
+| Combination proposed | Selected work, total cash and capacity, sequencing, work deferred or stopped and resources left uncommitted |
+| Uncertainty and first stages | What a smaller commitment can test, and what must remain workable if later work does not proceed |
+| Review decision | Evidence, date and authority for continuing, changing, expanding or stopping |
+
+Calculate cash and team time separately. Identify overlapping benefits and costs, as well as prerequisites that prevent projects from running in parallel. A resource estimate should say what is included; avoid adding existing payroll to a proposal a second time if the budget already contains it.
+
+Record the reason for the selected combination in ordinary language. A score can organize estimates, but the accountable decision-maker must still explain the trade-off and what evidence would change it.

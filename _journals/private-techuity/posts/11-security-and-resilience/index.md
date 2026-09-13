@@ -1,58 +1,60 @@
 ---
-title: Security Is an Investment Under Uncertainty, Not a Cost
+title: "How to Evaluate Security and Recovery Investments"
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Treat risk reduction as a governed investment under uncertainty, distinct from booked profit or an absence of incidents.
+excerpt: "Evaluate investments that protect essential work, reduce possible harm and help a company recover from disruption."
 permalink: pt-security-and-resilience
-timetoread: 5 min read
+timetoread: 7 min read
 status: draft:orange
 tags: private equity, technology leadership, Part III
 ---
 
 > **KEY POINTS:**
 >
-> * **Start with the business functions that must keep working.** Identify who would be affected by interruption, corruption or unauthorized access before choosing controls.
-> * **Risk estimates are uncertain decision inputs.** A modeled reduction in possible losses is not earnings, and a completed checklist is not proof of resilience.
-> * **Recovery needs practiced capability and clear ownership.** Fund response, test restoration and make responsibility for remaining risks explicit.
+> * **Start with the business functions that must keep working.** Identify who would be affected by lost service, damaged information or access by unauthorized people before choosing protections.
+> * **Risk estimates are uncertain decision inputs.** An estimate of lower future losses is not earned profit, and a completed checklist does not prove that service can survive disruption.
+> * **Practice restoring service before an emergency.** Fund the work and agree who is responsible for risks that remain.
 
 <br>
-Security is often asked to justify itself through a loss that has not occurred. That creates two temptations: invent a precise amount of “risk avoided,” or retreat into a checklist that says little about business exposure.
+**Cybersecurity** protects systems and information against threats such as unauthorized access, theft or damage. **Resilience** is the ability to continue or restore essential work through disruption. **Recovery** is the work of restoring service after something goes wrong.
+
+A company often has to fund these capabilities before suffering the loss they are intended to prevent. That creates two temptations: invent a precise amount of “risk avoided,” or retreat into a checklist that says little about business exposure.
 
 A better approach treats security and resilience as decisions under uncertainty. The company identifies material failure scenarios, the controls and response capabilities that matter, the investment required, and who accepts the remaining risk. Some obligations must be met regardless of a simplified financial model.
 
-Every other chapter in this part argues for work that produces a benefit. This one argues for work whose success looks like nothing happening — which is why it needs its own way of being valued, and why its number must never be added to earnings.
+The cloud chapter examined observed spending and service quality. Security also needs evidence, but part of its benefit is a lower chance or severity of future harm. We start with essential business functions, examine the evidence of protection and recovery, and then consider risk estimates and responsibility.
 
-NIST's Cybersecurity Framework 2.0, published in February 2024, organizes outcomes around Govern, Identify, Protect, Detect, Respond, and Recover. It explicitly avoids prescribing one implementation for every organization. [S17: NIST CSF 2.0](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) That makes it a useful reference for consistent questions while leaving room for company-specific answers.
+The US **National Institute of Standards and Technology (NIST)** provides Cybersecurity Framework 2.0. Published in February 2024, the framework groups security outcomes under six headings: Govern, Identify, Protect, Detect, Respond and Recover. It explicitly avoids prescribing one implementation for every organization. [S17: NIST CSF 2.0](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) That makes it a useful reference for consistent questions while leaving room for company-specific answers.
 
 ## Begin With What Must Keep Working
 
-Larkspur's customers are maintenance businesses that dispatch engineers each morning. If the scheduling service is unavailable at 6am, vans do not leave. That, not the CVE count, is where the security discussion starts: the business functions customers depend on, and the people affected when they fail. A retailer's equivalents are payments, inventory and fulfillment.
+Larkspur's customers are maintenance businesses that dispatch engineers each morning. If the scheduling service is unavailable at 6am, vans do not leave. The security discussion starts with that consequence: the business functions customers depend on, and the people affected when they fail. A retailer's equivalents are payments, inventory and fulfillment.
 
 For each critical function, ask what interruption, corruption, or unauthorized access would mean. How long can the business continue without it? Which customers face material harm? Which contracts, laws, or insurance conditions need specialist interpretation? What manual alternatives exist, and have they been tested?
 
 An asset inventory is useful when it supports those questions. An inventory that counts systems without identifying their role in critical work can create an impression of completeness while missing the most consequential dependency.
 
-## A Policy, a Config and a Test Are Different Proofs
+## Match Each Claim to the Evidence That Supports It
 
-A policy describes intended behavior. A configuration record describes a state at a point in time. A test shows what happened under particular conditions. An independent assessment can add another perspective but has a defined scope. None alone proves that the company will withstand every incident.
+A policy describes intended behavior. A **configuration record** shows how a system was set up at a point in time. A test shows what happened under particular conditions. An independent assessment can add another perspective but has a defined scope. None alone proves that the company will withstand every incident.
 
-Larkspur's diligence found that backups had run without error for three years, and that no one had attempted a full restore in that time. When the team tried, it took eleven hours and stopped twice: a credential no current employee held, and a database version no longer available. Backups running is evidence about backups. Restoring the service is evidence about the business. Test the operating outcome, not the presence of a control.
+A **backup** is a stored copy of data used to recover from loss or damage. A **restore** puts that data back into use. In this fictional scenario, the investigation before investing in Larkspur found that backups had run without error for three years. No one had attempted a full restore in that time. When the team tried, it took eleven hours and stopped twice. The first obstacle was a missing **credential**, information needed to prove someone may access a system. The second was an unavailable version of the database software that organizes and stores the application’s data. Backups running is evidence about backups. Restoring the service is evidence about the business. Test the operating outcome, not the presence of a control.
 
-A certification deserves the same reading — for entity, system, period and exclusions. A certificate says one system passed one set of tests on one date. It is not a statement about the whole company today.
+A **certification** is a formal statement that specified requirements have been met under a particular assessment process. Read which organization, systems, requirements and period it covers. It is not a guarantee that every part of the company is secure today.
 
 ## Put a Number on Risk Without Faking a Profit
 
-Suppose a prolonged Larkspur outage would cost €4 million in contractual credits, remediation and lost customers, and the team estimates a 5% annual chance of one. The expected loss is €200,000 a year. A proposed control is estimated to cut the probability to 2%, leaving €80,000 — a €120,000 difference, before what the control costs.
+Suppose a prolonged Larkspur outage would cost €4 million in contractual credits, remediation and lost customers, and the team estimates a 5% annual chance of one. The **expected annual loss** is the probability multiplied by the assumed loss: 5% × €4 million = €200,000. It is an average implied by the assumptions, not a prediction that the company loses that amount each year. A proposed control is estimated to cut the probability to 2%, leaving €80,000 — a €120,000 difference, before what the control costs.
 
-The method is only as good as the two guesses inside it. If the probabilities are weak, so is the answer; state them as ranges and say what evidence would narrow them. And expected value is the wrong rule where losses are correlated or a severe event would end the company: **a 2% chance of not surviving is not made acceptable by an affordable-looking average.**
+The method is only as good as the two guesses inside it. If the probabilities are weak, so is the answer; state them as ranges and say what evidence would narrow them. The average alone is also insufficient when one event could cause several failures together or threaten the company’s survival: **a 2% chance of not surviving is not made acceptable by an affordable-looking average.**
 
-State which scenarios the control addresses and which remain. Above all, do not add the €120,000 to realized EBITDA. It is a modelled change in risk exposure, not a booked operating gain.
+State which scenarios the control addresses and which remain. Above all, do not add the €120,000 to recorded operating earnings. It is a modelled change in risk exposure, not a booked operating gain.
 
 ## Security Work Needs an Owner and Funding
 
-A diligence finding such as “identity controls are inadequate” is incomplete. Which systems and people are exposed? What is the material scenario? What action is feasible before closing, and what needs post-close implementation? Who has authority and capacity to carry it out?
+An investigation finding such as “identity controls are inadequate” is incomplete. **Identity controls** determine how users prove who they are and what they may access. Which systems and people are exposed? What is the material scenario? What action is feasible before closing, and what needs post-close implementation? Who has authority and capacity to carry it out?
 
-The Principal can help obtain specialist judgment and communicate the implication to the investment team. The company needs accountable operating owners. The board needs to understand material residual risk. A consultant's recommendation does not transfer responsibility for the business to the consultant.
+The Principal can help obtain specialist judgment and communicate the implication to the investment team. The company needs accountable operating owners. The board needs to understand **residual risk**, the risk remaining after the chosen protections, and whether it is large enough to affect a company decision. A consultant's recommendation does not transfer responsibility for the business to the consultant.
 
 Some findings may affect transaction conditions, price, insurance, or whether the deal proceeds. Others may be appropriately accepted with an action plan. The distinction should follow materiality and evidence, not the desire to keep all findings the same color.
 
@@ -66,12 +68,12 @@ Legal notification deadlines, sector requirements, and contractual duties vary a
 
 ## Shared Support Can Spread Risk or Concentrate It
 
-A shared specialist network and tested response process can give small companies access to scarce expertise. A common identity provider, administrator, or integration mechanism can also create a shared dependency. The support design should examine the new concentration it introduces.
+A shared specialist network and tested response process can give small companies access to scarce expertise. Relying on the same user-login service, system administrator or connection between systems can also give several companies a common point of failure. The support design should examine the new concentration it introduces.
 
-Portfolio-level visibility does not require unrestricted access to customer data. Aggregate risk information, scoped evidence, and company-approved disclosures can support oversight. Raw production access should have a specific purpose and an explicit boundary.
+Portfolio-level visibility does not require unrestricted access to customer data. Aggregate risk information, scoped evidence, and company-approved disclosures can support oversight. Access to live company systems should have a specific purpose and an explicit boundary.
 
-Exit preparation should preserve the same discipline. Describe improvements with dates and test evidence. Disclose material unresolved issues through the appropriate process. An orderly data room is helpful; it is not equivalent to a resilient product.
+Exit preparation should preserve the same discipline. Describe improvements with dates and test evidence. Disclose material unresolved issues through the appropriate process. An orderly **data room**, a controlled collection of documents shared with a prospective buyer, is helpful; it is not equivalent to a resilient product.
 
-The outcome worth funding is a company that notices failures, responds to them, and keeps serving customers inside limits it has actually tested. That is worth real money. It still should not be written into the earnings as if it were profit.
+A sound proposal connects a harmful scenario to a protection or recovery capability, its cost and evidence that it works. The company also needs someone authorized to accept the remaining risk. A modeled reduction in future losses helps that decision; it is not a booked profit.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+The next chapter applies careful evaluation to another uncertain area: the benefits, costs and competitive effects of artificial intelligence. Continue with [[pt-data-and-ai]].

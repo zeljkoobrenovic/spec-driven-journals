@@ -2,30 +2,46 @@
 title: Decide Who Decides, Before You Disagree
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Explain decision rights, boards, investment and operating teams, escalation, and constructive challenge.
+excerpt: "Clarify who proposes, approves, funds and carries out decisions when the company and its owner work together."
 permalink: pt-governance
-timetoread: 6 min read
+timetoread: 8 min read
 status: draft:orange
 tags: private equity, technology leadership, Part II
 ---
 
 > **KEY POINTS:**
 >
-> * **Make decision authority explicit before disagreement.** A suggestion from someone close to the owner can be heard as an instruction even when no authority was delegated.
-> * **Support needs an accountable company counterpart.** Define who proposes, decides, funds and delivers an intervention, and where unresolved conflicts go.
-> * **Reporting should improve decisions.** Use consistent evidence to expose trade-offs and changing assumptions rather than create a parallel management hierarchy.
+> * **Agree who may decide before disagreement arises.** A suggestion from someone close to the owner can sound like an instruction.
+> * **Make changed expectations reviewable.** Agree who proposes, approves, funds and carries out the work, and how results will be assessed.
+> * **Use reporting to resolve choices.** A report should explain what changed, why it matters and which decision is needed.
 
 <br>
-A Technology Principal — a technology leader working for the investment firm, the owner, rather than for the company — tells a CTO that the company should move to a different cloud provider. The CTO hears an instruction from the owner. The Principal believes it was a suggestion. The CEO finds out after an engineering team has started planning the migration.
+An adviser from the investment firm suggests changing the company’s cloud provider, the supplier of its rented computing services. The technology leader hears an instruction from the owner and begins planning. The adviser thought they were only offering an idea.
 
-Nobody needed bad intentions for that to go wrong. Influence was exercised without anyone making the decision process explicit, and ownership amplifies the ambiguity: a remark from someone close to the investment partner carries more weight than their job title suggests. **Governance** is simply the arrangement that settles this in advance — who decides, who oversees, who is accountable.
+This is a problem of **governance**: the arrangements for making decisions, overseeing them and holding people responsible. Good intentions cannot replace an agreed decision process.
 
-Part I followed the money. Part II follows the authority, and this chapter comes first because every later disagreement — about incentives, about a rewrite, about a cost target — assumes somebody knows who is entitled to settle it. What follows is an operating design, not a statement of directors' legal duties in any particular jurisdiction.
+Part I followed the money. This chapter begins Part II by examining what investment can change about your authority and accountability. We first identify the changes, then establish who decides and how you can influence the plan through evidence and workable alternatives.
 
+The examples return to the fictional software company Larkspur. Ines is its chief executive officer (**CEO**), Alex its chief technology officer (**CTO**), and Sam its chief financial officer (**CFO**). Morgan is the **Technology Principal**, a technology adviser working for the investment firm. Their titles describe their work; their actual approval rights need to be agreed.
 
-## Each Forum Decides Something Different
+## Establish What Has Changed
 
-The investment team develops and evaluates the investment case. A fund's investment committee makes investment decisions within its mandate. Operating professionals can contribute expertise and help companies execute. The company's board oversees matters within its authority, while executives lead the business. Lenders can have contractual rights that affect what any of these actors can do.
+**Authority** means permission to make a particular decision. New ownership can change it directly through agreed rights, or change how people expect you to exercise it. Compare the arrangements before and after the investment using actual company documents and conversations with the responsible leaders.
+
+| Area | What to establish |
+| --- | --- |
+| Ownership | Who now holds an interest, and which rights come with it? |
+| Priorities | Which customer, financial or operating outcomes are now expected, and why? |
+| Approval | Which hiring, spending, product or transaction decisions need approval, from whom and when? |
+| Accountability | Who owns each result, what resources have been committed and how will progress be assessed? |
+
+An investment does not automatically change every entry. Recording what stayed the same is useful when employees are unsure whether earlier authority still applies. If you inherited the ownership arrangement, begin with the decisions ahead rather than assuming you participated in agreeing the original terms.
+
+You can also influence the expectations. Explain which commitments can coexist, which compete for the same resources and what would need to change. The purpose is to reach an accountable decision before the team treats an aspiration as an approved plan.
+
+## Identify the Different Decision-Makers
+
+The investment team develops and evaluates the investment case. A fund’s **investment committee** is the body authorized to approve investments within its **mandate**, the scope of work and decisions assigned to it. Operating professionals can contribute expertise and help companies execute. The company's board oversees matters within its authority, while executives lead the business. Lenders can have contractual rights that affect what any of these actors can do.
 
 The survey of private equity investors by Gompers and colleagues documents attention to governance, financing, and value creation; it does not establish a uniform organization chart. [S04: PE practitioner survey](https://www.nber.org/papers/w21133) KKR's public description of Capstone, its in-house operating-support team, similarly places operating support in collaboration with investment teams, boards, and company management. This establishes a stated delivery model, not proof that every intervention succeeds. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone)
 
@@ -37,26 +53,28 @@ The following is a proposed pattern to adapt to actual company documents. It is 
 
 | Decision | Company contribution | Principal's possible contribution | Approval to verify |
 | --- | --- | --- | --- |
-| Product priorities within an agreed budget | Product leader and CTO recommend; CEO resolves major trade-offs | Challenge assumptions and supply evidence | Executive delegation and any reserved matters (decisions the shareholder must approve) |
+| Product priorities within an agreed budget | Product leader and CTO recommend; CEO resolves major trade-offs | Challenge assumptions and supply evidence | Executive delegation and any reserved matters (decisions requiring approval from a specified party) |
 | Material technology investment | Management prepares options and financial case | Test technical feasibility and delivery dependencies | Board, shareholder, or financing approvals where required |
 | CTO appointment | CEO defines need and process | Help assess candidates and context | Actual appointment authority |
 | Cyber incident response | Designated incident leaders act under the response plan | Provide specialist access and ownership context | Emergency and disclosure protocols |
 | Acquisition integration | Executives own the company integration plan | Assess sequencing, capacity, and reusable support | Transaction and operating governance |
 
-That pattern is still generic. Filled in for Larkspur, the onboarding-automation decision looks like this:
+That pattern is still generic. Filled in for Larkspur, a proposal to automate **onboarding**, the setup needed before a customer can use the product, looks like this:
 
 | | Larkspur's actual answer |
 | --- | --- |
 | Decision | Spend €1 million automating customer onboarding |
-| Who recommends | Priya, VP Product, with Alex, the CTO |
+| Who recommends | Priya, the product leader, with Alex, the CTO |
 | Who resolves trade-offs | Ines, the CEO |
 | Principal's contribution | Test whether the 80-hour implementation figure holds across customer types; supply comparable onboarding patterns |
-| Whose approval is needed | Board, because the amount exceeds the CEO's €500,000 delegation |
+| Whose approval is needed | Board, because the amount exceeds the €500,000 the board has authorized the CEO to approve |
 | Response time | Two weeks — the budget cycle closes at month end |
+
+This is the €1 million program discussed in [[pt-cash-and-constraints]], not an approved commitment to spend it. The board still needs a feasible funding plan.
 
 Names and thresholds make the record usable. "Management recommends, the board approves" tells Alex nothing about whom to call on a Tuesday, or by when.
 
-A useful record therefore names a response time. An escalation route that takes six weeks is inadequate for a financing deadline or service failure. Treating every architectural disagreement as an emergency has the opposite failure: it prevents company leadership from exercising judgment.
+A useful record also names a response time. **Escalation** means taking an unresolved issue to someone authorized to decide it. An escalation route that takes six weeks is inadequate for a financing deadline or service failure. Treating every architectural disagreement as an emergency has the opposite failure: it prevents company leadership from exercising judgment.
 
 ## Challenge the Outcome, Not the Design
 
@@ -70,9 +88,9 @@ The same discipline applies in reverse. “Cut engineering by 20%” is not a co
 
 ## Support Can Become a Shadow Hierarchy
 
-Direct access to engineers can be useful during diligence or a bounded intervention. It can become destructive when portfolio staff receive competing priorities from the Principal, the CTO, and the investment team. A parallel reporting line then exists without an explicit mandate or accountability.
+Direct access to engineers can help during **due diligence**, the investigation before an investment, or during a clearly scoped support assignment. It can become destructive when portfolio staff receive competing priorities from the Principal, the CTO, and the investment team. A parallel reporting line then exists without an explicit mandate or accountability.
 
-An engagement charter can prevent this. It states the problem, company sponsor, working team, information access, deliverable, duration, and handback. It identifies whether the Principal is advising, facilitating, temporarily delivering, or formally acting in an executive role. If the role changes, the charter changes.
+An **engagement charter** is a short agreement for a support assignment. Its governance purpose is to make the company owner, the adviser’s role and the decision boundaries explicit. If the role changes, revisit the agreement. Part IV develops the practical scope, resources and handover in [[pt-making-support-work]].
 
 Hands-on work is not the same as taking over. A Principal might help diagnose a release failure with engineers, then return the improvement plan to the engineering leader. The test is whether company capability strengthens and responsibility remains understandable after the intervention ends.
 
@@ -80,9 +98,9 @@ Hands-on work is not the same as taking over. A Principal might help diagnose a 
 
 A board report should connect material outcomes, interpretation, and decisions needed. A traffic-light dashboard without an evidence trail can conceal more than it reveals. “Green” might mean on time, within budget, lower risk, or simply no one has escalated a problem.
 
-For a customer onboarding initiative, a compact report might show implementation time by cohort, the engineering effort per customer, contract-to-cash timing, the cost of the intervention, and an unresolved dependency. The narrative should explain whether observed changes are consistent with the hypothesis and what management wants to do next.
+For a customer onboarding initiative, a compact report might show implementation time by **cohort**, a defined group of comparable customers tracked over time, the engineering effort per customer, time from signing the contract to receiving the customer’s payment, the cost of the intervention, and an unresolved dependency. The narrative should explain whether observed changes are consistent with the hypothesis and what management wants to do next.
 
-Keep reporting effort visible. Requiring every company to produce the same large monthly questionnaire can consume the capacity the owner wants to improve. Standard definitions can be valuable; the amount and cadence of reporting should still reflect materiality and available systems.
+Keep reporting effort visible. Requiring every company to produce the same large monthly questionnaire can consume the capacity the owner wants to improve. Standard definitions can be valuable; the amount and frequency of reporting should match the importance of the decisions and the information the company can reasonably produce.
 
 ## Disagreement Without Evasion
 
@@ -90,6 +108,6 @@ A leader should be able to say: “We can deliver the cost target, but not the c
 
 The difficult boundary is confidentiality. Coaching cannot carry an unlimited promise of secrecy if a material issue requires escalation under the engagement's obligations. Agree those boundaries early. Explain what information will be shared, with whom, and why; do not turn routine coaching into an undisclosed assessment channel.
 
-Good governance is not the absence of disagreement. It is disagreement that reaches a decision someone is accountable for, fast enough to matter. It fails when nobody will say who decides, when bad news is slowed down, and when executives are held to choices someone else made. The incentives behind those behaviors are examined in [[pt-incentives]]; the Principal's operating charter in [[pt-technology-principal]].
+A useful governance arrangement lets disagreement reach an accountable decision in time to act. The record should make clear who decided, which options were considered and what consequences were accepted.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+Authority explains who can decide. The next chapter examines **incentives**, the rewards and consequences that influence what people choose: [[pt-incentives]].

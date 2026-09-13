@@ -3,7 +3,7 @@ title: Bibliography and Evidence Guide
 date: 2026-09-12
 permalink: pt-bibliography
 status: draft:orange
-excerpt: Consulted sources, publication dates, evidence types, and limits.
+excerpt: "Find the sources, understand what kind of evidence each provides and see the limits of what was consulted."
 ---
 
 > **KEY POINTS:**
@@ -13,9 +13,19 @@ excerpt: Consulted sources, publication dates, evidence types, and limits.
 > * **Keep facts, interpretation and examples distinct.** Follow the nearby chapter citations and use the consultation notes to identify what still needs verification.
 
 <br>
-This bibliography contains sources actually consulted for the manuscript and its revisions. **Access date: September 12, 2026.** Publication dates and study periods differ. The consultation notes identify partial access, interested perspectives, and version choices; listing a long document does not imply that every page was reviewed.
+This bibliography contains sources actually consulted for the manuscript and its revisions. **The original source review was on September 12, 2026; the beginner-reading revision added S54–S57 on September 13, 2026. The structural revision also rechecked S01 and S22 on that date for the ownership framing and investor-support chapters.** Publication dates and study periods differ. The consultation notes identify partial access, interested perspectives, and version choices; listing a long document does not imply that every page was reviewed.
 
 Source identifiers remain stable through revisions. Private inputs are identified separately without publishing their contents or confidential file details. The manuscript’s templates and fictional calculations are its own proposed tools, not validated standards.
+
+## How to Read an Entry
+
+The code in a citation identifies its source: **S** marks a public source, and **P** a supplied private input. The numbers are identifiers, not a ranking of quality or a reading order.
+
+**Evidence type** tells you what kind of source it is. A company filing records reported information under a formal disclosure process. A company or investor account also describes its own actions and may favor its own interpretation. A research study investigates a question using a stated method. A guidance document recommends or explains a practice; it does not demonstrate that every company follows it.
+
+**Consulted scope** states what the manuscript’s research actually examined. It can be an entire short page, selected pages or only an abstract, the short summary at the start of a research paper. A link to a long report does not imply every page was reviewed. **DOI** is a persistent identifier used for many research publications.
+
+For a first reading, follow the citations attached to the chapter you are studying. Return here when you need the source’s date, scope or limitations. Technical vocabulary is explained in [[pt-glossary]].
 
 ## Public evidence
 
@@ -23,7 +33,7 @@ Source identifiers remain stable through revisions. Private inputs are identifie
 
 U.S. Securities and Exchange Commission, Investor.gov. [Private Equity Funds](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity). Undated; accessed 2026-09-12.
 
-**Evidence type:** Regulator education. **Consulted scope:** Guide consulted for fund structure, investment forms, illiquidity, and investor considerations. An introduction, not a particular fund agreement.
+**Evidence type:** Regulator education. **Consulted scope:** Guide consulted for fund structure, investment forms, illiquidity, and investor considerations. An introduction, not a particular fund agreement. Rechecked 2026-09-13 for the distinction between controlling and minority investment strategies.
 
 ### S02 — ILPA principles
 
@@ -149,7 +159,7 @@ Joel Becker, Nate Rush, Tom Cunningham, David Rein, and Khalid Mahamud; METR. [W
 
 KKR. [Capstone](https://www.kkr.com/approach/capstone). Undated capability page; accessed September 12, 2026.
 
-**Evidence type:** Interested practitioner account. **Consulted scope:** Operating-support description consulted. Evidence of a stated offering and collaboration model; no causal attribution of returns or universal role charter.
+**Evidence type:** Interested practitioner account. **Consulted scope:** Operating-support description consulted. Evidence of a stated offering and collaboration model; no causal attribution of returns or universal role charter. Rechecked 2026-09-13 for the new investor-support chapter: management collaboration, specialist and partner networks, technology, growth and people support.
 
 ### S23 — Hilton registration filing
 
@@ -330,6 +340,30 @@ International Private Equity and Venture Capital Valuation Board (IPEV). [Intern
 Aswath Damodaran, NYU Stern School of Business. [Growth companies—Value Drivers, The Little Book of Valuation companion material](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/littlebook/growthvaluedrivers.htm). Undated teaching page; accessed September 12, 2026.
 
 **Evidence type:** Original author teaching material. **Consulted scope:** Full short page consulted on scalable revenue growth, sustainable margins and reinvestment. Used for the economic relationship, not as an empirical causal study of software architecture or a current market benchmark. Related growth pages were discovery leads, not additional cited publications.
+
+### S54 — Investor.gov stock basics
+
+U.S. Securities and Exchange Commission, Investor.gov. [Stocks: FAQs](https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks). Undated educational page; accessed September 13, 2026.
+
+**Evidence type:** Regulator education. **Consulted scope:** Ownership, reasons for issuing shares, dividends and differences between common and preferred shares. Used for introductory definitions, not particular shareholder agreements.
+
+### S55 — Investor.gov public-company reporting
+
+U.S. Securities and Exchange Commission, Investor.gov. [Public Companies](https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/public-companies). Undated educational page; accessed September 13, 2026.
+
+**Evidence type:** Regulator education. **Consulted scope:** Different meanings of public company, public-reporting obligations and annual versus quarterly reports. US context; not a universal reporting schedule for every jurisdiction.
+
+### S56 — SBA grant overview
+
+U.S. Small Business Administration. [Grants](https://www.sba.gov/loans/additional-funding-opportunities/grants/). Living page; accessed September 13, 2026.
+
+**Evidence type:** Government program information. **Consulted scope:** Overview and research-and-development grant section. Establishes that eligible grants are another possible funding source; the book does not assess an individual company’s eligibility or promise general startup funding.
+
+### S57 — Damodaran on capital structure
+
+Aswath Damodaran, NYU Stern School of Business. [Finding the Right Financing Mix: The Capital Structure Decision](https://people.stern.nyu.edu/adamodar/pdfiles/cf2E/capstru.pdf). Undated teaching slides; accessed September 13, 2026.
+
+**Evidence type:** Original author teaching material. **Consulted scope:** Introductory financing-choice and debt/equity-mix slides, especially slides 2–8. Used for the capital-structure definition, not historical tax examples, a mandatory company lifecycle or current financing recommendations.
 
 ## Supplied private inputs
 

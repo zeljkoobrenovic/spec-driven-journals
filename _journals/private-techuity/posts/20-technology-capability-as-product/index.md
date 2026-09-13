@@ -2,11 +2,11 @@
 title: Build Reusable Support Around Recurring Decisions
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Develop a testable capability model with service boundaries, adoption, outcomes, costs, authority, learning, and retirement criteria.
+excerpt: "Design reusable technology support around recurring company decisions, then assess its use, cost and results."
 permalink: pt-technology-capability-as-product
-timetoread: 6 min read
+timetoread: 7 min read
 status: draft:orange
-tags: private equity, technology leadership, Part V
+tags: "private equity, product thinking, appendix"
 ---
 
 > **KEY POINTS:**
@@ -16,11 +16,13 @@ tags: private equity, technology leadership, Part V
 > * **Measure adoption and outcomes separately.** Usage does not establish benefit, and improved company results do not isolate the contribution of the support service.
 
 <br>
+This is **Appendix A2**, addressed to readers designing reusable technology-support services. It develops the hypothesis introduced in [[pt-investment-firm-as-product]]; company leaders can use Part IV without adopting this model.
+
 A firm can have excellent technical people and still provide inconsistent technology support. Different deals may receive different questions. Findings from the pre-investment investigation may be lost after the transaction completes. Portfolio leaders may not know what help is available. Lessons may remain in one person's memory.
 
-The Productscapes hypothesis proposes a **Technology Value Creation Platform** to address this problem: a repeatable operating capability delivered through people, decision artifacts, specialist access, and supporting tools. It proposes the Technology Principal as its product leader. These are design hypotheses, not descriptions of an implemented firm-wide system. [P02: Productscapes hypothesis](pt-bibliography.html)
+**Productscapes** is the author’s proposal for designing investment and technology-support offerings around the needs of their users. It proposes a **Technology Value Creation Platform**: a repeatable support service made up of people, decision records, specialist access and useful tools. “Platform” here means an operating capability, rather than necessarily a software application. It proposes the Technology Principal as its product leader. These are design hypotheses, not descriptions of an implemented firm-wide system. [P02: Productscapes hypothesis](pt-bibliography.html)
 
-[[pt-investment-firm-as-product]] applied product thinking to the firm's whole offering. This chapter narrows to the part a technology leader could actually build, and insists on the discipline that makes the idea falsifiable: small services, honest measures of whether they helped, and a willingness to retire them.
+[[pt-investment-firm-as-product]] applied product thinking to the firm's whole offering. This chapter narrows to the part a technology leader could actually build, and identifies how it can be tested: small services, honest measures of whether they helped, and a willingness to retire them.
 
 The value of the idea lies in making the support offering understandable, accountable, and capable of learning. Its risk lies in building a catalogue and infrastructure before establishing that companies need the services.
 
@@ -45,9 +47,17 @@ The input's principle, **standardize the questions, not the answers**, is useful
 
 These areas overlap through ownership. Learning does not wait until acceleration is complete. Exit evidence starts when decisions and baselines are recorded. The table is a service architecture, not a mandatory six-stage workflow for every company.
 
+## Plan the Support Team’s Capacity
+
+A reusable support service still needs people with time to deliver it. One adviser cannot be deeply involved in every investment investigation and every company initiative at once. Prioritization belongs in the service design.
+
+In a fictional month, an adviser has 20 working days. A live investment investigation needs six, two company assignments need eight, portfolio reviews need three, and learning and preparation need three. The allocation uses all 20 days. A new ten-day integration assignment requires changed priorities, additional help or a different scope.
+
+Make that capacity visible when companies request help. A service catalogue should describe the people, availability and escalation process behind each offer. Evaluate which work needs the adviser personally and which could be delivered by a specialist or handled by the company itself.
+
 ## Make an Accelerator Small Enough to Use
 
-The Productscapes hypothesis suggests reusable accelerators for areas including AI, engineering effectiveness, leadership, cloud economics, nearshoring, integration, security, and exit readiness. A useful initial version contains a diagnostic, a relevant comparison where available, a decision framework, possible actions, and a way to review the outcome.
+The hypothesis suggests reusable support for areas including artificial intelligence, engineering effectiveness, leadership, cloud costs, teams in other countries, acquisitions, security and sale preparation. An **accelerator** is the proposal’s name for a reusable support package. It might contain questions to diagnose a problem, an appropriate comparison, a way to choose between options, practical actions and a review of the result. The name does not establish that it saves time.
 
 Take cloud economics. The accelerator might help a CTO and CFO define a service unit, reconcile cost, identify one opportunity, and decide whether to implement it. It does not need a large portal or a universal target percentage. If no comparable benchmark exists, it should say so.
 
@@ -65,7 +75,7 @@ A low participation rate may mean the service is poor, unavailable, badly timed,
 
 ## Outcomes and Contribution Need Different Measures
 
-The input separates adoption, company outcomes, and enterprise-value contribution. Preserve that separation. A CTO asking for help is adoption. Lower onboarding effort is an operational outcome. An economic contribution claim requires a further explanation of costs, use of freed capacity, competing causes, and financial treatment.
+The proposal separates **adoption**, use of the support, from company outcomes and any claimed effect on business value. Preserve that separation. A CTO asking for help is adoption. Lower onboarding effort is an operational outcome. An economic contribution claim requires a further explanation of costs, use of freed capacity, competing causes, and financial treatment.
 
 A support scorecard can record the problem, service cost, company effort, decision changed, outcome evidence, confidence, and next review. It should not translate every intervention into a speculative valuation uplift. The valuation bridge in [[pt-return-mechanics]] explains why that final step is especially uncertain.
 
@@ -75,7 +85,7 @@ Evidence from Visma and KKR shows that firms and groups can describe shared capa
 
 A portfolio can offer repeated observations, but usually not a clean experiment. Companies differ in market, scale, pricing, acquisition history, and accounting. Firms also select which businesses to buy and which interventions to attempt. These selection effects complicate causal claims.
 
-Preserve definitions and context. Use small cohorts to generate questions rather than rankings. Distinguish a case observation from a validated benchmark. Share only evidence for which the appropriate company and recipient permissions exist.
+Preserve definitions and context. Use small groups of comparable companies to generate questions rather than rankings. Distinguish a case observation from a validated benchmark. Share only evidence for which the appropriate company and recipient permissions exist.
 
 A database is justified when repeated decisions need it and simpler records no longer suffice. Before then, a small set of well-maintained decision and outcome records may be the better product. Building technical infrastructure too early can divert capacity from the service the infrastructure is meant to support.
 
@@ -85,6 +95,6 @@ Begin with one or two recurring decisions and a small number of willing company 
 
 Expand only when there is evidence of useful outcomes and sustainable delivery capacity. A Principal should be able to say that a proposed accelerator was retired because it did not help. That is a product-learning outcome, not an admission that the entire concept failed.
 
-The strongest version of Productscapes is small: a few services that people choose to use, with an honest account of whether they helped. The weakest version is a diagram of everything the firm could offer. Being able to retire an accelerator that did not work is the clearest evidence the discipline is real.
+Begin with a service that addresses a recurring decision and record whether it helps after the company’s effort and the provider’s cost are included. Expand, revise or retire it using that evidence. This gives the proposed model a practical test.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+This appendix extends the main book with a proposed design for the provider’s side of investor support. Test it through actual use and revise it when the evidence changes. The following [[pt-toolkit]] collects practical records for both company decisions and support engagements.

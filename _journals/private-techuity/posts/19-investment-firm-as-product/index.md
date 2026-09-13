@@ -2,23 +2,25 @@
 title: "An Investment Partnership as a Product: A Hypothesis"
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Develop the Productscapes hypothesis across customers, users, payers, legal vehicles, and affected stakeholders; examine its limits.
+excerpt: "Explore a proposed way to design investment partnerships around the needs of the people using and affected by them."
 permalink: pt-investment-firm-as-product
 timetoread: 6 min read
 status: draft:orange
-tags: private equity, technology leadership, Part V
+tags: "private equity, product thinking, appendix"
 ---
 
 > **KEY POINTS:**
 >
 > * **Product thinking can clarify what an investment firm offers.** Map needs, capabilities and feedback while distinguishing investors, company leaders and the users of internal tools.
 > * **The analogy must preserve power and economic boundaries.** An owner-associated service is not necessarily voluntary, and the firm’s success does not settle stakeholder outcomes.
-> * **Treat Productscapes as a hypothesis to test.** Look for better decisions at an acceptable cost, including declined and unsuccessful uses of the proposed model.
+> * **Treat the proposed approach as an idea to test.** Look for better decisions at an acceptable cost, including declined and unsuccessful uses of the proposed model.
 
 <br>
+This is **Appendix A1**, addressed to readers designing an investment firm’s offering. The company-side guide to finding and using support is in [[pt-investor-support]] and [[pt-making-support-work]].
+
 Product thinking asks who needs something, what progress they seek, how value is delivered, and how the offering improves through feedback. Those questions can illuminate private equity. They can also conceal its most important conflicts if everyone is casually called a customer.
 
-Parts I to IV described how ownership works and how a Principal operates inside it. Part V asks a different kind of question: could that support be designed deliberately rather than improvised per deal? It is the most speculative part of the book, and it is labelled as such — a hypothesis with tests, not a finding.
+The main narrative examined how company leaders work with investment and investor support. This appendix asks how the firm providing that support could design and improve its offering. The model is a hypothesis with tests; its usefulness still needs evidence from actual use.
 
 **Productscapes** is this book's name for the author's own hypothesis: that an investment partnership can be treated as a product — a repeatable combination of capital, ownership work, expertise and eventual realization. The name and the model are the author's, not established industry practice. This chapter develops it as an analytical tool, not as evidence that a firm is literally a software product or that the model works in practice. [P02: Productscapes hypothesis](pt-bibliography.html)
 
@@ -31,6 +33,8 @@ Those relationships share capabilities but have different contracts, economics, 
 This separation is the hypothesis's strongest feature. It prevents portfolio-company revenue from becoming manager revenue in the model and prevents a valuation from becoming cash returned to investors.
 
 ## Customer, User, Payer and Stakeholder Are Not the Same
+
+A **customer** receives an offering under a commercial relationship. A **user** works with it. A **payer** supplies the money. A **stakeholder** is someone affected by the arrangement, whether or not they choose or pay for it. One person can occupy several roles, but each role raises a different question.
 
 | Participant | Relationship to the offering | Why the distinction matters |
 | --- | --- | --- |
@@ -63,13 +67,13 @@ The model therefore needs tests at the relationship level: does the proposed cha
 
 ## Where the Analogy Becomes Misleading
 
-A fund's mandate and contractual duties cannot be reprioritized like a feature backlog. A portfolio company's legal identity and leadership responsibilities do not disappear inside a product hierarchy. An investment committee has to exercise judgment rather than optimize a user-satisfaction score.
+A fund’s **mandate**, its agreed investment scope, and contractual duties cannot be changed as freely as a list of proposed product features. A portfolio company's legal identity and leadership responsibilities do not disappear inside a product hierarchy. An investment committee has to exercise judgment rather than optimize a user-satisfaction score.
 
 The analogy also struggles with long feedback cycles. A company can look successful before exit, a fund can show attractive unrealized values, and an operating change can have consequences years later. Early adoption signals cannot substitute for eventual outcomes.
 
 Power is another limit. A CTO may praise support because criticism feels costly. A founder may accept a transaction because the alternatives are weak. Product research should examine the conditions under which feedback is given, including whether participants can decline, exit, or disagree.
 
-Finally, an attractive LP proposition can coexist with poor outcomes for people who do not participate in its upside. Product-market fit for the manager is not proof of social value. The durable-success test must remain broader than the product's paying customer.
+Finally, an attractive LP proposition can coexist with poor outcomes for people who do not participate in its upside. An offering that attracts paying investors has not, for that reason alone, demonstrated benefits for everyone affected by its investments. The durable-success test must remain broader than the product's paying customer.
 
 ## How to Test the Hypothesis
 
@@ -79,6 +83,6 @@ Compare with a plausible alternative: a simpler operating review, an external ad
 
 The hypothesis is supported when the model repeatedly helps people make better decisions and deliver useful outcomes at an acceptable cost. It should be revised if it creates bureaucracy, obscures authority, or produces attractive maps without changing the work.
 
-Product thinking helps here only while it keeps saying who owes what to whom, who can say no, and what would prove the model wrong. Drop any of the three and it becomes a diagram that flatters the firm. The next chapter applies the same discipline to technology support itself.
+Use the model to improve a specific relationship or decision. Keep obligations, participants’ ability to disagree and the costs of the service visible. Its usefulness depends on evidence that the work improves, rather than the completeness of the map.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+The next chapter turns this broad proposal into a smaller one that can be tried: reusable technology-support services built around recurring decisions. Continue with [[pt-technology-capability-as-product]].

@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,17 +13,17 @@
   "status": "pending",
   "asset": "assets/images/16-diligence-and-thesis/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Morgan opens diligence with the investment thesis in view. Use one speech bubble with the exact words: \"What must be true?\" Convey: The thesis should determine the important evidence questions.",
-  "alt": "Comic panel: morgan opens diligence with the investment thesis in view.",
-  "caption": "The thesis should determine the important evidence questions."
+  "prompt": "Panel 1 of an explainer comic. Alex and Sam ask Morgan which company capabilities the proposed investment depends on. Use one speech bubble with the exact words: \"What are we being asked to support?\" Convey: Due diligence investigates a company before an investment. Company leaders can help make the assumptions explicit and test them against actual work.",
+  "alt": "Comic panel: Alex and Sam ask Morgan which company capabilities the proposed investment depends on.",
+  "caption": "Due diligence investigates a company before an investment. Company leaders can help make the assumptions explicit and test them against actual work."
 }
 -->
 
-**Panel 1:** The thesis should determine the important evidence questions.
+**Panel 1:** Due diligence investigates a company before an investment. Company leaders can help make the assumptions explicit and test them against actual work.
 
-*Scene:* Morgan opens diligence with the investment thesis in view.
+*Scene:* Alex and Sam ask Morgan which company capabilities the proposed investment depends on.
 
-*Dialogue:* “What must be true?”
+*Dialogue:* “What are we being asked to support?”
 
 <!-- comic-panel
 {
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/16-diligence-and-thesis/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Alex demonstrates a system while Sam notes an untested dependency. Use one speech bubble with the exact words: \"What has this demonstration established?\" Convey: Evidence has a scope; access alone does not remove uncertainty.",
-  "alt": "Comic panel: alex demonstrates a system while Sam notes an untested dependency.",
-  "caption": "Evidence has a scope; access alone does not remove uncertainty."
+  "prompt": "Panel 2 of an explainer comic. Alex demonstrates a system while Sam notes an untested dependency. Use one speech bubble with the exact words: \"What has this demonstration established?\" Convey: A demonstration shows what worked under those conditions. Record which systems, customers and situations remain untested.",
+  "alt": "Comic panel: Alex demonstrates a system while Sam notes an untested dependency.",
+  "caption": "A demonstration shows what worked under those conditions. Record which systems, customers and situations remain untested."
 }
 -->
 
-**Panel 2:** Evidence has a scope; access alone does not remove uncertainty.
+**Panel 2:** A demonstration shows what worked under those conditions. Record which systems, customers and situations remain untested.
 
 *Scene:* Alex demonstrates a system while Sam notes an untested dependency.
 
@@ -49,17 +49,17 @@
   "status": "pending",
   "asset": "assets/images/16-diligence-and-thesis/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Morgan labels observation, assertion, and inference separately. Use one speech bubble with the exact words: \"These have different confidence.\" Convey: Preserve the basis of each material finding.",
-  "alt": "Comic panel: morgan labels observation, assertion, and inference separately.",
-  "caption": "Preserve the basis of each material finding."
+  "prompt": "Panel 3 of an explainer comic. Morgan labels observation, assertion, and inference separately. Use one speech bubble with the exact words: \"Which claims have supporting evidence?\" Convey: Separate what was observed, what someone reported and what the reviewer inferred. Explain the strength and limits of each finding.",
+  "alt": "Comic panel: Morgan labels observation, assertion, and inference separately.",
+  "caption": "Separate what was observed, what someone reported and what the reviewer inferred. Explain the strength and limits of each finding."
 }
 -->
 
-**Panel 3:** Preserve the basis of each material finding.
+**Panel 3:** Separate what was observed, what someone reported and what the reviewer inferred. Explain the strength and limits of each finding.
 
 *Scene:* Morgan labels observation, assertion, and inference separately.
 
-*Dialogue:* “These have different confidence.”
+*Dialogue:* “Which claims have supporting evidence?”
 
 <!-- comic-panel
 {
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/16-diligence-and-thesis/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. A finding moves toward price, funding, or a work plan. Use one speech bubble with the exact words: \"Which decision should this change?\" Convey: Diligence needs dispositions, not just descriptions.",
-  "alt": "Comic panel: a finding moves toward price, funding, or a work plan.",
-  "caption": "Diligence needs dispositions, not just descriptions."
+  "prompt": "Panel 4 of an explainer comic. A finding moves toward price, funding, or a work plan. Use one speech bubble with the exact words: \"Which decision should this change?\" Convey: Record how each important finding affects a decision. It may support the existing plan or call for different funding, terms or work.",
+  "alt": "Comic panel: A finding moves toward price, funding, or a work plan.",
+  "caption": "Record how each important finding affects a decision. It may support the existing plan or call for different funding, terms or work."
 }
 -->
 
-**Panel 4:** Diligence needs dispositions, not just descriptions.
+**Panel 4:** Record how each important finding affects a decision. It may support the existing plan or call for different funding, terms or work.
 
 *Scene:* A finding moves toward price, funding, or a work plan.
 
@@ -85,17 +85,17 @@
   "status": "pending",
   "asset": "assets/images/16-diligence-and-thesis/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex receives a report without an accepted owner and pauses. Use one speech bubble with the exact words: \"Who will carry this forward?\" Convey: A handoff fails when findings have no company-owned response.",
-  "alt": "Comic panel: alex receives a report without an accepted owner and pauses.",
-  "caption": "A handoff fails when findings have no company-owned response."
+  "prompt": "Panel 5 of an explainer comic. Alex annotates a finding with evidence still needed and the name of the company owner. Use one speech bubble with the exact words: \"Let’s record what we can commit to.\" Convey: Review important findings through the agreed process. Record company agreement, disagreement or an early review after completion when access is limited.",
+  "alt": "Comic panel: Alex annotates a finding with evidence still needed and the name of the company owner.",
+  "caption": "Review important findings through the agreed process. Record company agreement, disagreement or an early review after completion when access is limited."
 }
 -->
 
-**Panel 5:** A handoff fails when findings have no company-owned response.
+**Panel 5:** Review important findings through the agreed process. Record company agreement, disagreement or an early review after completion when access is limited.
 
-*Scene:* Alex receives a report without an accepted owner and pauses.
+*Scene:* Alex annotates a finding with evidence still needed and the name of the company owner.
 
-*Dialogue:* “Who will carry this forward?”
+*Dialogue:* “Let’s record what we can commit to.”
 
 <!-- comic-panel
 {
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/16-diligence-and-thesis/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team keeps one finding identifier through the plan. Use one speech bubble with the exact words: \"Keep the evidence connected.\" Convey: Trace assumptions into action and later outcome review.",
-  "alt": "Comic panel: the team keeps one finding identifier through the plan.",
-  "caption": "Trace assumptions into action and later outcome review."
+  "prompt": "Panel 6 of an explainer comic. The team keeps one finding identifier through the plan. Use one speech bubble with the exact words: \"Keep the evidence connected.\" Convey: Keep the finding connected to the plan and later results so that new evidence can change the original judgment.",
+  "alt": "Comic panel: The team keeps one finding identifier through the plan.",
+  "caption": "Keep the finding connected to the plan and later results so that new evidence can change the original judgment."
 }
 -->
 
-**Panel 6:** Trace assumptions into action and later outcome review.
+**Panel 6:** Keep the finding connected to the plan and later results so that new evidence can change the original judgment.
 
 *Scene:* The team keeps one finding identifier through the plan.
 

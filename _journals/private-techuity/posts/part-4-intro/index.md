@@ -1,38 +1,31 @@
 ---
-title: "The Same Ownership Period, Seen From the Other Chair"
+title: "Beyond Money: Using Investor Support to Build Capability and Accelerate Progress"
 date: 2026-09-13
 author: Private Techuity working manuscript
-excerpt: "The same events, seen from the owner's side: four chapters following a technology adviser through diligence, the first hundred days, ownership and exit."
+excerpt: "Find useful people, expertise and connections, agree what help will achieve, and leave the company able to sustain the result."
 permalink: pt-part-4
 timetoread: 2 min read
 status: draft:orange
 tags: private equity, part introduction, Part IV
 ---
 
-> **Part IV in one line:** the book changes seats, and looks at the same ownership period from the investor's side of the table.
+> **Part IV in one line:** find useful people, expertise and connections, agree what help will achieve, and leave the company able to sustain the result.
 
 <br>
-Everything so far has been written from inside a company. This part moves to the other chair.
+A company can have funding for a useful change and still lack the experience, people or connections needed to make it happen. The investor may be able to help through specialists, hiring support, introductions or other companies facing similar problems.
 
-A **Technology Principal** is a technology leader employed by the investment firm — the owner — rather than by any company it owns. They have no budget, no engineers and no production systems anywhere in the portfolio. Influence is the whole instrument, which makes the role a useful lens: it strips out formal authority and leaves only the question of whether the advice was any good.
+An **operating team** is a group associated with the investment firm that helps companies improve how they work. The firm’s **portfolio** is the set of investments it holds or manages. Neither label tells you what support is available to your company, when it can arrive or whether it fits your situation.
 
-Two kinds of reader will want this part. If you work for a PE-owned company, it explains the person on the other side of your board meeting. If the role interests you as a career, it is the most detailed account here of what the work involves.
+Part III established the work worth doing. This part helps you obtain support for a defined company need and turn that support into capability your team can sustain.
 
-## What These Four Chapters Do
+## The Learning Path
 
-They follow one ownership cycle in order, and each hands evidence to the next:
+- [[pt-technology-principal]] explains how to work with the investment firm’s technology adviser, including their responsibilities and the boundaries to agree.
+- [[pt-investor-support]] maps possible help to product development, engineering delivery, hiring, team development and new capabilities.
+- [[pt-making-support-work]] turns an offer into an engagement with a clear result, resources, responsibilities, review and handover.
 
-- [[pt-technology-principal]] establishes the role: who employs it, how it differs from a CTO, and what it cannot do.
-- [[pt-diligence-and-thesis]] covers the investigation before the money moves, and argues it has failed if it changes no price, condition or plan.
-- [[pt-first-hundred-days]] covers the period where those findings either become the company's own plan or quietly expire as someone else's report.
-- [[pt-execution-and-exit]] covers the long middle and the exit: the years most accounts skip, and what evidence survives the handover.
+Useful help may be a short introduction, a peer conversation, a specialist assignment or an ongoing service. The appropriate form depends on the problem. A company also needs a way to question the offer, change it or choose a different source of help.
 
-The handoffs between those chapters are where most of the value leaks away, which is why they are treated as a sequence rather than four separate topics.
+By the end, you should be able to name the capability you need, identify a plausible source of help and agree how both sides will know whether the engagement worked. You should also know who will own the work after the initial help ends.
 
-## What You Should Be Able to Do
-
-By the end of Part IV you should be able to tell useful owner-side support from expensive theatre, and to recognise the moment when advice quietly becomes instruction without anyone deciding it should.
-
-Part V then asks a more speculative question: whether this kind of support could be designed deliberately rather than improvised deal by deal.
-
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+Begin with [[pt-technology-principal]]. Part V then follows your responsibilities through the ownership period, using the financial, decision and support foundations already established.

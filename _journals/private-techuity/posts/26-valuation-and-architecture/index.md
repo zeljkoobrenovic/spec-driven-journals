@@ -2,43 +2,43 @@
 title: A Valuation Is an Estimate, Not a Fact
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: "The plain-language money primer: revenue, EBITDA and cash, then how a business gets valued and why the method matters."
+excerpt: "Understand sales, profit and cash, then work through the main ways of estimating what a business is worth."
 permalink: pt-valuation-and-architecture
-timetoread: 8 min read
+timetoread: 11 min read
 status: draft:orange
 tags: private equity, valuation, technology leadership, Part I
 ---
 
 > **KEY POINTS:**
 >
-> * **Learn revenue, earnings and cash before interpreting value.** Each answers a different question. An earnings subtotal does not establish the cash available for a technology investment.
-> * **A valuation is an estimate, not a lookup.** The same company can be worth different amounts to a reporting investor, a negotiating buyer and a lender — all correct, for different purposes.
-> * **The method encodes an assumption about where value comes from.** Comparable prices, future cash, or separable assets each imply something different — and that assumption is what eventually reaches your roadmap.
+> * **Sales, profit and cash answer different questions.** A business can record a sale or profit before receiving the customer’s money.
+> * **A valuation estimates what something is worth.** The purpose, date and assumptions affect the result.
+> * **The business’s value and its owners’ share of that value differ.** Borrowing and other claims help explain the difference.
 
 <br>
-"The company is worth €60 million." It sounds like a fact, the way a bank balance is a fact. It is not. It is somebody's estimate, made on a particular day, for a particular purpose — and a different person with a different purpose would produce a different number for the same company.
+Suppose someone says a company is worth €60 million. Before interpreting that number, ask what is being valued: the operating business, or the shares its owners hold? Then ask how the estimate was made.
 
-That matters to you because those estimates decide what gets funded. They are built from three quantities that get used interchangeably in conversation and mean quite different things: **revenue**, **earnings** and **cash**. Confusing them is how a technology leader ends up arguing for a budget that does not exist, or conceding one that does.
+The previous chapter followed ownership and cash payments. This chapter introduces the financial measures used to describe the company: revenue, profit and cash flow. We then use a single fictional business to distinguish business value from shareholder value and to explain three common valuation approaches.
 
-This is the book's money primer, and the chapter the others assume. [[pt-return-mechanics]] cannot explain an investor return without it; [[pt-cash-and-constraints]] cannot explain why a profitable company refuses to fund a migration; [[pt-valuation-and-design]] cannot connect either to architecture. If one chapter here is worth reading twice, it is this one.
+Read the calculations one step at a time. Their purpose is to make the assumptions understandable; no spreadsheet or accounting background is required.
 
 ## Revenue, Earnings and Cash Are Three Different Things
 
 **Revenue** is the income a business recognizes from selling its products or services during a period. It is not necessarily cash received during that period: a customer might pay later, or pay in advance for a service delivered over time.
 
-**Profit**, also called earnings, is what remains after the costs included in a particular profit measure. There are several measures because readers want to answer different questions. A measure of operating performance and a measure of the final result for shareholders include different costs.
+**Profit**, also called earnings, is what remains after the costs included in a particular profit measure. There are several measures because readers want to answer different questions. For example, one profit measure may focus on selling and delivering the product, while another also deducts interest on borrowing and income tax. A company’s **income statement** records revenue and expenses over a period; **net profit** is the final result after its income and charges.
 
-### EBITDA Strips Out Financing, Tax and Asset History
+### Why People Use EBITDA to Compare Operating Earnings
 
 Revenue shows the scale of sales but leaves out their cost: two companies with identical revenue can have very different operating economics. **Net profit**, the final profit after all income-statement charges, includes those costs but also reflects borrowing, income taxes and asset-accounting charges. Income-tax rates can differ between countries, so higher net profit need not mean that a company serves customers more efficiently.
 
 Consider two fictional companies with identical operations and €2 million of profit before tax. At assumed effective income-tax rates of 20% and 30%, their net profits are €1.6 million and €1.4 million. The difference comes entirely from tax. These are illustrative rates, not rates for particular countries.
 
-**EBITDA** stands for **earnings before interest, taxes, depreciation and amortization**. Interest is a financing cost. Here, taxes means income taxes, rather than every tax a business pays. Depreciation and amortization are accounting charges that spread the cost of certain assets over time: depreciation commonly concerns tangible assets such as equipment; amortization concerns intangible assets such as qualifying software development or acquired customer relationships.
+**EBITDA** stands for **earnings before interest, taxes, depreciation and amortization**. Interest is a financing cost. Here, taxes means income taxes, rather than every tax a business pays. An **asset** is a resource expected to provide future benefit. **Depreciation** and **amortization** are accounting charges that spread the cost of certain assets over time: depreciation commonly concerns **tangible assets**, physical items such as equipment; amortization concerns **intangible assets**, nonphysical resources such as qualifying software development or acquired customer relationships.
 
 EBITDA leaves those items out to help compare operating earnings across businesses with different financing, tax circumstances and asset histories. A more heavily borrowed company can pay more interest without operating less efficiently; an acquisition can introduce amortization charges without worsening the acquired product. Removing these effects helps examine the operating business before deciding how to finance or own it. Comparisons still require consistent accounting policies and context. [S52: IPEV valuation guidelines, section 3.4](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
-**EBITDA supplements net profit and cash flow.** The excluded costs still affect value: lower taxes can benefit shareholders, interest must be paid, and assets may need replacing. EBITDA cannot establish how much cash the business can spend. The SEC distinguishes EBITDA from measures making additional adjustments, which need a different label and reconciliation in its disclosure context. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures)
+**EBITDA supplements net profit and cash flow.** The excluded costs still affect value: lower taxes can benefit shareholders, interest must be paid, and assets may need replacing. EBITDA cannot establish how much cash the business can spend. The SEC distinguishes EBITDA from measures making additional adjustments, which need a different label and a calculation explaining the adjustments in its disclosure context. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures)
 
 ### Putting the Measures Together
 
@@ -48,21 +48,21 @@ Consider this deliberately simplified, fictional annual income statement. All fi
 | --- | --- | ---: |
 | Revenue | Sales recognized during the year | 20.0 |
 | EBITDA | Revenue 20.0 − operating expenses excluding depreciation and amortization 16.0 | 4.0 |
-| Operating profit, or EBIT | EBITDA 4.0 − depreciation and amortization 1.0 | 3.0 |
+| Operating profit, or EBIT (earnings before interest and taxes) | EBITDA 4.0 − depreciation and amortization 1.0 | 3.0 |
 | Profit before tax | Operating profit 3.0 − interest 1.0 | 2.0 |
 | Net profit | Profit before tax 2.0 − tax expense 0.5 | 1.5 |
 
 The **EBITDA margin** is EBITDA divided by revenue: €4 million / €20 million = 20%. It describes an earnings relationship, not a bank balance.
 
-To understand **cash flow**, we must also examine when customers pay, when suppliers are paid, spending recorded as assets, debt repayments and other actual receipts and payments. Spending €1 million on equipment consumes cash even if only part becomes a depreciation expense this year. Recording qualifying development as an asset can change the timing of earnings charges while leaving the cash payment in place. [[pt-cash-and-constraints]] develops that distinction.
+**Cash flow** is money moving into or out of the business during a period. To understand it, examine when customers and suppliers are paid, spending recorded as assets, debt repayments and other actual receipts and payments. Spending €1 million on equipment consumes cash even if only part becomes a depreciation expense this year. Recording qualifying development as an asset can change the timing of earnings charges while leaving the cash payment in place. [[pt-cash-and-constraints]] develops that distinction.
 
-An **adjusted EBITDA** measure adds further specified exclusions to an earnings calculation. Some may improve comparability; others may remove costs that the business will keep incurring. Always request the reconciliation and ask what the measure is intended to explain. The Visma and TeamSystem cases show why the adjective “adjusted” matters.
+An **adjusted EBITDA** measure adds further specified exclusions to an earnings calculation. Some may improve comparability; others may remove costs that the business will keep incurring. Request a **reconciliation**: a calculation showing how one reported number becomes another, line by line. Ask what each excluded cost is and whether the business will incur it again. The Visma and TeamSystem cases show why the adjective “adjusted” matters.
 
 ## A Valuation Is an Estimate, Not a Number You Look Up
 
 **Valuation** estimates what a business or an ownership interest is worth at a particular date, for a particular purpose. A negotiated acquisition price, an investor's estimate for reporting, and a buyer's maximum affordable price answer related but different questions. A technology budget should not treat them as interchangeable facts.
 
-**Enterprise value**, often abbreviated EV, is what the operating business is worth, before asking who has a claim on it. **Equity value** is what is left for shareholders once the lenders are paid. In the book's simplified bridge:
+**Enterprise value**, often abbreviated EV, is what the operating business is worth, before asking who has a claim on it. **Equity value** is the value attributable to the shares after allowing for debt, cash and other relevant claims. It is an estimate of share value, not necessarily cash already paid to shareholders. In the book's simplified bridge:
 
 **Equity value = enterprise value − net debt.**
 
@@ -70,16 +70,16 @@ An **adjusted EBITDA** measure adds further specified exclusions to an earnings 
 
 If enterprise value is €60 million and net debt is €20 million, equity value is €40 million, before other claims and transaction adjustments. A higher company valuation does not put the difference into the company's bank account. [[pt-capital-and-ownership]] explains why.
 
-Valuation methods organize evidence and assumptions; they do not eliminate judgment. The December 2025 IPEV guidelines distinguish the valuation basis, the technique used, and inputs such as EBITDA. Their focus is fair-value reporting for private investments, rather than prescribing a company's strategy or a negotiated deal price. [S52: IPEV valuation guidelines, introduction and section 3](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
+Valuation methods organize evidence and assumptions; they do not eliminate judgment. The December 2025 **International Private Equity and Venture Capital Valuation (IPEV) guidelines** distinguish the purpose of the valuation, the method used and inputs such as EBITDA. They guide the reporting of estimated values for private investments; they do not prescribe a company’s strategy or determine its negotiated sale price. [S52: IPEV valuation guidelines, introduction and section 3](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
-## Three Ways to Put a Number on a Business
+## Three Ways to Estimate Value
 
-The methods below offer a practical orientation. They can be used together, and their usefulness depends on the company and the available evidence. IPEV discusses earnings and revenue multiples, discounted cash flows, and net assets, emphasizing appropriate inputs and comparability. [S52: IPEV valuation guidelines, sections 3.2–3.9](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
+With business value and share value separated, we can ask how the business value itself is estimated. The methods below offer a practical orientation. They can be used together, and their usefulness depends on the company and the available evidence. IPEV discusses earnings and revenue multiples, discounted cash flows, and net assets, emphasizing appropriate inputs and comparability. [S52: IPEV valuation guidelines, sections 3.2–3.9](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
 | Approach | Plain-language question | Main limitation |
 | --- | --- | --- |
 | Market comparisons | What values do comparable businesses or transactions imply for this company? | The companies, dates, accounting and prospects may not be sufficiently comparable. |
-| Discounted cash flow | What is the business's expected future cash generation worth today? | The answer depends on uncertain forecasts, risk assumptions and value beyond the forecast period. |
+| Discounted cash flow: translate expected future cash into today’s value | What is the business's expected future cash generation worth today? | The answer depends on uncertain forecasts, risk assumptions and value beyond the forecast period. |
 | Asset-based valuation | What are the underlying assets worth, after accounting for relevant obligations? | Assets considered separately can miss the value of a functioning organization and its customer relationships. |
 
 ### Market Comparisons: Revenue and Earnings Multiples
@@ -104,13 +104,13 @@ A small fictional example explains discounting. At an assumed 10% annual discoun
 
 For a company valuation, the model also needs the cash flows across the forecast period and a **terminal value** for what comes afterward. That final estimate can materially affect the result. A spreadsheet extending for five years does not imply that the company stops needing development or maintenance in year six.
 
-DCF is useful for technology discussions because it makes the sequence visible: spend on a migration now, operate two platforms during transition, realize savings later, and continue paying to maintain the result. Its weakness is that plausible-looking assumptions can conceal an unachievable plan. The architecture and operating teams must help test what the forecast requires.
+For a technology proposal, this approach makes the sequence visible: spend on a migration now, operate two platforms during transition, realize savings later, and continue paying to maintain the result. Its weakness is that plausible-looking assumptions can conceal an unachievable plan. The architecture and operating teams must help test what the forecast requires.
 
 Growth also needs resources. Damodaran's teaching on growth-company valuation connects revenue growth, sustainable margins and reinvestment; a larger business may need more capital before it produces more cash. [S53: Growth companies—value drivers](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/littlebook/growthvaluedrivers.htm) For this book, the practical implication is to ask how much product, engineering, selling and implementation effort each growth assumption requires, and when the benefit can arrive.
 
 ### Asset-Based Valuation: Understand What Can Be Separated
 
-An asset-based approach examines the value of assets and relevant liabilities. It can be particularly informative when identifiable assets drive value or when continuing the business in its present form is doubtful. The calculation must be clear about which liabilities are already included so that debt is not deducted twice when moving to equity value.
+An asset-based approach examines the value of assets and relevant **liabilities**, financial obligations such as debts and unpaid bills. It can be particularly informative when identifiable assets drive value or when continuing the business in its present form is doubtful. The calculation must be clear about which liabilities are already included so that debt is not deducted twice when moving to equity value.
 
 For a software company, adding up historical development expenditure is not a sufficient valuation. Code written at great cost may have little usefulness; a relatively inexpensive product may support valuable customer relationships. The cost of building an asset and what someone would pay for it answer different questions.
 
@@ -118,9 +118,8 @@ The technology implications concern separability and continuity. Who controls th
 
 ## What to Carry Forward
 
-Three things survive this chapter. Revenue, earnings and cash are different quantities, and an earnings measure is not a spending budget. A valuation is an estimate made at a date for a purpose, not a fact you can look up. And the method behind a valuation encodes an assumption about what makes the business valuable — growth, repeatable earnings, or separable assets.
+Revenue records sales, profit deducts a specified set of costs, and cash flow follows actual payments. These measures are connected, but you cannot use one as a substitute for all the others.
 
-That last point is where technology enters. An investor who is paying for growth is buying a different future from one paying for steady earnings, and those futures ask different things of a product and its architecture. [[pt-valuation-and-design]] makes that translation, in Part III, once the operating chapters have supplied the vocabulary it needs. [[pt-return-mechanics]] comes first, and shows how company value becomes an investor return.
+Valuation adds another layer: an estimate of what future benefits are worth under stated assumptions. A multiple is one way to express that estimate; a cash-flow forecast makes the timing and investment assumptions more explicit. Neither tells the company how much it has in the bank today.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
-
+We can now follow a purchase through to a sale. The next chapter uses company value, borrowing and time to calculate what an investor gets back: [[pt-return-mechanics]]. Later, [[pt-valuation-and-design]] connects these financial assumptions to product and architecture decisions.

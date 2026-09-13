@@ -2,9 +2,9 @@
 title: Judge an Investor by Their Behavior Under Pressure
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Provide practical reference questions, evidence requests, warning signs, and responses during an engagement.
+excerpt: "Assess an investor through concrete decisions, references and the support available when a company faces difficulty."
 permalink: pt-investor-fit
-timetoread: 6 min read
+timetoread: 7 min read
 status: draft:orange
 tags: private equity, technology leadership, Part II
 ---
@@ -16,11 +16,15 @@ tags: private equity, technology leadership, Part II
 > * **Reassess fit during ownership.** A changing business or financing position can require a different relationship, operating plan or level of support.
 
 <br>
-Ines, Larkspur's CEO, has two term sheets on her desk. Both investors describe themselves as patient, operationally expert and respectful of management. Neither description is a lie, and neither is evidence. Investor fit is easiest to describe when business is good and hardest to observe when it matters, so a useful assessment asks for behavior under pressure.
+Ines, the chief executive of the fictional software company Larkspur, has two **term sheets** on her desk: documents setting out proposed investment terms. Both investors promise patient ownership and practical support. To compare them, she needs examples of how those promises work when a company misses its plan.
+
+**Investor fit** means how well an investor’s terms, resources and behavior match what the company needs. A reassuring description is a starting point for investigation.
 
 The purpose is not to find a universally good investor. It is to find out whether this partnership can support what Larkspur actually has to do next: automate onboarding, enter a second country, and replace a retiring founder's judgement. The same firm can be a strong fit for one situation and a poor fit for another.
 
-This chapter closes Part II by turning its two preceding arguments into something you can use in a room: if authority and incentives determine how ownership behaves, these are the questions that reveal how a particular investor will behave before you are committed to them.
+If your company already has an investor, use the same questions to assess the relationship you have. You may be able to change a support arrangement, an approval process or an unrealistic commitment even when choosing a different owner is not your decision.
+
+The previous chapters explained authority and incentives. We now turn them into a practical assessment: define the company’s needs, ask about earlier decisions, make promised support concrete, and review whether the relationship continues to work.
 
 ## Begin With the Work the Company Needs
 
@@ -34,26 +38,28 @@ A firm can advertise a broad support platform. KKR Capstone, for example, descri
 
 References selected only from enthusiastic current CEOs provide a restricted view. Where access is available and appropriate, seek former executives, leaders of companies that missed their plans, and leaders who declined or ended a proposed intervention. Explain the questions in advance and respect confidentiality.
 
-| Question | Evidence it seeks | A concerning answer sounds like |
+| Question | Evidence it seeks | An answer needing a follow-up |
 | --- | --- | --- |
 | Describe a plan that proved wrong. What changed afterward? | Ability to revise an investment thesis | "The plan was fine, execution was the problem." |
 | When did the investor fund additional work during a miss? | Conditional capital support and its limits | "It never came up." |
 | What happened when management disagreed with an operating expert? | Actual decision rights | "We aligned pretty quickly." |
 | Which support did you stop using, and why? | Freedom to reject low-value help | "We used everything they offered." |
-| What did you report that the investor did not want to hear? | Response to inconvenient evidence | A long pause, then a process answer. |
+| What did you report that the investor did not want to hear? | Response to inconvenient evidence | A general description of the reporting process, without an example. |
 | What remained unfinished at exit? | Willingness to disclose inherited obligations | "Nothing material." |
 
-The concerning answers share a shape: they describe a relationship with no friction in it. Every real ownership period produces disagreement, a missed number and a declined offer of help. A reference who cannot recall any is describing a brochure.
+These answers leave the requested behavior unclear. Ask for a specific example or another source. An executive may have had few relevant incidents, may be unable to share confidential details, or may be giving an incomplete account. The gap calls for follow-up rather than an automatic negative judgment.
 
 A single difficult story is not a verdict. Look for repeated mechanisms and consider alternative explanations. A dismissed executive may have an understandable grievance. A successful CEO may attribute too much to the current owner. Both can still provide concrete observations worth checking.
 
 ## Make the Support Offer Reviewable
 
-Suppose the investor promises help with AI and international engineering capacity. Ask what the first engagement would involve. Who is available? How much time can they provide? What relevant work have they done? Who pays for specialists and implementation? Who owns the decision? What would cause the engagement to stop?
+Suppose the investor promises help with **artificial intelligence (AI)** and with building engineering teams in other countries. Ask what the first engagement would involve. Who is available? How much time can they provide? What relevant work have they done? Who pays for specialists and implementation? Who owns the decision? What would cause the engagement to stop?
 
 A reasonable answer can be modest. A small firm might offer one experienced operator, a trusted specialist network, and disciplined access to partners. That can be more useful than an extensive catalogue without available capacity. The test is fit with the problem and a credible delivery commitment.
 
-Do not confuse advice with funding. A recommendation to modernize a platform is incomplete until the company has the capacity and money to do it. Nor should promised procurement savings be counted before fees, commitments, migration costs, and service effects have been understood.
+Do not confuse advice with funding. A recommendation to modernize a platform is incomplete until the company has the capacity and money to do it. Nor should promised savings from buying services or negotiating supplier contracts be counted before fees, commitments, migration costs, and service effects have been understood.
+
+This chapter uses support promises to assess the partnership. Once a specific company need is agreed, Part IV explains how to find suitable help and establish the engagement: [[pt-investor-support]] and [[pt-making-support-work]].
 
 ## Ask How Long the Money Is Staying
 
@@ -79,6 +85,6 @@ If a problem emerges, start with a concrete decision rather than a generalized c
 
 The Principal can help translate these conversations but cannot make every conflict disappear. Sometimes the owner wants a risk the executive considers unacceptable. Sometimes the executive's preferred strategy no longer fits the available capital. Honest disagreement may reveal that a role or partnership should change.
 
-Fit is not agreement. It is what happens the first time you disagree and something expensive is riding on it. A partnership works if that conversation reaches a real decision, everyone knows who made it, and the evidence was allowed in the room.
+The assessment should leave you with specific commitments: available people, funding arrangements, decision authority and a way to revise the plan. Review those commitments during ownership, particularly when the business changes.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+Part II has connected changed authority, incentives and the working relationship. Part III begins with choosing between the competing investments those arrangements must support: [[pt-part-3]] and [[pt-choosing-investments]].

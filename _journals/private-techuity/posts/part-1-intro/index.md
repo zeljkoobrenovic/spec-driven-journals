@@ -1,38 +1,32 @@
 ---
-title: "Why a Technology Book Starts With Money"
+title: "Understanding Private Equity: Money, Ownership and Returns"
 date: 2026-09-13
 author: Private Techuity working manuscript
-excerpt: "Why a technology book starts with money: the six chapters that explain where the money comes from, what it costs, and why it says no."
+excerpt: "Where does the money come from, what does the investor expect, and what can the company afford?"
 permalink: pt-part-1
 timetoread: 2 min read
 status: draft:orange
 tags: private equity, part introduction, Part I
 ---
 
-> **Part I in one line:** before you can argue for a technology investment, you have to understand the machine that decides whether the money exists.
+> **Part I in one line:** where does the money come from, what does the investor expect, and what can the company afford?
 
 <br>
-It is reasonable to ask why a book for product and engineering leaders opens with six chapters of finance.
+A useful product or technology plan needs money, people and time. Investment can help provide those resources, while also changing who owns the company and what they expect from it. This part gives you the financial knowledge needed to discuss those changes.
 
-The answer is that the arguments you will need to make later are all financial arguments in disguise. "We need to replace the billing system" is a claim about future cost and risk. "This will pay for itself in eighteen months" is a claim about cash timing. "The platform work created value" is a claim about valuation. Each can be answered — or dismissed — by someone fluent in a vocabulary most engineering leaders were never taught.
+**Financing** means arranging the money a business needs. **Private equity** means investment in company ownership outside public stock markets. This book focuses mainly on **buyouts**, purchases that give an investor control of a business, often involving borrowing and a planned later sale.
 
-## What These Six Chapters Do
+The opening chapter places that setting within a wider picture. A company might fund work from customer payments, borrow, or bring in an owner to support growth. The useful comparisons concern where the money goes, who can decide and what obligations follow. Later chapters explain the differences as they become relevant to a leader’s choices.
 
-They build one mental model, in order, each chapter depending on the one before:
+## The Learning Path
 
-- [[pt-how-companies-get-money]] places private equity among the ways a company can be financed at all, and explains what public and private ownership mean.
-- [[pt-capital-and-ownership]] opens such an arrangement up: the four entities inside it, and who is entitled to decide what.
-- [[pt-valuation-and-architecture]] is the money primer — revenue, earnings, cash, and how a business gets valued. Everything later assumes it.
-- [[pt-return-mechanics]] follows a company's value out to the investor, and shows how much of the result technology never touches.
-- [[pt-investment-fit]] asks which kind of capital suits which business problem, since private equity is one option among several.
-- [[pt-cash-and-constraints]] descends from the headline earnings figure to the money a company can actually spend — usually the answer to "why was my budget refused?"
+- [[pt-how-companies-get-money]] explains the main ways money reaches a company and what an ownership share represents.
+- [[pt-capital-and-ownership]] follows the money and responsibilities through a private equity arrangement.
+- [[pt-valuation-and-architecture]] teaches sales, profit, cash and estimates of business value.
+- [[pt-return-mechanics]] uses those measures to explain what an investor puts in and gets back.
+- [[pt-investment-fit]] compares funding and ownership arrangements against the work the company needs to do.
+- [[pt-cash-and-constraints]] checks what the business can actually afford after its obligations.
 
-## What You Should Be Able to Do
+By the end, you should be able to distinguish money paid to a selling owner from money available for company work. You should also be able to question a financial assumption and ask what would fund a proposed change.
 
-By the end of Part I you should be able to read an investment announcement without assuming it is a budget, follow a euro from a customer through to a fund's investors, and explain to your own team why a profitable company can be short of cash.
-
-You will not be able to value a business, and this book will not teach you to. The aim is to make you a competent participant in the conversation, not the person holding the spreadsheet.
-
-Part II then turns from the money to the authority: who, after the deal, is actually entitled to decide.
-
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+Begin with [[pt-how-companies-get-money]]. Part II then examines how investment changes the decisions you can make and influence.

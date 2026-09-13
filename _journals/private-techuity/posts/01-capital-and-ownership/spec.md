@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-12
+revised: 2026-09-13
 ---
 
 # Spec: An Investment Announcement Is Not a Budget
@@ -11,10 +11,13 @@ Separate the manager, fund, acquisition vehicle, and company; follow commitments
 
 ## Audience
 
-Experienced product and engineering leaders learning private equity; a developing Technology Principal needs both economic understanding and usable judgment.
+Readers learning private equity, company finance, and technology leadership from scratch, including product and engineering practitioners. Assume no prior knowledge of specialist financial or technical vocabulary.
 
 ## Success criteria
 
+- Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
+- Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
+- Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
@@ -45,8 +48,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-13: Revise for readers starting from scratch; define terms before use, explain reasoning steps, and connect the configured chapter sequence.
 - 2026-09-12: Readability pass. Second-person opening retained from the author's edit, with typos and an unclosed italic fixed. Four-entity prose converted to a comparison table plus two consequences ("the firm has capital" is not about you; the debt sits in the holding vehicle). Capital-call sequence rendered as a four-row timeline whose year-three row shows a markup paying nobody. Waterfall rendered as a table (€160 on €100 → €148 to LPs), with preferred return, catch-up and clawback defined rather than only named. Closing now observes that customers are the only source of new money entering the structure. KEY POINTS and summary.md realigned; comic panels unchanged and still consistent. 1,220 → 1,651 words.
-
 - 2026-09-12: Add the author-requested ai-notes KEY POINTS opening; preserve article-specific conclusions and caveats.
-
 - 2026-09-12: Initial spec, status draft; supports a substantial first manuscript and later evidence-led revision.

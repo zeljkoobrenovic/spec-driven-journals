@@ -2,7 +2,7 @@
 title: An Investment Announcement Is Not a Budget
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Follow who owns the company, who supplies its money, and who can decide how it is used.
+excerpt: "Follow who owns the company, who supplies its money, and who can decide how it is used."
 permalink: pt-capital-and-ownership
 timetoread: 7 min read
 status: draft:orange
@@ -11,43 +11,39 @@ tags: private equity, technology leadership, Part I
 
 > **KEY POINTS:**
 >
-> * **An investment announcement is not a budget.** The money may buy existing shares, repay old debt or pay transaction costs, and never reach the company at all.
-> * **"The investor" is four entities with four different clocks.** Firm, fund, holding vehicle and company hold different money and carry different obligations — and the debt is often not where you assume.
-> * **A valuation increase pays nobody.** Owning a company and running it are separate acts; ask which body, exercising which right, is actually making a decision.
+> * **Find out who receives the investment money.** Buying a founder’s shares pays the founder; buying new shares can put money into the company.
+> * **Separate the organizations involved.** The investment firm, its fund, the company used to hold the investment, and the business serving customers can have different money and obligations.
+> * **Distinguish an estimate from a payment.** Saying an investment is worth more does not mean its owners have received cash.
 
 <br>
-You hear that your company has received a €100 million investment. So you can now hire, build the thing that has been deferred for two years, finally fix the platform. Can you?
+Your company announces a €100 million investment. It is natural to expect a larger hiring or product budget. But the announcement may describe money paid to selling shareholders, repayment of old loans, and transaction costs. Only the part actually supplied to the business increases its cash directly.
 
-Possibly none of that €100 million reached the company's bank account. Some may have bought the founder's existing shares. Some may have repaid old borrowing. Some may have paid the lawyers and bankers who did the deal. **An ownership transaction can change what a company owes far more than what it can spend** — and the announcement will not tell you which happened.
+[[pt-how-companies-get-money]] introduced the difference between funding a company and buying its existing shares. We will now follow the money through a typical private equity arrangement: first identify the organizations, then see how investors supply money and receive it back, and finally connect that structure to company decisions.
 
-So the first question is not "what can we build now?" It is "where did the money actually go, and who decides what happens next?"
+## Start With Four Separate Organizations
 
-[[pt-how-companies-get-money]] placed private equity among the ways a company can be financed: a fund, borrowed money, control, and a planned sale. This chapter opens that arrangement up — the entities inside it, where the cash actually sits, and who is entitled to decide what. Everything in Parts II and III depends on telling those apart.
-
-## The "Investor" Is Four Entities With Four Different Clocks
-
-People say "the investor" as though it were one thing with one wallet. It is usually four things, and they want different outcomes on different timetables.
+A useful starting map separates four types of **entity**, meaning an organization or legal body. Actual transactions can have more layers, several investors and different arrangements. The purpose of this map is to locate money and responsibilities, rather than assume that everyone shares one bank account.
 
 | Entity | What it is | What it wants |
 | --- | --- | --- |
 | **Investment firm** (sponsor, manager) | The organization with the name on the door. Employs the investment and operating professionals. | Fees, a track record, and the next fund |
-| **Fund** | A specific pot of money with its own investors, mandate and end date. One firm runs several. | Returns for its investors, before its clock runs out |
-| **Holding vehicle** | A company that exists to own your company and often to carry the debt. | Nothing — it is a legal container |
+| **Fund** | A pool of investment money with its own investors, agreed investment scope and lifetime. A firm may manage several funds. | Returns for its investors, before its clock runs out |
+| **Holding vehicle** | A company set up to hold the investment; it may also borrow. | Hold ownership and meet its own obligations |
 | **Portfolio company** | You. Sells to customers, employs people, pays suppliers. | To keep serving customers and paying wages |
 
 Two consequences follow immediately.
 
 **"The firm has capital" is not a statement about you.** A firm may be raising a €2 billion fund while the fund that owns your company is fully invested and near the end of its life. Those are different pots. The new fund usually cannot simply hand money to an older fund's company.
 
-**The debt may not be where you think.** In many buyouts the borrowing sits in the holding vehicle above the operating company, not in the company itself. Your balance sheet can look calm while the structure above you is tightly financed — and it is that structure whose interest payments shape what your budget looks like.
+**Locate the borrowing as well as the cash.** Debt can sit in a holding company, an operating company, or several entities. The company’s **balance sheet**, a statement of assets, obligations and equity at a date, needs to be read at the relevant level. Payments required elsewhere in the ownership structure may still depend on cash from the operating business. Ask finance to explain those connections.
 
 So before accepting a cloud migration budget, ask which entity pays the invoice and who can commit its money. Before relying on a promise of support, ask by what mechanism the capital would actually arrive. Before sharing customer data with anyone at the owner, ask who is receiving it and under what authority. Common ownership answers none of these.
 
 ## Commitments Are Promises, Not Payments
 
-The money in the fund comes from **limited partners**, or LPs — pension funds, insurers, endowments, university funds. Somebody's retirement savings are, at several removes, paying for your platform migration. The **general partner**, or GP, is the entity that manages the fund and makes the investment decisions.
+The money in the fund comes from **limited partners**, or LPs — pension funds, insurers, endowments, university funds. An **endowment** is a pool of assets invested to support an institution, such as a university. These investors supply fund capital; whether any of it reaches a company’s technology budget depends on the transaction. The **general partner**, or GP, is the entity that manages the fund and makes the investment decisions.
 
-An LP does not hand over cash up front. It makes a **commitment**: a promise to supply money when asked, under agreed conditions. When the fund needs money for an investment, it issues a **capital call**.
+In a common arrangement, an LP does not pay its entire promised investment at once. It makes a **commitment**: a promise to supply money when asked, under agreed conditions. When the fund needs money for an investment, it issues a **capital call**.
 
 Follow one fictional LP with a €10 million commitment:
 
@@ -55,18 +51,18 @@ Follow one fictional LP with a €10 million commitment:
 | --- | --- | ---: |
 | Year 1 | Commits €10m. No money moves. | — |
 | Year 1 | First capital call: €2m requested, LP pays. | −€2m |
-| Year 3 | The fund marks its companies up. On paper, the LP is doing well. | **€0** |
+| Year 3 | The fund raises its estimates of what its companies are worth. | **€0** |
 | Year 7 | A company is sold; proceeds are distributed. | +€3.5m |
 
 The row that matters is year 3. **A valuation increase pays nobody.** It is an estimate, not a transfer, and the LP cannot spend it. That distinction runs through the whole book: the moment a company is said to be worth more is not the moment anyone receives anything.
 
-Real agreements add recycling, recallable distributions and other complications. The shape above is the part worth remembering.
+An agreement may allow the fund to reinvest proceeds or require an investor to return an earlier payment under stated conditions. Those details change cash timing. The basic distinction remains: a promise, a payment and a valuation estimate are three different events.
 
-A fund's life includes fundraising, investing, supporting companies, realizing investments, and winding down. These phases overlap. The investment period and the fund's overall term are different clocks; extensions and reinvestment provisions depend on the agreement. ILPA's model principles discuss these matters as recommendations from an LP association, rather than terms binding every fund. [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
+A fund's life includes fundraising, investing, supporting companies, selling investments or otherwise receiving proceeds, and eventually closing the fund. These phases overlap. The investment period and the fund's overall term are different clocks; extensions and reinvestment provisions depend on the agreement. The **Institutional Limited Partners Association (ILPA)** represents investors in private funds. Its principles offer recommendations on these matters; they are not terms binding every fund. [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
 
 For a company leader, the relevant question is not simply how long private equity usually holds a company. It is how much time and flexibility this ownership structure has, and what happens if an intended exit is delayed.
 
-## The Manager Is Paid Twice, in Different Ways
+## How Fees and Profit Sharing Work
 
 A **management fee** supports the manager's business under the agreed fee basis. **Carried interest**, or carry, is a contractual share of investment profits allocated to the GP or other entitled recipients. Carry is different from a company's executive bonus and different again from management's shares in that company.
 
@@ -79,7 +75,7 @@ A **distribution waterfall** sets the order in which money coming out of a fund 
 | | remainder to the LPs | €48 |
 | | **LPs receive in total** | **€148** |
 
-That order is the point: **the investors' original money comes back before anyone earns a share of the profit.** Real waterfalls add a *preferred return* (a minimum rate the LPs must clear before the GP shares in profit), a *catch-up* (which then lets the GP draw level), and a *clawback* (which claws carry back if later losses show too much was paid early). The 20% here is arithmetic, not a standard.
+In this example, the LPs receive their original €100 before the profit is shared. Actual agreements can distribute profits at different stages. They may include a **preferred return**, a threshold before specified profit sharing begins; a **catch-up**, a rule allowing the manager to receive a larger share of the next payments; or a **clawback**, a requirement to return excess profit distributions. The preferred return is not a guaranteed investment return. The 20% rate here is an illustrative assumption.
 
 Fees, allocation of shared expenses, and related-party services also create conflicts. The SEC's guide explicitly discusses the possibility that the manager's interests differ from those of its funds. [S01: SEC investor guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) A portfolio leader should therefore ask who funds an operating intervention and whether the provider has a financial interest in the recommendation. Useful support can still involve a conflict that needs to be understood.
 
@@ -87,11 +83,11 @@ Fees, allocation of shared expenses, and related-party services also create conf
 
 They are separate acts, performed by different bodies under different rules.
 
-A fund's **investment committee** deciding to buy your company is not the same act as your **board** approving next year's operating plan. Lenders have rights that neither of them can override. Shareholders can replace a board but cannot sign a customer contract. When someone says "the investor wants X," the useful reply is: which body, exercising which right, and can they actually require it?
+An **investment committee** is the body authorized to approve investments for the fund under its arrangements. A company’s **board** oversees the business within its own authority, while executives manage day-to-day work. Buying a company, approving its annual plan and signing a customer contract are different decisions. Share ownership alone does not give every shareholder authority to sign contracts for the company. Financing agreements may also require lender approval for particular actions. When someone says "the investor wants X," the useful reply is: which body, exercising which right, and can they actually require it?
 
 A Technology Principal — a technology leader employed by the investment firm, not by the company it owns — advises both forums and must know which decision each is making. [[pt-technology-principal]] develops the role; [[pt-governance]] works through the decision rights in detail.
 
-The map below is conceptual, not a legal organization chart. Follow the money down the left and back up the right:
+The map below is conceptual, not a legal organization chart. Read the arrows from the investors and lenders toward the business, then follow investment proceeds back to the fund’s investors:
 
 ---begin mermaid---
 flowchart TD
@@ -101,15 +97,14 @@ flowchart TD
   L[Lenders] -->|Contractual financing| H
   H -->|Ownership| C[Portfolio company]
   CU[Customers] -->|Payments for products and services| C
-  C -->|Permitted distributions or sale proceeds| H
+  C -->|Permitted payments to owners| H
+  B[Future buyer] -->|Payment for shares on sale| H
   H -->|Investment proceeds| F
   F -->|Distributions under the waterfall| LP
 ---end mermaid---
 
-It leaves out taxes, intermediate entities, security packages and parallel investments — acceptable for orientation, unacceptable in an actual financing analysis.
+The diagram simplifies the structure. A real financing review also needs the intermediate companies, taxes, lender protections and any other investors. The future buyer is shown separately because payment for existing shares comes from that buyer, rather than from the company’s customers.
 
-Notice what the diagram shows about your position: **customers are the only source of new money entering the system.** Everything else is a claim on what they pay, arranged in an order someone agreed before you were consulted.
+Customer payments sustain the operating business. Investors, lenders and future buyers can also bring cash into the wider arrangement. Keeping those sources separate helps explain why a well-funded investor and a cash-constrained company can coexist.
 
-So drop "the investor" as a phrase. It hides the four entities, the clock each one is running, and the fact that the money you were told about may never have been yours to spend. Ask instead: which entity, which decision, whose money, and by when? Next, [[pt-valuation-and-architecture]] asks what the business is worth and why that shapes its priorities; [[pt-return-mechanics]] follows the money back out as an investor return.
-
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+You can now trace who supplies cash, who receives it and which body makes a decision. The next question is how people estimate the value of the business and its shares. That requires three basic financial ideas—sales, profit and cash—which we develop in [[pt-valuation-and-architecture]].

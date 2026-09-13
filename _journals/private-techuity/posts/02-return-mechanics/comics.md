@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/02-return-mechanics/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Morgan places a business model beside a share certificate. Use one speech bubble with the exact words: \"Company value and equity differ.\" Convey: Enterprise value must be bridged to equity through debt and other relevant adjustments.",
-  "alt": "Comic panel: morgan places a business model beside a share certificate.",
-  "caption": "Enterprise value must be bridged to equity through debt and other relevant adjustments."
+  "prompt": "Panel 1 of an explainer comic. Morgan places a business model beside a share certificate. Use one speech bubble with the exact words: \"Company value and equity differ.\" Convey: Enterprise value estimates the operating business’s value. Equity value is the shareholders’ part after relevant debt, cash and other adjustments.",
+  "alt": "Comic panel: Morgan places a business model beside a share certificate.",
+  "caption": "Enterprise value estimates the operating business’s value. Equity value is the shareholders’ part after relevant debt, cash and other adjustments."
 }
 -->
 
-**Panel 1:** Enterprise value must be bridged to equity through debt and other relevant adjustments.
+**Panel 1:** Enterprise value estimates the operating business’s value. Equity value is the shareholders’ part after relevant debt, cash and other adjustments.
 
 *Scene:* Morgan places a business model beside a share certificate.
 
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/02-return-mechanics/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam moves earnings, valuation, and debt blocks independently. Use one speech bubble with the exact words: \"Several mechanisms change the return.\" Convey: Operating improvement, market pricing, and financing can all affect investor results.",
-  "alt": "Comic panel: sam moves earnings, valuation, and debt blocks independently.",
-  "caption": "Operating improvement, market pricing, and financing can all affect investor results."
+  "prompt": "Panel 2 of an explainer comic. Sam moves earnings, valuation, and debt blocks independently. Use one speech bubble with the exact words: \"Several mechanisms change the return.\" Convey: An investment return compares what the investor receives or still holds with what it invested. Business performance, prices, borrowing and time all matter.",
+  "alt": "Comic panel: Sam moves earnings, valuation, and debt blocks independently.",
+  "caption": "An investment return compares what the investor receives or still holds with what it invested. Business performance, prices, borrowing and time all matter."
 }
 -->
 
-**Panel 2:** Operating improvement, market pricing, and financing can all affect investor results.
+**Panel 2:** An investment return compares what the investor receives or still holds with what it invested. Business performance, prices, borrowing and time all matter.
 
 *Scene:* Sam moves earnings, valuation, and debt blocks independently.
 
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/02-return-mechanics/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex proudly holds a deployment report beside rising valuation. Use one speech bubble with the exact words: \"Which change caused which result?\" Convey: A technology improvement does not establish its own share of an exit price.",
-  "alt": "Comic panel: alex proudly holds a deployment report beside rising valuation.",
-  "caption": "A technology improvement does not establish its own share of an exit price."
+  "prompt": "Panel 3 of an explainer comic. Alex proudly holds a deployment report beside rising valuation. Use one speech bubble with the exact words: \"Which change caused which result?\" Convey: A software improvement may help the business. A higher sale price alone does not show how much that improvement contributed.",
+  "alt": "Comic panel: Alex proudly holds a deployment report beside rising valuation.",
+  "caption": "A software improvement may help the business. A higher sale price alone does not show how much that improvement contributed."
 }
 -->
 
-**Panel 3:** A technology improvement does not establish its own share of an exit price.
+**Panel 3:** A software improvement may help the business. A higher sale price alone does not show how much that improvement contributed.
 
 *Scene:* Alex proudly holds a deployment report beside rising valuation.
 
@@ -67,17 +67,17 @@
   "status": "pending",
   "asset": "assets/images/02-return-mechanics/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam compares two clocks beside the same proceeds. Use one speech bubble with the exact words: \"Time changes annualized returns.\" Convey: A multiple of money and IRR answer different questions.",
-  "alt": "Comic panel: sam compares two clocks beside the same proceeds.",
-  "caption": "A multiple of money and IRR answer different questions."
+  "prompt": "Panel 4 of an explainer comic. Sam compares two clocks beside the same proceeds. Use one speech bubble with the exact words: \"The payment dates matter too.\" Convey: MOIC compares value received or held with money invested. IRR is an annual return measure that also accounts for payment dates.",
+  "alt": "Comic panel: Sam compares two clocks beside the same proceeds.",
+  "caption": "MOIC compares value received or held with money invested. IRR is an annual return measure that also accounts for payment dates."
 }
 -->
 
-**Panel 4:** A multiple of money and IRR answer different questions.
+**Panel 4:** MOIC compares value received or held with money invested. IRR is an annual return measure that also accounts for payment dates.
 
 *Scene:* Sam compares two clocks beside the same proceeds.
 
-*Dialogue:* “Time changes annualized returns.”
+*Dialogue:* “The payment dates matter too.”
 
 <!-- comic-panel
 {
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/02-return-mechanics/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Morgan separates a cash envelope from a valuation estimate. Use one speech bubble with the exact words: \"Has the money been distributed?\" Convey: Residual value is different from a realized cash distribution.",
-  "alt": "Comic panel: morgan separates a cash envelope from a valuation estimate.",
-  "caption": "Residual value is different from a realized cash distribution."
+  "prompt": "Panel 5 of an explainer comic. Morgan separates a cash envelope from a valuation estimate. Use one speech bubble with the exact words: \"Has the money been distributed?\" Convey: Estimated value still held is different from cash already paid to investors. Keep both visible in a return report.",
+  "alt": "Comic panel: Morgan separates a cash envelope from a valuation estimate.",
+  "caption": "Estimated value still held is different from cash already paid to investors. Keep both visible in a return report."
 }
 -->
 
-**Panel 5:** Residual value is different from a realized cash distribution.
+**Panel 5:** Estimated value still held is different from cash already paid to investors. Keep both visible in a return report.
 
 *Scene:* Morgan separates a cash envelope from a valuation estimate.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/02-return-mechanics/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex tests the plan beneath a lower valuation sign. Use one speech bubble with the exact words: \"Does the business still improve?\" Convey: A resilient operating case should survive scrutiny beyond the preferred exit multiple.",
-  "alt": "Comic panel: alex tests the plan beneath a lower valuation sign.",
-  "caption": "A resilient operating case should survive scrutiny beyond the preferred exit multiple."
+  "prompt": "Panel 6 of an explainer comic. Alex tests the plan beneath a lower valuation sign. Use one speech bubble with the exact words: \"Does the business still improve?\" Convey: Test whether the operating improvement remains useful if the sale price is lower or the owner holds the business longer.",
+  "alt": "Comic panel: Alex tests the plan beneath a lower valuation sign.",
+  "caption": "Test whether the operating improvement remains useful if the sale price is lower or the owner holds the business longer."
 }
 -->
 
-**Panel 6:** A resilient operating case should survive scrutiny beyond the preferred exit multiple.
+**Panel 6:** Test whether the operating improvement remains useful if the sale price is lower or the owner holds the business longer.
 
 *Scene:* Alex tests the plan beneath a lower valuation sign.
 

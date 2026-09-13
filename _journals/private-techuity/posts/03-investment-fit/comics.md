@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/03-investment-fit/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex holds a promising prototype with unanswered customer notes. Use one speech bubble with the exact words: \"We still need to learn.\" Convey: Early uncertainty creates a different capital problem from mature ownership succession.",
-  "alt": "Comic panel: alex holds a promising prototype with unanswered customer notes.",
-  "caption": "Early uncertainty creates a different capital problem from mature ownership succession."
+  "prompt": "Panel 1 of an explainer comic. Alex holds a promising prototype with unanswered customer notes. Use one speech bubble with the exact words: \"We still need to learn.\" Convey: A young product may need money and time to learn whether enough customers will pay.",
+  "alt": "Comic panel: Alex holds a promising prototype with unanswered customer notes.",
+  "caption": "A young product may need money and time to learn whether enough customers will pay."
 }
 -->
 
-**Panel 1:** Early uncertainty creates a different capital problem from mature ownership succession.
+**Panel 1:** A young product may need money and time to learn whether enough customers will pay.
 
 *Scene:* Alex holds a promising prototype with unanswered customer notes.
 
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/03-investment-fit/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. The same team faces an implementation queue. Use one speech bubble with the exact words: \"Demand exceeds our delivery capacity.\" Convey: Growth funding is useful only with a credible path from demand to served customers.",
-  "alt": "Comic panel: the same team faces an implementation queue.",
-  "caption": "Growth funding is useful only with a credible path from demand to served customers."
+  "prompt": "Panel 2 of an explainer comic. The same team faces an implementation queue. Use one speech bubble with the exact words: \"Demand exceeds our delivery capacity.\" Convey: Money for expansion helps only if the company can turn demand into customers it can serve well.",
+  "alt": "Comic panel: The same team faces an implementation queue.",
+  "caption": "Money for expansion helps only if the company can turn demand into customers it can serve well."
 }
 -->
 
-**Panel 2:** Growth funding is useful only with a credible path from demand to served customers.
+**Panel 2:** Money for expansion helps only if the company can turn demand into customers it can serve well.
 
 *Scene:* The same team faces an implementation queue.
 
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/03-investment-fit/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. A founder places a retirement calendar beside a healthy business. Use one speech bubble with the exact words: \"Ownership is the question here.\" Convey: An ownership need does not necessarily imply a shortage of operating cash.",
-  "alt": "Comic panel: a founder places a retirement calendar beside a healthy business.",
-  "caption": "An ownership need does not necessarily imply a shortage of operating cash."
+  "prompt": "Panel 3 of an explainer comic. A founder places a retirement calendar beside a healthy business. Use one speech bubble with the exact words: \"Ownership is the question here.\" Convey: A retiring founder may want to sell their shares even when the company itself has enough cash.",
+  "alt": "Comic panel: A founder places a retirement calendar beside a healthy business.",
+  "caption": "A retiring founder may want to sell their shares even when the company itself has enough cash."
 }
 -->
 
-**Panel 3:** An ownership need does not necessarily imply a shortage of operating cash.
+**Panel 3:** A retiring founder may want to sell their shares even when the company itself has enough cash.
 
 *Scene:* A founder places a retirement calendar beside a healthy business.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/03-investment-fit/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam compares a minority stake with a substantial approval key. Use one speech bubble with the exact words: \"Read the rights, too.\" Convey: Ownership percentage alone does not describe control.",
-  "alt": "Comic panel: sam compares a minority stake with a substantial approval key.",
-  "caption": "Ownership percentage alone does not describe control."
+  "prompt": "Panel 4 of an explainer comic. Sam compares a minority stake with a substantial approval key. Use one speech bubble with the exact words: \"Read the rights, too.\" Convey: Owning a small share of a company can still bring important approval rights. Read the agreement as well as the percentage.",
+  "alt": "Comic panel: Sam compares a minority stake with a substantial approval key.",
+  "caption": "Owning a small share of a company can still bring important approval rights. Read the agreement as well as the percentage."
 }
 -->
 
-**Panel 4:** Ownership percentage alone does not describe control.
+**Panel 4:** Owning a small share of a company can still bring important approval rights. Read the agreement as well as the percentage.
 
 *Scene:* Sam compares a minority stake with a substantial approval key.
 
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/03-investment-fit/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Morgan replaces a rigid ladder with several branching doors. Use one speech bubble with the exact words: \"There is no required ladder.\" Convey: Venture, growth, buyout, carve-out, and turnaround are different circumstances, with overlap.",
-  "alt": "Comic panel: morgan replaces a rigid ladder with several branching doors.",
-  "caption": "Venture, growth, buyout, carve-out, and turnaround are different circumstances, with overlap."
+  "prompt": "Panel 5 of an explainer comic. Morgan replaces a rigid ladder with several branching doors. Use one speech bubble with the exact words: \"There is no required ladder.\" Convey: Different investments fund different needs: learning, expansion, a change of control, separation from a larger business or recovery from difficulty.",
+  "alt": "Comic panel: Morgan replaces a rigid ladder with several branching doors.",
+  "caption": "Different investments fund different needs: learning, expansion, a change of control, separation from a larger business or recovery from difficulty."
 }
 -->
 
-**Panel 5:** Venture, growth, buyout, carve-out, and turnaround are different circumstances, with overlap.
+**Panel 5:** Different investments fund different needs: learning, expansion, a change of control, separation from a larger business or recovery from difficulty.
 
 *Scene:* Morgan replaces a rigid ladder with several branching doors.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/03-investment-fit/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team matches a financing proposal to the company's work. Use one speech bubble with the exact words: \"Does this capital fit?\" Convey: Assess the actual needs, constraints, and feasible alternatives.",
-  "alt": "Comic panel: the team matches a financing proposal to the company's work.",
-  "caption": "Assess the actual needs, constraints, and feasible alternatives."
+  "prompt": "Panel 6 of an explainer comic. The team matches a financing proposal to the company's work. Use one speech bubble with the exact words: \"Does this capital fit?\" Convey: Choose a financing arrangement by examining the company’s work, cash needs, risks and feasible alternatives.",
+  "alt": "Comic panel: The team matches a financing proposal to the company's work.",
+  "caption": "Choose a financing arrangement by examining the company’s work, cash needs, risks and feasible alternatives."
 }
 -->
 
-**Panel 6:** Assess the actual needs, constraints, and feasible alternatives.
+**Panel 6:** Choose a financing arrangement by examining the company’s work, cash needs, risks and feasible alternatives.
 
 *Scene:* The team matches a financing proposal to the company's work.
 

@@ -1,8 +1,8 @@
 ---
-title: Two Successful Exits, Two Different Explanations
+title: "Hilton and Skype: Two Successful Exits"
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Compare Hilton and Skype using public transaction and operating evidence while separating investor outcomes from causal technology claims.
+excerpt: "Use two historical sales to separate investor gains, company improvements and claims about technology’s contribution."
 permalink: pt-hilton-and-skype
 timetoread: 9 min read
 status: draft:orange
@@ -11,26 +11,30 @@ tags: private equity, technology leadership, Part VI
 
 > **KEY POINTS:**
 >
-> * **A successful exit still needs an explanation.** Financing, recovery, product development and a buyer’s strategic interests can contribute differently to the result.
-> * **Separate company capability from investor cash flows.** A sale headline cannot reconstruct a fund return or identify how much value a technology intervention caused.
-> * **Follow the business beyond the ownership episode.** Later product and stakeholder outcomes matter, while remaining distinct from claims about the earlier owner’s decisions.
+> * **A valuable sale needs an explanation.** Better operations, financing changes, market recovery and the buyer’s interests can all affect the result.
+> * **Keep the company result separate from the investor’s cash.** Purchase and sale headlines do not include every investment, payment or fee.
+> * **Follow what happens to the product and people.** A completed sale does not establish whether customers and employees benefited over the longer term.
 
 <br>
-Hilton and Skype demonstrate that private equity-backed ownership can end in a valuable realized sale. They also show why a realized exit is only the beginning of a useful case analysis.
+Hilton operates a hotel business and brand network. Skype provided internet calling and communications software. Both experienced private equity-backed ownership followed by valuable sales, but the paths were very different.
 
-Hilton combines operating expansion, technology-enabled distribution, a severe downturn, and debt restructuring over a long period. Skype combines a corporate separation, resolution of a core intellectual-property problem, product investment, and a strategic buyer over a much shorter period. Neither can be reduced to “technology modernization created the return.”
+Hilton’s ownership episode ran through a severe economic downturn and recovery. Skype’s much shorter episode included resolving rights to essential technology before a sale to Microsoft. Comparing them helps apply the book’s central distinction: an **exit**, a sale through which investors receive value, is an event to explain rather than proof that every earlier decision worked.
 
-Part VI tests the preceding chapters against real companies. These two come first because they are the successes, and because success is the harder case to read honestly: when the outcome is good, every decision along the way acquires a retrospective glow it may not deserve.
+We examine Hilton first, then Skype, using the same questions: what changed, how might technology have helped, what did investors receive, and what remains unknown? A **sponsor** is the investment firm behind a transaction. Its account is useful evidence about its stated actions and reported result, but may emphasize favorable interpretations.
 
-The cases below distinguish documented events, interested accounts, and the manuscript's interpretation. Complete fund cash flows and independent evaluations of each technology intervention were not available in the consulted material.
+The historical material does not include complete fund cash flows or an independent calculation of each technology initiative’s contribution.
 
-## Hilton: What Happens When You Buy at the Top?
+For a company leader, the central question is how to distinguish a valuable sale from evidence that particular operating choices worked. Read the two histories by separating the investment expectations, the company choices, the resources available and the results each source actually establishes.
 
-Blackstone’s 2007 acquisition of Hilton was a large **leveraged take-private**: buying a publicly traded company into private ownership using substantial borrowing. A retrospective account in Private Equity International, hosted by Blackstone, describes a $26 billion transaction, a downturn-related writedown, additional capital, room expansion, debt restructuring, a 2013 initial public offering (IPO), a sale of shares onto a public market, and final exit in 2018. This is an industry award account and should be treated as a favorable retrospective, not an independent causal evaluation. [S25: PEI Hilton retrospective](https://www.blackstone.com/wp-content/uploads/sites/2/2019/03/pei_blackstone_hilton.pdf)
+## Hilton: Follow the Ownership Period From 2007 to 2018
+
+Blackstone’s 2007 acquisition of Hilton was a large **leveraged take-private**: buying a publicly traded company into private ownership using substantial borrowing. A retrospective account in Private Equity International, hosted by Blackstone, describes a $26 billion transaction, a downturn-related **writedown**, a reduction in the recorded investment value, additional capital, room expansion, and **debt restructuring**, changes to the borrowing terms or amounts owed, a 2013 initial public offering (IPO), a sale of shares onto a public market, and final exit in 2018. This is an industry award account and should be treated as a favorable retrospective, not an independent causal evaluation. [S25: PEI Hilton retrospective](https://www.blackstone.com/wp-content/uploads/sites/2/2019/03/pei_blackstone_hilton.pdf)
 
 The company's 2013 registration statement provides a firmer basis for examining particular mechanisms. It reports a $4.0 billion reduction in indebtedness from the April 2010 restructuring. It also describes a commercial platform linking reservations, guest information, online distribution, revenue management, and the OnQ property-management system. [S23: Hilton registration filing](https://www.sec.gov/Archives/edgar/data/1585689/000119312513364703/d593452ds1.htm)
 
-These observations matter because the business involved more than owning hotel buildings. Distribution and operating services could support a wider system of hotels. The plausible technology mechanism is coordination: consistent inventory and rates, usable guest information, and tools that help properties sell and manage rooms. That is an interpretation of the disclosed operating design, not a measured estimate of the value created by a specific system.
+The sequence matters: the 2007 purchase was followed by the downturn and 2010 debt restructuring, then the 2013 public offering and final stake sale in 2018. A public offering and a complete investor exit were different events.
+
+The operating observations matter because the business involved more than owning hotel buildings. Distribution and operating services could support a wider system of hotels. The plausible technology mechanism is coordination: consistent inventory and rates, usable guest information, and tools that help properties sell and manage rooms. That is an interpretation of the disclosed operating design, not a measured estimate of the value created by a specific system.
 
 A Technology Principal examining such a business would need to connect the platform to the hotel owner's economics as well as the guest's experience. Does the service help properties attract profitable demand? Does it lower the cost of distribution? Does it make the brand more valuable to an owner considering affiliation? Does it remain reliable as the network grows?
 
@@ -48,7 +52,7 @@ The 2013 company filing also notes that its owned and leased portfolio's trailin
 
 ### Was It the Technology, the Timing, or the Terms?
 
-A hotel business is exposed to travel demand and economic conditions. The purchase period, downturn, subsequent recovery, financing decisions, and ability to remain invested all belong in the explanation. The consulted evidence does not establish a counterfactual showing what Hilton would have achieved under a different owner with different financing.
+A hotel business is exposed to travel demand and economic conditions. The purchase period, downturn, subsequent recovery, financing decisions, and ability to remain invested all belong in the explanation. The consulted evidence does not establish a **counterfactual**, a supported estimate of what Hilton would have achieved under a different owner with different financing.
 
 The technology interpretation is therefore conditional: a shared commercial capability may help a network expand and operate, but the magnitude of that contribution requires evidence on distribution costs, owner economics, guest behavior, and investment costs. A retrospective statement that technology was important cannot supply that decomposition.
 
@@ -56,11 +60,11 @@ Employee and customer consequences also require separate investigation. A larger
 
 The transferable lesson is the interaction of **operating capability and financial room**. Technology work needs time and funding to matter. Financing changes can preserve that time, while commercial systems can support a business model whose value is broader than the software itself. Neither lesson licenses the assumption that a highly leveraged company will always receive support through a downturn.
 
-## Skype: What If You Do Not Own Your Own Technology?
+## Skype: Establish Rights to the Technology Before Expansion
 
-In November 2009, eBay announced completion of a sale valuing Skype at $2.75 billion. A Silver Lake-led investor group controlled approximately 70%, while eBay retained approximately 30%. eBay reported receiving cash and a buyer note and also participating in part of the debt financing. The transaction therefore cannot be understood simply as one buyer paying cash for 100% of a debt-free company. [S26: eBay Skype sale announcement](https://investors.ebayinc.com/investor-news/press-release-details/2009/EBay-Inc-Completes-Sale-of-Skype/default.aspx)
+In November 2009, eBay announced completion of a sale valuing Skype at $2.75 billion. A Silver Lake-led investor group controlled approximately 70%, while eBay retained approximately 30%. eBay reported receiving cash and a **buyer note**, a promise of later payment by the buyer and also participating in part of the debt financing. The transaction therefore cannot be understood simply as one buyer paying cash for 100% of a debt-free company. [S26: eBay Skype sale announcement](https://investors.ebayinc.com/investor-news/press-release-details/2009/EBay-Inc-Completes-Sale-of-Skype/default.aspx)
 
-The later Skype registration statement describes acquisition of core peer-to-peer technology rights from Joltid in November 2009 as part of a settlement resolving outstanding litigation. It also describes investment in people and infrastructure, acquisition of Qik, new products, and partnerships. These are company disclosures prepared for a proposed offering; their positive interpretation remains management's. [S27: Skype registration filing](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm)
+**Intellectual property (IP)** means legal rights in assets such as software and inventions. The later Skype registration statement describes acquisition of core **peer-to-peer** technology rights, concerning software that connects users’ computers to one another, from Joltid in November 2009 as part of a settlement resolving outstanding litigation. It also describes investment in people and infrastructure, acquisition of Qik, new products, and partnerships. These are company disclosures prepared for a proposed offering; their positive interpretation remains management's. [S27: Skype registration filing](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm)
 
 The core diligence lesson is unusually concrete. A product can function for customers while the rights to technology essential to its operation remain a material ownership issue. Code quality and scale testing would not, by themselves, resolve that investment risk.
 
@@ -99,6 +103,6 @@ For customers, migration is a real consequence even when a buyer considers produ
 
 The lessons are mechanisms to investigate, not instructions to imitate. Hilton does not show that every company should build a central platform. Skype does not show that every carve-out will attract a strategic premium. Both show that technology becomes investment-relevant through its relationship to business capability, ownership rights, financing, and a buyer's needs.
 
-Both companies were sold at a profit, and neither profit has a single cause. Hilton had eleven years and a recovering market; Skype had a buyer who wanted it for strategic reasons and had to buy back its own core technology first. The useful question is never "what did the winner do?" but "which mechanism was at work, what made it possible, and does any of that hold here?"
+Hilton’s case connects operating capability with time, financing and recovery. Skype’s connects technology rights and product development with a buyer’s strategic interests. The sources document those components without isolating a single cause of the investment result.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+Both cases include a completed exit. The next case examines continuity of an investment-firm relationship while the investors behind it change: [[pt-visma]].

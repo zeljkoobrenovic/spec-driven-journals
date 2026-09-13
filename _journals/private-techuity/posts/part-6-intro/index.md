@@ -1,33 +1,31 @@
 ---
-title: "Four Companies That Actually Existed"
+title: "Lessons from the Field"
 date: 2026-09-13
 author: Private Techuity working manuscript
-excerpt: "Four real companies and a verdict: what the evidence supports, what it cannot settle, and what counts as success once the investors have gone."
+excerpt: "Use real company histories to examine what happened, what leaders can learn and where the evidence remains incomplete."
 permalink: pt-part-6
 timetoread: 2 min read
 status: draft:orange
 tags: private equity, part introduction, Part VI
 ---
 
-> **Part VI in one line:** everything argued so far, tested against four companies that actually existed — and a question about who the gains were for.
+> **Part VI in one line:** use real company histories to examine what happened, what leaders can learn and where the evidence remains incomplete.
 
 <br>
-The preceding parts make claims. This part checks them against companies with names, filings and outcomes.
+The main parts have explained how to understand an investment, influence decisions, choose work and obtain useful support. This part asks what those ideas help us see in real company histories.
 
-Four cases, chosen for contrast rather than as a representative sample of private equity. Two ended in valuable sales, one in liquidation, and one is still going through its fourth owner. None of them proves a general rule, and the chapters are careful about saying what each can and cannot support.
+The four case-study chapters cover five companies. They were chosen for the questions they make visible, rather than as a representative sample of private equity. Their evidence concentrates on private equity ownership; wider applications require attention to differences in funding, control and company circumstances.
 
-## What These Five Chapters Do
+## The Learning Path
 
-- [[pt-hilton-and-skype]] takes the successes. Success is the harder case to read honestly, because a good outcome lends every earlier decision a glow it may not deserve.
-- [[pt-visma]] breaks the shape the others suggest: no single hold, no clean ending, and the closest case here to an ordinary software career.
-- [[pt-toys-r-us]] is the failure, placed after the successes deliberately: it shows what happens when the financing leaves no room to practise the disciplines the book has been recommending.
-- [[pt-teamsystem]] follows four owners in succession, and asks what a quarter-century of acquisitions actually accumulates.
-- [[pt-durable-value]] closes the book by setting the cases against the empirical research and asking what durable success would mean.
+- [[pt-hilton-and-skype]] separates valuable sales from explanations of how operating improvements, financing and buyer interests contributed.
+- [[pt-visma]] examines shared capability and local responsibility alongside changes in the investors behind a continuing manager relationship, principally through 2024.
+- [[pt-toys-r-us]] examines what happens when technology plans meet cash pressure, competition and business failure.
+- [[pt-teamsystem]] examines what successive acquisitions accumulate: products and capabilities, integration work and financial obligations, using evidence through 2017.
+- [[pt-durable-value]] brings the cases and wider research together to assess what lasts for the company and the people affected.
 
-## What You Should Be Able to Do
+Use the same questions in each case. What did the investment expect? What choices did company leaders face? Which resources and constraints mattered? What happened, and how much can the evidence explain? What would you investigate before applying a lesson elsewhere?
 
-By the end you should be able to read a case study — including the ones investors publish about themselves — and separate what happened from what caused it, and both from what the account would like you to conclude.
+A reported result does not establish its cause. Customer and employee outcomes also need their own evidence. Each chapter keeps those limits visible so that the case can improve judgment without becoming a universal recipe.
 
-The last chapter asks the question the rest of the book has been circling: a good investment result is evidence about one party. Durable value is what remains when the investors have gone, and it is not the same thing.
-
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+Begin with [[pt-hilton-and-skype]]. The durable-value chapter closes the main narrative. The optional [[pt-appendix]] then develops the author’s proposed approach to designing investor support; the [[pt-toolkit]] provides practical records for your own decisions.

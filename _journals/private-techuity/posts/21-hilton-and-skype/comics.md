@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/21-hilton-and-skype/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. The fictional team opens public Hilton and Skype documents. Use one speech bubble with the exact words: \"What do these exits demonstrate?\" Convey: These scenes analyze evidence; they do not reenact either company's history.",
-  "alt": "Comic panel: the fictional team opens public Hilton and Skype documents.",
-  "caption": "These scenes analyze evidence; they do not reenact either company's history."
+  "prompt": "Panel 1 of an explainer comic. The fictional team opens public Hilton and Skype documents. Use one speech bubble with the exact words: \"What do these exits demonstrate?\" Convey: The fictional team examines historical documents about hotel group Hilton and calling service Skype. These scenes do not reenact either history.",
+  "alt": "Comic panel: The fictional team opens public Hilton and Skype documents.",
+  "caption": "The fictional team examines historical documents about hotel group Hilton and calling service Skype. These scenes do not reenact either history."
 }
 -->
 
-**Panel 1:** These scenes analyze evidence; they do not reenact either company's history.
+**Panel 1:** The fictional team examines historical documents about hotel group Hilton and calling service Skype. These scenes do not reenact either history.
 
 *Scene:* The fictional team opens public Hilton and Skype documents.
 
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/21-hilton-and-skype/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan places Hilton's commercial systems beside a restructuring record. Use one speech bubble with the exact words: \"Several mechanisms changed together.\" Convey: Financing, business development, technology, and market conditions complicate attribution.",
-  "alt": "Comic panel: morgan places Hilton's commercial systems beside a restructuring record.",
-  "caption": "Financing, business development, technology, and market conditions complicate attribution."
+  "prompt": "Panel 2 of an explainer comic. Morgan places Hilton's commercial systems beside a restructuring record. Use one speech bubble with the exact words: \"Several mechanisms changed together.\" Convey: Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result.",
+  "alt": "Comic panel: Morgan places Hilton's commercial systems beside a restructuring record.",
+  "caption": "Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result."
 }
 -->
 
-**Panel 2:** Financing, business development, technology, and market conditions complicate attribution.
+**Panel 2:** Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result.
 
 *Scene:* Morgan places Hilton's commercial systems beside a restructuring record.
 
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/21-hilton-and-skype/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam reads a sponsor-reported return and labels its basis. Use one speech bubble with the exact words: \"Whose return is being reported?\" Convey: An investment outcome is not automatically a net LP fund result.",
-  "alt": "Comic panel: sam reads a sponsor-reported return and labels its basis.",
-  "caption": "An investment outcome is not automatically a net LP fund result."
+  "prompt": "Panel 3 of an explainer comic. Sam reads a sponsor-reported return and labels its basis. Use one speech bubble with the exact words: \"Whose return is being reported?\" Convey: An investment firm’s reported profit does not establish what each investor in its funds received after all fees and other deductions.",
+  "alt": "Comic panel: Sam reads a sponsor-reported return and labels its basis.",
+  "caption": "An investment firm’s reported profit does not establish what each investor in its funds received after all fees and other deductions."
 }
 -->
 
-**Panel 3:** An investment outcome is not automatically a net LP fund result.
+**Panel 3:** An investment firm’s reported profit does not establish what each investor in its funds received after all fees and other deductions.
 
 *Scene:* Sam reads a sponsor-reported return and labels its basis.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/21-hilton-and-skype/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex studies Skype's intellectual-property and operating disclosures. Use one speech bubble with the exact words: \"The product depended on these rights.\" Convey: Legal and technical dependencies can be material to an investment.",
-  "alt": "Comic panel: alex studies Skype's intellectual-property and operating disclosures.",
-  "caption": "Legal and technical dependencies can be material to an investment."
+  "prompt": "Panel 4 of an explainer comic. Alex studies Skype's intellectual-property and operating disclosures. Use one speech bubble with the exact words: \"The product depended on these rights.\" Convey: Skype’s case shows why legal rights to essential software matter alongside its technical quality.",
+  "alt": "Comic panel: Alex studies Skype's intellectual-property and operating disclosures.",
+  "caption": "Skype’s case shows why legal rights to essential software matter alongside its technical quality."
 }
 -->
 
-**Panel 4:** Legal and technical dependencies can be material to an investment.
+**Panel 4:** Skype’s case shows why legal rights to essential software matter alongside its technical quality.
 
 *Scene:* Alex studies Skype's intellectual-property and operating disclosures.
 
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/21-hilton-and-skype/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Sam refuses to divide two headline transaction valuations. Use one speech bubble with the exact words: \"We need the actual cash flows.\" Convey: Ownership, debt, funding, timing, and costs matter to realized returns.",
-  "alt": "Comic panel: sam refuses to divide two headline transaction valuations.",
-  "caption": "Ownership, debt, funding, timing, and costs matter to realized returns."
+  "prompt": "Panel 5 of an explainer comic. Sam refuses to divide two headline transaction valuations. Use one speech bubble with the exact words: \"We need the actual cash flows.\" Convey: To calculate an investor return, follow the money invested and received, with ownership, borrowing, costs and dates. Two company price headlines are insufficient.",
+  "alt": "Comic panel: Sam refuses to divide two headline transaction valuations.",
+  "caption": "To calculate an investor return, follow the money invested and received, with ownership, borrowing, costs and dates. Two company price headlines are insufficient."
 }
 -->
 
-**Panel 5:** Ownership, debt, funding, timing, and costs matter to realized returns.
+**Panel 5:** To calculate an investor return, follow the money invested and received, with ownership, borrowing, costs and dates. Two company price headlines are insufficient.
 
 *Scene:* Sam refuses to divide two headline transaction valuations.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/21-hilton-and-skype/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team keeps stakeholder and causal questions open. Use one speech bubble with the exact words: \"Success still needs explanation.\" Convey: A favorable exit supplies evidence of one outcome, not a complete causal account.",
-  "alt": "Comic panel: the team keeps stakeholder and causal questions open.",
-  "caption": "A favorable exit supplies evidence of one outcome, not a complete causal account."
+  "prompt": "Panel 6 of an explainer comic. The team keeps stakeholder and causal questions open. Use one speech bubble with the exact words: \"Success still needs explanation.\" Convey: A valuable sale is one outcome. The evidence still needs to explain causes and the consequences for customers and employees.",
+  "alt": "Comic panel: The team keeps stakeholder and causal questions open.",
+  "caption": "A valuable sale is one outcome. The evidence still needs to explain causes and the consequences for customers and employees."
 }
 -->
 
-**Panel 6:** A favorable exit supplies evidence of one outcome, not a complete causal account.
+**Panel 6:** A valuable sale is one outcome. The evidence still needs to explain causes and the consequences for customers and employees.
 
 *Scene:* The team keeps stakeholder and causal questions open.
 

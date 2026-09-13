@@ -2,39 +2,39 @@
 title: Fund the Engineering the Business Case Requires
 date: 2026-09-12
 author: Private Techuity working manuscript
-excerpt: Connect growth and earnings priorities to architectural flexibility, operating cost, technical debt and a funded transition.
+excerpt: "Compare software designs by what the business needs to change, what the work costs and how customers will move safely."
 permalink: pt-engineering-and-architecture
-timetoread: 7 min read
+timetoread: 8 min read
 status: draft:orange
 tags: private equity, technology leadership, Part III
 ---
 
 > **KEY POINTS:**
 >
-> * **Begin with the business capability the plan requires.** Growth may call for faster experiments; earnings improvement may call for lower operating cost. Both need dependable products and funded investment.
-> * **A valuation method does not select an architecture.** Compare specific options for change, cost and risk rather than equating growth with microservices or efficiency with deferred maintenance.
-> * **Measure the whole transition.** Include parallel operation, customer migration and postponed work, then test whether the promised capability and savings appear.
+> * **Begin with what the company needs to do.** Identify the changes, scale and reliability the business plan requires.
+> * **Compare designs using their consequences.** A fashionable technology or an old application is not, by itself, a good or bad investment.
+> * **Fund the path from the current system to the proposed one.** Include running both systems, moving customers and maintaining service along the way.
 
 <br>
-A fifteen-year-old application can be an excellent asset. A recently built distributed system can be a poor one. Age and fashion tell little about whether a system supports its customers, economics, and intended development.
+Larkspur, the fictional scheduling-software company, wants to serve customers in a second country. Its software assumes one set of tax rules, its contracts cover one market, and its support team works in one language. Which changes are needed before expansion can succeed?
 
-The investment question is more specific: **what must the business be able to change, operate, or scale, and what currently prevents it?** That question turns engineering assessment from a catalogue of technical preferences into an examination of company capability.
+**Software architecture** is the structure of a software system: its main parts, how they connect and how responsibility is divided between them. Architecture matters when that structure makes a required business change easier, harder or riskier.
 
-[[pt-product-value]] traced how product work reaches business results. This chapter asks what has to be true of the system underneath for that work to be possible at all — and what it costs to make it so. [[pt-valuation-and-design]] then connects both back to what the owner believes the company is worth.
+[[pt-product-value]] explained how to connect a proposed change to customer and business results. This chapter asks what the underlying system and team must be able to do. We move from the business constraint to technical debt, delivery evidence and the cost of changing systems.
 
-## Turn the Valuation Assumption Into Work
+## Translate the Business Plan Into Required Capabilities
 
 A **valuation** estimates what the business or an ownership interest is worth. Investors may emphasize revenue growth, established earnings, or future cash generation when making that estimate. The method is not a design specification: it tells the technology team which assumptions need investigation. [[pt-valuation-and-architecture]] introduces the financial terms and worked examples.
 
-If the investment case depends heavily on growth, the product may need cheaper experiments, faster onboarding or entry into another market. Useful architectural work might isolate country rules, make configuration safer or improve deployment and measurement. An expensive redesign that delays customer learning can defeat that purpose even if it promises more flexibility later.
+If the investment case depends heavily on growth, the product may need cheaper experiments, faster onboarding or entry into another market. Useful architectural work might keep country rules in a distinct part of the software, make its settings safer to change or improve **deployment**, the process of releasing software so people can use it. An expensive redesign that delays customer learning can defeat that purpose even if it promises more flexibility later.
 
 If the case emphasizes **EBITDA**, earnings before interest, taxes, depreciation and amortization, management may focus more closely on sustainable operating costs. Removing unused infrastructure, automating support work or retiring duplicate systems can help. The investment case must still include transition spending and continued product development; neither appears automatically in that earnings subtotal.
 
-These priorities overlap. Reliable deployment can reduce both the cost of failure and the time needed to experiment. A simpler application can support both margin and change. A useful architecture decision describes the capability required and the trade-offs, rather than assuming that growth requires microservices or that an earnings target justifies postponing maintenance.
+These priorities overlap. Reliable deployment can reduce both the cost of failure and the time needed to experiment. A simpler application can support both margin and change. A useful architecture decision describes the capability required and the trade-offs, rather than selecting a technology from the financial target alone.
 
 ## Start With a Constraint, Not a Score
 
-Larkspur plans to enter a second country. Its billing logic assumes one tax regime, its customer contracts have not been adapted, and its support team works in one language. A generic architecture score would report tight coupling. The investment-relevant finding is sharper: market entry depends on coordinated changes to billing, legal work, support and product configuration — and only the first is an engineering problem.
+Return to Larkspur’s plan to enter a second country. A generic architecture review might report **tight coupling**: parts of the system depend on one another so closely that changing one requires changing others. The investment-relevant finding is sharper: market entry depends on coordinated changes to billing, legal work, support and product configuration — and only the first is an engineering problem.
 
 The constraint could justify architectural change. It does not establish that the entire application should be replaced. Compare the smallest coherent options that can support the business need, including the possibility that the market-entry plan itself is premature.
 
@@ -42,27 +42,27 @@ Assessment should also record strengths. A stable core, deep domain knowledge, a
 
 ## Technical Debt Is a Decision About Future Work
 
-Technical debt is a useful metaphor when a current shortcut or accumulated condition creates future cost or risk. It becomes less useful when every disliked design choice is included without a connection to work the company needs to perform.
+**Technical debt** describes future effort or risk created by earlier technical choices or postponed work. It is a metaphor, rather than money owed to a lender. It becomes less useful when every disliked design choice is included without a connection to work the company needs to perform.
 
 Describe a material item through its consequences: which changes become slower, which incidents become more likely, what knowledge is scarce, and what the options cost. Avoid calculating a total “debt balance” by adding estimates with incompatible assumptions.
 
-Larkspur's invoicing module makes the distinction concrete. It is fragile enough that the same two specialists review every pricing change, which takes about three weeks. If the growth plan depends on frequent pricing experiments, that three weeks is the binding constraint on revenue learning. If pricing will stay stable, the more urgent problem is that those two people are the only ones who understand the module. The same code justifies different interventions under different theses.
+A **module** is a part of the software with a particular responsibility. Larkspur’s invoicing module makes the distinction concrete. It is fragile enough that the same two specialists review every pricing change, which takes about three weeks. If the growth plan depends on frequent pricing experiments, that three-week wait prevents the company from quickly learning what customers will pay. If pricing will stay stable, the more urgent problem is that those two people are the only ones who understand the module. What needs to improve depends on the company’s plan.
 
-Debt repayment competes with other investments. That does not mean it should always lose. It means its case should include avoided disruption, lower change cost, and preserved options, with uncertainty stated. “We must modernize” is weaker than an explanation of which business decisions are becoming infeasible.
+Addressing technical debt competes with other engineering investments. That does not mean it should always lose. It means its case should include avoided disruption, lower change cost, and preserved options, with uncertainty stated. “We must modernize” is weaker than an explanation of which business decisions are becoming infeasible.
 
 ## Engineering Effectiveness Has Several Dimensions
 
-The SPACE paper argues that developer productivity cannot be represented by a single activity measure or dimension. [S13: SPACE framework](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/) This is especially relevant when an owner asks whether a company has too many engineers. Headcount divided by revenue is a cost ratio; it is not a complete measure of the organization's effectiveness.
+**Engineering effectiveness** means the ability to deliver useful, reliable work and sustain that ability. The SPACE research framework examines several dimensions of developer productivity: satisfaction and well-being, performance, activity, communication and collaboration, and efficiency and flow. Its paper argues that developer productivity cannot be represented by a single activity measure or dimension. [S13: SPACE framework](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/) This is especially relevant when an owner asks whether a company has too many engineers. Headcount divided by revenue is a cost ratio; it is not a complete measure of the organization's effectiveness.
 
-DORA's current guidance, consulted in September 2026, uses five delivery metrics and emphasizes application or service context. It warns against disparate comparisons and metric gaming. [S14: DORA metrics guide](https://dora.dev/guides/dora-metrics/) A portfolio benchmark should therefore not rank a regulated transactional service against a newly launched marketing application without explaining the difference.
+**DORA**, the research program on software delivery and organizational performance, provides another perspective. Its metrics guidance, consulted in September 2026, uses five delivery metrics and emphasizes application or service context. It warns against disparate comparisons and metric gaming. [S14: DORA metrics guide](https://dora.dev/guides/dora-metrics/) A portfolio benchmark should therefore not rank a regulated transactional service against a newly launched marketing application without explaining the difference.
 
 For a specific company, begin with the work customers and the business need. Examine how long changes wait, how often released work causes disruption, and how much effort is spent understanding dependencies. Pair delivery evidence with product outcomes and the team's ability to sustain the work.
 
-Interviews are necessary because telemetry does not explain everything. A long lead time may reflect a shared approval queue, unclear product decisions, or a test environment that rarely works. More developers do not necessarily resolve any of those constraints.
+Interviews help explain **telemetry**, the records and measurements collected from systems. A long **lead time**, the time from starting a change to delivering it, may reflect a shared approval queue, unclear product decisions, or an unreliable **test environment**, a separate setup used to check changes before customers receive them. More developers do not necessarily resolve any of those constraints.
 
 ## A Rewrite Needs a Funded Transition
 
-A proposed replacement must account for the period in which old and new systems coexist. Suppose Alex proposes replacing Larkspur's scheduling engine over eighteen months:
+A proposed replacement must account for the period in which old and new systems coexist. For a separate fictional proposal, Alex, Larkspur’s technology leader, considers replacing its scheduling engine over eighteen months. This is a different project from the onboarding pilot in the previous chapter:
 
 | Transition cost | € |
 | --- | ---: |
@@ -79,7 +79,7 @@ Also identify the retirement condition. If customers remain indefinitely on the 
 
 ## Standardization Helps at the Right Boundary
 
-Common security expectations, incident definitions, or financial reporting can make coordination easier. Common source-control and build practices may reduce repeated work within a company. A mandatory shared application stack across unrelated portfolio companies requires a much stronger case.
+Common security expectations, incident definitions, or financial reporting can make coordination easier. Common ways of recording code changes and preparing software for release may reduce repeated work within a company. Requiring unrelated portfolio companies to use the same technologies to build and run their applications needs a much stronger case.
 
 The important distinction is the economic boundary. Products serving different customers can need different architectures. Acquired businesses can preserve useful local knowledge. Conversely, a group selling one integrated customer experience may need deeper coordination than an autonomy slogan allows.
 
@@ -93,6 +93,6 @@ The goal is not to make every program small. Some changes require substantial co
 
 A Technology Principal can bring patterns and specialists, but company engineers need to participate in diagnosis. Their knowledge of the system is part of the asset being acquired. An assessment that treats their explanations as resistance can lose the information needed to make the investment work.
 
-"The stack is dated" is not an investment case. "We cannot price experiment more than once a quarter, and the growth plan assumes monthly" is one. Name the business decision that is currently infeasible, cost the transition honestly, and say what evidence would justify continuing to fund it.
+A useful engineering case names the business constraint, compares feasible options and includes the cost of moving between them. For example, “pricing changes take three weeks, but the growth plan requires weekly experiments” tells decision-makers what needs to improve.
 
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+We can now bring the financial and technical explanations together. The next chapter follows a valuation assumption through to a concrete design choice: [[pt-valuation-and-design]].

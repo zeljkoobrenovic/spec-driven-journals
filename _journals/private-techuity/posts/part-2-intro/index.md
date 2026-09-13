@@ -1,35 +1,31 @@
 ---
-title: "Ownership Is Not the Same as Authority"
+title: "How Investment Changes Ownership, Governance and Decision-Making"
 date: 2026-09-13
 author: Private Techuity working manuscript
-excerpt: "Ownership is not the same as authority. Three chapters on who decides, what motivates them, and how to judge an investor before you are committed."
+excerpt: "Understand what changes when an investor enters: authority, priorities, accountability and the decisions leaders can make or influence."
 permalink: pt-part-2
 timetoread: 2 min read
 status: draft:orange
 tags: private equity, part introduction, Part II
 ---
 
-> **Part II in one line:** the money is settled; now find out who is actually allowed to decide, and what they want.
+> **Part II in one line:** understand what changes when an investor enters: authority, priorities, accountability and the decisions leaders can make or influence.
 
 <br>
-Part I followed the money. This part follows the authority, which turns out to be a different map entirely.
+Investment can change both the company’s resources and the conditions under which you lead. A new owner may bring different priorities, approval requirements or expectations about reporting. Even when your job title stays the same, the way decisions are made may change.
 
-Owning a company and running it are separate acts, performed by different people under different rules. A fund's investment committee can decide to buy your company without being entitled to approve your roadmap. A minority shareholder with the right contract can block a decision a majority owner wants. And the person whose suggestion carries the most weight in practice is often the one with the least formal authority on paper.
+**Governance** is the arrangement for making decisions, overseeing them and holding people responsible. **Authority** is permission to make a particular decision. Neither can be read reliably from a job title or an ownership percentage alone.
 
-## What These Three Chapters Do
+Part I explained money and ownership. This part helps you turn that understanding into an agreed way of working: what you decide, what you need approval for, and how you influence the assumptions behind the plan.
 
-- [[pt-governance]] establishes who decides what, and argues for writing it down with names and thresholds before a disagreement makes it urgent.
-- [[pt-incentives]] asks what actually motivates each party — and who is left out of the alignment story entirely. It is the least comfortable chapter in the book, because the honest answer is that some interests do not reconcile.
-- [[pt-investor-fit]] turns both into something usable: how to judge an investor's behavior under pressure, before you are committed to them.
+## The Learning Path
 
-The order matters. You cannot assess incentives without knowing who holds which rights, and you cannot assess a partnership without understanding both.
+- [[pt-governance]] shows how to establish decision rights, shape proposals and resolve disagreement before unclear authority disrupts delivery.
+- [[pt-incentives]] examines how rewards and consequences affect priorities, including interests that shared ownership does not align.
+- [[pt-investor-fit]] helps you assess the partnership, whether you are considering an investor or already working with one.
 
-## What You Should Be Able to Do
+The same questions can be useful under different ownership arrangements, but the answers depend on the actual agreements and people. A company leader may influence the choice of investor, inherit that choice, or join partway through ownership. Each still needs a clear account of authority and a way to surface difficult evidence.
 
-By the end of Part II you should be able to name, for any decision that matters to you, who recommends it, who approves it, who funds it, and how long that takes. You should also be able to ask an investor a question they cannot answer with a brochure.
+By the end, you should be able to explain how a consequential decision gets made, who is accountable and what you would do if the original expectations prove unrealistic.
 
-What you will not get is a way to make conflicting interests agree. Governance lets disagreement reach a decision someone is accountable for. It does not dissolve the disagreement, and a book that promised otherwise would be lying to you.
-
-Part III then turns to the work itself: how product and engineering decisions actually become business results.
-
-*Unfamiliar terms are defined in the [[pt-glossary]].*
+Begin with [[pt-governance]]. Part III then uses those decision arrangements to choose and deliver product and technology investments.

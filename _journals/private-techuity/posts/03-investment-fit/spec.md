@@ -1,6 +1,6 @@
 ---
 status: draft
-revised: 2026-09-12
+revised: 2026-09-13
 ---
 
 # Spec: Capital Should Fit the Company's Problem
@@ -11,10 +11,13 @@ Distinguish venture, growth, buyouts, carve-outs, turnarounds, and alternatives 
 
 ## Audience
 
-Experienced product and engineering leaders learning private equity; a developing Technology Principal needs both economic understanding and usable judgment.
+Readers learning private equity, company finance, and technology leadership from scratch, including product and engineering practitioners. Assume no prior knowledge of specialist financial or technical vocabulary.
 
 ## Success criteria
 
+- Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
+- Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
+- Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
@@ -45,8 +48,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-13: Revise for readers starting from scratch; define terms before use, explain reasoning steps, and connect the configured chapter sequence.
 - 2026-09-13: Readability pass. Intro tightened 119 → 104 words and cut from three overlapping paragraphs to two — paragraphs 1 and 2 had both argued "capital should fit the problem." Closing no longer restates the opening; it now ends on the question to ask instead. Last surviving question heading made declarative. Added the chapter's only figure (€4m vs €1m of interest against €10m EBITDA, consistent with the bridge in [[pt-cash-and-constraints]]), since reviewers noted this chapter sat between two numeric chapters with no arithmetic of its own.
-
 - 2026-09-12: Add the author-requested ai-notes KEY POINTS opening; preserve article-specific conclusions and caveats.
-
 - 2026-09-12: Initial spec, status draft; supports a substantial first manuscript and later evidence-led revision.

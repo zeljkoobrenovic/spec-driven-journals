@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic storyboard — artwork pending.** Morgan advises the investment firm, Alex leads company technology, and Sam leads company finance. All are fictional. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -13,13 +13,13 @@
   "status": "pending",
   "asset": "assets/images/22-visma/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. The fictional team reads a historical Visma report. Use one speech bubble with the exact words: \"Which period are we examining?\" Convey: The case uses the 2024 reporting period, not a current valuation claim.",
-  "alt": "Comic panel: the fictional team reads a historical Visma report.",
-  "caption": "The case uses the 2024 reporting period, not a current valuation claim."
+  "prompt": "Panel 1 of an explainer comic. The fictional team reads a historical Visma report. Use one speech bubble with the exact words: \"Which period are we examining?\" Convey: Visma is a business-software group. This case mainly examines evidence through 2024, rather than its current value.",
+  "alt": "Comic panel: The fictional team reads a historical Visma report.",
+  "caption": "Visma is a business-software group. This case mainly examines evidence through 2024, rather than its current value."
 }
 -->
 
-**Panel 1:** The case uses the 2024 reporting period, not a current valuation claim.
+**Panel 1:** Visma is a business-software group. This case mainly examines evidence through 2024, rather than its current value.
 
 *Scene:* The fictional team reads a historical Visma report.
 
@@ -31,13 +31,13 @@
   "status": "pending",
   "asset": "assets/images/22-visma/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan places several fund folders beside one long manager relationship. Use one speech bubble with the exact words: \"A manager is not one fund.\" Convey: Repeated ownership can involve different entry prices, vehicles, and realizations.",
-  "alt": "Comic panel: morgan places several fund folders beside one long manager relationship.",
-  "caption": "Repeated ownership can involve different entry prices, vehicles, and realizations."
+  "prompt": "Panel 2 of an explainer comic. Morgan places several fund folders beside one long manager relationship. Use one speech bubble with the exact words: \"A manager is not one fund.\" Convey: An investment manager can remain involved while the funds and investors behind it change. A long relationship is not one unchanged investment.",
+  "alt": "Comic panel: Morgan places several fund folders beside one long manager relationship.",
+  "caption": "An investment manager can remain involved while the funds and investors behind it change. A long relationship is not one unchanged investment."
 }
 -->
 
-**Panel 2:** Repeated ownership can involve different entry prices, vehicles, and realizations.
+**Panel 2:** An investment manager can remain involved while the funds and investors behind it change. A long relationship is not one unchanged investment.
 
 *Scene:* Morgan places several fund folders beside one long manager relationship.
 
@@ -49,13 +49,13 @@
   "status": "pending",
   "asset": "assets/images/22-visma/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex views autonomous products with selected shared services. Use one speech bubble with the exact words: \"Where should support be shared?\" Convey: Local entrepreneurship and common capabilities require deliberate boundaries.",
-  "alt": "Comic panel: alex views autonomous products with selected shared services.",
-  "caption": "Local entrepreneurship and common capabilities require deliberate boundaries."
+  "prompt": "Panel 3 of an explainer comic. Alex views autonomous products with selected shared services. Use one speech bubble with the exact words: \"Where should support be shared?\" Convey: Local product decisions and shared support can work together. Examine who decides what and whether customers benefit after the costs.",
+  "alt": "Comic panel: Alex views autonomous products with selected shared services.",
+  "caption": "Local product decisions and shared support can work together. Examine who decides what and whether customers benefit after the costs."
 }
 -->
 
-**Panel 3:** Local entrepreneurship and common capabilities require deliberate boundaries.
+**Panel 3:** Local product decisions and shared support can work together. Examine who decides what and whether customers benefit after the costs.
 
 *Scene:* Alex views autonomous products with selected shared services.
 
@@ -67,13 +67,13 @@
   "status": "pending",
   "asset": "assets/images/22-visma/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam reads the footnote below a financial measure. Use one speech bubble with the exact words: \"Definitions change the comparison.\" Convey: Repeatable revenue, organic growth, and free cash flow need their stated definitions.",
-  "alt": "Comic panel: sam reads the footnote below a financial measure.",
-  "caption": "Repeatable revenue, organic growth, and free cash flow need their stated definitions."
+  "prompt": "Panel 4 of an explainer comic. Sam reads the footnote below a financial measure. Use one speech bubble with the exact words: \"Definitions change the comparison.\" Convey: Sales, growth and cash measures depend on which businesses, dates and costs are included. Read those definitions before comparing results.",
+  "alt": "Comic panel: Sam reads the footnote below a financial measure.",
+  "caption": "Sales, growth and cash measures depend on which businesses, dates and costs are included. Read those definitions before comparing results."
 }
 -->
 
-**Panel 4:** Repeatable revenue, organic growth, and free cash flow need their stated definitions.
+**Panel 4:** Sales, growth and cash measures depend on which businesses, dates and costs are included. Read those definitions before comparing results.
 
 *Scene:* Sam reads the footnote below a financial measure.
 
@@ -85,13 +85,13 @@
   "status": "pending",
   "asset": "assets/images/22-visma/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Sam joins two differently presented earnings figures with the annual-report reconciliation. Use one speech bubble with the exact words: \"The adjustment explains the difference.\" Convey: The annual reports reconcile the 2024 figures through acquisition-related expenses; the changed measure does not create additional cash.",
-  "alt": "Comic panel: sam joins two differently presented earnings figures with the annual-report reconciliation.",
-  "caption": "The annual reports reconcile the 2024 figures through acquisition-related expenses; the changed measure does not create additional cash."
+  "prompt": "Panel 5 of an explainer comic. Sam joins two differently presented earnings figures with the annual-report reconciliation. Use one speech bubble with the exact words: \"The adjustment explains the difference.\" Convey: The reports explain two earnings figures for 2024 by adding back acquisition-related expenses. Changing the measure does not create new cash.",
+  "alt": "Comic panel: Sam joins two differently presented earnings figures with the annual-report reconciliation.",
+  "caption": "The reports explain two earnings figures for 2024 by adding back acquisition-related expenses. Changing the measure does not create new cash."
 }
 -->
 
-**Panel 5:** The annual reports reconcile the 2024 figures through acquisition-related expenses; the changed measure does not create additional cash.
+**Panel 5:** The reports explain two earnings figures for 2024 by adding back acquisition-related expenses. Changing the measure does not create new cash.
 
 *Scene:* Sam joins two differently presented earnings figures with the annual-report reconciliation.
 
@@ -103,13 +103,13 @@
   "status": "pending",
   "asset": "assets/images/22-visma/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team separates company claims from observed financial results. Use one speech bubble with the exact words: \"What would establish the mechanism?\" Convey: The operating model is relevant; its incremental causal contribution remains uncertain.",
-  "alt": "Comic panel: the team separates company claims from observed financial results.",
-  "caption": "The operating model is relevant; its incremental causal contribution remains uncertain."
+  "prompt": "Panel 6 of an explainer comic. The team separates company claims from observed financial results. Use one speech bubble with the exact words: \"What would establish the mechanism?\" Convey: Reported growth and investment support further investigation. They do not isolate the benefit of shared support or establish every customer’s experience.",
+  "alt": "Comic panel: The team separates company claims from observed financial results.",
+  "caption": "Reported growth and investment support further investigation. They do not isolate the benefit of shared support or establish every customer’s experience."
 }
 -->
 
-**Panel 6:** The operating model is relevant; its incremental causal contribution remains uncertain.
+**Panel 6:** Reported growth and investment support further investigation. They do not isolate the benefit of shared support or establish every customer’s experience.
 
 *Scene:* The team separates company claims from observed financial results.
 
