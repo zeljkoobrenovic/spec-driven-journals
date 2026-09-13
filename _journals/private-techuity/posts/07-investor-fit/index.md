@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Assess an investor through concrete decisions, references and the support available when a company faces difficulty."
 permalink: investor-fit
 timetoread: 8 min read
-status: draft:orange
 logo: "assets/images/07-investor-fit/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/07-investor-fit.png"

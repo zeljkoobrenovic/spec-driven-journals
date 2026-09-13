@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Examine how roles, decisions, skills and working relationships affect the company’s ability to deliver its technology plans."
 permalink: people-and-operating-models
 timetoread: 7 min read
-status: draft:orange
 logo: "assets/images/13-people-and-operating-models/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/13-people-and-operating-models.png"

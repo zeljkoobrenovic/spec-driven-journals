@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Use two historical sales to separate investor gains, company improvements and claims about technology’s contribution."
 permalink: hilton-and-skype
 timetoread: 10 min read
-status: draft:orange
 logo: "assets/images/21-hilton-and-skype/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/21-hilton-and-skype.png"

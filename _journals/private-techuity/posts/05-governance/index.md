@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Clarify who proposes, approves, funds and carries out decisions when the company and its owner work together."
 permalink: governance
 timetoread: 10 min read
-status: draft:orange
 logo: "assets/images/05-governance/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/05-governance.png"

@@ -2,7 +2,6 @@
 title: Glossary
 date: 2026-09-12
 permalink: glossary
-status: draft:orange
 excerpt: "Plain-language definitions organized in the order you encounter the book’s main subjects."
 logo: "assets/images/glossary/logo.jpeg"
 logo_credit: "AI-generated illustration"

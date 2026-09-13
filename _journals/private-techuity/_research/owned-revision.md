@@ -3,7 +3,7 @@
 **Date:** 2026-09-13
 **Status:** revised manuscript validated; installation recorded by the workspace installer
 
-The author selected **Owned: Product & Engineering Leadership Under Investors** and asked for a substantive rewrite, with a plan first. [PLAN.md](../PLAN.md) records the plan and all chapter contracts. [STRUCTURE.md](../STRUCTURE.md) describes the resulting book.
+The author selected **OWNED: Product & Engineering Leadership Under Investors** and asked for a substantive rewrite, with a plan first. [PLAN.md](../PLAN.md) records the plan and all chapter contracts. [STRUCTURE.md](../STRUCTURE.md) describes the resulting book.
 
 ## What changed
 

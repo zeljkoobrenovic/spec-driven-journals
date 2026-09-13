@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Examine technology plans alongside debt, cash shortages, competition and the consequences of a retailer’s failure."
 permalink: toys-r-us
 timetoread: 12 min read
-status: draft:orange
 logo: "assets/images/23-toys-r-us/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/23-toys-r-us.png"

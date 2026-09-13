@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Turn expectations about business value into practical choices about what to build or buy, what it costs and how much flexibility it keeps."
 permalink: valuation-and-design
 timetoread: 8 min read
-status: draft:orange
 logo: "assets/images/27-valuation-and-design/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/27-valuation-and-design.png"

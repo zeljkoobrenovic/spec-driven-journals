@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Lead through funding and ownership changes, including delays and continued ownership."
 permalink: part-5
 timetoread: 2 min read
-status: draft:orange
 logo: "assets/images/part-5-intro/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/part-5-intro.png"

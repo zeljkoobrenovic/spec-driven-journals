@@ -1,11 +1,11 @@
-# Rewrite Plan — Owned: Product & Engineering Leadership Under Investors
+# Rewrite Plan — OWNED: Product & Engineering Leadership Under Investors
 
 **Status:** implemented; final validation and installation recorded in `_research/owned-revision.md`
 **Date:** 2026-09-13
 
 ## Editorial decision
 
-The author selected **Owned: Product & Engineering Leadership Under Investors** and requested a substantive rewrite. This supersedes the earlier decision to make private equity the primary setting with wider applications. The book now follows the product and engineering leader’s work under investor ownership. Private equity remains the deepest historical treatment.
+The author selected **OWNED: Product & Engineering Leadership Under Investors** and requested a substantive rewrite. This supersedes the earlier decision to make private equity the primary setting with wider applications. The book now follows the product and engineering leader’s work under investor ownership. Private equity remains the deepest historical treatment.
 
 The reader may lead a venture-backed business, a company with growth investors, a business controlled by a buyout fund, or a company working with a corporate investor or parent. Founder funding provides a useful baseline. Public ownership appears where it changes financing or the next transition; this is not a complete manual for running a listed company.
 

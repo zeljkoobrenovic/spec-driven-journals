@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Follow who owns the company, who supplies its money, and who can decide how it is used."
 permalink: capital-and-ownership
 timetoread: 10 min read
-status: draft:orange
 logo: "assets/images/01-capital-and-ownership/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/01-capital-and-ownership.png"

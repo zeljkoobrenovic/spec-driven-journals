@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Identify your owners’ expectations and the money and decisions you can rely on."
 permalink: part-1
 timetoread: 2 min read
-status: draft:orange
 logo: "assets/images/part-1-intro/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/part-1-intro.png"

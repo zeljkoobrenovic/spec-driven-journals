@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Follow changing investors, acquisitions and shared support, while learning why financial figures need their exact definitions."
 permalink: visma
 timetoread: 10 min read
-status: draft:orange
 logo: "assets/images/22-visma/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/22-visma.png"

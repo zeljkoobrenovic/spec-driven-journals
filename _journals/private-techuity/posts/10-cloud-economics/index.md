@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Understand what drives a cloud bill and test whether lower spending preserves useful service after all costs are included."
 permalink: cloud-economics
 timetoread: 7 min read
-status: draft:orange
 logo: "assets/images/10-cloud-economics/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/10-cloud-economics.png"

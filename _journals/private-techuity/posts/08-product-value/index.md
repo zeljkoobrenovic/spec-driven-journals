@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Trace a product change through customer behavior to business results, and test each step before claiming a benefit."
 permalink: product-value
 timetoread: 9 min read
-status: draft:orange
 logo: "assets/images/08-product-value/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/08-product-value.png"

@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Plan the practical work of combining or separating businesses while keeping customers served and costs understood."
 permalink: acquisitions-and-carveouts
 timetoread: 8 min read
-status: draft:orange
 logo: "assets/images/14-acquisitions-and-carveouts/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/14-acquisitions-and-carveouts.png"

@@ -1,6 +1,6 @@
 # Accepted Title — Owned
 
-On September 13, 2026, the author selected **Owned: Product & Engineering Leadership Under Investors** and requested a substantive rewrite. Use this title for the current manuscript. The company leader’s work under investors is now the organizing subject; private equity remains the deepest historical treatment.
+On September 13, 2026, the author selected **OWNED: Product & Engineering Leadership Under Investors** and requested a substantive rewrite. Use this title for the current manuscript. The company leader’s work under investors is now the organizing subject; private equity remains the deepest historical treatment.
 
 See [the implementation plan](../PLAN.md), [the resulting structure](../STRUCTURE.md) and [the revision record](owned-revision.md). This decision supersedes the September 12 title and positioning below.
 

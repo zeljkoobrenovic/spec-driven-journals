@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Compare minority investment, dilution, buyout returns and strategic-owner expectations without confusing investor success with product or engineering performance."
 permalink: return-mechanics
 timetoread: 12 min read
-status: draft:orange
 logo: "assets/images/02-return-mechanics/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/02-return-mechanics.png"

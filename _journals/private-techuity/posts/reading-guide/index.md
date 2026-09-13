@@ -1,8 +1,7 @@
 ---
-title: Owned — Purpose and Reading Guide
+title: OWNED — Reading Guide
 date: 2026-09-12
 permalink: reading-guide
-status: draft:orange
 excerpt: "A practical guide to making product and engineering decisions when investors shape the money, authority and expectations around your company."
 logo: "assets/images/reading-guide/logo.jpeg"
 logo_credit: "AI-generated illustration"
@@ -18,7 +17,7 @@ icon: "assets/icons/reading-guide.png"
 <br>
 Your company has new investors. The announcement promises growth and support. Within weeks, you are asked to hire faster, demonstrate a new product, reduce costs or connect to the owner’s systems. The requests may each sound reasonable. Together, they can exceed the company’s money, authority and ability to deliver.
 
-**Owned: Product & Engineering Leadership Under Investors** is about doing your job in that situation. Its primary reader leads product or engineering inside the company, including someone joining an arrangement they did not choose. Understanding the investor matters because it changes the decisions you must make, the commitments you can support and the arguments you need to bring to the people who decide.
+**OWNED: Product & Engineering Leadership Under Investors** is about doing your job in that situation. Its primary reader leads product or engineering inside the company, including someone joining an arrangement they did not choose. Understanding the investor matters because it changes the decisions you must make, the commitments you can support and the arguments you need to bring to the people who decide.
 
 Company’s ownership setting does not remove your judgment or responsibility. Sometimes you can approve a change yourself. Sometimes you must negotiate funding, challenge a target or ask the board to choose between incompatible outcomes. The book helps you distinguish those situations and make the consequences clear.
 

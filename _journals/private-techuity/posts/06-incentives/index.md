@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Understand what management shares can pay, which conditions apply, and why shared ownership does not align every interest."
 permalink: incentives
 timetoread: 8 min read
-status: draft:orange
 logo: "assets/images/06-incentives/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/06-incentives.png"

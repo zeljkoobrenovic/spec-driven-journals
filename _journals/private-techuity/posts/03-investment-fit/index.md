@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Match a company’s funding needs to the investor, ownership arrangement and time needed to carry out its plan."
 permalink: investment-fit
 timetoread: 7 min read
-status: draft:orange
 logo: "assets/images/03-investment-fit/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/03-investment-fit.png"

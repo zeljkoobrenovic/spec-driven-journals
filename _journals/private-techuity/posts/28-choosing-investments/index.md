@@ -5,8 +5,7 @@ author: "Owned working manuscript"
 excerpt: "Compare competing uses of money and team capacity, fund a workable combination, and decide what evidence should change it."
 permalink: "choosing-investments"
 timetoread: 8 min read
-status: "draft:orange"
-logo: "assets/images/28-choosing-investments/logo.jpeg"
+Testing the Plans Against Engineering Realitylogo: "assets/images/28-choosing-investments/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/28-choosing-investments.png"
 ---

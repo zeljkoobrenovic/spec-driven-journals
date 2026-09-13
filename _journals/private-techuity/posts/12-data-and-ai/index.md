@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Examine three AI questions: better products, better internal work and threats to the business customers already buy from."
 permalink: data-and-ai
 timetoread: 8 min read
-status: draft:orange
 logo: "assets/images/12-data-and-ai/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/12-data-and-ai.png"

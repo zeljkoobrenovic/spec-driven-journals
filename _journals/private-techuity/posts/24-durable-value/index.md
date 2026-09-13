@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Assess what customers, teams and future operators can rely on after funding or ownership changes, while keeping investor returns and historical evidence in scope."
 permalink: durable-value
 timetoread: 9 min read
-status: draft:orange
 logo: "assets/images/24-durable-value/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/24-durable-value.png"

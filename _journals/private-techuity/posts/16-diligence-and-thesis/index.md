@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Help prospective investors understand the company’s capabilities, test their assumptions and connect the findings to a feasible plan."
 permalink: diligence-and-thesis
 timetoread: 9 min read
-status: draft:orange
 logo: "assets/images/16-diligence-and-thesis/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/16-diligence-and-thesis.png"

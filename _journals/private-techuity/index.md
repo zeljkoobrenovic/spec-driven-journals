@@ -1,6 +1,6 @@
 # Owned
 
-**Owned: Product & Engineering Leadership Under Investors**
+**OWNED: Product & Engineering Leadership Under Investors**
 
 A practical guide to making product and engineering decisions when investors shape the money, authority and expectations around your company.
 

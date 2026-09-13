@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Respond when funding, financing or investor expectations change, and prepare a useful handover through continued ownership, another round, a sale or integration."
 permalink: execution-and-exit
 timetoread: 9 min read
-status: draft:orange
 logo: "assets/images/18-execution-and-exit/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/18-execution-and-exit.png"

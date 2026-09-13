@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Ask for help the company can use and agree the cost, authority and continuing dependence."
 permalink: part-4
 timetoread: 2 min read
-status: draft:orange
 logo: "assets/images/part-4-intro/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/part-4-intro.png"

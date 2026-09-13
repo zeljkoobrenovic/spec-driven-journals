@@ -2,7 +2,6 @@
 title: Bibliography and Evidence Guide
 date: 2026-09-12
 permalink: bibliography
-status: draft:orange
 excerpt: "Find the sources, understand what kind of evidence each provides and see the limits of what was consulted."
 logo: "assets/images/bibliography/logo.jpeg"
 logo_credit: "AI-generated illustration"

@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Test whether the technology and the team can deliver the plan, what changing them would cost and how customers keep being served."
 permalink: engineering-and-architecture
 timetoread: 9 min read
-status: draft:orange
 logo: "assets/images/09-engineering-and-architecture/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/09-engineering-and-architecture.png"

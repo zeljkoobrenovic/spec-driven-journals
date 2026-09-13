@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Test leadership judgments against specific histories while keeping the evidence in scope."
 permalink: part-6
 timetoread: 2 min read
-status: draft:orange
 logo: "assets/images/part-6-intro/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/part-6-intro.png"

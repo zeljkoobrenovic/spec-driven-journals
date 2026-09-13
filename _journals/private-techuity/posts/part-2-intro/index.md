@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Establish who decides, what each party wants and how to resolve competing demands."
 permalink: part-2
 timetoread: 2 min read
-status: draft:orange
 logo: "assets/images/part-2-intro/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/part-2-intro.png"

@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Learn how customers, borrowing and ownership provide money, and why each source creates different expectations."
 permalink: how-companies-get-money
 timetoread: 6 min read
-status: draft:orange
 logo: "assets/images/00-how-companies-get-money/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/00-how-companies-get-money.png"

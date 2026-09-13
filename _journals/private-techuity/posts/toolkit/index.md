@@ -2,7 +2,6 @@
 title: Practical Tools for Ownership and Technology Decisions
 date: 2026-09-12
 permalink: toolkit
-status: draft:orange
 excerpt: "Records for mapping owners and funding, negotiating feasible commitments, obtaining support and carrying evidence through funding or ownership changes."
 logo: "assets/images/toolkit/logo.jpeg"
 logo_credit: "AI-generated illustration"

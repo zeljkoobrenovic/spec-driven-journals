@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Turn new funding or an ownership change into agreed priorities, available cash, responsibilities and a realistic sequence of work."
 permalink: first-hundred-days
 timetoread: 7 min read
-status: draft:orange
 logo: "assets/images/17-first-hundred-days/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/17-first-hundred-days.png"

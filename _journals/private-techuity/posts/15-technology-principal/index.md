@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Understand the technology adviser’s role, agree how you will work together and keep responsibility for company decisions clear."
 permalink: technology-principal
 timetoread: 7 min read
-status: draft:orange
 logo: "assets/images/15-technology-principal/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/15-technology-principal.png"

@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Evaluate investments that protect essential work, reduce possible harm and help a company recover from disruption."
 permalink: security-and-resilience
 timetoread: 8 min read
-status: draft:orange
 logo: "assets/images/11-security-and-resilience/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/11-security-and-resilience.png"

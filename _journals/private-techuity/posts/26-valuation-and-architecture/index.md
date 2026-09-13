@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Understand sales, profit and cash, then work through the main ways of estimating what a business is worth."
 permalink: valuation-and-architecture
 timetoread: 12 min read
-status: draft:orange
 logo: "assets/images/26-valuation-and-architecture/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/26-valuation-and-architecture.png"

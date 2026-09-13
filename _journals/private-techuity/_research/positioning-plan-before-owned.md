@@ -69,7 +69,7 @@ The book becomes: *here is how to operate under any investor, told by someone wh
 
 ### Working title (selected 2026-09-13)
 
-> **Owned: Product & Engineering Leadership Under Investors**
+> **OWNED: Product & Engineering Leadership Under Investors**
 
 Why it works: "Owned" is short, states the reader's actual condition, and carries the faint edge of the colloquial sense without committing to it — which suits a book that refuses to be either promotional or hostile about investors. The subtitle does the scoping work, naming both the reader and the setting.
 

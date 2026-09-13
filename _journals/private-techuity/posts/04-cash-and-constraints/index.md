@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Work through cash after debt payments and runway before another funding round, then decide which product and engineering commitments the company can sustain."
 permalink: cash-and-constraints
 timetoread: 10 min read
-status: draft:orange
 logo: "assets/images/04-cash-and-constraints/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/04-cash-and-constraints.png"

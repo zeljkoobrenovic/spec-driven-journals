@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Turn investor expectations into feasible commitments to customers, systems and teams."
 permalink: part-3
 timetoread: 2 min read
-status: draft:orange
 logo: "assets/images/part-3-intro/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/part-3-intro.png"

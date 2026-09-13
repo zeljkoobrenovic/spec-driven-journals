@@ -5,7 +5,6 @@ author: Owned working manuscript
 excerpt: "Follow successive owners and acquisitions, then distinguish reported earnings, cash received and estimated investment value."
 permalink: teamsystem
 timetoread: 12 min read
-status: draft:orange
 logo: "assets/images/25-teamsystem/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/25-teamsystem.png"
