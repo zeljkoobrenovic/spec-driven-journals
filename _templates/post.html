@@ -280,11 +280,27 @@
             padding: 0;
         }
 
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
         article table {
             border-collapse: collapse;
             margin: 16px 0;
             width: 100%;
             font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
         }
 
         article th, article td {
@@ -489,7 +505,7 @@
                         rows.push(splitRow(lines[i]));
                         i++;
                     }
-                    let html = '<table><thead><tr>';
+                    let html = '<div class="table-wrap"><table><thead><tr>';
                     headers.forEach(h => {
                         html += '<th>' + inline(h) + '</th>';
                     });
@@ -501,7 +517,7 @@
                         });
                         html += '</tr>';
                     });
-                    html += '</tbody></table>';
+                    html += '</tbody></table></div>';
                     out.push(html);
                     continue;
                 }
