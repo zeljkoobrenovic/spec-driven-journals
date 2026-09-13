@@ -98,3 +98,12 @@ Company leaders need to make the transition feasible and its claimed benefits ve
 Completing a transaction changes ownership. Completing the operating transition requires evidence that customers can still use the product, responsibilities are clear and the expected costs or dependencies have actually been removed. The two milestones can be far apart.
 
 Part III has examined which investments the company needs and what delivering them requires. Part IV explores the people, expertise and connections an investor may provide to help: [[part-4]] and [[technology-principal]].
+
+## Questions to Consider
+
+1. For the acquisition or separation closest to your company, what specific benefit is expected, and what will customers or the company do differently to realize it?
+2. Which depth of integration does each area need: separate products, shared services, connected workflows or consolidation? Who chose, and why?
+3. What is the single capacity view across your roadmap, ongoing service, integration and diligence for the next deal? Where are the same people counted twice?
+4. If your business were separated from its parent tomorrow, which services would stop, what would replacing them cost and who has funded that?
+5. What rights to code, data, licences and contracts does your company actually hold, and which depend on someone else’s continued agreement?
+6. How does your integration scorecard distinguish realized synergies from benefits counted in both companies’ plans?

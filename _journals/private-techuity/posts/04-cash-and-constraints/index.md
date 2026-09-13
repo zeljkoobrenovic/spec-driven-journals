@@ -122,3 +122,12 @@ The question becomes: which plan gives the company the strongest feasible abilit
 The cash bridge explains why positive earnings can coexist with an unfunded migration. It is a planning calculation, not a universal payment priority: ordinary engineering salaries are already included in operating costs, and actual payment dates and restrictions matter.
 
 Part I has now followed the money from funding to company cash. Part II asks who can decide how that cash and the company’s people are used. Begin with [[part-2]], then [[governance]].
+
+## Questions to Consider
+
+1. Starting from your company’s operating earnings, which payments come before a new initiative can be funded: interest, tax, capital expenditure, working capital, principal repayment, distributions? Do you know what remains?
+2. If your company spends more than it collects, what is its runway, when is the next funding decision, and by what date must you act before commitments become expensive to reverse?
+3. Which covenants or financing conditions apply to your company, and what would a single weak quarter do to next year’s technology budget?
+4. Does your roadmap include a downside funding path: which work continues during a revenue miss, which commitments cannot be unwound and the latest date to act?
+5. When engineering reports an improvement in earnings, can you tell whether the work became more effective, the accounting treatment changed, or both?
+6. Which proposed savings in your plan are reversible reductions of waste, and which would remove capability that costs more to rebuild later?

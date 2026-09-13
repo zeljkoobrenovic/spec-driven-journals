@@ -136,3 +136,12 @@ Then agree on a few observations that can change the plan: customer migration fa
 Repeated acquisitions can add products, customers and knowledge while also adding integration work, continuing costs and borrowing. Track both developments with consistent definitions. A larger group and a higher earnings figure alone do not establish better outcomes for every acquired company or customer.
 
 The final chapter brings the cases together with wider research. It asks what a lasting improvement would mean for each group affected: [[durable-value]].
+
+## Questions to Consider
+
+1. Which improvements in your company does the current owner’s entry price already assume, and which new improvements does its plan require?
+2. If your company has been through more than one ownership period, which operating commitments span them, and did each new owner fund the remaining burden?
+3. What is your company’s statutory result, and how does it reconcile with the adjusted earnings measure investors discuss?
+4. When you compare growth or productivity across periods, are the businesses and intervals consistent? What would acquisition timing do to the comparison?
+5. Which costs of your growth model are classed as exceptional but recur every year: integration, migration or acquisition assessment?
+6. What evidence do you have about customer and employee outcomes from your acquisitions, beyond aggregate revenue and headcount?

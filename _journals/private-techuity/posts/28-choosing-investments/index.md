@@ -127,3 +127,12 @@ Review the starting assumptions, actual spending, team burden and observed outco
 Explain the revised choice through the decision process established in [[governance]]. If the authority sits with the board or another executive, bring a concrete proposal: the result sought, the alternatives, the resources and the consequence of waiting. The [[toolkit]] provides a record for that conversation.
 
 A selected project still needs an explanation of how its benefits arise. The next chapter follows one product change from the work proposed to the customer and business result: [[product-value]].
+
+## Questions to Consider
+
+1. What result does the investor’s expectation require your company to produce, and which operating constraints stand between the company and that result?
+2. Which of your commitments protect existing obligations, which are improvements and which are experiments? Are they being compared as if they were the same kind of choice?
+3. For your current plan, what are the cash limit and the capacity limit, and which one binds first?
+4. If two projects need the same specialist, which one waits, and has that opportunity cost been stated?
+5. Which of your projects could be staged so that a small first step informs the next decision, and which require a coordinated commitment from the start?
+6. When the last plan was reviewed, was the whole combination reconsidered or only each project’s progress?

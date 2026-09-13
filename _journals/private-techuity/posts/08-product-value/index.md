@@ -120,3 +120,12 @@ Product and engineering leaders should keep the whole chain understandable to in
 For each proposal, explain the change, the capability it enables, the result expected and the cost of achieving it. Then identify the evidence needed at each step. Useful benefits include service continuity and reduced exposure to harm as well as growth and savings.
 
 The next question is what the underlying software and engineering team must be able to do to deliver that change. We examine it in [[engineering-and-architecture]].
+
+## Questions to Consider
+
+1. For your most important roadmap item, can you draw the chain from the change to the business result, with each arrow stated as a hypothesis you could test?
+2. Which of the six benefit mechanisms does your proposal claim: revenue, retention, margin, cash, risk reduction or flexibility? Are overlapping benefits being added together?
+3. When your team saves effort, what is the conversion plan? Will the freed capacity serve more customers, avoid hiring, improve quality or quietly disappear?
+4. Do you have a baseline, a cohort definition and a list of competing explanations for the last improvement you reported?
+5. Which requests on your roadmap arrived with a hypothesis about demand and contribution, and which arrived only with the name of the person who asked?
+6. What indicators would reveal that a current initiative is producing its result by shifting cost to customers, support teams or the future?

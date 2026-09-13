@@ -116,3 +116,12 @@ Part IV has shown how to understand the adviser, find the help you need and agre
 
 ![Support can leave an internal capability, a better-supported decision or an explicit continuing service.](assets/images/30-making-support-work/three-useful-support-endings.jpeg)
 **Figure 2:** *Agree what remains useful after the initial assignment and who will sustain it.*
+
+## Questions to Consider
+
+1. For the support engagement closest to you, can you state in one sentence what the company needs to do differently?
+2. Who is the accountable company leader, and what internal time and money does the engagement need beyond the specialist’s availability?
+3. Do the people being interviewed know whether the conversation feeds operating support, coaching or a board assessment?
+4. What baseline exists for the work the engagement is meant to change, and what would reveal harm as well as improvement?
+5. Which engagement in your company should be changed or stopped, and what has prevented that decision?
+6. After the current engagement ends, who will operate the result, what must they learn and what continuing support will the company pay for?

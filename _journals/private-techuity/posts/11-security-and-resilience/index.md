@@ -95,3 +95,12 @@ Exit preparation should preserve the same discipline. Describe improvements with
 A sound proposal connects a harmful scenario to a protection or recovery capability, its cost and evidence that it works. The company also needs someone authorized to accept the remaining risk. A modeled reduction in future losses helps that decision; it is not a booked profit.
 
 The next chapter applies careful evaluation to another uncertain area: the benefits, costs and competitive effects of artificial intelligence. Continue with [[data-and-ai]].
+
+## Questions to Consider
+
+1. Which business functions must keep working for your customers, and what would an hour, a day or a week without each of them mean?
+2. When did your team last restore the service from backup under realistic conditions, and how long did it take?
+3. For your largest security proposal, what harmful scenario does it address, what evidence shows it works and who accepts the risk that remains?
+4. Has a modelled reduction in expected loss ever been presented in your company as if it were an operating gain?
+5. If a material incident began now, who could decide to take the service down, notify customers or restore from backup? Has that been practiced?
+6. Which shared services, logins or connections tie your company to other portfolio companies or a parent, and what would fail together?

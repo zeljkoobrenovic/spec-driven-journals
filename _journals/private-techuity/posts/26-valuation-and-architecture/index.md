@@ -143,3 +143,12 @@ Revenue records sales, profit deducts a specified set of costs, and cash flow fo
 Valuation adds another layer: an estimate of what future benefits are worth under stated assumptions. A multiple is one way to express that estimate; a cash-flow forecast makes the timing and investment assumptions more explicit. Neither tells the company how much it has in the bank today.
 
 We can now follow a purchase through to a sale. The next chapter uses company value, borrowing and time to calculate what an investor gets back: [[return-mechanics]]. Later, [[valuation-and-design]] connects these financial assumptions to product and architecture decisions.
+
+## Questions to Consider
+
+1. The last time you heard a valuation for your company, was it enterprise value or equity value, at what date and for what purpose?
+2. Which valuation assumptions is your technology plan being asked to support: growth in which customers, margins at what cost to serve, earnings sustained by what investment?
+3. Can you explain to your team how revenue, EBITDA and cash differed for your company last year, and why?
+4. Which adjusted measures does your company report, and do you know what each excluded cost is and whether it recurs?
+5. If your company were valued by market comparison, discounted cash flow and asset value, which assumptions would each method expose?
+6. After the last funding round, how much money actually reached the company compared with the headline valuation?

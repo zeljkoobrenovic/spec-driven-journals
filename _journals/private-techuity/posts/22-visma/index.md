@@ -127,3 +127,12 @@ Visma supports a narrower, more defensible conclusion than “private equity mak
 Its transferable lesson is to inspect the **level at which reuse creates value**. Shared security expertise might travel well across products; a single customer workflow might not. Common financial definitions might help comparison; a uniform engineering ratio might obscure it.
 
 The next case returns to the cash constraint from Part I. Toys R Us shows why a technology plan must remain funded throughout the transition: [[toys-r-us]].
+
+## Questions to Consider
+
+1. If your investment manager stays but the fund or investors behind it change, what have you rechecked: funding, decision rights, expectations and shared services?
+2. Which two figures for the same period in your company’s reporting differ, and can you reconcile them line by line?
+3. Are acquisition, integration or transformation costs excluded from an adjusted measure your company reports? Do they recur?
+4. For each important measure you report, can you state the business included, the period, the calculation, the decision it supports and the evidence behind it?
+5. At which level does shared capability create value in your group, and where does it become an expensive central service?
+6. Whose costs are charged to a central program while local margins exclude them, and does anyone see the total?

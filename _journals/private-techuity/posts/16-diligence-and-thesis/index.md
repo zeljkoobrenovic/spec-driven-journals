@@ -109,3 +109,12 @@ Where you cannot inspect a conclusion or participate before the transaction, rec
 Useful diligence either supports an important assumption with evidence or shows why the decision should change. Its value comes from reducing uncertainty about a real investment choice, including when the original plan remains appropriate.
 
 Once the transaction completes, company leaders need to confirm the findings and turn them into a funded plan. The next chapter follows that handoff: [[first-hundred-days]].
+
+## Questions to Consider
+
+1. What is the investment thesis behind your current or prospective owner’s decision, and which technology assumptions does it depend on?
+2. Which conditions did you attach to commitments made during diligence, and have they survived into the plan or become unconditional promises?
+3. For each of the seven dimensions, what evidence beyond interviews can your company offer, and what remains missing?
+4. Which examples of your company’s work would you show a reviewer, and how were they selected? What would a less flattering sample reveal?
+5. Does your product depend on rights, contracts or shared services that a review of the code would not examine?
+6. Which diligence findings did you disagree with, and is that disagreement recorded where the plan will be reviewed?

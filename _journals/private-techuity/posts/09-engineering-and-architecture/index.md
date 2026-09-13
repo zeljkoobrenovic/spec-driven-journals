@@ -116,3 +116,12 @@ An investor’s adviser can bring patterns and specialists, but company engineer
 A useful engineering case names the business constraint, compares feasible options and includes the cost of moving between them. For example, “pricing changes take three weeks, but the growth plan requires weekly experiments” tells decision-makers what needs to improve.
 
 We can now bring the financial and technical explanations together. The next chapter follows a valuation assumption through to a concrete implementation choice: [[valuation-and-design]].
+
+## Questions to Consider
+
+1. What does your company’s business plan require the technology and the team to do: which changes, at what scale, with what reliability? Have you written that down before assessing the systems?
+2. For the constraint that most limits your plan, have you compared the smallest coherent options for removing it, including the possibility that the plan itself is premature?
+3. Which technical debt items in your organization are described through their consequences for specific work, and which are simply designs the team dislikes?
+4. If a rewrite or platform replacement is proposed, what is the full transition cost: additional people, parallel running, migration and the retirement condition?
+5. Which standards imposed across your group solve a stated problem with a named funder for the transition, and which are uniformity for its own sake?
+6. What strengths in your current systems and team would a diligence report listing only defects fail to record?

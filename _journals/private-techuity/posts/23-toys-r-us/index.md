@@ -134,3 +134,12 @@ Third, distinguish a necessary intervention from a sufficient rescue. A platform
 Finally, keep the consequences of failure visible. A plan that protects investor optionality while leaving employees and suppliers exposed is not adequately described as aligned simply because management holds equity.
 
 The next case examines a different challenge: how repeated acquisitions and ownership changes affect a software group’s development and financial reporting. Continue with [[teamsystem]].
+
+## Questions to Consider
+
+1. If your company’s earnings are positive, what is its operating cash flow after interest, investment and working capital? Could the two diverge as they did here?
+2. Which of your technology plans would need continued funding through a cash shortage, and which could be paused safely?
+3. How would a change in supplier or customer payment terms affect your company’s cash, and how quickly?
+4. Which clocks in your transformation plan are treated as interchangeable: customer adoption, debt service, supplier payments and product delivery?
+5. Are you presenting a growing channel or feature as if it proved that the whole business proposition works?
+6. Who beyond shareholders would bear the consequences if your company’s plan failed, and is that visible in the decision record?

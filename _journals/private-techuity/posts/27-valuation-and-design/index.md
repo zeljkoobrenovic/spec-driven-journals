@@ -97,3 +97,12 @@ The CEO, CFO, product leader and CTO should establish five things, drawing on th
 Record those five answers together. Then test slower growth, a lower sale valuation and a longer ownership period. The purpose is to identify which benefits remain useful, which assumptions are fragile and when the company should change course.
 
 The next chapter applies this reasoning to a visible operating expense: rented computing services. It shows how to tell whether a lower bill reflects a real improvement: [[cloud-economics]].
+
+## Questions to Consider
+
+1. What does “more flexible” or “lower cost to serve” mean in your company’s case: which changes must become easier, or which resources must fall, for the valuation assumption to hold?
+2. For your most significant technology proposal, can you state the value assumption, operating requirement, technical options, funded transition and review evidence together?
+3. Are the systems your company buys being customized in ways that trade upgrade flexibility for short-term convenience?
+4. What does your proposal look like through the earnings, cash, growth and implementation lenses? Are any benefits being counted twice?
+5. Which project in your plan is economically attractive but currently infeasible to fund, and what are the alternatives?
+6. Would your plan still justify the technology investment under slower growth, a lower sale valuation and a longer ownership period?

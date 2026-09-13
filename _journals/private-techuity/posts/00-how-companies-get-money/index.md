@@ -87,3 +87,11 @@ The leadership consequence is a question to investigate. Does the product plan n
 A technology proposal needs both a useful outcome and a way to pay for the work. Understanding financing helps you discuss the timing, obligations and decisions behind that funding.
 
 When you hear an investment announcement, begin by asking who receives the money. Then ask which company or investor can decide how it is used. The next chapter follows those questions through different ownership arrangements: [[capital-and-ownership]].
+
+## Questions to Consider
+
+1. Where does the cash your company is spending today come from: customer payments, borrowing, owners’ equity, asset sales or grants? What does each source oblige the company to deliver, repay or give up?
+2. When you last heard a funding or investment announcement about your company, did you find out who actually received the money and how much of it reached the business?
+3. Which of your budget decisions are constrained by conditions attached to the money rather than by the amount: repayment dates, approval rights or an expected sale?
+4. If your company issued new shares tomorrow, which of your plans would change? If a founder sold existing shares instead, which would not?
+5. What do you know for certain about your owners’ rights, expectations and time horizon, and what have you been assuming from a label such as “venture”, “private equity” or “corporate”?

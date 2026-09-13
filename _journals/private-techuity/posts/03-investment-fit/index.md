@@ -96,3 +96,11 @@ Ask what must be true for the proposed arrangement to work. Demand must support 
 Any of three answers can be correct: the transaction should change, the plan should change, or the company should stay as it is. A business that decides against outside ownership has not failed a test — it has answered the question.
 
 The useful question is **"what work must this business do next, and which ownership and funding arrangement can support it?"** The cash test follows in [[cash-and-constraints]]; the partnership assessment in [[investor-fit]].
+
+## Questions to Consider
+
+1. What work does your company need to do next: learn whether demand exists, repeat something that already works, transfer ownership or operate inside a parent? Does the current funding arrangement support that work?
+2. Which of your investor’s rights matter most to your plan, regardless of ownership percentage: approval of hiring, budgets, financing, acquisitions or a sale?
+3. If demand slowed or a migration took twice as long, which part of the arrangement would become restrictive first: cash, repayment dates, approval rights or investor expectations?
+4. What constraints does your investor face, such as follow-on capacity, fund life or relevant experience? Which of these have you tested with evidence rather than inferred from reputation?
+5. For your company today, would changing the plan, changing the financing or staying under current ownership be the more defensible answer, and who would need to agree?

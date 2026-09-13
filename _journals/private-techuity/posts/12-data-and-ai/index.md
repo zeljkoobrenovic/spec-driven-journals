@@ -97,3 +97,12 @@ The product leader’s market work, supported by the investor’s adviser where 
 Assess an AI investment through the complete task: what improves, how quality is checked, what the workflow costs and who maintains it as the technology changes. Record the tools and dates so that later readers know which evidence still applies.
 
 Even a useful tool depends on people who can evaluate, operate and improve it. The next chapter examines the organization needed to sustain technology work: [[people-and-operating-models]].
+
+## Questions to Consider
+
+1. When your investor asks for an “AI strategy”, which of the three questions are they asking: product opportunity, operating improvement or competitive threat? Which one is your company answering?
+2. For your most promising AI use case, what is the cost per successful outcome once review, correction, data preparation and monitoring are included?
+3. What rights does your company hold to the data it plans to use, and for which purposes? Which of those assumptions has a specialist checked?
+4. If a productivity pilot saved 1,000 hours a quarter, what would your company do with them, and which route to a financial result is being promised?
+5. Which AI-related commitments has your company made to investors that a demonstration cannot support?
+6. What would a competitor need in order to reproduce your product’s useful outcome, and which experiments could test that before the threat becomes urgent?

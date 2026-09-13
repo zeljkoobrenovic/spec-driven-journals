@@ -111,3 +111,12 @@ Any involvement after a handover needs an agreed role and appropriate access. It
 A consistent record makes it possible to learn from the full ownership period: what was expected, what was tried, what happened and what still needs work. It supports the next decision even when the earlier plan proved wrong.
 
 Part V has followed the company leader through investigation, early planning, ongoing ownership and handover. Part VI now uses real company histories to examine what those decisions can leave behind: [[part-6]] and [[hilton-and-skype]].
+
+## Questions to Consider
+
+1. What decision or evidence update did your last investor meeting change? If it changed nothing, what should the cadence be?
+2. When you last escalated a problem, did you name the decision required, the latest useful date and the consequences of delay?
+3. If the next funding round, refinancing or sale did not happen, what useful business would remain and what could it afford?
+4. What evidence would your company need to preserve today so that a buyer could see what was believed, invested, changed and left undone?
+5. Which results in your current reporting depend on delayed investment, exceptional classification or people who may leave?
+6. In the next ownership transition, who receives cash, who continues to own an interest and who holds authority over the plan afterwards?

@@ -104,3 +104,12 @@ The Principal can help translate these conversations but cannot make every confl
 The assessment should leave you with specific commitments: available people, funding arrangements, decision authority and a way to revise the plan. Review those commitments during ownership, particularly when the business changes.
 
 Part II has connected changed authority, incentives and the working relationship. Part III begins with choosing between the competing investments those arrangements must support: [[part-3]] and [[choosing-investments]].
+
+## Questions to Consider
+
+1. What are your company’s next three difficult decisions, and what would you need the owner to contribute to each: capital, expertise, access or patience?
+2. Whom have you spoken to who worked with your investor when a plan went wrong? What did the investor do?
+3. For each promised form of support, do you know who is available, how much time they have, who pays, who owns the decision and what would end the engagement?
+4. Does your plan depend on both rapid earnings growth and a higher exit multiple? How does it perform without the multiple?
+5. Which warning signs from this chapter have you seen in your own arrangement, and which uncomfortable practices turned out to be useful discipline?
+6. If you inherited the arrangement, what single change within reach would make it more workable: one approval route, a dated funding decision or a narrower support assignment?

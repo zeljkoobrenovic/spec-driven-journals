@@ -97,3 +97,12 @@ A proposed decision record should therefore include the expected distribution of
 An incentive plan should be read as a set of possible outcomes: who receives a reward, what must happen first, and who bears the costs. Holding shares or sharing targets does not settle those questions.
 
 We now have two ways to examine a partnership: its decision rights and its incentives. The next chapter uses both to assess a particular investor: [[investor-fit]].
+
+## Questions to Consider
+
+1. For your own equity or incentive arrangement, have you seen worked outcomes for a weak exit, a good exit, a refinancing, an equity-funded acquisition and your departure before exit?
+2. Which measures does your compensation reward this year, and what work could those measures encourage you to delay or overdo?
+3. What guardrail measures would reveal the damage if your growth, cost or delivery targets were pursued too hard?
+4. Whose time horizon is driving the current plan: the fund’s, the founder’s, the executives’ or the customers’? Which of these is being presented as everyone’s objective?
+5. When an assumption fails in your company, is it reported early? What happens to the person who reports it?
+6. Who bears costs from the current plan without sharing in its rewards: employees, customers, suppliers or lenders? Is that trade-off recorded anywhere?

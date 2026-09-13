@@ -120,3 +120,12 @@ Both cases include a completed exit. The next case examines continuity of an inv
 
 ![A sale produces an investor payment record while product, customer and employee outcomes continue afterward.](assets/images/21-hilton-and-skype/sale-result-and-later-outcomes.jpeg)
 **Figure 2:** *An investor’s realized result and the company’s longer operating history need separate evidence.*
+
+## Questions to Consider
+
+1. When a sponsor describes a successful exit, how much of the result can you explain by operating improvement, financing changes, market recovery and the buyer’s own interests?
+2. Does your product depend on technology rights that a code review would not examine? How do you know?
+3. What financial room would your company have to keep investing in technology through a severe downturn, and who would supply it?
+4. Which capability in your company must continue through a change of owner, and who would fund the unfinished work?
+5. What happened to customers and employees after the last ownership change you were part of, and how do you know?
+6. If your product were retired years after a successful sale, what would that tell you about the earlier ownership period, and what would it not?

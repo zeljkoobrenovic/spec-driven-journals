@@ -101,3 +101,12 @@ Useful support can leave a better decision, an assumption tested, a constraint r
 Review the company’s result and the effort required from both sides. Be clear about the adviser’s contribution alongside the work of product, engineering, customer and finance teams. A shared success does not need to be assigned entirely to one person.
 
 The adviser is one possible connection into a wider set of resources. The next chapter maps the expertise, peer companies, hiring support and introductions that may help your company: [[investor-support]].
+
+## Questions to Consider
+
+1. Who from your investor is involved in your technology decisions, what assignment do they have, how much time can they give and which decisions can they make?
+2. Which job is the adviser doing with you now: diligence, advice, delivery, coaching or oversight? Do both of you agree on the answer?
+3. Do your engineers know whether the adviser’s suggestions are ideas or instructions? Who told them?
+4. Do you give the investor one confident story and your engineers another? What would it take to use the same facts in both?
+5. What evidence would change the adviser’s view of your technology, and what evidence would change yours?
+6. After the adviser’s current involvement ends, what will the company be able to do that it could not do before?

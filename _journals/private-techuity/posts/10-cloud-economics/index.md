@@ -101,3 +101,12 @@ An investor’s peer network may help you find comparable services and people wh
 A useful cost improvement has an explanation the company can check: what changed, how demand affected the comparison, what the transition cost and whether service remained acceptable. The team should be able to repeat that assessment as conditions change.
 
 Some spending protects against uncertain future harm instead of lowering a known bill. The next chapter explains how to assess security and recovery work on that basis: [[security-and-resilience]].
+
+## Questions to Consider
+
+1. What unit of useful service does your cost per unit describe, and would that unit make sense to your CFO and to your customers?
+2. When your infrastructure bill last changed, how much came from usage, rates, architecture or demand? Were any savings counted twice?
+3. Which of your commitments would become stranded cost if demand fell, the product moved or the company were separated from its owner?
+4. For your last cost initiative, can you separate the identified opportunity, the implemented change and the realized economic effect?
+5. Which service measures are tracked alongside your cost target, and who decides whether a cheaper service is still the service the customer bought?
+6. What temporary credits or group discounts are concealing the continuing cost of your services, and what happens when they end?

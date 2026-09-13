@@ -134,3 +134,12 @@ The diagram simplifies the structure. A real financing review also needs the int
 Customer payments sustain the operating business. Investors, lenders and future buyers can also bring cash into the wider arrangement. Keeping those sources separate helps explain why a well-funded investor and a cash-constrained company can coexist.
 
 You can now trace who supplies cash, who receives it and which body makes a decision. The next question is how people estimate the value of the business and its shares. That requires three basic financial ideas—sales, profit and cash—which we develop in [[valuation-and-architecture]].
+
+## Questions to Consider
+
+1. Can you draw, on one page, the entities in your ownership arrangement: who holds shares, which entity supplies cash, who can commit it and what conditions apply before payment?
+2. When someone says “the investor has capital”, which pot are they describing: the fund that owns your company, a different fund or the firm’s own business?
+3. Where does the borrowing sit in your structure, and which of the operating company’s cash flows are needed to service it?
+4. Which figures in your plan are commitments, which are payments already received and which are valuation estimates? Has any of the three been treated as if it were another?
+5. Who in your arrangement could gain financially from recommending a particular operating intervention, and how would you find out?
+6. When you hear “the investor wants X”, do you know which body, exercising which right, is behind the request and whether it can actually require it?

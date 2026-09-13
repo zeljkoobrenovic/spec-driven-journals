@@ -99,3 +99,12 @@ When cost reduction is necessary, state what work will stop and which risks rema
 Evaluate an organizational change through the work people can now carry out: decisions made, responsibilities understood and knowledge transferred. Include the cost of transition and the treatment of people affected by it.
 
 Acquisitions and separations put these organizational and technical requirements under pressure together. The next chapter examines how to plan those changes: [[acquisitions-and-carveouts]].
+
+## Questions to Consider
+
+1. Trace one real piece of work through your company from request to outcome. Where does it wait, and who has to intervene repeatedly?
+2. Which knowledge in your organization sits with only one or two people, and what would the company lose if they left next month?
+3. If a location or supplier change is proposed, does the comparison include transition, coordination, rework and the period before the new team can own outcomes?
+4. Which decisions in your company are made centrally that should be local, and which are fragmented that should be shared?
+5. Which planned hires are funded, which are conditional on money not yet received, and do the teams know the difference?
+6. What signals of organizational health would tell you the plan has become infeasible before the financial targets show it?

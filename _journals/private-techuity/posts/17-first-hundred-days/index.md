@@ -106,3 +106,12 @@ Completing every planned task is not necessarily success if the tasks addressed 
 The early period should leave a plan whose owners understand the work, whose funding and capacity are credible, and whose assumptions can be reviewed. Completing a list of tasks is only useful if those tasks help establish the required outcomes.
 
 The next chapter follows that plan through revised funding, changing investor expectations and possible ownership transitions: [[execution-and-exit]].
+
+## Questions to Consider
+
+1. What changed for your company at the last transaction: money, rights, dependencies or expectations? Which early decisions follow from each?
+2. Which diligence findings did the people who will deliver the plan confirm, and which did they change?
+3. Are your early priorities specific enough to inspect: business outcome, accountable leader, funding, capacity and review date?
+4. Which material risks were left off the priority list, and has someone decided to accept, monitor or defer each of them?
+5. Where does your early plan use the same people twice? Which projects depend on a prerequisite that does not yet exist?
+6. What baselines exist today for the results your plan promises, and what are their known weaknesses?

@@ -110,3 +110,12 @@ Also ask what assumptions travel with a reused practice. A tool developed for a 
 If the proposed help is unavailable, identify **an alternative provider or change the plan** before the team depends on it. A useful introduction and a commitment to deliver work belong in different parts of that plan.
 
 Finish the search with a concrete request: the problem, the useful result, the proposed source of help and the company person who will own it. The next chapter turns that request into an agreed way of working: [[making-support-work]].
+
+## Questions to Consider
+
+1. What capability does your company lack, described through the work that fails or takes too long rather than through a category of help?
+2. Which of the four requests are you making: help understanding the problem, help making a decision, people to carry out work or help developing your own skills?
+3. Which contacts introduced by your investor represent your intended customers, and which represent a different market?
+4. For each support offer, who will do the work, when, for how long, at what cost to the company, and who inside the company will own the result afterwards?
+5. Which practices borrowed from another portfolio company arrived with their context attached, and which did not?
+6. Where is your company already dependent on a specialist service that no one planned to keep funding?

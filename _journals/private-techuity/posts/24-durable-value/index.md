@@ -101,3 +101,12 @@ The book began with how a company gets money. We can now ask the fuller question
 For your own company, begin with one decision. Explain the customer need, the work required, the funding and authority, and the evidence that would change the plan. Then review what happened and what remains to be done. The [[toolkit]] provides records for that next step, and the [[glossary]] can help you revisit the terms.
 
 The main narrative ends here. The [[toolkit]] that follows provides practical records for your own decisions.
+
+## Questions to Consider
+
+1. For your company’s current plan, who gains, who bears costs, what must remain true and which evidence would justify changing course?
+2. Which stakeholder outcomes does your reporting track beyond investor return: customers, employees, the next owner and the company’s ability to reinvest?
+3. Where can your customers not readily observe quality or change providers? What protects them if financial incentives do not?
+4. What observation window do you use to judge success, and would the verdict change if you extended it past the next exit?
+5. Which research findings about buyouts have you been treating as forecasts for your company, and which conditions differ?
+6. What one decision would you begin with tomorrow, and what would you record about it?

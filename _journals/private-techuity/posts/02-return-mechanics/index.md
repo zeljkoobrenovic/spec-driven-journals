@@ -163,3 +163,12 @@ Start with the observable change. Which customer task improved? What costs chang
 The worked example gives us a useful test for a proposed improvement: does its business case still hold if the sale price is lower or the owner holds the company longer? The answer helps separate a sustainable operating benefit from a result that depends heavily on market conditions.
 
 Now that we understand how returns work, we can ask which financing arrangement fits a company’s needs and uncertainty. That is the subject of [[investment-fit]].
+
+## Questions to Consider
+
+1. If your company’s earnings grew by half over five years, how would the investor’s return change under a lower exit multiple, a longer holding period or an additional funding round? Which of these can your team influence?
+2. Which of your current initiatives would still justify itself if the sale price were lower or the owner held the company longer than planned?
+3. The last time technology was credited with creating company value, how much of the gain was operating improvement, how much financing effect and how much a change in what buyers were paying?
+4. If an earlier investor’s stake has been diluted by a later round, do you understand what that means for their expectations of your plan?
+5. In your investor’s most recent performance report, how much is money actually returned and how much is value still estimated? How does that distinction affect the pressure on your company?
+6. If your owner is a corporate group, which business unit is accountable for the group-wide benefit attributed to your product, and who funds the work needed to deliver it?

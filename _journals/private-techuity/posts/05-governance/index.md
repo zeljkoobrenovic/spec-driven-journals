@@ -137,3 +137,12 @@ The difficult boundary is confidentiality. Coaching cannot carry an unlimited pr
 A useful governance arrangement lets disagreement reach an accountable decision in time to act. The record should make clear who decided, which options were considered and what consequences were accepted.
 
 Authority explains who can decide. The next chapter examines **incentives**, the rewards and consequences that influence what people choose: [[incentives]].
+
+## Questions to Consider
+
+1. For the most important technology decision ahead of your company, who recommends, who decides, who funds, who implements, and by when? Can you name people rather than roles?
+2. When an adviser from the investor makes a suggestion, how do your engineers know whether it is an idea, an assessment or an instruction?
+3. Which of your current commitments depend on an approval or hire that has not yet arrived? Is that condition recorded, together with the decision date?
+4. Does your board reporting connect outcomes to the decisions needed, or does it present status colours without an evidence trail?
+5. When investors or board members disagree, which forum resolves the choice? Are incompatible requests being carried into the team’s backlog instead?
+6. What confidentiality boundaries have you agreed for coaching or informal conversations with the investor’s advisers?
