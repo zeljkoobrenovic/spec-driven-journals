@@ -1,4 +1,4 @@
-**Profit and available cash are different.** A company can report positive earnings while lacking money for a needed technology change. To understand why, follow the payments and their timing.
+**Profit and available cash are different.** A company can report positive earnings while lacking money for a needed technology change. To understand why, follow the payments and their timing. Under investors the gap is structural, not only accounting: loan repayments, interest, fees and payments to owners are set by the financing and are paid before a migration or a new team is funded.
 
 ![An earnings report is checked against payment timing, obligations and a reserve before work is funded.](assets/images/04-cash-and-constraints/summary-at-a-glance.jpeg)
 **Figure 1:** *Fund the transition against actual payments, timing and operating needs.*

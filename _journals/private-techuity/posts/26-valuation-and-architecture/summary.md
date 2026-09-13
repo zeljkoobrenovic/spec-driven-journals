@@ -1,4 +1,4 @@
-**Valuation estimates what a business or ownership interest is worth at a date and for a purpose.** Different assumptions can produce different answers; each answer still needs supporting evidence.
+**Valuation estimates what a business or ownership interest is worth at a date and for a purpose.** Different assumptions can produce different answers; each answer still needs supporting evidence. Product and engineering leaders rarely need to value a company, but under investors the estimate becomes the target: its assumptions decide which growth, margin and cost results the company must deliver, and hence which technology work is funded.
 
 ![Valuation methods estimate business and equity value, while new cash received by the company remains a separate quantity.](assets/images/26-valuation-and-architecture/summary-at-a-glance.jpeg)
 **Figure 1:** *Separate the valuation method, ownership value and cash the company receives.*

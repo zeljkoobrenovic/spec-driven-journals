@@ -1,4 +1,4 @@
-An **operating model** describes how teams, responsibilities and decisions are arranged. It helps determine whether a company can turn a plan into repeated useful decisions. An organization chart and a headcount target are incomplete descriptions of that capability.
+An **operating model** describes how teams, responsibilities and decisions are arranged. It helps determine whether a company can turn a plan into repeated useful decisions. An organization chart and a headcount target are incomplete descriptions of that capability. Investment plans fund what can be counted, such as tools and headcount in a cheaper location, and rarely fund the slower change in how decisions are made, while the investor's timetable leaves little room for it.
 
 ![Customer work exposes queues, knowledge dependencies and decision handoffs, supported by skills, authority, capacity and a funded transition.](assets/images/13-people-and-operating-models/summary-at-a-glance.jpeg)
 **Figure 1:** *Design teams around the work, knowledge and decisions customers depend on.*

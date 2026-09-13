@@ -1,4 +1,4 @@
-Product work creates business value through **changes in customer behavior and operating economics**. A **roadmap** sets out intended product changes. An item describes proposed work; its benefit still needs an explanation.
+Product work creates business value through **changes in customer behavior and operating economics**. A **roadmap** sets out intended product changes. An item describes proposed work; its benefit still needs an explanation. Under investors, the benefit also has to reach a financial result the investment case depends on, within the period before the next review or a sale. That chain is what investors and their advisers will examine.
 
 ![A testable chain connects intervention, operating change, customer outcome and economic effect, supported by evidence and full costs.](assets/images/08-product-value/summary-at-a-glance.jpeg)
 **Figure 1:** *Test each link from product work to customer and economic outcomes.*

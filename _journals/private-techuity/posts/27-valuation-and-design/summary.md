@@ -1,4 +1,4 @@
-**A valuation assumption is a belief used when estimating company value**, such as expected sales growth or repeatable earnings. It becomes useful to a technology team only when translated into what the business must do.
+**A valuation assumption is a belief used when estimating company value**, such as expected sales growth or repeatable earnings. It becomes useful to a technology team only when translated into what the business must do. Under stable ownership, technical priorities follow from customers and operations. Under an investor they also follow from the valuation, which reaches the team as demands like “more flexible” with the reasoning left behind.
 
 ![An owner expectation is translated into required capability, design options, a funded transition and evidence.](assets/images/27-valuation-and-design/summary-at-a-glance.jpeg)
 **Figure 1:** *Translate financial expectations into testable work before choosing a design.*

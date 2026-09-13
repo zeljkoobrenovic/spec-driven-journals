@@ -1,4 +1,4 @@
-Hotel group **Hilton** and internet-calling product **Skype** illustrate successful investor outcomes with different ownership and technology contexts. They also show why an attractive sale, or **exit**, is insufficient evidence that a particular intervention caused the return.
+Hotel group **Hilton** and internet-calling product **Skype** illustrate successful investor outcomes with different ownership and technology contexts. They also show why an attractive sale, or **exit**, is insufficient evidence that a particular intervention caused the return. Exits matter to product and engineering leaders because much of what investors ask for during ownership is justified by the sale they expect to make.
 
 ![Hilton and Skype show different financing, operating and ownership contexts, with investor returns separated from company and technology outcomes.](assets/images/21-hilton-and-skype/summary-at-a-glance.jpeg)
 **Figure 1:** *Reconstruct each case and keep financial outcomes separate from causal claims.*

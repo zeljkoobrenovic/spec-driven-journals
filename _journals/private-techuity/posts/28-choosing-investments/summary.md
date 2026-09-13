@@ -1,4 +1,4 @@
-A **company investment** commits resources now for an expected future benefit. Choosing investments requires a view of both cash and **team capacity**, the time and capability available to do the work. Several attractive projects can exceed either limit when considered together.
+A **company investment** commits resources now for an expected future benefit. Choosing investments requires a view of both cash and **team capacity**, the time and capability available to do the work. Several attractive projects can exceed either limit when considered together. Investor ownership changes the decision in two ways: the financing limits the cash and capacity available, and the investor's expected result gives some options a priority the company's own view might not.
 
 ![Investment options are constrained by both cash and team capacity, with staged choices revised as evidence changes.](assets/images/28-choosing-investments/summary-at-a-glance.jpeg)
 **Figure 1:** *Choose a feasible combination and preserve room to learn.*

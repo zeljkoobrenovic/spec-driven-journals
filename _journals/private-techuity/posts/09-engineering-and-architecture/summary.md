@@ -1,4 +1,4 @@
-An engineering investment earns its place by **changing a business constraint**. That holds whether the systems are built in-house, bought from suppliers, or both. An old system is not automatically the binding constraint, and a new one is not automatically a useful outcome.
+An engineering investment earns its place by **changing a business constraint**. That holds whether the systems are built in-house, bought from suppliers, or both. An old system is not automatically the binding constraint, and a new one is not automatically a useful outcome. In normal operations, constraints are handled as they arise. An investment case fixes the destination and timetable in advance, so the engineering leader's job becomes testing whether the promised plan is feasible and what it would cost to make it so.
 
 ![Engineering map: constraint, options, funded transition, sustainable capability.](assets/images/09-engineering-and-architecture/summary-at-a-glance.jpeg)
 **Figure 1:** *Choose the technical commitment through the business constraint.*

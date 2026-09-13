@@ -1,4 +1,4 @@
-**An investment return compares what an investor receives or still holds with what it put in.** The company’s operating performance contributes to that result, alongside purchase price, borrowing, sale price and timing. Better earnings do not by themselves establish better products or a good investor result.
+**An investment return compares what an investor receives or still holds with what it put in.** The company’s operating performance contributes to that result, alongside purchase price, borrowing, sale price and timing. Better earnings do not by themselves establish better products or a good investor result. Leaders inside the company judge progress by customers and earnings; the investor judges the same company by the return on its holding. Many requests that seem hard to justify from the business follow from the mechanics of the investment.
 
 ![Investor returns depend on operations, price, debt and timing, while cash received remains separate from unsold value.](assets/images/02-return-mechanics/summary-at-a-glance.jpeg)
 **Figure 1:** *Explain the return’s drivers and distinguish cash from estimated value.*

@@ -1,4 +1,4 @@
-**An investment announcement does not tell you the company’s spending budget.** Money may go to selling shareholders, existing lenders or transaction costs. Identify the recipient before assuming a product or hiring plan is funded.
+**An investment announcement does not tell you the company’s spending budget.** Money may go to selling shareholders, existing lenders or transaction costs. Identify the recipient before assuming a product or hiring plan is funded. Without an outside investor, the budget is roughly what the business earns. A transaction breaks that link: the headline describes a change of ownership, and the deal structure decides how much reaches the business.
 
 ![Three lenses separate cash recipients, decision authority and funded company work within an ownership arrangement.](assets/images/01-capital-and-ownership/summary-at-a-glance.jpeg)
 **Figure 1:** *An ownership announcement leaves three practical questions to resolve.*

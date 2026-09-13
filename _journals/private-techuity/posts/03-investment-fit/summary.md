@@ -1,4 +1,4 @@
-Choose an ownership and financing arrangement around the **company’s work**. Personal cash for a selling founder, money for customer learning, funding for expansion and a change of control are different needs. The same software can require different arrangements under different circumstances.
+Choose an ownership and financing arrangement around the **company’s work**. Personal cash for a selling founder, money for customer learning, funding for expansion and a change of control are different needs. The same software can require different arrangements under different circumstances. Product and engineering leaders rarely choose the investor but inherit the choice: the type of capital sets the expected pace, the tolerable loss and whether the plan is judged against a sale or continued ownership.
 
 ![Alternative company needs are compared with the cash, rights and constraints of a proposed investment arrangement.](assets/images/03-investment-fit/summary-at-a-glance.jpeg)
 **Figure 1:** *Choose the arrangement around the company’s work and actual conditions.*

@@ -1,4 +1,4 @@
-A **capability** is something the company can reliably do. Investor support is useful when it helps develop a missing capability, resolve a constraint or improve a decision. Begin with that company need before asking for an expert, a tool or a network introduction.
+A **capability** is something the company can reliably do. Investor support is useful when it helps develop a missing capability, resolve a constraint or improve a decision. Begin with that company need before asking for an expert, a tool or a network introduction. This help exists only because of the investor, whose portfolio accumulates people and experience a single company cannot reach, and who offers them because a stronger company raises the value of its holding. The offer is real but not free of interest.
 
 ![A concrete company need is matched to available support, full costs and an accountable path to repeatable capability.](assets/images/29-investor-support/summary-at-a-glance.jpeg)
 **Figure 1:** *Request the help that closes a specific gap in company work.*

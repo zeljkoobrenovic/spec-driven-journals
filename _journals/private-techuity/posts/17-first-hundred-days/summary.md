@@ -1,4 +1,4 @@
-The early period after funding or an ownership change should establish the **conditions for useful execution**: shared understanding, clear ownership, clear starting measurements for comparison, feasible priorities, and funded decisions. A hundred days is a planning convention, not evidence that every business changes at the same speed.
+The early period after funding or an ownership change should establish the **conditions for useful execution**: shared understanding, clear ownership, clear starting measurements for comparison, feasible priorities, and funded decisions. A hundred days is a planning convention, not evidence that every business changes at the same speed. A new investor replaces the company's own rhythm with an investment case, an early review and expectations formed during diligence. This is when those expectations become a funded plan or harden into commitments nobody tested.
 
 ![Early execution confirms changed conditions, chooses feasible priorities, funds dependencies and reviews evidence.](assets/images/17-first-hundred-days/summary-at-a-glance.jpeg)
 **Figure 1:** *Use the early period to establish a company-owned, adaptable plan.*

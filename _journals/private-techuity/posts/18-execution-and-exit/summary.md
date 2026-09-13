@@ -1,4 +1,4 @@
-Company leaders need to revise the operating plan **as conditions change** through ownership. Investor support stays useful when it responds to those decisions and helps build capability. A fixed checklist or permanent layer of supervision can continue long after its original purpose has disappeared.
+Company leaders need to revise the operating plan **as conditions change** through ownership. Investor support stays useful when it responds to those decisions and helps build capability. A fixed checklist or permanent layer of supervision can continue long after its original purpose has disappeared. Under investors the plan is the basis on which money was committed, so each revision is reviewed against the investment case, the fund's timeline and the prospect of a sale or refinancing.
 
 ![Ongoing evidence and decisions support both continued ownership and a handover that preserves capabilities and obligations.](assets/images/18-execution-and-exit/summary-at-a-glance.jpeg)
 **Figure 1:** *Keep the operating plan and its evidence useful beyond the expected exit.*

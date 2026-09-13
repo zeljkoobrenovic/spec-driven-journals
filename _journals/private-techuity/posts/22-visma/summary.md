@@ -1,4 +1,4 @@
-**Visma**, a group of business-software companies, offers a setting for examining changing investors, acquisitions, local decision-making and shared support. The case focuses on operating evidence through 2024, with a later annual report used to reconcile the presentation of that year’s earnings. It is not a current valuation update.
+**Visma**, a group of business-software companies, offers a setting for examining changing investors, acquisitions, local decision-making and shared support. The case focuses on operating evidence through 2024, with a later annual report used to reconcile the presentation of that year’s earnings. It is not a current valuation update. The case matters because a change of fund, even under the same manager, can change the money and timeline behind long-running product and platform work.
 
 ![The Visma case separates changing ownership, local decisions, shared support and comparable financial measures.](assets/images/22-visma/summary-at-a-glance.jpeg)
 **Figure 1:** *Examine what changed behind the name, operating model and reported measures.*

@@ -1,4 +1,4 @@
-Durable success requires **more than a favorable funding valuation** or exit price. The manuscript proposes assessing the investment result, company economics, operating capability, consequences for people affected, and outcomes after ownership changes. This is an explicit evaluative standard, not a claim that all observers value those dimensions equally.
+Durable success requires **more than a favorable funding valuation** or exit price. The manuscript proposes assessing the investment result, company economics, operating capability, consequences for people affected, and outcomes after ownership changes. This is an explicit evaluative standard, not a claim that all observers value those dimensions equally. It is needed because investors measure success at the moment they realize value, while product and engineering leaders, customers and employees live with the company afterward.
 
 ![Durable value spans investment, company, capability, stakeholder and later outcomes.](assets/images/24-durable-value/summary-at-a-glance.jpeg)
 **Figure 1:** *Assess what lasts beyond the transaction.*

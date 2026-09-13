@@ -1,4 +1,4 @@
-**Security** protects systems and information from harm. **Resilience** is the ability to continue or restore essential work through disruption. Together they protect the company's ability to operate, keep commitments, and recover. Their value cannot be judged solely from whether an incident happened during the reporting period.
+**Security** protects systems and information from harm. **Resilience** is the ability to continue or restore essential work through disruption. Together they protect the company's ability to operate, keep commitments, and recover. Their value cannot be judged solely from whether an incident happened during the reporting period. Under investors, a security investment competes with growth work for limited cash and appears as cost without revenue, while a breach during the ownership period can reduce what the company is worth and diligence will test the controls.
 
 ![Critical services and failure scenarios guide accountable protection decisions and tested business recovery.](assets/images/11-security-and-resilience/summary-at-a-glance.jpeg)
 **Figure 1:** *Fund and test recovery against the services the company must sustain.*

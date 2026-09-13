@@ -1,4 +1,4 @@
-**Cloud services** are rented computing resources, storage and related services. A lower cloud bill can reflect efficiency, reduced demand, poorer service, or postponed obligations. The bill alone cannot distinguish them.
+**Cloud services** are rented computing resources, storage and related services. A lower cloud bill can reflect efficiency, reduced demand, poorer service, or postponed obligations. The bill alone cannot distinguish them. Cloud spending draws investor attention because it is a large, adjustable cost whose reduction improves the earnings measures on which the company is valued, so a cost target is easy to set from outside engineering and hard to refuse.
 
 ![Cloud costs are assessed per useful outcome, separating usage, price, architecture and future commitments.](assets/images/10-cloud-economics/summary-at-a-glance.jpeg)
 **Figure 1:** *Compare useful delivery and continuing costs before claiming a cloud saving.*

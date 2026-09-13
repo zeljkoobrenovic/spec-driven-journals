@@ -1,4 +1,4 @@
-**Financing means arranging the money a company needs.** Understanding where that money comes from helps explain what the company must pay, provide or give up in return.
+**Financing means arranging the money a company needs.** Understanding where that money comes from helps explain what the company must pay, provide or give up in return. Product and engineering leaders usually meet money as a budget; once investors are involved, the rights, repayment dates and expected sale attached to the money decide what that budget can be spent on and for how long.
 
 ![Financing overview connecting money source, cash recipient, obligations and spending authority.](assets/images/00-how-companies-get-money/summary-at-a-glance.jpeg)
 **Figure 1:** *Trace the source, recipient, obligations and authority before promising company work.*

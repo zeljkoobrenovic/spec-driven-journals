@@ -1,4 +1,4 @@
-**Incentives are rewards and consequences that influence choices.** Shared ownership creates some common interests, but investors, executives, employees and customers can still face different risks and time horizons.
+**Incentives are rewards and consequences that influence choices.** Shared ownership creates some common interests, but investors, executives, employees and customers can still face different risks and time horizons. In ordinary product and engineering work, incentives mean targets and pay. Investor ownership adds equity that pays out at a sale, targets tied to the investment case and a fund with its own timing, and that layer shapes which proposals get approved.
 
 ![An equity percentage is examined through contract terms, cash costs and timing, alongside consequences for employees and customers.](assets/images/06-incentives/summary-at-a-glance.jpeg)
 **Figure 1:** *Test the actual payout terms and the behavior the reward encourages.*

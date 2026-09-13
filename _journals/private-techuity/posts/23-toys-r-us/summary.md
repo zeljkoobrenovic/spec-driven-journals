@@ -1,4 +1,4 @@
-**Toys R Us**, the toy and baby-products retailer, illustrates the interaction of financing, competition, operating execution and the time needed for reinvention. The case does not establish a single cause of failure.
+**Toys R Us**, the toy and baby-products retailer, illustrates the interaction of financing, competition, operating execution and the time needed for reinvention. The case does not establish a single cause of failure. Its technology plans were reasonable in isolation; the financing constrained them, with debt service consuming the cash those plans required and a timetable set by obligations to lenders rather than by the market.
 
 ![A retail transition needs a competitive customer proposition and cash through supplier and financing obligations, with wider stakeholder consequences.](assets/images/23-toys-r-us/summary-at-a-glance.jpeg)
 **Figure 1:** *A necessary product improvement still needs funding until its benefits arrive.*

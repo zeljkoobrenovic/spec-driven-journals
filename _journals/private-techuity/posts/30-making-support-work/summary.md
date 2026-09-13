@@ -1,4 +1,4 @@
-An **engagement** is an agreed piece of support with a purpose, participants and boundaries. An **engagement charter** is a short record of that agreement. It turns an offer of help into work the company can understand, resource and review.
+An **engagement** is an agreed piece of support with a purpose, participants and boundaries. An **engagement charter** is a short record of that agreement. It turns an offer of help into work the company can understand, resource and review. The difficulty is peculiar to investor-backed companies: a consultant the company hires answers to the company, while a specialist sent by the investor answers partly to the owner, and engineers may not know whose instructions they are following.
 
 ![A support charter connects the agreed result, company and adviser resources, boundaries, evidence review and handover.](assets/images/30-making-support-work/summary-at-a-glance.jpeg)
 **Figure 1:** *Make support feasible, reviewable and sustainable after the engagement.*

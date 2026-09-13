@@ -1,4 +1,4 @@
-**Technical due diligence** investigates a company’s product, systems, people and risks before an investment. It is useful when it tests an important assumption, including when the evidence supports keeping the existing plan. A long report is not sufficient if material findings disappear between signing and execution.
+**Technical due diligence** investigates a company’s product, systems, people and risks before an investment. It is useful when it tests an important assumption, including when the evidence supports keeping the existing plan. A long report is not sufficient if material findings disappear between signing and execution. Diligence exists only because an investor is deciding whether, and on what terms, to put money in. Its findings feed the price, the funding and the plan the company will later be held to.
 
 ![Diligence tests the thesis, preserves evidence limits and carries recorded responses into funded operating action.](assets/images/16-diligence-and-thesis/summary-at-a-glance.jpeg)
 **Figure 1:** *Keep important findings connected to decisions, owners and resources.*
