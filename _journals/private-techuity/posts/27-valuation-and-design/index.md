@@ -20,6 +20,8 @@ icon: "assets/icons/27-valuation-and-design.png"
 <br>
 Suppose an investor expects the company to grow quickly. The technology team is then asked to make the software “more flexible.” That request leaves out the connection that matters: which changes must become easier for growth to happen?
 
+The missing connection is specific to investor-backed companies. Under stable ownership, technical priorities follow from customers and operations. Under an investor, they also follow from the assumptions in the valuation, which reach the team as demands like “more flexible” or “lower cost to serve” with the reasoning left behind. The leader’s task is to recover that reasoning and turn it into implementation choices the company can fund.
+
 A **valuation assumption** is a belief used when estimating what a business is worth, such as an expectation of future sales or profit. An **operating requirement** states what the company must do to make that belief plausible. An **implementation choice** is how the company decides to meet that requirement in its technology: how the systems are structured, what is built, what is bought, and how the parts fit together. That structure exists at more than one level — inside a system the team builds, and across the landscape of systems, suppliers and integrations the company runs. The examples below are drawn mostly from software a company builds; the same reasoning applies when the choice is which supplier system to adopt or how deeply to integrate it.
 
 The financial primer in [[valuation-and-architecture]] introduced valuation. The last two chapters explained customer outcomes and engineering choices. We can now join those ideas: financial assumption, business requirement, technical options, and a funded decision.

@@ -22,6 +22,8 @@ Larkspur, the fictional scheduling-software company, wants to serve customers in
 
 Answering that takes more than a look at the software. It takes a view of what the company’s technology and the people who run it can currently do, what changing them would cost, and how much of that can be known before committing money. The systems may be built in-house, bought from suppliers, or assembled from both; the assessment is the same.
 
+In normal operations, engineering constraints are handled as they arise. An investment case fixes the destination, and often the timetable, in advance, sometimes before anyone has examined the technology closely. The engineering leader’s job then changes from choosing the next improvement to testing whether the promised plan is feasible with the systems and people the company has, and saying what it would cost to make it so.
+
 [[product-value]] explained how to connect a proposed change to customer and business results. This chapter asks what the underlying systems and team must be able to do. We move from the business constraint to technical debt, delivery evidence and the cost of changing systems. The implementation choices that follow from such an assessment are the subject of [[valuation-and-design]].
 
 ## Translate the Business Plan Into Required Capabilities

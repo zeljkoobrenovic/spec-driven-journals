@@ -20,6 +20,8 @@ icon: "assets/icons/14-acquisitions-and-carveouts.png"
 <br>
 An **acquisition** is the purchase of a business or ownership interest in it. It can add customers and products to a group immediately. **Integration**, the work of making selected activities operate together, still has to be planned and carried out. A **carve-out**, the separation of a business from a larger parent, can transfer ownership legally while leaving essential operating dependencies behind.
 
+Both are usually investor decisions: an owner pursuing further purchases, or a seller separating a unit to realize its value. The transaction is agreed on the investor’s timetable and priced on assumptions about combined savings and separation costs that product and engineering leaders may not have been asked about. Their work begins when those assumptions become operating obligations.
+
 For product and engineering leaders, both situations create the same underlying challenge: define which capabilities must work across a new boundary, who owns them, and what transition makes that possible. The transaction date is a change in ownership. Operational readiness is a separate condition.
 
 This chapter closes Part III by bringing its questions together. An acquisition or separation tests the product logic, architecture, costs, security and organization against a transaction timetable that may leave little room for delay. [[teamsystem]] shows what accumulates when that is done repeatedly.

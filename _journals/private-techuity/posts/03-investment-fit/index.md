@@ -22,6 +22,8 @@ A business has customers and a useful product. Its founder might want money to e
 
 The preceding chapters explained funding, ownership, valuation and returns. We can now use those ideas to compare investment arrangements. Begin with the work the company needs to do, then examine which source of money can support it.
 
+Product and engineering leaders rarely choose the investor, but they inherit the consequences of the choice. The type of capital sets the pace at which results are expected, how much loss the owner can tolerate, and whether the plan is judged against a sale in a few years or against continued ownership. A migration or a product bet that fits one arrangement can be unaffordable or unwanted under another. Knowing which arrangement the company is in tells you which kind of plan you are being asked to write.
+
 There is no required journey from one investor type to the next. The examples below describe alternative situations, including remaining under the existing ownership.
 
 ## Separate the Owner, the Financing and the Situation

@@ -20,7 +20,7 @@ icon: "assets/icons/23-toys-r-us.png"
 <br>
 Toys “R” Us was a large toy and baby-products retailer. Its US business failed during the ownership episode examined here. That history is often reduced to a short explanation: debt killed the company, online competition killed it, or management failed to adapt. Each points toward a possible mechanism. None alone is a complete explanation.
 
-The case is useful because the company's late-period financial disclosures show both operating effort and severe constraints. A technology leader can learn from that combination without claiming to reconstruct every decision across the ownership period.
+The case is useful because the company's late-period financial disclosures show both operating effort and severe constraints. The technology plans were reasonable in isolation. What constrained them was the financing: debt service that consumed the cash those plans required, and a timetable set by obligations to lenders rather than by the market. A technology leader can learn from that combination without claiming to reconstruct every decision across the ownership period.
 
 The previous cases examined successful exits and a continuing software group. This case examines a failure, beginning with the purchase, then the technology plans, financial pressures and consequences of the US shutdown. It applies the distinction between earnings and available cash from [[cash-and-constraints]].
 

@@ -22,6 +22,8 @@ An adviser from the investment firm suggests changing the company’s cloud prov
 
 This is a problem of **governance**: the arrangements for making decisions, overseeing them and holding people responsible. Good intentions cannot replace an agreed decision process.
 
+In a founder-owned company an informal decision process can work for years. An outside investor introduces new holders of authority: board seats, approval thresholds, and advisers who speak, or seem to speak, for the owner. Their requests carry a weight that is easy to overestimate or underestimate, and the operating consequences of either mistake land on product and engineering teams.
+
 Part I followed the money. This chapter begins Part II by examining what investment can change about your authority and accountability. We first identify the changes, then establish who decides and how you can influence the plan through evidence and workable alternatives.
 
 The examples return to the fictional software company Larkspur. Ines is its chief executive officer (**CEO**), Alex its chief technology officer (**CTO**), and Sam its chief financial officer (**CFO**). Morgan is the **Technology Principal**, a technology adviser working for the investment firm. Their titles describe their work; their actual approval rights need to be agreed.

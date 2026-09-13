@@ -20,6 +20,8 @@ icon: "assets/icons/22-visma.png"
 <br>
 Visma is a group of business-software companies. Its public accounts describe product development, acquisitions and shared support alongside changes in its investors. The case gives us a different pattern from the completed exits in the previous chapter.
 
+It matters for product and engineering leaders because a change of fund, even under the same manager, can change the money and the timeline behind long-running product and platform work. It is also a reminder that the earnings measures reported to owners can differ from the figures used inside the company.
+
 The historical window here runs principally through 2024, including a December 2023 ownership transaction. **Hg** is the investment manager associated with the long relationship discussed in the sources. A manager is the organization overseeing investments; the funds and investors behind that organization can change.
 
 We follow three questions in order: who continued to own an interest, how the group described its operations, and why two sources report different earnings for 2024. The last question provides a practical exercise in reading financial definitions.

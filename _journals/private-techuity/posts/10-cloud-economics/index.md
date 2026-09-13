@@ -22,6 +22,8 @@ icon: "assets/icons/10-cloud-economics.png"
 
 Perhaps unused resources were removed. Perhaps traffic fell because customers left. Perhaps spending moved into another account. Perhaps a large upfront commitment lowered the monthly invoice while increasing long-term exposure. The number is a starting observation, not a conclusion.
 
+Cloud spending attracts investor attention because it is a large, visible and adjustable cost, and reducing it improves the earnings measures on which the company is valued. That makes a cost target easy to set from outside the engineering team and hard to refuse. The engineering leader’s contribution is to show what a cheaper bill means for the service customers receive, and whether a saving that looks good at the next review would still look good at a sale.
+
 The previous chapter compared the earnings, cash and design views of one proposal. Here we apply that approach to cloud spending. We first choose a meaningful unit of service, then separate the reasons costs change, and finally check the saving alongside service quality.
 
 **Unit economics** means examining revenue or cost for a meaningful unit of activity, such as a completed transaction or customer account. FinOps is the practice of managing technology's financial value through collaboration among engineering, finance and business teams. The FinOps Foundation's unit-economics guidance connects technology costs to organizational outcomes and distinguishes resource efficiency from business unit measures. [S16: FinOps unit economics](https://www.finops.org/framework/capabilities/unit-economics/) For a company leader, this provides a useful bridge between infrastructure work and the cash and margin questions discussed in [[cash-and-constraints]].

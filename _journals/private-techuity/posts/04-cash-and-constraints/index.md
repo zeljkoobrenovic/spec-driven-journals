@@ -20,6 +20,8 @@ icon: "assets/icons/04-cash-and-constraints.png"
 <br>
 The board sees a growing measure of operating earnings. The engineering team is told there is no money for an essential migration. Both can be true. The budget discussion needs to explain what happens between recording earnings and having cash available for new work.
 
+Without outside investors, the gap between earnings and cash is mostly an accounting matter. With them it becomes a structural one. Loan repayments, interest, fees and payments to owners are set by the financing rather than by the operating plan, and they are paid before a migration or a new team is funded. Product and engineering leaders who read only the earnings figure will misjudge how much of it is theirs to commit.
+
 [[valuation-and-architecture]] distinguished earnings from cash in principle. This chapter works from earnings to the cash remaining after planned payments, then examines runway in a company spending more than it collects. Both calculations help turn an investment request into a choice about timing and competing obligations.
 
 Before the calculation, recall **EBITDA**: earnings before interest, income taxes, depreciation and amortization, the asset-accounting charges explained in [[valuation-and-architecture]]. It leaves out several payments a business must make.

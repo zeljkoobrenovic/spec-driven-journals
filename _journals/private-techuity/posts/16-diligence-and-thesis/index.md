@@ -22,6 +22,8 @@ A diligence report identifies an onboarding bottleneck, but the investment plan 
 
 **Technical due diligence** investigates a company’s product and technology capabilities, dependencies, costs and risks before an investment. Its findings should help decision-makers assess price, funding, risk, transaction conditions and the operating plan.
 
+Diligence exists only because an investor is deciding whether, and on what terms, to put money in. Its findings feed the price, the funding and the operating plan the company will later be held to. Product and engineering leaders who treat diligence as an audit to pass miss the chance to shape the commitments they will afterwards have to deliver.
+
 This does not mean every diligence must find a reason to change the deal. It can confirm an important assumption. The requirement is to identify which assumption was tested, what evidence supports it, and what uncertainty remains.
 
 Part IV explained how to use investor support. Part V now follows the company leader through the ownership cycle, beginning before the deal is complete. Your role is to help the investigation understand the actual business, challenge unsupported assumptions and establish which work a credible investment plan would require. The following chapters carry that evidence into early ownership and later reviews.

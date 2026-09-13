@@ -20,6 +20,8 @@ icon: "assets/icons/26-valuation-and-architecture.png"
 <br>
 Suppose someone says a company is worth €60 million. Before interpreting that number, ask what is being valued: the operating business, or the shares its owners hold? Then ask how the estimate was made.
 
+Product and engineering leaders do not usually need to value a company. Under investors they need to understand valuations because the estimate becomes the target. The assumptions behind it decide which growth, margin and cost results the company must deliver, and hence which technology work is funded and which is questioned. Knowing how the number was built shows which assumptions your plan is actually being asked to support.
+
 The previous chapter followed ownership and cash payments. This chapter introduces the financial measures used to describe the company: revenue, profit and cash flow. We then use a single fictional business to distinguish business value from shareholder value and to explain three common valuation approaches.
 
 Read the calculations one step at a time. Their purpose is to make the assumptions understandable; no spreadsheet or accounting background is required.

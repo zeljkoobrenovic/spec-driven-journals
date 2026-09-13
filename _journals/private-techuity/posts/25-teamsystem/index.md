@@ -26,7 +26,7 @@ A **buy-and-build** strategy expands a group through further acquisitions. **Sta
 
 The sources have different strengths. Investor accounts explain their stated ambitions and reported realizations. Company financial statements expose operating measures, investment and financing. Neither supplies a controlled experiment identifying the effect of a particular architecture or management intervention.
 
-For the company leader, the central question is what each acquisition adds to both capability and obligations. The operating work can continue long after the investor who approved it has sold.
+For the company leader, the central question is what each acquisition adds to both capability and obligations. A buy-and-build strategy is set by investors and financed largely with debt, while the integration, product and platform work it creates is inherited by the operating team and carried across successive owners. The operating work can continue long after the investor who approved it has sold.
 
 ## From a Regional Company to a Different Ownership Problem
 

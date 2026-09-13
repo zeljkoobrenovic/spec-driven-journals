@@ -22,6 +22,8 @@ Hilton operates a hotel business and brand network. Skype provided internet call
 
 Hilton’s ownership episode ran through a severe economic downturn and recovery. Skype’s much shorter episode included resolving rights to essential technology before a sale to Microsoft. Comparing them helps apply the book’s central distinction: an **exit**, a sale through which investors receive value, is an event to explain rather than proof that every earlier decision worked.
 
+Exits matter to product and engineering leaders because much of what investors ask for during ownership is justified by the sale they expect to make. These two cases show what a completed sale can and cannot tell you about the technology work that preceded it, and how a sponsor’s account of its own success should be read.
+
 We examine Hilton first, then Skype, using the same questions: what changed, how might technology have helped, what did investors receive, and what remains unknown? A **sponsor** is the investment firm behind a transaction. Its account is useful evidence about its stated actions and reported result, but may emphasize favorable interpretations.
 
 The historical material does not include complete fund cash flows or an independent calculation of each technology initiative’s contribution. Keep that limit in view when assessing which operating lessons the cases support.

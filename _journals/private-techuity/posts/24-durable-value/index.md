@@ -20,7 +20,7 @@ icon: "assets/icons/24-durable-value.png"
 <br>
 Durable success means that a company can continue creating useful outcomes after the immediate intervention and, where relevant, after the owner exits. It includes economic viability, the ability to reinvest, operational capability, and the distribution of benefits and burdens.
 
-This definition is the manuscript's proposed evaluative standard. It is deliberately broader than investor return. It does not assume that every stakeholder benefits from every decision or that a difficult restructuring is always avoidable.
+This definition is the manuscript's proposed evaluative standard. It is deliberately broader than investor return, because investors measure success at the moment they realize value, while product and engineering leaders, customers and employees live with the company afterward. A plan can pass the first test and fail the second. The standard does not assume that every stakeholder benefits from every decision or that a difficult restructuring is always avoidable.
 
 The four case-study chapters examined five companies. This final chapter puts them alongside **empirical research**, research based on observations and data, and asks who gained, who bore costs and what the company could sustain afterward. We first examine how to read the research, then use it to develop a broader assessment of success.
 

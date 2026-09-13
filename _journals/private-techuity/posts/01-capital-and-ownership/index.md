@@ -20,6 +20,8 @@ icon: "assets/icons/01-capital-and-ownership.png"
 <br>
 Your company announces a €100 million investment. It is natural to expect a larger hiring or product budget. But the announcement may describe money paid to selling shareholders, repayment of old loans, and transaction costs. Only the part actually supplied to the business increases its cash directly.
 
+In a company with no outside investor, the budget is roughly what the business earns and chooses to spend. An investment transaction breaks that link. The headline figure describes a change of ownership, and the amount that reaches the business depends on how the deal was structured. A product or engineering leader who plans hiring against the announcement rather than the deal terms is planning against money the company may never see.
+
 [[how-companies-get-money]] introduced the difference between funding a company and buying its existing shares. We will now compare a minority funding round, a fund-backed buyout and corporate ownership. Then we examine the fund structure in more depth so you can distinguish an investor’s capacity from money committed to your company.
 
 ## Map the Arrangement Before Relying on the Money

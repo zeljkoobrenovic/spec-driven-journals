@@ -20,6 +20,8 @@ icon: "assets/icons/18-execution-and-exit.png"
 <br>
 The early ownership plan is agreed. Over the following months and years, customers change, projects encounter delays and leaders leave or take on new responsibilities. Funding assumptions can change just as quickly, requiring the company to revise commitments before cash or capacity runs short.
 
+In a company without investors, a plan can be revised quietly. Under investors, the plan is the basis on which money was committed, and each revision is reviewed against the investment case, the fund’s timeline and the prospect of a sale or refinancing. Product and engineering leaders have to keep the plan credible to owners who may change, while keeping the company itself, not only the investor’s return, in good order for whoever holds it next.
+
 Your responsibility as a company leader is to keep the operating plan credible as conditions change. An investor’s adviser may help through oversight, coaching or a specific delivery assignment. The role can change when investors change. Use the agreements from Part IV to establish the contribution needed and the company authority behind resulting decisions.
 
 [[first-hundred-days]] established a funded plan. This chapter follows regular reviews, changes in funding and the evidence needed for a handover. One possible transition is an **exit**: a sale or other arrangement through which an investor receives value from some or all of its holding.

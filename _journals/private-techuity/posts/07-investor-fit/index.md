@@ -22,6 +22,8 @@ Ines, the chief executive of the fictional software company Larkspur, has two **
 
 **Investor fit** means how well an investor’s terms, resources and behavior match what the company needs. A reassuring description is a starting point for investigation.
 
+Most product and engineering leaders are not asked to sign a term sheet. They are asked to deliver a plan whose feasibility depends on the investor’s behavior: whether funding continues after a missed quarter, whether support arrives in a usable form, and whether a delay is treated as a problem to solve or a reason to change management. Assessing the investor is therefore part of assessing whether your own commitments are achievable.
+
 The purpose is not to find a universally good investor. It is to find out whether this partnership can support what Larkspur actually has to do next: automate onboarding, enter a second country, and replace the knowledge and relationships concentrated in a retiring founder. The same firm can be a strong fit for one situation and a poor fit for another.
 
 If your company already has an investor, use the same questions to assess the relationship you have. You may be able to change a support arrangement, an approval process or an unrealistic commitment even when choosing a different owner is not your decision.

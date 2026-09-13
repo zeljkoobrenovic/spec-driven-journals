@@ -24,6 +24,8 @@ The company has changed its resources while leaving the delays in decisions unre
 
 The preceding chapters examined investments in systems, infrastructure, risk reduction and AI. Delivering those investments also depends on people with the time, knowledge and authority to do the work. An investment case that funds the work without funding the capacity to do it has not been completed.
 
+Investment plans usually fund what can be counted: tools, licences, headcount in a cheaper location. They rarely fund the slower change in how decisions are made, and the timetable that comes with the investment leaves little room for it. Investors and their advisers may also propose organizational changes directly. Product and engineering leaders need to show what the operating model can absorb, and what changing it costs, before the plan assumes the capacity.
+
 ## Follow One Piece of Work Through the Company
 
 Start with the customer and operating work the company needs to perform. Who learns about customer needs? Who decides priorities? Who can release a change? Who supports it? Who resolves conflicts across product boundaries?

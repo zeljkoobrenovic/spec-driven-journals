@@ -22,6 +22,8 @@ Larkspur has money to improve customer onboarding, the setup required before a n
 
 The investor may know a suitable specialist, a leader at another company who has solved a similar problem or someone who can help define the permanent role. Those are different forms of support. Which one would make the next decision easier?
 
+This kind of help exists only because of the investor. A firm with several portfolio companies accumulates people, suppliers and experience a single company could not reach on its own, and it offers them because a stronger company raises the value of its holding. The offer is real but not free of interest. Using it well requires knowing what the company needs before accepting what is offered.
+
 The previous chapter explained the investment firm’s technology adviser. This chapter widens the view to the people and connections around that adviser. We start with the company’s need, examine possible help and then consider how to judge its availability and fit.
 
 ## Name the Capability You Need

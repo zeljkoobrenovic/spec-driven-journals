@@ -20,7 +20,11 @@ icon: "assets/icons/06-incentives.png"
 <br>
 “We are all shareholders now” can describe a useful common interest. It can also conceal very different risks, rights, and time horizons.
 
-[[governance]] established who may decide. **Incentives** are the rewards and consequences that encourage a particular choice. This chapter examines ownership-based rewards first, then the behavior encouraged by targets, and finally the effects on people outside the reward arrangement.
+[[governance]] established who may decide. **Incentives** are the rewards and consequences that encourage a particular choice.
+
+In ordinary product and engineering work, incentives mostly mean performance targets and pay. Investor ownership adds a second layer: equity that pays out at a sale, targets tied to the investment case, and a fund whose interests differ from those of executives and employees in timing and risk. Product and engineering leaders need to read that layer because it shapes which proposals get approved and which behavior their own targets reward.
+
+This chapter examines ownership-based rewards first, then the behavior encouraged by targets, and finally the effects on people outside the reward arrangement.
 
 An **executive** is a senior leader responsible for managing the business. An executive may have most of their wealth and future employment tied to one company. A fund holds several investments. The manager earns fees and may receive **carried interest**, a contractual share of investment profits. Employees without equity can bear reorganization costs without receiving a share of the proceeds when the investor sells its holding, an **exit**. Customers can depend on a product long after the investor has sold.
 

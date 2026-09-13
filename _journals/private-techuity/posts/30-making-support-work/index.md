@@ -22,6 +22,8 @@ An investor offers Larkspur a specialist to improve customer setup. Everyone wel
 
 The offer named a person but left the work undefined. An **engagement** is an agreed piece of support with a purpose, participants and boundaries. An **engagement charter** is a short record of that agreement.
 
+The difficulty is peculiar to investor-backed companies. A consultant the company hires answers to the company. A specialist sent by the investor answers, at least in part, to the owner, and engineers may not be able to tell whose instructions they are following. Turning the offer into an engagement is how the company keeps the help while keeping the decisions.
+
 [[investor-support]] identified possible sources of help. This chapter explains how a company leader can use that help without creating a second, unclear route for assigning work. The approach is a proposed working method, illustrated through fictional situations.
 
 ## Turn the Request into a Decision or Result

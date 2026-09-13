@@ -20,6 +20,8 @@ icon: "assets/icons/17-first-hundred-days.png"
 <br>
 New funding or an ownership change creates an early period in which expectations must become an agreed **operating plan**: what the business will do, who will do it and what resources it requires. A hundred days can provide a useful planning horizon. It is neither enough to transform most businesses nor the right deadline for every commitment.
 
+A leader running a business under stable ownership plans on the company’s own rhythm. A new investor replaces that rhythm with its own: an investment case with stated assumptions, an early review, and expectations formed during diligence rather than inside the company. The period matters because this is when those expectations either become a plan the company can fund and staff, or harden into commitments nobody tested.
+
 [[diligence-and-thesis]] produced findings before a funding round, purchase or other ownership decision. This chapter explains how those findings become the company’s own plan. We first confirm the assumptions, select a manageable set of priorities, check their dependencies and establish how progress will be judged.
 
 ## The First Priorities Depend on What Changed

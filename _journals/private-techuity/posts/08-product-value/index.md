@@ -22,6 +22,8 @@ A product team proposes making customer setup faster. That sounds useful, but wh
 
 A **product roadmap** sets out intended product changes and priorities. A roadmap item describes work; its business case explains the useful result expected from that work. In this chapter, we follow one item from the proposed change to its possible financial effect.
 
+A product leader normally has to show that a change is useful. Under investors, the change also has to reach a financial result the investment case depends on: revenue growth, margin or retention within the period before the next review or a sale. The chain from work to that result is the part investors and their advisers will examine, and it is the part most often asserted rather than shown.
+
 The example uses Larkspur, a fictional company selling scheduling software. **Onboarding** is the setup and help required before a customer can use that software successfully. The **value mechanism** is the sequence by which a change to onboarding produces a benefit.
 
 [[choosing-investments]] compared competing uses of money and team capacity. We now examine a selected product change more closely: how could the work produce a useful customer and business result? Later chapters apply the same reasoning to engineering, costs, security, artificial intelligence and people.

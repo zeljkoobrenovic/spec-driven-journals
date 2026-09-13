@@ -22,6 +22,8 @@ A technology specialist employed by the investor joins your planning meeting. Th
 
 In this book, a **Technology Principal** is an adviser working for an investment firm who assesses technology and helps companies improve their operations. A **chief technology officer (CTO)** leads technology inside the company. The adviser can help test assumptions and improve company work; the company leader normally carries the continuing operating responsibility.
 
+No such person exists in a company without an outside investor. Their presence follows from ownership: the investor wants its own view of the technology and a channel for improving it. That gives the adviser information and influence a supplier or consultant would not have, and leaves the company’s technology leader to work out how the adviser’s assessment relates to their own authority.
+
 Part III examined the investments and capabilities your company needs. Part IV begins with the person who may help connect those needs to the investor’s resources. We first distinguish their possible assignments, then agree how to work together.
 
 ## Establish What Kind of Help Exists in Your Arrangement

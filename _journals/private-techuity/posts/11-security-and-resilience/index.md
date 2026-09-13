@@ -22,6 +22,8 @@ icon: "assets/icons/11-security-and-resilience.png"
 
 A company often has to fund these capabilities before suffering the loss they are intended to prevent. That creates two temptations: invent a precise amount of “risk avoided,” or retreat into a checklist that says little about business exposure.
 
+Investor ownership sharpens both temptations. A security investment competes with growth work for the same limited cash and appears in the plan as cost without revenue, so it needs a stronger case than in a company under no pressure to show earnings. At the same time, a breach or a long outage during the ownership period can reduce what the company is worth, and technical diligence and buyer questionnaires will test the controls. The leader has to argue for the investment in terms an investment committee recognizes: exposure, obligations and who accepts the remaining risk.
+
 A better approach treats security and resilience as decisions under uncertainty. The company identifies material failure scenarios, the controls and response capabilities that matter, the investment required, and who accepts the remaining risk. Some obligations must be met regardless of a simplified financial model.
 
 The cloud chapter examined observed spending and service quality. Security also needs evidence, but part of its benefit is a lower chance or severity of future harm. We start with essential business functions, examine the evidence of protection and recovery, and then consider risk estimates and responsibility.

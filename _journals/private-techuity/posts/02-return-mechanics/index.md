@@ -22,6 +22,8 @@ A company grows its earnings, yet its investor earns less than expected. Another
 
 An **investment return** compares what an investor receives, or still holds, with what it invested. Return measures answer different questions about amount and timing. Until an investment is sold, part of a reported return can depend on an estimate of its value.
 
+Leaders inside the company judge progress by customers served, products shipped and earnings. An investor judges the same company by the return on its holding, which also depends on the price it paid, the money it borrowed and when it sells. That is why an investor can press for a change that a product or engineering leader cannot justify from the business alone: the request often follows from the mechanics of the investment rather than from the product. Understanding those mechanics makes such requests easier to anticipate and to question.
+
 [[valuation-and-architecture]] explained company valuation. Here we follow a minority investment through a later funding round, then work through a buyout and vary its sale price and timing. These examples show why business performance and investor returns can move differently.
 
 In the calculations, “earnings growth” means an increase in the specified earnings measure. It does not by itself establish better products or customer service. For example, postponing maintenance can raise current earnings while creating problems later.

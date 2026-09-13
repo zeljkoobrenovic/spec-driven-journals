@@ -22,7 +22,9 @@ An investor asks for an “AI strategy.” The product team sees a new customer 
 
 **Artificial intelligence (AI)** refers here to software that performs tasks such as classifying information, making predictions or generating content from learned patterns. **Generative AI** produces outputs such as text, images or code. An **AI model** is the component that learns patterns from data and uses them to produce predictions or other outputs. Its output needs evaluation in the task where it will be used.
 
-Combining these into a single adoption target obscures the economics. A company can use AI extensively without creating value, create value through a narrow use case, or face disruption even if its own experiments work well.
+The investor’s request has reasons that go beyond the product. AI can change what the company is worth, what a buyer will pay for it, and whether the investment case still holds if a competitor’s product replaces it. Product and engineering leaders are therefore being asked a valuation question dressed as a technology question, and a headline commitment can be made on the company’s behalf before the work has been examined.
+
+Combining the three questions into a single adoption target obscures the economics. A company can use AI extensively without creating value, create value through a narrow use case, or face disruption even if its own experiments work well.
 
 We will examine customer uses first, then the data they require, evidence about internal productivity, and possible threats to the existing product. The value chain from [[product-value]] and the uncertainty discussed in [[security-and-resilience]] remain useful throughout.
 

@@ -22,7 +22,11 @@ Larkspur’s investor wants faster growth. Priya, the product leader, has reques
 
 A **company investment** commits resources now in the expectation of a future benefit. **Team capacity** is the time and capability people have available to do the work. Choosing investments requires both a cash plan and a capacity plan.
 
-Parts I and II explained financing, authority and incentives. This chapter applies them to a decision product and technology leaders face repeatedly: which combination of work should the company commit to next? The approach below is a proposed working method, illustrated with fictional figures.
+Parts I and II explained financing, authority and incentives. This chapter applies them to a decision product and technology leaders face repeatedly: which combination of work should the company commit to next?
+
+Investor ownership changes that decision in two ways. The cash and capacity available are limited by the financing described in Part I, and the investor’s expected result gives some options a priority the company’s own view might not. A leader who chooses by team preference or by the loudest request will find the plan overruled or unfunded.
+
+The approach below is a proposed working method, illustrated with fictional figures.
 
 ## Start With the Result the Company Needs
 

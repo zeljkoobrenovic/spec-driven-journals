@@ -22,6 +22,8 @@ A company needs cash to pay people, buy supplies and develop its products. Custo
 
 **Financing** means arranging the money a business needs. The source matters because each arrangement brings different costs, expectations and rights. Start by tracing the cash and identifying what the company promises in return.
 
+Product and engineering leaders usually meet money as a budget: an amount they may spend. Once investors are involved, the amount is the less important half. Money from an owner or a lender arrives with rights over decisions, repayment dates or an expected sale, and those conditions decide what the budget can be spent on and for how long. This chapter starts with the sources so that later chapters can connect a plan to the obligations behind the money that funds it.
+
 ## Four Common Ways Cash Reaches a Business
 
 Imagine a small company that sells scheduling software. It needs €100,000 to finish the product and pay its staff. Consider four ways it might obtain that cash.
