@@ -1,9 +1,11 @@
 ---
 title: Bibliography and Evidence Guide
 date: 2026-09-12
-permalink: pt-bibliography
-status: draft:orange
-excerpt: Consulted sources, publication dates, evidence types, and limits.
+permalink: bibliography
+excerpt: "Find the sources, understand what kind of evidence each provides and see the limits of what was consulted."
+logo: "assets/images/bibliography/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/bibliography.png"
 ---
 
 > **KEY POINTS:**
@@ -13,9 +15,25 @@ excerpt: Consulted sources, publication dates, evidence types, and limits.
 > * **Keep facts, interpretation and examples distinct.** Follow the nearby chapter citations and use the consultation notes to identify what still needs verification.
 
 <br>
-This bibliography contains sources actually consulted for the manuscript and its revisions. **Access date: September 12, 2026.** Publication dates and study periods differ. The consultation notes identify partial access, interested perspectives, and version choices; listing a long document does not imply that every page was reviewed.
+This bibliography contains sources actually consulted for the manuscript and its revisions. **The original source review was on September 12, 2026; the beginner-reading revision added S54–S57 on September 13, 2026. The structural revision also rechecked S01 and S22 on that date for the ownership framing and investor-support chapters.** Publication dates and study periods differ. The consultation notes identify partial access, interested perspectives, and version choices; listing a long document does not imply that every page was reviewed.
 
 Source identifiers remain stable through revisions. Private inputs are identified separately without publishing their contents or confidential file details. The manuscript’s templates and fictional calculations are its own proposed tools, not validated standards.
+
+## What Supports the Broader Ownership Frame
+
+The Owned revision added S58–S61 on September 13, 2026. These sources describe venture, expansion and corporate funding and the existence of distinct venture financing documents. They support the financial orientation. They do not validate the proposed working methods or establish comparative investor performance.
+
+The historical case and research evidence continues to concentrate on private equity. Comparisons elsewhere use explicitly fictional scenarios and the author’s reasoning about stated constraints. Transferring a question about funding, rights or capacity is different from transferring a causal finding to another ownership model. The new examples are not additional case studies.
+
+## How to Read an Entry
+
+The code in a citation identifies its source: **S** marks a public source, and **P** a supplied private input. The numbers are identifiers, not a ranking of quality or a reading order.
+
+**Evidence type** tells you what kind of source it is. A company filing records reported information under a formal disclosure process. A company or investor account also describes its own actions and may favor its own interpretation. A research study investigates a question using a stated method. A guidance document recommends or explains a practice; it does not demonstrate that every company follows it.
+
+**Consulted scope** states what the manuscript’s research actually examined. It can be an entire short page, selected pages or only an abstract, the short summary at the start of a research paper. A link to a long report does not imply every page was reviewed. **DOI** is a persistent identifier used for many research publications.
+
+For a first reading, follow the citations attached to the chapter you are studying. Return here when you need the source’s date, scope or limitations. Technical vocabulary is explained in [[glossary]].
 
 ## Public evidence
 
@@ -23,7 +41,7 @@ Source identifiers remain stable through revisions. Private inputs are identifie
 
 U.S. Securities and Exchange Commission, Investor.gov. [Private Equity Funds](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity). Undated; accessed 2026-09-12.
 
-**Evidence type:** Regulator education. **Consulted scope:** Guide consulted for fund structure, investment forms, illiquidity, and investor considerations. An introduction, not a particular fund agreement.
+**Evidence type:** Regulator education. **Consulted scope:** Guide consulted for fund structure, investment forms, illiquidity, and investor considerations. An introduction, not a particular fund agreement. Rechecked 2026-09-13 for the distinction between controlling and minority investment strategies.
 
 ### S02 — ILPA principles
 
@@ -51,7 +69,7 @@ Institutional Limited Partners Association (ILPA). [ILPA Performance Template](h
 
 ### S06 — SEC non-GAAP guidance
 
-U.S. Securities and Exchange Commission, Division of Corporation Finance. [Non-GAAP Financial Measures: Compliance and Disclosure Interpretations](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures). Living page; EBITDA interpretations 103.01–103.02 dated January 11, 2010; accessed 2026-09-12.
+U.S. Securities and Exchange Commission, Division of Corporation Finance. [Non-GAAP Financial Measures: Compliance and Disclosure Interpretations](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures). Living page; interpretation 103.01 dated January 11, 2010, and 103.02 dated May 17, 2016; accessed 2026-09-12 and rechecked 2026-09-13.
 
 **Evidence type:** Regulator staff guidance. **Consulted scope:** Relevant EBITDA and adjusted-measure interpretations consulted. US disclosure context; not a universal accounting definition for every private company.
 
@@ -59,7 +77,7 @@ U.S. Securities and Exchange Commission, Division of Corporation Finance. [Non-G
 
 IFRS Foundation. [IAS 38: Intangible Assets](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/). Undated standard overview; accessed 2026-09-12.
 
-**Evidence type:** Accounting standard issuer. **Consulted scope:** Public overview consulted for research expense and development recognition criteria. The complete standard and any particular company's application were not audited.
+**Evidence type:** Accounting standard issuer. **Consulted scope:** Public overview consulted for research expense and development recognition criteria. The overview was rechecked on September 13, 2026 to clarify that recognition criteria determine the treatment. The complete standard and any particular company's application were not audited.
 
 ### S08 — Davis et al., 2024 revision
 
@@ -131,7 +149,7 @@ Chloe Autio, Reva Schwartz, Jesse Dunietz, Shomik Jain, Martin Stanley, Elham Ta
 
 Sida Peng, Eirini Kalliamvakou, Peter Cihon, and Mert Demirer. [The Impact of AI on Developer Productivity: Evidence from GitHub Copilot](https://arxiv.org/abs/2302.06590). February 13, 2023; arXiv:2302.06590.
 
-**Evidence type:** Original controlled experiment. **Consulted scope:** Original abstract and task description consulted. Bounded HTTP-server programming task and tool generation constrain external validity; industry affiliations matter.
+**Evidence type:** Original controlled experiment. **Consulted scope:** Original abstract and task description consulted. The September 13, 2026 editorial review also checked the [study design and results](https://arxiv.org/html/2302.06590v1): the experiment ran in 2022, and the 55.8% figure is a reduction in average completion time among those who completed the task. The bounded task, tool generation and industry affiliations limit interpretation.
 
 ### S20 — METR early-2025 experiment
 
@@ -149,17 +167,17 @@ Joel Becker, Nate Rush, Tom Cunningham, David Rein, and Khalid Mahamud; METR. [W
 
 KKR. [Capstone](https://www.kkr.com/approach/capstone). Undated capability page; accessed September 12, 2026.
 
-**Evidence type:** Interested practitioner account. **Consulted scope:** Operating-support description consulted. Evidence of a stated offering and collaboration model; no causal attribution of returns or universal role charter.
+**Evidence type:** Interested practitioner account. **Consulted scope:** Operating-support description consulted. Evidence of a stated offering and collaboration model; no causal attribution of returns or universal role charter. Rechecked 2026-09-13 for the new investor-support chapter: management collaboration, specialist and partner networks, technology, growth and people support.
 
 ### S23 — Hilton registration filing
 
-Hilton Worldwide Holdings Inc.. [Form S-1 Registration Statement](https://www.sec.gov/Archives/edgar/data/1585689/000119312513364703/d593452ds1.htm). September 12, 2013.
+Hilton Worldwide Holdings Inc. [Form S-1 Registration Statement](https://www.sec.gov/Archives/edgar/data/1585689/000119312513364703/d593452ds1.htm). September 12, 2013.
 
 **Evidence type:** Company regulatory filing. **Consulted scope:** Prospectus business/commercial-services discussion, debt restructuring, and selected operating comparisons consulted. Financial disclosures and management narratives have different evidentiary roles; not a full independent audit of the filing.
 
 ### S24 — Blackstone 2018 investor call
 
-The Blackstone Group L.P.. [Second Quarter 2018 Earnings Investor Call](https://ir.blackstone.com/files/doc_events/BLACKSTONE-Second-Quarter-2018-Earnings-Investor-Call.pdf). July 19, 2018.
+The Blackstone Group L.P. [Second Quarter 2018 Earnings Investor Call](https://ir.blackstone.com/files/doc_events/BLACKSTONE-Second-Quarter-2018-Earnings-Investor-Call.pdf). July 19, 2018.
 
 **Evidence type:** Interested investor account. **Consulted scope:** Hilton realization discussion consulted for sponsor-reported 3.1× multiple and $14 billion profit. Not an independently reconstructed net LP cash-flow series.
 
@@ -171,13 +189,13 @@ Private Equity International. [North American Exit of the Year: Blackstone for H
 
 ### S26 — eBay Skype sale announcement
 
-eBay Inc.. [eBay Inc. Completes Sale of Skype](https://investors.ebayinc.com/investor-news/press-release-details/2009/EBay-Inc-Completes-Sale-of-Skype/default.aspx). November 19, 2009.
+eBay Inc. [eBay Inc. Completes Sale of Skype](https://investors.ebayinc.com/investor-news/press-release-details/2009/EBay-Inc-Completes-Sale-of-Skype/default.aspx). November 19, 2009.
 
 **Evidence type:** Company transaction announcement. **Consulted scope:** Completion, valuation, retained stake, and consideration description consulted. Does not supply the buyer consortium's complete equity cash flows.
 
 ### S27 — Skype registration filing
 
-Skype S.à r.l., to be converted into Skype S.A.. [Amendment No. 3 to Form S-1 Registration Statement](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm). April 13, 2011; SEC registration 333-168646.
+Skype S.à r.l., to be converted into Skype S.A. [Amendment No. 3 to Form S-1 Registration Statement](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm). April 13, 2011; SEC registration 333-168646.
 
 **Evidence type:** Company regulatory filing. **Consulted scope:** Prospectus summary pp. 1–4, recent developments, intellectual-property settlement, selected financial data and financing discussion consulted. Pro forma periods, adjusted EBITDA, and management claims require care.
 
@@ -219,19 +237,19 @@ Visma. [Financial Results](https://www.visma.com/investors/financials). Living p
 
 ### S34 — Toys R Us annual filing excerpts
 
-Toys R Us, Inc.. [Form 10-K for Fiscal Year Ended January 28, 2017](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000011/tru201610k.htm). 2017 filing; fiscal 2016.
+Toys R Us, Inc. [Form 10-K for Fiscal Year Ended January 28, 2017](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000011/tru201610k.htm). 2017 filing; fiscal 2016.
 
 **Evidence type:** Company regulatory filing; partial access. **Consulted scope:** Only indexed excerpts concerning the e-commerce platform and risk were consulted. Full-page browser and download attempts failed with access errors. Do not treat this as a full 10-K review; financial table claims use S35 instead. Research pass two again attempted complete access through the SEC and mirrors without obtaining the full document; the access limit remains. S50 supplies separately consulted primary court evidence, not a substitute claim that this full 10-K was read.
 
 ### S35 — Toys R Us fiscal 2016 results
 
-Toys R Us, Inc.. [Toys R Us, Inc. Reports Results for the Full Year and Fourth Quarter of Fiscal 2016](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000010/truq4-16earningsreleaseexh.htm). April 12, 2017; earnings release, Exhibit 99.1.
+Toys R Us, Inc. [Toys R Us, Inc. Reports Results for the Full Year and Fourth Quarter of Fiscal 2016](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000010/truq4-16earningsreleaseexh.htm). April 12, 2017; earnings release, Exhibit 99.1.
 
 **Evidence type:** Company financial disclosure. **Consulted scope:** Release and financial tables consulted, including operating earnings, interest, cash flow, capex, sales, and e-commerce discussion. Fiscal year ended January 28, 2017; table units are USD millions.
 
 ### S36 — Toys R Us bankruptcy note
 
-Toys R Us, Inc.. [Bankruptcy Filing: Note to Interim Financial Statements](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000047/R9.htm). 2017 filing for period ended October 28, 2017.
+Toys R Us, Inc. [Bankruptcy Filing: Note to Interim Financial Statements](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000047/R9.htm). 2017 filing for period ended October 28, 2017.
 
 **Evidence type:** Company regulatory disclosure. **Consulted scope:** Note consulted for the September 2017 filings and entity/jurisdiction scope. This is the company's financial-statement account, not a review of the complete court docket.
 
@@ -249,7 +267,7 @@ Joseph D. Bruch, Suhas Gondi, and Zirui Song. [Changes in Hospital Income, Use, 
 
 ### S40 — Toys R Us acquisition agreement announcement
 
-Toys R Us, Inc.. [Agreement to Be Acquired by KKR, Bain Capital and Vornado for $26.75 per Share in a $6.6 Billion Transaction](https://www.sec.gov/Archives/edgar/data/1005414/000119312505057773/dex991.htm). March 17, 2005; Exhibit 99.1.
+Toys R Us, Inc. [Agreement to Be Acquired by KKR, Bain Capital and Vornado for $26.75 per Share in a $6.6 Billion Transaction](https://www.sec.gov/Archives/edgar/data/1005414/000119312505057773/dex991.htm). March 17, 2005; Exhibit 99.1.
 
 **Evidence type:** Company transaction announcement. **Consulted scope:** Announcement consulted for agreed consideration and context. The title is shortened here; a headline transaction amount is not a reconstructed financing schedule.
 
@@ -309,13 +327,13 @@ TeamSystem Holding S.p.A. and subsidiaries. [Consolidated Financial Statements a
 
 ### S50 — Brandon first-day declaration
 
-David A. Brandon, Chairman and Chief Executive Officer of Toys “R” Us, Inc.. [Declaration in support of Chapter 11 petitions and first day motions](https://profhayesuwla.com/wp-content/uploads/2017/09/toys-r-us-first-day-dec-chairman.pdf). Filed September 19, 2017; U.S. Bankruptcy Court, Eastern District of Virginia, case 17-34665-KLP, document 20.
+David A. Brandon, Chairman and Chief Executive Officer of Toys “R” Us, Inc. [Declaration in support of Chapter 11 petitions and first day motions](https://profhayesuwla.com/wp-content/uploads/2017/09/toys-r-us-first-day-dec-chairman.pdf). Filed September 19, 2017; U.S. Bankruptcy Court, Eastern District of Virginia, case 17-34665-KLP, document 20.
 
 **Evidence type:** Primary court-filed debtor declaration, public document mirror. **Consulted scope:** Complete 47-page stamped filing obtained and text extracted. Selected paragraphs 10–12, 19–32, 53–55, 60, 74 and 91–95 consulted for debt, maturities, supplier terms, technology constraints and proposed investment. Sworn management account supporting an application, not a court finding of causation. Funding table is a September 2017 snapshot, not a reconstructed 2005 sources-and-uses statement. Future project spending is a plan, not a realized result.
 
 ### S51 — Hasbro 2018 annual report
 
-Hasbro, Inc.. [2018 Annual Report, including Form 10-K for the year ended December 30, 2018](https://www.annualreports.com/HostedData/AnnualReportArchive/h/NYSE_HAS_2018.pdf). 2019; fiscal year ended December 30, 2018.
+Hasbro, Inc. [2018 Annual Report, including Form 10-K for the year ended December 30, 2018](https://www.annualreports.com/HostedData/AnnualReportArchive/h/NYSE_HAS_2018.pdf). 2019; fiscal year ended December 30, 2018.
 
 **Evidence type:** Supplier annual report and financial statements, public report mirror. **Consulted scope:** Full report obtained and text extracted; selected management discussion, segment results, operating expenses and receivables note consulted. Printed pp. 38 and 67 support USD 60.4 million related costs and approximately USD 49 million bad-debt expense respectively; the latter is included, not additive. Separate supplier-side evidence, but Hasbro is an interested participant. Its overall revenue/profit change has other causes; these costs do not measure all supplier or social losses.
 
@@ -323,13 +341,61 @@ Hasbro, Inc.. [2018 Annual Report, including Form 10-K for the year ended Decemb
 
 International Private Equity and Venture Capital Valuation Board (IPEV). [International Private Equity and Venture Capital Valuation Guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf). December 2025; issuer states publication December 11, 2025; effective for quarterly reporting periods beginning on or after April 1, 2026.
 
-**Evidence type:** Industry valuation guidance. **Consulted scope:** Issuer landing page and selected primary PDF sections consulted: introduction, technique selection, revenue/earnings multiples, comparability, DCF and net assets (sections 3.1–3.9; especially pp. 21–25, 29 and 34–37). Not every application section reviewed. Fair-value reporting guidance, not a negotiated transaction price, legal standard or prescription for business strategy and architecture.
+**Evidence type:** Industry valuation guidance. **Consulted scope:** Issuer landing page and selected primary PDF sections consulted: introduction, technique selection, revenue/earnings multiples, comparability, DCF and net assets (sections 3.1–3.9; especially pp. 21–25, 29 and 34–37). The September 13, 2026 editorial review additionally checked the enterprise-to-equity adjustments, surplus cash and debt treatment on sale. Not every application section was reviewed. This is fair-value reporting guidance, not a negotiated transaction price, legal standard or prescription for business strategy and architecture.
 
 ### S53 — Damodaran growth value drivers
 
 Aswath Damodaran, NYU Stern School of Business. [Growth companies—Value Drivers, The Little Book of Valuation companion material](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/littlebook/growthvaluedrivers.htm). Undated teaching page; accessed September 12, 2026.
 
 **Evidence type:** Original author teaching material. **Consulted scope:** Full short page consulted on scalable revenue growth, sustainable margins and reinvestment. Used for the economic relationship, not as an empirical causal study of software architecture or a current market benchmark. Related growth pages were discovery leads, not additional cited publications.
+
+### S54 — Investor.gov stock basics
+
+U.S. Securities and Exchange Commission, Investor.gov. [Stocks: FAQs](https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks). Undated educational page; accessed September 13, 2026.
+
+**Evidence type:** Regulator education. **Consulted scope:** Ownership, reasons for issuing shares, dividends and differences between common and preferred shares. Used for introductory definitions, not particular shareholder agreements.
+
+### S55 — Investor.gov public-company reporting
+
+U.S. Securities and Exchange Commission, Investor.gov. [Public Companies](https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/public-companies). Undated educational page; accessed September 13, 2026.
+
+**Evidence type:** Regulator education. **Consulted scope:** Different meanings of public company, public-reporting obligations and annual versus quarterly reports. US context; not a universal reporting schedule for every jurisdiction.
+
+### S56 — SBA grant overview
+
+U.S. Small Business Administration. [Grants](https://www.sba.gov/loans/additional-funding-opportunities/grants/). Living page; accessed September 13, 2026.
+
+**Evidence type:** Government program information. **Consulted scope:** Overview and research-and-development grant section. Establishes that eligible grants are another possible funding source; the book does not assess an individual company’s eligibility or promise general startup funding.
+
+### S57 — Damodaran on capital structure
+
+Aswath Damodaran, NYU Stern School of Business. [Finding the Right Financing Mix: The Capital Structure Decision](https://people.stern.nyu.edu/adamodar/pdfiles/cf2E/capstru.pdf). Undated teaching slides; accessed September 13, 2026.
+
+**Evidence type:** Original author teaching material. **Consulted scope:** Introductory financing-choice and debt/equity-mix slides, especially slides 2–8. Used for the capital-structure definition, not historical tax examples, a mandatory company lifecycle or current financing recommendations.
+
+### S58 — Venture capital
+
+**British Business Bank. [Venture capital](https://www.british-business-bank.co.uk/business-guidance/guidance-articles/finance/venture-capital).** Undated guidance; accessed 2026-09-13.
+
+**Evidence type:** Public development-bank business guidance. **Consulted scope and limits:** Guide consulted for early-stage equity, minority participation and successive funding rounds. Not evidence of outcomes for the manuscript’s fictional examples; no universal funding or holding timetable is inferred.
+
+### S59 — Expansion capital
+
+**British Business Bank. [Expansion capital](https://www.british-business-bank.co.uk/business-guidance/guidance-articles/finance/expansion-capital).** Undated guidance; accessed 2026-09-13.
+
+**Evidence type:** Public development-bank business guidance. **Consulted scope and limits:** Guide consulted for equity supporting business expansion and possible retention of control. Its typical ranges are not applied as requirements or market-wide estimates.
+
+### S60 — Corporate venture capital
+
+**British Business Bank. [Corporate venture capital (CVC)](https://www.british-business-bank.co.uk/business-guidance/guidance-articles/finance/corporate-venture-capital).** Undated guidance; accessed 2026-09-13.
+
+**Evidence type:** Public development-bank business guidance. **Consulted scope and limits:** Guide consulted for corporate funding, commercial purposes, expertise and network access. Not a review of corporate acquisition law, specific investor agreements or universal CVC behavior.
+
+### S61 — NVCA model-document overview
+
+**National Venture Capital Association. [Model Legal Documents — overview](https://nvca.org/model-legal-documents/).** Living overview; accessed 2026-09-13.
+
+**Evidence type:** US venture industry model-document overview. **Consulted scope and limits:** The overview and document list were consulted, including its description of time- or milestone-based financing mechanics. Individual downloadable agreements were not reviewed. The citation supports checking distinct rights, voting and purchase documentation, not a clause-level or jurisdiction-independent legal claim.
 
 ## Supplied private inputs
 

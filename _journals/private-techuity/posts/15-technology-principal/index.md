@@ -1,78 +1,111 @@
 ---
-title: What Is the Technology Principal Actually Responsible For?
+title: "Working With the Investor’s Technology Adviser"
 date: 2026-09-12
-author: Private Techuity working manuscript
-excerpt: Ground the role in the supplied description while distinguishing a specific brief from universal authority or industry practice.
-permalink: pt-technology-principal
-timetoread: 6 min read
-status: draft:orange
-tags: private equity, technology leadership, Part IV
+author: Owned working manuscript
+excerpt: "Understand the technology adviser’s role, agree how you will work together and keep responsibility for company decisions clear."
+permalink: technology-principal
+timetoread: 7 min read
+logo: "assets/images/15-technology-principal/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/15-technology-principal.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **The Principal connects investment assumptions with company capability.** The role helps people make better decisions across investigation, planning, execution and preparation for a sale.
-> * **Responsibility does not automatically confer authority.** The supplied role brief grounds this book, but each firm and engagement needs an explicit mandate.
-> * **Credibility runs in both directions.** Understand the investor’s economics and the company’s work, and judge support by the decisions and outcomes it improves.
+> * Understand the **job your adviser is doing**. Investigating an investment, coaching a leader and helping deliver a change require different agreements.
+> * Make **authority and information use** explicit. Working for the investor can give an adviser influence, while company decisions still need clear owners.
+> * Judge help through the **company’s decisions and capabilities**. Agree what useful work is needed and what your team will own afterward.
 
 <br>
-An **investment thesis** explains why an investment should create value, what must change in the business, and which assumptions must hold. A Technology Principal works at the boundary between that thesis and a company's ability to carry it out. The role becomes valuable when it improves the quality of decisions and helps the company build the capability those decisions require.
+A technology specialist employed by the investor joins your planning meeting. They understand the product and offer useful ideas. Your engineers want to know whether the ideas are suggestions, a new assessment or instructions they should act on.
 
-**Sourcing** means finding and evaluating potential investments. **Technical due diligence** investigates a company’s product and technology before an investment decision. **Exit preparation** helps make the business and its evidence ready for a possible sale or other realization. These activities ask different questions even when they involve the same systems and people.
+In this book, a **Technology Principal** is an adviser working for an investment firm who assesses technology and helps companies improve their operations. A **chief technology officer (CTO)** leads technology inside the company. The adviser can help test assumptions and improve company work; the company leader normally carries the continuing operating responsibility.
 
-The supplied role description grounds this book in work across the investment lifecycle: market and sourcing input, technical diligence, advice to investment decision-makers, operational support, leadership recruitment, portfolio learning, and preparation for sale. It also explicitly includes AI and nearshoring support and the ability to influence resources outside the role's control. The brief is a private, undated two-page source; this chapter generalizes its responsibilities and does not reproduce employer-specific details. [P01: supplied role brief](pt-bibliography.html)
+No such person exists in a company without an outside investor. Their presence follows from ownership: the investor wants its own view of the technology and a channel for improving it. That gives the adviser information and influence a supplier or consultant would not have, and leaves the company’s technology leader to work out how the adviser’s assessment relates to their own authority.
 
-That is a specific role brief. It does not establish that every firm uses the title the same way, gives the role the same resources, or delegates company decisions to it.
+Part III examined the investments and capabilities your company needs. Part IV begins with the person who may help connect those needs to the investor’s resources. We first distinguish their possible assignments, then agree how to work together.
 
-## A Role With Several Customers and One Limited Calendar
+## Establish What Kind of Help Exists in Your Arrangement
 
-The investment partner needs a judgment about technology's relevance to the investment. The deal team needs material questions resolved within a timetable. The investment committee needs assumptions and conditions it can act on. The CEO and CTO need support that fits the business. The board needs outcome evidence. The exit team needs an account a buyer can examine.
+The supplied investment-firm role brief gives us a detailed example of an adviser working across investments. It does not establish a position every investor has or confer authority over a company’s CTO or product leader. [P01: supplied role brief](bibliography.html)
 
-Serving these needs requires translation, but translation alone is insufficient. The Principal must sometimes inspect technical evidence, participate in a difficult operating decision, or help deliver a bounded intervention. At other times, the most useful act is to bring in a specialist or decline work that company leadership can do better.
+With a venture investor, the useful contact might instead be a partner, a talent specialist or a person introduced for one problem. A growth investor might offer experienced expansion advisers. A corporate owner might provide group architecture or security specialists who also carry internal policy responsibilities. Some investors provide no operating support at all.
 
-The supplied brief's breadth creates a capacity problem. One person cannot be deeply involved in every deal and every portfolio initiative at once. Prioritization is part of the role, not a personal productivity issue to solve by attending more meetings.
+Start by asking who the person works for, what assignment they have, how much time they can provide and which decisions they can make. The answer helps distinguish an offer of advice, a delivery assignment and a requirement to follow group policy. The rest of this chapter uses the fund adviser as its detailed example; apply the role questions before transferring the arrangement.
 
-## Distinguish Responsibilities From Authority
+## Understand Which Job the Adviser Is Doing
 
-| Work grounded in the brief | Practical contribution | Boundary to establish |
+The adviser may contribute to several different decisions. **Due diligence** is the investigation that informs an investment decision. **Coaching** helps a person develop their own judgment and practice. **Operating support** helps the company improve how work is carried out. A specific assignment may also give the adviser formal oversight or temporary delivery responsibilities.
+
+Those purposes can overlap, but the people involved should understand which apply. A confidential discussion about developing your leadership differs from evidence gathered for a formal assessment. Advice about a system differs from responsibility for changing it.
+
+| Assignment | What company leaders may need | Boundary to establish |
 | --- | --- | --- |
-| Sourcing and market input | Test technology opportunity and disruption | Investment selection remains with authorized decision-makers |
-| Technical diligence | Identify material strengths, risks, costs, and unknowns | Evidence scope and recommendation authority |
-| Portfolio operational support | Help management resolve constraints and implement changes | Company ownership of budgets, people, and operations |
-| Leadership and specialist access | Shape roles, assess fit, connect expertise | Hiring authority, confidentiality, and provider interests |
-| Portfolio education and learning | Help peers exchange useful practice | Participation burden and information-sharing limits |
-| Exit preparation | Maintain credible capability and outcome evidence | Approval of buyer disclosures and unresolved issues |
+| Investigation before investment | A fair account of strengths, constraints and required funding | Evidence scope, access and how findings will inform the plan |
+| Advice on an operating decision | Relevant options, experience and specialist judgment | Who decides, which assumptions matter and what remains uncertain |
+| Help delivering a change | People and practical work that resolve a constraint | Resources, company accountability and what happens after the assignment |
+| Coaching or leadership development | Help learning and improving judgment | Confidentiality and any connection to formal performance assessment |
+| Ongoing oversight | Useful review of results, risks and changed assumptions | Reporting expectations and the route for decisions needing escalation |
 
-The table is an interpretation of the brief, not an employment contract. The role needs an agreed mandate that states where it advises, where it delivers, and where it has formal authority. If asked to act as an interim executive, that should become an explicit assignment with the appropriate accountability and support.
+Ask the adviser to explain their responsibilities to both the company and the investment firm. Their role may include work with prospective investments and other companies, which affects availability. You can work together more effectively when those demands are visible.
 
-## Credibility Has Two Directions
+![Investigation, coaching and delivery help require different scopes and working agreements.](assets/images/15-technology-principal/three-adviser-jobs.jpeg)
+**Figure 1:** *Identify the job before agreeing access, authority and the result the company expects.*
 
-Company teams need to believe the Principal understands technical work and will represent its constraints accurately. Investment professionals need to believe the Principal can distinguish material risks from preferences and connect technology to economics.
+## Agree What Each Person Can Decide
 
-These forms of credibility reinforce each other when the factual account is consistent. They conflict when the Principal tells the investment team a confident transformation story and tells engineers privately that the targets are unrealistic. The role cannot remain trusted through incompatible narratives.
+**Authority** means permission to make a particular decision. It can come from an executive role, board responsibilities or an explicit assignment. A job title and proximity to the owner do not settle every decision boundary.
 
-A useful judgment includes the evidence, confidence, practical options, and what would change the recommendation. It can be concise without hiding uncertainty. “The current platform can support the planned customer volume, but enterprise onboarding remains dependent on three specialists” is more useful than either a reassuring maturity score or a long list of technologies.
+State which questions the adviser can recommend on, which they can decide and which require company or board approval. If the adviser is asked to lead delivery or act as a temporary executive, establish that assignment with the resources and accountability it needs.
 
-## Hands-On Support Should Have an End
+The investor’s adviser can have substantial influence even when the service is described as optional. Company employees may treat a suggestion as an instruction. Explain the agreed arrangement to the people doing the work, using the decision map introduced in [[governance]].
 
-The role brief includes practical help, so a purely observational posture would miss part of the intended job. A Principal might work with a CTO to unblock a deployment problem, help shape a product operating model, or coordinate an integration specialist.
+For a product or architecture choice, a useful starting point is the business need, the options and their consequences. The adviser may help test those options. The agreed company decision-maker then needs to own the choice and its delivery conditions.
 
-Each intervention should begin with the company outcome, a sponsor, a scope, and an exit condition. The receiving team should know what it will own afterward. If the Principal becomes the only person who can keep the program moving, the intervention needs redesign or a formal change of role.
+![Adviser input and agreed information access cross a boundary while the company’s formal decision responsibility remains explicit.](assets/images/15-technology-principal/advice-and-accountability-boundary.jpeg)
+**Figure 2:** *Influence, access and formal decision authority need separate agreements.*
 
-There are situations where temporary dependence is reasonable: a crisis, an unexpected leadership departure, or a complex transition. It becomes a problem when it is unrecognized and therefore unfunded, ungoverned, or impossible to end.
+## Build a Shared Account of the Situation
 
-## Allocate Attention by Materiality and Additional Contribution
+A productive relationship needs consistent facts. Explain customer commitments, existing constraints and why the team made earlier choices. Ask the adviser which investment assumptions depend on those capabilities and what evidence could change their view.
 
-A practical portfolio view can rate issues along two dimensions: consequence for the investment or company, and the additional contribution the Principal can make. A major issue may need specialist leadership rather than the Principal's direct delivery. A smaller recurring issue may justify a reusable tool if it consumes substantial company effort across the portfolio.
+For the fictional company Larkspur, “we need a better platform” is vague. “Pricing changes take three weeks because only two people understand the billing code” exposes a company constraint. The next question is whether the plan needs faster pricing experiments, more people able to maintain the code or a different technical design.
 
-In a fictional month, the Principal has 20 available working days. A live diligence needs six, two bounded interventions need eight, portfolio reviews need three, and learning and preparation need three. There is no spare capacity for an unplanned ten-day integration. The response must change priorities, obtain help, or revise scope. The arithmetic should be visible to the people requesting the work.
+The company should not need one confident story for the investor and another account of the real constraints for engineers. **Preserve the same facts** while adjusting the level of detail to the audience. A short explanation can include uncertainty and feasible alternatives.
 
-## What Good Performance Looks Like
+Disagreement can improve that account. Ask which observation supports a conclusion and what would overturn it. An adviser should be able to revise an assessment; company leaders should be able to reconsider a familiar practice without treating either revision as a personal defeat.
 
-Activity measures help manage workload: diligence engagements, meetings, and interventions. They do not establish value. More useful evidence includes a material assumption corrected before investment, a company owner accepting a feasible plan, a constraint resolved, and an intervention the company can sustain independently.
+## Distinguish Advice from Delivery Help
 
-Economic contribution should be qualified. A Principal may help reduce onboarding effort, but the resulting growth also depends on the product, sales, implementation teams, market conditions, and funding. Taking sole credit undermines both accuracy and trust.
+An adviser may help identify a problem, connect a specialist, review a plan or carry out a bounded piece of work. Agree which contribution the company needs before assuming the adviser will deliver the whole improvement.
 
-The Productscapes hypothesis in [[pt-technology-capability-as-product]] adds another possibility: judge the role partly by the repeatable capability it leaves behind. Can future engagements use better questions, clearer evidence, and appropriate specialist support without relying on one person's memory?
+If Larkspur needs a reusable setup process for new customers, advice might establish the options. Implementation also needs engineering time, product decisions and people who will operate the result. Each commitment belongs in the plan.
 
-The role's purpose is therefore both immediate and developmental. It helps a company make the next difficult decision while improving the firm's ability to support similar decisions later. The following chapters turn that responsibility into work across diligence, the first 100 days, execution, and exit.
+Some situations justify temporary dependence on an adviser or specialist: a leadership departure, a service crisis or a difficult transition. The company should understand who has authority, how long the arrangement can last and **what will sustain the capability afterward**.
+
+The detailed agreement belongs in [[making-support-work]]. Here, the first task is to establish the type of help and the responsibility that remains inside the company.
+
+## Check Availability and Competing Demands
+
+The adviser may have responsibilities across several investments. A useful conversation can still lead to a plan they do not have time to support. Ask who can participate, when they can start, what specialist budget exists and what happens if another urgent assignment arrives.
+
+If the necessary support is unavailable, consider another specialist, a smaller first step or a revised timetable. **Availability is a planning input**, rather than a judgment about whether either side values the relationship.
+
+Also establish how possible conflicts will be handled. An adviser who helps develop your team may also inform the investor’s view of leadership. Clarifying that role and the use of information is part of making the relationship workable.
+
+## Judge What the Company Can Do Better
+
+Useful support can leave a better decision, an assumption tested, a constraint resolved or a capability the company can sustain. Meeting counts describe activity; they do not by themselves describe a benefit.
+
+Review the company’s result and the effort required from both sides. Be clear about the adviser’s contribution alongside the work of product, engineering, customer and finance teams. A shared success does not need to be assigned entirely to one person.
+
+The adviser is one possible connection into a wider set of resources. The next chapter maps the expertise, peer companies, hiring support and introductions that may help your company: [[investor-support]].
+
+## Questions to Consider
+
+1. Who from your investor is involved in your technology decisions, what assignment do they have, how much time can they give and which decisions can they make?
+2. Which job is the adviser doing with you now: diligence, advice, delivery, coaching or oversight? Do both of you agree on the answer?
+3. Do your engineers know whether the adviser’s suggestions are ideas or instructions? Who told them?
+4. Do you give the investor one confident story and your engineers another? What would it take to use the same facts in both?
+5. What evidence would change the adviser’s view of your technology, and what evidence would change yours?
+6. After the adviser’s current involvement ends, what will the company be able to do that it could not do before?

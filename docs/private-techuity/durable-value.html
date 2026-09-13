@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Judge Success Beyond the Funding Round or Sale</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">OWNED: Product &amp; Engineering Leadership Under Investors</a><span class="nav-right"><a class="nav-prev" href="teamsystem.html" title="TeamSystem: What a Buy-and-Build Actually Accumulates">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="toolkit.html" title="Practical Tools for Ownership and Technology Decisions">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VI — Lessons from the Field</p>
+        <h1>Judge Success Beyond the Funding Round or Sale</h1>
+        <p class="byline">Owned working manuscript  ·  2026-09-12  ·  9 min read · <a class="spec-link" href="durable-value.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/24-durable-value/logo.jpeg" target="_blank" rel="noopener noreferrer"><img class="logo" src="assets/images/24-durable-value/logo.jpeg" alt=""></a>
+        <p class="logo-credit">AI-generated illustration</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">OWNED: Product &amp; Engineering Leadership Under Investors</a><span class="nav-right"><a class="nav-prev" href="teamsystem.html" title="TeamSystem: What a Buy-and-Build Actually Accumulates">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="toolkit.html" title="Practical Tools for Ownership and Technology Decisions">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Judge Success Beyond the Funding Round or Sale", "date": "2026-09-12", "author": "Owned working manuscript", "excerpt": "Assess what customers, teams and future operators can rely on after funding or ownership changes, while keeping investor returns and historical evidence in scope.", "permalink": "durable-value", "timetoread": "9 min read", "logo": "assets/images/24-durable-value/logo.jpeg", "logo_credit": "AI-generated illustration", "icon": "assets/icons/24-durable-value.png"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **KEY POINTS:**\n>\n> * Durable value includes the **ability to keep creating useful outcomes**. Assess company economics, reinvestment, operating capability and stakeholder consequences alongside investor returns.\n> * The evidence does not support one verdict on every buyout. Company **context, financing, ownership choices and research design** all affect what conclusions can be drawn.\n> * Keep the central **thesis open to correction**. A credible plan explains who gains, who bears costs, what must remain true and which evidence would justify changing course.\n\n<br>\nDurable success means that a company can continue creating useful outcomes after the immediate intervention and, where relevant, after the owner exits. It includes economic viability, the ability to reinvest, operational capability, and the distribution of benefits and burdens.\n\nThis definition is the manuscript's proposed evaluative standard. It is deliberately broader than investor return, because investors measure success at the moment they realize value, while product and engineering leaders, customers and employees live with the company afterward. A plan can pass the first test and fail the second. The standard does not assume that every stakeholder benefits from every decision or that a difficult restructuring is always avoidable.\n\nThe four case-study chapters examined five companies. This final chapter puts them alongside **empirical research**, research based on observations and data, and asks who gained, who bore costs and what the company could sustain afterward. We first examine how to read the research, then use it to develop a broader assessment of success.\n\n## What Wider Studies Can Tell Us\n\nThe studies below compare groups of businesses. A **comparison group**, sometimes called a control group, helps estimate what might have happened without the ownership change. In **observational research**, researchers study events that occurred rather than randomly assigning companies to owners. Statistical adjustments can improve the comparison, but they rely on assumptions and do not remove every possible difference.\n\nDavis and colleagues' April 2024 revision studies US buyouts from 1980–2013 and finds substantial variation by transaction type and economic conditions. Its reported two-year employment effects are approximately −12% for **public-to-private buyouts**, purchases that take publicly traded businesses into private ownership, and +15% for **private-to-private buyouts**, purchases of already privately owned businesses, relative to their comparison groups. These are estimated average differences for studied groups, not predictions for an individual company. [S08: Davis et al., 2024 revision](https://www.nber.org/system/files/working_papers/w26371/w26371.pdf)\n\nTheir earlier research also distinguishes establishment-level job losses from firm-level creation, acquisition, and divestiture. [S09: Davis et al., jobs study](https://www.nber.org/papers/w19458) A statement about “jobs after buyouts” can change meaning depending on which boundary is measured. That is not a reason to ignore job losses. It is a reason to identify who loses work, who gains it, and how the comparison is constructed.\n\nBernstein, Lerner, and Mezzanotti examine UK firms around the 2008 crisis and find greater investment and financing inflows among companies backed by private equity relative to comparison firms, particularly when sponsors had more resources. [S10: Bernstein et al., crisis study](https://www.nber.org/system/files/working_papers/w23626/w23626.pdf) This challenges the assumption that leverage and sponsor ownership necessarily prevent support during a downturn. It does not establish that support is universal or that all financing structures are resilient.\n\nThese comparisons need careful interpretation. Investors choose which companies to buy, and the studied businesses may differ from others in ways the analysis cannot fully capture. **Generalizability** means how far a result can reasonably be applied beyond the group and period studied. Historical averages should inform questions and scenarios rather than become forecasts for a present-day software portfolio.\n\n## Some Harms Require Direct Attention\n\nHealthcare evidence demonstrates why company earnings and investor outcomes cannot stand in for stakeholder welfare. Gupta and colleagues' August 2023 revision studies US nursing homes and reports an adverse mortality effect for a subset of patients using an **instrumental-variable** method, alongside evidence involving staffing and care. This method uses a factor that changes the likelihood of the exposure being studied to try to separate its effect from other differences. Its validity depends on assumptions about that factor; the interpretation also depends on the patient group studied. It is not an estimate for every care setting. [S11: Gupta et al., nursing homes](https://www.nber.org/system/files/working_papers/w28474/w28474.pdf)\n\nKannan, Bruch, and Song's 2023 hospital study compares 51 hospitals acquired by private equity owners with 259 controls. It reports an adjusted increase of 4.6 hospital-acquired conditions per 10,000 eligible hospitalizations, equivalent to 25.4% of the pre-acquisition rate at those acquired hospitals. The relative percentage is not a percentage-point increase in every patient's risk. [S12: Kannan et al., adverse events](https://jamanetwork.com/journals/jama/fullarticle/2813379)\n\nAn earlier study by Bruch, Gondi, and Song found increases in financial measures and improvements in some measured quality indicators, with differences between the hospital company HCA and other hospitals. [S39: Bruch et al., hospital measures](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2769549) These findings do not simply cancel one another. They examine different outcomes and samples. Improvement in one quality measure cannot establish the absence of harm in another.\n\nThe relevance to software is a question about mechanisms, not an analogy equating software inconvenience with clinical harm. Where customers cannot readily observe quality or change providers, financial incentives may not protect them adequately. Product leaders should examine who bears the cost of reduced service and whether the people affected can meaningfully respond.\n\n## Follow Outcomes Beyond the First Exit\n\nKannan and Song's 2025 research letter compares 18 hospitals sold to a second private equity owner with 18 sold to other for-profit owners. It finds lower operating margins after those sales to a second private equity owner, associated with higher expenses rather than simple cost cutting. The small sample and observational design limit generalization, and financial measures do not establish patient outcomes. [S42: Kannan and Song, after sale](https://jamanetwork.com/journals/jama-health-forum/fullarticle/2837043)\n\nThis is useful because it makes the next ownership period an object of study. It also warns against treating a lower margin as self-evident deterioration: additional spending could have different purposes and consequences. Those purposes require investigation.\n\nThe Skype case makes a related temporal point. A valuable sale and later product retirement can both be true without one event providing a complete causal explanation of the other. The lesson is to **keep the observation window explicit**.\n\n## Success for Whom?\n\nA **stakeholder** is someone affected by the business, including people who did not choose its owner. The table below keeps their outcomes separate. It also distinguishes investor cash already received, or **realized proceeds**, from an estimate of unsold holdings.\n\n| Perspective | Evidence of progress | A question that can overturn the story |\n| --- | --- | --- |\n| Investors | Realized proceeds, net performance, understood risk | How much remains a valuation, and what capital was required? |\n| Company | Sustainable cash and ability to reinvest | What expenditure or obligation was deferred? |\n| Customers | Useful outcomes, reliability, fair transitions | Who lost value or became more dependent? |\n| Employees | Viable work, capability, fair treatment | Who bore transition costs without sharing benefits? |\n| Next owner | Inspectable capability and disclosed obligations | Which claims fail outside the sale presentation? |\n\nThese columns are not an additive score. A gain for one group **does not mathematically offset harm** to another. Some decisions require a choice between conflicting interests. The people authorized to decide should explain whose interests take priority, why and how the resulting harm will be addressed.\n\n![Investor, customer, employee, supplier and future-capability outcomes each require their own account.](assets/images/24-durable-value/separate-stakeholder-outcomes.jpeg)\n**Figure 1:** *An attractive investment result does not answer every question about who benefited or bore the cost.*\n\n## What a Durable Plan Looks Like\n\nA durable ownership plan begins with a credible customer and business thesis. It prices the investment needed to execute that thesis and leaves room for plausible downside conditions. It assigns decisions clearly and allows inconvenient evidence to change the plan.\n\nIt also preserves the people, systems, and relationships required for continued service. Cost reductions are evaluated with their transition costs and delayed effects. Growth is examined for contribution and cash, not only reported revenue. Technology support strengthens company judgment rather than creating permanent dependence on an owner-appointed expert.\n\nThese are proposed conditions drawn from the mechanisms examined throughout the book. They are not a validated formula that guarantees success. A well-designed plan can still fail because of competition, market change, or execution. A poorly designed plan can benefit from favorable timing.\n\n![Useful outcomes, cash, reinvestment and operating capability depend on one another over time.](assets/images/24-durable-value/value-that-can-continue.jpeg)\n**Figure 2:** *A durable plan explains how useful work can continue and what evidence would justify changing course.*\n\n## Responsibility Continues After a Funding Milestone\n\nA funding round that issues new shares supplies company resources under agreed terms. It does not prove that customers have a useful product or that the next round will occur. A sale realizes an ownership transaction; it does not prove that the new owner can sustain every service. A corporate integration milestone can be completed while customers still face migration or support problems.\n\nFor fictional Larkspur, Priya and Alex propose a review that follows customer outcomes and operating commitments through each event. Can customers complete the task they pay for? Can the team keep the service reliable? Which work remains unfunded? Which capability depends on a person or service that may leave? Which burdens have been moved to employees, customers or suppliers?\n\nThe measures should remain usable under continued ownership too. A company need not be sold for its leaders to examine whether the plan is worthwhile. Treat the investor’s next milestone as one constraint and one result to understand within **a longer operating responsibility**.\n\n## What You Can Change as a Company Leader\n\nAs a product or technology leader, you can improve the investment’s assumptions by explaining what the company can deliver and what resources it needs. You can expose unfunded dependencies, propose feasible alternatives and preserve a record of outcomes. Investor advisers and networks can help, but the company still needs accountable people making and carrying out its decisions.\n\nYou cannot control the capital markets, remove every conflict or guarantee that everyone benefits. You can make the relevant evidence and consequences visible, develop the people who will sustain the work and bring decisions to those with the authority to resolve them.\n\nThe book began with how a company gets money. We can now ask the fuller question: does its ownership arrangement help it serve customers, fund necessary work and meet its obligations over time? Answering requires evidence about investor returns, company cash and capabilities, and the people affected.\n\nFor your own company, begin with one decision. Explain the customer need, the work required, the funding and authority, and the evidence that would change the plan. Then review what happened and what remains to be done. The [Practical Tools for Ownership and Technology Decisions](toolkit.html) provides records for that next step, and the [Glossary](glossary.html) can help you revisit the terms.\n\nThe main narrative ends here. The [Practical Tools for Ownership and Technology Decisions](toolkit.html) that follows provides practical records for your own decisions.\n\n## Questions to Consider\n\n1. For your company’s current plan, who gains, who bears costs, what must remain true and which evidence would justify changing course?\n2. Which stakeholder outcomes does your reporting track beyond investor return: customers, employees, the next owner and the company’s ability to reinvest?\n3. Where can your customers not readily observe quality or change providers? What protects them if financial incentives do not?\n4. What observation window do you use to judge success, and would the verdict change if you extended it past the next exit?\n5. Which research findings about buyouts have you been treating as forecasts for your company, and which conditions differ?\n6. What one decision would you begin with tomorrow, and what would you record about it?\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {}, "blocks": [{"type": "markdown", "content": "Durable success requires **more than a favorable funding valuation** or exit price. The manuscript proposes assessing the investment result, company economics, operating capability, consequences for people affected, and outcomes after ownership changes. This is an explicit evaluative standard, not a claim that all observers value those dimensions equally. It is needed because investors measure success at the moment they realize value, while product and engineering leaders, customers and employees live with the company afterward.\n\n![Durable value spans investment, company, capability, stakeholder and later outcomes.](assets/images/24-durable-value/summary-at-a-glance.jpeg)\n**Figure 1:** *Assess what lasts beyond the transaction.*\n\nResearch using observed data challenges a single verdict on private equity. The April 2024 revision of a major US buyout study reports different employment patterns across transaction types, including contractions following purchases taking public companies private and expansion following purchases of already private companies, relative to comparison groups over its study horizon. [S08: Davis et al., 2024 revision](https://www.nber.org/system/files/working_papers/w26371/w26371.pdf) The sample and historical period matter; these are not forecasts for every software acquisition.\n\nOther research finds that private equity-backed UK firms maintained investment better during the financial crisis in the studied setting. [S10: Bernstein et al., crisis study](https://www.nber.org/system/files/working_papers/w23626/w23626.pdf) That result supports a possible financing and governance benefit under particular conditions. It does not show that leverage is harmless or that every sponsor supplies follow-on capital.\n\n**Stakeholders are people affected by the company, including employees and customers. Their outcomes need their own evidence.** Research on nursing homes and hospitals identifies adverse outcomes in specific populations and designs. [S11: Gupta et al., nursing homes](https://www.nber.org/system/files/working_papers/w28474/w28474.pdf) [S12: Kannan et al., adverse events](https://jamanetwork.com/journals/jama/fullarticle/2813379) Another hospital study finds improvements in some reported quality measures. [S39: Bruch et al., hospital measures](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2769549) Different measures and samples cannot be combined into a simple cancellation. They show why financial performance and selected quality indicators are incomplete accounts of welfare.\n\nA small 2025 study of hospital sales extends attention beyond one owner's exit, finding differing financial trajectories after subsequent ownership changes. [S42: Kannan and Song, after sale](https://jamanetwork.com/journals/jama-health-forum/fullarticle/2837043) It studies ownership changes that occurred, rather than assigning owners randomly, and its limited sample cannot settle long-run causal effects. It nevertheless highlights a question that an exit-centered scorecard can omit: what operating obligations and capacity did the next owner inherit?\n\nThe book's **central argument is conditional**. An investment thesis, financing structure, governance arrangement, and company execution capacity must fit together. Reinvestment, resilience, customer trust, and employee knowledge are part of that fit. Their costs cannot always be aligned with every investor's preferred time horizon.\n\n**Apply the standard beyond exits**. A round issuing new shares supplies company resources, not proof of a useful product or another future round. A corporate integration milestone can leave customer obligations unfinished. Preserve measures of customer outcomes, operating capability and unfunded work through each event and during continued ownership. These broader applications are proposed judgments; the cited buyout research retains its narrower populations and periods.\n\nProduct and technology leaders can expose and test these connections through evidence, feasible choices and clear requests for support. Advisers can help, while company responsibility and differing interests remain explicit. A credible ownership strategy explains how gains arise, who bears costs, which assumptions remain uncertain, and what evidence would justify changing course.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "<!-- comic-style\n{\n  \"cast\": \"MORGAN: a thoughtful investor technology adviser with short dark hair and a green jacket, used in the fund scenarios. ALEX: a practical CTO with curly hair and blue rolled-up sleeves. SAM: a CFO with round glasses and an amber cardigan. PRIYA: a product leader with straight dark hair and plum sleeves. INES: a CEO with short grey hair and a navy jacket. All are fictional; none represents a person in a real case.\",\n  \"style\": \"Clean editorial explainer comic, dark ink outlines, restrained green, blue, and amber accents on warm white, generous space, readable short speech bubbles, expressive people and simple physical metaphors. No photorealism, logos, dense charts, or title text. Keep the same character appearances throughout the journal.\"\n}\n-->\n\n**Comic.** Investors measure success at the moment they realize value, while product and engineering leaders, customers and employees live with the company afterward. The panels set a broader standard for judging the work than the exit alone.\n\nMorgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.\n\n<!-- comic-panel\n{\n  \"id\": \"01-scene\",\n  \"status\": \"generated\",\n  \"asset\": \"assets/images/24-durable-value/comic-01-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 1 of an explainer comic. Priya and Alex stand beside customer and team commitments while a funding milestone is marked behind them. Use one speech bubble with the exact words: \\\"What can people still rely on?\\\" Convey: A funding round, sale or corporate milestone does not complete the company’s responsibility to customers and teams. Judge what can keep working through change and continued ownership.\",\n  \"alt\": \"Comic panel: Priya and Alex stand beside customer and team commitments while a funding milestone is marked behind them.\",\n  \"caption\": \"A funding round, sale or corporate milestone does not complete the company’s responsibility to customers and teams. Judge what can keep working through change and continued ownership.\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference_id\": \"owned-cast-20260913\",\n    \"sha256\": \"a42b4cfb55953ac6a5b05c2d4fd1cb0b871442cadd0d49fff7ec63a880dabca1\"\n  }\n}\n-->\n\n![Comic panel: Priya and Alex stand beside customer and team commitments while a funding milestone is marked behind them.](assets/images/24-durable-value/comic-01-scene.jpeg)\n\n**Panel 1:** A funding round, sale or corporate milestone does not complete the company’s responsibility to customers and teams. Judge what can keep working through change and continued ownership.\n\n*Dialogue:* “What can people still rely on?”\n\n<!-- comic-panel\n{\n  \"id\": \"02-scene\",\n  \"status\": \"generated\",\n  \"asset\": \"assets/images/24-durable-value/comic-02-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 2 of an explainer comic. Sam compares different buyout types in historical research. Use one speech bubble with the exact words: \\\"Different groups had different results.\\\" Convey: Research results describe the groups and periods studied. Different types of buyout can have different outcomes; an average does not predict every company.\",\n  \"alt\": \"Comic panel: Sam compares different buyout types in historical research.\",\n  \"caption\": \"Research results describe the groups and periods studied. Different types of buyout can have different outcomes; an average does not predict every company.\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference_id\": \"owned-cast-20260913\",\n    \"sha256\": \"395c4ed365b37e7e514d65d3df4b6dabc5671c08455a87cea499ea705d3ed793\"\n  }\n}\n-->\n\n![Comic panel: Sam compares different buyout types in historical research.](assets/images/24-durable-value/comic-02-scene.jpeg)\n\n**Panel 2:** Research results describe the groups and periods studied. Different types of buyout can have different outcomes; an average does not predict every company.\n\n*Dialogue:* “Different groups had different results.”\n\n<!-- comic-panel\n{\n  \"id\": \"03-scene\",\n  \"status\": \"generated\",\n  \"asset\": \"assets/images/24-durable-value/comic-03-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 3 of an explainer comic. Alex reads patient-outcome evidence beside financial performance. Use one speech bubble with the exact words: \\\"These outcomes deserve separate evidence.\\\" Convey: Stakeholders are people affected by a company. Research on patient outcomes shows why their welfare needs evidence separate from financial performance.\",\n  \"alt\": \"Comic panel: Alex reads patient-outcome evidence beside financial performance.\",\n  \"caption\": \"Stakeholders are people affected by a company. Research on patient outcomes shows why their welfare needs evidence separate from financial performance.\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference_id\": \"owned-cast-20260913\",\n    \"sha256\": \"4e8bbc6ae6a66a507d6317bbdba34ee46dc5112942496efd76e7649e1c2e3187\"\n  }\n}\n-->\n\n![Comic panel: Alex reads patient-outcome evidence beside financial performance.](assets/images/24-durable-value/comic-03-scene.jpeg)\n\n**Panel 3:** Stakeholders are people affected by a company. Research on patient outcomes shows why their welfare needs evidence separate from financial performance.\n\n*Dialogue:* “These outcomes deserve separate evidence.”\n\n<!-- comic-panel\n{\n  \"id\": \"04-scene\",\n  \"status\": \"generated\",\n  \"asset\": \"assets/images/24-durable-value/comic-04-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 4 of an explainer comic. Morgan follows obligations beyond the ownership handoff. Use one speech bubble with the exact words: \\\"What happens after exit?\\\" Convey: A sale can leave the next owner with unfinished work, customer commitments and future costs. Follow those consequences too.\",\n  \"alt\": \"Comic panel: Morgan follows obligations beyond the ownership handoff.\",\n  \"caption\": \"A sale can leave the next owner with unfinished work, customer commitments and future costs. Follow those consequences too.\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference_id\": \"owned-cast-20260913\",\n    \"sha256\": \"75c3748095d5a1febb80c6a8db97114de29ae0c12895a15acb28e1d3a7630b3d\"\n  }\n}\n-->\n\n![Comic panel: Morgan follows obligations beyond the ownership handoff.](assets/images/24-durable-value/comic-04-scene.jpeg)\n\n**Panel 4:** A sale can leave the next owner with unfinished work, customer commitments and future costs. Follow those consequences too.\n\n*Dialogue:* “What happens after exit?”\n\n<!-- comic-panel\n{\n  \"id\": \"05-scene\",\n  \"status\": \"generated\",\n  \"asset\": \"assets/images/24-durable-value/comic-05-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 5 of an explainer comic. The team connects investment expectations, funding, decision rights and company work. Use one speech bubble with the exact words: \\\"Do these conditions fit together?\\\" Convey: The investment expectations, financing, decision rights and company capabilities need to fit together. The book proposes this as a test, not a guarantee.\",\n  \"alt\": \"Comic panel: The team connects investment expectations, funding, decision rights and company work.\",\n  \"caption\": \"The investment expectations, financing, decision rights and company capabilities need to fit together. The book proposes this as a test, not a guarantee.\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference_id\": \"owned-cast-20260913\",\n    \"sha256\": \"ee4ab68d1d1c979809ac7324a75ae81265849d10f565cf8b79cba06e419479ad\"\n  }\n}\n-->\n\n![Comic panel: The team connects investment expectations, funding, decision rights and company work.](assets/images/24-durable-value/comic-05-scene.jpeg)\n\n**Panel 5:** The investment expectations, financing, decision rights and company capabilities need to fit together. The book proposes this as a test, not a guarantee.\n\n*Dialogue:* “Do these conditions fit together?”\n\n<!-- comic-panel\n{\n  \"id\": \"06-scene\",\n  \"status\": \"generated\",\n  \"asset\": \"assets/images/24-durable-value/comic-06-scene.jpeg\",\n  \"aspect_ratio\": \"16:9\",\n  \"prompt\": \"Panel 6 of an explainer comic. Alex keeps an evidence notebook open beside the manuscript. Use one speech bubble with the exact words: \\\"What would change our judgment?\\\" Convey: Apply the ideas to one real decision, keep the evidence and revise the plan when the results challenge its assumptions.\",\n  \"alt\": \"Comic panel: Alex keeps an evidence notebook open beside the manuscript.\",\n  \"caption\": \"Apply the ideas to one real decision, keep the evidence and revise the plan when the results challenge its assumptions.\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference_id\": \"owned-cast-20260913\",\n    \"sha256\": \"328b8f8d0203836e45af923755c78cb4421daa64f2045121fa8600e21d447182\"\n  }\n}\n-->\n\n![Comic panel: Alex keeps an evidence notebook open beside the manuscript.](assets/images/24-durable-value/comic-06-scene.jpeg)\n\n**Panel 6:** Apply the ideas to one real decision, keep the evidence and revise the plan when the results challenge its assumptions.\n\n*Dialogue:* “What would change our judgment?”\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach(h => {
+                        html += '<th>' + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach(c => {
+                            html += '<td>' + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.setAttribute('role', 'tab');
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+    })();
+</script>
+</body>
+</html>

@@ -2,6 +2,7 @@
 
 **Private working notes; excluded from `config.yaml` and the rendered journal.** These files support revision and may identify confidential inputs. The reader-facing manuscript begins at [the book index](../index.md).
 
+- [Owned rewrite and validation](owned-revision.md) — current revision; earlier decisions are historical.
 - [Second research and accessibility pass](research-pass-02.md)
 - [Accepted working-title decision](title-decision.md)
 - [Editorial thesis and architecture](editorial-thesis.md)

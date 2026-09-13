@@ -1,116 +1,164 @@
 ---
-title: Private Techuity — Purpose and Reading Guide
+title: OWNED — Reading Guide
 date: 2026-09-12
-permalink: pt-reading-guide
-status: draft:orange
-excerpt: The accepted working title, financial foundations, book architecture and routes through the living manuscript.
+permalink: reading-guide
+excerpt: "A practical guide to making product and engineering decisions when investors shape the money, authority and expectations around your company."
+logo: "assets/images/reading-guide/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/reading-guide.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **Begin with the financial foundations.** Follow ownership, valuation, returns and cash, then connect them to decisions about products, architecture and leadership.
-> * **Read the book in depth or use its shorter adaptations.** Each chapter has a full article, a concise summary and a readable comic storyboard; artwork remains pending.
-> * **Treat this as a living, evidence-led manuscript.** The accepted working title and connected argument provide continuity while research gaps and revision priorities remain explicit.
+> * Ownership changes the **conditions in which you lead**. Find out which money, decisions and expectations your product and engineering commitments depend on.
+> * Different arrangements require **different choices**. A funding round, a buyout and a corporate acquisition can put the same roadmap under different constraints.
+> * You remain **responsible for the company’s work**. Challenge assumptions, make feasible commitments and explain consequences for customers and teams.
 
 <br>
-**Accepted working title: Private Techuity: Product and Engineering Leadership in Private Equity.**
+Your company has new investors. The announcement promises growth and support. Within weeks, you are asked to hire faster, demonstrate a new product, reduce costs or connect to the owner’s systems. The requests may each sound reasonable. Together, they can exceed the company’s money, authority and ability to deliver.
 
-Private equity changes the conditions under which product and engineering leaders work. It introduces an investment thesis, ownership rights, financing commitments, and a realization horizon. These conditions can fund useful change, create discipline, and supply capabilities. They can also constrain reinvestment, distort incentives, and transfer costs to people who did not choose the arrangement.
+**OWNED: Product & Engineering Leadership Under Investors** is about doing your job in that situation. Its primary reader leads product or engineering inside the company, including someone joining an arrangement they did not choose. Understanding the investor matters because it changes the decisions you must make, the commitments you can support and the arguments you need to bring to the people who decide.
 
-This book helps experienced technical leaders understand those mechanisms and act with better judgment. It also develops a Technology Principal perspective: connecting investment assumptions with the actual capabilities, obligations, and choices of a company. Financial terms are introduced when they first matter; prior knowledge of private equity is not required.
+Company’s ownership setting does not remove your judgment or responsibility. Sometimes you can approve a change yourself. Sometimes you must negotiate funding, challenge a target or ask the board to choose between incompatible outcomes. The book helps you distinguish those situations and make the consequences clear.
 
-**The emerging argument:** durable value depends on the fit among the investment thesis, financing, governance, and the company's capacity to execute and reinvest. Technology contributes when a specific capability changes a customer outcome, economic constraint, or material exposure. Product thinking can improve the support offered by an investment firm, but it cannot make conflicting interests disappear.
 
-## A Living First Draft
+## Owners, Rights, Funding, and Change
 
-This is a substantial first manuscript, researched and drafted on September 12, 2026, rather than a finished commercial book. It contains 26 connected chapters, shorter adaptations, worked examples, practical tools, a glossary, and an evidence guide. Chapters are designed to be read independently and then connected through the book's argument.
+This book focuses mainly on private companies working with **outside investors**. Funding by founders themselves serves as a useful point of comparison, and public markets come up where they influence financing or changes in ownership, but leadership in public companies is not covered in detail.
 
-The current case spine includes Hilton, Skype, Visma, Toys R Us and TeamSystem, complemented by empirical research on buyouts and healthcare ownership and by technology experiments. These cases were selected for explanatory contrasts and usable evidence. They are not a representative sample of private equity, and the manuscript still needs independent customer and employee evidence, more lower mid-market software engagements, growth-investment cases and carve-outs. TeamSystem adds a European software history beginning at a smaller regional-company scale; it does not make every later ownership period a lower mid-market case.
+To understand the impact of any **outside investment** in a company, keep **four questions** separate: who the owners are, what rights they have, how the company is funded, and what is changing.
 
-The supplied role brief grounds the Principal chapters. Its organization-specific details remain confidential, and its responsibilities are not presented as a universal job definition. Productscapes is developed as the author's starting hypothesis, with explicit tests and criticisms. **Larkspur and the financial teaching examples explicitly labeled fictional are illustrations**, not portfolio-company results. Separately sourced case figures and reconciliations describe their named historical companies.
+The first question, who the owners are, is where most of the labels and jargon come from. A **venture investor** funds a young company still searching for a repeatable business. A **growth investor** funds the expansion of a business with established demand. A **buyout investor** purchases control. A **corporate investor** is another operating business investing for financial or commercial reasons; it may hold a minority stake or acquire the company outright.
 
-Evidence carries its own date. Historical company assessments are labeled by period; the Visma case is principally through 2024. The AI discussion includes a February 2026 research update, without claiming to capture every subsequent model or experiment. Sponsor-reported returns, interim valuations, company outcomes, and causal explanations remain distinct.
+These labels tell you roughly what kind of investor you are dealing with, but not the answers to the other three questions. Rights do not automatically follow from stake size: a minority investment can carry important approval rights without conferring control. Funding does not follow from deal type: borrowing is a way to raise money and is not confined to buyouts. And the nature of the change is a separate matter again: a **carve-out** means taking a business out of a larger company, a **turnaround** means fixing serious business problems, and either can involve any of the owner types above.
 
-## Three Ways to Read Each Chapter
+The practical impact of any investment therefore depends on its actual terms, **established case by case**: the investor's rights, the financing arrangements, the support available, and the time horizon.
 
-- **Full Article:** the argument, explanations, evidence, and qualifications in `index.md`. The site's existing tab is labeled “Article.”
-- **TL;DR:** a 300–500-word adaptation in `summary.md`, useful for orientation and recall.
-- **Comic:** a six-panel textual storyboard in `comics.md`, with visible scenes, dialogue, captions, and structured illustration prompts. **Artwork is pending.** The fictional cast carries the concepts; real cases are discussed through documents rather than reenacted.
 
-The shorter modalities preserve the article's conclusions and significant caveats. They are entry points to the evidence, not substitutes for the case sources or full analysis. Reference pages use a single Article modality.
+![A company commitment depends on actual owners, funding, decision rights and expectations.](assets/images/reading-guide/four-questions-before-a-commitment.jpeg)
+**Figure 1:** *A company commitment depends on actual owners, funding, decision rights and expectations..*
 
-## Recommended Reading Order
+## How to Read This Book
 
-Read Parts I–VI in order for the full narrative: learn the economic system, beginning with ownership and a plain-language valuation introduction, examine the relationship, evaluate operating interventions, understand the Principal's work, develop the product hypothesis, and assess durable outcomes.
+This book aims to build a **shared understanding** of external investment dynamics so that all parties can collaborate more concretely. Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people. Part IV helps you obtain useful investor support. Part V prepares you for funding and ownership changes. Part VI examines historical cases and what remains after a transaction.
 
-For a shorter first pass, read chapters **1–3, 5–6, 9, 16, 21 and 26**: ownership, valuation, returns, cash, governance, product value, the Principal’s role, support as a product and durable outcomes. A product leader can continue with 8–10 and 13–15. A CTO entering a new ownership arrangement can prioritize 5–8 and 16–19. A developing Technology Principal should connect the foundations with Parts IV–V, then use the cases to challenge the proposed methods.
+No accounting or technical background is required. On a first pass, read the chapters in order, since each builds on terms introduced earlier. For example, [[valuation-and-architecture]] teaches financial valuation, and [[valuation-and-design]] later applies those concepts to technical choices once the product and engineering foundations are in place.
 
-If financial terms are unfamiliar, begin with [[pt-valuation-and-architecture]] before the return calculations. It introduces revenue, EBITDA, cash and value before explaining the valuation-to-architecture connection. The glossary supports recall; it is not a prerequisite. Each article opens with Key points and briefly introduces the financial concepts it needs.
+![The book moves from money and decisions through company work, support, ownership changes and field lessons.](assets/images/reading-guide/owned-reading-journey.jpeg)
+**Figure 2:** *The reading sequence builds the foundations before applying them to work, support and changing ownership.*
+
+The parts are **ordered for learning**, not by a company's timeline. The events a leader actually faces make up the **ownership cycle**, and they can arrive in any order. Each one raises its own question and sends you back to different parts of the book:
+
+| Event | The company leader's question | Where to look |
+| --- | --- | --- |
+| A first or further funding round | What evidence justifies new money, which rights change, and what can we still fund if it arrives late? | Parts I and V |
+| A purchase of control | Which decisions, obligations and operating commitments change? | Parts II and V |
+| Early work after funding or a transaction | Which promises have money, capacity and an accountable owner? | Parts II and III |
+| A missed target, refinancing or revised investor plan | Which assumptions failed, and which commitment or constraint must change? | Parts I, III and IV |
+| A sale, partial investor exit or corporate integration | Who decides next, and what must keep working through the transition? | Parts V and VI |
+| Continued ownership | What remains worth doing if no transaction happens on the expected date? | Parts IV and VI |
+
+## Meet the Fictional Company
+
+**Larkspur** sells scheduling software to maintenance businesses. Its customers organize appointments and assign people to work. A recurring challenge is **customer onboarding**: the setup and help needed before a customer can use the product successfully.
+
+Ines is the **chief executive officer (CEO)**, leading the company. Alex is the **chief technology officer (CTO)**, leading technology. Sam is the **chief financial officer (CFO)**, leading finance. Priya leads product. Morgan is the investor’s technology adviser in fund-backed scenarios.
+
+The chapters place Larkspur in alternative situations: learning with limited cash, expanding with growth funding, operating after a buyout, or working with a corporate owner. These are fictional decision exercises, not a single company history. Each example states its own assumptions; its figures do not combine into one set of accounts. “€m” means millions of euros.
+
+## Choose a Reading Format or Route
+
+The 29 main chapters each provide an **Article**, a 300–500-word **TL;DR** summary, and a six-panel **Comic**. TL;DR means “too long; didn’t read.” The comics are illustrated, with captions and dialogue transcripts. The six part introductions and four guide/reference pages do not include TL;DR and comic modalities.
+
+For a shorter first pass, read the introductions and summaries. For a current decision, use the routes below and return to Part I when a financial term is unfamiliar.
+
+| Your situation | Start with                                                                           |
+| --- |--------------------------------------------------------------------------------------|
+| A funding round has changed targets or decision rights | [[capital-and-ownership]]<br>[[governance]]<br>[[incentives]]                          |
+| New funding may arrive after your current cash runs short | [[cash-and-constraints]]<br>[[choosing-investments]]<br>[[execution-and-exit]]           |
+| Owners want more growth or earnings than the team can support | [[investment-fit]]<br>[[choosing-investments]]<br>[[people-and-operating-models]]        |
+| Investor requests compete with customer needs | [[product-value]]<br>[[governance]]<br>[[investor-fit]]                                  |
+| A corporate investor wants integration or access to data | [[acquisitions-and-carveouts]]<br>[[security-and-resilience]]<br>[[making-support-work]] |
+| The investor offers expertise or introductions | [[technology-principal]]<br>[[investor-support]]<br>[[making-support-work]]              |
+| A transaction or ownership transition is approaching | [[part-5]], then its three chapters in order                                         |
+
+## Read the Evidence With Its Limits
+
+This living manuscript was first drafted in September 2026. Its historical cases examine specified periods at Hilton, Skype, Visma, Toys R Us and TeamSystem. The evidence concentrates on private equity and related ownership transitions. It does not establish how all venture, growth or corporate investors behave or perform.
+
+Institutional funding guides support descriptions of other arrangements. The comparative Larkspur exercises are the author’s illustrations of decisions under stated assumptions. Company filings, investor accounts and research answer different questions; none makes an unobserved customer or employee outcome known.
+
+The [[bibliography]] records consultation scope and evidence limits.
 
 ## Contents
 
-### Part I — Understanding private equity
+### Part I — Understanding Financing and Ownership: Money, Authority and Returns
 
-Learn ownership, valuation, returns, investment fit and cash before assessing the operating plan.
+Identify your owners’ expectations and the money and decisions you can rely on.
 
-- **1.** [[pt-capital-and-ownership]]
-- **2.** [[pt-valuation-and-architecture]]
-- **3.** [[pt-return-mechanics]]
-- **4.** [[pt-investment-fit]]
-- **5.** [[pt-cash-and-constraints]]
+- [[part-1]] — part introduction
+- **1.** [[how-companies-get-money]]
+- **2.** [[capital-and-ownership]]
+- **3.** [[valuation-and-architecture]]
+- **4.** [[return-mechanics]]
+- **5.** [[investment-fit]]
+- **6.** [[cash-and-constraints]]
 
-### Part II — The investor–company relationship
+### Part II — How Investor Ownership Changes Decisions
 
-Turn ownership into explicit decisions, incentives, and a partnership that can withstand disagreement.
+Establish who decides, what each party wants and how to resolve competing demands.
 
-- **6.** [[pt-governance]]
-- **7.** [[pt-incentives]]
-- **8.** [[pt-investor-fit]]
+- [[part-2]] — part introduction
+- **7.** [[governance]]
+- **8.** [[incentives]]
+- **9.** [[investor-fit]]
 
-### Part III — Creating value through product and technology
+### Part III — Turning Investor Expectations into Commitments
 
-Connect interventions to customers, economics, risk, and the capabilities needed to execute.
+Turn investor expectations into feasible commitments to customers, systems and teams.
 
-- **9.** [[pt-product-value]]
-- **10.** [[pt-engineering-and-architecture]]
-- **11.** [[pt-cloud-economics]]
-- **12.** [[pt-security-and-resilience]]
-- **13.** [[pt-data-and-ai]]
-- **14.** [[pt-people-and-operating-models]]
-- **15.** [[pt-acquisitions-and-carveouts]]
+- [[part-3]] — part introduction
+- **10.** [[choosing-investments]]
+- **11.** [[product-value]]
+- **12.** [[engineering-and-architecture]]
+- **13.** [[valuation-and-design]]
+- **14.** [[cloud-economics]]
+- **15.** [[security-and-resilience]]
+- **16.** [[data-and-ai]]
+- **17.** [[people-and-operating-models]]
+- **18.** [[acquisitions-and-carveouts]]
 
-### Part IV — The Technology Principal’s work
+### Part IV — Beyond Money: Using Investor Support to Build Capability and Accelerate Progress
 
-Carry evidence from sourcing and diligence through company-owned action, learning, and exit.
+Ask for help the company can use and agree the cost, authority and continuing dependence.
 
-- **16.** [[pt-technology-principal]]
-- **17.** [[pt-diligence-and-thesis]]
-- **18.** [[pt-first-hundred-days]]
-- **19.** [[pt-execution-and-exit]]
+- [[part-4]] — part introduction
+- **19.** [[technology-principal]]
+- **20.** [[investor-support]]
+- **21.** [[making-support-work]]
 
-### Part V — Private equity and technology capabilities as products
+### Part V — Leading Through Funding and Ownership Changes
 
-Develop Productscapes as a testable service model while examining power, boundaries, and evidence.
+Lead through funding and ownership changes, including delays and continued ownership.
 
-- **20.** [[pt-investment-firm-as-product]]
-- **21.** [[pt-technology-capability-as-product]]
+- [[part-5]] — part introduction
+- **22.** [[diligence-and-thesis]]
+- **23.** [[first-hundred-days]]
+- **24.** [[execution-and-exit]]
 
-### Part VI — Durable value, success, and failure
+### Part VI — Lessons from the Field
 
-Compare outcomes and ask what survives beyond a favorable investment result.
+Test leadership judgments against specific histories while keeping the evidence in scope.
 
-- **22.** [[pt-hilton-and-skype]]
-- **23.** [[pt-visma]]
-- **24.** [[pt-toys-r-us]]
-- **25.** [[pt-teamsystem]]
-- **26.** [[pt-durable-value]]
+- [[part-6]] — part introduction
+- **25.** [[hilton-and-skype]]
+- **26.** [[visma]]
+- **27.** [[toys-r-us]]
+- **28.** [[teamsystem]]
+- **29.** [[durable-value]]
 
 ### Reference Material
 
-- [[pt-toolkit]] — reusable decision and outcome records.
-- [[pt-glossary]] — consistent financial, ownership, and operating definitions.
-- [[pt-bibliography]] — consulted sources, dates, evidence types, and access limits.
-
-## Title Decision
-
-The author accepted **Private Techuity: Product and Engineering Leadership in Private Equity** on September 12, 2026. It is the working title for this living manuscript.
+- [[toolkit]] — practical decision and support records.
+- [[glossary]] — plain-language definitions.
+- [[bibliography]] — sources, consultation dates and evidence limits.

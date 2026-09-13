@@ -1,50 +1,60 @@
 ---
-title: What Can Visma Teach About Repeated Software Ownership?
+title: "Visma: Continuity of Manager Is Not Continuity of Money"
 date: 2026-09-12
-author: Private Techuity working manuscript
-excerpt: Examine software investment, acquisition-led growth, autonomy, secondary transactions, financial definitions, and incomplete realization evidence.
-permalink: pt-visma
-timetoread: 9 min read
-status: draft:orange
-tags: private equity, technology leadership, Part VI
+author: Owned working manuscript
+excerpt: "Follow changing investors, acquisitions and shared support, while learning why financial figures need their exact definitions."
+permalink: visma
+timetoread: 10 min read
+logo: "assets/images/22-visma/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/22-visma.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **Repeated ownership can combine continuity and investor turnover.** A long relationship with a manager does not establish one unchanged fund investment or a fully realized return.
-> * **Shared capabilities need deliberate boundaries.** Local knowledge and common support may complement each other, but their costs and customer outcomes need evidence.
-> * **Reconcile financial definitions before interpreting improvement.** The annual reports explain the different 2024 earnings presentations; a changed adjustment does not create additional cash.
+> * The same investment firm can remain involved while **investors change**. Its long relationship with a company does not describe one unchanged investment.
+> * Shared support and local decisions need a **clear division of responsibility**. Examine which capabilities help individual businesses and what they cost.
+> * Check **how financial figures are calculated**. Two earnings numbers for the same year can differ because one excludes additional expenses.
 
 <br>
-Visma is useful because it complicates the idea that private equity ownership must involve a single short hold followed by a complete exit. It also provides an unusually relevant setting for product and engineering leaders: a group of business-software companies combining product development, acquisitions, and repeated changes in its investor base.
+Visma is a group of business-software companies. Its public accounts describe product development, acquisitions and shared support alongside changes in its investors. The case gives us a different pattern from the completed exits in the previous chapter.
 
-This case uses a historical operating window through 2024 and a December 2023 secondary transaction. The 2025 annual report, consulted in September 2026, helps reconcile a later presentation of the 2024 earnings measure. This is not a claim about the latest ownership or trading outcome. The evidence is largely company- and investor-supplied, so operational claims and implied causality require qualification.
+It matters for product and engineering leaders because a change of fund, even under the same manager, can change the money and the timeline behind long-running product and platform work. It is also a reminder that the earnings measures reported to owners can differ from the figures used inside the company.
 
-For readers starting with this case, **EBITDA** means earnings before interest, taxes, depreciation and amortization. It excludes financing, tax and specified asset-accounting charges. **Adjusted EBITDA** applies further stated exclusions. Neither measure is the cash remaining after every obligation. [[pt-valuation-and-architecture]] explains the terms and their relationship to company valuation.
+The historical window here runs principally through 2024, including a December 2023 ownership transaction. **Hg** is the investment manager associated with the long relationship discussed in the sources. A manager is the organization overseeing investments; the funds and investors behind that organization can change.
 
-## The Ownership and Strategic Context
+We follow three questions in order: who continued to own an interest, how the group described its operations, and why two sources report different earnings for 2024. The last question provides a practical exercise in reading financial definitions.
 
-Visma's December 2023 announcement describes a secondary sale valuing the company at €19 billion, with new investors and additional investment from existing shareholders. It says Hg would continue with a majority stake and refers to an investment relationship beginning in 2006. The announcement also describes a focus on standardized SaaS products after divestments of non-core activities. [S30: Visma 2023 transaction](https://www.visma.com/newsroom/visma-attracts-new-investors-for-further-international-expansion-in-a-transaction-valuing-the-company-at-eur-19-billion-59703d9f)
+Recall **EBITDA**, earnings before interest, taxes, depreciation and amortization. **Adjusted EBITDA** excludes additional specified items. A **reconciliation** shows the calculation from one figure to another. Neither earnings measure is the cash remaining after every company obligation.
+
+The operating question is where shared capability helps and where local responsibility matters. TeamSystem later examines what repeated acquisitions accumulate; here we focus on the division of responsibility and the definitions needed to judge results.
+
+## A Long Manager Relationship With Changing Investors
+
+A **secondary sale** transfers an existing ownership interest from one investor to another. Visma’s December 2023 announcement describes such a sale valuing the company at €19 billion, with new investors and additional investment from existing shareholders. It says Hg would continue with a majority stake and refers to an investment relationship beginning in 2006. The announcement also describes a focus on standardized **software as a service (SaaS)** products, accessed as an ongoing service rather than supplied only as a one-time software purchase, after selling activities outside its chosen focus. [S30: Visma 2023 transaction](https://www.visma.com/newsroom/visma-attracts-new-investors-for-further-international-expansion-in-a-transaction-valuing-the-company-at-eur-19-billion-59703d9f)
 
 The distinction between a secondary sale and new company funding is essential. Money used to purchase an existing shareholder's stake does not automatically fund product development. Continued involvement by a manager does not necessarily mean the same fund has held the same exposure unchanged for the entire period.
 
 The public announcement supports continuity of a sponsor relationship alongside investor turnover. It does not provide the complete fund-by-fund history needed to calculate realized net returns, follow every retained interest, or assess conflicts in every transaction. The €19 billion valuation is not cash distributed to all investors.
 
-## The Visible Operating Model
+![A company and investment firm can maintain a long relationship while the underlying funds and investors change.](assets/images/22-visma/continuity-with-changing-investors.jpeg)
+**Figure 1:** *Continuity of familiar people does not establish that the investment and decision rights are unchanged.*
 
-In its March 2025 account of 2024, Visma describes substantial local autonomy supported by shared infrastructure and knowledge. It reports 33 acquisitions during 2024 and says it spends close to 20% of revenue on product development. Those are company-reported descriptions and measures, not independently verified proof of the model's effectiveness. [S32: Visma annual-report announcement](https://www.visma.com/newsroom/visma-releases-annual-and-sustainability-reports-for-2024-7f5c9f37)
+## Thirty-Three Acquisitions in a Single Year
 
-The proposed mechanism is attractive: retain local product and market knowledge while sharing capabilities that would be expensive to assemble separately. That resembles the boundaries examined in [[pt-acquisitions-and-carveouts]] and the support-product hypothesis in [[pt-technology-capability-as-product]].
+In its March 2025 account of 2024, Visma describes substantial local autonomy supported by shared infrastructure and knowledge. It reports 33 acquisitions during 2024 — nearly three a month — and says it spends close to 20% of revenue on product development, while also acquiring other businesses. Those are company-reported descriptions and measures, not independently verified proof of the model's effectiveness. [S32: Visma annual-report announcement](https://www.visma.com/newsroom/visma-releases-annual-and-sustainability-reports-for-2024-7f5c9f37)
+
+The proposed mechanism is attractive: retain local product and market knowledge while sharing capabilities that would be expensive to assemble separately. That resembles the boundaries examined in [[acquisitions-and-carveouts]].
 
 But resemblance does not validate Productscapes. A group owning operating businesses has different authority and economics from an investment manager offering support across separate portfolio companies. Visma's scale and accumulated capabilities may also be very different from those of a smaller sponsor.
 
 The practical question is which decisions are local, which are shared, and how the combination improves customer outcomes after coordination costs. “Autonomy” can describe useful accountability or insufficient integration. “Shared capability” can describe valuable expertise or an expensive central service. The label alone cannot decide.
 
-## Read the Financial Definitions Before Comparing Results
+## Two Sources, Two Numbers, One Year
 
-The Q4 2024 report gives full-year revenue of €2,804 million and EBITDA of €893 million. For Q4 it reports 13.6% revenue growth and 10.0% organic growth. It reports net debt / EBITDA of 2.5× and describes debt facilities maturing in 2028. These are figures and definitions at that reporting point, not current financing terms. [S31: Visma Q4 2024 report](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f4589_Visma%202024%20Q4.pdf)
+The report for the fourth quarter (**Q4**) of 2024 gives full-year revenue of €2,804 million and EBITDA of €893 million. For Q4 it reports 13.6% revenue growth and 10.0% organic growth. It reports **net debt / EBITDA of 2.5×**, comparing debt after included cash with the report’s defined annual earnings measure, and describes borrowing arrangements due to mature in 2028. The ratio depends on those definitions; it should not be treated as directly comparable with a ratio using gross debt, another EBITDA basis or a different business. These are figures and definitions at that reporting point, not current financing terms. [S31: Visma Q4 2024 report](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f4589_Visma%202024%20Q4.pdf)
 
-The report defines organic growth using constant currency and includes acquired companies in both the reporting and comparison periods. It defines its free cash flow before tax and after specified development and asset investment. Its ARR means **annualized repeatable revenue**, including both contractual recurrence and certain repeatable transaction revenue. [S31: Visma Q4 2024 report](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f4589_Visma%202024%20Q4.pdf)
+The report defines **organic growth**, growth adjusted for specified changes in the businesses being compared, using **constant currency**, which removes the effect of exchange-rate movements, and includes acquired companies in both the reporting and comparison periods. It defines its **free cash flow**, a measure of cash after specified spending, before tax and after specified development and asset investment. Its **ARR** means **annualized repeatable revenue**, an estimate expressed at a yearly rate, including both contractual recurrence and certain repeatable transaction revenue. [S31: Visma Q4 2024 report](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f4589_Visma%202024%20Q4.pdf)
 
 Those definitions are consequential. “Organic” does not mean simply subtracting the revenue acquired during the year. A before-tax free-cash-flow measure is not the same as cash available after every obligation. Repeatable transaction revenue is not identical to contracted subscription revenue.
 
@@ -56,9 +66,9 @@ The investor webpage, inspected in September 2026, presents a 2024 figure of €
 | Add acquisition-related expenses in the later reconciliation | 11.665 |
 | Adjusted EBITDA for 2024 in the 2025 annual report | 904.311 |
 
-This resolves the numerical gap. The later number is a differently defined earnings measure for the same year, not evidence that an additional €11.665 million of business improvement subsequently occurred in 2024. Nor does the adjustment itself create cash.
+This resolves the numerical gap. The later number is a differently defined earnings measure for the same year, not evidence that an additional €11.665 million of business improvement subsequently occurred in 2024. **Nor does the adjustment itself create cash**.
 
-## What an Acquisition Expense Means to the Strategy
+## If You Buy Companies Every Year, Is Buying Them Exceptional?
 
 The reconciliation creates a better question than whether one headline is correct and the other wrong. Which measure helps answer the decision at hand?
 
@@ -68,7 +78,7 @@ This is an analytical distinction, not a finding that the reported adjustment is
 
 Technology creates a similar measurement problem. An integration team can be charged to a central acquisition program while local product margins exclude its cost. That may help local accountability, but a decision to expand the program still needs the total cost. Conversely, assigning all central costs to a newly acquired product immediately can make a useful transition look unviable before its benefits arrive. These are possible reporting designs, not assertions about Visma's internal allocations.
 
-The Principal and CFO should agree on a short description attached to each important measure:
+The company’s product and technology leaders should agree with the CFO on a short description attached to each important measure:
 
 - **Business included:** the whole group, a segment, an acquired company, or a defined product cohort.
 - **Period:** the dates covered and whether comparative acquisitions or disposals are treated consistently.
@@ -78,7 +88,10 @@ The Principal and CFO should agree on a short description attached to each impor
 
 That discipline also protects architectural decisions. A consolidation that improves a local cost ratio while adding more expense to the shared platform has not yet demonstrated a group saving. An experiment that lowers current earnings while creating a valuable future product is not automatically a failed investment. The relevant case connects the whole transition to customer outcomes and cash over time.
 
-The reconciliation therefore improves this living case in two ways: it closes a specific factual uncertainty and makes the decision framework more precise. Resolving a reporting difference is progress; it does not resolve the separate causal question of how much shared technology capability contributed to the company's results.
+The calculation answers why the two earnings figures differ. The separate question—how much shared technology support helped the company—still requires evidence about the work and its outcomes.
+
+![Repeated acquisitions draw on reusable diligence, integration choices and shared support while requiring explicit local decision rights.](assets/images/22-visma/repeat-acquisitions-as-capability.jpeg)
+**Figure 2:** *When acquisitions recur, their support and integration demands belong in the operating model.*
 
 ## What the Evidence Supports About Technology
 
@@ -90,18 +103,35 @@ A stronger causal assessment would connect individual product changes to custome
 
 The group's public technology examples are useful leads for that next investigation. This draft does not elevate launch announcements or management descriptions of customer time savings into independently verified outcomes.
 
-## Employees, Customers, and Acquired Companies
+## Employees, Customers and Acquired Companies
 
 Local autonomy may preserve founder knowledge and product focus. Shared capabilities may help employees develop and give customers access to stronger services. These are plausible benefits that require participant evidence.
 
 Acquisition and product transition can also create losses: duplicated work, changed responsibilities, pricing changes, or the retirement of a product customers depend on. Aggregate group growth cannot establish that every acquired business or customer cohort benefited.
 
-The consulted material does not provide a consistent independent series of employee outcomes, customer migration costs, or the experiences of companies that fit the model poorly. Those gaps are especially important because a successful aggregate can conceal unsuccessful components.
+The consulted material does not provide a consistent independent series of employee outcomes, customer migration costs, or the experiences of companies that fit the model poorly. Those gaps are especially important because **a successful aggregate can conceal unsuccessful components**.
 
-## A Useful Example With a Clear Boundary
+## Recheck Authority Even When the Familiar People Stay
+
+For a product leader, continuity of the investment manager is useful relationship information. It does not remove the need to understand a new transaction’s funding, participants and expectations. Ask which decisions remain local, whether shared services change and what the new arrangement expects the company to deliver.
+
+The comparable question in a minority funding round is whether a familiar lead investor now works alongside different shareholders and rights. In a corporate group it is whether the same local executives operate under a changed group mandate. These are applications of the ownership-map method, not findings established by Visma’s history about those other arrangements.
+
+The practical lesson is to preserve useful operating knowledge while **rechecking the authority and resources** behind it. A stable relationship and a changed ownership arrangement can coexist.
+
+## What the Case Supports
 
 Visma supports a narrower, more defensible conclusion than “private equity makes software companies better.” It shows a publicly described model combining sustained software investment, acquisition, shared support, local discretion, and repeated investor transactions. The reported results justify serious investigation of that model.
 
 Its transferable lesson is to inspect the **level at which reuse creates value**. Shared security expertise might travel well across products; a single customer workflow might not. Common financial definitions might help comparison; a uniform engineering ratio might obscure it.
 
-The unresolved question is how much this operating design contributes after selection, acquisitions, financing, and market conditions are considered. That question should shape the next revision rather than be filled with a confident explanation the public evidence cannot support.
+The next case returns to the cash constraint from Part I. Toys R Us shows why a technology plan must remain funded throughout the transition: [[toys-r-us]].
+
+## Questions to Consider
+
+1. If your investment manager stays but the fund or investors behind it change, what have you rechecked: funding, decision rights, expectations and shared services?
+2. Which two figures for the same period in your company’s reporting differ, and can you reconcile them line by line?
+3. Are acquisition, integration or transformation costs excluded from an adjusted measure your company reports? Do they recur?
+4. For each important measure you report, can you state the business included, the period, the calculation, the decision it supports and the evidence behind it?
+5. At which level does shared capability create value in your group, and where does it become an expensive central service?
+6. Whose costs are charged to a central program while local margins exclude them, and does anyone see the total?

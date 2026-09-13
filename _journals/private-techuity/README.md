@@ -1,7 +1,13 @@
-# Private Techuity — Manuscript Workspace
+# Owned — Manuscript Workspace
 
-Start reading at [the book index](index.md). The maintained chapters and reference pages are in `posts/`; `config.yaml` integrates them with the repository's journal build.
+**OWNED: Product & Engineering Leadership Under Investors**
 
-The accepted working title is **Private Techuity: Product and Engineering Leadership in Private Equity**. This is a living manuscript, now incorporating a second research and accessibility pass. Each of the 26 chapters has a Full Article, TL;DR, and comic storyboard. Comic artwork is pending. Specs state intent; `_research/` holds private provenance, evidence gaps, validation, and continuation notes and is excluded from site content. Original `_input/` material is preserved.
+A practical guide to making product and engineering decisions when investors shape the money, authority and expectations around your company.
 
-For revision, use [the research and editorial index](_research/README.md). For evidence, use [the public bibliography](posts/bibliography/index.md). See [validation and status](_research/validation.md) for delivered counts and checks.
+Start with [the purpose and reading guide](posts/reading-guide/index.md) or [the book index](index.md). The book follows company leaders working with venture, growth, buyout and corporate investors. The actual ownership rights, financing, expectations and available support determine the advice. The historical evidence remains concentrated on private equity.
+
+The manuscript contains **29 main chapters in six parts**. All 29 have an article, a 300–500-word summary and a six-panel illustrated comic. The edition includes 39 header logos and 39 navigation icons, alongside 174 comic panels and a dedicated Owned journal logo. Six part introductions and four guide/reference pages bring the published total to **39 pages**, each with a companion specification.
+
+[PLAN.md](PLAN.md) records the substantive Owned rewrite and its chapter contracts. [STRUCTURE.md](STRUCTURE.md) records the resulting positioning and reading structure. Source directory names remain stable; public page names use unprefixed permalinks. Chapter numbers refer to reading positions. Use the book’s part and chapter order for navigation; omit article tags from front matter.
+
+Use [the public bibliography](posts/bibliography/index.md) for evidence. `_research/` preserves private provenance, dated decisions and validation notes; earlier counts and titles describe their dated revisions. `_input/` remains private and is excluded from the site.

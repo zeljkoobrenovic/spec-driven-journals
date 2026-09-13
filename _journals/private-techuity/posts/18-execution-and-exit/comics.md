@@ -1,116 +1,148 @@
 <!-- comic-style
 {
-  "cast": "MORGAN: a thoughtful Technology Principal with short dark hair and a green jacket. ALEX: a practical CTO with curly hair and blue rolled-up sleeves. SAM: a CFO with round glasses and an amber cardigan. All are fictional; none represents a person in a real case.",
+  "cast": "MORGAN: a thoughtful investor technology adviser with short dark hair and a green jacket, used in the fund scenarios. ALEX: a practical CTO with curly hair and blue rolled-up sleeves. SAM: a CFO with round glasses and an amber cardigan. PRIYA: a product leader with straight dark hair and plum sleeves. INES: a CEO with short grey hair and a navy jacket. All are fictional; none represents a person in a real case.",
   "style": "Clean editorial explainer comic, dark ink outlines, restrained green, blue, and amber accents on warm white, generous space, readable short speech bubbles, expressive people and simple physical metaphors. No photorealism, logos, dense charts, or title text. Keep the same character appearances throughout the journal."
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic.** Under investors, the plan is the basis on which money was committed, so each revision is reviewed against the investment case, the fund’s timeline and the prospect of a sale. The panels follow a company keeping its plan credible to owners who may change.
+
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
   "id": "01-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/18-execution-and-exit/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Morgan arrives with a familiar reporting checklist; Alex raises a new problem. Use one speech bubble with the exact words: \"Is this still the useful question?\" Convey: Support should adapt as company decisions change.",
-  "alt": "Comic panel: morgan arrives with a familiar reporting checklist; Alex raises a new problem.",
-  "caption": "Support should adapt as company decisions change."
+  "prompt": "Panel 1 of an explainer comic. Alex brings a changed customer need and a blocked initiative to the regular conversation with Morgan. Use one speech bubble with the exact words: \"Here is the decision we need to revisit.\" Convey: Company leaders need to revise the operating plan as circumstances change. Use investor conversations to explain decisions, constraints and help needed.",
+  "alt": "Comic panel: Alex brings a changed customer need and a blocked initiative to the regular conversation with Morgan.",
+  "caption": "Company leaders need to revise the operating plan as circumstances change. Use investor conversations to explain decisions, constraints and help needed.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "0808d937a5bf4679a9c7611f01d62e6a28d6aa80e327be1a06b7c9d87eb8f086"
+  }
 }
 -->
 
-**Panel 1:** Support should adapt as company decisions change.
+![Comic panel: Alex brings a changed customer need and a blocked initiative to the regular conversation with Morgan.](assets/images/18-execution-and-exit/comic-01-scene.jpeg)
 
-*Scene:* Morgan arrives with a familiar reporting checklist; Alex raises a new problem.
+**Panel 1:** Company leaders need to revise the operating plan as circumstances change. Use investor conversations to explain decisions, constraints and help needed.
 
-*Dialogue:* “Is this still the useful question?”
+*Dialogue:* “Here is the decision we need to revisit.”
 
 <!-- comic-panel
 {
   "id": "02-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/18-execution-and-exit/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. The team separates coaching, project help, and board reporting. Use one speech bubble with the exact words: \"Clarify the conversation's purpose.\" Convey: Different forms of involvement have different information and accountability needs.",
-  "alt": "Comic panel: the team separates coaching, project help, and board reporting.",
-  "caption": "Different forms of involvement have different information and accountability needs."
+  "prompt": "Panel 2 of an explainer comic. The team separates coaching, project help, and board reporting. Use one speech bubble with the exact words: \"Clarify the conversation's purpose.\" Convey: Coaching, project delivery and board reporting serve different purposes. Agree what information each conversation may use and share.",
+  "alt": "Comic panel: The team separates coaching, project help, and board reporting.",
+  "caption": "Coaching, project delivery and board reporting serve different purposes. Agree what information each conversation may use and share.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "d141b5d7a6523ef72cf3d4aee41f17e5ad22b9811cdb0851d782869aea06384e"
+  }
 }
 -->
 
-**Panel 2:** Different forms of involvement have different information and accountability needs.
+![Comic panel: The team separates coaching, project help, and board reporting.](assets/images/18-execution-and-exit/comic-02-scene.jpeg)
 
-*Scene:* The team separates coaching, project help, and board reporting.
+**Panel 2:** Coaching, project delivery and board reporting serve different purposes. Agree what information each conversation may use and share.
 
 *Dialogue:* “Clarify the conversation's purpose.”
 
 <!-- comic-panel
 {
   "id": "03-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/18-execution-and-exit/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex shares a practice while protecting a confidential company folder. Use one speech bubble with the exact words: \"Share the learning appropriately.\" Convey: Portfolio collaboration does not create unrestricted information rights.",
-  "alt": "Comic panel: alex shares a practice while protecting a confidential company folder.",
-  "caption": "Portfolio collaboration does not create unrestricted information rights."
+  "prompt": "Panel 3 of an explainer comic. Alex shares a practice while protecting a confidential company folder. Use one speech bubble with the exact words: \"Share the learning appropriately.\" Convey: Companies sharing an owner still have separate confidential information. Share lessons within agreed permissions.",
+  "alt": "Comic panel: Alex shares a practice while protecting a confidential company folder.",
+  "caption": "Companies sharing an owner still have separate confidential information. Share lessons within agreed permissions.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "30f0b25035b664896d45b7a884bb0ac7952c1907394e0730243e71c0db9f3d2a"
+  }
 }
 -->
 
-**Panel 3:** Portfolio collaboration does not create unrestricted information rights.
+![Comic panel: Alex shares a practice while protecting a confidential company folder.](assets/images/18-execution-and-exit/comic-03-scene.jpeg)
 
-*Scene:* Alex shares a practice while protecting a confidential company folder.
+**Panel 3:** Companies sharing an owner still have separate confidential information. Share lessons within agreed permissions.
 
 *Dialogue:* “Share the learning appropriately.”
 
 <!-- comic-panel
 {
   "id": "04-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/18-execution-and-exit/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam traces an outcome back to its baseline and costs. Use one speech bubble with the exact words: \"Can a buyer examine this claim?\" Convey: Exit evidence is built through ownership.",
-  "alt": "Comic panel: sam traces an outcome back to its baseline and costs.",
-  "caption": "Exit evidence is built through ownership."
+  "prompt": "Panel 4 of an explainer comic. Sam traces an outcome back to its baseline and costs. Use one speech bubble with the exact words: \"Can a buyer examine this claim?\" Convey: An exit is a sale or other transaction through which investors receive value. Prepare its evidence by recording costs and results throughout ownership.",
+  "alt": "Comic panel: Sam traces an outcome back to its baseline and costs.",
+  "caption": "An exit is a sale or other transaction through which investors receive value. Prepare its evidence by recording costs and results throughout ownership.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "c72c015b5feb66fb7ce7256d4e09e25b0692c975801092527a269e85f1c1daa8"
+  }
 }
 -->
 
-**Panel 4:** Exit evidence is built through ownership.
+![Comic panel: Sam traces an outcome back to its baseline and costs.](assets/images/18-execution-and-exit/comic-04-scene.jpeg)
 
-*Scene:* Sam traces an outcome back to its baseline and costs.
+**Panel 4:** An exit is a sale or other transaction through which investors receive value. Prepare its evidence by recording costs and results throughout ownership.
 
 *Dialogue:* “Can a buyer examine this claim?”
 
 <!-- comic-panel
 {
   "id": "05-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/18-execution-and-exit/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Morgan marks remaining shares beside an exit announcement. Use one speech bubble with the exact words: \"What has actually been realized?\" Convey: A transaction label does not establish complete cash realization.",
-  "alt": "Comic panel: morgan marks remaining shares beside an exit announcement.",
-  "caption": "A transaction label does not establish complete cash realization."
+  "prompt": "Panel 5 of an explainer comic. Sam moves a funding date while Alex and Priya review commitments before hiring and contracts remove options. Use one speech bubble with the exact words: \"What changes if the money arrives late?\" Convey: A delayed round, refinancing or corporate budget change requires a revised operating decision. Keep a viable plan for continued ownership if the expected transaction does not occur.",
+  "alt": "Comic panel: Sam moves a funding date while Alex and Priya review commitments before hiring and contracts remove options.",
+  "caption": "A delayed round, refinancing or corporate budget change requires a revised operating decision. Keep a viable plan for continued ownership if the expected transaction does not occur.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "2804d76c4cbcd4a7c24bf6859e418e7aa5a07aba17532eba2f4b39a11ac87cf1"
+  }
 }
 -->
 
-**Panel 5:** A transaction label does not establish complete cash realization.
+![Comic panel: Sam moves a funding date while Alex and Priya review commitments before hiring and contracts remove options.](assets/images/18-execution-and-exit/comic-05-scene.jpeg)
 
-*Scene:* Morgan marks remaining shares beside an exit announcement.
+**Panel 5:** A delayed round, refinancing or corporate budget change requires a revised operating decision. Keep a viable plan for continued ownership if the expected transaction does not occur.
 
-*Dialogue:* “What has actually been realized?”
+*Dialogue:* “What changes if the money arrives late?”
 
 <!-- comic-panel
 {
   "id": "06-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/18-execution-and-exit/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex continues the process as Morgan steps back. Use one speech bubble with the exact words: \"The capability stays here.\" Convey: Useful support includes a credible handoff and a decision to reduce dependence.",
-  "alt": "Comic panel: alex continues the process as Morgan steps back.",
-  "caption": "Useful support includes a credible handoff and a decision to reduce dependence."
+  "prompt": "Panel 6 of an explainer comic. Alex hands a new company leader the operating record and a clearly named support agreement. Use one speech bubble with the exact words: \"We know what the next stage needs.\" Convey: A useful handover explains what improved, what remains and how the capability will be sustained, including any continuing support.",
+  "alt": "Comic panel: Alex hands a new company leader the operating record and a clearly named support agreement.",
+  "caption": "A useful handover explains what improved, what remains and how the capability will be sustained, including any continuing support.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "63db38b914cff3ec25b21c71548dc4d8a7aef9159d572b84cad6ef5abe8e660a"
+  }
 }
 -->
 
-**Panel 6:** Useful support includes a credible handoff and a decision to reduce dependence.
+![Comic panel: Alex hands a new company leader the operating record and a clearly named support agreement.](assets/images/18-execution-and-exit/comic-06-scene.jpeg)
 
-*Scene:* Alex continues the process as Morgan steps back.
+**Panel 6:** A useful handover explains what improved, what remains and how the capability will be sustained, including any continuing support.
 
-*Dialogue:* “The capability stays here.”
+*Dialogue:* “We know what the next stage needs.”

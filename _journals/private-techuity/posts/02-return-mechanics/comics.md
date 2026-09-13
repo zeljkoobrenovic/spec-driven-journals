@@ -1,116 +1,148 @@
 <!-- comic-style
 {
-  "cast": "MORGAN: a thoughtful Technology Principal with short dark hair and a green jacket. ALEX: a practical CTO with curly hair and blue rolled-up sleeves. SAM: a CFO with round glasses and an amber cardigan. All are fictional; none represents a person in a real case.",
+  "cast": "MORGAN: a thoughtful investor technology adviser with short dark hair and a green jacket, used in the fund scenarios. ALEX: a practical CTO with curly hair and blue rolled-up sleeves. SAM: a CFO with round glasses and an amber cardigan. PRIYA: a product leader with straight dark hair and plum sleeves. INES: a CEO with short grey hair and a navy jacket. All are fictional; none represents a person in a real case.",
   "style": "Clean editorial explainer comic, dark ink outlines, restrained green, blue, and amber accents on warm white, generous space, readable short speech bubbles, expressive people and simple physical metaphors. No photorealism, logos, dense charts, or title text. Keep the same character appearances throughout the journal."
 }
 -->
 
-**Comic storyboard — artwork pending.** Six fictional scenes adapt the full article. Morgan is the Technology Principal, Alex the CTO, and Sam the CFO. The case-study scenes discuss public records; they do not portray real participants. Consult the Full Article for sources, definitions, and qualifications.
+**Comic.** Leaders inside the company judge progress by customers and earnings. The panels show how an investor judges the same company by the return on its holding, and why requests that seem hard to justify from the business often follow from the price paid, the borrowing and the timing of a sale.
+
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
   "id": "01-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/02-return-mechanics/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Morgan places a business model beside a share certificate. Use one speech bubble with the exact words: \"Company value and equity differ.\" Convey: Enterprise value must be bridged to equity through debt and other relevant adjustments.",
-  "alt": "Comic panel: morgan places a business model beside a share certificate.",
-  "caption": "Enterprise value must be bridged to equity through debt and other relevant adjustments."
+  "prompt": "Panel 1 of an explainer comic. Morgan places a business model beside a share certificate. Use one speech bubble with the exact words: \"Company value and equity differ.\" Convey: Enterprise value estimates the operating business’s value. Equity value is the shareholders’ part after relevant debt, cash and other adjustments.",
+  "alt": "Comic panel: Morgan holds a company folder and a separate equity certificate.",
+  "caption": "Enterprise value estimates the operating business’s value. Equity value is the shareholders’ part after relevant debt, cash and other adjustments.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "59fd4db0497298adb6145f37e768acbfc6820f15e5ac2000bd7038fdbec94790"
+  }
 }
 -->
 
-**Panel 1:** Enterprise value must be bridged to equity through debt and other relevant adjustments.
+![Comic panel: Morgan holds a company folder and a separate equity certificate.](assets/images/02-return-mechanics/comic-01-scene.jpeg)
 
-*Scene:* Morgan places a business model beside a share certificate.
+**Panel 1:** Enterprise value estimates the operating business’s value. Equity value is the shareholders’ part after relevant debt, cash and other adjustments.
 
 *Dialogue:* “Company value and equity differ.”
 
 <!-- comic-panel
 {
   "id": "02-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/02-return-mechanics/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam moves earnings, valuation, and debt blocks independently. Use one speech bubble with the exact words: \"Several mechanisms change the return.\" Convey: Operating improvement, market pricing, and financing can all affect investor results.",
-  "alt": "Comic panel: sam moves earnings, valuation, and debt blocks independently.",
-  "caption": "Operating improvement, market pricing, and financing can all affect investor results."
+  "prompt": "Panel 2 of an explainer comic. Sam moves earnings, valuation, and debt blocks independently. Use one speech bubble with the exact words: \"Several mechanisms change the return.\" Convey: An investment return compares what the investor receives or still holds with what it invested. Business performance, prices, borrowing and time all matter.",
+  "alt": "Comic panel: Sam moves earnings, valuation, and debt blocks independently.",
+  "caption": "An investment return compares what the investor receives or still holds with what it invested. Business performance, prices, borrowing and time all matter.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "75a33807a01a2097d2ef1c0c05d617ba9e5a08e37262a22b9b22a343263ff39e"
+  }
 }
 -->
 
-**Panel 2:** Operating improvement, market pricing, and financing can all affect investor results.
+![Comic panel: Sam moves earnings, valuation, and debt blocks independently.](assets/images/02-return-mechanics/comic-02-scene.jpeg)
 
-*Scene:* Sam moves earnings, valuation, and debt blocks independently.
+**Panel 2:** An investment return compares what the investor receives or still holds with what it invested. Business performance, prices, borrowing and time all matter.
 
 *Dialogue:* “Several mechanisms change the return.”
 
 <!-- comic-panel
 {
   "id": "03-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/02-return-mechanics/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex proudly holds a deployment report beside rising valuation. Use one speech bubble with the exact words: \"Which change caused which result?\" Convey: A technology improvement does not establish its own share of an exit price.",
-  "alt": "Comic panel: alex proudly holds a deployment report beside rising valuation.",
-  "caption": "A technology improvement does not establish its own share of an exit price."
+  "prompt": "Panel 3 of an explainer comic. Alex proudly holds a deployment report beside rising valuation. Use one speech bubble with the exact words: \"Which change caused which result?\" Convey: A software improvement may help the business. A higher sale price alone does not show how much that improvement contributed.",
+  "alt": "Comic panel: Alex proudly holds a deployment report beside rising valuation.",
+  "caption": "A software improvement may help the business. A higher sale price alone does not show how much that improvement contributed.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "71dcb1d334787d4f56a8888b18dc734e024a14032dbcd856aae8110657e3cefc"
+  }
 }
 -->
 
-**Panel 3:** A technology improvement does not establish its own share of an exit price.
+![Comic panel: Alex proudly holds a deployment report beside rising valuation.](assets/images/02-return-mechanics/comic-03-scene.jpeg)
 
-*Scene:* Alex proudly holds a deployment report beside rising valuation.
+**Panel 3:** A software improvement may help the business. A higher sale price alone does not show how much that improvement contributed.
 
 *Dialogue:* “Which change caused which result?”
 
 <!-- comic-panel
 {
   "id": "04-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/02-return-mechanics/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam compares two clocks beside the same proceeds. Use one speech bubble with the exact words: \"Time changes annualized returns.\" Convey: A multiple of money and IRR answer different questions.",
-  "alt": "Comic panel: sam compares two clocks beside the same proceeds.",
-  "caption": "A multiple of money and IRR answer different questions."
+  "prompt": "Panel 4 of an explainer comic. Sam compares two clocks beside the same proceeds. Use one speech bubble with the exact words: \"The payment dates matter too.\" Convey: MOIC compares value received or held with money invested. IRR is an annual return measure that also accounts for payment dates.",
+  "alt": "Comic panel: Sam compares MOIC and IRR clock symbols, with a calendar beside IRR to emphasize payment timing.",
+  "caption": "MOIC compares value received or held with money invested. IRR is an annual return measure that also accounts for payment dates.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "81793b059630282a48b03ff7b75d7d8aa2ea5a7e36561cd7f1ff0cee97337672"
+  }
 }
 -->
 
-**Panel 4:** A multiple of money and IRR answer different questions.
+![Comic panel: Sam compares MOIC and IRR clock symbols, with a calendar beside IRR to emphasize payment timing.](assets/images/02-return-mechanics/comic-04-scene.jpeg)
 
-*Scene:* Sam compares two clocks beside the same proceeds.
+**Panel 4:** MOIC compares value received or held with money invested. IRR is an annual return measure that also accounts for payment dates.
 
-*Dialogue:* “Time changes annualized returns.”
+*Dialogue:* “The payment dates matter too.”
 
 <!-- comic-panel
 {
   "id": "05-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/02-return-mechanics/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Morgan separates a cash envelope from a valuation estimate. Use one speech bubble with the exact words: \"Has the money been distributed?\" Convey: Residual value is different from a realized cash distribution.",
-  "alt": "Comic panel: morgan separates a cash envelope from a valuation estimate.",
-  "caption": "Residual value is different from a realized cash distribution."
+  "prompt": "Panel 5 of an explainer comic. Sam starts a new worksheet labelled Minority example, apart from the earlier buyout calculation, while Alex counts share blocks. Use one speech bubble with the exact words: \"New funding can change the percentage.\" Convey: Separate fictional minority example: 200 of 1,000 shares is 20%. Another issue raises the total to 1,250, reducing the holding to 16%. With equal rights, €20m of sale proceeds gives this investor €3.2m.",
+  "alt": "Comic panel: Sam starts a new worksheet labelled Minority example, apart from the earlier buyout calculation, while Alex counts share blocks.",
+  "caption": "Separate fictional minority example: 200 of 1,000 shares is 20%. Another issue raises the total to 1,250, reducing the holding to 16%. With equal rights, €20m of sale proceeds gives this investor €3.2m.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "56f8700a539e19790d2bea218b6a423a6cf91b89cd8da873e14c2909d747079b"
+  }
 }
 -->
 
-**Panel 5:** Residual value is different from a realized cash distribution.
+![Comic panel: Sam starts a new worksheet labelled Minority example, apart from the earlier buyout calculation, while Alex counts share blocks.](assets/images/02-return-mechanics/comic-05-scene.jpeg)
 
-*Scene:* Morgan separates a cash envelope from a valuation estimate.
+**Panel 5:** Separate fictional minority example: 200 of 1,000 shares is 20%. Another issue raises the total to 1,250, reducing the holding to 16%. With equal rights, €20m of sale proceeds gives this investor €3.2m.
 
-*Dialogue:* “Has the money been distributed?”
+*Dialogue:* “New funding can change the percentage.”
 
 <!-- comic-panel
 {
   "id": "06-scene",
-  "status": "pending",
+  "status": "generated",
   "asset": "assets/images/02-return-mechanics/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex tests the plan beneath a lower valuation sign. Use one speech bubble with the exact words: \"Does the business still improve?\" Convey: A resilient operating case should survive scrutiny beyond the preferred exit multiple.",
-  "alt": "Comic panel: alex tests the plan beneath a lower valuation sign.",
-  "caption": "A resilient operating case should survive scrutiny beyond the preferred exit multiple."
+  "prompt": "Panel 6 of an explainer comic. Alex tests the plan beneath a lower valuation sign. Use one speech bubble with the exact words: \"Does the business still improve?\" Convey: Test whether the operating improvement remains useful if the sale price is lower or the owner holds the business longer.",
+  "alt": "Comic panel: Alex tests the plan beneath a lower valuation sign.",
+  "caption": "Test whether the operating improvement remains useful if the sale price is lower or the owner holds the business longer.",
+  "generation": {
+    "model": "gemini-3-pro-image-preview",
+    "reference_id": "owned-cast-20260913",
+    "sha256": "87683dc57dd3822d65b2a81add19fdee63e8d8cab3ded94b6578844d5e911b99"
+  }
 }
 -->
 
-**Panel 6:** A resilient operating case should survive scrutiny beyond the preferred exit multiple.
+![Comic panel: Alex tests the plan beneath a lower valuation sign.](assets/images/02-return-mechanics/comic-06-scene.jpeg)
 
-*Scene:* Alex tests the plan beneath a lower valuation sign.
+**Panel 6:** Test whether the operating improvement remains useful if the sale price is lower or the owner holds the business longer.
 
 *Dialogue:* “Does the business still improve?”

@@ -1,3 +1,5 @@
+> **Historical thesis, superseded September 13, 2026.** The current editorial contract is [Owned’s rewrite plan](../PLAN.md); the current structure is [STRUCTURE.md](../STRUCTURE.md). The text below records the earlier private-equity-first thesis and should not govern new revisions.
+
 # Editorial Thesis and Architecture
 
 Decision date: September 12, 2026. Recommended title accepted by the author as the working title.
