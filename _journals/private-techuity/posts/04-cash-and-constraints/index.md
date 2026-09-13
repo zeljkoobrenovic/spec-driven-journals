@@ -1,26 +1,28 @@
 ---
-title: A Profitable Company Can Still Run Out of Cash
+title: "Profit, Runway and the Cash You Can Commit"
 date: 2026-09-12
-author: Private Techuity working manuscript
-excerpt: "Follow the money left after bills, borrowing and investment, and see why reported profit is not a spending budget."
-permalink: pt-cash-and-constraints
-timetoread: 8 min read
+author: Owned working manuscript
+excerpt: "Work through cash after debt payments and runway before another funding round, then decide which product and engineering commitments the company can sustain."
+permalink: cash-and-constraints
+timetoread: 10 min read
 status: draft:orange
-tags: private equity, technology leadership, Part I
+logo: "assets/images/04-cash-and-constraints/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/04-cash-and-constraints.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **An earnings measure is not a spending budget.** The business must still fund taxes, financing, investment and the timing gap between payments and receipts.
-> * **Borrowing changes how much error the plan can absorb.** Examine payment deadlines and the cash needed if results disappoint before committing to major changes.
-> * **Accounting does not remove the cost of work.** Recording development as an asset changes its earnings treatment; the company still pays for it.
+> * An earnings measure is **not a spending budget**. The business must still fund taxes, financing, investment and the timing gap between payments and receipts.
+> * The next **funding or payment date** constrains today’s commitments. Examine cash after borrowing obligations and runway before another round; decide early what changes if funding or results disappoint.
+> * Accounting **does not remove the cost of work**. Recording development as an asset changes its earnings treatment; the company still pays for it.
 
 <br>
-The board sees a growing measure of operating earnings. The engineering team is told there is no money for an essential migration. Both are true at once, and the gap between them is where most technology budget arguments are actually lost.
+The board sees a growing measure of operating earnings. The engineering team is told there is no money for an essential migration. Both can be true. The budget discussion needs to explain what happens between recording earnings and having cash available for new work.
 
-[[pt-valuation-and-architecture]] distinguished earnings from cash in principle. This chapter turns that into a line-by-line descent from the headline number to the money a company can actually spend — the single most useful financial tool a technology leader can learn, because it converts "technology needs investment" into a conversation about timing, competing obligations and financial room.
+[[valuation-and-architecture]] distinguished earnings from cash in principle. This chapter works from earnings to the cash remaining after planned payments, then examines runway in a company spending more than it collects. Both calculations help turn an investment request into a choice about timing and competing obligations.
 
-Before the calculation, recall **EBITDA**: earnings before interest, income taxes, depreciation and amortization, the asset-accounting charges explained in [[pt-valuation-and-architecture]]. It leaves out several payments a business must make.
+Before the calculation, recall **EBITDA**: earnings before interest, income taxes, depreciation and amortization, the asset-accounting charges explained in [[valuation-and-architecture]]. It leaves out several payments a business must make.
 
 **Capital expenditure**, often shortened to **capex**, is spending on assets such as equipment or qualifying software development. Recording qualifying spending as an asset is called **capitalization**. The cash is still spent even though the expense is recognized over time.
 
@@ -28,7 +30,7 @@ For this example, **working capital** means money tied up in unpaid customer inv
 
 ## From Earnings to the Cash You Can Actually Spend
 
-Take Larkspur, the fictional scheduling-software company from [[pt-investment-fit]], now a few years past its buyout and carrying the borrowing that funded it. The following fictional annual planning example uses millions of euros. It is separate from the generic buyout calculation in [[pt-return-mechanics]]. This is a simplified management model rather than a cash-flow statement prepared under formal accounting rules. EBITDA already includes expensed payroll and ordinary operating costs; capitalized development is listed separately to avoid pretending those cash payments have disappeared.
+Take Larkspur, the fictional scheduling-software company from [[investment-fit]], now a few years past its buyout and carrying the borrowing that funded it. The following fictional annual planning example uses millions of euros. It is separate from the generic buyout calculation in [[return-mechanics]]. This is a simplified management model rather than a cash-flow statement prepared under formal accounting rules. EBITDA already includes expensed payroll and ordinary operating costs; capitalized development is listed separately to avoid pretending those cash payments have disappeared.
 
 | Cash bridge | €m |
 | --- | ---: |
@@ -41,11 +43,34 @@ Take Larkspur, the fictional scheduling-software company from [[pt-investment-fi
 | Required repayment of the amount borrowed (principal) | −1.5 |
 | Remaining cash before other movements | 0.5 |
 
-Larkspur's engineering leader wants €1 million for the onboarding automation. EBITDA — operating earnings before interest, tax and the asset-accounting charges — is €10 million. **After everything the business is already committed to, €0.5 million is left.** The initiative might displace another investment, require borrowing or equity, or be staged over time. Calling the constraint short-term thinking does not resolve it. Neither does declaring the initiative unaffordable without examining whether it protects future cash.
+Larkspur's engineering leader wants €1 million for the onboarding automation. EBITDA — operating earnings before interest, tax and the asset-accounting charges — is €10 million. **After the payments included in this annual model, €0.5 million remains.** Existing cash, reserves, payment dates and obligations omitted from the model still need to be checked before committing it. The initiative might displace another investment, require borrowing or equity, or be staged over time. Calling the constraint short-term thinking does not resolve it. Neither does declaring the initiative unaffordable without examining whether it protects future cash.
 
-The working-capital line is the one engineers most often miss. Larkspur grew, so more customers owed it money at year end than at the start — about €1 million more invoiced but not yet collected. The company has recorded the sales but has not collected that €1 million. In this scenario, growth increased the cash tied up in customer invoices.
+The working-capital line explains why sales growth can absorb cash. Larkspur grew, so more customers owed it money at year end than at the start — about €1 million more invoiced but not yet collected. The company has recorded the sales but has not collected that €1 million. In this scenario, growth increased the cash tied up in customer invoices.
 
 More generally, working capital is money tied up in the operating cycle. A company can recognize revenue before collecting invoices, or pay suppliers before customers pay it. Annual subscription prepayments work the other way and produce cash before the revenue is recognized. These timing differences can be economically helpful while still creating future service obligations.
+
+![An earnings estimate must be reconciled with cash balances, receipts, payments and reserves before a spending commitment.](assets/images/04-cash-and-constraints/earnings-to-dated-cash-plan.jpeg)
+**Figure 1:** *An annual residual is a planning result; available cash also depends on balances, obligations and dates.*
+
+## A Company Without Acquisition Debt Can Still Run Out of Time
+
+Consider a separate fictional Larkspur scenario with no acquisition debt. The company has €3m of unrestricted cash and spends €600,000 a month while collecting €350,000. **Net cash burn** is the difference: €250,000 a month. At that unchanged rate, cash lasts 12 months. This estimate is its **runway**.
+
+Alex proposes hires that raise monthly cash spending by €100,000, with no immediate increase in receipts. Net burn becomes €350,000 and simple runway falls to about 8.6 months. The board expects another funding round in nine months. On these assumptions, the hires make the plan depend on money arriving before it is currently expected.
+
+| Planning assumption | Net monthly burn | Simple runway on €3m |
+| --- | ---: | ---: |
+| Current spending and receipts | €250,000 | 12 months |
+| New hires, no immediate extra receipts | €350,000 | About 8.6 months |
+
+Real cash forecasts need payment dates, taxes, one-off costs, restricted cash, revenue uncertainty and a minimum operating reserve. A company should act before the bank balance reaches zero. This calculation isolates the choice; it is not a recommendation to maintain a particular reserve or fundraising schedule.
+
+The leadership response is to agree what evidence the hires would produce, stage commitments where possible and decide when to change course if funding remains uncertain. Sam and Alex should put the next decision date ahead of the point where notice periods, customer obligations or fixed contracts make the plan expensive to reverse. An investor’s intention to participate in another round is different from cash received or a binding commitment with understood conditions.
+
+Under corporate ownership, replace the hoped-for round with the relevant parent-company allocation and approval. Under profitable growth, include the timing of customer receipts and the spending needed to serve them. In each case, the proposal needs a funded path through the next important decision.
+
+![Current cash funds work only until it is spent; delayed funding requires decisions before the runway ends.](assets/images/04-cash-and-constraints/runway-and-funding-decision.jpeg)
+**Figure 2:** *Make the next funding decision and the fallback plan visible before taking on permanent commitments.*
 
 ## Debt Changes the Consequences of Being Wrong
 
@@ -57,13 +82,13 @@ A simple downside scenario illustrates the operating significance. Suppose a com
 
 A lender's leverage calculation may use a different EBITDA definition from management's operating report. A calculation might include an anticipated **synergy**, a benefit expected from combining acquired businesses, even before that benefit produces cash. Leaders should know both the contractual measure and a conservative view of the business's ability to pay.
 
-This is why a technical value-creation plan should include a downside funding path. Which work continues during a revenue miss? Which commitments cannot be unwound? What is the latest date to act before a dependency becomes a crisis? A roadmap without these answers assumes a financial environment the company may not have.
+This is why a technical value-creation plan should include **a downside funding path**. Which work continues during a revenue miss? **Which commitments cannot be unwound?** What is the latest date to act before a dependency becomes a crisis? A roadmap without these answers assumes a financial environment the company may not have.
 
 ## Accounting Changes the Picture, Not the Work
 
 Under **IAS 38**, the international accounting standard covering intangible assets, research expenditure is expensed; development expenditure that meets specified criteria is recognized as an intangible asset. The accounting treatment depends on the facts and applicable standards. It is not a discretionary device for meeting an EBITDA target. [S07: IAS 38 overview](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/)
 
-To isolate the accounting effect, consider a separate €1 million development-spending example. Compare the same spending under two treatments, only where the applicable accounting criteria permit them:
+To isolate the accounting effect, consider a separate €1 million development-spending example. The table isolates the effect of recognizing the spending immediately as an expense versus recognizing it as an asset. In practice, the applicable criteria determine the treatment; management cannot simply choose the column with higher EBITDA:
 
 | | Expensed | Capitalized |
 | --- | ---: | ---: |
@@ -76,7 +101,7 @@ The point is not that capitalization is suspicious. It is that useful performanc
 
 Adjusted earnings require a similar discipline; the SEC distinguishes plain EBITDA from measures carrying further adjustments, which need their own label and reconciliation. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures) Separating an unusual restructuring charge can help analysis. Repeatedly excluding the costs of recurring acquisitions can obscure the economics of a business whose strategy depends on recurring acquisitions. Maintain a reconciliation, examine recurrence, and ask what expenditure the next owner will still need.
 
-## Efficiency and Resilience Pull Against Each Other
+## Preserve the Capacity to Absorb a Setback
 
 Debt can make an attractive acquisition possible and sharpen attention to cash. It can also reduce the capacity to withstand surprises. The evidence does not justify assuming that sponsor ownership always removes financial support: Bernstein, Lerner, and Mezzanotti found greater investment and financing inflows among PE-backed companies relative to peers during the 2008 crisis in their study, with stronger effects when sponsors had more resources. That is evidence of a conditional support mechanism, not a promise of rescue. [S10: Bernstein et al., crisis study](https://www.nber.org/system/files/working_papers/w23626/w23626.pdf)
 
@@ -84,7 +109,7 @@ For planning purposes, distinguish committed support from hopeful support. An ow
 
 Product and engineering leaders should also distinguish reversible savings from capability losses. Turning off unused environments can reduce waste. Removing the people who understand a fragile billing platform may create a deferred cost larger than the immediate payroll reduction. Estimate the transition cost, state the uncertainty, and agree on service and delivery indicators that would reveal damage.
 
-The historical Toys R Us case in [[pt-toys-r-us]] makes this distinction concrete. Its fiscal 2016 release reports positive adjusted EBITDA alongside negative operating cash flow and substantial capital expenditure. [S35: Toys R Us fiscal 2016 results](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000010/truq4-16earningsreleaseexh.htm) That combination does not identify the cause of failure, but it rules out using the earnings headline as the available reinvention budget.
+The historical Toys R Us case in [[toys-r-us]] makes this distinction concrete. Its fiscal 2016 release reports positive adjusted EBITDA alongside negative operating cash flow and substantial capital expenditure. [S35: Toys R Us fiscal 2016 results](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000010/truq4-16earningsreleaseexh.htm) That combination does not identify the cause of failure, but it rules out using the earnings headline as the available reinvention budget.
 
 ## Bring Choices, Not an Unpriced Wish List
 
@@ -94,4 +119,4 @@ The question becomes: which plan gives the company the strongest feasible abilit
 
 The cash bridge explains why positive earnings can coexist with an unfunded migration. It is a planning calculation, not a universal payment priority: ordinary engineering salaries are already included in operating costs, and actual payment dates and restrictions matter.
 
-Part I has now followed the money from funding to company cash. Part II asks who can decide how that cash and the company’s people are used. Begin with [[pt-part-2]], then [[pt-governance]].
+Part I has now followed the money from funding to company cash. Part II asks who can decide how that cash and the company’s people are used. Begin with [[part-2]], then [[governance]].

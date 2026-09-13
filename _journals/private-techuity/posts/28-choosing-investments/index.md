@@ -1,19 +1,21 @@
 ---
 title: "Choosing What to Fund—and What to Stop"
 date: "2026-09-13"
-author: "Private Techuity working manuscript"
+author: "Owned working manuscript"
 excerpt: "Compare competing uses of money and team capacity, fund a workable combination, and decide what evidence should change it."
-permalink: "pt-choosing-investments"
-timetoread: 7 min read
+permalink: "choosing-investments"
+timetoread: 8 min read
 status: "draft:orange"
-tags: "private equity, technology leadership, Part III"
+logo: "assets/images/28-choosing-investments/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/28-choosing-investments.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **Choose a combination of work the company can actually deliver.** Several attractive projects can still require more money or team time than is available.
-> * **Connect investor expectations to customer needs and operating facts.** A growth target starts a discussion about what must change; it does not choose the product or technology solution.
-> * **Make the next review part of the decision.** Explain what would justify continuing, expanding, changing or stopping the work.
+> * Choose a **combination of work the company can actually deliver**. Several attractive projects can still require more money or team time than is available.
+> * Connect investor expectations to **customer needs and operating facts**. A growth target starts a discussion about what must change; it does not choose the product or technology solution.
+> * Make the **next review part of the decision**. Explain what would justify continuing, expanding, changing or stopping the work.
 
 <br>
 Larkspur’s investor wants faster growth. Priya, the product leader, has requests for a new customer portal. Alex, the technology leader, wants to improve recovery from system failures. The customer team wants simpler setup for new accounts. Each request has a plausible benefit. They cannot all use the same people at the same time.
@@ -42,6 +44,21 @@ Next, identify improvements that could help customers or the business, and exper
 
 These groups help explain the purpose of spending. They are not a formula for dividing every budget into fixed percentages.
 
+## The Same Project Can Need a Different Commitment
+
+Consider four alternative Larkspur situations. Priya wants onboarding to become repeatable. Alex has a proposal for a larger platform change. Before comparing designs, make the ownership and funding assumptions explicit.
+
+| Stated situation | The immediate decision |
+| --- | --- |
+| Another funding round depends on evidence of repeat purchases | Fund the smallest credible test that can answer that question while leaving time to respond |
+| Growth funding is available for expansion into two countries | Fund the onboarding process, local requirements and support capacity together |
+| Borrowing leaves limited cash during the transition | Compare a staged migration with delay, including customer risk and overlapping costs |
+| A corporate owner expects its channel to sell the product | Agree the channel commitment, integration budget and accountability for actual sales before building for it |
+
+These are fictional conditions, not prescribed strategies for investor categories. In each case, the investor’s expectation needs a testable operating plan. Show which work the choice displaces, which approval is needed and what happens if funding, demand or the partner’s contribution changes.
+
+A board that wants the expansion date without funding the necessary capacity has an unresolved choice. **Present the feasible combinations**. Do not turn the gap into an unrecorded demand for the team to work harder.
+
 ## Compare Complete Options
 
 The **opportunity cost** of a choice is the benefit of the best alternative you give up. If two projects need the same specialist, approving one may delay the other even when both have funding.
@@ -57,7 +74,7 @@ Compare options using the same questions:
 | What happens if we wait or the change disappoints? | Compare the cost of delay with the consequences of failure. |
 | What can a smaller first step teach us? | Some uncertainty can be resolved before committing the full investment. |
 
-An estimated score can help organize a conversation. It should not hide that a legal obligation, a speculative product opportunity and a cash-saving project answer different questions. Explain the trade-off in words as well as numbers.
+An estimated score can help organize a conversation. It should not hide that a legal obligation, a speculative product opportunity and a cash-saving project answer different questions. **Explain the trade-off in words** as well as numbers.
 
 ## A Choice With Two Separate Limits
 
@@ -75,11 +92,16 @@ The cash estimates below concern additional spending, such as specialist help an
 
 The portal research comes before a full build; the table shows what funding both stages would require. Management still needs to decide whether the research justifies that later commitment.
 
+The totals are only a first check. Confirm that the required specialists are available in the weeks each project needs them. Twenty-four engineer-weeks spread across several teams or months may not support a plan that needs the same specialist for twelve consecutive weeks.
+
 Suppose the recovery requirement is already agreed, the setup constraint is supported by customer evidence and the portal’s benefit remains uncertain. One defensible choice is restoration, the smaller setup change and customer research. That uses €280,000 and 18 engineer-weeks, leaving €220,000 and six engineer-weeks uncommitted.
 
 The unused money does not make the full portal feasible: its twelve engineer-weeks still exceed the remaining capacity, and its benefit still needs investigation. The remaining resources can provide room for uncertainty or support a later decision. They are not automatically savings or permission to start another project.
 
 This is one choice under stated assumptions. If evidence showed that the portal was essential to retain a major customer, the priorities could change. The method is to expose the trade-off, rather than pretend the table selects the answer itself.
+
+![A group of projects must fit both the cash budget and the available team and specialist time.](assets/images/28-choosing-investments/money-and-capacity-two-limits.jpeg)
+**Figure 1:** *A project can be affordable and still be impossible to schedule.*
 
 ## Make the Commitment in Stages Where That Helps
 
@@ -87,7 +109,10 @@ A **funding stage** commits resources for a defined piece of work before decidin
 
 For the portal, a small first stage could test the customer problem and a simple prototype. The next decision might be to build a narrow function, investigate another need or stop. For restoration, the test might be whether the service can actually recover within the agreed conditions.
 
-Check the connections between stages. Can the company operate safely if it stops after the first? Who maintains anything already delivered? What spending is unavoidable once the first commitment is made? Some transitions require a larger coordinated commitment, which should be visible from the start.
+Check the connections between stages. Can the company operate safely if it stops after the first? **Who maintains anything already delivered?** What spending is unavoidable once the first commitment is made? Some transitions require a larger coordinated commitment, which should be visible from the start.
+
+![An initial funded test leads to a review before the company expands, changes or stops the work.](assets/images/28-choosing-investments/staged-investment-with-review.jpeg)
+**Figure 2:** *Commit enough to answer the next decision, then use the evidence before committing more.*
 
 ## Review the Combination, Not Just Each Project
 
@@ -95,8 +120,6 @@ New evidence can change the whole plan. A supplier failure may use the spare cap
 
 Review the starting assumptions, actual spending, team burden and observed outcomes together. Decide which work continues, which changes and which stops. **Sunk cost** means resources already spent that cannot be recovered. Those costs belong in the record; the next commitment should depend on its remaining costs and expected benefits.
 
-Explain the revised choice through the decision process established in [[pt-governance]]. If the authority sits with the board or another executive, bring a concrete proposal: the result sought, the alternatives, the resources and the consequence of waiting. The [[pt-toolkit]] provides a record for that conversation.
+Explain the revised choice through the decision process established in [[governance]]. If the authority sits with the board or another executive, bring a concrete proposal: the result sought, the alternatives, the resources and the consequence of waiting. The [[toolkit]] provides a record for that conversation.
 
-These questions also apply when the company uses its own cash or has another kind of investor. What changes is the available funding, the authority to commit it and the expectations the plan must address.
-
-A selected project still needs an explanation of how its benefits arise. The next chapter follows one product change from the work proposed to the customer and business result: [[pt-product-value]].
+A selected project still needs an explanation of how its benefits arise. The next chapter follows one product change from the work proposed to the customer and business result: [[product-value]].

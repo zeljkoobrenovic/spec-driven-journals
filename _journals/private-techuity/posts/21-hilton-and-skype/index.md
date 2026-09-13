@@ -1,19 +1,21 @@
 ---
 title: "Hilton and Skype: Two Successful Exits"
 date: 2026-09-12
-author: Private Techuity working manuscript
+author: Owned working manuscript
 excerpt: "Use two historical sales to separate investor gains, company improvements and claims about technology’s contribution."
-permalink: pt-hilton-and-skype
-timetoread: 9 min read
+permalink: hilton-and-skype
+timetoread: 10 min read
 status: draft:orange
-tags: private equity, technology leadership, Part VI
+logo: "assets/images/21-hilton-and-skype/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/21-hilton-and-skype.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **A valuable sale needs an explanation.** Better operations, financing changes, market recovery and the buyer’s interests can all affect the result.
-> * **Keep the company result separate from the investor’s cash.** Purchase and sale headlines do not include every investment, payment or fee.
-> * **Follow what happens to the product and people.** A completed sale does not establish whether customers and employees benefited over the longer term.
+> * A **valuable sale needs an explanation**. Better operations, financing changes, market recovery and the buyer’s interests can all affect the result.
+> * Keep the **company result separate from the investor’s cash**. Purchase and sale headlines do not include every investment, payment or fee.
+> * Follow what happens to the **product and people**. A completed sale does not establish whether customers and employees benefited over the longer term.
 
 <br>
 Hilton operates a hotel business and brand network. Skype provided internet calling and communications software. Both experienced private equity-backed ownership followed by valuable sales, but the paths were very different.
@@ -22,9 +24,7 @@ Hilton’s ownership episode ran through a severe economic downturn and recovery
 
 We examine Hilton first, then Skype, using the same questions: what changed, how might technology have helped, what did investors receive, and what remains unknown? A **sponsor** is the investment firm behind a transaction. Its account is useful evidence about its stated actions and reported result, but may emphasize favorable interpretations.
 
-The historical material does not include complete fund cash flows or an independent calculation of each technology initiative’s contribution.
-
-For a company leader, the central question is how to distinguish a valuable sale from evidence that particular operating choices worked. Read the two histories by separating the investment expectations, the company choices, the resources available and the results each source actually establishes.
+The historical material does not include complete fund cash flows or an independent calculation of each technology initiative’s contribution. Keep that limit in view when assessing which operating lessons the cases support.
 
 ## Hilton: Follow the Ownership Period From 2007 to 2018
 
@@ -32,11 +32,11 @@ Blackstone’s 2007 acquisition of Hilton was a large **leveraged take-private**
 
 The company's 2013 registration statement provides a firmer basis for examining particular mechanisms. It reports a $4.0 billion reduction in indebtedness from the April 2010 restructuring. It also describes a commercial platform linking reservations, guest information, online distribution, revenue management, and the OnQ property-management system. [S23: Hilton registration filing](https://www.sec.gov/Archives/edgar/data/1585689/000119312513364703/d593452ds1.htm)
 
-The sequence matters: the 2007 purchase was followed by the downturn and 2010 debt restructuring, then the 2013 public offering and final stake sale in 2018. A public offering and a complete investor exit were different events.
+The 2013 public offering and the final stake sale in 2018 were different milestones. Going public did not complete Blackstone’s exit.
 
 The operating observations matter because the business involved more than owning hotel buildings. Distribution and operating services could support a wider system of hotels. The plausible technology mechanism is coordination: consistent inventory and rates, usable guest information, and tools that help properties sell and manage rooms. That is an interpretation of the disclosed operating design, not a measured estimate of the value created by a specific system.
 
-A Technology Principal examining such a business would need to connect the platform to the hotel owner's economics as well as the guest's experience. Does the service help properties attract profitable demand? Does it lower the cost of distribution? Does it make the brand more valuable to an owner considering affiliation? Does it remain reliable as the network grows?
+A product or engineering leader examining such a business would need to connect the platform to the hotel owner's economics as well as the guest's experience. Does the service help properties attract profitable demand? Does it lower the cost of distribution? Does it make the brand more valuable to an owner considering affiliation? Does it remain reliable as the network grows?
 
 These questions differ from asking whether the company has a modern architecture. A central system can be valuable because it coordinates a commercial network, even when parts of the technology are mature. Conversely, a platform's scale can create a consequential concentration risk that should be governed.
 
@@ -62,7 +62,7 @@ The transferable lesson is the interaction of **operating capability and financi
 
 ## Skype: Establish Rights to the Technology Before Expansion
 
-In November 2009, eBay announced completion of a sale valuing Skype at $2.75 billion. A Silver Lake-led investor group controlled approximately 70%, while eBay retained approximately 30%. eBay reported receiving cash and a **buyer note**, a promise of later payment by the buyer and also participating in part of the debt financing. The transaction therefore cannot be understood simply as one buyer paying cash for 100% of a debt-free company. [S26: eBay Skype sale announcement](https://investors.ebayinc.com/investor-news/press-release-details/2009/EBay-Inc-Completes-Sale-of-Skype/default.aspx)
+In November 2009, eBay announced completion of a sale valuing Skype at $2.75 billion. A Silver Lake-led investor group controlled approximately 70%, while eBay retained approximately 30%. eBay reported receiving cash and a **buyer note**, a promise of later payment by the buyer. It also participated in part of the debt financing. The transaction therefore cannot be understood simply as one buyer paying cash for 100% of a debt-free company. [S26: eBay Skype sale announcement](https://investors.ebayinc.com/investor-news/press-release-details/2009/EBay-Inc-Completes-Sale-of-Skype/default.aspx)
 
 **Intellectual property (IP)** means legal rights in assets such as software and inventions. The later Skype registration statement describes acquisition of core **peer-to-peer** technology rights, concerning software that connects users’ computers to one another, from Joltid in November 2009 as part of a settlement resolving outstanding litigation. It also describes investment in people and infrastructure, acquisition of Qik, new products, and partnerships. These are company disclosures prepared for a proposed offering; their positive interpretation remains management's. [S27: Skype registration filing](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm)
 
@@ -90,6 +90,17 @@ The long interval includes subsequent ownership choices and changing communicati
 
 For customers, migration is a real consequence even when a buyer considers product consolidation strategically sensible. For employees, a successful transaction does not establish the distribution of financial rewards or career outcomes. The consulted filings and announcements cannot settle those questions.
 
+## Read an Ownership Transition From the Company’s Side
+
+The documented Skype sequence includes movement from a corporate owner to an investor group and then to Microsoft. For a company leader, that is a reason to remap decision authority, rights to essential technology and the intended role of the product at each transaction. The next buyer’s strategic interest need not be the same as the selling investor’s reason for owning it.
+
+Hilton supplies a different question: what happens to the operating plan when financing and the time needed for recovery change? The case supports examining those dependencies. It does not tell a venture-funded company what its next round should look like, or prove that a particular technology program caused the return.
+
+Use these histories to formulate questions for the current owner: **which capability must continue through the transaction**, which assumption has changed, and **who funds the unfinished work**? The questions can travel; the historical outcomes remain specific to the cases.
+
+![Hilton prompts separate questions about operations and financing; Skype adds technology rights and the product’s life across owners.](assets/images/21-hilton-and-skype/two-histories-two-operating-questions.jpeg)
+**Figure 1:** *Use each history to identify a specific operating question before transferring its lesson.*
+
 ## What the Comparison Teaches
 
 | Question | Hilton | Skype |
@@ -103,6 +114,7 @@ For customers, migration is a real consequence even when a buyer considers produ
 
 The lessons are mechanisms to investigate, not instructions to imitate. Hilton does not show that every company should build a central platform. Skype does not show that every carve-out will attract a strategic premium. Both show that technology becomes investment-relevant through its relationship to business capability, ownership rights, financing, and a buyer's needs.
 
-Hilton’s case connects operating capability with time, financing and recovery. Skype’s connects technology rights and product development with a buyer’s strategic interests. The sources document those components without isolating a single cause of the investment result.
+Both cases include a completed exit. The next case examines continuity of an investment-firm relationship while the investors behind it change: [[visma]].
 
-Both cases include a completed exit. The next case examines continuity of an investment-firm relationship while the investors behind it change: [[pt-visma]].
+![A sale produces an investor payment record while product, customer and employee outcomes continue afterward.](assets/images/21-hilton-and-skype/sale-result-and-later-outcomes.jpeg)
+**Figure 2:** *An investor’s realized result and the company’s longer operating history need separate evidence.*

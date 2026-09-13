@@ -1,4 +1,7 @@
-Durable success requires more than a favorable exit price. The manuscript proposes assessing the investment result, company economics, operating capability, consequences for people affected, and outcomes after ownership changes. This is an explicit evaluative standard, not a claim that all observers value those dimensions equally.
+Durable success requires **more than a favorable funding valuation** or exit price. The manuscript proposes assessing the investment result, company economics, operating capability, consequences for people affected, and outcomes after ownership changes. This is an explicit evaluative standard, not a claim that all observers value those dimensions equally.
+
+![Durable value spans investment, company, capability, stakeholder and later outcomes.](assets/images/24-durable-value/summary-at-a-glance.jpeg)
+**Figure 1:** *Assess what lasts beyond the transaction.*
 
 Research using observed data challenges a single verdict on private equity. The April 2024 revision of a major US buyout study reports different employment patterns across transaction types, including contractions following purchases taking public companies private and expansion following purchases of already private companies, relative to comparison groups over its study horizon. [S08: Davis et al., 2024 revision](https://www.nber.org/system/files/working_papers/w26371/w26371.pdf) The sample and historical period matter; these are not forecasts for every software acquisition.
 
@@ -8,6 +11,8 @@ Other research finds that private equity-backed UK firms maintained investment b
 
 A small 2025 study of hospital sales extends attention beyond one owner's exit, finding differing financial trajectories after subsequent ownership changes. [S42: Kannan and Song, after sale](https://jamanetwork.com/journals/jama-health-forum/fullarticle/2837043) It studies ownership changes that occurred, rather than assigning owners randomly, and its limited sample cannot settle long-run causal effects. It nevertheless highlights a question that an exit-centered scorecard can omit: what operating obligations and capacity did the next owner inherit?
 
-The book's central argument is conditional. An investment thesis, financing structure, governance arrangement, and company execution capacity must fit together. Reinvestment, resilience, customer trust, and employee knowledge are part of that fit. Their costs cannot always be aligned with every investor's preferred time horizon.
+The book's **central argument is conditional**. An investment thesis, financing structure, governance arrangement, and company execution capacity must fit together. Reinvestment, resilience, customer trust, and employee knowledge are part of that fit. Their costs cannot always be aligned with every investor's preferred time horizon.
+
+**Apply the standard beyond exits**. A round issuing new shares supplies company resources, not proof of a useful product or another future round. A corporate integration milestone can leave customer obligations unfinished. Preserve measures of customer outcomes, operating capability and unfunded work through each event and during continued ownership. These broader applications are proposed judgments; the cited buyout research retains its narrower populations and periods.
 
 Product and technology leaders can expose and test these connections through evidence, feasible choices and clear requests for support. Advisers can help, while company responsibility and differing interests remain explicit. A credible ownership strategy explains how gains arise, who bears costs, which assumptions remain uncertain, and what evidence would justify changing course.

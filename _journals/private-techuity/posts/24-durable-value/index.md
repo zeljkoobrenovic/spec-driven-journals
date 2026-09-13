@@ -1,19 +1,21 @@
 ---
-title: Durable Success Is What Remains After the Investors Leave
+title: "Judge Success Beyond the Funding Round or Sale"
 date: 2026-09-12
-author: Private Techuity working manuscript
-excerpt: "Bring the cases and wider research together to ask what lasts, who benefits and which costs remain after an investment."
-permalink: pt-durable-value
-timetoread: 8 min read
+author: Owned working manuscript
+excerpt: "Assess what customers, teams and future operators can rely on after funding or ownership changes, while keeping investor returns and historical evidence in scope."
+permalink: durable-value
+timetoread: 9 min read
 status: draft:orange
-tags: private equity, technology leadership, Part VI
+logo: "assets/images/24-durable-value/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/24-durable-value.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **Durable value includes the ability to keep creating useful outcomes.** Assess company economics, reinvestment, operating capability and stakeholder consequences alongside investor returns.
-> * **The evidence does not support one verdict on every buyout.** Company context, financing, ownership choices and research design all affect what conclusions can be drawn.
-> * **Keep the central thesis open to correction.** A credible plan explains who gains, who bears costs, what must remain true and which evidence would justify changing course.
+> * Durable value includes the **ability to keep creating useful outcomes**. Assess company economics, reinvestment, operating capability and stakeholder consequences alongside investor returns.
+> * The evidence does not support one verdict on every buyout. Company **context, financing, ownership choices and research design** all affect what conclusions can be drawn.
+> * Keep the central **thesis open to correction**. A credible plan explains who gains, who bears costs, what must remain true and which evidence would justify changing course.
 
 <br>
 Durable success means that a company can continue creating useful outcomes after the immediate intervention and, where relevant, after the owner exits. It includes economic viability, the ability to reinvest, operational capability, and the distribution of benefits and burdens.
@@ -21,8 +23,6 @@ Durable success means that a company can continue creating useful outcomes after
 This definition is the manuscript's proposed evaluative standard. It is deliberately broader than investor return. It does not assume that every stakeholder benefits from every decision or that a difficult restructuring is always avoidable.
 
 The four case-study chapters examined five companies. This final chapter puts them alongside **empirical research**, research based on observations and data, and asks who gained, who bore costs and what the company could sustain afterward. We first examine how to read the research, then use it to develop a broader assessment of success.
-
-The central argument is conditional: private equity can support durable product and technology value when the investment thesis, financing, governance, and company capabilities fit together. It can undermine that value when returns depend on exhausting capabilities, transferring unrecognized costs, or maintaining assumptions the evidence has invalidated.
 
 ## What Wider Studies Can Tell Us
 
@@ -52,7 +52,7 @@ Kannan and Song's 2025 research letter compares 18 hospitals sold to a second pr
 
 This is useful because it makes the next ownership period an object of study. It also warns against treating a lower margin as self-evident deterioration: additional spending could have different purposes and consequences. Those purposes require investigation.
 
-The Skype case makes a related temporal point. A valuable sale and later product retirement can both be true without one event providing a complete causal explanation of the other. The lesson is to keep the observation window explicit.
+The Skype case makes a related temporal point. A valuable sale and later product retirement can both be true without one event providing a complete causal explanation of the other. The lesson is to **keep the observation window explicit**.
 
 ## Success for Whom?
 
@@ -66,7 +66,10 @@ A **stakeholder** is someone affected by the business, including people who did 
 | Employees | Viable work, capability, fair treatment | Who bore transition costs without sharing benefits? |
 | Next owner | Inspectable capability and disclosed obligations | Which claims fail outside the sale presentation? |
 
-These columns are not an additive score. A gain for one group does not mathematically offset harm to another. Some decisions involve genuine trade-offs that governance must make explicit.
+These columns are not an additive score. A gain for one group **does not mathematically offset harm** to another. Some decisions require a choice between conflicting interests. The people authorized to decide should explain whose interests take priority, why and how the resulting harm will be addressed.
+
+![Investor, customer, employee, supplier and future-capability outcomes each require their own account.](assets/images/24-durable-value/separate-stakeholder-outcomes.jpeg)
+**Figure 1:** *An attractive investment result does not answer every question about who benefited or bore the cost.*
 
 ## What a Durable Plan Looks Like
 
@@ -76,6 +79,17 @@ It also preserves the people, systems, and relationships required for continued 
 
 These are proposed conditions drawn from the mechanisms examined throughout the book. They are not a validated formula that guarantees success. A well-designed plan can still fail because of competition, market change, or execution. A poorly designed plan can benefit from favorable timing.
 
+![Useful outcomes, cash, reinvestment and operating capability depend on one another over time.](assets/images/24-durable-value/value-that-can-continue.jpeg)
+**Figure 2:** *A durable plan explains how useful work can continue and what evidence would justify changing course.*
+
+## Responsibility Continues After a Funding Milestone
+
+A funding round that issues new shares supplies company resources under agreed terms. It does not prove that customers have a useful product or that the next round will occur. A sale realizes an ownership transaction; it does not prove that the new owner can sustain every service. A corporate integration milestone can be completed while customers still face migration or support problems.
+
+For fictional Larkspur, Priya and Alex propose a review that follows customer outcomes and operating commitments through each event. Can customers complete the task they pay for? Can the team keep the service reliable? Which work remains unfunded? Which capability depends on a person or service that may leave? Which burdens have been moved to employees, customers or suppliers?
+
+The measures should remain usable under continued ownership too. A company need not be sold for its leaders to examine whether the plan is worthwhile. Treat the investor’s next milestone as one constraint and one result to understand within **a longer operating responsibility**.
+
 ## What You Can Change as a Company Leader
 
 As a product or technology leader, you can improve the investment’s assumptions by explaining what the company can deliver and what resources it needs. You can expose unfunded dependencies, propose feasible alternatives and preserve a record of outcomes. Investor advisers and networks can help, but the company still needs accountable people making and carrying out its decisions.
@@ -84,6 +98,6 @@ You cannot control the capital markets, remove every conflict or guarantee that 
 
 The book began with how a company gets money. We can now ask the fuller question: does its ownership arrangement help it serve customers, fund necessary work and meet its obligations over time? Answering requires evidence about investor returns, company cash and capabilities, and the people affected.
 
-For your own company, begin with one decision. Explain the customer need, the work required, the funding and authority, and the evidence that would change the plan. Then review what happened and what remains to be done. The [[pt-toolkit]] provides records for that next step, and the [[pt-glossary]] can help you revisit the terms.
+For your own company, begin with one decision. Explain the customer need, the work required, the funding and authority, and the evidence that would change the plan. Then review what happened and what remains to be done. The [[toolkit]] provides records for that next step, and the [[glossary]] can help you revisit the terms.
 
-The main narrative ends here. If you are interested in designing support from the investment firm’s side, the optional [[pt-appendix]] develops the author’s Productscapes proposal and the evidence it would need.
+The main narrative ends here. The [[toolkit]] that follows provides practical records for your own decisions.

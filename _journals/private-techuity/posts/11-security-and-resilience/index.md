@@ -1,19 +1,21 @@
 ---
 title: "How to Evaluate Security and Recovery Investments"
 date: 2026-09-12
-author: Private Techuity working manuscript
+author: Owned working manuscript
 excerpt: "Evaluate investments that protect essential work, reduce possible harm and help a company recover from disruption."
-permalink: pt-security-and-resilience
-timetoread: 7 min read
+permalink: security-and-resilience
+timetoread: 8 min read
 status: draft:orange
-tags: private equity, technology leadership, Part III
+logo: "assets/images/11-security-and-resilience/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/11-security-and-resilience.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **Start with the business functions that must keep working.** Identify who would be affected by lost service, damaged information or access by unauthorized people before choosing protections.
-> * **Risk estimates are uncertain decision inputs.** An estimate of lower future losses is not earned profit, and a completed checklist does not prove that service can survive disruption.
-> * **Practice restoring service before an emergency.** Fund the work and agree who is responsible for risks that remain.
+> * Start with the **business functions that must keep working**. Identify who would be affected by lost service, damaged information or access by unauthorized people before choosing protections.
+> * Risk estimates are **uncertain decision inputs**. An estimate of lower future losses is not earned profit, and a completed checklist does not prove that service can survive disruption.
+> * **Practice restoring service** before an emergency. Fund the work and agree who is responsible for risks that remain.
 
 <br>
 **Cybersecurity** protects systems and information against threats such as unauthorized access, theft or damage. **Resilience** is the ability to continue or restore essential work through disruption. **Recovery** is the work of restoring service after something goes wrong.
@@ -28,11 +30,11 @@ The US **National Institute of Standards and Technology (NIST)** provides Cybers
 
 ## Begin With What Must Keep Working
 
-Larkspur's customers are maintenance businesses that dispatch engineers each morning. If the scheduling service is unavailable at 6am, vans do not leave. The security discussion starts with that consequence: the business functions customers depend on, and the people affected when they fail. A retailer's equivalents are payments, inventory and fulfillment.
+Larkspur's customers are maintenance businesses that dispatch engineers each morning. If the scheduling service is unavailable at 6am, dispatchers may be unable to assign work or tell customers when an engineer will arrive. The security discussion starts with that consequence: the business functions customers depend on, and the people affected when they fail. A retailer's equivalents are payments, inventory and fulfillment.
 
 For each critical function, ask what interruption, corruption, or unauthorized access would mean. How long can the business continue without it? Which customers face material harm? Which contracts, laws, or insurance conditions need specialist interpretation? What manual alternatives exist, and have they been tested?
 
-An asset inventory is useful when it supports those questions. An inventory that counts systems without identifying their role in critical work can create an impression of completeness while missing the most consequential dependency.
+An asset inventory is useful when it supports those questions. An inventory that counts systems without identifying their role in critical work can create an impression of completeness while missing **the most consequential dependency**.
 
 ## Match Each Claim to the Evidence That Supports It
 
@@ -42,17 +44,20 @@ A **backup** is a stored copy of data used to recover from loss or damage. A **r
 
 A **certification** is a formal statement that specified requirements have been met under a particular assessment process. Read which organization, systems, requirements and period it covers. It is not a guarantee that every part of the company is secure today.
 
+![A policy document, an observed control test and a restoration exercise support different claims.](assets/images/11-security-and-resilience/security-claims-and-proof.jpeg)
+**Figure 1:** *Match the evidence to the capability you say the company has.*
+
 ## Put a Number on Risk Without Faking a Profit
 
 Suppose a prolonged Larkspur outage would cost €4 million in contractual credits, remediation and lost customers, and the team estimates a 5% annual chance of one. The **expected annual loss** is the probability multiplied by the assumed loss: 5% × €4 million = €200,000. It is an average implied by the assumptions, not a prediction that the company loses that amount each year. A proposed control is estimated to cut the probability to 2%, leaving €80,000 — a €120,000 difference, before what the control costs.
 
-The method is only as good as the two guesses inside it. If the probabilities are weak, so is the answer; state them as ranges and say what evidence would narrow them. The average alone is also insufficient when one event could cause several failures together or threaten the company’s survival: **a 2% chance of not surviving is not made acceptable by an affordable-looking average.**
+The result depends on both the probability estimate and the assumed loss. If the probabilities are weak, so is the answer; state them as ranges and say what evidence would narrow them. The average alone is also insufficient when one event could cause several failures together or threaten the company’s survival: **a 2% chance of not surviving is not made acceptable by an affordable-looking average.**
 
-State which scenarios the control addresses and which remain. Above all, do not add the €120,000 to recorded operating earnings. It is a modelled change in risk exposure, not a booked operating gain.
+State which scenarios the control addresses and which remain. Above all, do not add the €120,000 to recorded operating earnings. It is a modelled change in risk exposure, **not a booked operating gain**.
 
 ## Security Work Needs an Owner and Funding
 
-An investigation finding such as “identity controls are inadequate” is incomplete. **Identity controls** determine how users prove who they are and what they may access. Which systems and people are exposed? What is the material scenario? What action is feasible before closing, and what needs post-close implementation? Who has authority and capacity to carry it out?
+An investigation finding such as “identity controls are inadequate” is incomplete. **Identity controls** determine how users prove who they are and what they may access. Which systems and people are exposed? What is the material scenario? What action is feasible now, and what needs a funded follow-up? If a transaction is approaching, what must be resolved before it closes? Who has authority and capacity to carry out each action?
 
 The Principal can help obtain specialist judgment and communicate the implication to the investment team. The company needs accountable operating owners. The board needs to understand **residual risk**, the risk remaining after the chosen protections, and whether it is large enough to affect a company decision. A consultant's recommendation does not transfer responsibility for the business to the consultant.
 
@@ -66,6 +71,17 @@ A practical exercise can test a plausible scenario. Larkspur's: the scheduling s
 
 Legal notification deadlines, sector requirements, and contractual duties vary and can change. In a live incident, the organization needs current advice for its jurisdictions and facts. This chapter supplies the operating questions; it does not substitute a universal deadline.
 
+![Incident response connects detection, decisions, verified restoration and learning through a practiced operating loop.](assets/images/11-security-and-resilience/incident-restoration-practice.jpeg)
+**Figure 2:** *Restoration is a capability to practice and verify, with clear responsibility throughout.*
+
+## Funding Pressure Does Not Decide Who May Accept Risk
+
+Suppose fictional Larkspur delays a recovery improvement because the next funding round is uncertain. Alex should identify the affected service, current recovery evidence, feasible minimum work and consequences of further delay. The authorized company decision-maker must address that exposure in the operating plan. A slide saying “deferred until funding” does not identify who accepted the consequences.
+
+A minority investor may ask for customer data to help assess a risk. A corporate investor may offer a shared security platform. In both cases, establish the purpose, permitted access, separation from other companies and responsibility for an incident before moving information or systems. Ownership and a useful offer do not, by themselves, settle the access decision.
+
+Use shared expertise where it makes the company more capable, and verify that the company can still **detect, communicate and recover** if the service or owner changes. The same test applies when a parent requires integration: budget for the local work needed to meet the group’s requirements, and keep any gap visible until it is resolved.
+
 ## Shared Support Can Spread Risk or Concentrate It
 
 A shared specialist network and tested response process can give small companies access to scarce expertise. Relying on the same user-login service, system administrator or connection between systems can also give several companies a common point of failure. The support design should examine the new concentration it introduces.
@@ -76,4 +92,4 @@ Exit preparation should preserve the same discipline. Describe improvements with
 
 A sound proposal connects a harmful scenario to a protection or recovery capability, its cost and evidence that it works. The company also needs someone authorized to accept the remaining risk. A modeled reduction in future losses helps that decision; it is not a booked profit.
 
-The next chapter applies careful evaluation to another uncertain area: the benefits, costs and competitive effects of artificial intelligence. Continue with [[pt-data-and-ai]].
+The next chapter applies careful evaluation to another uncertain area: the benefits, costs and competitive effects of artificial intelligence. Continue with [[data-and-ai]].

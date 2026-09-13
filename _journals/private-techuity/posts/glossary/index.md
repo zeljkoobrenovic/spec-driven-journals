@@ -1,9 +1,12 @@
 ---
 title: Glossary
 date: 2026-09-12
-permalink: pt-glossary
+permalink: glossary
 status: draft:orange
 excerpt: "Plain-language definitions organized in the order you encounter the book’s main subjects."
+logo: "assets/images/glossary/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/glossary.png"
 ---
 
 > **KEY POINTS:**
@@ -17,7 +20,7 @@ The glossary follows the book’s learning sequence: basic funding, investment o
 
 ## Basic Funding and Ownership
 
-Start with [[pt-how-companies-get-money]]. The stock and public-company definitions use Investor.gov’s educational material; the capital-structure definition follows Damodaran’s finance teaching. [S54: Stock basics](https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks) [S55: Public companies](https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/public-companies) [S57: Capital structure](https://people.stern.nyu.edu/adamodar/pdfiles/cf2E/capstru.pdf)
+Start with [[how-companies-get-money]]. The stock and public-company definitions use Investor.gov’s educational material; the capital-structure definition follows Damodaran’s finance teaching. [S54: Stock basics](https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks) [S55: Public companies](https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/public-companies) [S57: Capital structure](https://people.stern.nyu.edu/adamodar/pdfiles/cf2E/capstru.pdf)
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -39,14 +42,38 @@ Start with [[pt-how-companies-get-money]]. The stock and public-company definiti
 | Board of directors | The body overseeing a company within its authority. Its responsibilities differ from executives’ day-to-day management. |
 | CEO / CTO / CFO | Chief executive officer, leading the company; chief technology officer, leading technology; chief financial officer, leading finance. Actual duties and authority vary. |
 
+## Comparing Ownership and Funding Arrangements
+
+These definitions support the comparisons in [[investment-fit]]; they do not replace the terms of a particular arrangement.
+
+| Term | Plain-language meaning |
+| --- | --- |
+| Investor ownership | An arrangement in which investors hold an interest in the company; the amount of ownership and the rights attached to it vary. |
+| Venture capital | Equity funding commonly used by young businesses pursuing uncertain growth; funding can occur through successive rounds. |
+| Growth equity / expansion capital | Equity funding for expansion of a business with established activity; the investor’s rights and control depend on the terms. |
+| Corporate investor | Another operating business, or its investment organization, holding an interest for financial or commercial reasons. |
+| Corporate venture capital (CVC) | Venture investment backed by a corporate business; it is distinct from acquiring the whole company. |
+| Strategic acquisition | A purchase motivated by expected commercial benefits for the buyer as well as the acquired business’s standalone economics. |
+| Minority investment | Ownership of less than a majority of shares; the percentage alone does not describe voting power or approval rights. |
+| Funding round | A financing event in which investors supply capital on agreed terms; it need not replace the controlling owner. |
+| Primary share issue | The company issues new shares and receives the subscription money. |
+| Secondary share sale | Existing holders sell shares; payment goes to those sellers rather than automatically funding the company. |
+| Pre-money / post-money valuation | In a simplified equity round, negotiated equity value before new cash / that value plus the new cash. Rights and other instruments can complicate the calculation. |
+| Fully diluted ownership | A percentage calculated after including the specified options and other rights to shares; check exactly what is included. |
+| Net cash burn | Cash spending minus cash receipts over a stated period when spending is greater. |
+| Runway | Estimated time until available cash reaches a stated limit under a cash forecast. Cash divided by constant net burn is a simplifying illustration. |
+| Conditional commitment | Work promised subject to an explicit event, such as funding or approval, with a date and response if the condition is not met. |
+
+Carve-outs, turnarounds, acquisitions and refinancing describe changes or conditions; they do not by themselves identify who owns the business. Follow the money and authority separately.
+
 ## The Investment Organizations and Their Payments
 
-For the money-flow example, read [[pt-capital-and-ownership]]. Fund terms depend on the agreement. [S01: SEC private equity guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
+For the money-flow example, read [[capital-and-ownership]]. Fund terms depend on the agreement. [S01: SEC private equity guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
 
 | Term | Plain-language meaning |
 | --- | --- |
 | Investment firm / manager / sponsor | The organization managing investments. “Sponsor” commonly refers to the firm behind a transaction; it can mean the leader backing a project in an operating discussion. |
-| Fund | A pool of investment money with its own investors, agreements and lifetime. One firm can manage several funds. |
+| Fund | An investment vehicle with its own investors, committed capital, agreements and term. Committed capital may not yet have been paid in. One firm can manage several funds. |
 | General partner (GP) | The partner with management responsibilities and powers under the fund arrangements. The term is also used informally for the manager. |
 | Limited partner (LP) | An investor in the fund under its partnership arrangements. |
 | Endowment | A pool of assets invested to support an institution, such as a university. |
@@ -68,7 +95,7 @@ For the money-flow example, read [[pt-capital-and-ownership]]. Fund terms depend
 
 ## Sales, Earnings and Cash
 
-[[pt-valuation-and-architecture]] introduces the earnings calculation; [[pt-cash-and-constraints]] follows the payments it leaves out. Accounting and reported adjustments need their own definitions. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures) [S07: IAS 38 overview](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/)
+[[valuation-and-architecture]] introduces the earnings calculation; [[cash-and-constraints]] follows the payments it leaves out. Accounting and reported adjustments need their own definitions. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures) [S07: IAS 38 overview](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/)
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -110,7 +137,7 @@ For the money-flow example, read [[pt-capital-and-ownership]]. Fund terms depend
 
 ## Value and Investment Returns
 
-Read [[pt-return-mechanics]] for the worked investment. Valuation techniques are introduced in [[pt-valuation-and-architecture]]. [S03: Buyout overview](https://www.nber.org/system/files/working_papers/w14207/w14207.pdf) [S05: ILPA performance guidance](https://ilpa.org/industry-guidance/templates-standards-model-documents/ilpa-templates-hub/ilpa-performance-template/) [S52: IPEV valuation guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
+Read [[return-mechanics]] for the worked investment. Valuation techniques are introduced in [[valuation-and-architecture]]. [S03: Buyout overview](https://www.nber.org/system/files/working_papers/w14207/w14207.pdf) [S05: ILPA performance guidance](https://ilpa.org/industry-guidance/templates-standards-model-documents/ilpa-templates-hub/ilpa-performance-template/) [S52: IPEV valuation guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -138,7 +165,7 @@ Read [[pt-return-mechanics]] for the worked investment. Valuation techniques are
 
 ## Transactions and Incentives
 
-For examples, use [[pt-investment-fit]], [[pt-incentives]] and [[pt-acquisitions-and-carveouts]].
+For examples, use [[investment-fit]], [[incentives]] and [[acquisitions-and-carveouts]].
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -148,7 +175,6 @@ For examples, use [[pt-investment-fit]], [[pt-incentives]] and [[pt-acquisitions
 | Acquisition / buyout | Purchase of a business or interest in it / a purchase giving control. |
 | Leveraged buyout | A buyout financed with substantial debt alongside equity. |
 | Public-to-private / private-to-private | A purchase taking a publicly traded company into private ownership / a purchase of an already privately held business. |
-| Venture capital / growth equity | Equity investment for uncertain early growth / investment to fund expansion with more evidence of demand. Boundaries overlap. |
 | Carve-out | Separation of a business from a larger owner, often requiring replacement of services the parent supplied. |
 | Turnaround / restructuring | Work to restore business viability / changes to operations or financing. Debt restructuring can change payment dates, rates or amounts owed. |
 | Platform company / add-on / buy-and-build | A business used as a base for acquisitions / a business subsequently acquired / a strategy of developing a group through repeated acquisitions. |
@@ -167,7 +193,7 @@ For examples, use [[pt-investment-fit]], [[pt-incentives]] and [[pt-acquisitions
 
 ## Choosing and Supporting Company Work
 
-See [[pt-choosing-investments]], [[pt-investor-support]] and [[pt-making-support-work]]. These terms describe the proposed working methods used in the main narrative.
+See [[choosing-investments]], [[investor-support]] and [[making-support-work]]. These terms describe the proposed working methods used in the main narrative.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -182,11 +208,11 @@ See [[pt-choosing-investments]], [[pt-investor-support]] and [[pt-making-support
 | Engagement | An agreed piece of support with a purpose, participants and boundaries. |
 | Engagement sponsor | The person backing a particular support assignment. Specify whether they represent the company or the investment firm. |
 | Handover | Transfer of the knowledge, information and responsibilities needed to continue work. |
-| Ownership cycle | The book’s organizing sequence of investigation, early planning, ongoing ownership and a possible sale or other transition. It is not a fixed timetable. |
+| Ownership cycle | A map of possible funding and ownership changes, including further rounds, refinancing, sales and continued ownership. Each can require investigation, planning and review; they need not occur in a fixed sequence. |
 
 ## Technology and Company Work
 
-The company-investment sequence begins at [[pt-choosing-investments]] and [[pt-product-value]]. Part IV explains the adviser and practical support; Part V follows the ownership cycle. The Productscapes design proposal is in [[pt-appendix]].
+The company-investment sequence begins at [[choosing-investments]] and [[product-value]]. Part IV explains the adviser and practical support; Part V follows the ownership cycle.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -219,12 +245,12 @@ The company-investment sequence begins at [[pt-choosing-investments]] and [[pt-p
 | SaaS / IT / IP | Software as a service, accessed as an ongoing service / information technology / intellectual property, legal rights concerning assets such as software and inventions. |
 | Transition services agreement (TSA) | An agreement providing temporary services, often from a seller to a separated business. It needs a replacement plan as well as an end date. |
 | Stranded cost | A cost that remains after the activity benefiting from it has ended or moved. |
-| Nearshoring / offshoring | Locating work in relatively nearby / more distant countries. Total costs and coordination matter alongside wages. |
+| Nearshoring / offshoring | Nearshoring locates work in a nearby country; offshoring is the broader practice of locating work abroad. Total costs and coordination matter alongside wages. |
 | Productscapes / accelerator | The author’s proposed approach to designing investment and technology-support offerings / a reusable support package within that proposal. Neither label implies proven effectiveness. |
 
 ## Evidence and Lasting Outcomes
 
-For application, read [[pt-durable-value]] or use [[pt-toolkit]].
+For application, read [[durable-value]] or use [[toolkit]].
 
 | Term | Plain-language meaning |
 | --- | --- |

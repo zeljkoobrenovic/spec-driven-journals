@@ -1,19 +1,21 @@
 ---
 title: A Valuation Is an Estimate, Not a Fact
 date: 2026-09-12
-author: Private Techuity working manuscript
+author: Owned working manuscript
 excerpt: "Understand sales, profit and cash, then work through the main ways of estimating what a business is worth."
-permalink: pt-valuation-and-architecture
-timetoread: 11 min read
+permalink: valuation-and-architecture
+timetoread: 12 min read
 status: draft:orange
-tags: private equity, valuation, technology leadership, Part I
+logo: "assets/images/26-valuation-and-architecture/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/26-valuation-and-architecture.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **Sales, profit and cash answer different questions.** A business can record a sale or profit before receiving the customer’s money.
-> * **A valuation estimates what something is worth.** The purpose, date and assumptions affect the result.
-> * **The business’s value and its owners’ share of that value differ.** Borrowing and other claims help explain the difference.
+> * **Sales, profit and cash** answer different questions. A business can record a sale or profit before receiving the customer’s money.
+> * A valuation estimates what something is worth. The purpose, **date and assumptions** affect the result.
+> * The business’s value and its **owners’ share of that value** differ. Borrowing and other claims help explain the difference.
 
 <br>
 Suppose someone says a company is worth €60 million. Before interpreting that number, ask what is being valued: the operating business, or the shares its owners hold? Then ask how the estimate was made.
@@ -54,9 +56,12 @@ Consider this deliberately simplified, fictional annual income statement. All fi
 
 The **EBITDA margin** is EBITDA divided by revenue: €4 million / €20 million = 20%. It describes an earnings relationship, not a bank balance.
 
-**Cash flow** is money moving into or out of the business during a period. To understand it, examine when customers and suppliers are paid, spending recorded as assets, debt repayments and other actual receipts and payments. Spending €1 million on equipment consumes cash even if only part becomes a depreciation expense this year. Recording qualifying development as an asset can change the timing of earnings charges while leaving the cash payment in place. [[pt-cash-and-constraints]] develops that distinction.
+**Cash flow** is money moving into or out of the business during a period. To understand it, examine when customers and suppliers are paid, spending recorded as assets, debt repayments and other actual receipts and payments. Spending €1 million on equipment consumes cash even if only part becomes a depreciation expense this year. Recording qualifying development as an asset can change the timing of earnings charges while leaving the cash payment in place. [[cash-and-constraints]] develops that distinction.
 
 An **adjusted EBITDA** measure adds further specified exclusions to an earnings calculation. Some may improve comparability; others may remove costs that the business will keep incurring. Request a **reconciliation**: a calculation showing how one reported number becomes another, line by line. Ask what each excluded cost is and whether the business will incur it again. The Visma and TeamSystem cases show why the adjective “adjusted” matters.
+
+![A sale and its costs can be recorded before the customer pays, while company payments follow their own dates.](assets/images/26-valuation-and-architecture/sale-profit-cash-timing.jpeg)
+**Figure 1:** *Revenue, earnings and cash describe different events; timing connects them.*
 
 ## A Valuation Is an Estimate, Not a Number You Look Up
 
@@ -66,9 +71,9 @@ An **adjusted EBITDA** measure adds further specified exclusions to an earnings 
 
 **Equity value = enterprise value − net debt.**
 
-**Net debt** is borrowings minus the cash the business holds. A company that owes €25 million to lenders and holds €5 million in the bank has net debt of €20 million: a buyer inherits the loans but also gets the bank balance, so only the difference changes what the shares are worth.
+**Net debt** is borrowings minus the cash included in the valuation bridge. If €25 million of borrowing and €5 million of cash are included, net debt is €20 million. The debt may remain in place, be repaid or be refinanced at a sale; its treatment must be reflected in the calculation. Cash needed to run the business or restricted from use may be treated differently from surplus cash.
 
-If enterprise value is €60 million and net debt is €20 million, equity value is €40 million, before other claims and transaction adjustments. A higher company valuation does not put the difference into the company's bank account. [[pt-capital-and-ownership]] explains why.
+If enterprise value is €60 million and net debt is €20 million, equity value is €40 million, before other claims and transaction adjustments. A higher company valuation does not put the difference into the company's bank account. [[capital-and-ownership]] explains why.
 
 Valuation methods organize evidence and assumptions; they do not eliminate judgment. The December 2025 **International Private Equity and Venture Capital Valuation (IPEV) guidelines** distinguish the purpose of the valuation, the method used and inputs such as EBITDA. They guide the reporting of estimated values for private investments; they do not prescribe a company’s strategy or determine its negotiated sale price. [S52: IPEV valuation guidelines, introduction and section 3](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
@@ -114,7 +119,20 @@ An asset-based approach examines the value of assets and relevant **liabilities*
 
 For a software company, adding up historical development expenditure is not a sufficient valuation. Code written at great cost may have little usefulness; a relatively inexpensive product may support valuable customer relationships. The cost of building an asset and what someone would pay for it answer different questions.
 
-The technology implications concern separability and continuity. Who controls the product rights? Can the service operate without its current parent? What shared systems, people and contracts would need replacing? These questions become especially concrete in a carve-out, where a business is separated from a larger organization. [[pt-acquisitions-and-carveouts]] examines that work.
+The technology implications concern separability and continuity. Who controls the product rights? Can the service operate without its current parent? What shared systems, people and contracts would need replacing? These questions become especially concrete in a carve-out, where a business is separated from a larger organization. [[acquisitions-and-carveouts]] examines that work.
+
+![Comparable businesses, expected future cash and assets less liabilities offer different lenses on an estimated value.](assets/images/26-valuation-and-architecture/valuation-lenses-and-assumptions.jpeg)
+**Figure 2:** *A valuation depends on its purpose and assumptions; no single lens supplies an automatic price.*
+
+## A Funding-Round Valuation Answers a Different Question
+
+In a separate fictional example, Larkspur agrees an **equity valuation before new funding**, or **pre-money valuation**, of €8m. An investor subscribes €2m for new shares. Ignoring fees, other securities and different share rights, the **post-money valuation**, the equity value immediately after that funding, is €10m. The new investor owns €2m / €10m = 20%.
+
+The company receives €2m. It does not receive the €10m headline valuation. If the same investor instead pays a founder €2m for existing shares, the company receives no new money from that purchase. Nor should this equity valuation be compared directly with an enterprise value that treats borrowing differently.
+
+A financing round sets a negotiated price for particular shares under particular terms. It does not establish what every shareholder could receive in a sale, especially when payment rights differ. The product leader’s useful question is which assumptions about customer demand, growth and future funding justify the price and which of those assumptions the team can test.
+
+An early business with losses cannot sensibly use a positive EBITDA multiple as though current earnings established its value. A forecast or comparison still needs **assumptions about future sales, costs, reinvestment and uncertainty**. A corporate buyer may also expect benefits in its own operations. Those expected benefits belong in a separate explanation of what must change, who pays and how success would be observed. They are not additional cash already available to your team.
 
 ## What to Carry Forward
 
@@ -122,4 +140,4 @@ Revenue records sales, profit deducts a specified set of costs, and cash flow fo
 
 Valuation adds another layer: an estimate of what future benefits are worth under stated assumptions. A multiple is one way to express that estimate; a cash-flow forecast makes the timing and investment assumptions more explicit. Neither tells the company how much it has in the bank today.
 
-We can now follow a purchase through to a sale. The next chapter uses company value, borrowing and time to calculate what an investor gets back: [[pt-return-mechanics]]. Later, [[pt-valuation-and-design]] connects these financial assumptions to product and architecture decisions.
+We can now follow a purchase through to a sale. The next chapter uses company value, borrowing and time to calculate what an investor gets back: [[return-mechanics]]. Later, [[valuation-and-design]] connects these financial assumptions to product and architecture decisions.

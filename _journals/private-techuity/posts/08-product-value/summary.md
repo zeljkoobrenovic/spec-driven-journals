@@ -1,6 +1,9 @@
-Product work creates business value through changes in customer behavior and operating economics. A **roadmap** sets out intended product changes. An item describes proposed work; its benefit still needs an explanation.
+Product work creates business value through **changes in customer behavior and operating economics**. A **roadmap** sets out intended product changes. An item describes proposed work; its benefit still needs an explanation.
 
-Make the chain explicit: intervention, operating change, customer outcome, and economic effect. **Onboarding** is the setup needed before a customer can use the product. In the fictional example, reusable settings may reduce that effort, bring forward customer use and billing, or help customers stay. Every connection is a hypothesis. Weak demand, poor adoption, or new maintenance costs can break the chain.
+![A testable chain connects intervention, operating change, customer outcome and economic effect, supported by evidence and full costs.](assets/images/08-product-value/summary-at-a-glance.jpeg)
+**Figure 1:** *Test each link from product work to customer and economic outcomes.*
+
+**Make the chain explicit**: intervention, operating change, customer outcome, and economic effect. **Onboarding** is the setup needed before a customer can use the product. In the fictional example, reusable settings may reduce that effort, bring forward customer use and billing, or help customers stay. Every connection is a hypothesis. Weak demand, poor adoption, or new maintenance costs can break the chain.
 
 **Distinguish capacity from cash.** Fewer implementation hours can free people for other work without reducing payroll. The company needs a conversion plan: serve additional profitable demand, avoid hiring, reduce external spending, improve quality, or use the capacity another way. Include implementation and ongoing costs before claiming a net benefit.
 
@@ -12,4 +15,6 @@ Establish a **baseline**, a starting measurement with clear customers, dates, so
 
 Protect the future product through measures that could reveal harm. Lower onboarding effort is incomplete if customers wait longer, abandon the process, or create more support demand.
 
-The investment firm’s technology adviser, the **Technology Principal**, helps keep the full chain understandable to investors and teams. A qualified claim of contribution is stronger than an unsupported valuation number. The same evidence should also justify stopping an initiative whose customer or economic hypothesis no longer holds.
+An investor introduction is an opportunity to learn, **not proof of demand**. In a fictional Larkspur scenario, Priya tests whether introduced prospects share a need and will pay before committing to unrelated demonstrations. With a corporate investor, she separates its group’s demand from the wider market and makes the cost of exclusivity explicit. A requested feature belongs in the same comparison of customer benefit, funding and displaced work as any other roadmap choice.
+
+Product and engineering leaders keep the full chain understandable to investors and teams, with adviser support where useful. A qualified claim of contribution is stronger than an unsupported valuation number. The same evidence should also justify stopping an initiative whose customer or economic hypothesis no longer holds.

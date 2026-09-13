@@ -1,233 +1,88 @@
-# Restructuring Plan — Book Flow and Framing
+# Rewrite Plan — Owned: Product & Engineering Leadership Under Investors
 
-**Status:** working notes, not yet decided
+**Status:** implemented; final validation and installation recorded in `_research/owned-revision.md`
 **Date:** 2026-09-13
-**Scope:** the book's framing and part structure, from the perspective of the product and engineering leader who reads it
 
-This is a discussion document. Nothing here has been applied to `config.yaml`, `index.md`, or any chapter. It records the reasoning so the decisions can be made deliberately rather than inside an edit.
-
----
-
-## 1. The framing decision (decide this first)
-
-Everything else follows from one question: **is this a book about private equity, or a book about leading product and engineering under external ownership?**
-
-### Where the manuscript is now
-
-It is **PE-centric with a technology reader**. The subject is private equity; the reader happens to be a CTO. Parts I, II, V and VI all explain how the machine works. Only Part III is written in the reader's own voice, about their own work.
-
-This is a drift from the original brief, which asked for "demystifying private equity **for** product and engineering leaders."
-
-### The proposed correction: two steps, not one
-
-**Step one — leader-centric rather than PE-centric.** The subject becomes *your job under this kind of ownership*; the investor is the condition, not the topic.
-
-Reasons to take this step:
-
-- It is what the original brief actually asked for.
-- "How PE works" is a crowded shelf, competing with people who do deals for a living. "How to run product and engineering when an investor owns you" is nearly empty.
-- It resolves Parts IV and V, which currently sit awkwardly because they are written from the *firm's* chair rather than the reader's.
-
-Cost: Part I becomes explicitly instrumental — finance you need in order to argue, not finance for its own sake. The Part I introduction already says exactly this ("the arguments you will need to make later are all financial arguments in disguise"), so the frame is half-built.
-
-**Step two — investors and investment generally, rather than private equity only.**
-
-The reader's problem is broader than PE. A leader who needs this book is usually facing one of: a VC-backed company that just raised and now has a board, a founder-owned company taking growth equity, a buyout, a carve-out, a strategic or corporate investor — or the same company passing between two of those. The underlying skill (read the money, find who decides, argue in financial terms, extract value from the owner) transfers across all of them.
-
-The manuscript already crosses this line. [[pt-investment-fit]] covers venture, growth, buyout, carve-out and turnaround. [[pt-how-companies-get-money]] is about how any company is financed at all. Those two chapters are already writing the broader book.
-
-It also fixes a structural weakness: while PE is the subject, the book keeps *explaining PE*. If investors-in-general is the subject, PE becomes **the hardest case** — most leverage, shortest clock, most explicit governance — and explaining it is instrumental. That is a better posture, and it enables something the PE-only version cannot say: *what changes when the ownership type changes*, which is where much of the useful judgment lives.
-
-### What broadening costs
-
-| Cost | Detail | Mitigation |
-| --- | --- | --- |
-| Distinctiveness | "How tech leaders work with investors" is a vaguer shelf than "under PE ownership." Specificity is currently the edge. | Keep depth concentrated in PE; broaden the frame, not the treatment. |
-| Evidence base | The case spine (Hilton, Skype, Visma, Toys R Us, TeamSystem) is entirely buyout/PE. Part VI would make general investor claims off PE-only evidence. | Either add a VC-backed and a growth-equity case, or state explicitly that the cases test the buyout end of the spectrum. |
-| The author's own vantage | The Technology Principal thread, Productscapes, the grounding job description — all PE. That is the part only this author can write. | Keep it PE-specific and labelled as the deepest treatment, not generalized. |
-
-### Recommendation
-
-**Broaden the frame, keep the specialty.** Subject broad, depth concentrated:
-
-- **Framing:** investors and ownership, not private equity alone. The promise is the reader's job under external ownership, whoever the owner is.
-- **Part I becomes genuinely comparative** — "what kind of owner do you have, and what does that change" across venture, growth, buyout, carve-out, strategic and founder-held, with PE explained in the most depth because it is the most structurally demanding.
-- **Parts II–V stay as designed**, but each names where ownership type changes the answer. Governance under a VC board is not governance under a majority sponsor; incentives with options are not incentives with rollover equity; sponsor leverage from a growth investor is a different menu than from a buyout firm. These are one-paragraph or one-table distinctions per chapter, not new chapters — and they are the detail that makes a book feel authoritative.
-- **Be explicit that the evidence concentrates on buyouts.** The manuscript is already unusually honest about evidence limits; this is the same move.
-- **Keep the PE-specific material PE-specific.** The Technology Principal, Productscapes and the case spine are the deepest treatment, not generalized claims.
-
-The book becomes: *here is how to operate under any investor, told by someone who works at the sharpest end of it.*
-
-### Consequences to accept
-
-- **"Private Techuity" stops fitting as a title.** It is a PE pun; under the broader subject it promises the narrower book. See §1a for the replacement. The journal directory and the `pt-` permalink prefix are internal and can stay regardless — this is a cover-title question only.
-- **Part IV gets better, not worse.** "Leveraging your investor" is richer when the investor might be a VC with a talent partner, a growth fund with a customer network, or a sponsor with an M&A team. The menu differs by owner type, and comparing them is genuinely useful.
-
----
-
-## 1a. Title and terminology
-
-### Working title (selected 2026-09-13)
-
-> **Owned: Product and Engineering Leadership Under Investors**
-
-Why it works: "Owned" is short, states the reader's actual condition, and carries the faint edge of the colloquial sense without committing to it — which suits a book that refuses to be either promotional or hostile about investors. The subtitle does the scoping work, naming both the reader and the setting.
-
-Two things it costs, accepted knowingly:
-
-- **It reads best in English.** The double meaning and the clipped one-word punch do not survive translation, and a non-native reader may take it literally. The subtitle carries the meaning on its own, so the downside is small — but the audience is substantially European technology leadership.
-- **It retires "Techuity" from the cover.** Open question: is Techuity retired as a concept, or does it survive as a term inside the book? The journal directory (`private-techuity/`) and the `pt-` permalink prefix are internal and stay regardless.
-
-Alternatives considered: *Techuity* alone (drops "Private," keeps the coinage, cheapest possible fix); *Someone Else's Money* (evocative, but a well-known film about a corporate raider); *When Investors Own Your Roadmap*; *Answering to Owners*.
-
-### Terminology: prefer "ownership," not "investment"
-
-**"Investment" is ambiguous in a technology book.** Engineers use it to mean *spending on a system* ("we should invest in the platform"), and the chapters use it in that sense constantly. If the framing noun and the body prose use the same word for two different things, that is avoidable friction.
-
-House usage:
-
-| Job | Preferred | Avoid |
-| --- | --- | --- |
-| The category the book is about | **investor ownership**; **investor-backed** as an adjective | "institutional investment" (academic), "sponsored ownership" (borrows a PE term of art too broadly) |
-| The arrangement the reader manages | **the ownership arrangement**; **the investment relationship** | — |
-| In body prose | **your owners**, **your investors** — plainest and best | abstractions where a plain noun works |
-| Spending on systems | **investment** keeps this meaning | — |
-
-Note that the existing chapter prose mostly already says "owner" and "investor" rather than "private equity." The drift toward PE sits in the part titles and part introductions, less in the body — which makes the reframe cheaper than it looks.
-
----
-
-## 2. Part-by-part analysis
-
-### Part I — Understanding private equity → comparative ownership
-
-**Current:** `00-how-companies-get-money`, `01-capital-and-ownership`, `26-valuation-and-architecture`, `02-return-mechanics`, `03-investment-fit`, `04-cash-and-constraints`
-
-**Verdict:** works as-is; the only part where "understanding the machine" is genuinely the job.
-
-**Under the broader frame:** make the spine "what kind of owner do you have, and what does that change." Chapters 00 and 03 already do this; the others need PE positioned as one case treated in most depth rather than as the default. This is the part where the broadening change is largest — worth sketching first to test whether the broader book still feels like the author's.
-
-### Part II — The investor–company relationship
-
-**Current:** `05-governance`, `06-incentives`, `07-investor-fit`
-
-**Problem:** the title names a relationship but not a stake.
-
-**What the part is actually about:** who is entitled to decide, what they want, and whether you can work with them.
-
-Candidate titles:
-
-- **"Who Decides What You Can Do"** — reader-facing, concrete, states the stake immediately. *Recommended.*
-- "Ownership, Authority, and Decision Rights" — accurate, drier.
-- "Living With Your Owners" — warmer, weaker.
-
-The existing part introduction's one-liner ("the money is settled; now find out who is actually allowed to decide") is already that title in sentence form.
-
-### Part III — Creating value through product and technology
-
-**Current:** `08-product-value`, `09-engineering-and-architecture`, `27-valuation-and-design`, `10-cloud-economics`, `11-security-and-resilience`, `12-data-and-ai`, `13-people-and-operating-models`, `14-acquisitions-and-carveouts`
-
-**Problem:** the title does say "creating value," but the introduction reads as generic tech-to-business translation that would be true with no investor anywhere. The fix is the frame more than the title: this is where **the investment thesis becomes engineering work**.
-
-Candidate title: **"Turning the Investment Thesis Into Product and Engineering Work"** — long, but it names what makes the part specific.
-
-**On length:** eight chapters, by far the largest part. Leave it. It is the reader's own job, and length there signals priority correctly. (A split into "value mechanics" — 08, 09, 27 — and "specific arenas" — 10–14 — remains available if the part becomes unwieldy.)
-
-### Part IV — The Technology Principal's work → working the ownership structure
-
-**Current:** `15-technology-principal`, `16-diligence-and-thesis`, `17-first-hundred-days`, `18-execution-and-exit`
-
-**The proposal:** flip from "here is what a Technology Principal does" to "**here is how to use the investment structure to your advantage**" — sponsor support, the firm's network, bootstrapping, acceleration of product development, of engineering, and of team growth.
-
-This converts the most inside-baseball section into the most actionable, and it is the strongest idea on the list.
-
-**How much is actually new — less than it first appears.** Reading the section headings, three of the four Principal chapters already carry substantial company-side content:
-
-- `16-diligence-and-thesis` ends on "Diligence Ends When Management Accepts the Findings"
-- `17-first-hundred-days` is explicitly about converting findings into a *company-owned funded plan*
-- `18-execution-and-exit` has "Portfolio Collaboration Must Earn Its Time" and "Escalate Through a Defined Path"
-
-Those are already about the company using the relationship; they are narrated from the adviser's chair. **Flipping the point of view is an editing job, not a rewrite.**
-
-**The genuine gap** is the *sponsor-leverage inventory*: what a firm can actually supply (operating partners, portfolio peer networks, hiring reach, shared tooling, M&A machinery, benchmark data, capital sequencing), how to ask for it, and what accepting it costs you. Scattered pieces exist — [[pt-technology-capability-as-product]]'s "accelerator small enough to use," [[pt-security-and-resilience]]'s "Shared Support Can Spread Risk or Concentrate It," [[pt-people-and-operating-models]]'s location and talent material, [[pt-investor-fit]]'s "Make the Support Offer Reviewable" — but nothing collects them from the receiving end.
-
-**Estimated work:** two new chapters, plus a point-of-view pass on 15–18. Not five new chapters.
-
-Proposed title: **"Working the Ownership Structure."**
-
-### Part V — Productscapes → appendix
-
-**Current:** `19-investment-firm-as-product`, `20-technology-capability-as-product`
-
-**Verdict:** move to an appendix, keep it labelled as the author's hypothesis.
-
-The reason is stronger than length: the part's own introduction opens by disclaiming itself — "read this sceptically," "it is a hypothesis," "no evidence here shows that adopting them improves returns or company outcomes." A part that begins by disclaiming itself belongs after the argument, not inside it. As an appendix it stays a distinctive contribution without interrupting the reader's spine.
-
-### New Part V — through the ownership cycle
-
-The Part IV rewrite creates an orphan problem: diligence, first-100-days and execution-and-exit are *lifecycle* chapters, and they are arguably the most useful material in the book for a reader who has just been acquired.
-
-Written from the reader's chair, these chapters answer "what happens to me, in what order": being diligenced, the first hundred days as the company rather than the adviser, the long middle, and preparing for exit. That is a spine, and it is currently buried inside the Principal's part.
-
-### Part VI — Durable value, success, and failure
-
-**Current:** `21-hilton-and-skype`, `22-visma`, `23-toys-r-us`, `25-teamsystem`, `24-durable-value`
-
-**Problem:** the title states a conclusion; the part is really evidence-testing.
-
-Candidate titles:
-
-- "Lessons From the Field" — warmer. *Recommended.*
-- "Testing the Argument Against Real Companies" — more accurate.
-- "What the Record Shows"
-
----
-
-## 3. Proposed shape
-
-| | Part | Chapters | Change |
-| --- | --- | --- | --- |
-| I | Understanding investors and ownership | 00, 01, 26, 02, 03, 04 | comparative reframe; renumber |
-| II | **Who decides what you can do** | 05, 06, 07 | retitle + introduction reframe |
-| III | **Turning the thesis into product and engineering work** | 08, 09, 27, 10, 11, 12, 13, 14 | retitle + introduction reframe |
-| IV | **Working the ownership structure** | 15 (company-side rewrite), + 2 new: *what an investor can supply* / *asking for it, and what it costs* | new part |
-| V | **Through the ownership cycle** | 16, 17, 18 (point-of-view flip) | new part from old Part IV |
-| VI | **Lessons from the field** | 21, 22, 23, 25, 24 | retitle only |
-| App. | Productscapes: a hypothesis | 19, 20 | demoted from Part V |
-
-Reader question per part:
-
-- **I** — What is this machine, and which kind of owner do I have?
-- **II** — Who am I answerable to now?
-- **III** — How does my work become value?
-- **IV** — What can I get out of this?
-- **V** — What happens to me, and when?
-- **VI** — Did any of this hold?
-
----
-
-## 4. Housekeeping to do regardless
-
-**Folder numbering no longer matches reading order.** Chapters 26 and 27 are numbered last but placed early — 26 sits third in Part I, 27 fourth in Part III. Folder 26 is the money primer that everything else depends on, so the numbering is actively misleading. Renumber the folders to match reading order; `permalink:` values stay put, so no URLs break and no `[[…]]` cross-links need touching.
-
----
-
-## 5. Open questions
-
-1. **Framing: broaden to investors generally, or stay PE-only?** Recommendation above is to broaden. If yes, the cover title needs revisiting and Part I needs the comparative reframe.
-
-2. **Part IV — commit or defer?** Two new chapters plus a point-of-view pass on 15. If committing, write `spec.md` first (per the repository's spec-driven convention) so the scope of "leveraging the structure" is agreed before drafting.
-
-3. **The Technology Principal's fate.** Under the proposed shape, chapter 15 is rewritten as "who is across the table and what they can do for you" — which serves the reader but loses the Principal as a vantage point. Alternative: keep 15 largely as-is inside Part IV and add the two sponsor-leverage chapters around it, so both sides of the table are visible. Slightly less clean; more honest to the author's own career direction. A third option is to keep the Principal as a recurring "from the other side of the table" note in each part rather than a part of its own.
-
-4. **Case-spine breadth.** If the frame broadens, does Part VI add a VC-backed or growth-equity case, or does it state explicitly that the evidence tests the buyout end only?
-
-5. **Part titles.** Working titles proposed above; cheapest thing to change and the place the author will have the strongest opinion.
-
----
-
-## 6. Suggested next step
-
-Sketch **Part I under the comparative frame** first. It is where the broadening change is largest, and it will show quickly whether the broader book still feels like the author's.
-
-After that, drafting the six part introductions against the proposed shape is the fastest way to read the book's spine and surface structural problems — and it is fully reversible, since no chapter or config file moves.
+## Editorial decision
+
+The author selected **Owned: Product & Engineering Leadership Under Investors** and requested a substantive rewrite. This supersedes the earlier decision to make private equity the primary setting with wider applications. The book now follows the product and engineering leader’s work under investor ownership. Private equity remains the deepest historical treatment.
+
+The reader may lead a venture-backed business, a company with growth investors, a business controlled by a buyout fund, or a company working with a corporate investor or parent. Founder funding provides a useful baseline. Public ownership appears where it changes financing or the next transition; this is not a complete manual for running a listed company.
+
+## Reader promise
+
+Help leaders understand the money and authority around them, test investor expectations, negotiate feasible commitments, use available support and remain accountable for customers and teams. “Owned” describes the company’s ownership setting; leaders still exercise judgment and must identify which decisions they can make, influence or escalate.
+
+## Implementation sequence
+
+1. Revise each companion specification before editing its article. Keep the existing 29 main chapters, six parts, two appendix essays and four guide/reference pages.
+2. Rewrite the opening promise and Part I comparatively. Separate investor identity, ownership rights, financing and transaction context. A carve-out is a separation; a turnaround is a business condition. Neither specifies the owner.
+3. Carry concrete consequences into Parts II–IV: competing investors, funding milestones, dilution, board decisions, contractual cash pressure, product choices, architecture commitments, staffing and support. Use conditional scenarios rather than fixed investor stereotypes.
+4. Revise Part V for funding rounds, ownership changes, financing delays, refinancing, corporate integration and possible exits. Preserve the early-planning discipline without making 100 days or a sale universal.
+5. Reframe the case lessons around the decisions and obligations left with company leaders. Retain historical claims, calculations, citations and uncertainty. Do not turn the buyout case collection into evidence of outcomes across all investor types.
+6. Synchronize summaries, six-panel storyboards, navigation, glossary, toolkit and source records. Retire the old title from current reader-facing content; retain dated history and stable folder names, and use public permalinks without the journal prefix.
+7. Build a staged site and check all articles/specs, cross-links, reading formats, financial examples, privacy exclusions, old framing and browser rendering. Install only reviewed changes, checking that original files have not changed since the baseline.
+
+## Meaningful content changes
+
+The revised manuscript must let a reader answer the same operating question differently when the arrangement changes. A platform proposal can require a small learning experiment before another funding round, repeatable onboarding under growth funding, a cash-feasible migration under borrowing, or negotiated interfaces under a corporate parent. The owner’s label alone decides none of these. The text must state the relevant assumption and the consequence for the leader’s decision.
+
+The financial treatment will add a minority investment and dilution calculation, distinguish funding-round valuation from business sale value, and use a runway calculation alongside the existing buyout cash bridge. The practical treatment will add conditional commitments, competing investor requests, corporate commercial conflicts and plans for delayed funding or ownership transitions.
+
+## Evidence policy
+
+New institutional guidance supports descriptions of venture, expansion and corporate funding. The NVCA model-document overview establishes that funding terms and rights are documented separately; it is not a review of individual agreements or a jurisdiction-independent rule. Fictional Larkspur scenarios illustrate reasoning, not observed investor performance. Historical case and research claims retain their original scope and dates.
+
+## Acceptance criteria
+
+- The exact new title and reader promise agree across current source and generated pages.
+- Every main chapter has an explicit company-leader decision and a substantive change where the ownership frame affects it.
+- Part I and Part V no longer assume that investor ownership means a leveraged buyout followed by a sale.
+- Private-equity-specific material stays labelled; no generic replacement broadens an evidence claim.
+- Every revised article agrees with its spec, 300–500-word summary and six-panel storyboard where applicable.
+- All 42 pages use unprefixed permalinks, no private inputs or research notes enter the public build, and navigation and reading modes work.
+
+## Chapter contracts
+
+- `00-how-companies-get-money`: Explain the funding behind a company leader’s commitments. Introduce investor ownership across private funding arrangements, with public markets and founder funding as comparisons; distinguish new company cash from payments to existing owners.
+- `01-capital-and-ownership`: Map money, ownership and authority under a minority funding round, a fund-backed buyout and corporate ownership. Teach fund mechanics as one important arrangement, then show how to identify the entity that can actually fund company work.
+- `26-valuation-and-architecture`: Teach valuation foundations and distinguish the price of a new funding round, a sale of a business and value to a strategic owner. Explain why neither a headline valuation nor an investor’s hoped-for value is a product budget.
+- `02-return-mechanics`: Compare the returns from a minority investment with dilution, a leveraged buyout and strategic ownership. Connect investor economics to expectations leaders must test without treating fund returns as a measure of their teams’ performance.
+- `03-investment-fit`: Compare ownership arrangements using the company’s actual work and uncertainty. Separate investor type, control, financing and transaction context; a carve-out and a turnaround are not categories of investor.
+- `04-cash-and-constraints`: Plan engineering commitments against available cash under both borrowing and loss-funded growth. Work through a cash bridge and a separate runway example, including a funding-delay response before cash is exhausted.
+- `05-governance`: Help leaders establish decision authority when founders, multiple minority investors, a controlling sponsor or a corporate parent have different rights. Turn disagreement into a specific proposal, approval and escalation process.
+- `06-incentives`: Explain the different exposures behind employee options, management rollover, fund carry and corporate rewards. Use dilution, funding rounds, thresholds and departure scenarios to examine what rewards can encourage or damage.
+- `07-investor-fit`: Assess the investor relationship a leader can influence, including one already inherited. Examine competing investors, follow-on funding, strategic conflicts and support behavior under pressure.
+- `28-choosing-investments`: Translate investor expectations into feasible competing uses of product and engineering capacity. Compare the same choice under learning, expansion, debt-service and corporate-integration constraints, with explicit work to stop.
+- `08-product-value`: Help product leaders test which customer outcomes support the owner’s expectations. Show how investor introductions, growth targets and strategic customer demands can change priorities without proving market demand.
+- `09-engineering-and-architecture`: Choose architecture commitments that the company can fund through the relevant ownership decision. Compare learning before another round, repeatable expansion, cash-constrained modernization and corporate integration.
+- `27-valuation-and-design`: Translate valuation assumptions into testable architecture choices under different ownership arrangements. Keep technical evidence, valuation inference and the funding of future options separate.
+- `10-cloud-economics`: Evaluate cloud costs and commitments under runway, profitable expansion and group purchasing. Compare temporary credits with continuing economics and contract duration with the company’s funded horizon.
+- `11-security-and-resilience`: Make security and recovery obligations explicit when funding is uncertain or investors offer shared services. Tie risk acceptance to company authority and test access boundaries under minority and corporate ownership.
+- `12-data-and-ai`: Assess data and AI proposals against customer use, total cost and ownership-related pressure. Distinguish a fundraising demonstration, a repeatable commercial capability and strategic data access.
+- `13-people-and-operating-models`: Turn investor growth, earnings and integration expectations into a credible team plan. Examine conditional hiring, changing incentives, leadership accountability and the cost of losing capability.
+- `14-acquisitions-and-carveouts`: Treat acquisition and separation as changes to product obligations and authority. Distinguish sponsor consolidation, a strategic acquisition and a separation funded by any suitable owner.
+- `15-technology-principal`: Explain how a company leader can work with the investor’s adviser. Keep the supplied Technology Principal role explicitly fund-specific and compare it with venture support, corporate specialists and an investor with no operating team.
+- `29-investor-support`: Help company leaders request useful investor support under different arrangements. Compare possible expertise, networks and corporate access while testing availability, incentives and the cost of dependence.
+- `30-making-support-work`: Convert an investor’s help into an engagement with company authority, capacity, information boundaries and an ending. Address competing minority investors and corporate commercial interests as practical agreement questions.
+- `16-diligence-and-thesis`: Help company leaders shape feasible commitments before a funding round, control transaction or strategic investment. Match evidence and access to the decision and prevent the transaction story from outrunning delivery capacity.
+- `17-first-hundred-days`: Use the early period after funding or an ownership change to establish a funded operating plan. Adapt the priorities to a minority round, buyout or corporate acquisition; avoid assuming every investment replaces the owner.
+- `18-execution-and-exit`: Lead through ongoing ownership, delayed funding, refinancing, changed expectations and possible sale or integration. Prepare an honest handover without treating an exit as the inevitable next stage.
+- `21-hilton-and-skype`: Use the documented ownership periods to distinguish investor proceeds from company capability and product continuity. Treat Skype’s strategic acquisition as a change of decision context, not proof of general strategic-owner behavior.
+- `22-visma`: Examine changing investors behind a continuing manager and the implications for local product authority and shared capability. Keep the historical evidence specific to the periods and measures actually documented.
+- `23-toys-r-us`: Use the documented cash and operating pressures to test the feasibility of a technology plan. Distinguish a transferable funding-dependency question from a causal claim about venture-backed or strategically owned companies.
+- `25-teamsystem`: Use successive ownership transactions and acquisition demands to examine the operating work left with leaders. Separate financial presentation, changes of owner and evidence about sustained company capability.
+- `24-durable-value`: Define leadership success through what remains for customers, employees and future operators when funding or ownership changes. Keep buyout research bounded and compare what a funding round, sale and corporate integration establish.
+- `19-investment-firm-as-product`: Present Productscapes as an optional hypothesis for designing investment-firm support. Bound the fund-specific actor model and show what would require redesign for a corporate investor or an investor without a support team.
+- `20-technology-capability-as-product`: Present reusable technology support as a hypothesis with a clear company recipient. Examine service access under minority investments and commercial boundaries under corporate ownership without asserting proven outcomes.
+- `reading-guide`: Introduce Owned as a guide to product and engineering leadership under investors. Establish the comparative ownership lens, the company leader’s agency, the six-part learning route and the narrower historical evidence base.
+- `part-1-intro`: Introduce money, authority, valuation, returns and cash as tools for understanding the owner’s expectations and the company leader’s room to act. Establish comparison from the start.
+- `part-2-intro`: Introduce decision rights, incentives and investor relationships from the company leader’s position, including several investors with conflicting objectives.
+- `part-3-intro`: Connect the owner’s proposed business outcome to product choices, engineering commitments and company capacity. Explain what changes across learning, expansion, debt and integration scenarios.
+- `part-4-intro`: Introduce the company leader’s choices when accepting expertise, introductions or shared services from an investor. Make possible help dependent on the particular provider and arrangement.
+- `part-5-intro`: Introduce funding and ownership changes as branching events rather than a mandatory buyout-to-exit sequence. Link diligence, early planning and ongoing leadership to each possible transition.
+- `part-6-intro`: Frame historical cases as tests concentrated on private equity and related ownership transitions. Separate observed outcomes, hypotheses about mechanisms and questions for other ownership arrangements.
+- `appendix-intro`: Introduce Productscapes as optional fund-side design hypotheses, with explicit adaptation needed for different kinds of investor support.
+- `toolkit`: Provide usable records for understanding the owner, funding horizon and authority; comparing commitments; agreeing support; and planning funding or ownership transitions.
+- `glossary`: Define the terms needed for comparative investor ownership, including minority funding, strategic ownership, dilution, runway and funding rounds. Separate financing terms from transaction contexts.
+- `bibliography`: Distinguish source support for funding arrangements from historical evidence about outcomes. Record newly consulted venture, growth, corporate and governance guidance with precise consultation limits.

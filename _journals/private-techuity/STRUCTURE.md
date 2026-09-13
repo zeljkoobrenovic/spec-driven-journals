@@ -1,49 +1,51 @@
-# Private Techuity — Implemented Structure
+# Owned — Implemented Structure
 
-**Status:** implemented
+**Status:** implemented; living manuscript remains a draft
 **Date:** 2026-09-13
 
 ## Positioning
 
-A practical guide to leading product and technology under private equity ownership, with lessons for working effectively with investors across other ownership models.
+**Owned: Product & Engineering Leadership Under Investors**
 
-Product and technology leaders inside the company are the primary readers. Private equity remains the main setting and the focus of the historical evidence. Wider applications are made explicit through comparisons of funding purpose, authority, investor expectations, time and available support.
+A practical guide to making product and engineering decisions when investors shape the money, authority and expectations around your company.
 
-The current manuscript title is **Private Techuity: Product and Engineering Leadership in Private Equity**. [PLAN.md](PLAN.md) retains the separate discussion of possible title and positioning changes; this record describes the structural revision agreed in this editing session.
+The primary reader leads product or engineering inside a company working under investors. Venture, growth, buyout and corporate arrangements recur where they change the leader’s decision. Founder funding is a comparison; public markets appear at relevant transitions. Private equity remains the principal historical evidence base, not the default assumption about every reader’s company.
 
 ## Part Structure
 
+
 | Part | Title | Reader purpose |
 | --- | --- | --- |
-| I | Understanding Private Equity: Money, Ownership and Returns | Where does the money come from, what does the investor expect, and what can the company afford? |
-| II | How Investment Changes Ownership, Governance and Decision-Making | Understand what changes when an investor enters: authority, priorities, accountability and the decisions leaders can make or influence. |
-| III | Turning Investment into Product and Technology Value | Choose where to invest money and team capacity, then connect the work to customer outcomes, business results and lasting capability. |
+| I | Understanding Financing and Ownership: Money, Authority and Returns | Understand the actual owners, rights, funding and return expectations. |
+| II | How Investor Ownership Changes Decisions | Understand what changes when an investor enters: authority, priorities, accountability and the decisions leaders can make or influence. |
+| III | Turning Investor Expectations into Commitments | Choose where to invest money and team capacity, then connect the work to customer outcomes, business results and lasting capability. |
 | IV | Beyond Money: Using Investor Support to Build Capability and Accelerate Progress | Find useful people, expertise and connections, agree what help will achieve, and leave the company able to sustain the result. |
-| V | Leading Through the Ownership Cycle | Navigate the investigation before an investment, the first hundred days, ongoing ownership and preparation for a sale. |
+| V | Leading Through Funding and Ownership Changes | Prepare for funding rounds, changes of ownership, revised plans, integration and possible exits. |
 | VI | Lessons from the Field | Use real company histories to examine what happened, what leaders can learn and where the evidence remains incomplete. |
-| Appendix | Productscapes: Designing Investor Support as a Product | Optional treatment for readers designing support from the investment firm’s side. |
+
 
 ## Placement and Boundaries
 
-- Part I retains the financial foundations, with an early explanation of the wider applications.
-- Part II explains changes in authority, incentives and accountability, including how leaders influence decisions in an arrangement they did not choose.
-- Part III begins with choosing among competing investments before examining the product, engineering and economic consequences.
-- Part IV contains the company-side explanation of the technology adviser, a map of possible investor support and a practical engagement chapter.
-- Part V contains the existing investigation, first-hundred-days and execution-and-exit material, organized around the company leader’s ownership cycle.
-- Part VI retains four case-study chapters about five companies and the durable-value conclusion. Visma emphasizes shared capability and local responsibility; TeamSystem emphasizes accumulated acquisition demands and financial interpretation.
-- The two Productscapes essays move to the appendix. Practical scope, feedback and handover lessons remain available in Part IV.
+- Part I makes ownership comparative and teaches financial foundations for decisions, including dilution, round valuations, buyout arithmetic, cash and runway.
+- Part II addresses actual authority, different incentives and relationships with one or several investors.
+- Part III turns investor expectations into feasible company work, carrying funding and authority consequences into product, systems, costs, risk, AI, people and transactions.
+- Part IV starts with the company’s missing capability and assesses available support, conflicting interests and continuing dependence.
+- Part V follows possible funding and ownership events, including delays, refinancing, corporate integration and continued ownership.
+- Part VI retains the documented company histories and distinguishes transferable questions from evidence about different ownership models.
+- The Productscapes appendix remains an optional hypothesis grounded in fund-side inputs; its provider model requires adaptation elsewhere.
 
 ## Editorial Rules
 
-- Introduce terms before use and preserve the beginner learning sequence.
-- Keep company leaders’ choices, constraints and responsibilities central.
-- Distinguish money paid for ownership from funding available for company work.
-- Label fictional examples, proposed methods, source accounts and evidence limits.
-- Preserve existing permalinks and folder names. Published reading order is controlled by config.yaml; folder numbers are stable storage names.
-- Keep the reading guide, repository index, introductions, chapter transitions, summaries, storyboards and specifications consistent.
+Define terms before use. Identify the company leader’s decision, required authority, available funding and next review. Separate investor identity, ownership rights, financing and transaction context. Label fictional comparisons and keep historical claims within their evidence. Preserve folder names and the current unprefixed permalinks. Keep the 42 specifications and all applicable reading formats consistent.
 
 ## Decision Record
 
+- 2026-09-13: The author selected **Owned: Product & Engineering Leadership Under Investors** and requested a substantive rewrite. This supersedes the earlier private-equity-first positioning below. The implemented six-part structure and stable URLs are retained.
+
+### Earlier decisions retained as history
+
+
+- 2026-09-13: Remove the Productscapes appendix entirely at the author's request — the appendix introduction and both essays (`appendix-intro`, `19-investment-firm-as-product`, `20-technology-capability-as-product`). The book is now 29 main chapters and 39 published pages. Inbound references in the Visma and TeamSystem case chapters were deleted along with the appendix listings in the book index, reading guide, glossary, Part VI introduction and the Part VI closing chapter. Earlier entries below still mention the appendix; they record decisions that were true when made.
 - 2026-09-13: The author accepted private equity as the primary lens with wider applications and the six-part reader journey.
 - 2026-09-13: The author approved “How Investment Changes Ownership, Governance and Decision-Making” for Part II and “Beyond Money: Using Investor Support to Build Capability and Accelerate Progress” for Part IV.
 - 2026-09-13: Implement the agreed structure, add the three connecting chapters and the appendix introduction, and retain earlier readability improvements.

@@ -1,32 +1,34 @@
 ---
-title: "Understanding Private Equity: Money, Ownership and Returns"
+title: "PART I — Understanding Financing and Ownership"
 date: 2026-09-13
-author: Private Techuity working manuscript
-excerpt: "Where does the money come from, what does the investor expect, and what can the company afford?"
-permalink: pt-part-1
+author: Owned working manuscript
+excerpt: "Identify your owners’ expectations and the money and decisions you can rely on."
+permalink: part-1
 timetoread: 2 min read
 status: draft:orange
-tags: private equity, part introduction, Part I
+logo: "assets/images/part-1-intro/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/part-1-intro.png"
 ---
 
-> **Part I in one line:** where does the money come from, what does the investor expect, and what can the company afford?
+> Any work you commit a team to must be paid for, and where that money comes from — a funding round, customers, retained cash or a parent's budget — determines who can approve it and when.
 
 <br>
-A useful product or technology plan needs money, people and time. Investment can help provide those resources, while also changing who owns the company and what they expect from it. This part gives you the financial knowledge needed to discuss those changes.
+**Financing** arranges the money a company needs. **Ownership** determines who holds shares and the rights attached to them. A new investment can change one, the other or both, and the difference matters for anyone who commits money and people to work.
 
-**Financing** means arranging the money a business needs. **Private equity** means investment in company ownership outside public stock markets. This book focuses mainly on **buyouts**, purchases that give an investor control of a business, often involving borrowing and a planned later sale.
+Any plan that needs people and money — a launch, a hire, a roadmap — depends on where that money comes from: a new funding round, customer receipts, cash left after debt payments or a corporate parent's budget. Each is a different condition on the same leadership job: committing resources to work the company can actually sustain. Before an announcement becomes a delivery promise, learn to identify the source of the money, who receives it, who has authority over it and when it arrives.
 
-The opening chapter places that setting within a wider picture. A company might fund work from customer payments, borrow, or bring in an owner to support growth. The useful comparisons concern where the money goes, who can decide and what obligations follow. Later chapters explain the differences as they become relevant to a leader’s choices.
+This part teaches the financial concepts by comparing arrangements side by side. Fund-backed buyouts receive the most detailed treatment because the available cases let us examine them closely; minority funding, growth plans and corporate ownership supply further decision contexts. No investor category, on its own, tells you how much cash is available or who can approve its use.
 
 ## The Learning Path
 
-- [[pt-how-companies-get-money]] explains the main ways money reaches a company and what an ownership share represents.
-- [[pt-capital-and-ownership]] follows the money and responsibilities through a private equity arrangement.
-- [[pt-valuation-and-architecture]] teaches sales, profit, cash and estimates of business value.
-- [[pt-return-mechanics]] uses those measures to explain what an investor puts in and gets back.
-- [[pt-investment-fit]] compares funding and ownership arrangements against the work the company needs to do.
-- [[pt-cash-and-constraints]] checks what the business can actually afford after its obligations.
+- [[how-companies-get-money]] explains the main ways money reaches a company and what an ownership share represents.
+- [[capital-and-ownership]] maps the money and responsibilities in a minority round, a fund-backed buyout and corporate ownership.
+- [[valuation-and-architecture]] introduces sales, profit, cash and estimates of business value.
+- [[return-mechanics]] uses those measures to explain what an investor puts in and what it gets back.
+- [[investment-fit]] compares funding and ownership arrangements against the work the company needs to do.
+- [[cash-and-constraints]] checks what the business can afford once its obligations are met.
 
-By the end, you should be able to distinguish money paid to a selling owner from money available for company work. You should also be able to question a financial assumption and ask what would fund a proposed change.
+By the end, you should be able to distinguish money paid to a selling owner from money available for company work, question a financial assumption and ask **what would fund a proposed change**.
 
-Begin with [[pt-how-companies-get-money]]. Part II then examines how investment changes the decisions you can make and influence.
+Begin with [[how-companies-get-money]]. Part II then examines how investment changes the decisions you can make and influence.

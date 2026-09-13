@@ -1,43 +1,64 @@
 ---
 title: An Investment Announcement Is Not a Budget
 date: 2026-09-12
-author: Private Techuity working manuscript
+author: Owned working manuscript
 excerpt: "Follow who owns the company, who supplies its money, and who can decide how it is used."
-permalink: pt-capital-and-ownership
-timetoread: 7 min read
+permalink: capital-and-ownership
+timetoread: 10 min read
 status: draft:orange
-tags: private equity, technology leadership, Part I
+logo: "assets/images/01-capital-and-ownership/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/01-capital-and-ownership.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **Find out who receives the investment money.** Buying a founder’s shares pays the founder; buying new shares can put money into the company.
-> * **Separate the organizations involved.** The investment firm, its fund, the company used to hold the investment, and the business serving customers can have different money and obligations.
-> * **Distinguish an estimate from a payment.** Saying an investment is worth more does not mean its owners have received cash.
+> * Find out **who receives the investment money**. Buying a founder’s shares pays the founder; buying new shares can put money into the company.
+> * **Separate the organizations involved**. The investment firm, its fund, the company used to hold the investment, and the business serving customers can have different money and obligations.
+> * Distinguish **an estimate from a payment**. Saying an investment is worth more does not mean its owners have received cash.
 
 <br>
 Your company announces a €100 million investment. It is natural to expect a larger hiring or product budget. But the announcement may describe money paid to selling shareholders, repayment of old loans, and transaction costs. Only the part actually supplied to the business increases its cash directly.
 
-[[pt-how-companies-get-money]] introduced the difference between funding a company and buying its existing shares. We will now follow the money through a typical private equity arrangement: first identify the organizations, then see how investors supply money and receive it back, and finally connect that structure to company decisions.
+[[how-companies-get-money]] introduced the difference between funding a company and buying its existing shares. We will now compare a minority funding round, a fund-backed buyout and corporate ownership. Then we examine the fund structure in more depth so you can distinguish an investor’s capacity from money committed to your company.
 
-## Start With Four Separate Organizations
+## Map the Arrangement Before Relying on the Money
+
+Consider three alternative, fictional Larkspur announcements. In each, Alex wants to hire engineers for onboarding. The number in the announcement cannot approve those hires.
+
+| Announcement | Where money goes under these assumptions | What Alex needs to establish |
+| --- | --- | --- |
+| Investors buy €8m of newly issued minority shares | The company receives €8m before transaction costs | Which operating plan is approved, what consents apply and how long that plan can be funded |
+| A fund buys the founder’s shares for €40m | The selling founder receives the purchase money | Whether separate company funding exists and which payments the new financing requires |
+| A corporate group buys Larkspur | Selling shareholders receive the agreed share price | Which group entity funds future work and how the local budget relates to the parent’s priorities |
+
+If an existing investor participates in another round, that does not mean every shareholder contributes again. If a corporate investment is a minority stake, it does not automatically make the company part of the parent’s operating hierarchy. Draw the actual arrangement.
+
+Use one page to identify the shareholder, the entity supplying cash, the person authorized to commit it and any conditions before payment. Include the date on which a promised decision must arrive for the engineering plan to remain feasible. The exercise converts ownership information into something a leader can act on.
+
+The next sections explain a fund-backed arrangement in detail. Venture and growth investors can also use funds; corporate and individual owners may use different structures. Do not invent a fund, a holding company or a fixed sale deadline when the arrangement has none.
+
+## A Fund-Backed Buyout Can Involve Four Separate Organizations
 
 A useful starting map separates four types of **entity**, meaning an organization or legal body. Actual transactions can have more layers, several investors and different arrangements. The purpose of this map is to locate money and responsibilities, rather than assume that everyone shares one bank account.
 
-| Entity | What it is | What it wants |
+| Entity | What it is | Main responsibilities or interests |
 | --- | --- | --- |
-| **Investment firm** (sponsor, manager) | The organization with the name on the door. Employs the investment and operating professionals. | Fees, a track record, and the next fund |
-| **Fund** | A pool of investment money with its own investors, agreed investment scope and lifetime. A firm may manage several funds. | Returns for its investors, before its clock runs out |
+| **Investment firm** (sponsor, manager) | Employs the investment and operating professionals; may manage several funds. | Manage investments, meet obligations to fund investors and sustain its own business |
+| **Fund** | An investment vehicle with its own investors, committed capital, investment scope and agreed term. | Invest and distribute proceeds under its governing agreements |
 | **Holding vehicle** | A company set up to hold the investment; it may also borrow. | Hold ownership and meet its own obligations |
-| **Portfolio company** | You. Sells to customers, employs people, pays suppliers. | To keep serving customers and paying wages |
+| **Portfolio company** | The operating business: sells to customers, employs people and pays suppliers. | Serve customers, meet obligations and sustain the business |
 
 Two consequences follow immediately.
 
-**"The firm has capital" is not a statement about you.** A firm may be raising a €2 billion fund while the fund that owns your company is fully invested and near the end of its life. Those are different pots. The new fund usually cannot simply hand money to an older fund's company.
+**"The firm has capital" is not a statement about you.** A firm may be raising a €2 billion fund while the fund that owns your company is fully invested and near the end of its life. Those are different pots. An investment from the new fund would need its own justification and approvals under the relevant agreements; it is not an automatic source of support for the older fund’s company.
 
 **Locate the borrowing as well as the cash.** Debt can sit in a holding company, an operating company, or several entities. The company’s **balance sheet**, a statement of assets, obligations and equity at a date, needs to be read at the relevant level. Payments required elsewhere in the ownership structure may still depend on cash from the operating business. Ask finance to explain those connections.
 
-So before accepting a cloud migration budget, ask which entity pays the invoice and who can commit its money. Before relying on a promise of support, ask by what mechanism the capital would actually arrive. Before sharing customer data with anyone at the owner, ask who is receiving it and under what authority. Common ownership answers none of these.
+So before accepting a cloud migration budget, ask **which entity pays the invoice** and who can commit its money. Before relying on a promise of support, ask **by what mechanism the capital would actually arrive**. Before sharing customer data with anyone at the owner, ask who is receiving it and under what authority. Common ownership answers none of these.
+
+![An illustrative buyout separates the investment firm, fund, holding company and customer-serving operating company.](assets/images/01-capital-and-ownership/four-separate-organizations.jpeg)
+**Figure 1:** *Map the legal entities and their obligations before assuming one organization can use another’s money.*
 
 ## Commitments Are Promises, Not Payments
 
@@ -60,7 +81,10 @@ An agreement may allow the fund to reinvest proceeds or require an investor to r
 
 A fund's life includes fundraising, investing, supporting companies, selling investments or otherwise receiving proceeds, and eventually closing the fund. These phases overlap. The investment period and the fund's overall term are different clocks; extensions and reinvestment provisions depend on the agreement. The **Institutional Limited Partners Association (ILPA)** represents investors in private funds. Its principles offer recommendations on these matters; they are not terms binding every fund. [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
 
-For a company leader, the relevant question is not simply how long private equity usually holds a company. It is how much time and flexibility this ownership structure has, and what happens if an intended exit is delayed.
+For a company leader, the relevant question is not simply how long private equity usually holds a company. It is how much time and flexibility this ownership structure has, and **what happens if an intended exit is delayed**.
+
+![A commitment becomes paid fund capital through a capital call; a company investment requires a separate allocation and approval.](assets/images/01-capital-and-ownership/capital-commitment-to-company-cash.jpeg)
+**Figure 2:** *Committed capital, cash in a fund and cash available to a company are different states.*
 
 ## How Fees and Profit Sharing Work
 
@@ -81,13 +105,13 @@ Fees, allocation of shared expenses, and related-party services also create conf
 
 ## Owning a Company Does Not Mean Running It
 
-They are separate acts, performed by different bodies under different rules.
+An owner’s influence over the company and an executive’s authority to act for it come from different roles and agreements.
 
 An **investment committee** is the body authorized to approve investments for the fund under its arrangements. A company’s **board** oversees the business within its own authority, while executives manage day-to-day work. Buying a company, approving its annual plan and signing a customer contract are different decisions. Share ownership alone does not give every shareholder authority to sign contracts for the company. Financing agreements may also require lender approval for particular actions. When someone says "the investor wants X," the useful reply is: which body, exercising which right, and can they actually require it?
 
-A Technology Principal — a technology leader employed by the investment firm, not by the company it owns — advises both forums and must know which decision each is making. [[pt-technology-principal]] develops the role; [[pt-governance]] works through the decision rights in detail.
+Some firms employ a Technology Principal, a technology adviser who may contribute to both investment and company discussions. The role’s authority must be established in each forum; neither a venture investor nor a corporate owner necessarily provides an equivalent role. [[technology-principal]] develops the role; [[governance]] works through the decision rights in detail.
 
-The map below is conceptual, not a legal organization chart. Read the arrows from the investors and lenders toward the business, then follow investment proceeds back to the fund’s investors:
+The map below illustrates a fund-backed buyout, not every form of investor ownership. It is conceptual, not a legal organization chart. Read the arrows from the investors and lenders toward the business, then follow investment proceeds back to the fund’s investors:
 
 ---begin mermaid---
 flowchart TD
@@ -107,4 +131,4 @@ The diagram simplifies the structure. A real financing review also needs the int
 
 Customer payments sustain the operating business. Investors, lenders and future buyers can also bring cash into the wider arrangement. Keeping those sources separate helps explain why a well-funded investor and a cash-constrained company can coexist.
 
-You can now trace who supplies cash, who receives it and which body makes a decision. The next question is how people estimate the value of the business and its shares. That requires three basic financial ideas—sales, profit and cash—which we develop in [[pt-valuation-and-architecture]].
+You can now trace who supplies cash, who receives it and which body makes a decision. The next question is how people estimate the value of the business and its shares. That requires three basic financial ideas—sales, profit and cash—which we develop in [[valuation-and-architecture]].

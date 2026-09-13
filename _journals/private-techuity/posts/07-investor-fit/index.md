@@ -1,30 +1,30 @@
 ---
 title: Judge an Investor by Their Behavior Under Pressure
 date: 2026-09-12
-author: Private Techuity working manuscript
+author: Owned working manuscript
 excerpt: "Assess an investor through concrete decisions, references and the support available when a company faces difficulty."
-permalink: pt-investor-fit
-timetoread: 7 min read
+permalink: investor-fit
+timetoread: 8 min read
 status: draft:orange
-tags: private equity, technology leadership, Part II
+logo: "assets/images/07-investor-fit/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/07-investor-fit.png"
 ---
 
 > **KEY POINTS:**
 >
-> * **Assess behavior under pressure.** Concrete decisions and difficult references reveal more than general promises of patience, expertise or partnership.
-> * **Match support to the company’s next decisions.** Establish the people, time, cost and authority behind the offer before depending on it.
-> * **Reassess fit during ownership.** A changing business or financing position can require a different relationship, operating plan or level of support.
+> * Assess **behavior under pressure**. Concrete decisions and difficult references reveal more than general promises of patience, expertise or partnership.
+> * Match support to the **company’s next decisions**. Establish the people, time, cost and authority behind the offer before depending on it.
+> * **Reassess fit during ownership**. A changing business or financing position can require a different relationship, operating plan or level of support.
 
 <br>
 Ines, the chief executive of the fictional software company Larkspur, has two **term sheets** on her desk: documents setting out proposed investment terms. Both investors promise patient ownership and practical support. To compare them, she needs examples of how those promises work when a company misses its plan.
 
 **Investor fit** means how well an investor’s terms, resources and behavior match what the company needs. A reassuring description is a starting point for investigation.
 
-The purpose is not to find a universally good investor. It is to find out whether this partnership can support what Larkspur actually has to do next: automate onboarding, enter a second country, and replace a retiring founder's judgement. The same firm can be a strong fit for one situation and a poor fit for another.
+The purpose is not to find a universally good investor. It is to find out whether this partnership can support what Larkspur actually has to do next: automate onboarding, enter a second country, and replace the knowledge and relationships concentrated in a retiring founder. The same firm can be a strong fit for one situation and a poor fit for another.
 
 If your company already has an investor, use the same questions to assess the relationship you have. You may be able to change a support arrangement, an approval process or an unrealistic commitment even when choosing a different owner is not your decision.
-
-The previous chapters explained authority and incentives. We now turn them into a practical assessment: define the company’s needs, ask about earlier decisions, make promised support concrete, and review whether the relationship continues to work.
 
 ## Begin With the Work the Company Needs
 
@@ -49,7 +49,10 @@ References selected only from enthusiastic current CEOs provide a restricted vie
 
 These answers leave the requested behavior unclear. Ask for a specific example or another source. An executive may have had few relevant incidents, may be unable to share confidential details, or may be giving an incomplete account. The gap calls for follow-up rather than an automatic negative judgment.
 
-A single difficult story is not a verdict. Look for repeated mechanisms and consider alternative explanations. A dismissed executive may have an understandable grievance. A successful CEO may attribute too much to the current owner. Both can still provide concrete observations worth checking.
+A single difficult story is not a verdict. **Look for repeated mechanisms** and consider alternative explanations. A dismissed executive may have an understandable grievance. A successful CEO may attribute too much to the current owner. Both can still provide concrete observations worth checking.
+
+![References about missed plans, funding pressure and disagreement turn a support promise into evidence to examine.](assets/images/07-investor-fit/test-support-under-pressure.jpeg)
+**Figure 1:** *Ask how the investor behaved when the original plan stopped working.*
 
 ## Make the Support Offer Reviewable
 
@@ -59,15 +62,18 @@ A reasonable answer can be modest. A small firm might offer one experienced oper
 
 Do not confuse advice with funding. A recommendation to modernize a platform is incomplete until the company has the capacity and money to do it. Nor should promised savings from buying services or negotiating supplier contracts be counted before fees, commitments, migration costs, and service effects have been understood.
 
-This chapter uses support promises to assess the partnership. Once a specific company need is agreed, Part IV explains how to find suitable help and establish the engagement: [[pt-investor-support]] and [[pt-making-support-work]].
+This chapter uses support promises to assess the partnership. Once a specific company need is agreed, Part IV explains how to find suitable help and establish the engagement: [[investor-support]] and [[making-support-work]].
 
-## Ask How Long the Money Is Staying
+## Test the Funding Horizon
 
 Request a comprehensible account of the transaction's use of proceeds and the company's post-deal obligations. Which money reaches the business? What are the debt maturities and material restrictions? What financial scenario funds the product plan? What happens if growth arrives a year later?
 
 At fund level, identify the investment's place in the fund lifecycle and the process for follow-on decisions. Do not ask for an absolute promise that the company will never be sold early or that more capital will always be available. Ask how those decisions will be made and which conditions matter.
 
-The return sensitivity in [[pt-return-mechanics]] can structure the conversation. If the plan requires both unusually rapid earnings growth and a higher exit multiple, ask how it performs without the multiple increase. If it requires cost reductions and faster delivery at once, ask which operating changes make both feasible.
+The return sensitivity in [[return-mechanics]] can structure the conversation. If the plan requires both unusually rapid earnings growth and a higher exit multiple, ask how it performs without the multiple increase. If it requires cost reductions and faster delivery at once, ask which operating changes make both feasible.
+
+![The company’s work schedule and the investor’s funding constraints meet at an explicit review point.](assets/images/07-investor-fit/company-and-investor-calendars.jpeg)
+**Figure 2:** *Fit depends on whether the work can be funded and supported for the time it needs.*
 
 ## Warning Signs Are Patterns to Investigate
 
@@ -76,6 +82,14 @@ A refusal to discuss downside scenarios is concerning because it prevents the pl
 Other warning signs include direct instructions to staff that bypass executives, repeated promises of help without a named delivery owner, and confidential coaching used unexpectedly in performance assessments. These are not proof of misconduct. They are reasons to clarify the operating arrangement before reliance deepens.
 
 Some practices that initially feel uncomfortable can be productive. A new owner may insist on cash reporting, challenge a favored project, or question whether an executive's capabilities fit the company's needs. The distinction is whether the challenge uses evidence, produces a legitimate decision, and recognizes consequences. Discomfort alone does not distinguish discipline from interference.
+
+## Test the Relationship You Have, Including the Other Investors
+
+In a fictional Larkspur round, the lead investor is willing to provide more money if another investor joins. The existing investor is supportive but has not committed. Priya’s proposed expansion depends on both. The relevant question is who can commit what, under which conditions, by which date. Two encouraging conversations do not equal a funded plan.
+
+In another scenario, a corporate investor introduces valuable customers but requests a product feature available only through its channel. Before agreeing, test the effect on other customers, future partnerships and support costs. Ask which requests belong to the investment relationship and which require a separate commercial decision. Financial support and commercial dependence can grow together.
+
+If you inherited the arrangement, focus on changes within reach: **one approval route for the operating plan**, a dated funding decision, a narrower support assignment or a clear way to escalate conflicting requests. Record what cannot be changed and reflect it in the commitments you make. Investor fit is also the continuing work of making an imperfect relationship usable.
 
 ## Fit Is Not Settled at Signing
 
@@ -87,4 +101,4 @@ The Principal can help translate these conversations but cannot make every confl
 
 The assessment should leave you with specific commitments: available people, funding arrangements, decision authority and a way to revise the plan. Review those commitments during ownership, particularly when the business changes.
 
-Part II has connected changed authority, incentives and the working relationship. Part III begins with choosing between the competing investments those arrangements must support: [[pt-part-3]] and [[pt-choosing-investments]].
+Part II has connected changed authority, incentives and the working relationship. Part III begins with choosing between the competing investments those arrangements must support: [[part-3]] and [[choosing-investments]].

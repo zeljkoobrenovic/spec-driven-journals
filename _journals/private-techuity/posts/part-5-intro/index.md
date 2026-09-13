@@ -1,31 +1,33 @@
 ---
-title: "Leading Through the Ownership Cycle"
+title: "PART V — Leading Through Funding and Ownership Changes"
 date: 2026-09-13
-author: Private Techuity working manuscript
-excerpt: "Navigate the investigation before an investment, the first hundred days, ongoing ownership and preparation for a sale."
-permalink: pt-part-5
+author: Owned working manuscript
+excerpt: "Lead through funding and ownership changes, including delays and continued ownership."
+permalink: part-5
 timetoread: 2 min read
 status: draft:orange
-tags: private equity, part introduction, Part V
+logo: "assets/images/part-5-intro/logo.jpeg"
+logo_credit: "AI-generated illustration"
+icon: "assets/icons/part-5-intro.png"
 ---
 
-> **Part V in one line:** navigate the investigation before an investment, the first hundred days, ongoing ownership and preparation for a sale.
+> Lead through funding and ownership changes, including the ones that stall and the owners who stay.
 
 <br>
-An investment changes more than the ownership record on a particular day. Company leaders may help investigate the business before the deal, establish an early plan, revise it during ownership and later explain the company to another prospective owner.
+Investors enter, invest again, change their expectations, sell part of a holding or stay longer than planned. A company may also refinance its borrowing or become part of a corporate group. Each event changes the leadership work, and the events follow no fixed order: a company need not move from purchase to sale in a straight line.
 
-We call that sequence the **ownership cycle**. It is a way to organize the work, rather than a fixed timetable every company must follow. A further investment can change expectations without replacing the owner; a planned sale may take longer than expected.
+The **ownership cycle** is a map of these possibilities. **Due diligence** is the investigation that informs a transaction. An early operating plan turns agreed expectations into funded commitments, and later reviews test those commitments as customer, financing or ownership conditions change.
 
-The earlier parts explain the money, the decisions, the work worth funding and the support available. This part brings those subjects together from the company leader’s side of the table.
+Use this part from the company's side of the table. A minority funding round needs a credible use of the money and an understanding of which rights have changed. A buyout needs clarity about control and financing. A corporate acquisition needs a working integration agreement. And if the expected transaction is delayed or never happens, the company still needs a plan.
 
 ## The Learning Path
 
-- [[pt-diligence-and-thesis]] examines **due diligence**, the investigation that informs an investment decision. It explains how to present evidence, challenge unsupported assumptions and carry findings into the plan.
-- [[pt-first-hundred-days]] establishes priorities with credible funding, team capacity and responsibilities after the transaction completes.
-- [[pt-execution-and-exit]] follows the longer period of delivery and revision, then preparation for an **exit**, a sale or other transaction through which an investor receives value from its holding.
+- [[diligence-and-thesis]] explains how to present evidence, challenge unsupported assumptions and carry what the investigation finds into the plan.
+- [[first-hundred-days]] sets priorities after the transaction completes, matched to credible funding, team capacity and clear responsibilities.
+- [[execution-and-exit]] covers revising the plan when funding, financing or expectations change, then the handovers that follow: a further round, continued ownership, integration, or an **exit**, the transaction through which an investor realizes its holding.
 
-Each stage changes the questions you need to answer. Before investment, the emphasis is on what the company can support and what remains uncertain. Early ownership turns that account into commitments. Later reviews test whether the commitments still make sense. Sale preparation asks whether another owner can understand and sustain the resulting business.
+Each stage asks a different question. Before a funding round or purchase: what can the company support? In the early plan: which commitments follow from that answer? In later reviews: do the funding and expectations still hold? Another round, a refinancing, continued ownership or a sale each needs its own decision and its own evidence; **the next event is not predetermined**.
 
-By the end, you should be able to carry the same evidence through those stages, make a specific request when the plan needs to change and prepare a handover that includes unfinished work.
+By the end, you should be able to carry the same body of evidence through all of these stages, make a specific request when the plan needs to change, and prepare a handover that accounts for unfinished work.
 
-Begin with [[pt-diligence-and-thesis]]. Part VI then tests these ways of thinking against historical company situations.
+Begin with [[diligence-and-thesis]]. Part VI then tests these ways of thinking against historical company situations.
