@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Investment plans fund what can be counted, such as tools and headcount in a cheaper location, and rarely fund the slower change in how decisions are made. The panels show what happens when the investor’s timetable assumes a capacity the operating model does not have.
+**Comic.** A plan has funded new resources, tools, a cheaper location, a second team, without funding the management time and decision changes needed to use them. The panels follow fictional Larkspur tracing one piece of work through its queue and letting that diagnosis decide what hiring the plan needs.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/13-fix-decisions-before-hiring/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam compares salary savings with transition obligations. Use one speech bubble with the exact words: \"What is the full operating cost?\" Convey: A lower wage bill can be offset by recruitment, coordination, training and the cost of moving work between teams.",
+  "prompt": "Panel 3 of an explainer comic. Sam compares salary savings with transition obligations. Use one speech bubble with the exact words: \"What is the full operating cost?\" Convey: A cheaper team than the current external development spend can be offset by recruitment, coordination, training and the cost of moving work between teams.",
   "alt": "Comic panel: Sam compares salary savings with transition obligations.",
-  "caption": "A lower wage bill can be offset by recruitment, coordination, training and the cost of moving work between teams.",
+  "caption": "A cheaper team than the current external development spend can be offset by recruitment, coordination, training and the cost of moving work between teams.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam compares salary savings with transition obligations.](assets/images/13-fix-decisions-before-hiring/comic-03-scene.jpeg)
 
-**Panel 3:** A lower wage bill can be offset by recruitment, coordination, training and the cost of moving work between teams.
+**Panel 3:** A cheaper team than the current external development spend can be offset by recruitment, coordination, training and the cost of moving work between teams.
 
 *Dialogue:* “What is the full operating cost?”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/13-fix-decisions-before-hiring/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex considers a leadership change beside unclear authority. Use one speech bubble with the exact words: \"Which conditions would also change?\" Convey: Before replacing a leader, examine the authority, resources and priorities around the role as well as the person’s decisions.",
+  "prompt": "Panel 4 of an explainer comic. Alex considers a leadership change beside unclear authority. Use one speech bubble with the exact words: \"Which conditions would also change?\" Convey: Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, replacement is justified.",
   "alt": "Comic panel: Alex considers a leadership change beside unclear authority.",
-  "caption": "Before replacing a leader, examine the authority, resources and priorities around the role as well as the person’s decisions.",
+  "caption": "Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, replacement is justified.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex considers a leadership change beside unclear authority.](assets/images/13-fix-decisions-before-hiring/comic-04-scene.jpeg)
 
-**Panel 4:** Before replacing a leader, examine the authority, resources and priorities around the role as well as the person’s decisions.
+**Panel 4:** Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, replacement is justified.
 
 *Dialogue:* “Which conditions would also change?”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/13-fix-decisions-before-hiring/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex and Priya review two clearly labelled groups of roles with Sam before speaking to the team. Use one speech bubble with the exact words: \"Which roles are funded now?\" Convey: Separate funded hiring from roles conditional on another round. Include recruitment, onboarding and management capacity, and explain the same conditions to investors and teams.",
+  "prompt": "Panel 6 of an explainer comic. Alex and Priya review two clearly labelled groups of roles with Sam before speaking to the team. Use one speech bubble with the exact words: \"Which roles are funded now?\" Convey: The hire changes shape: one billing engineer funded now, the second team conditional on demand evidence and new money. Explain the same conditions to investors and teams.",
   "alt": "Comic panel: Alex and Priya review two clearly labelled groups of roles with Sam before speaking to the team.",
-  "caption": "Separate funded hiring from roles conditional on another round. Include recruitment, onboarding and management capacity, and explain the same conditions to investors and teams.",
+  "caption": "The hire changes shape: one billing engineer funded now, the second team conditional on demand evidence and new money. Explain the same conditions to investors and teams.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex and Priya review two clearly labelled groups of roles with Sam before speaking to the team.](assets/images/13-fix-decisions-before-hiring/comic-06-scene.jpeg)
 
-**Panel 6:** Separate funded hiring from roles conditional on another round. Include recruitment, onboarding and management capacity, and explain the same conditions to investors and teams.
+**Panel 6:** The hire changes shape: one billing engineer funded now, the second team conditional on demand evidence and new money. Explain the same conditions to investors and teams.
 
 *Dialogue:* “Which roles are funded now?”

@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Product and engineering leaders rarely need to value a company. The panels show why, under investors, the estimate becomes the target: its assumptions decide which growth, margin and cost results the company must deliver, and hence which technology work is funded.
+**Comic.** Product and engineering leaders rarely need to produce a valuation, but they need to read one. The panels follow one question, what “worth €60 million” means, in two stages: first read the business’s numbers, then interpret the valuation. An investor’s valuation assumptions can become growth, margin and cost targets; knowing how the number was built shows which assumptions the plan is being asked to support.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/26-valuation-is-an-estimate/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Sam places revenue, earnings and cash cards on separate shelves. Use one speech bubble with the exact words: \"They answer different questions.\" Convey: Revenue records sales. Earnings deduct specified costs. Cash flow follows actual money received and paid. These answer different questions.",
+  "prompt": "Panel 1 of an explainer comic. Sam places revenue, earnings and cash cards on separate shelves. Use one speech bubble with the exact words: \"They answer different questions.\" Convey: Stage 1, read the numbers. Revenue records sales. Earnings deduct specified costs. Cash flow follows actual money received and paid. These answer different questions.",
   "alt": "Comic panel: Sam places revenue, earnings and cash cards on separate shelves.",
-  "caption": "Revenue records sales. Earnings deduct specified costs. Cash flow follows actual money received and paid. These answer different questions.",
+  "caption": "Stage 1, read the numbers. Revenue records sales. Earnings deduct specified costs. Cash flow follows actual money received and paid. These answer different questions.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam places revenue, earnings and cash cards on separate shelves.](assets/images/26-valuation-is-an-estimate/comic-01-scene.jpeg)
 
-**Panel 1:** Revenue records sales. Earnings deduct specified costs. Cash flow follows actual money received and paid. These answer different questions.
+**Panel 1:** Stage 1, read the numbers. Revenue records sales. Earnings deduct specified costs. Cash flow follows actual money received and paid. These answer different questions.
 
 *Dialogue:* “They answer different questions.”
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/26-valuation-is-an-estimate/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam compares two identical operating businesses with different tax bills, while invoices for financing and investment remain on the desk. Use one speech bubble with the exact words: \"Different taxes, same operating performance.\" Convey: EBITDA leaves out interest, income taxes, depreciation and amortization. The last two spread asset costs over time. The excluded costs still matter.",
+  "prompt": "Panel 2 of an explainer comic. Sam compares two identical operating businesses with different tax bills, while invoices for financing and investment remain on the desk. Use one speech bubble with the exact words: \"Different taxes, same operating performance.\" Convey: EBITDA leaves out interest, income taxes, depreciation and amortization. The last two spread asset costs over time. The excluded costs still matter, so ask what an adjusted figure leaves out.",
   "alt": "Comic panel: Sam compares two identical operating businesses with different tax bills, while invoices for financing and investment remain on the desk.",
-  "caption": "EBITDA leaves out interest, income taxes, depreciation and amortization. The last two spread asset costs over time. The excluded costs still matter.",
+  "caption": "EBITDA leaves out interest, income taxes, depreciation and amortization. The last two spread asset costs over time. The excluded costs still matter, so ask what an adjusted figure leaves out.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam compares two identical operating businesses with different tax bills, while invoices for financing and investment remain on the desk.](assets/images/26-valuation-is-an-estimate/comic-02-scene.jpeg)
 
-**Panel 2:** EBITDA leaves out interest, income taxes, depreciation and amortization. The last two spread asset costs over time. The excluded costs still matter.
+**Panel 2:** EBITDA leaves out interest, income taxes, depreciation and amortization. The last two spread asset costs over time. The excluded costs still matter, so ask what an adjusted figure leaves out.
 
 *Dialogue:* “Different taxes, same operating performance.”
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/26-valuation-is-an-estimate/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Morgan examines comparable businesses, a future cash calendar and a cabinet of assets. Use one speech bubble with the exact words: \"How are we estimating value?\" Convey: Valuation estimates what something is worth. Compare similar businesses, estimate what future cash is worth today, or examine assets and relevant obligations.",
+  "prompt": "Panel 3 of an explainer comic. Morgan examines comparable businesses, a future cash calendar and a cabinet of assets. Use one speech bubble with the exact words: \"How are we estimating value?\" Convey: Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Compare similar businesses, estimate what future cash is worth today, or examine assets and relevant obligations.",
   "alt": "Comic panel: Morgan examines comparable businesses, a future cash calendar and a cabinet of assets.",
-  "caption": "Valuation estimates what something is worth. Compare similar businesses, estimate what future cash is worth today, or examine assets and relevant obligations.",
+  "caption": "Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Compare similar businesses, estimate what future cash is worth today, or examine assets and relevant obligations.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan examines comparable businesses, a future cash calendar and a cabinet of assets.](assets/images/26-valuation-is-an-estimate/comic-03-scene.jpeg)
 
-**Panel 3:** Valuation estimates what something is worth. Compare similar businesses, estimate what future cash is worth today, or examine assets and relevant obligations.
+**Panel 3:** Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Compare similar businesses, estimate what future cash is worth today, or examine assets and relevant obligations.
 
 *Dialogue:* “How are we estimating value?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/26-valuation-is-an-estimate/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Two calculators on a table show 60 and 48 for the same business. Use one speech bubble with the exact words: \"What supports each assumption?\" Convey: Using an assumed 3× revenue gives €60 million; using 12× EBITDA gives €48 million. Examine the assumptions and evidence behind each estimate.",
+  "prompt": "Panel 5 of an explainer comic. Two calculators on a table show 60 and 48 for the same business. Use one speech bubble with the exact words: \"What supports each assumption?\" Convey: Using an assumed 3× revenue gives €60 million; using 12× EBITDA gives €48 million. Either estimate can become a target, so examine the assumptions and evidence behind each before the plan is asked to support it.",
   "alt": "Comic panel: Two calculators on a table show 60 and 48 for the same business.",
-  "caption": "Using an assumed 3× revenue gives €60 million; using 12× EBITDA gives €48 million. Examine the assumptions and evidence behind each estimate.",
+  "caption": "Using an assumed 3× revenue gives €60 million; using 12× EBITDA gives €48 million. Either estimate can become a target, so examine the assumptions and evidence behind each before the plan is asked to support it.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Two calculators on a table show 60 and 48 for the same business.](assets/images/26-valuation-is-an-estimate/comic-05-scene.jpeg)
 
-**Panel 5:** Using an assumed 3× revenue gives €60 million; using 12× EBITDA gives €48 million. Examine the assumptions and evidence behind each estimate.
+**Panel 5:** Using an assumed 3× revenue gives €60 million; using 12× EBITDA gives €48 million. Either estimate can become a target, so examine the assumptions and evidence behind each before the plan is asked to support it.
 
 *Dialogue:* “What supports each assumption?”
 

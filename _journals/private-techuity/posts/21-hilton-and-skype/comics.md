@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Much of what investors ask for during ownership is justified by the sale they expect to make. The panels use two completed exits to show what a sale can and cannot tell a product or engineering leader about the technology work that preceded it.
+**Comic.** Much of what investors ask for during ownership is justified by the sale they expect to make. The panels use two completed exits to show what a sale can and cannot tell a product or engineering leader about the technology work that preceded it, and why the two cases ask different questions: Hilton about financing and time, Skype about technology rights and what one buyer valued.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/21-hilton-and-skype/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan places Hilton's commercial systems beside a restructuring record. Use one speech bubble with the exact words: \"Several mechanisms changed together.\" Convey: Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result.",
+  "prompt": "Panel 2 of an explainer comic. Morgan places Hilton's commercial systems beside a restructuring record. Use one speech bubble with the exact words: \"Several mechanisms changed together.\" Convey: Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result. The filing describes the systems but does not date them, so it cannot say which the owner inherited.",
   "alt": "Comic panel: Morgan places Hilton's commercial systems beside a restructuring record.",
-  "caption": "Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result.",
+  "caption": "Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result. The filing describes the systems but does not date them, so it cannot say which the owner inherited.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan places Hilton's commercial systems beside a restructuring record.](assets/images/21-hilton-and-skype/comic-02-scene.jpeg)
 
-**Panel 2:** Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result.
+**Panel 2:** Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result. The filing describes the systems but does not date them, so it cannot say which the owner inherited.
 
 *Dialogue:* “Several mechanisms changed together.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/21-hilton-and-skype/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The fictional team places decision maps beside the historical documents without reenacting the events. Use one speech bubble with the exact words: \"Which question transfers to our situation?\" Convey: Skype’s documented transitions prompt a new map of rights and product purpose at each owner. Hilton prompts a financing question. These histories do not establish outcomes for all investors.",
-  "alt": "Comic panel: The fictional team places decision maps beside the historical documents without reenacting the events.",
-  "caption": "Skype’s documented transitions prompt a new map of rights and product purpose at each owner. Hilton prompts a financing question. These histories do not establish outcomes for all investors.",
+  "prompt": "Panel 6 of an explainer comic. The fictional team places two decision maps beside the historical documents without reenacting the events. Use one speech bubble with the exact words: \"Two cases, two different decisions.\" Convey: Hilton asks whether the company has financing and time for the operating plan. Skype asks whether it controls the rights the product depends on and what a particular buyer values. Neither answer can be read from the exit price.",
+  "alt": "Comic panel: The fictional team places two decision maps, one for financing and time and one for rights and the buyer, beside the historical documents.",
+  "caption": "Hilton asks whether the company has financing and time for the operating plan. Skype asks whether it controls the rights the product depends on and what a particular buyer values. Neither answer can be read from the exit price.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +141,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: The fictional team places decision maps beside the historical documents without reenacting the events.](assets/images/21-hilton-and-skype/comic-06-scene.jpeg)
+![Comic panel: The fictional team places two decision maps, one for financing and time and one for rights and the buyer, beside the historical documents.](assets/images/21-hilton-and-skype/comic-06-scene.jpeg)
 
-**Panel 6:** Skype’s documented transitions prompt a new map of rights and product purpose at each owner. Hilton prompts a financing question. These histories do not establish outcomes for all investors.
+**Panel 6:** Hilton asks whether the company has financing and time for the operating plan. Skype asks whether it controls the rights the product depends on and what a particular buyer values. Neither answer can be read from the exit price.
 
-*Dialogue:* “Which question transfers to our situation?”
+*Dialogue:* “Two cases, two different decisions.”

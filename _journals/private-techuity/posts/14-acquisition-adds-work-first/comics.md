@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Acquisitions and carve-outs are usually investor decisions, agreed on the investor’s timetable and priced on assumptions the operating team may not have been asked about. The panels follow what happens after the transaction date, when those assumptions become operating obligations.
+**Comic.** A transaction plan can assume savings or independence before the operating teams have validated the work. The panels follow what happens after the transaction date, when those assumptions become operating obligations: choosing the depth of integration, deciding what waits, and replacing a parent’s services before they end.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/14-acquisition-adds-work-first/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Alex compares shared reporting with a full product merger. Use one speech bubble with the exact words: \"How much integration is useful?\" Convey: Integration makes selected activities work together. Choose how much to combine by identifying the customer or cost benefit.",
+  "prompt": "Panel 2 of an explainer comic. Alex compares shared reporting with a full product merger. Use one speech bubble with the exact words: \"How much integration is useful?\" Convey: Integration makes selected activities work together. Choose how much to combine by identifying the customer or cost benefit, and decide which roadmap work waits while the same engineers do it.",
   "alt": "Comic panel: Alex compares shared-reporting and product-integration models, each accompanied by a question mark.",
-  "caption": "Integration makes selected activities work together. Choose how much to combine by identifying the customer or cost benefit.",
+  "caption": "Integration makes selected activities work together. Choose how much to combine by identifying the customer or cost benefit, and decide which roadmap work waits while the same engineers do it.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex compares shared-reporting and product-integration models, each accompanied by a question mark.](assets/images/14-acquisition-adds-work-first/comic-02-scene.jpeg)
 
-**Panel 2:** Integration makes selected activities work together. Choose how much to combine by identifying the customer or cost benefit.
+**Panel 2:** Integration makes selected activities work together. Choose how much to combine by identifying the customer or cost benefit, and decide which roadmap work waits while the same engineers do it.
 
 *Dialogue:* “How much integration is useful?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/14-acquisition-adds-work-first/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Morgan marks an expiration date on a service bridge. Use one speech bubble with the exact words: \"How do we leave this bridge?\" Convey: A transition services agreement supplies temporary support, often from the seller. Record its cost, end date and how the company will replace it.",
+  "prompt": "Panel 5 of an explainer comic. Morgan marks an expiration date on a service bridge. Use one speech bubble with the exact words: \"How do we leave this bridge?\" Convey: A transition services agreement supplies temporary support, often from the seller. Record its cost, its end date, the milestone that replaces each service and the test that shows the business runs alone.",
   "alt": "Comic panel: Morgan marks an expiration date on a service bridge.",
-  "caption": "A transition services agreement supplies temporary support, often from the seller. Record its cost, end date and how the company will replace it.",
+  "caption": "A transition services agreement supplies temporary support, often from the seller. Record its cost, its end date, the milestone that replaces each service and the test that shows the business runs alone.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan marks an expiration date on a service bridge.](assets/images/14-acquisition-adds-work-first/comic-05-scene.jpeg)
 
-**Panel 5:** A transition services agreement supplies temporary support, often from the seller. Record its cost, end date and how the company will replace it.
+**Panel 5:** A transition services agreement supplies temporary support, often from the seller. Record its cost, its end date, the milestone that replaces each service and the test that shows the business runs alone.
 
 *Dialogue:* “How do we leave this bridge?”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/14-acquisition-adds-work-first/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex compare two integration scopes and a separate parent-service replacement plan. Use one speech bubble with the exact words: \"Which benefit requires this integration?\" Convey: A corporate buyer’s combined offering can need different work from a sponsor’s shared reporting. A carve-out needs funded independence whatever the new owner’s label.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex compare two integration scopes and a separate parent-service replacement plan. Use one speech bubble with the exact words: \"Which benefit requires this integration?\" Convey: A corporate buyer’s combined offering can need different work from a buyout fund’s shared reporting. A carve-out needs funded independence and an accountable leader for each replaced service, whatever the new owner’s label.",
   "alt": "Comic panel: Priya and Alex compare two integration scopes and a separate parent-service replacement plan.",
-  "caption": "A corporate buyer’s combined offering can need different work from a sponsor’s shared reporting. A carve-out needs funded independence whatever the new owner’s label.",
+  "caption": "A corporate buyer’s combined offering can need different work from a buyout fund’s shared reporting. A carve-out needs funded independence and an accountable leader for each replaced service, whatever the new owner’s label.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Alex compare two integration scopes and a separate parent-service replacement plan.](assets/images/14-acquisition-adds-work-first/comic-06-scene.jpeg)
 
-**Panel 6:** A corporate buyer’s combined offering can need different work from a sponsor’s shared reporting. A carve-out needs funded independence whatever the new owner’s label.
+**Panel 6:** A corporate buyer’s combined offering can need different work from a buyout fund’s shared reporting. A carve-out needs funded independence and an accountable leader for each replaced service, whatever the new owner’s label.
 
 *Dialogue:* “Which benefit requires this integration?”

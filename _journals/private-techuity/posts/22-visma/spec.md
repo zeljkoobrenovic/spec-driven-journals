@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
 # Spec: Visma: Continuity of Manager Is Not Continuity of Money
 
 ## Intent
 
-Examine changing investors behind a continuing manager and the implications for local product authority and shared capability. Keep the historical evidence specific to the periods and measures actually documented.
+Examine changing investors behind a continuing manager, shown in a partial transaction map built only from the cited Visma and Hg announcements with unknown cells marked, and the implications for local product authority and shared capability. Make this chapter the book’s home for the recurring-acquisition-adjustment lesson: the same year reported under two earnings definitions, and the budget decision the adjustment cannot resolve. Treat the shared-services operating model as a question the case raises, not a demonstrated mechanism. Keep the historical evidence specific to the periods and measures actually documented.
 
 ## Audience
 
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Editorial revision: keep the title and add a sourced transaction map (manager / vehicle / entering / leaving / money to the company, unknown cells marked), connect the ownership and earnings lessons and follow the €892.646m + €11.665m = €904.311m bridge with the budget decision it cannot resolve, narrow the shared-services claim to a question, consolidate evidence-limit sections, correct the ESMA annotation, and end on one authority-and-budget check with the handoff to Toys R Us; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

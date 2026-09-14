@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** A consultant the company hires answers to the company. A specialist sent by the investor answers partly to the owner, and engineers may not know whose instructions they are following. The panels show how an engagement charter keeps the help while keeping the decisions.
+**Comic.** The specialist also reports to the investor, so before work starts the company agrees how that responsibility relates to its priorities and who can direct the assignment. The panels follow one fictional engagement from an undefined offer through a completed charter, a scope change and a tested handover.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/30-useful-engagement/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "A short engagement charter records purpose, resources, company responsibility, authority, information use, review and handover.",
+  "caption": "A short engagement charter records the result, the accountable company leader, the investor-side sponsor, resources on both sides, who directs the work, information use, review date and handover test.",
   "alt": "Comic panel: Alex, Sam and Morgan examine one shared agreement with clearly separated responsibility fields.",
-  "prompt": "Panel 2 of an explainer comic. Alex, Sam and Morgan examine one shared agreement with clearly separated responsibility fields. Use one speech bubble with the exact words: \"Who decides, and who does the work?\" Convey: A short engagement charter records purpose, resources, company responsibility, authority, information use, review and handover.",
+  "prompt": "Panel 2 of an explainer comic. Alex, Sam and Morgan examine one shared agreement with clearly separated responsibility fields. Use one speech bubble with the exact words: \"Who decides, and who does the work?\" Convey: A short engagement charter records the result, the accountable company leader, the investor-side sponsor, resources on both sides, who directs the work, information use, review date and handover test.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex, Sam and Morgan examine one shared agreement with clearly separated responsibility fields.](assets/images/30-useful-engagement/comic-02-scene.jpeg)
 
-**Panel 2:** A short engagement charter records purpose, resources, company responsibility, authority, information use, review and handover.
+**Panel 2:** A short engagement charter records the result, the accountable company leader, the investor-side sponsor, resources on both sides, who directs the work, information use, review date and handover test.
 
 *Dialogue:* “Who decides, and who does the work?”
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/30-useful-engagement/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "External expertise still needs company capacity. The engagement must account for internal participation and implementation costs.",
+  "caption": "External expertise still needs company capacity. Ten specialist days need six engineer-days, two customer-team sessions and Priya’s review, all written into the plan.",
   "alt": "Comic panel: Sam adds company engineer time beside the specialist’s ten-day offer on a six-week calendar.",
-  "prompt": "Panel 3 of an explainer comic. Sam adds company engineer time beside the specialist’s ten-day offer on a six-week calendar. Use one speech bubble with the exact words: \"Our time belongs in the plan too.\" Convey: External expertise still needs company capacity. The engagement must account for internal participation and implementation costs.",
+  "prompt": "Panel 3 of an explainer comic. Sam adds company engineer time beside the specialist’s ten-day offer on a six-week calendar. Use one speech bubble with the exact words: \"Our time belongs in the plan too.\" Convey: External expertise still needs company capacity. Ten specialist days need six engineer-days, two customer-team sessions and Priya’s review, all written into the plan.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam adds company engineer time beside the specialist’s ten-day offer on a six-week calendar.](assets/images/30-useful-engagement/comic-03-scene.jpeg)
 
-**Panel 3:** External expertise still needs company capacity. The engagement must account for internal participation and implementation costs.
+**Panel 3:** External expertise still needs company capacity. Ten specialist days need six engineer-days, two customer-team sessions and Priya’s review, all written into the plan.
 
 *Dialogue:* “Our time belongs in the plan too.”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/30-useful-engagement/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "Coaching, delivery help and formal oversight use information for different purposes. Make those purposes and sharing boundaries understandable.",
+  "caption": "The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. An assessment would be requested separately and announced.",
   "alt": "Comic panel: Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder.",
-  "prompt": "Panel 4 of an explainer comic. Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder. Use one speech bubble with the exact words: \"How will this information be used?\" Convey: Coaching, delivery help and formal oversight use information for different purposes. Make those purposes and sharing boundaries understandable.",
+  "prompt": "Panel 4 of an explainer comic. Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder. Use one speech bubble with the exact words: \"How will this information be used?\" Convey: The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. An assessment would be requested separately and announced.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder.](assets/images/30-useful-engagement/comic-04-scene.jpeg)
 
-**Panel 4:** Coaching, delivery help and formal oversight use information for different purposes. Make those purposes and sharing boundaries understandable.
+**Panel 4:** The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. An assessment would be requested separately and announced.
 
 *Dialogue:* “How will this information be used?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/30-useful-engagement/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "A baseline records the starting situation. Compare outcomes and costs, and revise the engagement if the evidence points to a different problem.",
+  "caption": "The day-20 baseline shows data quality, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the remaining five specialist days; the budget and review date do not move.",
   "alt": "Comic panel: Alex places before-and-after customer-setup records beside a newly discovered data-quality issue.",
-  "prompt": "Panel 5 of an explainer comic. Alex places before-and-after customer-setup records beside a newly discovered data-quality issue. Use one speech bubble with the exact words: \"The evidence changed the problem.\" Convey: A baseline records the starting situation. Compare outcomes and costs, and revise the engagement if the evidence points to a different problem.",
+  "prompt": "Panel 5 of an explainer comic. Alex places before-and-after customer-setup records beside a newly discovered data-quality issue. Use one speech bubble with the exact words: \"The evidence changed the problem.\" Convey: The day-20 baseline shows data quality, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the remaining five specialist days; the budget and review date do not move.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex places before-and-after customer-setup records beside a newly discovered data-quality issue.](assets/images/30-useful-engagement/comic-05-scene.jpeg)
 
-**Panel 5:** A baseline records the starting situation. Compare outcomes and costs, and revise the engagement if the evidence points to a different problem.
+**Panel 5:** The day-20 baseline shows data quality, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the remaining five specialist days; the budget and review date do not move.
 
 *Dialogue:* “The evidence changed the problem.”
 
@@ -128,11 +128,12 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "06-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/30-useful-engagement/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "Two investor advisers should work against one company question and accountable plan. Agree access, costs and an ending, including what changes under a future owner.",
-  "alt": "Comic panel: Priya and Alex align two adviser assignments to one company decision and review date.",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex align two adviser assignments to one company decision and review date. Use one speech bubble with the exact words: \"One company plan, with clear responsibilities.\" Convey: Two investor advisers should work against one company question and accountable plan. Agree access, costs and an ending, including what changes under a future owner.",
+  "caption": "Week six: the Larkspur engineer completes a new customer’s setup with the specialist observing only. The engagement ends on schedule, and the data-quality finding goes to the board as a better decision to make.",
+  "alt": "Comic panel: Priya and Alex watch a Larkspur engineer complete a customer setup while the specialist stands back, hands folded.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex watch a Larkspur engineer complete a customer setup at a screen while the specialist stands back, hands folded, observing only; a small card on the desk reads data quality, to the board. Use one speech bubble with the exact words: \"Our engineer ran it alone. The rest goes to the board.\" Convey: Week six: the Larkspur engineer completes a new customer’s setup with the specialist observing only. The engagement ends on schedule, and the data-quality finding goes to the board as a better decision to make.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +142,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Priya and Alex align two adviser assignments to one company decision and review date.](assets/images/30-useful-engagement/comic-06-scene.jpeg)
+![Comic panel: Priya and Alex watch a Larkspur engineer complete a customer setup while the specialist stands back, hands folded.](assets/images/30-useful-engagement/comic-06-scene.jpeg)
 
-**Panel 6:** Two investor advisers should work against one company question and accountable plan. Agree access, costs and an ending, including what changes under a future owner.
+**Panel 6:** Week six: the Larkspur engineer completes a new customer’s setup with the specialist observing only. The engagement ends on schedule, and the data-quality finding goes to the board as a better decision to make.
 
-*Dialogue:* “One company plan, with clear responsibilities.”
+*Dialogue:* “Our engineer ran it alone. The rest goes to the board.”

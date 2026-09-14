@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** This help exists only because of the investor, whose portfolio accumulates people and experience a single company cannot reach. The panels show how to use an offer that is real but not free of interest, starting from the company’s need rather than from what is offered.
+**Comic.** An investor may give Larkspur faster access to relevant people and experience. The panels compare that access with the help the company could obtain elsewhere, starting from the company’s need, and end with the written request that the next chapter turns into a charter.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/29-help-that-changes-capability/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "Investor support may include operating specialists, leaders at other portfolio companies, hiring help and introductions. Match the source to the need.",
+  "caption": "Lay out the credible sources for the same need, including those outside the investor’s network, and compare them on availability, company effort, cost and relevant experience.",
   "alt": "Comic panel: Morgan lays out cards representing a specialist, a peer leader, a recruiter and a customer introduction.",
-  "prompt": "Panel 2 of an explainer comic. Morgan lays out cards representing a specialist, a peer leader, a recruiter and a customer introduction. Use one speech bubble with the exact words: \"Which kind of help would resolve it?\" Convey: Investor support may include operating specialists, leaders at other portfolio companies, hiring help and introductions. Match the source to the need.",
+  "prompt": "Panel 2 of an explainer comic. Morgan lays out cards representing a specialist, a peer leader, a recruiter and a customer introduction. Use one speech bubble with the exact words: \"Which kind of help would resolve it?\" Convey: Lay out the credible sources for the same need, including those outside the investor’s network, and compare them on availability, company effort, cost and relevant experience.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan lays out cards representing a specialist, a peer leader, a recruiter and a customer introduction.](assets/images/29-help-that-changes-capability/comic-02-scene.jpeg)
 
-**Panel 2:** Investor support may include operating specialists, leaders at other portfolio companies, hiring help and introductions. Match the source to the need.
+**Panel 2:** Lay out the credible sources for the same need, including those outside the investor’s network, and compare them on availability, company effort, cost and relevant experience.
 
 *Dialogue:* “Which kind of help would resolve it?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/29-help-that-changes-capability/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "Establish availability, company effort and cost before depending on an offer. Relevant expertise may already be committed elsewhere.",
+  "caption": "Establish availability, company effort and cost before depending on an offer. The investor’s specialist can start in three weeks; the fallback is an independent specialist, and hiring stays deferred.",
   "alt": "Comic panel: Sam and Morgan compare the specialist calendar with the company team’s available time.",
-  "prompt": "Panel 5 of an explainer comic. Sam and Morgan compare the specialist calendar with the company team’s available time. Use one speech bubble with the exact words: \"When can both sides do the work?\" Convey: Establish availability, company effort and cost before depending on an offer. Relevant expertise may already be committed elsewhere.",
+  "prompt": "Panel 5 of an explainer comic. Sam and Morgan compare the specialist calendar with the company team’s available time. Use one speech bubble with the exact words: \"When can both sides do the work?\" Convey: Establish availability, company effort and cost before depending on an offer. The investor’s specialist can start in three weeks; the fallback is an independent specialist, and hiring stays deferred.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam and Morgan compare the specialist calendar with the company team’s available time.](assets/images/29-help-that-changes-capability/comic-05-scene.jpeg)
 
-**Panel 5:** Establish availability, company effort and cost before depending on an offer. Relevant expertise may already be committed elsewhere.
+**Panel 5:** Establish availability, company effort and cost before depending on an offer. The investor’s specialist can start in three weeks; the fallback is an independent specialist, and hiring stays deferred.
 
 *Dialogue:* “When can both sides do the work?”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/29-help-that-changes-capability/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "Different investors can offer different people, networks or shared services. Test actual availability, company effort, commercial interests and continuing dependence before accepting help.",
-  "alt": "Comic panel: Priya selects one specific company need from a table of possible investor offers while Alex checks the required team time.",
-  "prompt": "Panel 6 of an explainer comic. Priya selects one specific company need from a table of possible investor offers while Alex checks the required team time. Use one speech bubble with the exact words: \"Which help changes what we can do?\" Convey: Different investors can offer different people, networks or shared services. Test actual availability, company effort, commercial interests and continuing dependence before accepting help.",
+  "caption": "Priya chooses the first step for one need and writes the request: make one setup path repeatable, with a specialist alongside our engineer for six weeks; Priya assesses customer outcomes.",
+  "alt": "Comic panel: Priya selects one company need from a table of possible offers while Alex checks availability, effort, commercial interests and dependence.",
+  "prompt": "Panel 6 of an explainer comic. Priya selects one company need from a table of possible offers while Alex checks availability, effort, commercial interests and dependence. Use one speech bubble with the exact words: \"Which help changes what we can do?\" Convey: Priya chooses the first step for one need and writes the request: make one setup path repeatable, with a specialist alongside our engineer for six weeks; Priya assesses customer outcomes.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +141,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Priya selects one specific company need from a table of possible investor offers while Alex checks the required team time.](assets/images/29-help-that-changes-capability/comic-06-scene.jpeg)
+![Comic panel: Priya selects one company need from a table of possible offers while Alex checks availability, effort, commercial interests and dependence.](assets/images/29-help-that-changes-capability/comic-06-scene.jpeg)
 
-**Panel 6:** Different investors can offer different people, networks or shared services. Test actual availability, company effort, commercial interests and continuing dependence before accepting help.
+**Panel 6:** Priya chooses the first step for one need and writes the request: make one setup path repeatable, with a specialist alongside our engineer for six weeks; Priya assesses customer outcomes.
 
 *Dialogue:* “Which help changes what we can do?”

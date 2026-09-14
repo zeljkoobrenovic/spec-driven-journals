@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Under investors, a security investment competes with growth work for limited cash and appears as cost without revenue, while a breach during the ownership period can reduce what the company is worth. The panels show how to argue for it in terms an investment committee recognizes.
+**Comic.** In the fictional Larkspur scenario, backups had run for three years and nobody had restored the service. The panels follow one restore from a recovery objective stated in a dispatcher’s words, through a failed test and funded corrective work, to a retest and a record of what remains exposed and who accepted it. The decisions are the company’s, taken by the Larkspur board, its CEO and its CTO under the plan the board approved; the investor’s adviser helps obtain specialist judgment but does not decide what Larkspur funds.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/11-prove-you-can-restore/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex points to a dashboard with no reported incidents. Use one speech bubble with the exact words: \"What does silence prove?\" Convey: Security protects systems and information from harm. An absence of reported incidents does not prove that protection is adequate.",
+  "prompt": "Panel 1 of an explainer comic. Alex points to a dashboard with no reported incidents. Use one speech bubble with the exact words: \"What does silence prove?\" Convey: Security protects systems and information from harm. An absence of reported incidents does not prove that protection is adequate, or that dispatch would resume after a failure.",
   "alt": "Comic panel: Alex points to a dashboard with no reported incidents.",
-  "caption": "Security protects systems and information from harm. An absence of reported incidents does not prove that protection is adequate.",
+  "caption": "Security protects systems and information from harm. An absence of reported incidents does not prove that protection is adequate, or that dispatch would resume after a failure.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex points to a dashboard with no reported incidents.](assets/images/11-prove-you-can-restore/comic-01-scene.jpeg)
 
-**Panel 1:** Security protects systems and information from harm. An absence of reported incidents does not prove that protection is adequate.
+**Panel 1:** Security protects systems and information from harm. An absence of reported incidents does not prove that protection is adequate, or that dispatch would resume after a failure.
 
 *Dialogue:* “What does silence prove?”
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/11-prove-you-can-restore/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan maps a critical customer service and the systems and people it requires. Use one speech bubble with the exact words: \"Start with the business service.\" Convey: Begin with a service customers need. Ask what happens if it fails and how long the business can continue without it.",
+  "prompt": "Panel 2 of an explainer comic. Morgan maps a critical customer service and the systems and people it requires. Use one speech bubble with the exact words: \"Start with the business service.\" Convey: Begin with the service customers need and state the objective in ordinary words: dispatch must resume within four hours, with no more than fifteen minutes of lost schedule updates. An agreed fictional objective, not a legal standard.",
   "alt": "Comic panel: Morgan maps a critical customer service and the systems and people it requires.",
-  "caption": "Begin with a service customers need. Ask what happens if it fails and how long the business can continue without it.",
+  "caption": "Begin with the service customers need and state the objective in ordinary words: dispatch must resume within four hours, with no more than fifteen minutes of lost schedule updates. An agreed fictional objective, not a legal standard.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan maps a critical customer service and the systems and people it requires.](assets/images/11-prove-you-can-restore/comic-02-scene.jpeg)
 
-**Panel 2:** Begin with a service customers need. Ask what happens if it fails and how long the business can continue without it.
+**Panel 2:** Begin with the service customers need and state the objective in ordinary words: dispatch must resume within four hours, with no more than fifteen minutes of lost schedule updates. An agreed fictional objective, not a legal standard.
 
 *Dialogue:* “Start with the business service.”
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/11-prove-you-can-restore/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam studies several uncertain loss scenarios. Use one speech bubble with the exact words: \"These are assumptions, not booked savings.\" Convey: Expected loss combines an estimated chance with an estimated consequence. A reduction in that uncertain estimate is not recorded profit.",
+  "prompt": "Panel 3 of an explainer comic. Sam studies several uncertain loss scenarios. Use one speech bubble with the exact words: \"These are assumptions, not booked savings.\" Convey: Expected loss combines an estimated chance with an estimated consequence. A reduction in that uncertain estimate supports the funding decision; it is not the reason for it, and it is not recorded profit.",
   "alt": "Comic panel: Sam studies several uncertain loss scenarios.",
-  "caption": "Expected loss combines an estimated chance with an estimated consequence. A reduction in that uncertain estimate is not recorded profit.",
+  "caption": "Expected loss combines an estimated chance with an estimated consequence. A reduction in that uncertain estimate supports the funding decision; it is not the reason for it, and it is not recorded profit.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam studies several uncertain loss scenarios.](assets/images/11-prove-you-can-restore/comic-03-scene.jpeg)
 
-**Panel 3:** Expected loss combines an estimated chance with an estimated consequence. A reduction in that uncertain estimate is not recorded profit.
+**Panel 3:** Expected loss combines an estimated chance with an estimated consequence. A reduction in that uncertain estimate supports the funding decision; it is not the reason for it, and it is not recorded profit.
 
 *Dialogue:* “These are assumptions, not booked savings.”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/11-prove-you-can-restore/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. A backup box opens to reveal an untested restore process. Use one speech bubble with the exact words: \"Can we actually recover?\" Convey: Resilience is the ability to continue or restore essential work. A stored backup alone does not demonstrate that the service can be restored.",
+  "prompt": "Panel 4 of an explainer comic. A backup box opens to reveal an untested restore process. Use one speech bubble with the exact words: \"Can we actually recover?\" Convey: Larkspur’s backups ran without error for three years. The first full restore took eleven hours and lost a night of updates, against a four-hour, fifteen-minute objective. A stored backup alone does not demonstrate that the service can be restored.",
   "alt": "Comic panel: A backup box opens to reveal an untested restore process.",
-  "caption": "Resilience is the ability to continue or restore essential work. A stored backup alone does not demonstrate that the service can be restored.",
+  "caption": "Larkspur’s backups ran without error for three years. The first full restore took eleven hours and lost a night of updates, against a four-hour, fifteen-minute objective. A stored backup alone does not demonstrate that the service can be restored.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: A backup box opens to reveal an untested restore process.](assets/images/11-prove-you-can-restore/comic-04-scene.jpeg)
 
-**Panel 4:** Resilience is the ability to continue or restore essential work. A stored backup alone does not demonstrate that the service can be restored.
+**Panel 4:** Larkspur’s backups ran without error for three years. The first full restore took eleven hours and lost a night of updates, against a four-hour, fifteen-minute objective. A stored backup alone does not demonstrate that the service can be restored.
 
 *Dialogue:* “Can we actually recover?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/11-prove-you-can-restore/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. The team practices service restoration and customer communication. Use one speech bubble with the exact words: \"Test the whole response.\" Convey: Practice recovery with the technical team, suppliers and people communicating with customers. Check the whole service.",
+  "prompt": "Panel 5 of an explainer comic. The team practices service restoration and customer communication. Use one speech bubble with the exact words: \"Test the whole response.\" Convey: The funded corrective item, €80,000 and four engineer-weeks, fixes the credential and database-version gaps. The retest restores dispatch within the objective, checked end to end with the customer team.",
   "alt": "Comic panel: The team practices service restoration and customer communication.",
-  "caption": "Practice recovery with the technical team, suppliers and people communicating with customers. Check the whole service.",
+  "caption": "The funded corrective item, €80,000 and four engineer-weeks, fixes the credential and database-version gaps. The retest restores dispatch within the objective, checked end to end with the customer team.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: The team practices service restoration and customer communication.](assets/images/11-prove-you-can-restore/comic-05-scene.jpeg)
 
-**Panel 5:** Practice recovery with the technical team, suppliers and people communicating with customers. Check the whole service.
+**Panel 5:** The funded corrective item, €80,000 and four engineer-weeks, fixes the credential and database-version gaps. The retest restores dispatch within the objective, checked end to end with the customer team.
 
 *Dialogue:* “Test the whole response.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/11-prove-you-can-restore/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex identifies the affected customer service, the company decision-maker and the external support boundary. Use one speech bubble with the exact words: \"Who accepts this risk, with what evidence?\" Convey: Delayed funding still requires an explicit decision about service risk. Shared investor support also needs agreed access and a recovery plan if the provider changes.",
+  "prompt": "Panel 6 of an explainer comic. Alex identifies the affected customer service, the company decision-maker and the external support boundary. Use one speech bubble with the exact words: \"Who accepts this risk, with what evidence?\" Convey: A passed test changes the exposure; it does not remove it. Alex records what the test did not cover, the CEO accepts the residual risk on the board’s behalf with a quarterly retest, and any shared investor support still needs agreed access and a recovery plan if the provider changes.",
   "alt": "Comic panel: Alex identifies the affected customer service, the company decision-maker and the external support boundary.",
-  "caption": "Delayed funding still requires an explicit decision about service risk. Shared investor support also needs agreed access and a recovery plan if the provider changes.",
+  "caption": "A passed test changes the exposure; it does not remove it. Alex records what the test did not cover, the CEO accepts the residual risk on the board’s behalf with a quarterly retest, and any shared investor support still needs agreed access and a recovery plan if the provider changes.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex identifies the affected customer service, the company decision-maker and the external support boundary.](assets/images/11-prove-you-can-restore/comic-06-scene.jpeg)
 
-**Panel 6:** Delayed funding still requires an explicit decision about service risk. Shared investor support also needs agreed access and a recovery plan if the provider changes.
+**Panel 6:** A passed test changes the exposure; it does not remove it. Alex records what the test did not cover, the CEO accepts the residual risk on the board’s behalf with a quarterly retest, and any shared investor support still needs agreed access and a recovery plan if the provider changes.
 
 *Dialogue:* “Who accepts this risk, with what evidence?”

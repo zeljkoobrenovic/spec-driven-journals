@@ -1,0 +1,16 @@
+# Bibliography Revision History
+
+**Private working note; excluded from `config.yaml` and the rendered journal.** This records the editorial chronology of the source register in `posts/bibliography/index.md`: which revision added or rechecked which identifiers. It was moved here on 2026-09-14 so that the reader-facing bibliography states present-tense scope only. The consultation dates that affect interpretation of a source stay inside its entry on the public page; `sources.json` remains the machine-readable record.
+
+Identifiers are stable and are never reassigned. S38 is unassigned in the register as published and in `sources.json`; the gap is preserved rather than renumbered so that every existing citation keeps its meaning.
+
+| Date | Revision | Register change |
+| --- | --- | --- |
+| 2026-09-12 | Original source review (first draft, research passes one and two) | S01–S37 and S39–S53 consulted; P01 and P02 reviewed. Pass two (same date) reconciled the Visma financials page (S33) against the 2024 and 2025 annual reports (S43–S44), added the TeamSystem sources (S45–S49), the Toys R Us court declaration and Hasbro report (S50–S51) and the valuation sources (S52–S53), and re-attempted complete access to the Toys R Us fiscal 2016 10-K (S34) without success. |
+| 2026-09-13 | Beginner-reading revision | Added S54–S57 (Investor.gov stock and public-company pages, SBA grants overview, Damodaran capital-structure slides). |
+| 2026-09-13 | Structural revision (company-leader perspective, revised part structure) | Rechecked S01 for the controlling-versus-minority distinction and S22 for the investor-support chapters. Rechecked S06 (non-GAAP interpretations) and S07 (IAS 38 recognition criteria). |
+| 2026-09-13 | Editorial review of the draft | Checked the Peng et al. study design and results (S19; 2022 experiment, 55.8% completion-time figure) and the IPEV enterprise-to-equity adjustments (S52). |
+| 2026-09-13 | Owned rewrite | Added S58–S61 (British Business Bank venture, expansion and corporate venture capital guides; NVCA model-document overview) to support the broader ownership frame. These support the financial orientation only; they do not validate the proposed working methods or establish comparative investor performance. |
+| 2026-09-14 | Owned editorial revision (post-review) | No entries added or removed; no consultation note changed in substance. The public page gained a topic index, per-entry "Used in" chapter links, a single statement separating proposed methods from empirical evidence, and a section distinguishing chapter-end "To Probe Further" lists from the consulted-evidence register. S58–S61 formatting was normalized to the preceding entries. "Used in" lines were derived by grepping `[S<nn>:` across `posts/*/index.md`; entries whose citing text is moving between chapters in the same revision (S01: announcement / fund-economics; S05: three-different-returns / fund-economics; S02, S24, S30: the-financing-slipped / handover-of-obligations) list both destinations pending a recheck after the chapters settle. |
+
+Related notes: [research method and source limits](research-method.md), [research pass two](research-pass-02.md), [Owned rewrite](owned-revision.md).

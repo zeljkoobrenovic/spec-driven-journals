@@ -1,7 +1,7 @@
 # Owned — Implemented Structure
 
 **Status:** implemented; living manuscript remains a draft
-**Date:** 2026-09-13
+**Date:** 2026-09-14
 
 ## Positioning
 
@@ -20,7 +20,7 @@ The primary reader leads product or engineering inside a company working under i
 | II | How Investor Ownership Changes Decisions | Understand what changes when an investor enters: authority, priorities, accountability and the decisions leaders can make or influence. |
 | III | Turning Investor Expectations into Commitments | Choose where to invest money and team capacity, then connect the work to customer outcomes, business results and lasting capability. |
 | IV | Beyond Money: Using Investor Support to Build Capability and Accelerate Progress | Find useful people, expertise and connections, agree what help will achieve, and leave the company able to sustain the result. |
-| V | Leading Through Funding and Ownership Changes | Prepare for funding rounds, changes of ownership, revised plans, integration and possible exits. |
+| V | Leading Through Funding and Ownership Changes | Diligence, the early funded plan, delayed financing and the handover of continuing obligations through rounds, sales, integration or continued ownership. |
 | VI | Lessons from the Field | Use real company histories to examine what happened, what leaders can learn and where the evidence remains incomplete. |
 
 
@@ -28,11 +28,11 @@ The primary reader leads product or engineering inside a company working under i
 
 - Part I makes ownership comparative and teaches financial foundations for decisions, including dilution, round valuations, buyout arithmetic, cash and runway.
 - Part II addresses actual authority, different incentives and relationships with one or several investors.
-- Part III turns investor expectations into feasible company work, carrying funding and authority consequences into product, systems, costs, risk, AI, people and transactions.
+- Part III turns investor expectations into feasible company work in three moves: choose and justify the work; assess and change the delivery system (assessment, organization, design); apply the reasoning to cloud, recovery, AI and transactions.
 - Part IV starts with the company’s missing capability and assesses available support, conflicting interests and continuing dependence.
-- Part V follows possible funding and ownership events, including delays, refinancing, corporate integration and continued ownership.
+- Part V has four destinations: diligence, the early funded plan, a delayed financing and the handover of continuing obligations. One fictional finding (D-3, onboarding depends on one specialist) travels through all four and the toolkit.
 - Part VI retains the documented company histories and distinguishes transferable questions from evidence about different ownership models.
-- The Productscapes appendix remains an optional hypothesis grounded in fund-side inputs; its provider model requires adaptation elsewhere.
+- Reference Material holds the toolkit, an optional fund-economics page (fees, distributions, performance ratios moved out of Part I), the glossary and the bibliography. The Productscapes hypothesis is recorded only as provenance (P02).
 
 ## Editorial Rules
 
@@ -40,6 +40,7 @@ Define terms before use. Identify the company leader’s decision, required auth
 
 ## Decision Record
 
+- 2026-09-14: Editorial revision implementing the 14 September 2026 review. Structural changes: split the handover material out of "The Roadmap Did Not Slip, the Financing Did" into a new Part V chapter, `31-handover-of-obligations` (permalink `handover-of-obligations`); added an optional `fund-economics` reference page; moved "Fix the Decision Problem Before Adding People" directly after "Can the Software and the Team Deliver What Was Promised?" in Part III; retitled four chapters with permalinks unchanged (Match the Funding to the Work; Find the Cash Behind Your Technology Budget; Toys R Us: Positive Operating Earnings, Too Little Cash; TeamSystem: Each New Owner Inherits Progress and Unfinished Work). Review files kept unchanged; dispositions in `posts/REVISION_LOG.md`.
 - 2026-09-13: The author selected **OWNED: Product & Engineering Leadership Under Investors** and requested a substantive rewrite. This supersedes the earlier private-equity-first positioning below. The implemented six-part structure and stable URLs are retained.
 
 ### Earlier decisions retained as history

@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Product and engineering leaders rarely choose the investor but inherit the choice. The panels compare capital arrangements to show how each one sets the expected pace, the tolerable loss and whether the plan is judged against a sale or continued ownership.
+**Comic.** Product and engineering leaders may not choose the investor but they inherit its terms, and the terms of the funding and the investor’s expectations affect the pace, the tolerated losses and the time available for the plan. The panels size one piece of work, compare two arrangements that could fund it and show who can recommend and who can renegotiate.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/03-raise-what-you-need/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. The same team faces an implementation queue. Use one speech bubble with the exact words: \"Demand exceeds our delivery capacity.\" Convey: Money for expansion helps only if the company can turn demand into customers it can serve well.",
+  "prompt": "Panel 2 of an explainer comic. The same team faces an implementation queue. Use one speech bubble with the exact words: \"Demand exceeds our delivery capacity.\" Convey: Demand is not the problem; delivery is. Alex and Priya size the fix at about €610,000: the €180,000 build plus transition, interim capacity, an uncertainty allowance and decision runway.",
   "alt": "Comic panel: The same team faces an implementation queue.",
-  "caption": "Money for expansion helps only if the company can turn demand into customers it can serve well.",
+  "caption": "Demand is not the problem; delivery is. Alex and Priya size the fix at about €610,000: the €180,000 build plus transition, interim capacity, an uncertainty allowance and decision runway.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: The same team faces an implementation queue.](assets/images/03-raise-what-you-need/comic-02-scene.jpeg)
 
-**Panel 2:** Money for expansion helps only if the company can turn demand into customers it can serve well.
+**Panel 2:** Demand is not the problem; delivery is. Alex and Priya size the fix at about €610,000: the €180,000 build plus transition, interim capacity, an uncertainty allowance and decision runway.
 
 *Dialogue:* “Demand exceeds our delivery capacity.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/03-raise-what-you-need/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team matches a financing proposal to the company's work. Use one speech bubble with the exact words: \"Does this capital fit?\" Convey: Choose a financing arrangement by examining the company’s work, cash needs, risks and feasible alternatives.",
-  "alt": "Comic panel: The team matches a financing proposal to the company's work.",
-  "caption": "Choose a financing arrangement by examining the company’s work, cash needs, risks and feasible alternatives.",
+  "prompt": "Panel 6 of an explainer comic. The team weighs two financing proposals against the sized onboarding work. Use one speech bubble with the exact words: \"Does this capital fit?\" Convey: Two arrangements could fund the same need. Under the stated assumptions the staged loan is chosen over €2.5m of growth equity; Alex and Priya recommend the work, Ines and Sam negotiate the terms.",
+  "alt": "Comic panel: The team weighs two financing proposals against the sized onboarding work.",
+  "caption": "Two arrangements could fund the same need. Under the stated assumptions the staged loan is chosen over €2.5m of growth equity; Alex and Priya recommend the work, Ines and Sam negotiate the terms.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +141,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: The team matches a financing proposal to the company's work.](assets/images/03-raise-what-you-need/comic-06-scene.jpeg)
+![Comic panel: The team weighs two financing proposals against the sized onboarding work.](assets/images/03-raise-what-you-need/comic-06-scene.jpeg)
 
-**Panel 6:** Choose a financing arrangement by examining the company’s work, cash needs, risks and feasible alternatives.
+**Panel 6:** Two arrangements could fund the same need. Under the stated assumptions the staged loan is chosen over €2.5m of growth equity; Alex and Priya recommend the work, Ines and Sam negotiate the terms.
 
 *Dialogue:* “Does this capital fit?”

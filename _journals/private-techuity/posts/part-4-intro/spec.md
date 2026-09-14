@@ -48,6 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-14: Shorten the investor-category recap, state the three distinct chapter jobs (adviser role; sourcing; charter and handover), keep the continuing-service allowance and use accountable-leader language. Permalink unchanged.
 - 2026-09-14: Retitle the post from “PART IV — Beyond Money: Using Investor Support to Build Capability and Accelerate Progress” to “PART IV — Beyond Money: Getting Useful Help From Your Investor”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

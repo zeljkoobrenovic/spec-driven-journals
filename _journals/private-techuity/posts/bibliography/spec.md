@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
 # Spec: Bibliography and Evidence Guide
 
 ## Intent
 
-Distinguish source support for funding arrangements from historical evidence about outcomes. Record newly consulted venture, growth, corporate and governance guidance with precise consultation limits.
+Give readers a stable register of the sources the book consulted, findable by topic and by chapter, with each entry stating the version consulted, the evidence type, the consulted scope and the chapters that cite it. Distinguish source support for funding arrangements from historical evidence about outcomes, and distinguish both from the book’s proposed methods and from optional chapter-end reading.
 
 ## Audience
 
@@ -20,6 +20,8 @@ Product and engineering leaders inside companies working under investors, includ
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Make the page usable by a beginner: explain how to start, define labels plainly, and link the relevant teaching chapters.
+- Keep S/P identifiers stable (gaps such as S38 stay); provide a topic index and per-entry “Used in” links; state general reading rules once and keep source-specific limits attached to entries.
+- Keep editorial revision chronology out of the page (it lives in `_research/bibliography-revision-history.md`); do not claim consultation of chapter-end “To Probe Further” resources that carry no S identifier.
 
 Readers can find, interpret, and use the material without confusing evidence with proposals or fictional examples. Navigation is stable; confidential provenance remains outside site content.
 
@@ -46,6 +48,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-14: Replaced revision-history narrative with present-tense scope, added a topic index and per-entry “Used in” chapter links, merged the two reading-rules sections, stated the proposed-methods-versus-evidence distinction once, added an evidence-versus-further-reading section and normalized S58–S61, in response to the 2026-09-14 review; permalink and id unchanged.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Clarify the editorial acceptance criterion above before polishing the article and checking its related reading formats.
 - 2026-09-13: Reconcile the revised article and applicable reading formats with the Owned contract; specification accepted as matching the draft manuscript.

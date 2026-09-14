@@ -2,111 +2,129 @@
 title: "Fix the Decision Problem Before Adding People"
 date: 2026-09-12
 author: Owned working manuscript
-excerpt: "Examine how roles, decisions, skills and working relationships affect the company’s ability to deliver its technology plans."
+excerpt: "Trace one piece of work through the company before adding people: separate decision, knowledge and staffing constraints, assess leaders in their system, and decide what hiring the plan needs."
 permalink: fix-decisions-before-hiring
-timetoread: 7 min read
+timetoread: 13 min read
 logo: "assets/images/13-fix-decisions-before-hiring/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/13-fix-decisions-before-hiring.png"
 ---
 
+> **IN THIS SECTION, YOU WILL:** Learn to trace one piece of work through the company, separate decision, knowledge and staffing constraints, assess leaders in their system and decide what hiring the plan needs.
+
+> **WHY IS THIS IMPORTANT:** Hiring into a queue made of unclear authority and concentrated knowledge buys people who wait; the diagnosis decides whether new people help, and what shape the hire should take.
+
+
 > **KEY POINTS:**
 >
-> * A company's operating capability includes **how people decide and coordinate**. New tools or locations will not solve unclear priorities and concentrated knowledge by themselves.
-> * People changes have **transition costs**. Compare the full delivery model, including recruitment, overlap, knowledge transfer and management effort.
-> * **Organizational health affects the investment plan**. Watch whether the company can keep learning, supporting customers and changing safely after the intervention.
+> * A company’s capacity includes **how people decide and coordinate**. New tools, locations or hires will not remove a queue that is made of unclear authority and concentrated knowledge.
+> * People changes have **transition costs and a knowledge-transfer test**. Compare the full delivery model, including recruitment, overlap, management effort and the receiving team’s demonstrated competence.
+> * The diagnosis should **produce a staffing decision**: hiring proceeds, changes shape or is deferred, with the remaining gap, its funding and the evidence that would reopen the choice named.
 
 <br>
-A company buys a new delivery tool, adopts a new architecture, and recruits engineers in a lower-cost location. Six months later, decisions still wait for the founder, priorities still change every week, and the same two people resolve every production problem.
+A company buys a new delivery tool, adopts a new architecture, and recruits engineers in a lower-cost location. Six months later, decisions still wait for the same executive, priorities still change every week, and the same two people resolve every production problem.
 
-The company has changed its resources without touching the delays in its decisions. An **operating model** is the arrangement of responsibilities, teams and processes through which work gets done. **Capability** is what that arrangement lets people do reliably.
+The plan funded new resources, but it has not funded the management time and decision changes needed to use them. An **operating model** is the arrangement of responsibilities, teams and processes through which work gets done. **Capability** is what that arrangement lets people do reliably. Delivering the investments in the preceding chapters depends on people with the time, knowledge and authority to do the work, and an investment case that funds the work without funding the capacity to do it isn’t complete.
 
-The preceding chapters examined investments in systems, infrastructure, risk reduction and AI. Delivering them depends on people with the time, knowledge and authority to do the work. An investment case that funds the work without funding the capacity to do it isn't complete.
-
-Investment plans usually fund what can be counted: tools, licences, headcount in a cheaper location. They rarely fund the slower change in how decisions are made, and the investment timetable leaves little room for it. Investors and their advisers may also propose organizational changes directly. Product and engineering leaders need to show what the operating model can absorb, and what changing it costs, before the plan assumes the capacity.
+This chapter starts from the finding in [[can-the-team-deliver]]. At fictional Larkspur, a change to pricing rules takes about three weeks from request to production while the build itself takes under two days, and the second country’s tax and pricing rules will pass through the same queue. The board also wants a second product team before the next funding round. Investors and their advisers may propose organizational changes directly: a new leader, a cheaper location, a second team. Before Larkspur adds people, it should know what the queue is made of.
 
 ## Follow One Piece of Work Through the Company
 
 Start with the customer and operating work the company needs to perform. Who learns about customer needs? Who decides priorities? Who can release a change? Who supports it? Who resolves conflicts across product boundaries?
 
-An organization chart shows reporting lines and hides these dependencies. Trace several real pieces of work from request to outcome. Record where they wait, where information is lost and which people have to intervene again and again. The purpose is diagnosis, not a time-and-motion exercise that treats every pause as waste.
+An organization chart shows reporting lines; it does not capture these dependencies. Trace real pieces of work from request to outcome and record where they wait, where information is lost and which people have to intervene again and again. The purpose is diagnosis, not a time-and-motion exercise that treats every pause as waste. A deliberate review step may prevent expensive mistakes. **An unclear decision boundary** may cause avoidable delay. Distinguishing the two is more useful than announcing that the organization needs more autonomy or more control.
 
-A deliberate review step may prevent expensive mistakes. **An unclear decision boundary** may cause avoidable delay. Distinguishing the two is more useful than announcing that the organization needs more autonomy or more control.
+Here is one of Larkspur’s pricing changes, traced by Alex and Priya. The figures are fictional.
+
+| Step | Working days | What the wait is made of |
+| --- | ---: | --- |
+| Request waits for Priya to confirm the commercial rule | 3 | A product decision nobody else is authorized to make |
+| Change waits in the two specialists’ review queue | 7 | The specialists also handle every production problem; review is fitted around incidents |
+| Change built and tested | 2 | The only building in the sequence |
+| Change waits for Ines to sign off anything that touches customer invoices | 3 | A control introduced after an invoicing error two years ago, never revisited |
+| Commit to production | 1 | The DORA change lead time |
+| **Request to production** | **16** | **About three weeks; two days of building** |
 
 ![A customer request moves through decisions and handoffs, where waiting and unclear ownership can dominate delivery time.](assets/images/13-fix-decisions-before-hiring/work-crosses-team-boundaries.jpeg)
 **Figure 1:** *Follow actual work to find the coordination problem before changing the organization chart.*
 
-## Assess the Job Before You Assess the Leader
+The trace separates three constraints that “the team is too slow” had merged. The first is a **decision constraint**: two of the waits exist because authority sits with one person. The second is a **knowledge constraint**: the specialists’ queue exists because only two people can safely change the module. The third, a **staffing constraint**, becomes visible only once the first two are addressed: how much capacity is actually missing?
 
-A leader who built an early product may need support to lead a larger organization. A leader with large-company experience may introduce processes a small business cannot afford. Neither background establishes fit by itself.
+## Change the Decisions First
 
-Describe the work the role requires: product judgment, technical direction, operational reliability, people leadership, commercial communication or integration. Assess the evidence in each area and the system around the person. A weak product function shouldn't automatically become a verdict on the CTO. Equally, technical expertise doesn't excuse an inability to develop people or make hard decisions.
+Two of the waits can be removed without hiring anyone. Priya agrees a catalogue of pricing-rule types that the team may implement without a fresh commercial decision; only new rule types come back to her. Ines delegates the invoice sign-off to Sam’s finance team for changes inside that catalogue, with a monthly review of what was released. The control she introduced after the invoicing error is kept, but moved to the people who reconcile invoices anyway. Together these remove about six of the thirteen waiting days.
 
-The supplied role brief emphasizes technical credibility, commercial understanding, people planning, and influence where resources sit outside the role's direct control. [P01: supplied role brief](bibliography.html) For the Principal, this means helping design leadership conditions as well as assessing individuals.
+The specialists’ queue does not move. It is not a decision problem; it is a knowledge problem, and delegation cannot fix it. The remaining end-to-end lead time is about ten working days, of which seven are still spent waiting for the two people who understand the invoicing module and who are interrupted by production work. That is the **capacity gap the plan actually has**: not a second product team’s worth of engineers, but a third person able to change the invoicing module, and protected time for the two who can.
+
+## Decide What Hiring the Gap Needs
+
+The board asked for a second product team of five before the next round. Alex and Priya compare three responses; every figure is fictional.
+
+- **Hire the second team now.** Five roles, about €450,000 a year once filled, six months of recruitment and onboarding, and management time from Alex. It would not touch the specialists’ queue, because none of the five could change the invoicing module for months, and it would lengthen the queue by producing more changes that need review.
+- **Hire nobody and rely on the delegation changes.** No new cost. The queue stays at seven days, and the second country’s rules still depend on two interruptible people.
+- **Change the shape of the hire.** One engineer into the billing area now, with the explicit job of becoming the third person who can change the module; one protected day a week of each specialist’s time for knowledge transfer; the second team deferred until second-country demand is evidenced and the next round is committed.
+
+They choose the third. Funding: one role from the approved operating budget, about €90,000 a year, plus an agreed reduction in the specialists’ production duties, with the operations lead taking first-line incidents. Scarce capacity: the two specialists’ time; the knowledge-transfer days are protected in the plan, not assumed. Authority: Alex is accountable for the billing engineer and the transfer; Ines takes the changed shape to the board, which had asked for a team and is asked to accept a conditional plan instead. Rejected: the full second team, because it does not address the gap, adds to the queue and commits payroll ahead of money not yet received; and no hiring, because it leaves the plan dependent on two people. Evidence that would change the decision: if the end-to-end lead time is still above two weeks sixty days after the delegation changes, the diagnosis was wrong and the queue is not what the trace said it was; if the second country signs customers faster than expected, the second team’s conditions are met and hiring proceeds; if the billing engineer cannot release a rule change independently by month six, the transfer has failed and the role is reassessed rather than the specialists released.
+
+That is the sense in which decisions come before people. It is not a rule that hiring always waits. The trace showed which roles the plan needed, and the hire that was made was different in shape from the one the board first asked for.
+
+## Assess Leaders in Their System
+
+The same discipline applies to leadership. A leader who built an early product may need support to lead a larger organization. A leader with large-company experience may introduce processes a small business cannot afford. Neither background establishes fit by itself.
+
+Describe the work the role requires: product judgment, technical direction, operational reliability, people leadership, commercial communication or integration. Assess the evidence in each area and the system around the person. A weak product function shouldn’t automatically become a verdict on the CTO, and a three-week queue that turns out to be made of two sign-offs and an interrupted pair of specialists is not evidence that the CTO cannot lead. Equally, technical expertise doesn’t excuse an inability to develop people or make hard decisions.
+
+Changing a CTO can be necessary when the company’s needs have changed or leadership is ineffective. It can also be a convenient explanation for an unrealistic plan. Before recommending replacement, state a **hypothesis**, an explanation that can be checked: what must new leadership enable, and what evidence shows that capability is missing? Does the leader make sound decisions but lack product management support? Is delivery blocked by unstable commercial commitments? Has the board asked for incompatible outcomes? A diagnosis that begins and ends with the individual may miss the system around them, and a replacement who inherits the same system reproduces the failure while losing knowledge. [[different-bets]] adds one distortion to watch: compensation or exit expectations can shape how a leader is assessed.
+
+The hypothesis cuts both ways, and that is how it preserves accountability. Suppose the trace at Larkspur had gone differently: the delegation changes were agreed, and three months later Alex was still personally approving every release, the catalogue had never been written, and the billing engineer had been moved onto feature work. The conditions were changed and the leader did not use them. The hypothesis “an engineering leader who will delegate release authority and protect knowledge transfer removes the queue” is now testable against evidence about this person, and replacement or added leadership, a head of engineering with authority over the release process, is the justified response. Recruitment then follows a role design rather than a search for someone willing to repeat the plan more confidently.
 
 ## Cheaper Locations Do Not Automatically Save Money
 
-Nearshoring and offshoring mean locating work in other countries, with “near” describing some geographic, time-zone or cultural proximity. The labels don't determine the delivery model. A company can hire employees, use a supplier, open its own development office or combine arrangements.
+Nearshoring and offshoring mean locating work in other countries, with “near” describing geographic or time-zone proximity. Cultural similarity is often assumed alongside it and has to be checked separately. The labels don’t determine the delivery model. A company can hire employees, use a supplier, open its own development office or combine arrangements.
 
 A wage comparison is only one input. Include recruitment, management, onboarding, travel, knowledge transfer, supplier margin, legal and employment arrangements, departures, rework and the period of overlapping teams. Add the time before a new team can own useful outcomes.
 
-In a fictional case, replacing €1 million of annual external development with a €650,000 team appears to save €350,000. If the transition costs €250,000 and recurring coordination and specialist support add €150,000 a year, the annual saving after transition falls to €200,000 before any quality or delivery effects. Even with a full year at the lower operating cost, the €250,000 transition payment makes first-year spending €1.05 million, €50,000 above the original. The numbers illustrate the model, not a benchmark for any location.
+In a fictional case, replacing €1 million of annual external development spending with a €650,000 team of the company’s own appears to save €350,000. If the transition costs €250,000 and recurring coordination and specialist support add €150,000 a year, the recurring cost is €800,000 and the annual saving after transition falls to €200,000 before any quality or delivery effects. Even with a full year at the lower operating cost, the €250,000 transition payment makes first-year spending €1.05 million, €50,000 above the original. The comparison is between supplier invoices and the full cost of an employed team, not between two salary bills; the numbers illustrate the model, not a benchmark for any location.
 
-The more important question is **whether the work can be transferred coherently**. If every decision depends on a small group elsewhere, lower hourly cost may come with more waiting and rework. A bounded product or service responsibility, adequate context and a clear escalation path can matter more than geography.
+The more important question is **whether the work can be transferred coherently**. If every decision depends on a small group elsewhere, lower hourly cost may come with more waiting and rework; Larkspur’s queue would simply acquire a time zone. A bounded product or service responsibility, adequate context and a clear escalation path can matter more than geography.
 
 ![The cost of a team change includes transition spending and continuing coordination and support, as well as pay.](assets/images/13-fix-decisions-before-hiring/full-cost-of-a-team-change.jpeg)
 **Figure 2:** *Compare the complete delivery model over time, including the cost of reaching it.*
 
 ## Preserve the Knowledge Only a Few People Hold
 
-Code and documentation don't hold all the knowledge. Some of it is why a customer behaves differently, which migration failed before, and which operational symptoms precede a problem. Restructuring can remove that knowledge before a replacement team knows it's missing.
+Code and documentation don’t hold all the knowledge. Some of it is why a customer behaves differently, which migration failed before, and which operational symptoms precede a problem. Restructuring can remove that knowledge before a replacement team knows it’s missing.
 
 Make transition obligations explicit. Which business capabilities must continue? Who can independently operate and change them? How will the receiving team demonstrate readiness? What overlap is necessary? What evidence will show that the handoff is complete?
 
-A document delivered isn't capability transferred. The receiving team should perform the work under realistic conditions. Don't release the outgoing team because a calendar milestone has arrived while critical operational dependencies remain unresolved.
+A document delivered isn’t capability transferred. The receiving team should perform the work under realistic conditions. At Larkspur, the test is that the billing engineer releases a new country rule change without either specialist reviewing it and the monthly reconciliation shows no errors. Don’t release the outgoing team because a calendar milestone has arrived while critical operational dependencies remain unresolved.
 
 ## Organizational Health Is an Operating Signal
 
-Overload, persistent vacancies, loss of key people and repeated priority changes can weaken the company's ability to deliver. They aren't cultural preferences to discuss once the financial targets are met. They can decide whether the targets are feasible at all.
+Overload, persistent vacancies, loss of key people and repeated priority changes can weaken the company’s ability to deliver. They aren’t cultural preferences to discuss once the financial targets are met. They can decide whether the targets are feasible at all.
 
 **DORA**, a research program studying software delivery and organizational performance, associates unstable priorities with poorer productivity and greater burnout in its 2024 survey analysis. [S15: DORA 2024 report](https://dora.dev/research/2024/dora-report/) The practical lesson is to investigate the source of instability and its consequences, not to infer a precise financial loss from a survey relationship.
 
-Choose measures that help management act: dependence on particular individuals, unplanned work, sustained overload from on-call duties, time to fill material roles, and the team's understanding of priorities. Use qualitative evidence alongside counts. A company can meet a hiring target while losing the knowledge or trust the work depends on.
+Choose measures that help management act: dependence on particular individuals, unplanned work, sustained overload from on-call duties, time to fill material roles, and the team’s understanding of priorities. Use qualitative evidence alongside counts. A company can meet a hiring target while losing the knowledge or trust the work depends on.
 
-## Standardization and Autonomy Both Need Boundaries
+## One Boundary Question
 
-**Autonomy** gives teams room to make their own decisions. Without clear outcomes and boundaries, it can fragment the company. Standardization without a value case can suppress local knowledge and create a central queue. The right design depends on where coordination creates value.
-
-A group selling separate niche products may benefit from shared finance definitions, recruiting access and security expectations while keeping local product decisions. A company promising one integrated workflow may need stronger product and technical coordination. The operating model should follow that promise.
-
-The Principal can facilitate this design but shouldn't become the permanent coordinator of every dependency. If the company needs the Principal at every planning meeting, the intervention may have created reliance rather than capability.
-
-## Make Hiring and Restructuring Conditional on a Feasible Plan
-
-In fictional Larkspur, the board wants a second product team before the next funding round. Hiring creates commitments long before the new team contributes at full capacity: recruitment, notice periods, onboarding and management time. Alex and Priya should distinguish funded roles from roles conditional on new money, and agree when those conditions must be resolved.
-
-A growth investor may ask the company to add leadership capacity while preserving speed. A buyout plan may require lower costs. A corporate parent may require reporting lines or shared services. For each proposed change, trace a real customer decision through the future organization and identify who will have the knowledge and authority to make it. A headcount target doesn't answer that question.
-
-Tell investors and teams the same plan. Don't promise employees durable roles while privately treating their funding as provisional, or call a capability indispensable while approving its removal without a replacement. Where the chosen course creates a risk or burden, name it, fund the transition and set up a review that can still change the outcome.
+The staffing choice above assumes the invoicing module stays Larkspur’s to change. If a parent company or a group standard mandated a shared billing platform, the third specialist’s job would be integration rather than rule changes, and the knowledge worth transferring would be different. Decide where that boundary sits before designing the roles around it: [[acquisition-adds-work-first]] treats the integration-depth choice, and [[growth-into-design]] its design consequences. An investor’s adviser can facilitate that design but shouldn’t become the permanent coordinator of every dependency. If the company needs the adviser at every planning meeting, the intervention has created reliance rather than capability.
 
 ## The People Plan Belongs in the Value Plan
 
-For every material initiative, identify the skills, leadership time and operating capacity it needs. Distinguish hiring from capability: a filled vacancy doesn't mean a team can perform independently. Put the learning period in the economic and delivery plan.
+For every material initiative, identify the skills, leadership time and operating capacity it needs. Distinguish hiring from capability: a filled vacancy doesn’t mean a team can perform independently. Put the learning period in the economic and delivery plan. Distinguish funded roles from roles conditional on new money, and agree when those conditions must be resolved.
 
-When cost reduction is necessary, state what work will stop and which risks remain. When growth requires more capacity, explain the customer demand and constraints that justify it. When a leader needs development, define the support and evidence of progress.
+Tell investors and teams the same plan. Don’t promise employees durable roles while privately treating their funding as provisional, or call a capability indispensable while approving its removal without a replacement. When cost reduction is necessary, state what work will stop and which risks remain. When a leader needs development, define the support and the evidence of progress. Judge an organizational change by the work people can now carry out: decisions made, responsibilities understood and knowledge transferred, with the cost of the transition and the treatment of the people affected included.
 
-Judge an organizational change by the work people can now carry out: decisions made, responsibilities understood and knowledge transferred. Include the cost of the transition and how the people affected are treated.
-
-Acquisitions and separations put these organizational and technical requirements under pressure together. The next chapter examines how to plan those changes: [[acquisition-adds-work-first]].
+With the queue reduced to its knowledge core and the hire reshaped to close it, Larkspur still has the system constraint from the finding: country rules coupled into the invoicing module. The reader’s next question is which change to that system the company should fund, a supplier’s configuration, a boundary it owns or a replacement. [[growth-into-design]] compares the three against the same customer need, date, ongoing responsibility and cash limit, and chooses one.
 
 ## Questions to Consider
 
-1. *Trace one real piece of work through your company from request to outcome. Where does it wait, and who has to intervene repeatedly?*
-2. *Which knowledge in your organization sits with only one or two people, and what would the company lose if they left next month?*
+1. *Trace one real piece of work through your company from request to outcome. How many days are building, and how many are waiting for a decision or for one person?*
+2. *Which waits could be removed by changing who is authorized to decide, and which remain because knowledge sits with one or two people?*
 3. *If a location or supplier change is proposed, does the comparison include transition, coordination, rework and the period before the new team can own outcomes?*
-4. *Which decisions in your company are made centrally that should be local, and which are fragmented that should be shared?*
-5. *Which planned hires are funded, which are conditional on money not yet received, and do the teams know the difference?*
-6. *What signals of organizational health would tell you the plan has become infeasible before the financial targets show it?*
+4. *Which planned hires are funded, which are conditional on money not yet received, and what evidence would change their shape?*
 
 ## To Probe Further
 

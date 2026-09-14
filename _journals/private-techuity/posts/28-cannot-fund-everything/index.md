@@ -2,88 +2,35 @@
 title: "You Cannot Fund Every Good Project at Once"
 date: "2026-09-13"
 author: "Owned working manuscript"
-excerpt: "Compare competing uses of money and team capacity, fund a workable combination, and decide what evidence should change it."
+excerpt: "Compare competing uses of money and team capacity, fund a workable combination, and revise it when the evidence changes."
 permalink: cannot-fund-everything
-timetoread: 8 min read
+timetoread: 10 min read
 logo: "assets/images/28-cannot-fund-everything/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/28-cannot-fund-everything.png"
 ---
 
+> **IN THIS SECTION, YOU WILL:** Learn to choose a combination of work that fits both the cash and the team time available, and revise the whole combination when a test fails.
+
+> **WHY IS THIS IMPORTANT:** A plan that fits the cash but not the team time, or ignores an agreed obligation, gets overrun by the constraint nobody counted; choosing the feasible combination is what makes commitments deliverable.
+
+
 > **KEY POINTS:**
 >
-> * Choose a **combination of work the company can actually deliver**. Several attractive projects can still require more money or team time than is available.
-> * Connect investor expectations to **customer needs and operating facts**. A growth target starts a discussion about what must change; it does not choose the product or technology solution.
-> * Make the **next review part of the decision**. Explain what would justify continuing, expanding, changing or stopping the work.
+> * Choose a **combination of work the company can actually deliver**. Several attractive projects can fit the cash limit and still exceed the team time available.
+> * Sort the requests by **what they rest on**: an agreed obligation, tested customer evidence or an assumption. A growth target starts the discussion; it does not choose the project.
+> * Make the **next review part of the decision**, and revise the whole combination, not just one project, when a test fails or new evidence arrives.
 
 <br>
 Larkspur’s investor wants faster growth. Priya, the product leader, has requests for a new customer portal. Alex, the technology leader, wants to improve recovery from system failures. The customer team wants simpler setup for new accounts. Each request has a plausible benefit. They can’t all use the same people at the same time.
 
-A **company investment** commits resources now in the expectation of a future benefit. **Team capacity** is the time and capability people have available to do the work. Choosing investments needs both a cash plan and a capacity plan.
+A **company investment** commits resources now in the expectation of a future benefit. **Team capacity** is the time and capability people have available to do the work. Choosing investments needs both a cash plan and a capacity plan. This chapter shows one way to make the choice, as a proposed working method illustrated with fictional figures.
 
-Parts I and II explained financing, authority and incentives. This chapter applies them to a decision product and technology leaders face repeatedly: which combination of work should the company commit to next?
+## Three Requests, Two Limits
 
-Investor ownership changes that decision in two ways. The cash and capacity available are limited by the financing described in Part I, and the investor’s expected result gives some options a priority the company’s own view might not. A leader who chooses by team preference or by the loudest request will find the plan overruled or unfunded.
+In this **fictional planning exercise**, the Larkspur board has authorized up to €500,000 of additional cash and 24 engineer-weeks for a set of improvements over the next two quarters, and Ines, the CEO, decides how that envelope is used. Routine operating work is already budgeted. The following change budget must also fund the improvement needed to meet the agreed recovery requirement. One **engineer-week** means one person’s working time for one week; it’s a planning estimate, not a guarantee that people are interchangeable.
 
-The approach below is a proposed working method, illustrated with fictional figures.
-
-## Start With the Result the Company Needs
-
-An **investment thesis** explains why the owner expects its investment to succeed. It may depend on serving more customers, improving earnings or establishing a capability another buyer will value. The company leader needs to examine the operating assumptions behind that expectation.
-
-For Larkspur, “grow faster” could mean winning more customers, activating customers already waiting or helping existing customers buy additional services. Those are different problems. More marketing won’t fix a setup process that can’t handle the customers already sold.
-
-Begin with the customer and business evidence. What is keeping customers from getting useful results? Which costs rise as the business grows? What must keep working even if the new initiative fails? Explain the required change before selecting a project.
-
-The leader’s contribution includes changing an unsupported expectation. If growth assumes onboarding twice as many customers while the same specialists remain the bottleneck, show the constraint, the options and the resources each would need. A credible plan may require a different target, sequence or investment.
-
-## Establish the Commitments That Come First
-
-Some work protects an existing obligation: continuing a contracted service, meeting an applicable requirement or resolving a risk the company has decided it can’t accept. Identify those commitments before comparing discretionary improvements.
-
-That doesn’t make every proposed security or maintenance project mandatory. Establish the specific obligation or failure scenario, the minimum acceptable result and the feasible alternatives, with specialist interpretation where necessary. The company still has to choose how to meet the need and fund the work.
-
-Next, identify improvements that could help customers or the business, and experiments that could resolve important uncertainty. An **experiment** is a limited test designed to learn whether an assumption holds. Its immediate result may be a better decision rather than additional revenue.
-
-These groups help explain the purpose of spending. They aren’t a formula for dividing every budget into fixed percentages.
-
-## The Same Project Can Need a Different Commitment
-
-Consider four alternative Larkspur situations. Priya wants onboarding to become repeatable. Alex has a proposal for a larger platform change. Before comparing designs, make the ownership and funding assumptions explicit.
-
-| Stated situation | The immediate decision |
-| --- | --- |
-| Another funding round depends on evidence of repeat purchases | Fund the smallest credible test that can answer that question while leaving time to respond |
-| Growth funding is available for expansion into two countries | Fund the onboarding process, local requirements and support capacity together |
-| Borrowing leaves limited cash during the transition | Compare a staged migration with delay, including customer risk and overlapping costs |
-| A corporate owner expects its channel to sell the product | Agree the channel commitment, integration budget and accountability for actual sales before building for it |
-
-These are fictional conditions, not prescribed strategies for investor categories. In each case, the investor’s expectation needs a testable operating plan. Show which work the choice displaces, which approval is needed and what happens if funding, demand or the partner’s contribution changes.
-
-A board that wants the expansion date without funding the necessary capacity has an unresolved choice. **Present the feasible combinations**. Don’t turn the gap into an unrecorded demand for the team to work harder.
-
-## Compare Complete Options
-
-The **opportunity cost** of a choice is the benefit of the best alternative you give up. If two projects need the same specialist, approving one may delay the other even when both have funding.
-
-Compare options using the same questions:
-
-| Question | Why it matters |
-| --- | --- |
-| What useful result should change? | A feature or technology name does not describe the benefit. |
-| What evidence supports that expectation? | A customer request, a tested constraint and a guess deserve different confidence. |
-| What money, people and time are required? | Include preparation, transition, ongoing operation and other work displaced. |
-| What must happen first? | A dependency can delay benefits even after the project itself is approved. |
-| What happens if we wait or the change disappoints? | Compare the cost of delay with the consequences of failure. |
-| What can a smaller first step teach us? | Some uncertainty can be resolved before committing the full investment. |
-
-An estimated score can help organize a conversation. It shouldn’t hide that a legal obligation, a speculative product opportunity and a cash-saving project answer different questions. **Explain the trade-off in words** as well as numbers.
-
-## A Choice With Two Separate Limits
-
-Consider a **separate fictional planning exercise** at Larkspur. After covering existing commitments, management has approved up to €500,000 of additional cash and 24 engineer-weeks for a set of improvements. One **engineer-week** means one person’s working time for one week; it’s a planning estimate, not a guarantee that people are interchangeable.
-
-The cash estimates below concern additional spending, such as specialist help and new services. Existing employees’ pay is already in the ordinary operating budget; their available time is shown separately. These figures aren’t additions to the programs in other chapters.
+The cash estimates concern additional spending, such as specialist help and new services. Existing employees’ pay is already in the ordinary operating budget; their available time is shown separately. These figures aren’t additions to the programs in other chapters.
 
 | Proposed work | Additional cash | Engineer-weeks | Intended result |
 | --- | ---: | ---: | --- |
@@ -93,15 +40,43 @@ The cash estimates below concern additional spending, such as specialist help an
 | Test the portal need with customer research | €20,000 | 2 | Learn which problems would justify a larger product commitment |
 | **All proposed work** | **€500,000** | **30** | **Fits the cash limit but exceeds available engineering time** |
 
-The portal research comes before a full build; the table shows what funding both stages would require. Management still needs to decide whether the research justifies that later commitment.
+The money fits. The time does not. The portal research comes before a full build; the table shows what funding both stages would require, and the company still has to decide whether the research justifies that later commitment.
 
 The totals are only a first check. Confirm that the required specialists are available in the weeks each project needs them. Twenty-four engineer-weeks spread across several teams or months may not support a plan that needs the same specialist for twelve consecutive weeks.
 
-Suppose the recovery requirement is already agreed, the setup constraint is supported by customer evidence and the portal’s benefit remains uncertain. One defensible choice is restoration, the smaller setup change and customer research. That uses €280,000 and 18 engineer-weeks, leaving €220,000 and six engineer-weeks uncommitted.
+## Sort the Rows by What They Rest On
 
-The unused money doesn’t make the full portal feasible: its twelve engineer-weeks still exceed the remaining capacity, and its benefit still needs investigation. The remaining resources can provide room for uncertainty or support a later decision. They aren’t automatically savings or permission to start another project.
+Before choosing among the rows, establish what each one depends on. The table gives every row the same shape; the rows are not the same kind of choice.
 
-This is one choice under stated assumptions. If evidence showed the portal was essential to retain a major customer, the priorities could change. The method exposes the trade-off; the table doesn’t select the answer itself.
+**An agreed obligation.** Some work protects an existing commitment: continuing a contracted service, meeting an applicable requirement or resolving a risk the company has decided it can’t accept. At Larkspur the board has agreed a recovery requirement, and the restoration row is what meeting it costs. That doesn’t make every proposed security or maintenance project mandatory. Establish the specific obligation or failure scenario, the minimum acceptable result and the feasible alternatives, with specialist interpretation where necessary. The company still chooses how to meet the need.
+
+**An expected result.** An **investment thesis** is the investor’s explanation of why the investment should succeed; it is a revisable prediction, not an instruction. Larkspur’s says the company can grow faster. “Grow faster” could mean winning more customers, activating customers already waiting or helping existing customers buy additional services. Those are different problems, and more marketing won’t fix a setup process that can’t handle the customers already sold. For each row, ask what evidence supports the intended result: a customer request, a tested constraint and a guess deserve different confidence.
+
+**Dependencies and displaced work.** The **opportunity cost** of a choice is the benefit of the best alternative you give up. If two rows need the same specialist, approving one delays the other even when both have funding. Include preparation, transition, continuing operation and the work each row pushes aside.
+
+**What a smaller step could teach.** An **experiment** is a limited test designed to learn whether an assumption holds. Its immediate result may be a better decision rather than revenue. The portal research row is one; it exists because the portal’s benefit is the least supported claim on the table.
+
+## The Condition That Applies Here
+
+This arrangement changes the conditions of the decision. Establish the actual funding, authority and deadline before committing. In this exercise the condition is specific: Larkspur’s growth funding was agreed on a plan that assumes onboarding volume can rise substantially without proportional growth in the implementation team. That gives the setup row a priority the company’s own view might not, and it makes the pilot’s evidence a condition of the next expansion step. Other funding arrangements set other conditions; [[raise-what-you-need]] compares them, and the [[reading-guide]] explains how the book’s alternative scenarios relate to each other.
+
+A board that wants the expansion date without funding the necessary capacity has an unresolved choice. **Present the feasible combinations.** Don’t turn the gap into an unrecorded demand for the team to work harder. A plan chosen by team preference or the loudest request has a specific weakness: it leaves out the constraint that will actually bind, the money and capacity available and the result the funding was agreed on, so it can’t say what it displaces or what evidence would change it.
+
+## Select the Combination
+
+Suppose the recovery requirement is agreed, the setup constraint is supported by customer evidence and the portal’s benefit remains uncertain. Ines’s choice is restoration, the smaller setup change and customer research. That uses €280,000 and 18 engineer-weeks, leaving €220,000 and six engineer-weeks uncommitted.
+
+Record the decision in full:
+
+- **Chosen:** restoration (€80,000, four weeks), the setup change (€180,000, twelve weeks) and the portal research (€20,000, two weeks).
+- **Rejected for now:** the full portal build. The unused money doesn’t make it feasible: its twelve engineer-weeks still exceed the remaining six, and its benefit still needs investigation.
+- **Funding and scarce capacity:** €280,000 of the €500,000 envelope; 18 of 24 engineer-weeks, with the implementation specialist needed by the setup change for twelve consecutive weeks.
+- **Authority:** the board authorized the envelope; Ines decides the combination within it and reports the choice to the board. Alex is accountable for restoration, Priya for the setup change and the research.
+- **Evidence that would change it:** research showing the portal is essential to retain a major customer, or a first setup cohort showing no reduction in effort.
+
+The remaining €220,000 and six weeks provide room for uncertainty and for a later decision. They aren’t automatically savings or permission to start another project. The review below shows what part of them was for.
+
+An estimated score can help organize this conversation. It shouldn’t hide that an agreed obligation, a speculative product opportunity and a learning step answer different questions. **Explain the trade-off in words** as well as numbers.
 
 ![A group of projects must fit both the cash budget and the available team and specialist time.](assets/images/28-cannot-fund-everything/money-and-capacity-two-limits.jpeg)
 **Figure 1:** *A project can be affordable and still be impossible to schedule.*
@@ -110,7 +85,7 @@ This is one choice under stated assumptions. If evidence showed the portal was e
 
 A **funding stage** commits resources for a defined piece of work before deciding whether to commit more. The stage needs a useful outcome or a decision it can inform. Dividing a project into calendar phases doesn’t by itself reduce risk.
 
-For the portal, a small first stage could test the customer problem and a simple prototype. The next decision might be to build a narrow function, investigate another need or stop. For restoration, the test might be whether the service can actually recover within the agreed conditions.
+For the portal, the research is the first stage; the next decision might be to build a narrow function, investigate another need or stop. For restoration, the stage is the test itself: can the service recover within the agreed conditions?
 
 Check the connections between stages. Can the company operate safely if it stops after the first? **Who maintains anything already delivered?** What spending is unavoidable once the first commitment is made? Some transitions require a larger coordinated commitment, which should be visible from the start.
 
@@ -119,27 +94,34 @@ Check the connections between stages. Can the company operate safely if it stops
 
 ## Review the Combination, Not Just Each Project
 
-New evidence can change the whole plan. A supplier failure may use the spare capacity. Customer research may invalidate an expected benefit. One completed improvement may remove the need for another.
+New evidence can change the whole plan, and in this exercise it did. At the day-45 restoration test the service came back after eleven hours against the agreed four, because a credential was missing and the database version the backup needed was no longer available ([[prove-you-can-restore]] walks through this kind of failure). The €80,000 and four engineer-weeks had been spent. That is **sunk cost**: resources already spent that can’t be recovered. It belongs in the record, but the next commitment depends on remaining costs and expected benefits, and the obligation has not gone away.
 
-Review the starting assumptions, actual spending, team burden and observed outcomes together. Decide which work continues, which changes and which stops. **Sunk cost** means resources already spent that can’t be recovered. Those costs belong in the record; the next commitment should depend on its remaining costs and expected benefits.
+Correcting the two faults and re-running the test needs about €20,000 and two engineer-weeks, which come from the uncommitted reserve. The revised commitment:
 
-Explain the revised choice through the decision process established in [[decide-who-decides]]. If the authority sits with the board or another executive, bring a concrete proposal: the result sought, the alternatives, the resources and the consequence of waiting. The [[toolkit]] provides a record for that conversation.
+- **Chosen:** the retest by day 85 is added; the setup change and the portal research continue unchanged. Total committed: €300,000 and 20 engineer-weeks; €200,000 and four engineer-weeks remain.
+- **Rejected:** pausing the setup change to free its specialist for recovery work, because its cohort evidence is the condition on the expansion decision; and starting the portal build with the remaining money, which is still infeasible in capacity and still unsupported by evidence.
+- **Funding and scarce capacity:** two of the six spare engineer-weeks, in the weeks the operations lead is available for the retest.
+- **Authority:** Ines takes the revision to the board because it changes what the envelope funds; [[decide-who-decides]] describes that path.
+- **Evidence that would change it:** a second failed test, which would send the remaining reserve to recovery before anything else and delay the setup change’s second cohort.
 
-A selected project still needs an explanation of how its benefits arise. The next chapter follows one product change from the work proposed to the customer and business result: [[roadmap-to-revenue]].
+Review the starting assumptions, actual spending, team burden and observed outcomes together, not project by project. A supplier failure may use the spare capacity. Customer research may invalidate an expected benefit. One completed improvement may remove the need for another. Decide which work continues, which changes and which stops.
+
+## Keep the Record
+
+The [[toolkit]]’s record for comparing investment choices and capacity (Tool 12) holds exactly the fields used above: the required commitments, the money and team time available, the options, the combination proposed, the first stages and the review decision. Fill it in before the board conversation, and update it after the review rather than starting a new one.
+
+The setup change was chosen on customer evidence. Whether its benefit is real is a separate question, and the next chapter follows that one change from the work proposed to the measured customer and business result: [[roadmap-to-revenue]].
 
 ## Questions to Consider
 
-1. *What result does the investor’s expectation require your company to produce, and which operating constraints stand between the company and that result?*
-2. *Which of your commitments protect existing obligations, which are improvements and which are experiments? Are they being compared as if they were the same kind of choice?*
-3. *For your current plan, what are the cash limit and the capacity limit, and which one binds first?*
-4. *If two projects need the same specialist, which one waits, and has that opportunity cost been stated?*
-5. *Which of your projects could be staged so that a small first step informs the next decision, and which require a coordinated commitment from the start?*
-6. *When the last plan was reviewed, was the whole combination reconsidered or only each project’s progress?*
+1. *For your current plan, what are the cash limit and the capacity limit, which one binds first, and does the plan say what is already budgeted and what it must still fund?*
+2. *Which of your commitments rest on an agreed obligation, which on tested evidence and which on an assumption? Are they being compared as if they were the same kind of choice?*
+3. *When the last plan was reviewed, was the whole combination reconsidered or only each project’s progress, and did the reserve go where the evidence pointed?*
 
 ## To Probe Further
 
 - **[2015 Letter to Shareholders](https://www.sec.gov/Archives/edgar/data/0001018724/000119312516530910/d168744dex991.htm)** — Jeff Bezos, Amazon.com, filed with the SEC in April 2016.<br>*The short passage on Type 1 and Type 2 decisions, a compact way to ask whether a proposed commitment can be staged or must be made all at once.*
-- **[Delusions of Success: How Optimism Undermines Executives' Decisions](https://hbr.org/2003/07/delusions-of-success-how-optimism-undermines-executives-decisions)** — Dan Lovallo and Daniel Kahneman, Harvard Business Review, July 2003.<br>*Explains why project forecasts are systematically optimistic and proposes checking a plan against comparable past projects, the evidence question in this chapter's comparison table.*
-- **[Investment Opportunities as Real Options: Getting Started on the Numbers](https://hbr.org/1998/07/investment-opportunities-as-real-options-getting-started-on-the-numbers)** — Timothy Luehrman, Harvard Business Review, July–August 1998.<br>*A manager's introduction to treating a staged investment as an option to continue, expand or stop, which gives the funding-stage idea here a financial footing.*
+- **[Delusions of Success: How Optimism Undermines Executives' Decisions](https://hbr.org/2003/07/delusions-of-success-how-optimism-undermines-executives-decisions)** — Dan Lovallo and Daniel Kahneman, Harvard Business Review, July 2003.<br>*Explains why project forecasts are systematically optimistic and proposes checking a plan against comparable past projects, the evidence question in this chapter's sorting of the rows.*
+- **[Investment Opportunities as Real Options: Getting Started on the Numbers](https://hbr.org/1998/07/investment-opportunities-as-real-options-getting-started-on-the-numbers)** — Timothy Luehrman, Harvard Business Review, July–August 1998.<br>*A manager's introduction to treating a staged investment as an option to continue, expand or stop. The option is only worth what it costs to exercise, which is why this chapter asks whether a stage can stand alone.*
 - **[The Principles of Product Development Flow: Second Generation Lean Product Development](https://archive.org/details/principlesofprod0000rein)** — Donald Reinertsen, Celeritas Publishing, 2009.<br>*Explains, through queues and the cost of delay, why 24 engineer-weeks spread across teams is not the same as one specialist available for twelve consecutive weeks.*
 - **[The psychology of sunk cost](https://doi.org/10.1016/0749-5978%2885%2990049-4)** — Hal Arkes and Catherine Blumer, Organizational Behavior and Human Decision Processes, 1985.<br>*The experiments behind this chapter's rule that a review should weigh remaining costs and benefits, not what has already been spent.*

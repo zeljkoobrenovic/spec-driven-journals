@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Explain how a company leader can work with the investor’s adviser. Keep the supplied Technology Principal role explicitly fund-specific and compare it with venture support, corporate specialists and an investor with no operating team.
+Explain how a company leader establishes an investor’s technology adviser’s assignment and reporting relationship, separates the adviser’s influence from decision authority, and handles a change of role (coaching that becomes assessment, or advice that becomes interim delivery) before sharing sensitive information. “Investor’s technology adviser” is the general term; the supplied Technology Principal role is this book’s example and is kept explicitly fund-specific. Sourcing help and engagement mechanics belong to the two following chapters.
 
 ## Audience
 
@@ -18,6 +18,10 @@ Product and engineering leaders inside companies working under investors, includ
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
+- Make the dual-role conflict the central worked case: what the CTO can ask before sharing sensitive information, what the adviser must explain, who can authorize a changed assignment and how employees are informed; promise no confidentiality beyond agreed obligations.
+- State the adviser’s distinguishing feature as the reporting relationship to the investment firm, not privileged access; avoid uniqueness or universal-ownership contrasts across all formats.
+- Use the assignment table as a diagnostic: what employees should hear (assessment finding, recommendation, authorized instruction); ask “Who is authorized to decide?” rather than “who owns”.
+- End with the agreed purpose and authority of the opening planning meeting; link engagement mechanics (availability, resources, continuing service, handover) to the engagement chapter rather than repeating them.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
@@ -54,6 +58,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Editorial revision per review: uniqueness claim replaced by the reporting-relationship framing, the coaching-to-assessment role change made the central case (absorbing the shadow-hierarchy and coaching-confidentiality material from decide-who-decides), engagement mechanics moved to links, the billing-code example replaced, the ending returned to the opening meeting; comic panels 2 and 6 reworded (regeneration flagged); permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Working With the Investor’s Technology Adviser” to “Is the Investor’s Adviser Helping, Assessing or Deciding?”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

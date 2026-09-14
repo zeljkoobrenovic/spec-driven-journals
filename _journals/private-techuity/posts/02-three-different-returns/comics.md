@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Leaders inside the company judge progress by customers and earnings. The panels show how an investor judges the same company by the return on its holding, and why requests that seem hard to justify from the business often follow from the price paid, the borrowing and the timing of a sale.
+**Comic.** Leaders inside the company judge progress by customers and earnings; an investor judges the same company by the return on its holding. The panels hold one fictional company’s performance completely fixed, EBITDA up from €10m to €15m and debt down from €60m to €40m, and show three investor outcomes that differ only in the price a buyer pays at exit. Then they show why a sale result cannot say how much engineering contributed.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/02-three-different-returns/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Morgan places a business model beside a share certificate. Use one speech bubble with the exact words: \"Company value and equity differ.\" Convey: Enterprise value estimates the operating business’s value. Equity value is the shareholders’ part after relevant debt, cash and other adjustments.",
+  "prompt": "Panel 1 of an explainer comic. Morgan places a business model beside a share certificate. Use one speech bubble with the exact words: \"Company value and equity differ.\" Convey: Fictional buyout: the fund pays €100m for a business earning €10m of EBITDA, €60m borrowed and €40m of its own. Five years later EBITDA is €15m and debt is €40m. What the business is worth and what the fund gets are different amounts.",
   "alt": "Comic panel: Morgan holds a company folder and a separate equity certificate.",
-  "caption": "Enterprise value estimates the operating business’s value. Equity value is the shareholders’ part after relevant debt, cash and other adjustments.",
+  "caption": "Fictional buyout: the fund pays €100m for a business earning €10m of EBITDA, €60m borrowed and €40m of its own. Five years later EBITDA is €15m and debt is €40m. What the business is worth and what the fund gets are different amounts.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan holds a company folder and a separate equity certificate.](assets/images/02-three-different-returns/comic-01-scene.jpeg)
 
-**Panel 1:** Enterprise value estimates the operating business’s value. Equity value is the shareholders’ part after relevant debt, cash and other adjustments.
+**Panel 1:** Fictional buyout: the fund pays €100m for a business earning €10m of EBITDA, €60m borrowed and €40m of its own. Five years later EBITDA is €15m and debt is €40m. What the business is worth and what the fund gets are different amounts.
 
 *Dialogue:* “Company value and equity differ.”
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/02-three-different-returns/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam moves earnings, valuation, and debt blocks independently. Use one speech bubble with the exact words: \"Several mechanisms change the return.\" Convey: An investment return compares what the investor receives or still holds with what it invested. Business performance, prices, borrowing and time all matter.",
+  "prompt": "Panel 2 of an explainer comic. Sam moves earnings, valuation, and debt blocks independently. Use one speech bubble with the exact words: \"Ten times: one hundred and ten million.\" Convey: Outcome one. A buyer pays the same 10× multiple: €15m × 10 = €150m, less €40m of debt. The fund receives €110m, 2.75 times its €40m, about 22% a year. Earnings up, debt down, price per euro unchanged.",
   "alt": "Comic panel: Sam moves earnings, valuation, and debt blocks independently.",
-  "caption": "An investment return compares what the investor receives or still holds with what it invested. Business performance, prices, borrowing and time all matter.",
+  "caption": "Outcome one. A buyer pays the same 10× multiple: €15m × 10 = €150m, less €40m of debt. The fund receives €110m, 2.75 times its €40m, about 22% a year. Earnings up, debt down, price per euro unchanged.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,9 +51,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam moves earnings, valuation, and debt blocks independently.](assets/images/02-three-different-returns/comic-02-scene.jpeg)
 
-**Panel 2:** An investment return compares what the investor receives or still holds with what it invested. Business performance, prices, borrowing and time all matter.
+**Panel 2:** Outcome one. A buyer pays the same 10× multiple: €15m × 10 = €150m, less €40m of debt. The fund receives €110m, 2.75 times its €40m, about 22% a year. Earnings up, debt down, price per euro unchanged.
 
-*Dialogue:* “Several mechanisms change the return.”
+*Dialogue:* “Ten times: one hundred and ten million.”
 
 <!-- comic-panel
 {
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/02-three-different-returns/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex proudly holds a deployment report beside rising valuation. Use one speech bubble with the exact words: \"Which change caused which result?\" Convey: A software improvement may help the business. A higher sale price alone does not show how much that improvement contributed.",
+  "prompt": "Panel 3 of an explainer comic. Alex proudly holds a deployment report beside rising valuation. Use one speech bubble with the exact words: \"Twelve times. Same team, same numbers.\" Convey: Outcome two. Same EBITDA, same debt, but a buyer pays 12×: €180m less €40m. The fund receives €140m, 3.5 times its money, about 28% a year. Calling this proof of exceptional engineering confuses the exit price with the company's work.",
   "alt": "Comic panel: Alex proudly holds a deployment report beside rising valuation.",
-  "caption": "A software improvement may help the business. A higher sale price alone does not show how much that improvement contributed.",
+  "caption": "Outcome two. Same EBITDA, same debt, but a buyer pays 12×: €180m less €40m. The fund receives €140m, 3.5 times its money, about 28% a year. Calling this proof of exceptional engineering confuses the exit price with the company’s work.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,19 +74,20 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex proudly holds a deployment report beside rising valuation.](assets/images/02-three-different-returns/comic-03-scene.jpeg)
 
-**Panel 3:** A software improvement may help the business. A higher sale price alone does not show how much that improvement contributed.
+**Panel 3:** Outcome two. Same EBITDA, same debt, but a buyer pays 12×: €180m less €40m. The fund receives €140m, 3.5 times its money, about 28% a year. Calling this proof of exceptional engineering confuses the exit price with the company’s work.
 
-*Dialogue:* “Which change caused which result?”
+*Dialogue:* “Twelve times. Same team, same numbers.”
 
 <!-- comic-panel
 {
   "id": "04-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/02-three-different-returns/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam compares two clocks beside the same proceeds. Use one speech bubble with the exact words: \"The payment dates matter too.\" Convey: MOIC compares value received or held with money invested. IRR is an annual return measure that also accounts for payment dates.",
-  "alt": "Comic panel: Sam compares MOIC and IRR clock symbols, with a calendar beside IRR to emphasize payment timing.",
-  "caption": "MOIC compares value received or held with money invested. IRR is an annual return measure that also accounts for payment dates.",
+  "prompt": "Panel 4 of an explainer comic. Sam stands beside the same rising earnings chart and the same shrinking debt stack as before, but holds a smaller price tag; Alex looks at the identical chart, puzzled. Use one speech bubble with the exact words: \"Seven times. Same team, same numbers.\" Convey: Outcome three. Same EBITDA, same debt, but a buyer pays only 7×: €105m less €40m. The fund receives €65m, 1.6 times its money, about 10% a year. Calling this a failed transformation confuses the exit price with the company's work.",
+  "alt": "Comic panel: Sam holds a smaller price tag beside the same earnings chart and debt stack, while Alex looks at the unchanged chart.",
+  "caption": "Outcome three. Same EBITDA, same debt, but a buyer pays only 7×: €105m less €40m. The fund receives €65m, 1.6 times its money, about 10% a year. Calling this a failed transformation confuses the exit price with the company’s work.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -95,11 +96,11 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Sam compares MOIC and IRR clock symbols, with a calendar beside IRR to emphasize payment timing.](assets/images/02-three-different-returns/comic-04-scene.jpeg)
+![Comic panel: Sam holds a smaller price tag beside the same earnings chart and debt stack, while Alex looks at the unchanged chart.](assets/images/02-three-different-returns/comic-04-scene.jpeg)
 
-**Panel 4:** MOIC compares value received or held with money invested. IRR is an annual return measure that also accounts for payment dates.
+**Panel 4:** Outcome three. Same EBITDA, same debt, but a buyer pays only 7×: €105m less €40m. The fund receives €65m, 1.6 times its money, about 10% a year. Calling this a failed transformation confuses the exit price with the company’s work.
 
-*Dialogue:* “The payment dates matter too.”
+*Dialogue:* “Seven times. Same team, same numbers.”
 
 <!-- comic-panel
 {
@@ -130,9 +131,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/02-three-different-returns/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex tests the plan beneath a lower valuation sign. Use one speech bubble with the exact words: \"Does the business still improve?\" Convey: Test whether the operating improvement remains useful if the sale price is lower or the owner holds the business longer.",
+  "prompt": "Panel 6 of an explainer comic. Alex tests the plan beneath a lower valuation sign. Use one speech bubble with the exact words: \"Does the business still improve?\" Convey: A sale price cannot say how much engineering contributed to earnings. Gather that evidence on the way, and test whether an improvement still pays if the sale price is lower or the owner holds the business longer.",
   "alt": "Comic panel: Alex tests the plan beneath a lower valuation sign.",
-  "caption": "Test whether the operating improvement remains useful if the sale price is lower or the owner holds the business longer.",
+  "caption": "A sale price cannot say how much engineering contributed to earnings. Gather that evidence on the way, and test whether an improvement still pays if the sale price is lower or the owner holds the business longer.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +144,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex tests the plan beneath a lower valuation sign.](assets/images/02-three-different-returns/comic-06-scene.jpeg)
 
-**Panel 6:** Test whether the operating improvement remains useful if the sale price is lower or the owner holds the business longer.
+**Panel 6:** A sale price cannot say how much engineering contributed to earnings. Gather that evidence on the way, and test whether an improvement still pays if the sale price is lower or the owner holds the business longer.
 
 *Dialogue:* “Does the business still improve?”

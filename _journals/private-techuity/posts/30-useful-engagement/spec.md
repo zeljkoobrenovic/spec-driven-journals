@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Convert an investor’s help into an engagement with company authority, capacity, information boundaries and an ending. Address competing minority investors and corporate commercial interests as practical agreement questions.
+Convert the written request from the sourcing chapter into a completed engagement charter for the ONB-1 pilot support (accountable company leader, investor-side sponsor, resources on both sides, funding, authority, information use, initial evidence, scope boundary, review date, handover test), carry the same engagement through a week-three scope change and a week-six review, and end with a capability, a decision or an understood continuing service. Competing advisers, corporate commercial interests and required group services are handled in one governance paragraph with links.
 
 ## Audience
 
@@ -18,7 +18,9 @@ Product and engineering leaders inside companies working under investors, includ
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
-- Distinguish the accountable company leader from a shareholder and the engagement sponsor from the investment firm itself.
+- Distinguish the accountable company leader from a shareholder and the investor-side sponsor from the investment firm itself; open with the specialist’s reporting relationship to the investor, not a contrast with company-hired consultants.
+- Fill in the charter with the shared Larkspur chain’s support-engagement facts (ten specialist days over six weeks, six engineer-days, two customer-team sessions, Priya accountable, review at week six) and show the scope change: who changes scope, which work stops, whether the budget still fits, alternatives rejected and the evidence that would change it.
+- Apply the adviser chapter’s role/information boundary, the governance chapter’s shadow-hierarchy warning and the roadmap chapter’s causal-measurement caution in one paragraph each, linking to their homes; place Figure 2 before the Part V handoff; end the comic on the tested handover.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Define necessary terms before using them, and begin with a recognizable company decision.
@@ -47,6 +49,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-09-14: Editorial revision per review: charter completed for the ONB-1 pilot support, week-three scope change and week-six review carried through the same engagement, opening and sponsor label corrected, repeated role/measurement advice reduced to applied paragraphs with links, Figure 2 moved before the handoff; comic panel 6 rewritten to the handover (regeneration flagged); permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Turn an Offer of Help into a Useful Engagement” to “Turn an Offer of Help Into a Useful Engagement”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

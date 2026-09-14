@@ -2,38 +2,45 @@
 title: "Prove You Can Restore, Not Just That You Back Up"
 date: 2026-09-12
 author: Owned working manuscript
-excerpt: "Evaluate investments that protect essential work, reduce possible harm and help a company recover from disruption."
+excerpt: "Follow one failed restore from a stated recovery objective through funded corrective work, a retest and a recorded decision about the exposure that remains."
 permalink: prove-you-can-restore
-timetoread: 8 min read
+timetoread: 12 min read
 logo: "assets/images/11-prove-you-can-restore/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/11-prove-you-can-restore.png"
 ---
 
+> **IN THIS SECTION, YOU WILL:** Learn to state a recovery objective in ordinary language, judge a restore test against it, fund the corrective work, retest and record the exposure that remains.
+
+> **WHY IS THIS IMPORTANT:** A backup that has never been restored to a working service is a hope, not a control; the failure is discovered at 6am on the day the company can least afford it.
+
+
 > **KEY POINTS:**
 >
-> * Start with the **business functions that must keep working**. Identify who would be affected by lost service, damaged information or access by unauthorized people before choosing protections.
-> * Risk estimates are **uncertain decision inputs**. An estimate of lower future losses is not earned profit, and a completed checklist does not prove that service can survive disruption.
-> * **Practice restoring service** before an emergency. Fund the work and agree who is responsible for risks that remain.
+> * Start with the **business function that must keep working** and state the recovery objective in ordinary language: how soon service must resume and how much recent work may be lost.
+> * **Evidence of a backup is not evidence of an operating service**. A restore test is judged against the objective, and a failed test is a finding to fund, not a slide to defer.
+> * After the retest, **record what remains exposed and who accepted it**. A modelled reduction in future losses supports that decision; it is not a booked profit.
 
 <br>
-**Cybersecurity** protects systems and information against threats such as unauthorized access, theft or damage. **Resilience** is the ability to continue or restore essential work through disruption. **Recovery** is the work of restoring service after something goes wrong.
+At six in the morning a dispatcher at one of Larkspur’s customers, a maintenance business, opens the scheduling service to assign the day’s jobs. It doesn’t load. Twenty engineers are in vans waiting to be told where to go, and the customers of that business were promised arrival windows the previous afternoon. Every hour the service stays down, the dispatcher is working from memory and a phone. This is a fictional scenario, and it is what the rest of this chapter is about.
 
-A company often has to fund these capabilities before suffering the loss they're meant to prevent. That creates two temptations: invent a precise amount of “risk avoided,” or retreat into a checklist that says little about business exposure.
+**Cybersecurity** protects systems and information against threats such as unauthorized access, theft or damage. **Resilience** is the ability to continue or restore essential work through disruption. **Recovery** is the work of restoring service after something goes wrong. The dispatcher doesn’t care which of the three failed. The question for Larkspur is what evidence it has that dispatch would resume, how soon, and what it would cost to obtain that evidence before a real morning like this one.
 
-Investor ownership sharpens both. A security investment competes with growth work for the same limited cash and appears in the plan as cost without revenue, so it needs a stronger case than in a company under no pressure to show earnings. At the same time, a breach or a long outage during the ownership period can reduce what the company is worth, and technical diligence and buyer questionnaires will test the controls. The leader has to argue for the investment in terms an investment committee recognizes: exposure, obligations and who accepts the remaining risk.
+A company has to fund these capabilities before suffering the loss they’re meant to prevent. That creates two temptations: invent a precise amount of “risk avoided,” or retreat into a checklist that says little about business exposure. Larkspur’s ownership arrangement changes the conditions of the decision rather than the decision itself. Recovery work competes for the same board-approved cash and engineer-weeks as the onboarding pilot and the customer portal in [[cannot-fund-everything]], and the technical diligence before the investment recorded a finding, D-6, that there was no evidence the service could be restored completely. The company decision-maker for that work is the Larkspur board, which approves the plan and its funding; Ines, the CEO, authorizes within it; Alex, the CTO, is accountable for the result. Morgan, the investor’s technology adviser, can help obtain specialist judgment and explain the finding to the investor, but doesn’t decide what Larkspur funds.
 
-A better approach treats security and resilience as decisions under uncertainty. The company identifies material failure scenarios, the controls and response capabilities that matter, the investment required, and who accepts the remaining risk. Some obligations must be met regardless of a simplified financial model.
+The cloud chapter examined observed spending and service quality. Recovery also needs evidence, but part of its benefit is a lower chance or severity of future harm. We follow one restore from a stated objective through a failed test, funded corrective work, a retest and a decision about what remains.
 
-The cloud chapter examined observed spending and service quality. Security also needs evidence, but part of its benefit is a lower chance or severity of future harm. We start with essential business functions, examine the evidence of protection and recovery, then consider risk estimates and responsibility.
+The US **National Institute of Standards and Technology (NIST)** publishes Cybersecurity Framework 2.0. Released in February 2024, it groups security outcomes under six headings: Govern, Identify, Protect, Detect, Respond and Recover. It explicitly avoids prescribing one implementation for every organization. [S17: NIST CSF 2.0](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) That makes it a useful source of consistent questions while leaving room for company-specific answers. This chapter stays inside Recover, with Govern and Respond where the case needs them.
 
-The US **National Institute of Standards and Technology (NIST)** publishes Cybersecurity Framework 2.0. Released in February 2024, it groups security outcomes under six headings: Govern, Identify, Protect, Detect, Respond and Recover. It explicitly avoids prescribing one implementation for every organization. [S17: NIST CSF 2.0](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) That makes it a useful source of consistent questions while leaving room for company-specific answers.
+## State the Objective in Ordinary Language
 
-## Begin With What Must Keep Working
+The security discussion starts with the consequence at 6am: the business function customers depend on, and the people affected when it fails. For that function, ask what interruption, corruption or unauthorized access would mean. How long can the business continue without it? Which customers face material harm? Which contracts, laws or insurance conditions need specialist interpretation? What manual alternatives exist, and have they been tested?
 
-Larkspur's customers are maintenance businesses that dispatch engineers each morning. If the scheduling service is unavailable at 6am, dispatchers may be unable to assign work or tell customers when an engineer will arrive. The security discussion starts with that consequence: the business functions customers depend on, and the people affected when they fail. A retailer's equivalents are payments, inventory and fulfillment.
+The answers become a **recovery objective**, a plain statement of how soon service must resume and how much recent work may be lost. Larkspur’s, agreed between Priya, the customer team and Alex and approved by Ines, is:
 
-For each critical function, ask what interruption, corruption or unauthorized access would mean. How long can the business continue without it? Which customers face material harm? Which contracts, laws or insurance conditions need specialist interpretation? What manual alternatives exist, and have they been tested?
+> *Dispatch must resume within four hours of a failure, with no more than fifteen minutes of lost schedule updates.*
+
+Four hours is the longest a customer’s morning dispatch can slip before the day is lost. Fifteen minutes is the amount of schedule change a dispatcher can re-enter from memory. This is an agreed fictional objective, not a legal standard; a company with regulated obligations will have some set for it. What matters is that the objective is written in terms a dispatcher would recognize, because that is what the restore test will be judged against.
 
 An asset inventory is useful when it supports those questions. One that counts systems without identifying their role in critical work can look complete while missing **the most consequential dependency**.
 
@@ -41,68 +48,72 @@ An asset inventory is useful when it supports those questions. One that counts s
 
 A policy describes intended behavior. A **configuration record** shows how a system was set up at a point in time. A test shows what happened under particular conditions. An independent assessment adds another perspective but has a defined scope. None alone proves the company will withstand every incident.
 
-A **backup** is a stored copy of data used to recover from loss or damage. A **restore** puts that data back into use. In this fictional scenario, the investigation before investing in Larkspur found that backups had run without error for three years. No one had attempted a full restore in that time. When the team tried, it took eleven hours and stopped twice. The first obstacle was a missing **credential**, information needed to prove someone may access a system. The second was an unavailable version of the database software that organizes and stores the application’s data. Backups running is evidence about backups. Restoring the service is evidence about the business. Test the operating outcome, not the presence of a control.
+A **backup** is a stored copy of data used to recover from loss or damage. A **restore** puts that data back into use. The diligence before the investment found that Larkspur’s backups had run without error for three years. No one had attempted a full restore in that time. That became finding D-6, and in the first-hundred-days plan it became a funded item, REC-1: a restore test against the recovery objective, with Alex accountable together with the operations lead ([[first-hundred-days]]).
 
-A **certification** is a formal statement that specified requirements were met under a particular assessment process. Read which organization, systems, requirements and period it covers. It isn't a guarantee that every part of the company is secure today.
+The day-45 test took eleven hours and stopped twice. The first obstacle was a missing **credential**, information needed to prove someone may access a system: the account that could read the backup store belonged to an engineer who had left. The second was an unavailable version of the database software that organizes and stores the application’s data: the backup could only be loaded into the version it was taken from, and that version was no longer installed anywhere. When the service finally came up, the data was as of the previous night’s backup.
+
+Against the objective, the test failed twice over. Eleven hours against four. A night of lost schedule updates against fifteen minutes. Backups running is evidence about backups. Restoring the service is evidence about the business. Test the operating outcome, not the presence of a control.
+
+That is also what a restore test has to demonstrate: not that data came back, but that it is complete and consistent, that the right people can reach it, that the application and the services it depends on start against it, and that a dispatcher can assign a job end to end within the objective. A **certification**, a formal statement that specified requirements were met under a particular assessment process, is read the same way: which organization, systems, requirements and period it covers. It isn’t a guarantee that every part of the company is secure today.
 
 ![A policy document, an observed control test and a restoration exercise support different claims.](assets/images/11-prove-you-can-restore/security-claims-and-proof.jpeg)
 **Figure 1:** *Match the evidence to the capability you say the company has.*
 
-## Put a Number on Risk Without Faking a Profit
+## Fund the Corrective Work
 
-Suppose a prolonged Larkspur outage would cost €4 million in contractual credits, remediation and lost customers, and the team estimates a 5% annual chance of one. The **expected annual loss** is the probability multiplied by the assumed loss: 5% × €4 million = €200,000. It's an average implied by the assumptions, not a prediction that the company loses that amount each year. A proposed control is estimated to cut the probability to 2%, leaving €80,000, a €120,000 difference before what the control costs.
+A failed test is a finding with a price. In [[cannot-fund-everything]], the board-approved envelope already carried the item “improve and test service restoration” at €80,000 and four engineer-weeks, chosen ahead of the customer portal because the recovery requirement was an agreed customer commitment and the portal’s benefit was still uncertain. REC-1 spends that item.
 
-The result depends on both the probability estimate and the assumed loss. If the probabilities are weak, so is the answer; state them as ranges and say what evidence would narrow them. The average alone is also insufficient when one event could cause several failures together or threaten the company’s survival: **a 2% chance of not surviving is not made acceptable by an affordable-looking average.**
+What the money and the four weeks buy, in this fictional scenario: a restore environment kept at the same database version as production; credentials for the backup store held in a managed service with a documented emergency procedure that two named people can execute; schedule data backed up every fifteen minutes rather than nightly, so the data-loss half of the objective is achievable; and a written rehearsal the operations lead can run without Alex.
 
-State which scenarios the control addresses and which remain. Above all, don't add the €120,000 to recorded operating earnings. It's a modelled change in risk exposure, **not a booked operating gain**.
+Two alternatives were considered and rejected. Deferring the work until the next financing round was rejected because the objective is an agreed customer commitment, and “deferred until funding” doesn’t say who accepted a night of lost dispatch in the meantime. A redesign that runs the service in two regions at once was rejected because its cost sits well outside the envelope and a four-hour objective doesn’t require it. Alex proposed; Sam confirmed the €80,000 sat within the board’s authorized €300,000 envelope for the period; Ines approved under the plan the board had adopted. The decision would change if the retest showed the objective could not be met without the larger redesign, or if customer contracts changed the objective.
 
-## Security Work Needs an Owner and Funding
+### Inset: Put a Number on Risk Without Faking a Profit
 
-An investigation finding such as “identity controls are inadequate” is incomplete. **Identity controls** determine how users prove who they are and what they may access. Which systems and people are exposed? What is the material scenario? What action is feasible now, and what needs a funded follow-up? If a transaction is approaching, what must be resolved before it closes? Who has the authority and capacity to carry out each action?
+The arithmetic that often accompanies such a request is worth showing once, and bounding. Suppose a prolonged Larkspur outage would cost €4 million in contractual credits, remediation and lost customers, and the team estimates a 5% annual chance of one. The **expected annual loss** is the probability multiplied by the assumed loss: 5% × €4 million = €200,000. It’s an average implied by the assumptions, not a prediction that the company loses that amount each year. If REC-1 is estimated to cut the probability to 2%, the expected loss becomes €80,000, a €120,000 difference against the €80,000 cost.
 
-The Principal can help obtain specialist judgment and communicate the implication to the investment team. The company needs accountable operating owners. The board needs to understand **residual risk**, the risk remaining after the chosen protections, and whether it's large enough to affect a company decision. A consultant's recommendation doesn't transfer responsibility for the business to the consultant.
+The result depends on both the probability estimate and the assumed loss, and the 2% is an illustrative assumption about a control, not measured effectiveness. If the probabilities are weak, so is the answer; state them as ranges and say what evidence would narrow them. The average alone is also insufficient when one event could cause several failures together or threaten the company’s survival: **a 2% chance of not surviving is not made acceptable by an affordable-looking average.** Above all, don’t add the €120,000 to recorded operating earnings. It’s a modelled change in risk exposure, **not a booked operating gain**. In Larkspur’s case the arithmetic supports the decision; the agreed objective is the reason for it.
 
-Some findings may affect transaction conditions, price, insurance or whether the deal proceeds. Others may be appropriately accepted with an action plan. The distinction should follow materiality and evidence, not the desire to keep all findings the same color.
+## Retest, Then Record What Remains
+
+The corrected restore was rerun at day 85. Dispatch resumed within the four-hour objective with under fifteen minutes of lost schedule updates, and a dispatcher from the customer team assigned a job on the restored service. REC-1 closed as passed at the day-100 review.
+
+A passed test doesn’t make the exposure zero; it changes what the exposure is. Larkspur’s day-100 record lists what the test did not cover: a failure of the cloud provider’s region itself, which the single restore environment cannot survive; a rehearsal run only on a weekday outside the dispatch window; and the dependence of the emergency credential procedure on two people. **Residual risk**, the risk remaining after the chosen protections, is written down with those limits, and Ines accepts it on the board’s behalf with a quarterly repeat of the test and a review of the region question when the second-country expansion is reconsidered.
+
+Documented acceptance has a limit of its own. It records who decided to live with a known gap; it cannot make an unmet mandatory obligation disappear. If a customer contract, a law or an insurance condition requires something the company hasn’t met, a signed acceptance is evidence of a decision, not compliance. Specialist interpretation governs that question, and it should be sought before the acceptance is signed.
 
 ## Incident Response Is an Operating Capability
 
-An incident can require simultaneous technical work, customer communication, legal judgment, financial decisions and coordination with the owner. A response plan should name the decision process before urgency compresses it.
+Restoring from a clean failure is one scenario. An incident can require simultaneous technical work, customer communication, legal judgment, financial decisions and coordination with the investor. A response plan should name the decision process before urgency compresses it.
 
-A practical exercise can test a plausible scenario. Larkspur's: the scheduling service is returning wrong engineer assignments, nobody yet knows why, the largest customer wants an answer within the hour, and restoring from backup may destroy the evidence needed to find the cause. The exercise should reveal who can decide, which specialists are available and how the team communicates uncertainty. It shouldn't be staged merely to show that a plan exists.
+A practical exercise tests a plausible scenario. Larkspur’s: the scheduling service is returning wrong engineer assignments, nobody yet knows why, the largest customer wants an answer within the hour, and restoring from backup may destroy the evidence needed to find the cause. The exercise should reveal who can decide, which specialists are available and how the team communicates uncertainty. It shouldn’t be staged merely to show that a plan exists.
 
 Legal notification deadlines, sector requirements and contractual duties vary and can change. In a live incident, the organization needs current advice for its jurisdictions and facts. This chapter supplies the operating questions, not a universal deadline.
 
 ![Incident response connects detection, decisions, verified restoration and learning through a practiced operating loop.](assets/images/11-prove-you-can-restore/incident-restoration-practice.jpeg)
 **Figure 2:** *Restoration is a capability to practice and verify, with clear responsibility throughout.*
 
-## Funding Pressure Does Not Decide Who May Accept Risk
+## Every Finding Needs an Accountable Leader
 
-Suppose fictional Larkspur delays a recovery improvement because the next funding round is uncertain. Alex should identify the affected service, current recovery evidence, feasible minimum work and the consequences of further delay. The authorized company decision-maker must address that exposure in the operating plan. A slide saying “deferred until funding” doesn't identify who accepted the consequences.
+An investigation finding such as “identity controls are inadequate” is incomplete. **Identity controls** determine how users prove who they are and what they may access. Which systems and people are exposed? What is the material scenario? What action is feasible now, and what needs a funded follow-up? Who has the authority and capacity to carry out each action?
 
-A minority investor may ask for customer data to help assess a risk. A corporate investor may offer a shared security platform. In both cases, establish the purpose, permitted access, separation from other companies and responsibility for an incident before moving information or systems. Ownership and a useful offer don't, by themselves, settle the access decision.
+The investor’s technology adviser can help obtain specialist judgment and communicate the implication to the investor. The company needs an accountable leader for each finding, and the board needs to understand the residual risk and whether it’s large enough to affect a company decision. A consultant’s recommendation doesn’t transfer responsibility for the business to the consultant. During a transaction, some findings may affect conditions, price, insurance or whether the deal proceeds, and others may be accepted with an action plan; [[diligence-corrects-the-plan]] covers that distinction, which should follow materiality and evidence rather than the desire to keep all findings the same color.
 
-Use shared expertise where it makes the company more capable, and verify that the company can still **detect, communicate and recover** if the service or owner changes. The same test applies when a parent requires integration: budget for the local work needed to meet the group’s requirements, and keep any gap visible until it's resolved.
+## Shared Support and Changing Owners
 
-## Shared Support Can Spread Risk or Concentrate It
+A corporate investor may offer a shared security platform; a minority investor may ask for customer data to help assess a risk; an investor’s network may supply scarce specialists. Each can make the company more capable, and each can create a common point of failure or an access boundary the company hasn’t agreed. Establish the purpose, permitted access and responsibility for an incident before moving information or systems, and verify that the company can still **detect, communicate and recover** if the service or the investor changes. [[useful-engagement]] in Part IV sets out how to agree that support.
 
-A shared specialist network and tested response process can give small companies access to scarce expertise. Relying on the same user-login service, system administrator or connection between systems can also give several companies a common point of failure. The support design should examine the new concentration it introduces.
+The same evidence should survive a change of owner. A restore that passed against a stated objective, with its residual risks written down, is worth more to the next owner than an orderly **data room**, a controlled collection of documents shared with a prospective buyer. [[handover-of-obligations]] covers carrying that evidence across the transaction.
 
-Portfolio-level visibility doesn't require unrestricted access to customer data. Aggregate risk information, scoped evidence and company-approved disclosures can support oversight. Access to live company systems should have a specific purpose and an explicit boundary.
+A sound recovery decision connects a harmful scenario to a stated objective, a test that failed or passed against it, the funded work in between, and someone authorized to accept what remains. Evidence of a backup is evidence about a backup. Evidence of an operating service is what the dispatcher at 6am needs, and it is what the board should be asked to fund.
 
-Exit preparation should keep the same discipline. Describe improvements with dates and test evidence. Disclose material unresolved issues through the appropriate process. An orderly **data room**, a controlled collection of documents shared with a prospective buyer, is helpful; it isn't equivalent to a resilient product.
-
-A sound proposal connects a harmful scenario to a protection or recovery capability, its cost and evidence that it works. The company also needs someone authorized to accept the remaining risk. A modeled reduction in future losses helps that decision; it isn't a booked profit.
-
-The next chapter applies the same careful evaluation to another uncertain area: the benefits, costs and competitive effects of artificial intelligence. Continue with [[ai-strategy-three-questions]].
+Larkspur could judge its recovery spending by a test it could run and watch. The next chapter turns to spending whose benefit is harder to observe and easier to assert: an AI strategy, which hides three separate investment questions behind one word. Continue with [[ai-strategy-three-questions]].
 
 ## Questions to Consider
 
-1. *Which business functions must keep working for your customers, and what would an hour, a day or a week without each of them mean?*
-2. *When did your team last restore the service from backup under realistic conditions, and how long did it take?*
-3. *For your largest security proposal, what harmful scenario does it address, what evidence shows it works and who accepts the risk that remains?*
+1. *Which business function must keep working for your customers, and what is your recovery objective for it in words a customer would recognize?*
+2. *When did your team last restore that service under realistic conditions, and how did the result compare with the objective?*
+3. *For your largest security or recovery proposal, what scenario does it address, what test shows it works, and who is authorized to accept the risk that remains?*
 4. *Has a modelled reduction in expected loss ever been presented in your company as if it were an operating gain?*
-5. *If a material incident began now, who could decide to take the service down, notify customers or restore from backup? Has that been practiced?*
-6. *Which shared services, logins or connections tie your company to other portfolio companies or a parent, and what would fail together?*
 
 ## To Probe Further
 

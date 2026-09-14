@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** A product leader normally has to show that a change is useful. The panels follow one roadmap item to the financial result the investment case depends on, because that chain is what investors and their advisers will examine.
+**Comic.** A product leader normally has to show that a change is useful. An investor may expect the change to support a particular growth, margin or retention target; the panels follow one roadmap item along the chain from work to result, testing each link, because that chain is the part most often asserted rather than shown.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,22 +38,23 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. A customer reaches a usable product with fewer handoffs. Use one speech bubble with the exact words: \"They reach value sooner.\" Convey: Fewer setup steps may help customers begin useful work sooner. Check whether that result actually occurs.",
+  "prompt": "Panel 2 of an explainer comic. A customer reaches a usable product with fewer handoffs. Use one speech bubble with the exact words: \"Do customers reach value sooner?\" Convey: Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the pilot, waiting time did not change.",
   "alt": "Comic panel: A customer reaches a usable product with fewer handoffs.",
-  "caption": "Fewer setup steps may help customers begin useful work sooner. Check whether that result actually occurs.",
+  "caption": "Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the pilot, waiting time did not change.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
     "sha256": "5db768872b66e3311043cd7c12c279cfd39ce3e33ded9d8d8d9dca85778420e0"
-  }
+  },
+  "needs_regeneration": true
 }
 -->
 
 ![Comic panel: A customer reaches a usable product with fewer handoffs.](assets/images/08-roadmap-to-revenue/comic-02-scene.jpeg)
 
-**Panel 2:** Fewer setup steps may help customers begin useful work sooner. Check whether that result actually occurs.
+**Panel 2:** Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the pilot, waiting time did not change.
 
-*Dialogue:* “They reach value sooner.”
+*Dialogue:* “Do customers reach value sooner?”
 
 <!-- comic-panel
 {
@@ -84,9 +85,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Morgan separates product change from a pricing change. Use one speech bubble with the exact words: \"What else changed this quarter?\" Convey: To judge the effect of the change, compare similar customers and examine other changes, such as a new price.",
+  "prompt": "Panel 4 of an explainer comic. Morgan separates product change from a pricing change. Use one speech bubble with the exact words: \"What else changed this quarter?\" Convey: To judge the effect, compare like groups and name the differences that remain: who chose the pilot customers, the same specialist serving both groups, a new price or a busier quarter.",
   "alt": "Comic panel: Morgan separates product change from a pricing change.",
-  "caption": "To judge the effect of the change, compare similar customers and examine other changes, such as a new price.",
+  "caption": "To judge the effect, compare like groups and name the differences that remain: who chose the pilot customers, the same specialist serving both groups, a new price or a busier quarter.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +98,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan separates product change from a pricing change.](assets/images/08-roadmap-to-revenue/comic-04-scene.jpeg)
 
-**Panel 4:** To judge the effect of the change, compare similar customers and examine other changes, such as a new price.
+**Panel 4:** To judge the effect, compare like groups and name the differences that remain: who chose the pilot customers, the same specialist serving both groups, a new price or a busier quarter.
 
 *Dialogue:* “What else changed this quarter?”
 
@@ -107,9 +108,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex adds implementation and ongoing costs to the proposal. Use one speech bubble with the exact words: \"Count the whole intervention.\" Convey: Include the money and effort needed to build, introduce and maintain the improvement before claiming a net benefit.",
+  "prompt": "Panel 5 of an explainer comic. Alex adds implementation and ongoing costs to the proposal. Use one speech bubble with the exact words: \"Count the whole intervention.\" Convey: Include the €180,000 build and €30,000 a year of maintenance before claiming a net benefit, and say which conversion of the released time actually happened.",
   "alt": "Comic panel: Alex adds implementation and ongoing costs to the proposal.",
-  "caption": "Include the money and effort needed to build, introduce and maintain the improvement before claiming a net benefit.",
+  "caption": "Include the €180,000 build and €30,000 a year of maintenance before claiming a net benefit, and say which conversion of the released time actually happened.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +121,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex adds implementation and ongoing costs to the proposal.](assets/images/08-roadmap-to-revenue/comic-05-scene.jpeg)
 
-**Panel 5:** Include the money and effort needed to build, introduce and maintain the improvement before claiming a net benefit.
+**Panel 5:** Include the €180,000 build and €30,000 a year of maintenance before claiming a net benefit, and say which conversion of the released time actually happened.
 
 *Dialogue:* “Count the whole intervention.”
 
@@ -130,9 +131,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya compares an introduced prospect’s request with existing customer needs and the work it would displace. Use one speech bubble with the exact words: \"Does this serve the market we chose?\" Convey: An investor introduction creates a learning opportunity. Test demand and the cost of exclusivity before changing the roadmap for a corporate channel.",
+  "prompt": "Panel 6 of an explainer comic. Priya compares an introduced prospect’s request with existing customer needs and the work it would displace. Use one speech bubble with the exact words: \"Does this serve the market we chose?\" Convey: An investor introduction is a lead, not a product strategy. Test the need and willingness to pay as with any prospect, and make the displaced work explicit before changing the roadmap.",
   "alt": "Comic panel: Priya compares an introduced prospect’s request with existing customer needs and the work it would displace.",
-  "caption": "An investor introduction creates a learning opportunity. Test demand and the cost of exclusivity before changing the roadmap for a corporate channel.",
+  "caption": "An investor introduction is a lead, not a product strategy. Test the need and willingness to pay as with any prospect, and make the displaced work explicit before changing the roadmap.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +144,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya compares an introduced prospect’s request with existing customer needs and the work it would displace.](assets/images/08-roadmap-to-revenue/comic-06-scene.jpeg)
 
-**Panel 6:** An investor introduction creates a learning opportunity. Test demand and the cost of exclusivity before changing the roadmap for a corporate channel.
+**Panel 6:** An investor introduction is a lead, not a product strategy. Test the need and willingness to pay as with any prospect, and make the displaced work explicit before changing the roadmap.
 
 *Dialogue:* “Does this serve the market we chose?”

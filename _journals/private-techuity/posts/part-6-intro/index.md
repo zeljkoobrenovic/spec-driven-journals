@@ -10,23 +10,25 @@ logo_credit: "AI-generated illustration"
 icon: "assets/icons/part-6-intro.png"
 ---
 
-> Test leadership judgments against specific histories while keeping the evidence in scope.
+> **IN THIS SECTION, YOU WILL:** Get an introduction to Part VI, Lessons from the Field, and an overview of its five case chapters: the decision each one illuminates and the three-step method for reading them with the evidence kept in scope.
 
 <br>
-A good operating argument should survive contact with what actually happened. These chapters follow defined ownership periods at Hilton, Skype, Visma, Toys R Us and TeamSystem, then ask which outcomes matter beyond the investor’s transaction.
+Hilton’s sponsor reported a large gain after a decade that included a financial crisis. Toys R Us reported positive operating earnings in the year before it filed for bankruptcy. Both facts are true, and neither explains itself. A good operating argument should survive contact with what actually happened, and these chapters supply the contact: defined ownership periods at Hilton, Skype, Visma, Toys R Us and TeamSystem, then a judgment about which outcomes matter beyond the investor’s transaction.
 
-The cases concentrate on private equity. Skype’s passage between owners also takes in a strategic acquisition and a later product history. Together they are useful evidence about particular transitions, not a balanced sample of ownership models, and not proof that one type of investor produces a given outcome.
-
-Read each case in three steps: **establish what the sources show**, identify the possible mechanism, then ask which decision a company leader could make differently. Keep the lesson separate from its historical packaging: a dependency on funding may transfer to other settings even when the financing structure that created it does not. And where customer, employee or technical evidence is missing, **treat the gap as a gap** rather than filling it with inference.
-
-The same questions apply throughout. What did the investment expect? What choices did company leaders face? Which resources and constraints mattered? What happened, and how much can the evidence explain? What would you investigate before applying a lesson elsewhere?
+Read each case in three steps: **establish what the sources show**, identify the possible mechanism, then ask which decision a company leader could make differently. Keep the lesson separate from its historical packaging: a dependency on funding may transfer to other settings even when the financing structure that created it does not. Where customer, employee or technical evidence is missing, **treat the gap as a gap** rather than filling it with inference. Management’s account, the sponsor’s account and the author’s inference are kept apart throughout.
 
 ## The Learning Path
 
-- [[hilton-and-skype]] separates the fact of a valuable sale from the question of how much operating improvement, financing and buyer interest each contributed.
-- [[visma]] examines shared capability and local responsibility, alongside changes in the investors behind a continuing management relationship, principally through 2024.
-- [[toys-r-us]] follows what happens when technology plans meet cash pressure, competition and business failure.
-- [[teamsystem]] traces what successive acquisitions accumulate — products and capabilities, integration work and financial obligations — using evidence through 2017.
-- [[success-for-whom]] brings the cases and wider research together to assess what lasts for the company and the people affected.
+Each case illuminates a different decision.
+
+| Case | Historical window | The decision it illuminates |
+| --- | --- | --- |
+| [[hilton-and-skype]] | Hilton 2007–2018; Skype 2009–2011, with later product history | Explaining a successful exit: financing and time for the operating plan, or control of the rights a product depends on and what a particular buyer values |
+| [[visma]] | Principally 2023–2024 | What continues behind a familiar manager when investors change, and what an adjusted earnings measure can and cannot settle |
+| [[toys-r-us]] | Transaction in 2005; financial evidence mainly fiscal 2016–2017 | Why positive operating earnings did not fund a product transition when financing and supplier payments consumed the cash |
+| [[teamsystem]] | Ownership episodes through 2017, with later announcements noted | What successive owners inherit: products, unfinished integration work, reporting periods and obligations |
+| [[success-for-whom]] | Synthesis, with wider research | The book’s standard for success: who received the gains, who carried the costs and what the company can still do |
+
+The cases concentrate on private equity. Skype’s passage between owners also takes in a strategic acquisition and a later product history. Together they are useful evidence about particular transitions, not a balanced sample of ownership models, and not proof that one type of investor produces a given outcome. The last chapter is not another company history: it compares the four cases, applies the book’s standard to one final company decision and uses wider research to test whether investor outcomes alone can measure success.
 
 Begin with [[hilton-and-skype]] and read in order; [[success-for-whom]] closes the main narrative. The [[toolkit]] then provides practical records for your own decisions.

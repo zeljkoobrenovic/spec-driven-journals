@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
 # Spec: Judge an Investor by Their Behavior Under Pressure
 
 ## Intent
 
-Assess the investor relationship a leader can influence, including one already inherited. Examine competing investors, follow-on funding, strategic conflicts and support behavior under pressure.
+Assess the investor relationship a leader can influence, including one already inherited. Resolve the two-term-sheet opening with a compact comparison (evidence obtained, remaining uncertainty, effect on Larkspur's next decisions, negotiated commitment) that ends in a recorded choice, show one changed dependency for an investor already in place, and give a missing-evidence outcome. Engagement design belongs to Part IV and is only linked.
 
 ## Audience
 
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Resolve the two-investor comparison with a recorded decision, bring the inherited-relationship route forward with one changed dependency, add a missing-evidence outcome, consolidate warning signs and reassessment into one process, cut engagement design to Part IV links, and scope the Bernstein and Sheen annotation; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

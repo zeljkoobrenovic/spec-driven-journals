@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** In normal operations, engineering constraints are handled as they arise. The panels show what changes when an investment case fixes the destination and timetable in advance: the engineering leader has to test whether the promised plan is feasible and say what it would cost to make it so.
+**Comic.** An expansion date has been proposed before the dependencies were assessed. The panels follow Alex establishing what fictional Larkspur’s systems and team can support for a second country, what must change in the plan, and what a transition would cost before its first benefit appears.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/09-can-the-team-deliver/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan translates a growth assumption into easier customer onboarding. Use one speech bubble with the exact words: \"Make the required change easier.\" Convey: If growth needs faster customer setup, investigate which system changes make that work easier.",
+  "prompt": "Panel 2 of an explainer comic. Morgan translates a growth assumption into easier customer onboarding. Use one speech bubble with the exact words: \"Make the required change easier.\" Convey: If growth needs customers set up in a second country, investigate which system changes make that work easier.",
   "alt": "Comic panel: Morgan translates a growth assumption into easier customer onboarding.",
-  "caption": "If growth needs faster customer setup, investigate which system changes make that work easier.",
+  "caption": "If growth needs customers set up in a second country, investigate which system changes make that work easier.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan translates a growth assumption into easier customer onboarding.](assets/images/09-can-the-team-deliver/comic-02-scene.jpeg)
 
-**Panel 2:** If growth needs faster customer setup, investigate which system changes make that work easier.
+**Panel 2:** If growth needs customers set up in a second country, investigate which system changes make that work easier.
 
 *Dialogue:* “Make the required change easier.”
 
@@ -82,11 +82,12 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "04-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/09-can-the-team-deliver/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex compares one modular application with separately deployed services. Use one speech bubble with the exact words: \"Which option fits our work?\" Convey: Modularity gives software parts clear responsibilities. Running those parts as separate services adds independence and operating work; compare both.",
-  "alt": "Comic panel: Alex compares one modular application with separately deployed services.",
-  "caption": "Modularity gives software parts clear responsibilities. Running those parts as separate services adds independence and operating work; compare both.",
+  "prompt": "Panel 4 of an explainer comic. Alex stands at a board with two columns: on the left, a steady stack labelled by a small tick (a stable core and a team that knows its customers); on the right, a tangle of country-rule cards knotted into one invoicing box. Use one speech bubble with the exact words: \"What do we keep, and what blocks the plan?\" Convey: An assessment records strengths as well as constraints: a stable core and deep customer knowledge beside country rules coupled into the invoicing module.",
+  "alt": "Comic panel: Alex writes the assessment on a board with a strengths column beside a constraints column.",
+  "caption": "An assessment records strengths as well as constraints: a stable core and deep customer knowledge beside country rules coupled into the invoicing module.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -95,11 +96,11 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex compares one modular application with separately deployed services.](assets/images/09-can-the-team-deliver/comic-04-scene.jpeg)
+![Comic panel: Alex writes the assessment on a board with a strengths column beside a constraints column.](assets/images/09-can-the-team-deliver/comic-04-scene.jpeg)
 
-**Panel 4:** Modularity gives software parts clear responsibilities. Running those parts as separate services adds independence and operating work; compare both.
+**Panel 4:** An assessment records strengths as well as constraints: a stable core and deep customer knowledge beside country rules coupled into the invoicing module.
 
-*Dialogue:* “Which option fits our work?”
+*Dialogue:* “What do we keep, and what blocks the plan?”
 
 <!-- comic-panel
 {
@@ -107,9 +108,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/09-can-the-team-deliver/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex sketches a migration step with a rollback path and transition costs. Use one speech bubble with the exact words: \"Can we learn safely first?\" Convey: Technical debt is future effort or risk from past choices or postponed work. Addressing it needs a funded transition and a usable route back if needed.",
+  "prompt": "Panel 5 of an explainer comic. Alex sketches a migration step with a rollback path and transition costs. Use one speech bubble with the exact words: \"Can we learn safely first?\" Convey: A replacement needs a funded transition: extra people, both systems running together, migration, a route back, and a stated month when the first benefit appears.",
   "alt": "Comic panel: Alex sketches a migration step with a rollback path and transition costs.",
-  "caption": "Technical debt is future effort or risk from past choices or postponed work. Addressing it needs a funded transition and a usable route back if needed.",
+  "caption": "A replacement needs a funded transition: extra people, both systems running together, migration, a route back, and a stated month when the first benefit appears.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +121,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex sketches a migration step with a rollback path and transition costs.](assets/images/09-can-the-team-deliver/comic-05-scene.jpeg)
 
-**Panel 5:** Technical debt is future effort or risk from past choices or postponed work. Addressing it needs a funded transition and a usable route back if needed.
+**Panel 5:** A replacement needs a funded transition: extra people, both systems running together, migration, a route back, and a stated month when the first benefit appears.
 
 *Dialogue:* “Can we learn safely first?”
 
@@ -130,9 +131,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/09-can-the-team-deliver/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex and Priya compare a small test interface with a funded expansion plan on two separate scenario cards. Use one speech bubble with the exact words: \"What must work before the next decision?\" Convey: A bounded trial can support learning before another round; confirmed expansion can need a repeatable capability. State what each stage supports and what remains to fund.",
+  "prompt": "Panel 6 of an explainer comic. Alex and Priya compare a small test interface with a funded expansion plan on two separate scenario cards. Use one speech bubble with the exact words: \"What must work before the next decision?\" Convey: The finding is handed over: a bounded trial if demand is untested, a repeatable capability if expansion is committed. State what each stage supports and what remains to fund.",
   "alt": "Comic panel: Alex and Priya compare a small test interface with a funded expansion plan on two separate scenario cards.",
-  "caption": "A bounded trial can support learning before another round; confirmed expansion can need a repeatable capability. State what each stage supports and what remains to fund.",
+  "caption": "The finding is handed over: a bounded trial if demand is untested, a repeatable capability if expansion is committed. State what each stage supports and what remains to fund.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +144,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex and Priya compare a small test interface with a funded expansion plan on two separate scenario cards.](assets/images/09-can-the-team-deliver/comic-06-scene.jpeg)
 
-**Panel 6:** A bounded trial can support learning before another round; confirmed expansion can need a repeatable capability. State what each stage supports and what remains to fund.
+**Panel 6:** The finding is handed over: a bounded trial if demand is untested, a repeatable capability if expansion is committed. State what each stage supports and what remains to fund.
 
 *Dialogue:* “What must work before the next decision?”

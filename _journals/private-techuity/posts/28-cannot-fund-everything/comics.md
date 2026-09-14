@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Investor ownership changes the choice of what to fund in two ways: the financing limits the cash and capacity available, and the investor’s expected result gives some options a priority the company’s own view might not. The panels show how to choose without the plan being overruled or unfunded.
+**Comic.** Investor ownership changes the conditions of the choice of what to fund: establish the actual money, team time and authority before committing, and name the result the funding was agreed on. The panels follow a fictional Larkspur exercise from four requests to a feasible combination, and then to the review that revised it.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/28-cannot-fund-everything/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "Identify existing obligations and the minimum acceptable service before comparing optional improvements. Examine how to meet the need, not only the proposed project.",
+  "caption": "Routine operating work is already budgeted. The change budget must still fund the improvement needed to meet the agreed recovery requirement, and the company still chooses how to meet it.",
   "alt": "Comic panel: Alex points to a service-restoration card while Sam checks a clearly marked company requirement.",
-  "prompt": "Panel 2 of an explainer comic. Alex points to a service-restoration card while Sam checks a clearly marked company requirement. Use one speech bubble with the exact words: \"What must keep working?\" Convey: Identify existing obligations and the minimum acceptable service before comparing optional improvements. Examine how to meet the need, not only the proposed project.",
+  "prompt": "Panel 2 of an explainer comic. Alex points to a service-restoration card while Sam checks a clearly marked company requirement. Use one speech bubble with the exact words: \"What must keep working?\" Convey: Routine operating work is already budgeted. The change budget must still fund the improvement needed to meet the agreed recovery requirement, and the company still chooses how to meet it.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex points to a service-restoration card while Sam checks a clearly marked company requirement.](assets/images/28-cannot-fund-everything/comic-02-scene.jpeg)
 
-**Panel 2:** Identify existing obligations and the minimum acceptable service before comparing optional improvements. Examine how to meet the need, not only the proposed project.
+**Panel 2:** Routine operating work is already budgeted. The change budget must still fund the improvement needed to meet the agreed recovery requirement, and the company still chooses how to meet it.
 
 *Dialogue:* “What must keep working?”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/28-cannot-fund-everything/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "One possible selection uses €280,000 and 18 engineer-weeks for restoration, a smaller setup change and customer research. It leaves room for uncertainty.",
+  "caption": "One defensible selection uses €280,000 and 18 engineer-weeks for restoration, the smaller setup change and customer research. It leaves €220,000 and six weeks uncommitted and defers the full portal, whose twelve weeks still do not fit.",
   "alt": "Comic panel: Alex selects three cards and leaves the full portal proposal beside a question mark.",
-  "prompt": "Panel 4 of an explainer comic. Alex selects three cards and leaves the full portal proposal beside a question mark. Use one speech bubble with the exact words: \"Learn before the larger commitment.\" Convey: One possible selection uses €280,000 and 18 engineer-weeks for restoration, a smaller setup change and customer research. It leaves room for uncertainty.",
+  "prompt": "Panel 4 of an explainer comic. Alex selects three cards and leaves the full portal proposal beside a question mark. Use one speech bubble with the exact words: \"Learn before the larger commitment.\" Convey: One defensible selection uses €280,000 and 18 engineer-weeks for restoration, the smaller setup change and customer research. It leaves €220,000 and six weeks uncommitted and defers the full portal, whose twelve weeks still do not fit.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex selects three cards and leaves the full portal proposal beside a question mark.](assets/images/28-cannot-fund-everything/comic-04-scene.jpeg)
 
-**Panel 4:** One possible selection uses €280,000 and 18 engineer-weeks for restoration, a smaller setup change and customer research. It leaves room for uncertainty.
+**Panel 4:** One defensible selection uses €280,000 and 18 engineer-weeks for restoration, the smaller setup change and customer research. It leaves €220,000 and six weeks uncommitted and defers the full portal, whose twelve weeks still do not fit.
 
 *Dialogue:* “Learn before the larger commitment.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/28-cannot-fund-everything/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "Alternative ownership and funding conditions change which commitment is feasible. Show the scope, timing and funding choices when investor expectations exceed available capacity.",
-  "alt": "Comic panel: Alex, Sam and Priya compare two option sheets with scope, time and funding checklists.",
-  "prompt": "Panel 6 of an explainer comic. Priya, Alex and Sam compare three feasible combinations and identify the work each leaves out. Use one speech bubble with the exact words: \"Which combination can we actually deliver?\" Convey: Alternative ownership and funding conditions change which commitment is feasible. Show the scope, timing and funding choices when investor expectations exceed available capacity.",
+  "caption": "The day-45 restoration test fails. Correcting it takes €20,000 and two weeks from the reserve, so the combination is revised: €300,000 and 20 engineer-weeks committed, the portal still deferred and the retest as the next review point.",
+  "alt": "Comic panel: Alex, Sam and Priya compare the original combination sheet with the revised one after the failed restoration test.",
+  "prompt": "Panel 6 of an explainer comic. Alex, Sam and Priya compare two option sheets, the original combination and the revised one after a failed restoration test, with scope, time and funding checklists. Use one speech bubble with the exact words: \"Which combination can we actually deliver?\" Convey: The day-45 restoration test fails. Correcting it takes €20,000 and two weeks from the reserve, so the combination is revised: €300,000 and 20 engineer-weeks committed, the portal still deferred and the retest as the next review point.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +141,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex, Sam and Priya compare two option sheets with scope, time and funding checklists.](assets/images/28-cannot-fund-everything/comic-06-scene.jpeg)
+![Comic panel: Alex, Sam and Priya compare the original combination sheet with the revised one after the failed restoration test.](assets/images/28-cannot-fund-everything/comic-06-scene.jpeg)
 
-**Panel 6:** Alternative ownership and funding conditions change which commitment is feasible. Show the scope, timing and funding choices when investor expectations exceed available capacity.
+**Panel 6:** The day-45 restoration test fails. Correcting it takes €20,000 and two weeks from the reserve, so the combination is revised: €300,000 and 20 engineer-weeks committed, the portal still deferred and the retest as the next review point.
 
 *Dialogue:* “Which combination can we actually deliver?”

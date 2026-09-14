@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Explain the different exposures behind employee options, management rollover, fund carry and corporate rewards. Use dilution, funding rounds, thresholds and departure scenarios to examine what rewards can encourage or damage.
+Explain the different exposures behind employee options, management rollover, fund carry and corporate rewards. Use dilution, funding rounds, thresholds and departure scenarios to examine what rewards can encourage or damage, and complete the title's comparison with one proposed consolidation that sets executive proceeds, fund timing, employee jobs and customer continuity side by side and ends in a recorded company decision. Leadership assessment lives in the organization chapter; this chapter keeps one sentence on how incentives distort it.
 
 ## Audience
 
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Replace the opening generalization, add the consolidation comparison with a recorded decision and unresolved burden, turn the guardrail list into one worked revenue-target choice, distinguish the company payout waterfall from the fund waterfall, move "A Leadership Change Needs a Hypothesis" to the organization chapter, and scope the Leslie and Oyer annotation; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Owning Shares Together Is Not Wanting the Same Thing” to “Management Equity, Fund Carry and Employee Jobs Are Different Bets”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “Shared Ownership Does Not Create Identical Interests” to “Owning Shares Together Is Not Wanting the Same Thing”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

@@ -2,22 +2,50 @@
 title: Glossary
 date: 2026-09-12
 permalink: glossary
-excerpt: "Plain-language definitions organized in the order you encounter the book’s main subjects."
+excerpt: "Plain-language definitions with an alphabetical index for lookup, organized underneath in the order you encounter the book’s main subjects."
 logo: "assets/images/glossary/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/glossary.png"
 ---
 
+> **IN THIS SECTION, YOU WILL:** Learn the book’s vocabulary: find a term in the alphabetical index, read its plain-language definition and see the contrasts that matter beside it.
+
+
 > **KEY POINTS:**
 >
-> * **Use this page to recall a term when you need it.** The chapters teach the ideas and calculations in sequence.
-> * **Check what each number describes.** Sales, profit, cash and estimated value answer different questions.
-> * **Read the definition in the actual document too.** Contracts and company reports may use more specific calculations than these teaching definitions.
+> * **Find a term in the alphabetical index, then read its section.** Each section groups the terms one part of the book uses, so the neighboring rows explain the contrasts that matter.
+> * **Check what each number describes.** Sales, profit, cash and estimated value answer different questions; name the measure, the scope and the period.
+> * **Read the definition in the actual document too.** Contracts, fund agreements and company reports use more specific calculations than these teaching definitions.
 
 <br>
-The glossary follows the book’s learning sequence: basic funding, investment organizations, financial measures, transactions, investment choices, company work and evidence. Use your browser’s Find command to look for a word or abbreviation. Related terms are separated where that makes them easier to distinguish.
+## How to Use This Glossary
 
-## Basic Funding and Ownership
+Look up a term or abbreviation in the alphabetical index below; each entry links to the thematic section that defines it, next to the terms it is most often confused with. The thematic sections follow the book’s learning sequence: basic funding, ownership arrangements, investment organizations, roles and authority, financial measures, value and returns, transactions, company work, technology, evidence, and finally the terms this book proposes. The definitions are plain-language teaching descriptions, not legal or accounting standards. Where a chapter works through a term with numbers, the row links to that chapter. These rows are also the terminology standard the chapters follow: when a chapter and this page differ, the chapter needs correcting.
+
+## Alphabetical Index
+
+- **A** — [Accountable company leader](#roles) · [Acquisition](#transactions) · [Acquisition vehicle](#organizations) · [Add-on](#transactions) · [Adjusted EBITDA](#earnings) · [AI system](#technology) · [Amortization](#earnings) · [Announced transaction value](#transactions) · [Annual recurring revenue](#earnings) · [Approval pending](#arrangements) · [Architecture](#technology) · [ARR](#earnings) · [Assertion](#evidence) · [Asset](#funding) · [Asset-based valuation](#returns) · [Assumption of debt](#transactions) · [Attributable](#earnings) · [Attribution](#evidence)
+- **B** — [Balance sheet](#earnings) · [Baseline](#evidence) · [Board of directors](#roles) · [Buy-and-build](#transactions) · [Buyout](#transactions)
+- **C** — [Capability](#technology) · [Capability left with the company](#choosing) · [Capacity benefit](#earnings) · [Capex](#earnings) · [Capital](#funding) · [Capital call](#organizations) · [Capital expenditure](#earnings) · [Capital structure](#funding) · [Capitalization](#earnings) · [Carried interest](#organizations) · [Carry](#organizations) · [Carve-out](#transactions) · [Cash conversion](#earnings) · [Cash flow](#earnings) · [Cash received](#arrangements) · [Catch-up](#organizations) · [Causal contribution](#evidence) · [Causation](#evidence) · [CEO](#roles) · [CFO](#roles) · [Chapter 11](#transactions) · [Clawback](#organizations) · [Cloud](#technology) · [Cohort](#evidence) · [Collateral](#earnings) · [Commitment](#organizations) · [Company investment](#choosing) · [Company sponsor](#roles) · [Company, the](#funding) · [Comparable multiple](#returns) · [Conditional commitment](#arrangements) · [Confidence](#evidence) · [Configuration](#technology) · [Consolidated](#earnings) · [Constant currency](#earnings) · [Continuation vehicle](#transactions) · [Continuing specialist service](#choosing) · [Contractual commitment](#arrangements) · [Control or comparison group](#evidence) · [Corporate investor](#arrangements) · [Corporate venture capital](#arrangements) · [Correlation](#evidence) · [Counterfactual](#evidence) · [Coupling](#technology) · [Covenant](#earnings) · [CTO](#roles) · [CVC](#arrangements)
+- **D** — [Data room](#technology) · [DCF](#returns) · [Debt](#funding) · [Debt service](#earnings) · [Decision rights](#roles) · [Deployment](#technology) · [Depreciation](#earnings) · [Dilution](#transactions) · [Discount rate](#returns) · [Discounted cash flow](#returns) · [Distribution](#organizations) · [Distribution waterfall](#organizations) · [Dividend](#funding) · [Dividend recapitalization](#transactions) · [DORA](#technology) · [DORA change lead time](#technology) · [DPI](#returns) · [Durable value](#proposed)
+- **E** — [Earnings](#earnings) · [EBIT](#earnings) · [EBITDA](#earnings) · [Empirical research](#evidence) · [Endowment](#organizations) · [End-to-end work lead time](#technology) · [Engagement](#choosing) · [Engagement charter](#proposed) · [Engagement sponsor](#roles) · [Engineering effectiveness](#technology) · [Engineer-week](#choosing) · [Enterprise value](#returns) · [Equity](#funding) · [Equity value](#returns) · [Escalation](#roles) · [EV](#returns) · [Exit](#transactions) · [Expansion capital](#arrangements) · [Expression of interest](#arrangements)
+- **F** — [FCF](#earnings) · [Feature flag](#technology) · [Financial bridge](#earnings) · [Financial contribution](#earnings) · [Financial sponsor](#roles) · [Financing](#funding) · [FinOps](#technology) · [Floating-rate debt](#earnings) · [Free cash flow](#earnings) · [Fully diluted ownership](#arrangements) · [Fund](#organizations) · [Fund term](#organizations) · [Funding round](#arrangements) · [Funding stage](#choosing)
+- **G** — [General partner](#organizations) · [Generalizability](#evidence) · [Generative AI](#technology) · [Governance](#roles) · [GP](#organizations) · [Gross return](#returns) · [Gross revenue retention](#earnings) · [Growth equity](#arrangements)
+- **H** — [Handover](#choosing) · [Holding company](#organizations) · [Hurdle](#organizations) · [Hypothesis](#evidence)
+- **I** — [Impairment](#transactions) · [Income statement](#earnings) · [Inference](#evidence) · [Information technology](#technology) · [Initial public offering](#funding) · [Intellectual property](#technology) · [Interest](#funding) · [Interface](#technology) · [Investment committee](#roles) · [Investment firm](#organizations) · [Investment period](#organizations) · [Investment return](#returns) · [Investment thesis](#transactions) · [Investor](#funding) · [Investor ownership](#arrangements) · [Investor’s technology adviser](#roles) · [Investor-side sponsor](#roles) · [IP](#technology) · [IPO](#funding) · [IRR](#returns) · [IT](#technology)
+- **L** — [Latency](#technology) · [Leaver provisions](#transactions) · [Leverage](#returns) · [Leveraged buyout](#transactions) · [Liability](#funding) · [Limited partner](#organizations) · [Liquidation](#transactions) · [Liquidity](#earnings) · [LP](#organizations)
+- **M** — [Managed service](#technology) · [Management equity](#transactions) · [Management fee](#organizations) · [Management rollover](#transactions) · [Manager](#organizations) · [Mandate](#roles) · [Margin](#earnings) · [Market approach](#returns) · [Materiality](#evidence) · [Maturity](#earnings) · [Microservices](#technology) · [Minority investment](#arrangements) · [Model inference](#technology) · [Modularity](#technology) · [MOIC](#returns) · [Multiple compression](#returns) · [Multiple expansion](#returns)
+- **N** — [Nearshoring](#technology) · [Net cash burn](#arrangements) · [Net debt](#returns) · [Net debt to EBITDA ratio](#returns) · [Net loss](#earnings) · [Net profit](#earnings) · [Net return](#returns) · [Net revenue retention](#earnings)
+- **O** — [Observation](#evidence) · [Observational research](#evidence) · [Offshoring](#technology) · [Onboarding](#technology) · [Operating cash flow](#earnings) · [Operating earnings](#earnings) · [Operating model](#technology) · [Operating profit](#earnings) · [Operating team](#roles) · [Opportunity cost](#choosing) · [Option](#transactions) · [Organic growth](#earnings) · [Ownership cycle](#proposed)
+- **P** — [Payables](#earnings) · [PE](#funding) · [Peer network](#choosing) · [Percentage](#evidence) · [Percentage point](#evidence) · [Platform company](#transactions) · [Portfolio](#organizations) · [Portfolio company](#organizations) · [Post-money valuation](#arrangements) · [Preference](#transactions) · [Preferred return](#organizations) · [Pre-money valuation](#arrangements) · [Present value](#returns) · [Primary share issue](#arrangements) · [Principal](#funding) · [Private company](#funding) · [Private equity](#funding) · [Private-to-private](#transactions) · [Pro forma](#earnings) · [Profit](#earnings) · [Public company](#funding) · [Public-to-private](#transactions)
+- **R** — [Realization](#transactions) · [Realized saving](#earnings) · [Receivables](#earnings) · [Received proceeds](#transactions) · [Reconciliation](#earnings) · [Recovery](#technology) · [Recovery objective](#technology) · [Refinancing](#earnings) · [Reserved matters](#roles) · [Residual risk](#technology) · [Resilience](#technology) · [Restructuring](#transactions) · [Retained investment value](#returns) · [Revenue](#earnings) · [Rightsizing](#technology) · [Roadmap](#technology) · [Run-rate](#earnings) · [Runway](#arrangements) · [RVPI](#returns)
+- **S** — [SaaS](#technology) · [Secondary share sale](#arrangements) · [Secondary transaction](#transactions) · [Security](#technology) · [Share](#funding) · [Shareholder](#funding) · [Simple payback](#returns) · [Software as a service](#technology) · [SPACE](#technology) · [Stakeholder](#evidence) · [Statutory accounts](#earnings) · [Statutory result](#earnings) · [Stock exchange](#funding) · [Stranded cost](#technology) · [Strategic acquisition](#arrangements) · [Strategic buyer](#transactions) · [Subscription line](#organizations) · [Sunk cost](#choosing) · [Synergy](#transactions)
+- **T** — [Team capacity](#choosing) · [Technical debt](#technology) · [Technical due diligence](#technology) · [Technology Principal](#roles) · [Tenant isolation](#technology) · [Transition services agreement](#technology) · [TSA](#technology) · [Turnaround](#transactions) · [TVPI](#returns)
+- **U** — [Underwriting](#transactions) · [Unit economics](#technology)
+- **V** — [Valuation](#returns) · [Valuation multiple](#returns) · [Value-creation plan](#choosing) · [Venture capital](#arrangements) · [Vesting](#transactions)
+- **W** — [Working capital](#earnings) · [Writedown](#transactions)
+
+## <a id="funding"></a>Basic Funding and Ownership
 
 Start with [[customers-lenders-investors]]. The stock and public-company definitions use Investor.gov’s educational material; the capital-structure definition follows Damodaran’s finance teaching. [S54: Stock basics](https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks) [S55: Public companies](https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/public-companies) [S57: Capital structure](https://people.stern.nyu.edu/adamodar/pdfiles/cf2E/capstru.pdf)
 
@@ -29,21 +57,22 @@ Start with [[customers-lenders-investors]]. The stock and public-company definit
 | Principal | The amount borrowed, as distinct from interest. In “Technology Principal,” Principal is a job title. |
 | Interest | The charge for using borrowed money. |
 | Equity | An ownership interest. In a balance sheet, equity is the accounting amount remaining after liabilities are deducted from assets. |
-| Share / shareholder | A unit of company ownership / its holder. Ten of 1,000 identical shares represents 1% of those shares; share classes can have different rights. |
+| Share / shareholder | A unit of company ownership / its holder. Ten of 1,000 identical shares represents 1% of those shares; share classes can have different rights. Use “shareholder” for ownership; for responsibility, see accountable company leader. |
 | Dividend | A payment to shareholders under the company’s arrangements. |
-| Asset / liability | A resource the business controls that can provide future benefit / an obligation, such as an amount owed. |
+| Asset / liability | Teaching description only: a resource the business controls that can provide future benefit / an obligation, such as an amount owed. Accounting standards set stricter tests for when either is recognized and at what amount. |
 | Capital structure | The mix of debt and equity financing. It is distinct from a list of all cash sources, such as customer payments and asset sales. |
 | Stock exchange | An organized market where investors trade shares and other securities. |
 | Public company | In this book, usually a company with publicly traded shares. Legal public-reporting categories can be broader; reporting obligations vary. |
 | Private company | A company without shares traded on a public stock market. It may still have many owners and significant reporting obligations. |
+| Audited financial statements | Financial statements examined by an independent auditor, who reports whether they give a true and fair view under the applicable accounting rules. Public companies must publish audited statements regularly; many private companies must also, depending on size, jurisdiction and financing agreements. An audit checks the statements, not the wisdom of the decisions behind them. |
 | Initial public offering (IPO) | The first public offering of a company’s shares. It may raise company money, let existing owners sell, or do both. |
 | Private equity (PE) | Ownership investment outside public stock markets, including transactions taking public companies private. Broad usage includes venture and growth investment; narrower usage often means buyouts. |
-| Board of directors | The body overseeing a company within its authority. Its responsibilities differ from executives’ day-to-day management. |
-| CEO / CTO / CFO | Chief executive officer, leading the company; chief technology officer, leading technology; chief financial officer, leading finance. Actual duties and authority vary. |
+| Investor | Anyone supplying money for an ownership interest or a return: a person, a fund, an investment firm acting for a fund, or a corporate business. The chapters say “the investor” when the distinction does not matter and name the fund, firm or person wherever money or authority depends on it. |
+| The company | The operating business the reader works in. Its cash, obligations and decisions are separate from those of any fund, holding company or shareholder, even when one shareholder controls it. |
 
-## Comparing Ownership and Funding Arrangements
+## <a id="arrangements"></a>Comparing Ownership and Funding Arrangements
 
-These definitions support the comparisons in [[raise-what-you-need]]; they do not replace the terms of a particular arrangement.
+These definitions support the comparisons in [[raise-what-you-need]]; they do not replace the terms of a particular arrangement. The last five rows describe the funding states the book uses from [[announcement-is-not-a-budget]] onward: expression of interest → approval pending → contractual commitment with conditions → cash received. A budget can rely only on the last state.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -57,59 +86,88 @@ These definitions support the comparisons in [[raise-what-you-need]]; they do no
 | Funding round | A financing event in which investors supply capital on agreed terms; it need not replace the controlling owner. |
 | Primary share issue | The company issues new shares and receives the subscription money. |
 | Secondary share sale | Existing holders sell shares; payment goes to those sellers rather than automatically funding the company. |
-| Pre-money / post-money valuation | In a simplified equity round, negotiated equity value before new cash / that value plus the new cash. Rights and other instruments can complicate the calculation. |
+| Pre-money valuation / post-money valuation | In a simplified equity round, negotiated equity value before new cash / that value plus the new cash. Rights and other instruments can complicate the calculation. |
 | Fully diluted ownership | A percentage calculated after including the specified options and other rights to shares; check exactly what is included. |
 | Net cash burn | Cash spending minus cash receipts over a stated period when spending is greater. |
 | Runway | Estimated time until available cash reaches a stated limit under a cash forecast. Cash divided by constant net burn is a simplifying illustration. |
-| Conditional commitment | Work promised subject to an explicit event, such as funding or approval, with a date and response if the condition is not met. |
+| Expression of interest | A statement that an investor may want to invest, without approval or binding terms. It funds nothing. |
+| Approval pending | Terms are being negotiated or await a decision by the body authorized to approve them, such as a fund’s investment committee. Still not money. |
+| Contractual commitment | A signed agreement to supply money, normally subject to conditions such as regulatory clearance, completion steps or milestones. Read the conditions; money arrives only when they are met. |
+| Cash received | Money actually in the company’s bank account. Only this state funds a budget. Never call an announced or agreed transaction value “received” or “realized”. |
+| Conditional commitment | Company-side: work promised subject to an explicit event, such as funding or approval, with a date and a response if the condition is not met. See the dated cash plan in [[the-financing-slipped]] and the approval record in [[decide-who-decides]]. |
 
 Carve-outs, turnarounds, acquisitions and refinancing describe changes or conditions; they do not by themselves identify who owns the business. Follow the money and authority separately.
 
-## The Investment Organizations and Their Payments
+## <a id="organizations"></a>The Investment Organizations and Their Payments
 
-For the money-flow example, read [[announcement-is-not-a-budget]]. Fund terms depend on the agreement. [S01: SEC private equity guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
+For the money-flow example, read [[announcement-is-not-a-budget]]. Fund terms depend on the agreement. The waterfall, preferred-return, catch-up, clawback and subscription-line rows are explained with a worked report in [[fund-economics]], which is optional depth for company leaders. [S01: SEC private equity guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
 
 | Term | Plain-language meaning |
 | --- | --- |
-| Investment firm / manager / sponsor | The organization managing investments. “Sponsor” commonly refers to the firm behind a transaction; it can mean the leader backing a project in an operating discussion. |
-| Fund | An investment vehicle with its own investors, committed capital, agreements and term. Committed capital may not yet have been paid in. One firm can manage several funds. |
+| Investment firm / manager | The organization that raises and manages funds and decides investments on their behalf. It is not the fund and not the company. One firm can manage several funds. |
+| Fund | An investment vehicle with its own investors, committed capital, agreements and term. Committed capital may not yet have been paid in. The fund, not the firm, usually holds the investment. |
 | General partner (GP) | The partner with management responsibilities and powers under the fund arrangements. The term is also used informally for the manager. |
 | Limited partner (LP) | An investor in the fund under its partnership arrangements. |
 | Endowment | A pool of assets invested to support an institution, such as a university. |
-| Commitment | A promise to supply money under agreed conditions. |
-| Capital call | A request for an investor to pay part of its commitment. |
-| Investment period / fund term | The period for making specified new investments / the wider lifetime of the fund. Agreements govern extensions and further investments. |
+| Commitment (fund) | A fund investor’s promise to supply money under agreed conditions, drawn through capital calls. Distinct from a contractual commitment to the company (see the funding states above). |
+| Capital call | A request for a fund investor to pay part of its commitment. |
+| Investment period | The period in which a fund may make specified new investments. Agreements govern extensions and further investments. |
+| Fund term | The wider lifetime of the fund, after which it is expected to have sold its investments and distributed the proceeds. |
 | Holding company / acquisition vehicle | A company used to hold or acquire an investment. It may also borrow and have its own obligations. |
 | Portfolio / portfolio company | The collection of investments / an operating business owned wholly or partly through an investment. |
-| Investment committee | The body authorized to make investment decisions within the fund’s arrangements. |
-| Mandate | The agreed scope of investments, responsibilities or authority. State which meaning applies. |
 | Management fee | A payment for managing investments under an agreed calculation. |
 | Carried interest / carry | A contractual share of investment profits allocated to the manager or other entitled recipients. It is separate from company executives’ shares. |
-| Distribution | Money or other assets paid out to investors. State whether a reported distribution is cash. |
-| Distribution waterfall | The order and formulas used to allocate investment payments. |
+| Distribution | Money or other assets paid out to fund investors. State whether a reported distribution is cash. |
+| Distribution waterfall | The order and formulas used to allocate investment payments between fund investors and the manager. |
 | Preferred return / hurdle | A threshold relevant to when specified profit sharing begins. It is not a guaranteed investment return. |
 | Catch-up | A rule that allocates a larger share of certain subsequent payments to a recipient after earlier conditions are met. |
 | Clawback | A requirement to return excess payments previously received, under the agreement’s conditions. |
-| Subscription line | Borrowing by a fund that can cover spending before its investors supply cash. It can change the timing of investor payments. |
+| Subscription line | Borrowing by a fund that can cover spending before its investors supply cash. It can change the timing of investor payments and the reported rate of return. |
 
-## Sales, Earnings and Cash
+## <a id="roles"></a>Roles, Authority and Sponsors
 
-[[valuation-is-an-estimate]] introduces the earnings calculation; [[obligations-before-budget]] follows the payments it leaves out. Accounting and reported adjustments need their own definitions. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures) [S07: IAS 38 overview](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/)
+The chapters keep three questions separate: who owns shares, who is accountable for a result, and who is authorized to approve it. See [[decide-who-decides]] for authority, [[investors-adviser]] for the adviser role and [[useful-engagement]] for sponsors of support work.
+
+| Term | Plain-language meaning |
+| --- | --- |
+| Shareholder | A holder of shares. Use this word for ownership; it says nothing about who runs the work. |
+| Accountable company leader | The executive answerable for a result and authorized to decide within stated limits. Use this phrase, not “owner”, for responsibility: ask “who is accountable for this” or “who is authorized to decide”, not “who owns the decision”. |
+| Board of directors | The body overseeing a company within its authority, including approval of company plans and funding above executives’ limits. Its responsibilities differ from executives’ day-to-day management. |
+| Investment committee | The body within a fund’s arrangements authorized to approve the fund’s investments and transaction terms. It approves investments, not the company’s work; a company decision goes to the company board or executives unless the scenario is an investment approval. |
+| CEO / CTO / CFO | Chief executive officer, leading the company; chief technology officer, leading technology; chief financial officer, leading finance. Actual duties and authority vary. |
+| Governance | The arrangements for making decisions and overseeing their execution: which body decides what, on what information, and how it is reviewed. |
+| Decision rights | Authority over specified decisions, such as who may approve spending above a limit. |
+| Reserved matters | Matters that require approval from a designated party, often the board or a shareholder, under the company’s agreements. |
+| Mandate | The agreed scope of investments, responsibilities or authority. State which meaning applies. |
+| Escalation | Taking an unresolved issue to someone authorized or equipped to act, through a path agreed in advance. |
+| Financial sponsor | The investment firm behind a transaction, acting for its fund. This is the usual meaning of “sponsor” in deal documents. |
+| Investor-side sponsor | The person at the investment firm who backs a particular support engagement and answers for the investor’s side of it. This book’s Tool 4 names this role explicitly. |
+| Company sponsor | The executive who backs a piece of work inside the company and answers for its use of company resources. |
+| Engagement sponsor | The person backing a support assignment. Always say whether the investor-side sponsor or the company sponsor is meant; an engagement usually needs both. |
+| Investor’s technology adviser | The general term for a person the investor uses to assess technology, product and engineering questions, before or after an investment. Scope, authority and resources vary by firm. |
+| Technology Principal | This book’s supplied example of an investor’s technology adviser role, played by Morgan in the fictional Larkspur examples. A role description for teaching purposes, not evidence about how all advisers work. |
+| Operating team | People associated with an investment firm who help companies improve how they work. Actual services, authority and availability vary. |
+
+## <a id="earnings"></a>Sales, Earnings and Cash
+
+[[valuation-is-an-estimate]] introduces the earnings calculation; [[obligations-before-budget]] follows the payments it leaves out and builds the cash bridge. Accounting and reported adjustments need their own definitions. Whenever a chapter names a profit or cash figure, it names the measure, the scope (the consolidated group or the part attributable to particular shareholders) and the period. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures) [S07: IAS 38 overview](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/)
 
 | Term | Plain-language meaning |
 | --- | --- |
 | Revenue | Sales recognized during a period. Customer payment may occur earlier or later. |
-| Earnings / profit | Income less the costs included in a stated measure. Always name the measure. |
+| Earnings / profit | Income less the costs included in a stated measure. Always name the measure, the scope and the period; an unqualified “profitable” can reverse the careful body of a report. |
+| Operating profit / operating earnings | Earnings from the business’s operations before interest, income taxes and items outside operations. The same period can show positive operating earnings and a net loss once interest and other charges are deducted ([[toys-r-us]]). |
 | Net profit / net loss | The final positive or negative result after the income statement’s income and charges. |
+| Consolidated / attributable | Figures for the whole group under one parent / the part of a result belonging to a specified set of shareholders after other claims. State which one a figure is. |
 | Income statement | A financial statement showing income and expenses over a period. |
 | Balance sheet | A statement of assets, liabilities and equity at a particular date. |
 | Depreciation / amortization | Charges spreading certain asset costs over time. Depreciation commonly concerns equipment; amortization commonly concerns intangible assets such as qualifying software. |
 | EBITDA | Earnings before interest, taxes, depreciation and amortization. Here taxes means income taxes. The excluded costs and other cash needs still matter. |
 | EBIT | Earnings before interest and taxes. It is not identical to every company’s reported operating-profit measure. |
-| Adjusted EBITDA | EBITDA modified by additional specified adjustments. Ask which costs are excluded and whether they recur. |
+| Adjusted EBITDA | EBITDA modified by additional specified adjustments, such as removing costs presented as non-recurring. Ask which costs are excluded, whether they recur, and how the adjusted figure reconciles to the statutory result ([[teamsystem]], [[valuation-is-an-estimate]]). |
 | Reconciliation / financial bridge | A line-by-line calculation showing how one financial number becomes another. |
-| Margin | A stated profit measure divided by revenue. €4 million of EBITDA on €20 million of revenue gives a 20% EBITDA margin. |
-| Financial contribution | Revenue from an activity less the costs assigned to it. State those costs; the result need not equal final company profit. |
+| Margin | A stated profit measure divided by revenue. €4m of EBITDA on €20m of revenue gives a 20% EBITDA margin. |
+| Financial contribution | Revenue from an activity less the costs assigned to it, over a stated period. State those costs; the result need not equal final company profit. Use this phrase for the measure; for a causal claim say “helped produce” or “contributed to” (see causal contribution). |
 | Cash flow | Actual money received or paid during a period. |
 | Operating cash flow | Cash generated or used by operating activities under the applicable reporting rules. Check whether interest and tax are included before making further deductions. |
 | Working capital | In the book’s simplified examples, unpaid customer invoices plus inventory less amounts owed to suppliers. An increase uses cash; customer prepayments can change the pattern. Other definitions exist. |
@@ -117,26 +175,27 @@ For the money-flow example, read [[announcement-is-not-a-budget]]. Fund terms de
 | Capital expenditure / capex | Spending on assets, such as equipment or qualifying development. |
 | Capitalization | Recording qualifying spending as an asset, with expenses recognized over time. The cash payment still occurs. |
 | Free cash flow (FCF) | A measure of cash after specified spending. Definitions differ; check which taxes, investment and financing payments it includes. |
-| Cash conversion | A comparison of a stated cash measure with an earnings measure over a stated period. It needs explicit definitions. |
+| Cash conversion | A comparison of a stated cash measure with an earnings measure over the same period, for example operating cash flow divided by EBITDA. It needs explicit definitions; a business can report positive operating earnings and still run short of cash ([[toys-r-us]], [[obligations-before-budget]]). |
 | Liquidity | The ability to meet payments when they fall due. A valuable or profitable company can still lack immediate cash. |
 | Debt service | Payments required to meet financing obligations, including interest and any principal due under the chosen definition. |
 | Covenant | A condition in a financing agreement. Consequences of a breach depend on the agreement and available remedies. |
-| Maturity / refinancing | The date borrowing is due / replacing existing financing with new financing. Replacement is not assured on preferred terms. |
+| Maturity | The date on which borrowing falls due for repayment. |
+| Refinancing | Replacing existing financing with new financing. Replacement is not assured on the previous terms. |
 | Floating-rate debt | Borrowing whose interest rate can change with a reference rate or other agreed conditions. |
 | Collateral | Assets pledged as security for borrowing. Lender rights depend on the agreement and law. |
 | Run-rate | A rate inferred from current conditions, such as turning one month’s saving into an annual estimate. It assumes those conditions continue. |
 | Realized saving | A reduction actually reflected in the relevant spending or cash measure, with scope, costs and comparison stated. |
 | Capacity benefit | Time or resources made available for other work. It becomes a cash saving only if an additional decision reduces or avoids spending. |
-| Statutory accounts / result | Financial information reported under the applicable legal and accounting requirements. |
+| Statutory accounts / statutory result | Financial information reported under the applicable legal and accounting requirements / the profit or loss those accounts show. |
 | Pro forma | A constructed comparison showing results as if specified events had occurred at another time or under another arrangement. Read its assumptions. |
 | Organic growth | Growth within a defined business comparison, adjusted for specified changes such as acquisitions. Definitions vary; it does not isolate the effect of technology. |
 | Constant currency | A comparison adjusted to remove specified exchange-rate movements. |
 | Annual recurring revenue (ARR) | A yearly measure of recurring revenue, often used for subscriptions. Visma’s case instead uses **annualized repeatable revenue**, which also includes certain transaction revenue. Read the source definition. [S31: Visma Q4 report](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f4589_Visma%202024%20Q4.pdf) |
-| Gross / net revenue retention | Revenue kept from a starting customer group, excluding additional sales to that group for gross retention and including them for net retention. Define the period and treatment of losses and price changes. |
+| Gross revenue retention / net revenue retention | Revenue kept from a starting customer group, excluding additional sales to that group for gross retention and including them for net retention. Define the period and treatment of losses and price changes. |
 
-## Value and Investment Returns
+## <a id="returns"></a>Value and Investment Returns
 
-Read [[three-different-returns]] for the worked investment. Valuation techniques are introduced in [[valuation-is-an-estimate]]. [S03: Buyout overview](https://www.nber.org/system/files/working_papers/w14207/w14207.pdf) [S05: ILPA performance guidance](https://ilpa.org/industry-guidance/templates-standards-model-documents/ilpa-templates-hub/ilpa-performance-template/) [S52: IPEV valuation guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
+Read [[three-different-returns]] for the worked investment and [[valuation-is-an-estimate]] for valuation techniques. The fund performance ratios (DPI, RVPI, TVPI) and gross versus net returns are worked through in [[fund-economics]]. [S03: Buyout overview](https://www.nber.org/system/files/working_papers/w14207/w14207.pdf) [S05: ILPA performance guidance](https://ilpa.org/industry-guidance/templates-standards-model-documents/ilpa-templates-hub/ilpa-performance-template/) [S52: IPEV valuation guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -145,9 +204,9 @@ Read [[three-different-returns]] for the worked investment. Valuation techniques
 | Equity value | Value attributed to shares. In the simple examples, enterprise value less net debt; actual transactions can require more adjustments. |
 | Net debt | Borrowing minus the cash included in the calculation. Transaction and lender definitions can differ. |
 | Leverage | Use of borrowing alongside equity. It can magnify gains and losses on the equity investment. |
-| Net debt / EBITDA | A leverage ratio comparing net debt with a specified annual earnings measure. Gross debt is a different numerator; dates and earnings definitions also affect comparisons. |
-| Valuation multiple | Value divided by a financial measure. €60 million of enterprise value divided by €4 million of EBITDA gives 15×. |
-| Multiple expansion / compression | A rise / fall in that ratio. Market conditions and business prospects can both contribute. |
+| Net debt to EBITDA ratio | A leverage ratio comparing net debt with a specified annual earnings measure. Gross debt is a different numerator; dates and earnings definitions also affect comparisons. |
+| Valuation multiple | Value divided by a financial measure. €60m of enterprise value divided by €4m of EBITDA gives 15×. |
+| Multiple expansion / multiple compression | A rise / fall in that ratio. Market conditions and business prospects can both contribute. |
 | Market approach / comparable multiple | Estimating value using evidence from sufficiently similar businesses or transactions. |
 | Discounted cash flow (DCF) | Estimating what expected future cash is worth today. Match the cash flows and rate to the business or ownership interest being valued. |
 | Discount rate / present value | The rate used to translate future money into today’s value / the resulting value today. The rate reflects time and risk under the model. |
@@ -157,40 +216,48 @@ Read [[three-different-returns]] for the worked investment. Valuation techniques
 | Investment return | A comparison of money invested with proceeds received and, where included, the value still held. Some measures also account for timing. |
 | MOIC | Multiple of invested capital. Total proceeds and any included remaining value divided by money invested. €110 received from €40 invested gives 2.75×; state whether unsold value is included. |
 | IRR | Internal rate of return. An annual rate calculated from the amounts and dates of investment payments. With one payment in and one out, it is the compound annual rate linking them. More complex payment patterns can complicate interpretation. |
-| DPI | Distributions to paid-in capital: amounts distributed divided by investor contributions. State whether distributions are cash. |
-| RVPI | Residual value to paid-in capital: estimated value still held divided by investor contributions. |
+| DPI | Distributions to paid-in capital: amounts distributed divided by fund investors’ contributions. State whether distributions are cash. |
+| RVPI | Residual value to paid-in capital: estimated value still held divided by fund investors’ contributions. An estimate, not money received. |
 | TVPI | Total value to paid-in capital: distributions plus remaining estimated value, divided by contributions. With consistent definitions, TVPI = DPI + RVPI. |
-| Gross / net return | Return before / after specified fees and deductions. Name the investor whose return is measured and the deductions included. |
+| Gross return / net return | Return before / after specified fees and deductions. Name the investor whose return is measured and the deductions included. |
+| Retained investment value | The estimated value of the interest an investor still holds after a partial sale, or after reinvesting in a transaction. It remains a valuation until that interest is sold; a total that adds it to cash received mixes an estimate with money ([[teamsystem]], [[fund-economics]]). |
 
-## Transactions and Incentives
+## <a id="transactions"></a>Transactions and Incentives
 
-For examples, use [[raise-what-you-need]], [[different-bets]] and [[acquisition-adds-work-first]].
+For examples, use [[raise-what-you-need]], [[different-bets]] and [[acquisition-adds-work-first]]; [[diligence-corrects-the-plan]] shows a thesis being revised.
 
 | Term | Plain-language meaning |
 | --- | --- |
-| Investment thesis | The explanation of why an investment should succeed, including assumptions about price, funding and the work required. |
+| Investment thesis | The investor’s explanation of why the investment should succeed, including assumptions about price, funding and the work required. It is a revisable prediction, not an instruction to the company; diligence findings and operating results can and should change it. |
 | Underwriting | The financial and risk assessment used to justify an investment. |
-| Term sheet | A document setting out proposed transaction terms. The legal effect of its provisions depends on the document. |
+| Term sheet | A document setting out proposed transaction terms. The legal effect of its provisions depends on the document; it is not a contractual commitment. |
+| Announced transaction value / received proceeds | The value stated when a deal is agreed or announced / the cash a seller has actually received after completion, adjustments and any deferred or conditional payments. An announced or agreed value is neither received nor realized ([[teamsystem]]). |
 | Acquisition / buyout | Purchase of a business or interest in it / a purchase giving control. |
 | Leveraged buyout | A buyout financed with substantial debt alongside equity. |
 | Public-to-private / private-to-private | A purchase taking a publicly traded company into private ownership / a purchase of an already privately held business. |
 | Carve-out | Separation of a business from a larger owner, often requiring replacement of services the parent supplied. |
-| Turnaround / restructuring | Work to restore business viability / changes to operations or financing. Debt restructuring can change payment dates, rates or amounts owed. |
-| Platform company / add-on / buy-and-build | A business used as a base for acquisitions / a business subsequently acquired / a strategy of developing a group through repeated acquisitions. |
+| Turnaround | Work to restore the viability of a business in difficulty. |
+| Restructuring | Changes to operations or financing. Debt restructuring can change payment dates, rates or amounts owed. |
+| Platform company / add-on | A business used as a base for acquisitions / a business subsequently acquired and attached to it. |
+| Buy-and-build | A strategy of developing a group through repeated acquisitions. Each acquisition adds integration work before it adds benefit ([[acquisition-adds-work-first]]). |
 | Synergy | A benefit expected from combining activities. It needs evidence and must include the cost of achieving it. |
 | Secondary transaction | A sale of an existing investment interest. Specify whether company shares, fund interests or another interest changes hands. |
 | Continuation vehicle | A new investment vehicle used to continue holding assets associated with an existing manager or fund arrangement. |
-| Exit / realization | A sale or other process through which an investor receives value and reduces or ends its investment. An announcement or partial sale is not necessarily full cash realization. |
+| Exit / realization | A sale or other process through which an investor receives value and reduces or ends its investment. An announcement or partial sale is not full cash realization. |
 | Strategic buyer | An operating business buying another business for commercial reasons, such as complementary products or customers. |
-| Management rollover / management equity | Retaining or reinvesting an interest after a sale / company-level ownership or economic rights held by executives. |
+| Management rollover | Executives retaining or reinvesting an interest in the business when it is sold, rather than taking all proceeds in cash. |
+| Management equity | Company-level ownership or economic rights held by executives, such as shares or options. |
 | Option / vesting | A right to buy shares on stated terms / the conditions under which rights are earned over time or through performance. |
-| Preferences / dilution / leaver provisions | Payment priorities / changes to existing ownership or payouts when more equity is issued / rules applying when a participant leaves. |
+| Preference | A right giving some shares priority in specified payments, such as on a sale or liquidation. The terms set the amount, order and whether the holder also shares in what remains. |
+| Dilution | Reduction in an existing holder’s percentage ownership, and possibly in its share of proceeds, when more shares or rights to shares are issued. Check whether any protection applies. |
+| Leaver provisions | Rules setting what happens to a departing participant’s shares or options, often with different outcomes for different categories of leaver. |
 | Assumption of debt | Taking on existing borrowing as part of a purchase. The share purchase price may exclude that amount. |
 | Writedown / impairment | Reducing an asset’s recorded value. This changes an estimate rather than making a cash payment. |
-| Dividend recapitalization | Borrowing used to pay a distribution to owners, leaving debt in the company or ownership structure. |
-| Chapter 11 / liquidation | A US bankruptcy process that can allow continued trading while obligations are reorganized / selling assets and winding down the relevant business. |
+| Dividend recapitalization | Borrowing used to pay a distribution to shareholders, leaving debt in the company or ownership structure. |
+| Chapter 11 | A US bankruptcy process that can allow continued trading while obligations are reorganized. |
+| Liquidation | Selling assets and winding down the relevant business. |
 
-## Choosing and Supporting Company Work
+## <a id="choosing"></a>Choosing and Supporting Company Work
 
 See [[cannot-fund-everything]], [[help-that-changes-capability]] and [[useful-engagement]]. These terms describe the proposed working methods used in the main narrative.
 
@@ -202,16 +269,16 @@ See [[cannot-fund-everything]], [[help-that-changes-capability]] and [[useful-en
 | Opportunity cost | The benefit of the best alternative a choice gives up. |
 | Sunk cost | Resources already spent that cannot be recovered. The next decision still needs an assessment of remaining costs and benefits. |
 | Funding stage | A commitment of resources to a defined piece of work before deciding whether to commit more. |
-| Operating team | People associated with an investment firm who help companies improve how they work. Actual services, authority and availability vary. |
-| Peer network | Connections among people in similar roles who can exchange relevant experience. |
+| Value-creation plan | A plan connecting expected benefits to work, accountable people, funding and review. Its title does not establish that the benefits occur. |
+| Peer network | Connections among people in similar roles who can exchange relevant experience; one source of help among several. |
 | Engagement | An agreed piece of support with a purpose, participants and boundaries. |
-| Engagement sponsor | The person backing a particular support assignment. Specify whether they represent the company or the investment firm. |
-| Handover | Transfer of the knowledge, information and responsibilities needed to continue work. |
-| Ownership cycle | A map of possible funding and ownership changes, including further rounds, refinancing, sales and continued ownership. Each can require investigation, planning and review; they need not occur in a fixed sequence. |
+| Capability left with the company | What the company can do on its own after support ends. It does not require internalizing every specialty; see the next row. |
+| Continuing specialist service | A specialist service the company deliberately keeps buying because owning that skill would cost more than it is worth. A legitimate outcome of an engagement when the decision is explicit and funded, not a failure of independence. |
+| Handover | Transfer of the knowledge, information, evidence and obligations needed to continue work, including at a change of ownership ([[handover-of-obligations]]). |
 
-## Technology and Company Work
+## <a id="technology"></a>Technology and Company Work
 
-The company-investment sequence begins at [[cannot-fund-everything]] and [[roadmap-to-revenue]]. Part IV explains the adviser and practical support; Part V follows the ownership cycle.
+The company-investment sequence begins at [[cannot-fund-everything]] and [[roadmap-to-revenue]]; delivery measures are discussed in [[can-the-team-deliver]], recovery in [[prove-you-can-restore]] and AI in [[ai-strategy-three-questions]]. Sources for the frameworks named below: [S13: SPACE](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/) [S14: DORA metrics](https://dora.dev/guides/dora-metrics/) [S16: FinOps unit economics](https://www.finops.org/framework/capabilities/unit-economics/) [S17: NIST framework](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) and, for the AI definition, [S63: OECD AI-system definition memorandum](https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/03/explanatory-memorandum-on-the-updated-oecd-definition-of-an-ai-system_3c815e51/623da898-en.pdf).
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -219,50 +286,69 @@ The company-investment sequence begins at [[cannot-fund-everything]] and [[roadm
 | Roadmap | Intended product or technology changes and priorities over time. |
 | Onboarding | Setup and support needed before a new customer can use a product successfully. |
 | Operating model | How teams, responsibilities, processes and decisions are arranged to do the work. |
-| Governance / decision rights / reserved matters | Arrangements for decisions and oversight / authority over specified decisions / matters requiring approval from a designated party. |
-| Escalation | Taking an unresolved issue to someone authorized or equipped to act. |
-| Engagement charter | A short agreement defining a support assignment, including purpose, responsibility, resources, information access and ending. |
-| Value-creation plan | A plan connecting expected benefits to work, responsible people, funding and review. Its title does not establish that the benefits occur. |
-| Technical due diligence | Investigation of product, technology, people and risks to inform an investment decision. |
+| Technical due diligence | Investigation of product, technology, people and risks to inform an investment decision. Its findings are observations, reported assertions and inferences; keep them apart (see the evidence section). |
 | Data room | A controlled collection of information shared for a transaction. |
-| Technology Principal | The investment-firm technology adviser and operating-support role developed in this book. Scope, authority and resources vary. |
-| Architecture / interface | A system’s main parts and connections / an agreed way for those parts to exchange information. |
+| Architecture | A system’s main parts, their responsibilities and their connections. |
+| Interface | An agreed way for parts of a system, or different systems, to exchange information. |
 | Modularity / coupling | Dividing software into parts with clear responsibilities / the degree to which parts depend on one another. |
-| Microservices | Smaller software services that can be deployed and operated separately, with coordination and operating costs to consider. |
+| Microservices | An architecture of smaller services designed to be deployed separately. Whether each service can actually be released and operated on its own depends on how it was built; coordination and operating costs apply either way. |
 | Configuration / feature flag | Settings that change behavior / a control enabling or disabling selected behavior. |
-| Deployment / lead time | Putting a software version into use / elapsed time between defined stages of a change, such as starting work and delivering it. |
+| Deployment | Putting a software version into use. |
+| End-to-end work lead time | Elapsed time from starting a change (for example, when work on it begins) to delivering it to users. Name the start and end points; it includes waiting, approvals and hand-offs. |
+| DORA change lead time | DORA’s defined measure: time from a code commit to that change running in production. Narrower than end-to-end lead time; do not use one number for both. |
 | Tenant isolation | Keeping customers’ data or workloads appropriately separated in a shared service. |
 | Technical debt | Future effort or risk from earlier technical choices or postponed work. It is a metaphor, not a literal loan balance. |
 | Engineering effectiveness | Ability to deliver useful, reliable work and sustain that ability. Activity counts alone are insufficient. |
-| SPACE / DORA | A research framework examining several dimensions of developer productivity / a research program on software delivery and organizational performance. [S13: SPACE](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/) [S14: DORA metrics](https://dora.dev/guides/dora-metrics/) |
-| Cloud / managed service | Rented computing resources and related services / a service operated by a supplier on the customer’s behalf. |
-| FinOps / unit economics | Collaborative management of technology’s financial value / cost or value per defined unit of useful work. [S16: FinOps unit economics](https://www.finops.org/framework/capabilities/unit-economics/) |
-| Rightsizing / latency | Matching computing capacity to demand and service requirements / the delay before a response or result. |
-| Security / resilience / recovery | Protection against threats / ability to continue or restore essential work / the work of restoring service. [S17: NIST framework](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) |
+| SPACE | A research framework examining several dimensions of developer productivity (satisfaction, performance, activity, communication, efficiency). |
+| DORA | A research program on software delivery and organizational performance; its current guidance lists five delivery metrics. |
+| Cloud | Computing resources rented from a supplier rather than owned. |
+| Managed service | A service operated by a supplier on the customer’s behalf, such as a managed database. |
+| FinOps | Collaborative management of the financial value of technology spending, especially cloud. |
+| Unit economics | Cost or value per defined unit of useful work, such as cost per processed transaction. A lower total bill can hide a worse unit cost ([[cheaper-cloud-bill]]). |
+| Rightsizing | Matching computing capacity to demand and service requirements. |
+| Latency | The delay before a response or result. |
+| Security | Protection of systems and data against threats. |
+| Resilience / recovery | Ability to continue or restore essential work / the work of restoring service after failure. A backup is not evidence of recovery until a restore has been tested. |
+| Recovery objective | An agreed target for how quickly service must resume and how much data may be lost; the fictional Larkspur objective is dispatch within four hours with under fifteen minutes of lost updates ([[prove-you-can-restore]]). |
 | Residual risk | Risk remaining after the chosen protections or actions. |
-| AI / generative AI / inference | Artificial intelligence, software performing tasks from learned patterns / AI generating content / running a trained model to produce output. |
-| SaaS / IT / IP | Software as a service, accessed as an ongoing service / information technology / intellectual property, legal rights concerning assets such as software and inventions. |
+| AI system | A machine-based system that, for explicit or implicit objectives, infers from the input it receives how to generate outputs such as predictions, content, recommendations or decisions. This covers both learned (machine-learning) and knowledge-based approaches; this book mainly discusses learning-based systems. |
+| Generative AI | AI systems whose output is new content, such as text, code or images, produced by models trained on large collections of examples. Correctness for the intended use has to be checked. |
+| Model inference | Running a trained model on new input to produce output. It is a recurring operating cost, distinct from the cost of training, licensing or buying the model. |
+| Software as a service (SaaS) | Software accessed as an ongoing subscription service run by the supplier, rather than installed and operated by the customer. |
+| Information technology (IT) | The computing systems, networks and services a company runs, and the function that runs them. |
+| Intellectual property (IP) | Legal rights concerning assets such as software, inventions, designs and brands. Who holds these rights matters in every transaction. |
 | Transition services agreement (TSA) | An agreement providing temporary services, often from a seller to a separated business. It needs a replacement plan as well as an end date. |
 | Stranded cost | A cost that remains after the activity benefiting from it has ended or moved. |
 | Nearshoring / offshoring | Nearshoring locates work in a nearby country; offshoring is the broader practice of locating work abroad. Total costs and coordination matter alongside wages. |
-| Productscapes / accelerator | The author’s proposed approach to designing investment and technology-support offerings / a reusable support package within that proposal. Neither label implies proven effectiveness. |
 
-## Evidence and Lasting Outcomes
+## <a id="evidence"></a>Evidence and Lasting Outcomes
 
-For application, read [[success-for-whom]] or use [[toolkit]].
+For application, read [[success-for-whom]] or use [[toolkit]]; [[diligence-corrects-the-plan]] shows the observed / reported / inferred split in use.
 
 | Term | Plain-language meaning |
 | --- | --- |
 | Hypothesis | An explanation or expectation that evidence can support or challenge. |
-| Baseline / cohort | The starting observation used for comparison / a defined group tracked over time. |
+| Baseline | The starting observation used for comparison, measured before a change. |
+| Cohort | A defined group tracked over time, such as the customers onboarded in one quarter. |
 | Counterfactual | An estimate of what would have happened without the change being studied. |
-| Observation / assertion / inference | Something observed / a claim someone reports / a conclusion drawn from evidence and reasoning. |
-| Attribution / causal contribution | Assigning an outcome to a cause / explaining how an intervention helped alongside other causes. This use of contribution differs from the financial measure above. |
+| Observation / assertion / inference | Something observed directly / a claim someone reports / a conclusion drawn from evidence and reasoning. A diligence finding should say which of the three each statement is. |
+| Attribution | Assigning an outcome to a cause. It needs a comparison, not just a sequence of events. |
+| Causal contribution | Explaining how an intervention helped produce an outcome alongside other causes. Say “helped produce” or “contributed to”; this differs from financial contribution, the measure defined above. |
 | Correlation / causation | Things changing together / one thing helping cause another. The first does not establish the second. |
-| Materiality / confidence | Importance to a decision / strength of the supporting evidence. An important risk can remain uncertain. |
-| Empirical / observational research | Research using observations and data / research examining events that occurred without researchers randomly assigning the exposure. |
+| Materiality | Importance to a decision. An important risk can remain uncertain. |
+| Confidence | Strength of the supporting evidence for a claim. |
+| Empirical research / observational research | Research using observations and data / research examining events that occurred without researchers randomly assigning the exposure. |
 | Control or comparison group | A group used to help estimate what would have happened without the event or intervention. |
 | Generalizability | How far findings can reasonably apply beyond the people, businesses or period studied. |
 | Percentage / percentage point | A relative change / an arithmetic difference between percentages. From 4% to 5% is one percentage point, or a 25% increase relative to 4%. |
 | Stakeholder | A person or group affected by the company, including those who did not choose its owner. |
-| Durable value | This book’s proposed standard: useful outcomes the company can sustain through continued investment, capability and attention to consequences for people. It is not an accounting measure or guarantee. |
+
+## <a id="proposed"></a>Terms This Book Proposes
+
+These are the author’s constructs, labelled as such so they are not mistaken for accounting or industry definitions.
+
+| Term | Plain-language meaning |
+| --- | --- |
+| Durable value | The author’s proposed evaluative standard: useful outcomes the company can sustain through continued investment, capability and attention to consequences for people, judged by who received the gains, who carried the costs and what the company can continue to do ([[success-for-whom]]). It is not an accounting measure or a guarantee. |
+| Ownership cycle | The author’s map of possible funding and ownership changes, including further rounds, refinancing, sales and continued ownership. Each can require investigation, planning and review; they need not occur in a fixed sequence. |
+| Engagement charter | The short agreement this book proposes for a support assignment: purpose, accountable company leader, investor-side sponsor, resources, information access and ending ([[useful-engagement]]). |

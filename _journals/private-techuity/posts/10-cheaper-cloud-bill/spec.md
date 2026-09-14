@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Evaluate cloud costs and commitments under runway, profitable expansion and group purchasing. Compare temporary credits with continuing economics and contract duration with the company’s funded horizon.
+Show why a cloud bill must be read through useful service, a comparable cost basis and the reasons costs change, then carry one fictional commitment decision to a choice under a stated demand range and funded horizon. Group credits, minimum spend, renewal and ownership-change terms as one set of invoice distortions, and keep service quality as the final test of any saving.
 
 ## Audience
 
@@ -18,7 +18,8 @@ Product and engineering leaders inside companies working under investors, includ
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
-- Use a simple fictional commitment calculation to show how a discount can become more expensive than flexible spending when demand falls.
+- Use a simple fictional commitment calculation to show how a discount can become more expensive than flexible spending when demand falls, then complete the decision: options compared on one cost basis across a stated demand range, the chosen option, rejected alternatives, who approves and the evidence that would reopen it. Do not prescribe one result for every contract.
+- State the comparison basis (cash paid, cost assigned to the period, credits, commitment usage) before comparing figures, and use opportunity → change implemented → observed net effect consistently across the article, summary and comic, with run-rate projections labelled separately.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
@@ -55,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Editorial revision: add an explicit comparison basis, complete the commitment decision under a stated demand range and funding condition, group credits/minimum-spend/ownership-change terms, align the opportunity → change implemented → observed net effect vocabulary across formats, trim acquisition and peer-network material to links, and cut questions to three; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “A Smaller Bill Is Not Always an Improvement” to “Why a Cheaper Cloud Bill Can Be Bad News”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

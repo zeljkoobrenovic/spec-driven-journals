@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Lead through ongoing ownership, delayed funding, refinancing, changed expectations and possible sale or integration. Prepare an honest handover without treating an exit as the inevitable next stage.
+Show a company leader how to respond when an expected round, refinancing or parent budget arrives late while delivery is on track: put cash and commitments on a calendar, find the latest useful decision date, price the alternatives, obtain one authorized fallback, tell customers and teams which plan is running, and restore the original plan only on a signed commitment. Handover through ownership changes is a separate chapter, [[handover-of-obligations]].
 
 ## Audience
 
@@ -15,23 +15,19 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
-- Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
-- Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
-- Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
-- Keep historical findings within their source scope and label new comparative scenarios as fictional.
-- Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
-- Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
-- Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
-- Explain the title question and its implications for a concrete company decision.
-- Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
-- Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
-- Link related chapters and cite substantive external factual claims close to the text.
-- Keep the TL;DR and six-panel comic script consistent with the full article.
+- Open with the actual scenario (September round now likely in December) rather than a general account of ownership, and avoid contrasts with “companies without investors”; name the specific condition the arrangement changes.
+- Work one fictional Larkspur scenario with the shared figures (€1.6m on 1 July, €200,000 monthly burn, €400,000 reserve reached 31 December, hires at €30,000 a month, €120,000 portal contract) through to a dated board decision: chosen option, alternatives rejected, funding, scarce capacity, who is authorized, review date and the evidence that would change it.
+- Make the latest useful decision date (15 August) central, and distinguish the stages of a commitment: expression of interest, approval pending, contractual commitment with conditions, cash received.
+- Retain only the escalation step this decision needs, with a link to the governance chapter; keep the distinction between a failed hypothesis, poor execution and an unfunded dependency.
+- Include two short variations (a refinancing that leaves less cash; a corporate parent withdrawing budget) without developing a second full case.
+- Keep Figure 1 (ownership paths from a review junction) with a caption that matches the revised text; keep the article header logo and navigation icon.
+- Keep the TL;DR (300–500 words) and the six-panel comic consistent with the article; panels whose existing artwork cannot carry the financing story are flagged for regeneration rather than re-captioned misleadingly.
+- Keep historical and research references within their source scope; label fictional figures as fictional.
+- Close with the next-chapter handoff to the handover chapter, and trim Questions to Consider to three.
 
 ## Non-goals
 
-Universal prescriptions, invented evidence, promises of investment performance, or disclosure of confidential inputs. The chapter is not a legal or tax opinion.
+Handover, exit readiness, exit-period distortions and transaction forms (moved to [[handover-of-obligations]]); regular investor cadence and peer networks (governance and Part IV chapters); universal prescriptions, invented evidence, promises of investment performance, or disclosure of confidential inputs. The chapter is not a legal or tax opinion.
 
 ## Modalities
 
@@ -41,19 +37,21 @@ Universal prescriptions, invented evidence, promises of investment performance, 
 
 ## Open questions
 
-Evidence gaps and chapter-specific next research are tracked in the separate editorial backlog. The book uses the author’s accepted working title; evidence and role questions remain open.
+Panels 2, 3 and 4 of the comic carry captions their current artwork does not support and are flagged `needs_regeneration`. Evidence gaps and chapter-specific next research are tracked in the separate editorial backlog.
 
 ## Decision log
 
+- 2026-09-14: Split the chapter. Delayed financing stays here; everything from exit readiness onward moves to the new handover chapter; peer-network material moves to the help chapter; cadence and escalation material is cut to the one escalation step the funding decision needs.
 - 2026-09-13: The author requested Owned and substantive comparative treatment of leadership under investors; this supersedes the previous private-equity-first framing.
 - 2026-09-12: Use an explanatory essay rather than the repository's ADR template. Preserve per-post folders and stable permalinks. User explicitly requested varied chapter structures.
 
 ## Sources
 
-The supplied book brief establishes scope. Public citations appear in the article and bibliography. Private provenance is recorded separately in _research/input-reading.md and is excluded from the site configuration.
+The supplied book brief establishes scope, including the shared Larkspur delayed-financing figures. Public citations appear in the article and bibliography. Private provenance is recorded separately in _research/input-reading.md and is excluded from the site configuration.
 
 ## Changelog
 
+- 2026-09-14: Refocus the post on the delayed-financing decision with a completed dated Larkspur scenario; move exit readiness, exit-period distortions, transaction forms, handover and post-handoff learning to the new chapter `handover-of-obligations`, peer-network material to `help-that-changes-capability`, and cut cadence and escalation to the single step the decision needs; comic panels 2–4 flagged for regeneration; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Keep the Plan Credible Through Funding and Ownership Changes” to “The Roadmap Did Not Slip, the Financing Did”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

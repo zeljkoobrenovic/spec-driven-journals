@@ -2,117 +2,118 @@
 title: "Is the Investor’s Adviser Helping, Assessing or Deciding?"
 date: 2026-09-12
 author: Owned working manuscript
-excerpt: "Understand the technology adviser’s role, agree how you will work together and keep responsibility for company decisions clear."
+excerpt: "Establish the adviser’s assignment and reporting relationship, separate influence from authority, and handle a change of role before sharing sensitive information."
 permalink: investors-adviser
-timetoread: 7 min read
+timetoread: 11 min read
 logo: "assets/images/15-investors-adviser/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/15-investors-adviser.png"
 ---
 
+> **IN THIS SECTION, YOU WILL:** Learn to establish the investor adviser’s assignment and reporting relationship, separate influence from authority, and handle a change of role before sharing sensitive information.
+
+> **WHY IS THIS IMPORTANT:** An adviser who reports to the investment firm can help, assess and, without an explicit assignment, appear to decide; what you share and how it is used depends on knowing which role is in play.
+
+
 > **KEY POINTS:**
 >
-> * Understand the **job your adviser is doing**. Investigating an investment, coaching a leader and helping deliver a change require different agreements.
-> * Make **authority and information use** explicit. Working for the investor can give an adviser influence, while company decisions still need clear owners.
-> * Judge help through the **company’s decisions and capabilities**. Agree what useful work is needed and what your team will own afterward.
+> * Establish the **assignment and the reporting relationship**. The adviser reports to the investment firm, so the company needs to understand both the operating assignment and how findings may inform the investor’s decisions.
+> * Separate **influence from authority**. Proximity to the investor gives a suggestion weight; only an explicit assignment, agreed by the company, gives anyone the authority to decide.
+> * Treat a **change of role as a new agreement**. When coaching becomes assessment, or advice becomes delivery, ask what the information is for, who authorized the change and what employees will be told.
 
 <br>
 A technology specialist employed by the investor joins your planning meeting. They understand the product and offer useful ideas. Your engineers want to know whether the ideas are suggestions, a new assessment or instructions they should act on.
 
-In this book, a **Technology Principal** is an adviser working for an investment firm who assesses technology and helps companies improve how they operate. A **chief technology officer (CTO)** leads technology inside the company. The adviser can test assumptions and improve company work; the company leader normally carries the continuing operating responsibility.
+An **investor’s technology adviser** is a person the investment firm employs or engages to form its own view of a company’s technology and, often, to help improve it. In this book the supplied example of that role is the **Technology Principal**, and Morgan holds it in the fictional Larkspur scenarios. A **chief technology officer (CTO)** leads technology inside the company; at Larkspur that is Alex. The adviser can test assumptions and improve company work. The company leader carries the continuing operating responsibility.
 
-No such person exists in a company without an outside investor. Their presence follows from ownership: the investor wants its own view of the technology and a channel for improving it. That gives the adviser information and influence a supplier or consultant wouldn’t have, and leaves the company’s technology leader to work out how the adviser’s assessment relates to their own authority.
+What distinguishes this adviser from other outside experts is not privileged access or multiple responsibilities; a board-appointed consultant can have both. This adviser reports to the investment firm, so the company needs to understand both the operating assignment and how findings may inform the investor’s decisions. Working that out is the company technology leader’s job, and it starts before sensitive information is shared.
 
-Part III examined the investments and capabilities your company needs. Part IV begins with the person who may connect those needs to the investor’s resources. This chapter first distinguishes their possible assignments, then turns to how to work together.
+Part III examined the investments and capabilities your company needs. Part IV begins with the person who may connect those needs to the investor’s resources. This chapter establishes the adviser’s assignment, separates influence from authority, works through what happens when the role changes and ends by returning to the planning meeting. Sourcing help is the subject of [[help-that-changes-capability]]; the mechanics of an engagement belong to [[useful-engagement]].
 
-## Establish What Kind of Help Exists in Your Arrangement
+## Establish the Assignment and the Reporting Relationship
 
 The supplied investment-firm role brief gives a detailed example of an adviser working across investments. It doesn’t establish a position every investor has, or confer authority over a company’s CTO or product leader. [P01: supplied role brief](bibliography.html)
 
 With a venture investor, the useful contact might instead be a partner, a talent specialist or someone introduced for one problem. A growth investor might offer experienced expansion advisers. A corporate owner might provide group architecture or security specialists who also carry internal policy responsibilities. Some investors provide no operating support at all.
 
-Start by asking who the person works for, what their assignment is, how much time they can give and which decisions they can make. The answers separate an offer of advice from a delivery assignment and from a requirement to follow group policy. The rest of this chapter uses the fund adviser as its detailed example; ask the role questions before transferring the arrangement.
+Four questions settle most of the ambiguity: Who does the person work for? What is their assignment with this company? How much time can they give? Which decisions, if any, are they authorized to make? The last question matters most. Deciding is not a sixth kind of help; it is authority that may or may not attach to an assignment, and it has to be granted by someone entitled to grant it.
 
 ## Understand Which Job the Adviser Is Doing
 
 The adviser may contribute to several different decisions. **Due diligence** is the investigation that informs an investment decision. **Coaching** helps a person develop their own judgment and practice. **Operating support** helps the company improve how work gets done. A specific assignment may also give the adviser formal oversight or temporary delivery responsibilities.
 
-These purposes can overlap, but everyone involved should know which apply. A confidential conversation about developing your leadership differs from evidence gathered for a formal assessment. Advice about a system differs from responsibility for changing it.
+These purposes can overlap, but everyone involved should know which apply. The table adds a diagnostic column: what the people doing the work should hear when the adviser speaks. If employees cannot say which of the three they are hearing, the assignment has not been explained.
 
-| Assignment | What company leaders may need | Boundary to establish |
-| --- | --- | --- |
-| Investigation before investment | A fair account of strengths, constraints and required funding | Evidence scope, access and how findings will inform the plan |
-| Advice on an operating decision | Relevant options, experience and specialist judgment | Who decides, which assumptions matter and what remains uncertain |
-| Help delivering a change | People and practical work that resolve a constraint | Resources, company accountability and what happens after the assignment |
-| Coaching or leadership development | Help learning and improving judgment | Confidentiality and any connection to formal performance assessment |
-| Ongoing oversight | Useful review of results, risks and changed assumptions | Reporting expectations and the route for decisions needing escalation |
+| Assignment | What company leaders may need | Boundary to establish | What employees should hear |
+| --- | --- | --- | --- |
+| Investigation before an investment | A fair account of strengths, constraints and required funding | Evidence scope, access and how findings will inform the plan | An **assessment finding**, reported to the investor |
+| Advice on an operating decision | Relevant options, experience and specialist judgment | Who is authorized to decide, which assumptions matter and what remains uncertain | A **recommendation** the accountable leader may accept or reject |
+| Help delivering a change | People and practical work that resolve a constraint | Resources, company accountability and what happens after the assignment | A recommendation, unless the charter gives the adviser day-to-day direction of the work |
+| Coaching or leadership development | Help learning and improving judgment | What may be shared, with whom and any connection to formal assessment | Nothing; a coaching conversation is not addressed to the team |
+| Formal oversight or interim leadership | Review of results and risks, or temporary direction of a team | The explicit assignment, its duration and the route for escalation | An **authorized instruction**, announced by the company |
 
-Ask the adviser to explain their responsibilities to both the company and the investment firm. Their role may include prospective investments and other companies, which affects availability. Working together is easier when those demands are visible.
+Ask the adviser to explain their responsibilities to both the company and the investment firm. Their role may include prospective investments and other companies, which affects availability; treat that as a planning input for [[useful-engagement]], not as a judgment about the relationship.
 
 ![Investigation, coaching and delivery help require different scopes and working agreements.](assets/images/15-investors-adviser/three-adviser-jobs.jpeg)
 **Figure 1:** *Identify the job before agreeing access, authority and the result the company expects.*
 
-## Agree What Each Person Can Decide
+## Separate Influence From Authority
 
-**Authority** means permission to make a particular decision. It can come from an executive role, board responsibilities or an explicit assignment. A job title and proximity to the owner don’t settle every decision boundary.
+**Authority** means permission to make a particular decision. It comes from an executive role, board responsibilities or an explicit assignment. A job title and proximity to the owner don’t settle any decision boundary.
 
-State which questions the adviser can recommend on, which they can decide and which need company or board approval. If the adviser is asked to lead delivery or act as a temporary executive, set up that assignment with the resources and accountability it needs.
+The investor’s adviser can carry substantial influence even when the service is described as optional. Direct access to engineers is useful during diligence or a scoped support assignment. It becomes destructive when engineers receive competing priorities from the adviser, the CTO and the investment team: a parallel reporting line then exists without a mandate or accountability. The team stops asking “what should we build?” and starts asking “whose instruction wins?”
 
-The investor’s adviser can carry substantial influence even when the service is described as optional. Employees may treat a suggestion as an instruction. Explain the agreed arrangement to the people doing the work, using the decision map from [[decide-who-decides]].
+The remedy is the decision map from [[decide-who-decides]], applied to the adviser by name. State which questions Morgan can recommend on, which the accountable company leader decides and which need board approval. Then tell the people doing the work. An engineer who hears a suggestion from Morgan should be able to answer “Who is authorized to decide?” without asking a manager.
 
-For a product or architecture choice, start from the business need, the options and their consequences. The adviser may help test the options. The agreed company decision-maker then owns the choice and its delivery conditions.
+Hands-on work isn’t the same as taking over. Morgan might help diagnose a release failure alongside engineers and then return the improvement plan to Alex. The test is whether company capability strengthens and responsibility stays understandable after the intervention ends.
 
 ![Adviser input and agreed information access cross a boundary while the company’s formal decision responsibility remains explicit.](assets/images/15-investors-adviser/advice-and-accountability-boundary.jpeg)
 **Figure 2:** *Influence, access and formal decision authority need separate agreements.*
+
+## When a Coaching Conversation Becomes an Assessment
+
+The hardest case is a change of role that nobody announces. It is fictional here, but the shape is common.
+
+For three months Morgan has met Alex monthly to help him develop as a leader: how he runs the engineering managers, where he avoids conflict, which decisions he delays. Alex has been candid, because candor is what makes coaching useful. Then the investment firm’s deal team, preparing the board paper on second-country expansion, asks Morgan for a written view of whether Larkspur’s technology leadership can carry the plan. Morgan knows more about Alex than any assessment interview would reveal.
+
+Nothing improper has yet happened. Morgan reports to the firm, and the firm is entitled to ask its adviser for a view. What matters is what happens next.
+
+**What Alex can ask before sharing anything sensitive.** These questions belong at the start of any coaching arrangement, and Alex can ask them again the moment the role changes: What is this conversation for? Who will receive what I say, in what form? Does it feed a formal assessment, now or later? What are you already obliged to report, regardless of what we agree? Will you tell me if the purpose changes?
+
+**What Morgan must explain.** That the request has been made and by whom. What will be shared with the firm and in what form: a view of leadership capability against the plan, not a transcript of coaching sessions. That confidentiality cannot exceed the obligations already agreed: if a coaching conversation reveals a material risk to the company, Morgan’s engagement obligations may require escalation, and Alex should have known that from the first session. A professional coaching code can guide this conversation, but it binds only an adviser who has adopted it; the agreed obligations are what count.
+
+**Who can authorize the changed assignment.** The firm can ask Morgan for an opinion. It cannot, on its own, make Morgan an assessor of a Larkspur executive with access to company information for that purpose. That is a company decision: Ines, as CEO, or the board where the assessment informs a board decision, agrees the scope, the evidence Morgan may use and the form of the report. The same applies in the other direction. If the firm proposes that Morgan lead the onboarding delivery for a quarter because Alex is stretched, the board authorizes an interim assignment with its duration, resources and reporting line, or it does not happen. Neither side should discover the change from a meeting invitation.
+
+**How employees are informed.** Ines tells the engineering managers, in writing, what Morgan is now doing and until when: “Morgan is preparing a leadership assessment for the board’s expansion decision; conversations for that purpose will be announced as such; day-to-day priorities continue to come from Alex.” If the assignment is interim delivery leadership, the note says which decisions Morgan is authorized to make and which still go to Alex or Ines.
+
+Alex does not need to like the assessment. He needs to know it is happening, what it draws on and who authorized it. Coaching that continues afterward is a fresh agreement, with the boundary restated.
 
 ## Build a Shared Account of the Situation
 
 A productive relationship needs consistent facts. Explain customer commitments, existing constraints and why the team made earlier choices. Ask the adviser which investment assumptions depend on those capabilities and what evidence could change their view.
 
-For the fictional company Larkspur, “we need a better platform” is vague. “Pricing changes take three weeks because only two people understand the billing code” exposes a real constraint. The next question is whether the plan needs faster pricing experiments, more people who can maintain the code or a different technical design.
+Disagreement improves that account when both sides state what would overturn their position. In the diligence example developed in [[diligence-corrects-the-plan]], Morgan reads Larkspur’s onboarding dependency as structural, and Alex attributes much of the effort to poor customer data. Neither is asked to concede. Both explanations are recorded, and the pilot cohort’s measured effort split is named as the evidence that will resolve them. An adviser should be able to revise an assessment, and a company leader should be able to reconsider a familiar practice, without either treating the revision as a personal defeat.
 
-The company shouldn’t need one confident story for the investor and another account of the real constraints for engineers. **Preserve the same facts** and adjust only the level of detail to the audience. A short explanation can still include uncertainty and feasible alternatives.
+The company shouldn’t need one confident story for the investor and another account of the real constraints for engineers. **Preserve the same facts** and adjust only the level of detail to the audience.
 
-Disagreement can improve that account. Ask which observation supports a conclusion and what would overturn it. An adviser should be able to revise an assessment, and company leaders should be able to reconsider a familiar practice, without either treating the revision as a personal defeat.
+## Back to the Planning Meeting
 
-## Distinguish Advice from Delivery Help
+The opening scene resolves with two sentences agreed before the roadmap discussion starts. Purpose: Morgan attends as the investment firm’s technology adviser, and what Morgan says about the roadmap is a recommendation. Authority: Alex is authorized to decide the technical plan within the approved budget; Ines and the board approve spending beyond it; if the firm wants an assessment of the plan or the team, it will request one separately and the company will announce it.
 
-An adviser may identify a problem, connect a specialist, review a plan or carry out a bounded piece of work. Agree which contribution the company needs before assuming the adviser will deliver the whole improvement.
+Alex says this to the engineers before the meeting, not after. Morgan confirms it in the room. From then on, an idea from Morgan is weighed on its merits, which is what makes the ideas useful.
 
-If Larkspur needs a reusable setup process for new customers, advice might establish the options. Implementation also needs engineering time, product decisions and people who will operate the result. Each commitment belongs in the plan.
-
-Some situations justify temporary dependence on an adviser or specialist: a leadership departure, a service crisis or a difficult transition. The company should know who has authority, how long the arrangement can last and **what will sustain the capability afterward**.
-
-The detailed agreement belongs in [[useful-engagement]]. Here, the first task is to establish the type of help and the responsibility that stays inside the company.
-
-## Check Availability and Competing Demands
-
-The adviser may have responsibilities across several investments. A useful conversation can still lead to a plan they don’t have time to support. Ask who can take part, when they can start, what specialist budget exists and what happens if another urgent assignment arrives.
-
-If the support isn’t available, consider another specialist, a smaller first step or a revised timetable. **Availability is a planning input**, not a judgment about whether either side values the relationship.
-
-Also agree how possible conflicts will be handled. An adviser who helps develop your team may also inform the investor’s view of leadership. Clarifying that role and the use of information is part of making the relationship workable.
-
-## Judge What the Company Can Do Better
-
-Useful support can leave a better decision, a tested assumption, a resolved constraint or a capability the company can sustain. Meeting counts describe activity, not benefit.
-
-Review the company’s result and the effort required from both sides. Be clear about the adviser’s contribution alongside the work of the product, engineering, customer and finance teams. A shared success doesn’t need to be assigned to one person.
-
-The adviser is one possible connection into a wider set of resources. The next chapter maps the expertise, peer companies, hiring support and introductions that may help your company: [[help-that-changes-capability]].
+The adviser is one possible source of help. The next chapter compares that source with the others the company could use for the same need, including those outside the investor’s network: [[help-that-changes-capability]].
 
 ## Questions to Consider
 
-1. *Who from your investor is involved in your technology decisions, what assignment do they have, how much time can they give and which decisions can they make?*
-2. *Which job is the adviser doing with you now: diligence, advice, delivery, coaching or oversight? Do both of you agree on the answer?*
-3. *Do your engineers know whether the adviser’s suggestions are ideas or instructions? Who told them?*
-4. *Do you give the investor one confident story and your engineers another? What would it take to use the same facts in both?*
-5. *What evidence would change the adviser’s view of your technology, and what evidence would change yours?*
-6. *After the adviser’s current involvement ends, what will the company be able to do that it could not do before?*
+1. *Who from your investor is involved in your technology decisions, what is their assignment, and which decisions, if any, are they authorized to make?*
+2. *Which job is the adviser doing with you now: diligence, advice, delivery, coaching or oversight? Would your engineers give the same answer?*
+3. *Before your last candid conversation with the adviser, did you know who would receive what you said and what they were obliged to report?*
+4. *If the adviser’s role changed tomorrow, who would authorize it, and how would the team be told?*
 
 ## To Probe Further
 
 - **[Corporate Governance and Value Creation: Evidence from Private Equity](https://academic.oup.com/rfs/article-abstract/26/2/368/1582364)** — Viral Acharya, Oliver Gottschalg, Moritz Hahn and Conor Kehoe, The Review of Financial Studies, 2013.<br>*Deal-level evidence that an investor partner's background shapes the deal, which explains why investors field operating specialists and what each adviser is likely to look for.*
 - **[Flawless Consulting: A Guide to Getting Your Expertise Used](https://www.wiley.com/en-us/flawless-consulting-a-guide-to-getting-your-expertise-used-4th-edition-p-9781394177301)** — Peter Block, Wiley, fourth edition, 2023.<br>*A guide written for the person giving advice, which read from the receiving side shows what a well-run adviser relationship should ask of you.*
 - **[Humble Consulting](https://bkconnection.com/products/9781626567214_humble-consulting)** — Edgar Schein, Berrett-Koehler, 2016.<br>*Argues that useful help starts with asking rather than telling, which supports the chapter's call to build consistent facts with the adviser before accepting a diagnosis.*
-- **[ICF Code of Ethics](https://coachingfederation.org/credentialing/coaching-ethics/icf-code-of-ethics/)** — International Coaching Federation, in force from April 2025.<br>*The professional code requiring coaches to agree confidentiality and information sharing with client and sponsor, relevant when an adviser who coaches you also informs the investor's view.*
+- **[ICF Code of Ethics](https://coachingfederation.org/credentialing/coaching-ethics/icf-code-of-ethics/)** — International Coaching Federation, in force from April 2025.<br>*A professional code that asks coaches to agree confidentiality and information sharing with client and sponsor; it binds only coaches who have adopted it, but its checklist of what to agree is a useful model for the conversation this chapter describes.*

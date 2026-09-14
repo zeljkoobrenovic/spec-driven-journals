@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
 # Spec: Glossary
 
 ## Intent
 
-Define the terms needed for comparative investor ownership, including minority funding, strategic ownership, dilution, runway and funding rounds. Separate financing terms from transaction contexts.
+Define the terms needed for comparative investor ownership, including minority funding, strategic ownership, dilution, runway and funding rounds. Separate financing terms from transaction contexts. Serve as the collection’s terminology standard: the distinctions the chapters must follow (investor / firm / fund / company; shareholder vs accountable leader; the three sponsor roles; the four funding states; named profit and cash measures; financial vs causal contribution; the two lead times; thesis vs durable value; adviser vs Technology Principal; investment committee vs board; announced vs received value) are defined here once, and the chapters are corrected to match.
 
 ## Audience
 
@@ -19,6 +19,8 @@ Product and engineering leaders inside companies working under investors, includ
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Make the page usable by a beginner: explain how to start, define labels plainly, and link the relevant teaching chapters.
+- Make lookup fast: a short “how to use” paragraph and an alphabetical index of terms and abbreviations at the top, each entry linking to the thematic section that defines it; one concept per row underneath, with close contrasts kept paired.
+- Label teaching descriptions and the author’s own constructs as such; keep the AI definition broad enough to cover learned and knowledge-based systems; cite a source only where one is verified.
 
 Readers can find, interpret, and use the material without confusing evidence with proposals or fictional examples. Navigation is stable; confidential provenance remains outside site content.
 
@@ -36,6 +38,7 @@ Research and editorial gaps remain in the separate notes; revise this reference 
 
 ## Decision log
 
+- 2026-09-14: The glossary becomes the terminology standard the chapters are aligned to (per the collection review); reader-facing vocabulary drops Productscapes, which stays in the bibliography as provenance.
 - 2026-09-13: The author requested Owned and substantive comparative treatment of leadership under investors; this supersedes the previous private-equity-first framing.
 - 2026-09-12: Keep reference pages in the repository's per-post structure and expose them through the journal configuration.
 
@@ -45,6 +48,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-14: Add the how-to-use paragraph and alphabetical index, split overloaded rows, add the terminology-sheet entries (roles and sponsors section, funding states, measures with scope and period, lead times, retained and announced value), broaden the AI definition with a verified OECD citation, and remove the Productscapes entry, per the editorial review; permalink and id unchanged.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Reconcile the revised article and applicable reading formats with the Owned contract; specification accepted as matching the draft manuscript.
 - 2026-09-13: Revise the contract for Owned before adapting the article and its reading formats.

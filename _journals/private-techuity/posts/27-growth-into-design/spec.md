@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Translate valuation assumptions into testable implementation choices under different ownership arrangements. Keep technical evidence, valuation inference and the funding of future options separate. Frame the choice to cover structure, build and buy, so the chapter is usable by companies whose technology is largely bought and integrated.
+Translate an investor’s growth assumption, which reaches the team as a request for flexibility, into one completed design decision. Start from the assessed constraint handed over by [[can-the-team-deliver]] (country rules coupled into the invoicing module) after [[fix-decisions-before-hiring]] has relieved the queue around it; compare configuring a supplier, a company-owned boundary and a core replacement against the same customer need, delivery date, ongoing responsibility and cash limit; choose one under explicit assumptions and name the evidence that would reverse it. Keep technical evidence, valuation inference and the funding of future options separate. Cover structure, build and buy, so the chapter is usable by companies whose technology is largely bought and integrated.
 
 ## Audience
 
@@ -24,10 +24,12 @@ Product and engineering leaders inside companies working under investors, includ
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Show why "we are valued on growth" and "we are valued on EBITDA" are incomplete as instructions, and what questions complete them.
-- Map growth and earnings priorities to technical capabilities and their trade-offs, without prescribing microservices for growth or cost-cutting for earnings. Give each priority both a build-side and a buy-side answer, and cover supplier dependence as a priority in its own right.
-- Carry the Larkspur €200,000 onboarding example through four lenses — earnings, cash, growth, implementation — and show they can disagree legitimately.
-- State the multiple-based sensitivity honestly, including the double-counting trap.
-- End with the five things to agree before choosing an implementation.
+- Map growth and earnings priorities to technical capabilities and their trade-offs as a short overview plus two smaller build-side and buy-side comparisons, without prescribing microservices for growth or cost-cutting for earnings; treat supplier or single-person dependence by comparing impact and likelihood with the cost and effectiveness of alternatives, including consequences the company cannot accept (linked to [[prove-you-can-restore]]), never by rarity alone.
+- Complete the Larkspur second-country design decision: three options in one table, the chosen option, alternatives rejected, funding (€140,000 of a €300,000 envelope), scarce capacity (six specialist-weeks), who is authorized, and the reversing evidence.
+- Keep the €200,000 / €100,000 payback and the 10× sensitivity as a bounded, separately labelled illustration, including the double-counting trap.
+- Fill the five-answer decision record with the chosen design and stress it against slower growth, a lower sale valuation and a longer ownership period.
+- Open with the specific condition (an assumption arriving without its reasoning), not a contrast between stable and investor ownership; use “a common arrangement” / “one common way” rather than prevalence claims.
+- Make the boundary with [[can-the-team-deliver]] explicit and do not repeat its assessment; hand off to [[cheaper-cloud-bill]] by naming the operating cost line the design creates.
 
 ## Non-goals
 
@@ -39,11 +41,11 @@ Article, TL;DR, six-panel illustrated comic — matching the rest of the manuscr
 
 ## Open questions
 
-- Does Part III's ordering work with this chapter after [[can-the-team-deliver]], or should it precede it?
-- Should the architecture/priority table carry a fifth row for regulated or safety-critical contexts?
+- Should the priority tables carry a further row for regulated or safety-critical contexts?
 
 ## Decision log
 
+- 2026-09-14: Part III order settled by the collection revision: this chapter follows [[fix-decisions-before-hiring]] (which follows [[can-the-team-deliver]]) and precedes [[cheaper-cloud-bill]]. The earlier open question on ordering is closed.
 - 2026-09-13: The author requested Owned and substantive comparative treatment of leadership under investors; this supersedes the previous private-equity-first framing.
 - **Split from Chapter 2 (2026-09-12).** The primer half stays in Part I as Chapter 2 and keeps the `valuation-and-architecture` permalink for URL stability. The architecture half becomes this chapter, placed in Part III where "investment thesis" and "Technology Principal" are already established. Before the split, both terms were forward dependencies of roughly fourteen chapters.
 
@@ -53,6 +55,7 @@ Inherits the IPEV valuation guidance cited in [[valuation-is-an-estimate]]. The 
 
 ## Changelog
 
+- 2026-09-14: Editorial revision: replaced the stable-versus-investor opening with the assumption-without-reasoning condition, split the four-column table into an overview plus build-side and buy-side tables, replaced the rare-failure rule with an impact-and-likelihood comparison linked to [[prove-you-can-restore]], completed one design decision (supplier configuration vs owned boundary vs core replacement; boundary chosen) from the constraint handed over by [[can-the-team-deliver]], kept the payback and 10× sensitivity as a bounded illustration, filled the five-answer record, replaced prevalence claims with “a common arrangement”, and rewrote the handoff to [[cheaper-cloud-bill]]; permalink and id unchanged.
 - 2026-09-14: Retitle the post from ““More Flexible” Is Not a Requirement” to “Turn “We Expect Growth” Into a Design Decision”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “From Valuation Assumptions to Implementation Choices” to ““More Flexible” Is Not a Requirement”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Split the capability table into build-side and buy-side columns and add a fifth priority row for supplier and single-person dependence. The framing sentence promised the reasoning carried over to bought systems; the table did not yet show it. Added customization and exit cost to the vocabulary, and a buy-side counterpart to the microservices paragraph.

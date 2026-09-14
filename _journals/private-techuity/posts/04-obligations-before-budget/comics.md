@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Under investors, the gap between earnings and cash is structural rather than accounting. The panels follow the payments set by the financing, from interest to distributions, that are made before a migration or a new team is funded.
+**Comic.** Positive EBITDA does not establish the cash available for a new initiative. The panels follow one earnings figure through investment, tax, financing payments and working capital to the cash on hand, separate the payments that are obligations from the ones that are choices, and end with three priced options and a decision.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/04-obligations-before-budget/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam allocates cash to interest, tax, assets and unpaid customer invoices. Use one speech bubble with the exact words: \"These commitments also need cash.\" Convey: Subtract the payments and additional cash needs left outside that earnings measure. The remainder may be much smaller than the earnings headline.",
+  "prompt": "Panel 2 of an explainer comic. Sam allocates cash to interest, tax, assets and unpaid customer invoices. Use one speech bubble with the exact words: \"These commitments also need cash.\" Convey: Subtract the payments and cash needs left outside that earnings measure. Interest and repayments are contractual; investment is a choice; payroll is already inside. The remainder may be much smaller than the headline.",
   "alt": "Comic panel: Sam allocates cash to interest, tax, assets and unpaid customer invoices.",
-  "caption": "Subtract the payments and additional cash needs left outside that earnings measure. The remainder may be much smaller than the earnings headline.",
+  "caption": "Subtract the payments and cash needs left outside that earnings measure. Interest and repayments are contractual; investment is a choice; payroll is already inside. The remainder may be much smaller than the headline.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam allocates cash to interest, tax, assets and unpaid customer invoices.](assets/images/04-obligations-before-budget/comic-02-scene.jpeg)
 
-**Panel 2:** Subtract the payments and additional cash needs left outside that earnings measure. The remainder may be much smaller than the earnings headline.
+**Panel 2:** Subtract the payments and cash needs left outside that earnings measure. Interest and repayments are contractual; investment is a choice; payroll is already inside. The remainder may be much smaller than the headline.
 
 *Dialogue:* “These commitments also need cash.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/04-obligations-before-budget/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex funds a necessary step and sets a review date. Use one speech bubble with the exact words: \"A feasible plan beats an ambition.\" Convey: The plan should protect essential service and fund useful improvements through explicit, feasible choices.",
-  "alt": "Comic panel: Alex reviews a feasible project plan and a service-protection checklist beside a calendar.",
-  "caption": "The plan should protect essential service and fund useful improvements through explicit, feasible choices.",
+  "prompt": "Panel 6 of an explainer comic. Alex and Ines fund the staged pilot from three priced options and set the cohort review date. Use one speech bubble with the exact words: \"A feasible plan beats an ambition.\" Convey: Three priced options, each with a decision date and a decider: continuity, a staged pilot, the full request. Under the stated assumptions the €200,000 pilot is funded; the cohort review decides the rest.",
+  "alt": "Comic panel: Alex reviews three priced options and a service-protection checklist beside a calendar marked with the cohort review.",
+  "caption": "Three priced options, each with a decision date and a decider: continuity, a staged pilot, the full request. Under the stated assumptions the €200,000 pilot is funded; the cohort review decides the rest.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +141,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex reviews a feasible project plan and a service-protection checklist beside a calendar.](assets/images/04-obligations-before-budget/comic-06-scene.jpeg)
+![Comic panel: Alex reviews three priced options and a service-protection checklist beside a calendar marked with the cohort review.](assets/images/04-obligations-before-budget/comic-06-scene.jpeg)
 
-**Panel 6:** The plan should protect essential service and fund useful improvements through explicit, feasible choices.
+**Panel 6:** Three priced options, each with a decision date and a decider: continuity, a staged pilot, the full request. Under the stated assumptions the €200,000 pilot is funded; the cohort review decides the rest.
 
 *Dialogue:* “A feasible plan beats an ambition.”

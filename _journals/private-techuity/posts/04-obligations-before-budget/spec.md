@@ -3,11 +3,11 @@ status: accepted
 revised: 2026-09-14
 ---
 
-# Spec: Interest, Tax and Loan Repayments Come Before Your Budget
+# Spec: Find the Cash Behind Your Technology Budget
 
 ## Intent
 
-Plan engineering commitments against available cash under both borrowing and loss-funded growth. Work through a cash bridge and a separate runway example, including a funding-delay response before cash is exhausted.
+Show that positive EBITDA does not establish the cash available for a new initiative: reconcile it with investment, tax, financing payments, working capital and cash on hand, then check dates and restrictions. Work through the cash bridge, separate the lines that are obligations under an agreement from those that are management choices, price three options for one initiative with decision dates and deciders, and teach runway and financing downside in a separate loss-funded scenario. No universal payment hierarchy and no contrast with companies that have no investors.
 
 ## Audience
 
@@ -18,7 +18,9 @@ Product and engineering leaders inside companies working under investors, includ
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
-- Distinguish cash remaining in the annual planning model from cash available to commit; make accounting recognition criteria and omitted cash assumptions explicit.
+- Distinguish cash remaining in the annual planning model from cash available to commit; make accounting recognition criteria and omitted cash assumptions explicit. Place the qualification (planning calculation, not a payment priority; engineering salaries are already in operating costs) beside the bridge, with a table saying which lines can move and under whose agreement.
+- Complete the €1 million initiative decision: minimum-continuity, staged and full-funding options with cash, engineer-weeks, next decision date and who decides; state the chosen option, alternatives rejected, funding, scarce capacity, authority and the evidence that would change it; link to [[cannot-fund-everything]].
+- State that capitalization changes when costs enter profit and that later amortization is excluded from EBITDA.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
@@ -55,6 +57,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Retitle to “Find the Cash Behind Your Technology Budget” and revise per the editorial review: opening rewritten around reconciling EBITDA with investment, tax, financing, working capital and cash on hand (universal payment hierarchy and the no-investors contrast removed) across all formats; obligations-versus-choices table and the planning-calculation qualification placed beside the bridge; €1 million initiative completed with three priced options and a decision; setback section tightened to the conditional-support finding plus links; amortization sentence corrected; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Profit Is Not Money You Can Spend” to “Interest, Tax and Loan Repayments Come Before Your Budget”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “Profit, Runway and the Cash You Can Commit” to “Profit Is Not Money You Can Spend”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

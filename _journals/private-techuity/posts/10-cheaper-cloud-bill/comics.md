@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Cloud spending draws investor attention because it is a large, adjustable cost whose reduction improves the earnings measures on which the company is valued. The panels show how the engineering team turns a cost target set from outside into a judgment about the service customers receive.
+**Comic.** In the fictional Larkspur scenario, the board-approved plan assumes flat cloud spending while volume grows, and the investor’s technology adviser has asked why the bill rose. The panels show how the engineering team turns that question into a judgment about the service customers receive: put the figures on one basis, separate why the bill changed, commit only to the demand the company can defend, and check the continuing cost behind credits and contracts.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/10-cheaper-cloud-bill/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Sam sees a larger cloud bill and frowns. Use one speech bubble with the exact words: \"Did efficiency get worse?\" Convey: Cloud services are rented computing resources. A larger bill alone does not show that the company has become less efficient.",
+  "prompt": "Panel 1 of an explainer comic. Sam sees a larger cloud bill and frowns. Use one speech bubble with the exact words: \"Did efficiency get worse?\" Convey: Cloud services are rented computing resources. A larger bill alone does not show that the company has become less efficient; first put both bills on the same cost basis.",
   "alt": "Comic panel: Sam sees a larger cloud bill and frowns.",
-  "caption": "Cloud services are rented computing resources. A larger bill alone does not show that the company has become less efficient.",
+  "caption": "Cloud services are rented computing resources. A larger bill alone does not show that the company has become less efficient; first put both bills on the same cost basis.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam sees a larger cloud bill and frowns.](assets/images/10-cheaper-cloud-bill/comic-01-scene.jpeg)
 
-**Panel 1:** Cloud services are rented computing resources. A larger bill alone does not show that the company has become less efficient.
+**Panel 1:** Cloud services are rented computing resources. A larger bill alone does not show that the company has become less efficient; first put both bills on the same cost basis.
 
 *Dialogue:* “Did efficiency get worse?”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/10-cheaper-cloud-bill/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam receives a discount tied to a heavy commitment. Use one speech bubble with the exact words: \"What if demand falls?\" Convey: A long contract may lower the rate while requiring payment for capacity the company no longer needs.",
+  "prompt": "Panel 4 of an explainer comic. Sam receives a discount tied to a heavy commitment. Use one speech bubble with the exact words: \"What if demand falls?\" Convey: A long contract may lower the rate while requiring payment for capacity the company no longer needs. Larkspur states a demand range and its funded horizon, then commits only to the demand it can defend across both.",
   "alt": "Comic panel: Sam examines a minimum-commitment contract beside unused servers under a lower-demand label.",
-  "caption": "A long contract may lower the rate while requiring payment for capacity the company no longer needs.",
+  "caption": "A long contract may lower the rate while requiring payment for capacity the company no longer needs. Larkspur states a demand range and its funded horizon, then commits only to the demand it can defend across both.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam examines a minimum-commitment contract beside unused servers under a lower-demand label.](assets/images/10-cheaper-cloud-bill/comic-04-scene.jpeg)
 
-**Panel 4:** A long contract may lower the rate while requiring payment for capacity the company no longer needs.
+**Panel 4:** A long contract may lower the rate while requiring payment for capacity the company no longer needs. Larkspur states a demand range and its funded horizon, then commits only to the demand it can defend across both.
 
 *Dialogue:* “What if demand falls?”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/10-cheaper-cloud-bill/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Sam points to the end of a temporary credit period while Alex reviews the continuing service. Use one speech bubble with the exact words: \"What happens when the credits end?\" Convey: Separate fictional credits example: a €30,000 monthly service bill falls to €5,000 for six months. The plan must still fund the cost after credits end and check any continuing contract.",
+  "prompt": "Panel 6 of an explainer comic. Sam points to the end of a temporary credit period while Alex reviews the continuing service. Use one speech bubble with the exact words: \"What happens when the credits end?\" Convey: Separate fictional credits example: a €30,000 monthly service bill falls to €5,000 for six months. The plan must still fund the cost after credits end, and check which entity signed, any minimum spend and what happens if ownership changes.",
   "alt": "Comic panel: Sam points to the end of a temporary credit period while Alex reviews the continuing service.",
-  "caption": "Separate fictional credits example: a €30,000 monthly service bill falls to €5,000 for six months. The plan must still fund the cost after credits end and check any continuing contract.",
+  "caption": "Separate fictional credits example: a €30,000 monthly service bill falls to €5,000 for six months. The plan must still fund the cost after credits end, and check which entity signed, any minimum spend and what happens if ownership changes.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam points to the end of a temporary credit period while Alex reviews the continuing service.](assets/images/10-cheaper-cloud-bill/comic-06-scene.jpeg)
 
-**Panel 6:** Separate fictional credits example: a €30,000 monthly service bill falls to €5,000 for six months. The plan must still fund the cost after credits end and check any continuing contract.
+**Panel 6:** Separate fictional credits example: a €30,000 monthly service bill falls to €5,000 for six months. The plan must still fund the cost after credits end, and check which entity signed, any minimum spend and what happens if ownership changes.
 
 *Dialogue:* “What happens when the credits end?”

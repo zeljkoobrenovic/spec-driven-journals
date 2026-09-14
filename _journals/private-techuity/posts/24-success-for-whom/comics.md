@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Investors measure success at the moment they realize value, while product and engineering leaders, customers and employees live with the company afterward. The panels set a broader standard for judging the work than the exit alone.
+**Comic.** An exit is a decisive reporting event for some investors, not the only horizon for judging the work: product and engineering leaders, customers, employees and suppliers live with the company through and after each funding or ownership event. The panels set the book’s proposed standard of durable success, a company that can keep serving customers, fund its obligations and explain what is unfinished, beside the investor’s result, and show what to record when the two disagree.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/24-success-for-whom/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Priya and Alex stand beside customer and team commitments while a funding milestone is marked behind them. Use one speech bubble with the exact words: \"What can people still rely on?\" Convey: A funding round, sale or corporate milestone does not complete the company’s responsibility to customers and teams. Judge what can keep working through change and continued ownership.",
+  "prompt": "Panel 1 of an explainer comic. Priya and Alex stand beside customer and team commitments while a funding milestone is marked behind them. Use one speech bubble with the exact words: \"What can people still rely on?\" Convey: A funding round, sale or corporate milestone does not complete the company’s responsibility to customers, teams and suppliers. Judge what can keep working through change and continued ownership.",
   "alt": "Comic panel: Priya and Alex stand beside customer and team commitments while a funding milestone is marked behind them.",
-  "caption": "A funding round, sale or corporate milestone does not complete the company’s responsibility to customers and teams. Judge what can keep working through change and continued ownership.",
+  "caption": "A funding round, sale or corporate milestone does not complete the company’s responsibility to customers, teams and suppliers. Judge what can keep working through change and continued ownership.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Alex stand beside customer and team commitments while a funding milestone is marked behind them.](assets/images/24-success-for-whom/comic-01-scene.jpeg)
 
-**Panel 1:** A funding round, sale or corporate milestone does not complete the company’s responsibility to customers and teams. Judge what can keep working through change and continued ownership.
+**Panel 1:** A funding round, sale or corporate milestone does not complete the company’s responsibility to customers, teams and suppliers. Judge what can keep working through change and continued ownership.
 
 *Dialogue:* “What can people still rely on?”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/24-success-for-whom/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Morgan follows obligations beyond the ownership handoff. Use one speech bubble with the exact words: \"What happens after exit?\" Convey: A sale can leave the next owner with unfinished work, customer commitments and future costs. Follow those consequences too.",
+  "prompt": "Panel 4 of an explainer comic. Morgan follows obligations beyond the ownership handoff. Use one speech bubble with the exact words: \"What happens after exit?\" Convey: A sale can leave the next owner with unfinished work, customer commitments and future costs. Hand over the obligations with the company, and follow those consequences too.",
   "alt": "Comic panel: Morgan follows obligations beyond the ownership handoff.",
-  "caption": "A sale can leave the next owner with unfinished work, customer commitments and future costs. Follow those consequences too.",
+  "caption": "A sale can leave the next owner with unfinished work, customer commitments and future costs. Hand over the obligations with the company, and follow those consequences too.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan follows obligations beyond the ownership handoff.](assets/images/24-success-for-whom/comic-04-scene.jpeg)
 
-**Panel 4:** A sale can leave the next owner with unfinished work, customer commitments and future costs. Follow those consequences too.
+**Panel 4:** A sale can leave the next owner with unfinished work, customer commitments and future costs. Hand over the obligations with the company, and follow those consequences too.
 
 *Dialogue:* “What happens after exit?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/24-success-for-whom/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. The team connects investment expectations, funding, decision rights and company work. Use one speech bubble with the exact words: \"Do these conditions fit together?\" Convey: The investment expectations, financing, decision rights and company capabilities need to fit together. The book proposes this as a test, not a guarantee.",
+  "prompt": "Panel 5 of an explainer comic. The team connects investment expectations, funding, decision rights and company work. Use one speech bubble with the exact words: \"Do these conditions fit together?\" Convey: The investment expectations, financing, decision rights and company capabilities need to fit together. When they pull apart, name who is authorized to decide and whose interests lose. The book proposes this as a test, not a guarantee.",
   "alt": "Comic panel: The team connects investment expectations, funding, decision rights and company work.",
-  "caption": "The investment expectations, financing, decision rights and company capabilities need to fit together. The book proposes this as a test, not a guarantee.",
+  "caption": "The investment expectations, financing, decision rights and company capabilities need to fit together. When they pull apart, name who is authorized to decide and whose interests lose. The book proposes this as a test, not a guarantee.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: The team connects investment expectations, funding, decision rights and company work.](assets/images/24-success-for-whom/comic-05-scene.jpeg)
 
-**Panel 5:** The investment expectations, financing, decision rights and company capabilities need to fit together. The book proposes this as a test, not a guarantee.
+**Panel 5:** The investment expectations, financing, decision rights and company capabilities need to fit together. When they pull apart, name who is authorized to decide and whose interests lose. The book proposes this as a test, not a guarantee.
 
 *Dialogue:* “Do these conditions fit together?”
 

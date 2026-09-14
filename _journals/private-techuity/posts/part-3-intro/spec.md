@@ -48,6 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-14: Group the nine chapters into three moves (choose and justify work; assess and change the delivery system; apply the reasoning to operating choices) and reflect the new order in which fix-decisions-before-hiring follows can-the-team-deliver. Permalink unchanged.
 - 2026-09-14: Retitle the post from “PART III — Turning Investor Expectations into Commitments” to “PART III — Turning Investor Expectations Into Commitments”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

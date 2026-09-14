@@ -5,9 +5,9 @@
 }
 -->
 
-**Comic.** Under investors, the plan is the basis on which money was committed, so each revision is reviewed against the investment case, the fund’s timeline and the prospect of a sale. The panels follow a company keeping its plan credible to owners who may change.
+**Comic.** The team is on schedule, but the €4m round expected in September now looks likely in December. The panels follow a fictional company changing a funding assumption before it becomes a delivery promise: cash by date, a latest useful decision date, three alternatives and one authorized fallback.
 
-Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, Sam leads finance and Ines is the CEO. All are fictional, and every figure in the scenario is invented. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/18-the-financing-slipped/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex brings a changed customer need and a blocked initiative to the regular conversation with Morgan. Use one speech bubble with the exact words: \"Here is the decision we need to revisit.\" Convey: Company leaders need to revise the operating plan as circumstances change. Use investor conversations to explain decisions, constraints and help needed.",
-  "alt": "Comic panel: Alex brings a changed customer need and a blocked initiative to the regular conversation with Morgan.",
-  "caption": "Company leaders need to revise the operating plan as circumstances change. Use investor conversations to explain decisions, constraints and help needed.",
+  "prompt": "Panel 1 of an explainer comic. Alex shows Morgan the operating plan whose September funding assumption has moved to December. Use one speech bubble with the exact words: \"Here is the decision we need to revisit.\" Convey: The roadmap is on schedule; the round expected in September now looks likely in December. That is an unfunded dependency, not an execution failure, and the funding assumption must be revisited before hiring offers and a contract signature make it irreversible.",
+  "alt": "Comic panel: Alex shows Morgan the operating plan whose September funding assumption has moved to December.",
+  "caption": "The roadmap is on schedule; the round expected in September now looks likely in December. That is an unfunded dependency, not an execution failure, and the funding assumption must be revisited before hiring offers and a contract signature make it irreversible.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -26,9 +26,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex brings a changed customer need and a blocked initiative to the regular conversation with Morgan.](assets/images/18-the-financing-slipped/comic-01-scene.jpeg)
+![Comic panel: Alex shows Morgan the operating plan whose September funding assumption has moved to December.](assets/images/18-the-financing-slipped/comic-01-scene.jpeg)
 
-**Panel 1:** Company leaders need to revise the operating plan as circumstances change. Use investor conversations to explain decisions, constraints and help needed.
+**Panel 1:** The roadmap is on schedule; the round expected in September now looks likely in December. That is an unfunded dependency, not an execution failure, and the funding assumption must be revisited before hiring offers and a contract signature make it irreversible.
 
 *Dialogue:* “Here is the decision we need to revisit.”
 
@@ -36,11 +36,12 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "02-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/18-the-financing-slipped/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. The team separates coaching, project help, and board reporting. Use one speech bubble with the exact words: \"Clarify the conversation's purpose.\" Convey: Coaching, project delivery and board reporting serve different purposes. Agree what information each conversation may use and share.",
-  "alt": "Comic panel: The team separates coaching, project help, and board reporting.",
-  "caption": "Coaching, project delivery and board reporting serve different purposes. Agree what information each conversation may use and share.",
+  "prompt": "Panel 2 of an explainer comic. Sam, Alex and Priya sort commitment documents on a table into three labeled groups: PROTECTED, COMMITTED, NOT YET COMMITTED. Use one speech bubble with the exact words: \"Which of these can we still stop?\" Convey: Sort commitments by whether they can still be changed. Customer contracts and the recovery requirement are protected; the onboarding pilot is committed; two September hires and a €120,000 portal contract are still reversible until 15 August, the latest useful decision date.",
+  "alt": "Comic panel: Sam, Alex and Priya sort commitment documents into protected, committed and not yet committed groups.",
+  "caption": "Sort commitments by whether they can still be changed. Customer contracts and the recovery requirement are protected; the onboarding pilot is committed; two September hires and a €120,000 portal contract are still reversible until 15 August, the latest useful decision date.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -49,21 +50,22 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: The team separates coaching, project help, and board reporting.](assets/images/18-the-financing-slipped/comic-02-scene.jpeg)
+![Comic panel: Sam, Alex and Priya sort commitment documents into protected, committed and not yet committed groups.](assets/images/18-the-financing-slipped/comic-02-scene.jpeg)
 
-**Panel 2:** Coaching, project delivery and board reporting serve different purposes. Agree what information each conversation may use and share.
+**Panel 2:** Sort commitments by whether they can still be changed. Customer contracts and the recovery requirement are protected; the onboarding pilot is committed; two September hires and a €120,000 portal contract are still reversible until 15 August, the latest useful decision date.
 
-*Dialogue:* “Clarify the conversation's purpose.”
+*Dialogue:* “Which of these can we still stop?”
 
 <!-- comic-panel
 {
   "id": "03-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/18-the-financing-slipped/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex shares a practice while protecting a confidential company folder. Use one speech bubble with the exact words: \"Share the learning appropriately.\" Convey: Companies sharing an owner still have separate confidential information. Share lessons within agreed permissions.",
-  "alt": "Comic panel: Alex shares a practice while protecting a confidential company folder.",
-  "caption": "Companies sharing an owner still have separate confidential information. Share lessons within agreed permissions.",
+  "prompt": "Panel 3 of an explainer comic. Sam stands at a whiteboard showing a simple cash line falling from July to a reserve line at 31 December, with three short branches labeled A, B and C ending at November, December and March. Use one speech bubble with the exact words: \"Plan A breaks the reserve in November.\" Convey: Put cash on a calendar. Without new money the €400,000 reserve is reached on 31 December. Proceeding as planned breaches it in late November; deferring the hires and the portal holds to 31 December; a conditional €600,000 bridge would cover a slip to March, but it is not cash until it is committed in writing.",
+  "alt": "Comic panel: Sam at a whiteboard showing cash falling to the reserve line, with three branches A, B and C ending in November, December and March.",
+  "caption": "Put cash on a calendar. Without new money the €400,000 reserve is reached on 31 December. Proceeding as planned breaches it in late November; deferring the hires and the portal holds to 31 December; a conditional €600,000 bridge would cover a slip to March, but it is not cash until it is committed in writing.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -72,21 +74,22 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex shares a practice while protecting a confidential company folder.](assets/images/18-the-financing-slipped/comic-03-scene.jpeg)
+![Comic panel: Sam at a whiteboard showing cash falling to the reserve line, with three branches A, B and C ending in November, December and March.](assets/images/18-the-financing-slipped/comic-03-scene.jpeg)
 
-**Panel 3:** Companies sharing an owner still have separate confidential information. Share lessons within agreed permissions.
+**Panel 3:** Put cash on a calendar. Without new money the €400,000 reserve is reached on 31 December. Proceeding as planned breaches it in late November; deferring the hires and the portal holds to 31 December; a conditional €600,000 bridge would cover a slip to March, but it is not cash until it is committed in writing.
 
-*Dialogue:* “Share the learning appropriately.”
+*Dialogue:* “Plan A breaks the reserve in November.”
 
 <!-- comic-panel
 {
   "id": "04-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/18-the-financing-slipped/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam traces an outcome back to its baseline and costs. Use one speech bubble with the exact words: \"Can a buyer examine this claim?\" Convey: An exit is a sale or other transaction through which investors receive value. Prepare its evidence by recording costs and results throughout ownership.",
-  "alt": "Comic panel: Sam traces an outcome back to its baseline and costs.",
-  "caption": "An exit is a sale or other transaction through which investors receive value. Prepare its evidence by recording costs and results throughout ownership.",
+  "prompt": "Panel 4 of an explainer comic. Ines and Sam present a single page to a small board table where Morgan sits; the page shows three lines labeled DECISION, DATE and CONSEQUENCE. Use one speech bubble with the exact words: \"Decide by 15 August, or the plan chooses itself.\" Convey: One escalation step: state the decision required, the latest useful date and the consequence of delay, and take it to the forum authorized to approve the operating plan. Saying the round has slipped is not enough.",
+  "alt": "Comic panel: Ines and Sam present a one-page escalation with decision, date and consequence to the board, where Morgan sits.",
+  "caption": "One escalation step: state the decision required, the latest useful date and the consequence of delay, and take it to the forum authorized to approve the operating plan. Saying the round has slipped is not enough.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -95,11 +98,11 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Sam traces an outcome back to its baseline and costs.](assets/images/18-the-financing-slipped/comic-04-scene.jpeg)
+![Comic panel: Ines and Sam present a one-page escalation with decision, date and consequence to the board, where Morgan sits.](assets/images/18-the-financing-slipped/comic-04-scene.jpeg)
 
-**Panel 4:** An exit is a sale or other transaction through which investors receive value. Prepare its evidence by recording costs and results throughout ownership.
+**Panel 4:** One escalation step: state the decision required, the latest useful date and the consequence of delay, and take it to the forum authorized to approve the operating plan. Saying the round has slipped is not enough.
 
-*Dialogue:* “Can a buyer examine this claim?”
+*Dialogue:* “Decide by 15 August, or the plan chooses itself.”
 
 <!-- comic-panel
 {
@@ -107,9 +110,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/18-the-financing-slipped/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Sam moves a funding date while Alex and Priya review commitments before hiring and contracts remove options. Use one speech bubble with the exact words: \"What changes if the money arrives late?\" Convey: A delayed round, refinancing or corporate budget change requires a revised operating decision. Keep a viable plan for continued ownership if the expected transaction does not occur.",
-  "alt": "Comic panel: Sam moves a funding date while Alex and Priya review commitments before hiring and contracts remove options.",
-  "caption": "A delayed round, refinancing or corporate budget change requires a revised operating decision. Keep a viable plan for continued ownership if the expected transaction does not occur.",
+  "prompt": "Panel 5 of an explainer comic. Sam moves a funding date on a wall calendar while Alex and Priya review contracts and a commitments list at the table. Use one speech bubble with the exact words: \"What changes if the money arrives late?\" Convey: On 10 August the board chooses B: defer the hires and the portal, keep the pilot and the recovery work. Sam is to obtain a written bridge commitment by 1 September, the plan is reviewed on 1 October, and Alex and Priya stage the deferred work so it can restart without rework.",
+  "alt": "Comic panel: Sam moves a funding date on the calendar while Alex and Priya review contracts and the commitments list.",
+  "caption": "On 10 August the board chooses B: defer the hires and the portal, keep the pilot and the recovery work. Sam is to obtain a written bridge commitment by 1 September, the plan is reviewed on 1 October, and Alex and Priya stage the deferred work so it can restart without rework.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -118,9 +121,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Sam moves a funding date while Alex and Priya review commitments before hiring and contracts remove options.](assets/images/18-the-financing-slipped/comic-05-scene.jpeg)
+![Comic panel: Sam moves a funding date on the calendar while Alex and Priya review contracts and the commitments list.](assets/images/18-the-financing-slipped/comic-05-scene.jpeg)
 
-**Panel 5:** A delayed round, refinancing or corporate budget change requires a revised operating decision. Keep a viable plan for continued ownership if the expected transaction does not occur.
+**Panel 5:** On 10 August the board chooses B: defer the hires and the portal, keep the pilot and the recovery work. Sam is to obtain a written bridge commitment by 1 September, the plan is reviewed on 1 October, and Alex and Priya stage the deferred work so it can restart without rework.
 
 *Dialogue:* “What changes if the money arrives late?”
 
@@ -130,9 +133,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/18-the-financing-slipped/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex hands a new company leader the operating record and a clearly named support agreement. Use one speech bubble with the exact words: \"We know what the next stage needs.\" Convey: A useful handover explains what improved, what remains and how the capability will be sustained, including any continuing support.",
-  "alt": "Comic panel: Alex hands a new company leader the operating record and a clearly named support agreement.",
-  "caption": "A useful handover explains what improved, what remains and how the capability will be sustained, including any continuing support.",
+  "prompt": "Panel 6 of an explainer comic. Alex hands a colleague the operating record that shows which plan the team is executing and what would restore the original one. Use one speech bubble with the exact words: \"We know what the next stage needs.\" Convey: Customers get no promise that depends on the hires. The team is told it is executing B, what continues, and what restores the original plan: a signed subscription agreement with understood conditions, not a term sheet.",
+  "alt": "Comic panel: Alex hands a colleague the operating record that shows which plan the team is executing and what would restore the original one.",
+  "caption": "Customers get no promise that depends on the hires. The team is told it is executing B, what continues, and what restores the original plan: a signed subscription agreement with understood conditions, not a term sheet.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +144,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex hands a new company leader the operating record and a clearly named support agreement.](assets/images/18-the-financing-slipped/comic-06-scene.jpeg)
+![Comic panel: Alex hands a colleague the operating record that shows which plan the team is executing and what would restore the original one.](assets/images/18-the-financing-slipped/comic-06-scene.jpeg)
 
-**Panel 6:** A useful handover explains what improved, what remains and how the capability will be sustained, including any continuing support.
+**Panel 6:** Customers get no promise that depends on the hires. The team is told it is executing B, what continues, and what restores the original plan: a signed subscription agreement with understood conditions, not a term sheet.
 
 *Dialogue:* “We know what the next stage needs.”

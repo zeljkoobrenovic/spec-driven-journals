@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
 # Spec: Decide Who Decides, Before You Disagree
 
 ## Intent
 
-Help leaders establish decision authority when founders, multiple minority investors, a controlling sponsor or a corporate parent have different rights. Turn disagreement into a specific proposal, approval and escalation process.
+Help leaders establish decision authority when founders, multiple minority investors, a controlling financial sponsor or a corporate parent have different rights. Organize the chapter around one filled-in Larkspur decision record (a misheard cloud suggestion, the €1 million onboarding proposal, a conditional delivery date) and show what happens when the approval it depends on is late. Adviser influence, confidentiality and support charters are owned by the Part IV chapters and only linked here.
 
 ## Audience
 
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Reorganize around the filled Larkspur decision record with generic roles afterward, add the missed-deadline branch and a three-sentence board update, cut the shadow-hierarchy and coaching-confidentiality material to a short parallel-instructions warning linking the adviser and engagement chapters, and replace "owns" with "is accountable for"; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

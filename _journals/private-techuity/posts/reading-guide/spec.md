@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
 # Spec: Owned — Purpose and Reading Guide
@@ -20,6 +20,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Make the page usable by a beginner: explain how to start, define labels plainly, and link the relevant teaching chapters.
+- State the primary reader and an accurate accessibility promise (no finance training assumed; technical questions are explained but not avoided); offer decision routes before the full tour; keep the contents list as a secondary lookup aid; keep the Part IV heading identical to the configured title.
 
 Readers can find, interpret, and use the material without confusing evidence with proposals or fictional examples. Navigation is stable; confidential provenance remains outside site content.
 
@@ -29,7 +30,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. The 29 main chapters and two appendix essays additionally provide a TL;DR and an illustrated comic. Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. The 30 main chapters additionally provide a TL;DR; 29 of them also have an illustrated comic (the handover chapter added on 2026-09-14 does not yet). Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -46,6 +47,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-14: Editorial revision: state the primary reader immediately and correct the accessibility promise; move decision routes ahead of the four-question frame; fold the ownership-event table into the frame; add the handover chapter, the fund-economics reference and the new Part III order to the contents; correct the Part IV heading; describe the formats accurately. Permalink unchanged.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.
 - 2026-09-13: Reconcile the revised article and applicable reading formats with the Owned contract; specification accepted as matching the draft manuscript.

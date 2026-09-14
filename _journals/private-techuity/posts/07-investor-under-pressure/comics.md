@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Most product and engineering leaders never sign the term sheet, but their plan depends on how the investor behaves after a missed quarter. The panels test two investors against that question rather than against their promises.
+**Comic.** Most product and engineering leaders never sign the term sheet, but their plan depends on how the investor behaves after a missed quarter. The panels put two fictional offers, Investor A with a broad support platform and Investor B with one experienced operator, through the same questions, and end with the choice Ines makes and the dependency Alex changes for an investor already in place.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/07-investor-under-pressure/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex reviews an investor presentation full of capability promises. Use one speech bubble with the exact words: \"Who actually provides this support?\" Convey: A promise of support needs available people, relevant experience and time to do the work.",
-  "alt": "Comic panel: Alex reviews an investor presentation full of capability promises.",
-  "caption": "A promise of support needs available people, relevant experience and time to do the work.",
+  "prompt": "Panel 1 of an explainer comic. Alex reviews Investor A's presentation full of capability promises. Use one speech bubble with the exact words: \"Who actually provides this support?\" Convey: Investor A promises a broad support platform. A promise of support needs a named person, relevant experience and time; the presentation names nobody for Larkspur yet.",
+  "alt": "Comic panel: Alex reviews Investor A's presentation full of capability promises.",
+  "caption": "Investor A promises a broad support platform. A promise of support needs a named person, relevant experience and time; the presentation names nobody for Larkspur yet.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -26,9 +26,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex reviews an investor presentation full of capability promises.](assets/images/07-investor-under-pressure/comic-01-scene.jpeg)
+![Comic panel: Alex reviews Investor A's presentation full of capability promises.](assets/images/07-investor-under-pressure/comic-01-scene.jpeg)
 
-**Panel 1:** A promise of support needs available people, relevant experience and time to do the work.
+**Panel 1:** Investor A promises a broad support platform. A promise of support needs a named person, relevant experience and time; the presentation names nobody for Larkspur yet.
 
 *Dialogue:* “Who actually provides this support?”
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/07-investor-under-pressure/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan asks for a story about a difficult engagement. Use one speech bubble with the exact words: \"Tell us about a disagreement.\" Convey: Ask for examples of how the investor handled a missed plan, disagreement or request for further help.",
-  "alt": "Comic panel: Morgan asks for a story about a difficult engagement.",
-  "caption": "Ask for examples of how the investor handled a missed plan, disagreement or request for further help.",
+  "prompt": "Panel 2 of an explainer comic. Morgan asks a reference for a story about a difficult engagement. Use one speech bubble with the exact words: \"Tell us about a disagreement.\" Convey: Ask each investor's references about a plan that went wrong. Investor B's reference reports a bridge funded within six weeks, and a CFO replaced in the same quarter.",
+  "alt": "Comic panel: Morgan asks a reference for a story about a difficult engagement.",
+  "caption": "Ask each investor’s references about a plan that went wrong. Investor B’s reference reports a bridge funded within six weeks, and a CFO replaced in the same quarter.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -49,9 +49,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Morgan asks for a story about a difficult engagement.](assets/images/07-investor-under-pressure/comic-02-scene.jpeg)
+![Comic panel: Morgan asks a reference for a story about a difficult engagement.](assets/images/07-investor-under-pressure/comic-02-scene.jpeg)
 
-**Panel 2:** Ask for examples of how the investor handled a missed plan, disagreement or request for further help.
+**Panel 2:** Ask each investor’s references about a plan that went wrong. Investor B’s reference reports a bridge funded within six weeks, and a CFO replaced in the same quarter.
 
 *Dialogue:* “Tell us about a disagreement.”
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/07-investor-under-pressure/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam reviews a downside cash scenario with the investor. Use one speech bubble with the exact words: \"What happens if growth slows?\" Convey: Fit includes the money available when results disappoint and the process for revising the plan.",
+  "prompt": "Panel 3 of an explainer comic. Sam reviews a downside cash scenario with the investor. Use one speech bubble with the exact words: \"What happens if growth slows?\" Convey: The same downside question goes to both investors. Investor A's follow-on goes to a committee whose criteria are not written down; Investor B's fund is in its seventh year of ten.",
   "alt": "Comic panel: Sam reviews a downside cash scenario with the investor.",
-  "caption": "Fit includes the money available when results disappoint and the process for revising the plan.",
+  "caption": "The same downside question goes to both investors. Investor A’s follow-on goes to a committee whose criteria are not written down; Investor B’s fund is in its seventh year of ten.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam reviews a downside cash scenario with the investor.](assets/images/07-investor-under-pressure/comic-03-scene.jpeg)
 
-**Panel 3:** Fit includes the money available when results disappoint and the process for revising the plan.
+**Panel 3:** The same downside question goes to both investors. Investor A’s follow-on goes to a committee whose criteria are not written down; Investor B’s fund is in its seventh year of ten.
 
 *Dialogue:* “What happens if growth slows?”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/07-investor-under-pressure/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex considers declining an offered intervention. Use one speech bubble with the exact words: \"Can we say this does not fit?\" Convey: Ask what happens if company leaders decline a proposed service. Their answer helps explain how much choice they have.",
+  "prompt": "Panel 4 of an explainer comic. Alex considers declining an offered intervention. Use one speech bubble with the exact words: \"Can we say this does not fit?\" Convey: Ask both investors what happens if Larkspur declines a proposed service. Investor A describes a process; Investor B names the operator who would stop. The answers show how much choice the company keeps.",
   "alt": "Comic panel: Alex considers declining an offered intervention.",
-  "caption": "Ask what happens if company leaders decline a proposed service. Their answer helps explain how much choice they have.",
+  "caption": "Ask both investors what happens if Larkspur declines a proposed service. Investor A describes a process; Investor B names the operator who would stop. The answers show how much choice the company keeps.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex considers declining an offered intervention.](assets/images/07-investor-under-pressure/comic-04-scene.jpeg)
 
-**Panel 4:** Ask what happens if company leaders decline a proposed service. Their answer helps explain how much choice they have.
+**Panel 4:** Ask both investors what happens if Larkspur declines a proposed service. Investor A describes a process; Investor B names the operator who would stop. The answers show how much choice the company keeps.
 
 *Dialogue:* “Can we say this does not fit?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/07-investor-under-pressure/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. A warning light appears beside repeated unexplained reversals. Use one speech bubble with the exact words: \"Look for a pattern.\" Convey: One difficult event needs context. Repeated unexplained contradictions call for further investigation.",
+  "prompt": "Panel 5 of an explainer comic. A warning light appears beside repeated unexplained reversals. Use one speech bubble with the exact words: \"Look for a pattern.\" Convey: One difficult story is context, not a verdict. A second former executive with the same account of Investor B replacing management would be a pattern, and would reopen the choice.",
   "alt": "Comic panel: A warning light appears beside repeated unexplained reversals.",
-  "caption": "One difficult event needs context. Repeated unexplained contradictions call for further investigation.",
+  "caption": "One difficult story is context, not a verdict. A second former executive with the same account of Investor B replacing management would be a pattern, and would reopen the choice.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: A warning light appears beside repeated unexplained reversals.](assets/images/07-investor-under-pressure/comic-05-scene.jpeg)
 
-**Panel 5:** One difficult event needs context. Repeated unexplained contradictions call for further investigation.
+**Panel 5:** One difficult story is context, not a verdict. A second former executive with the same account of Investor B replacing management would be a pattern, and would reopen the choice.
 
 *Dialogue:* “Look for a pattern.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/07-investor-under-pressure/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex place two investor messages beside a single funding decision calendar. Use one speech bubble with the exact words: \"Who can commit, and when?\" Convey: One investor’s interest conditional on another joining is not a funded company plan. Establish who can commit money, on which conditions and by what date.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex place two investor messages beside a single funding decision calendar. Use one speech bubble with the exact words: \"Who can commit, and when?\" Convey: Ines chooses Investor B with a written, conditional follow-on. For an investor already in place, Alex moves the June hire to a dated July decision and labels unconfirmed support. Interest is not committed money.",
   "alt": "Comic panel: Priya and Alex place two investor messages beside a single funding decision calendar.",
-  "caption": "One investor’s interest conditional on another joining is not a funded company plan. Establish who can commit money, on which conditions and by what date.",
+  "caption": "Ines chooses Investor B with a written, conditional follow-on. For an investor already in place, Alex moves the June hire to a dated July decision and labels unconfirmed support. Interest is not committed money.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Alex place two investor messages beside a single funding decision calendar.](assets/images/07-investor-under-pressure/comic-06-scene.jpeg)
 
-**Panel 6:** One investor’s interest conditional on another joining is not a funded company plan. Establish who can commit money, on which conditions and by what date.
+**Panel 6:** Ines chooses Investor B with a written, conditional follow-on. For an investor already in place, Alex moves the June hire to a dated July decision and labels unconfirmed support. Interest is not committed money.
 
 *Dialogue:* “Who can commit, and when?”

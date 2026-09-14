@@ -5,9 +5,9 @@
 }
 -->
 
-**Comic.** Product and engineering leaders usually meet money as a budget. The panels show why, once investors are involved, the source of the money matters more than the amount: each source arrives with rights, repayment dates or an expected sale that decide what the budget can be spent on.
+**Comic.** Product and engineering leaders usually meet money as a budget: an amount they may spend. The panels follow Larkspur's fictional €100,000 need to show what the funding terms add: when the money may be spent, who must approve it, and what the company must deliver, repay or give up in return.
 
-Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/00-customers-lenders-investors/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards. Use one speech bubble with the exact words: \"What comes with the money?\" Convey: Customers, loans, owners and asset sales are four common sources of company cash. Each brings different obligations; other sources, such as eligible grants, also exist.",
+  "prompt": "Panel 1 of an explainer comic. Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards. Use one speech bubble with the exact words: \"What comes with the money?\" Convey: Larkspur needs €100,000. Customer payments, a loan, owners’ money and an asset sale are four common sources; each arrives with a different obligation, and other sources, such as eligible grants, also exist.",
   "alt": "Comic panel: Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards.",
-  "caption": "Customers, loans, owners and asset sales are four common sources of company cash. Each brings different obligations; other sources, such as eligible grants, also exist.",
+  "caption": "Larkspur needs €100,000. Customer payments, a loan, owners’ money and an asset sale are four common sources; each arrives with a different obligation, and other sources, such as eligible grants, also exist.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards.](assets/images/00-customers-lenders-investors/comic-01-scene.jpeg)
 
-**Panel 1:** Customers, loans, owners and asset sales are four common sources of company cash. Each brings different obligations; other sources, such as eligible grants, also exist.
+**Panel 1:** Larkspur needs €100,000. Customer payments, a loan, owners’ money and an asset sale are four common sources; each arrives with a different obligation, and other sources, such as eligible grants, also exist.
 
 *Dialogue:* “What comes with the money?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/00-customers-lenders-investors/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Three owners review their private company’s decision agreement with Alex. Use one speech bubble with the exact words: \"Who may approve the work?\" Convey: A private company’s shares do not trade on a public stock market. Its owners and decision rules still need to be understood.",
+  "prompt": "Panel 5 of an explainer comic. Three owners review their private company’s decision agreement with Alex. Use one speech bubble with the exact words: \"Who may approve the work?\" Convey: A private company’s shares do not trade on a public stock market. Its shareholders and decision rules still need to be understood.",
   "alt": "Comic panel: Three owners review their private company’s decision agreement with Alex.",
-  "caption": "A private company’s shares do not trade on a public stock market. Its owners and decision rules still need to be understood.",
+  "caption": "A private company’s shares do not trade on a public stock market. Its shareholders and decision rules still need to be understood.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Three owners review their private company’s decision agreement with Alex.](assets/images/00-customers-lenders-investors/comic-05-scene.jpeg)
 
-**Panel 5:** A private company’s shares do not trade on a public stock market. Its owners and decision rules still need to be understood.
+**Panel 5:** A private company’s shares do not trade on a public stock market. Its shareholders and decision rules still need to be understood.
 
 *Dialogue:* “Who may approve the work?”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/00-customers-lenders-investors/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex compare four ownership cards with Sam, keeping the company budget separate. Use one speech bubble with the exact words: \"What can we actually commit to?\" Convey: Venture, growth, buyout and corporate arrangements can bring different money, rights and expectations. Establish the actual terms before promising company work.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex compare four ownership cards with Sam, keeping the company budget separate. Use one speech bubble with the exact words: \"What can we actually commit to?\" Convey: Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date.",
   "alt": "Comic panel: Priya and Alex compare four ownership cards with Sam, keeping the company budget separate.",
-  "caption": "Venture, growth, buyout and corporate arrangements can bring different money, rights and expectations. Establish the actual terms before promising company work.",
+  "caption": "Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Alex compare four ownership cards with Sam, keeping the company budget separate.](assets/images/00-customers-lenders-investors/comic-06-scene.jpeg)
 
-**Panel 6:** Venture, growth, buyout and corporate arrangements can bring different money, rights and expectations. Establish the actual terms before promising company work.
+**Panel 6:** Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date.
 
 *Dialogue:* “What can we actually commit to?”

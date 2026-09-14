@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Make security and recovery obligations explicit when funding is uncertain or investors offer shared services. Tie risk acceptance to company authority and test access boundaries under minority and corporate ownership.
+Make one failed restore the spine of the chapter: a recovery objective stated in ordinary language, a test that fails it, funded corrective work chosen from the board-approved plan, a retest, and a written record of residual exposure and who accepted it. Tie risk acceptance to the company decision-maker (the Larkspur board, CEO and accountable CTO), keep quantified risk as a bounded inset, and link shared-service and handover detail to Parts IV and V.
 
 ## Audience
 
@@ -19,6 +19,8 @@ Product and engineering leaders inside companies working under investors, includ
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
+- Use the shared Larkspur chain: finding D-6, plan item REC-1 (€80,000, four engineer-weeks), the day-45 failure (missing credential, unavailable database version), the day-85 retest passing the objective “dispatch must resume within four hours of a failure, with no more than fifteen minutes of lost schedule updates”, and a recorded residual risk. End the decision with chosen option, rejected alternatives, funding, capacity, approver and the evidence that would change it.
+- Never send a company funding decision to an “investment committee”; note that documented acceptance cannot discharge an unmet mandatory obligation.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
@@ -54,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Editorial revision: open with the 6am dispatch scene, state the recovery objective, carry the failed restore through funded corrective work, retest and residual-risk record, replace the investment committee with the company decision-maker, drop the no-earnings-pressure comparison, bound the risk arithmetic as an inset, compress shared-support and handover material to links, and cut questions to four; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “How to Evaluate Security and Recovery Investments” to “Prove You Can Restore, Not Just That You Back Up”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

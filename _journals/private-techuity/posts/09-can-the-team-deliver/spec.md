@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Assess whether the company’s technology and team can deliver the plan, and choose engineering commitments it can fund through the relevant ownership decision. Compare learning before another round, repeatable expansion, cash-constrained modernization and corporate integration. Design choices themselves belong to [[growth-into-design]]; this chapter stops at the assessment and the funding of the commitment. Keep the framing usable by companies whose technology is bought and integrated rather than built.
+Assess whether the company’s technology and team can deliver the plan, and end in a compact finding the next two chapters use: required capability, current evidence, preserved strength, constraint, uncertainty and transition resources. The worked case is fictional Larkspur’s second-country expansion, carried through the whole chapter; the pricing/invoicing module appears only as a named dependency of that case. The chapter owns the assessment and the transition-feasibility test (including the €1.3m replacement estimate with its spending period and first-benefit date). The organizational response belongs to [[fix-decisions-before-hiring]] and the design choice to [[growth-into-design]]. Keep the framing usable by companies whose technology is bought and integrated rather than built.
 
 ## Audience
 
@@ -18,7 +18,10 @@ Product and engineering leaders inside companies working under investors, includ
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
-- Separate incremental transition cash from existing payroll and scarce team capacity; a total project cost needs a dated funding plan before approval.
+- Separate incremental transition cash from existing payroll and scarce team capacity; a total project cost needs a dated funding plan, a spending period and a first-benefit date before approval.
+- Distinguish end-to-end work lead time (request to customer use) from DORA change lead time (commit to production), naming start and end points; keep DORA’s five-metric count.
+- Open with the specific condition (an expansion date proposed before the dependencies were assessed), not a contrast between investor-backed and other companies.
+- End with the six-element finding table and hand the organizational question to [[fix-decisions-before-hiring]] and the design choice to [[growth-into-design]].
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
@@ -32,7 +35,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Non-goals
 
-Universal prescriptions, invented evidence, promises of investment performance, or disclosure of confidential inputs. The chapter is not a legal or tax opinion. It does not define or teach architecture, which [[growth-into-design]] owns; and it does not assume the reader’s company writes its own software.
+Universal prescriptions, invented evidence, promises of investment performance, or disclosure of confidential inputs. The chapter is not a legal or tax opinion. It does not define or teach architecture, which [[growth-into-design]] owns; it does not choose the organizational response, which [[fix-decisions-before-hiring]] owns; it does not develop the group-versus-local standardization design point, which [[acquisition-adds-work-first]] and [[growth-into-design]] own; and it does not assume the reader’s company writes its own software.
 
 ## Modalities
 
@@ -55,6 +58,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Editorial revision: opened with the specific condition instead of a normal-operations contrast, distinguished end-to-end work lead time from DORA change lead time, clarified the €1.3m table as transition spending before benefit offsets with a spending period and first-benefit month, qualified the built/bought transition comparison, cut standardization to one question with links, carried the second-country case through the chapter, added the six-element finding table, rerouted the handoff to [[fix-decisions-before-hiring]] then [[growth-into-design]], and rewrote comic panel 4 as an assessment beat (needs regeneration); permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Testing the Plans Against Engineering Reality” to “Can the Software and the Team Deliver What Was Promised?”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Drop the opening software-architecture definition. It duplicated [[growth-into-design]], which owns architecture in the reading order, and narrowed the chapter to companies that build their own software. The chapter now frames itself as an assessment of engineering capability and the cost of changing it, keeping "architecture" only where it names a long-lived commitment (funded transition, standardization boundary). Applied across index, TL;DR and comic panel 1; no artwork regenerated.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

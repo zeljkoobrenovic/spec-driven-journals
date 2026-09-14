@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Define leadership success through what remains for customers, employees and future operators when funding or ownership changes. Keep buyout research bounded and compare what a funding round, sale and corporate integration establish.
+Close the book by putting its five cases side by side (investor result, company result, stakeholder evidence, what is not established), stating durable success as the author’s proposed standard, and applying it to one final fictional Larkspur decision with a real trade-off. Keep buyout and healthcare research bounded and in service of that judgment; treat an exit as a decisive reporting event for some investors, not the only measurement horizon.
 
 ## Audience
 
@@ -18,6 +18,9 @@ Product and engineering leaders inside companies working under investors, includ
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
+- Open with a compact case matrix drawn only from the four case chapters; leave unknown cells explicitly unknown.
+- Complete one Larkspur decision in which a financially attractive option damages customer continuity or transfers cost to employees: chosen option, alternatives rejected, funding, scarce capacity, who is authorized, evidence that would change it, and the recorded disagreement with its review.
+- Give suppliers their own row in the success-for-whom table; allow a deliberately funded continuing specialist service as durable capability; link the handover chapter where handover is mentioned.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
@@ -54,6 +57,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Rebuild the finale around a case matrix and a final Larkspur trade-off decision, correct the realization-only framing and two source annotations, add a supplier row and a process for unresolved disagreement, and shorten research methodology so it serves the leadership argument; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Judge Success Beyond the Funding Round or Sale” to “Success for Whom, and for How Long?”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

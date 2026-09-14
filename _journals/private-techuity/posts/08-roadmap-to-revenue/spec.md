@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
 # Spec: The Chain From Roadmap to Revenue Breaks Easily
 
 ## Intent
 
-Help product leaders test which customer outcomes support the owner’s expectations. Show how investor introductions, growth targets and strategic customer demands can change priorities without proving market demand.
+Help product leaders test the chain from one roadmap item to a customer and business result. Put the customer need before the business case, work the capacity arithmetic with full costs, show a realistic small-company comparison with its unresolved differences, and finish the pilot with a measured result that changes the next commitment. Show that investor introductions and stated targets set an expectation to test, not a proof of demand.
 
 ## Audience
 
@@ -25,7 +25,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
-- Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
+- Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment; the Larkspur pilot ends with a chosen option, rejected alternatives, funding, scarce capacity, authority and the evidence that would change the decision.
 - Link related chapters and cite substantive external factual claims close to the text.
 - Keep the TL;DR and six-panel comic script consistent with the full article.
 
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Move the customer-need test before the business case, narrow the opening’s deadline claim to a stated investor expectation, separate “financial contribution” from causal “helped produce”, add the eight-customer pilot comparison with its unresolved differences, finish the pilot decision (80→62 hours, waiting time unchanged, data-quality step funded from the reserve, expansion and hiring deferred), point the handoff to [[can-the-team-deliver]] with [[fix-decisions-before-hiring]] following it, and make comic panel 2 a testable question; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

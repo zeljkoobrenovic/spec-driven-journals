@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Assess data and AI proposals against customer use, total cost and ownership-related pressure. Distinguish a fundraising demonstration, a repeatable commercial capability and strategic data access.
+Separate the three investment questions inside an investor’s request for an AI strategy: a product customers will pay for, internal work that changes spending, and a substitute for the product customers already buy. Give each a decision, the evidence required and one completed Larkspur example, and settle who coordinates the three answers in proportion to the company’s size.
 
 ## Audience
 
@@ -25,7 +25,9 @@ Product and engineering leaders inside companies working under investors, includ
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
-- Show that an AI strategy is an org-wide operating model rather than a product and engineering roadmap: every function sets its own AI goals, names an accountable champion and has a seat where the strategy is set.
+- Use the three investment questions as the visible structure, each with a decision, evidence required and one Larkspur example that ends with the chosen option, alternatives rejected, funding, scarce capacity, who is authorized and the evidence that would change it. Keep the dated coding-study comparison as a compact evidence box inside the internal-work question.
+- Present company-wide coordination as a proportionate proposal integrated early: who coordinates, which functions participate in this company, which decisions are shared. Champions are an option with time and authority, not a requirement for every function; state the two-or-three-functions starting point in every format.
+- Use the specific investor expectation in the scenario rather than prevalence claims about investors or companies.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
 - Link related chapters and cite substantive external factual claims close to the text.
@@ -56,6 +58,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Restructure around the three investment questions with completed Larkspur examples, move the coding studies into an evidence box, recast the operating model as a proportionate coordination proposal, remove prevalence claims and hand off to the acquisition chapter, per the editorial review; permalink and id unchanged.
 - 2026-09-14: Add an intro paragraph on why AI earns a chapter of its own, reorder the intro for flow, and add a section on treating AI as an org-wide operating model rather than a product and engineering topic. TL;DR updated to match.
 - 2026-09-14: Retitle the post from “An AI Strategy Contains Three Different Investment Questions” to “An AI Strategy Hides Three Investment Questions”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

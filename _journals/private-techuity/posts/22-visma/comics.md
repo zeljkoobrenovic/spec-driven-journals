@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** A change of fund, even under the same manager, can change the money and timeline behind long-running product and platform work. The panels follow that pattern through Visma’s documents and the earnings definitions reported to its owners.
+**Comic.** A change of fund, even under the same manager, can change the money and timeline behind long-running product and platform work. The panels follow that pattern through Visma’s documents: the funds and shareholders named in its transactions, the acquisition pace, and the two earnings definitions under which the same year is reported. They end on the specific budget and authority the fictional team would recheck.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/22-visma/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan places several fund folders beside one long manager relationship. Use one speech bubble with the exact words: \"A manager is not one fund.\" Convey: An investment manager can remain involved while the funds and investors behind it change. A long relationship is not one unchanged investment.",
+  "prompt": "Panel 2 of an explainer comic. Morgan places several fund folders beside one long manager relationship. Use one speech bubble with the exact words: \"A manager is not one fund.\" Convey: An investment manager can remain involved while the funds and investors behind it change. Hg’s own announcements name two different funds and one investor leaving entirely; a long relationship is not one unchanged investment.",
   "alt": "Comic panel: Morgan places several fund folders beside one long manager relationship.",
-  "caption": "An investment manager can remain involved while the funds and investors behind it change. A long relationship is not one unchanged investment.",
+  "caption": "An investment manager can remain involved while the funds and investors behind it change. Hg’s own announcements name two different funds and one investor leaving entirely; a long relationship is not one unchanged investment.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan places several fund folders beside one long manager relationship.](assets/images/22-visma/comic-02-scene.jpeg)
 
-**Panel 2:** An investment manager can remain involved while the funds and investors behind it change. A long relationship is not one unchanged investment.
+**Panel 2:** An investment manager can remain involved while the funds and investors behind it change. Hg’s own announcements name two different funds and one investor leaving entirely; a long relationship is not one unchanged investment.
 
 *Dialogue:* “A manager is not one fund.”
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/22-visma/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex views autonomous products with selected shared services. Use one speech bubble with the exact words: \"Where should support be shared?\" Convey: Local product decisions and shared support can work together. Examine who decides what and whether customers benefit after the costs.",
+  "prompt": "Panel 3 of an explainer comic. Alex views autonomous products with selected shared services. Use one speech bubble with the exact words: \"Where should support be shared?\" Convey: Visma describes local product decisions alongside shared support. The documents raise the question of who decides what and whether customers benefit after the costs; they do not prove the model.",
   "alt": "Comic panel: Alex reviews two business-software laptops and a shared-support folder beside local-product notebooks.",
-  "caption": "Local product decisions and shared support can work together. Examine who decides what and whether customers benefit after the costs.",
+  "caption": "Visma describes local product decisions alongside shared support. The documents raise the question of who decides what and whether customers benefit after the costs; they do not prove the model.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex reviews two business-software laptops and a shared-support folder beside local-product notebooks.](assets/images/22-visma/comic-03-scene.jpeg)
 
-**Panel 3:** Local product decisions and shared support can work together. Examine who decides what and whether customers benefit after the costs.
+**Panel 3:** Visma describes local product decisions alongside shared support. The documents raise the question of who decides what and whether customers benefit after the costs; they do not prove the model.
 
 *Dialogue:* “Where should support be shared?”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/22-visma/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex compares an unchanged manager name with a revised ownership and decision map. Use one speech bubble with the exact words: \"What changed behind the familiar name?\" Convey: A familiar investment manager can remain while investors change. Recheck local authority, shared services and funding; the documented case does not prove outcomes in other ownership models.",
-  "alt": "Comic panel: Alex compares a manager folder with notebook tabs labeled owner, company and support.",
-  "caption": "A familiar investment manager can remain while investors change. Recheck local authority, shared services and funding; the documented case does not prove outcomes in other ownership models.",
+  "prompt": "Panel 6 of an explainer comic. Alex checks three tabs beside an unchanged manager folder: which fund now holds the majority, whether the shared-service and integration budget is still funded, and which earnings definition the plan uses. Use one speech bubble with the exact words: \"Which fund, which budget, which definition?\" Convey: After the transaction, the fictional team rechecks three specific things: the fund now holding the majority and its horizon, the funding and accountable leader for shared services and integration work, and the earnings definition the board, the lenders and the plan each use.",
+  "alt": "Comic panel: Alex compares a manager folder with notebook tabs for the majority fund, the shared-service and integration budget, and the earnings definition in use.",
+  "caption": "After the transaction, the fictional team rechecks three specific things: the fund now holding the majority and its horizon, the funding and accountable leader for shared services and integration work, and the earnings definition the board, the lenders and the plan each use.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +141,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex compares a manager folder with notebook tabs labeled owner, company and support.](assets/images/22-visma/comic-06-scene.jpeg)
+![Comic panel: Alex compares a manager folder with notebook tabs for the majority fund, the shared-service and integration budget, and the earnings definition in use.](assets/images/22-visma/comic-06-scene.jpeg)
 
-**Panel 6:** A familiar investment manager can remain while investors change. Recheck local authority, shared services and funding; the documented case does not prove outcomes in other ownership models.
+**Panel 6:** After the transaction, the fictional team rechecks three specific things: the fund now holding the majority and its horizon, the funding and accountable leader for shared services and integration work, and the earnings definition the board, the lenders and the plan each use.
 
-*Dialogue:* “What changed behind the familiar name?”
+*Dialogue:* “Which fund, which budget, which definition?”

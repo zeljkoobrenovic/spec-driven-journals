@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Compare the returns from a minority investment with dilution, a leveraged buyout and strategic ownership. Connect investor economics to expectations leaders must test without treating fund returns as a measure of their teams’ performance.
+Show, with one fictional buyout whose operating result is held fixed, that the investor’s return can differ markedly with the exit price, borrowing and timing, and use that arithmetic to explain what product and engineering can and cannot claim credit for. Treat minority dilution and corporate-owner benefits as brief extensions. Fund-level reporting (DPI/RVPI/TVPI, gross and net returns, subscription lines) lives in the optional [[fund-economics]] reference; this chapter keeps only the received-cash versus unsold-estimate distinction and a link.
 
 ## Audience
 
@@ -23,6 +23,9 @@ Product and engineering leaders inside companies working under investors, includ
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
+- Preview the 7×/10×/12× same-performance comparison directly after the opening, teach the base buyout arithmetic, then return to the full table with annual returns; keep the €50m/€20m/€10m interaction decomposition and attach it to one claim (“engineering created €30m”).
+- Avoid shortcuts the review flagged: state MOIC as proceeds divided by total capital invested only for the fully realized example; say the operating assumptions are unchanged and only the exit multiple varies, not “market mood”.
+- The summary carries the three-multiple comparison rather than fund-ratio detail; three comic panels show the same operating result with three investor outcomes.
 - Explain the title question and its implications for a concrete company decision.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
@@ -54,6 +57,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Editorial revision per REVIEW.md: preview the three-outcome comparison after the opening, merge the measures and base-buyout sections, attach the interaction decomposition to the “engineering created €30m” claim, fix the MOIC and “market mood” shortcuts, move the fund performance report section to [[fund-economics]] leaving a two-sentence distinction and link, realign the summary and three comic panels (2–4) to the three outcomes, and trim the questions; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “How Company Value Becomes an Investor Return” to “Same Company, Same Performance, Three Different Returns”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

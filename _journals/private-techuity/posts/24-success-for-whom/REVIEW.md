@@ -1,0 +1,32 @@
+# Editorial review: Success for Whom, and for How Long?
+
+Reviewed 14 September 2026. Read the complete article, summary and reader-facing comic text.
+
+## Overall assessment
+
+The finale proposes judging ownership by investor outcomes, sustainable company economics, operating capability, stakeholder consequences and what happens afterward. It is an appropriate conclusion for company leaders who carry obligations across funding and ownership events. Its explicit statement that this is an evaluative standard, rather than a neutral accounting measure, is a strength.
+
+The chapter currently works better as a careful research essay than as the conclusion to this particular book. Employment and healthcare studies occupy the opening stretch, while the preceding company cases receive little comparative synthesis. Readers need a stronger return to the decisions they have learned to make and an example of what happens when the proposed dimensions conflict.
+
+## Detailed feedback
+
+- **Introduction and framing:** “Investors measure success at the moment they realize value” is too categorical. The collection itself teaches remaining estimated value and continuing ownership. An exit is a decisive reporting event for some investors, not their only measurement horizon. The summary and comic introduction repeat the overstatement.
+- **Organization and narrative:** “What Wider Studies Can Tell Us,” “Some Harms Require Direct Attention,” and “Follow Outcomes Beyond the First Exit” are individually clear but delay the book's concluding synthesis. Start with what the preceding cases show and leave open, then use wider studies to test the sufficiency of investor-only outcomes.
+- **Evidence and technical accuracy:** The treatment of heterogeneous buyout effects is careful. The headline −12% and +15% employment comparisons agree with the [April 2024 NBER revision](https://www.nber.org/papers/w26371). The hospital discussion correctly distinguishes the 4.6 additional conditions per 10,000 hospitalizations from a 25.4% relative increase, and does not equate different quality measures; the [2023 JAMA study](https://jamanetwork.com/journals/jama/fullarticle/2813379) supports those distinctions. The [2025 hospital-sale study](https://jamanetwork.com/journals/jama-health-forum/fullarticle/2837043) supports the small-sample financial comparison, not a patient-outcome claim. These checks do not constitute a reanalysis of the studies or verification of every causal assumption.
+- **Tone and depth:** Keep the direct treatment of patient harms. Do not turn differences among studies into a rhetorical cancellation of consequences. The explanation of study scope is useful, but the amount of methodological detail should serve the final leadership argument. Some detail can move to a linked evidence essay without hiding material findings.
+- **Confirmed internal omission:** The “Success for Whom?” table omits suppliers, although the surrounding collection and figure explicitly recognize them and Toys R Us supplies concrete supplier evidence. Add a supplier row with payment reliability, continuing obligations and relevant evidence.
+- **Missing practical conflict:** “What a Durable Plan Looks Like” lists desirable conditions but does not resolve a case where a financially attractive option damages customer continuity or transfers cost to employees. Show an actual proposed choice, who has authority, whose interests lose, mitigation and the remaining disagreement. A broader scorecard does not itself align interests.
+- **Source annotations:** The [July 2023 BMJ review](https://www.bmj.com/content/382/bmj-2023-075244) cannot include research published afterward; describe it as earlier literature, not an encompassing synthesis of the later hospital studies. The Cohn–Hotchkiss–Towery note misleadingly associates that paper with the +15% figure, which the body attributes to Davis et al. Present it as complementary evidence about private-firm buyouts. Its [abstract](https://academic.oup.com/rof/article-abstract/26/2/257/6516584) describes financing constraints and operating improvements, with a limited role for financial engineering; “rather than” overstates the exclusion.
+- **Conclusion and companions:** The last call to explain gains, costs and revisable assumptions fits the author's voice. Make it a consequence of a worked final judgment rather than another checklist. Clarify that durable capability can include a deliberately funded continuing specialist service, as Part IV allows; it need not mean ending every external dependency.
+
+## Recommended changes
+
+- **High impact — Rebuild the opening around the book's cases and one final company decision.** A compact matrix can separate investor result, company result, stakeholder evidence and unknowns. Do not fill unknown cells with inferences. Then apply the proposed standard to a fictional decision with a real trade-off.
+- **High impact — Correct the research annotations and the realization-only framing.** These are accuracy and consistency fixes, distinct from the optional choice of essay length.
+- **Medium impact — Retain the healthcare findings but shorten or relocate methodological exposition.** Explain why these different settings establish the need to measure affected people's outcomes while not predicting software-company effects. A separate evidence essay is justified only if the fuller methods discussion remains important to the intended audience.
+- **Medium impact — Add suppliers and a process for unresolved disagreement.** Show the responsible decision-maker, affected groups, mitigation and review; do not imply evidence eliminates differing interests.
+- **Low impact — Strengthen the final sentence through a concrete subject.** For example: “The next team should inherit a company that can serve its customers, fund its obligations and explain what still needs to change.” Keep the stronger evaluative standard explicit rather than presenting it as a guaranteed investor objective.
+
+## Proposed structure
+
+What the preceding cases establish and leave unknown → the proposed meaning of durable success → a company decision with competing consequences → wider research testing an investor-only view → outcomes after ownership change → responsibility, disagreement and the next review. This makes the chapter a culmination of the book while preserving its substantive ethical and empirical content.

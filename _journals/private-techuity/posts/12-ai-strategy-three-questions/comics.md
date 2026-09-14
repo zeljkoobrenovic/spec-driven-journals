@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** An investor asks for an AI strategy because AI can change what the company is worth, what a buyer will pay and whether the investment case survives a competitor’s product. The panels separate that valuation question from the three investment questions hidden inside it.
+**Comic.** An investor’s request for an AI strategy hides three investment questions: a product customers will pay for, internal work that changes spending, and a substitute for the product customers already buy. The panels separate the three, show why the evidence for each stays attached to its conditions, and keep a funding demonstration apart from a product commitment.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/12-ai-strategy-three-questions/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex receives an AI tool beside three different work problems. Use one speech bubble with the exact words: \"Which outcome are we buying?\" Convey: Artificial intelligence, or AI, can classify, predict or generate from learned patterns. Separate customer uses, internal work and possible competitive threats.",
+  "prompt": "Panel 1 of an explainer comic. Alex receives an AI tool beside three different work problems. Use one speech bubble with the exact words: \"Which outcome are we buying?\" Convey: Artificial intelligence, or AI, can classify, predict or generate from learned patterns. Separate the product, internal-work and substitution questions, and decide who is accountable for answering each.",
   "alt": "Comic panel: Alex receives an AI tool beside three different work problems.",
-  "caption": "Artificial intelligence, or AI, can classify, predict or generate from learned patterns. Separate customer uses, internal work and possible competitive threats.",
+  "caption": "Artificial intelligence, or AI, can classify, predict or generate from learned patterns. Separate the product, internal-work and substitution questions, and decide who is accountable for answering each.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex receives an AI tool beside three different work problems.](assets/images/12-ai-strategy-three-questions/comic-01-scene.jpeg)
 
-**Panel 1:** Artificial intelligence, or AI, can classify, predict or generate from learned patterns. Separate customer uses, internal work and possible competitive threats.
+**Panel 1:** Artificial intelligence, or AI, can classify, predict or generate from learned patterns. Separate the product, internal-work and substitution questions, and decide who is accountable for answering each.
 
 *Dialogue:* “Which outcome are we buying?”
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/12-ai-strategy-three-questions/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan compares two experiments in visibly different settings. Use one speech bubble with the exact words: \"These studies ask different questions.\" Convey: A productivity experiment describes particular people, tasks and tools. Its result is not a universal staffing rule.",
+  "prompt": "Panel 2 of an explainer comic. Morgan compares two experiments in visibly different settings. Use one speech bubble with the exact words: \"These studies ask different questions.\" Convey: A productivity experiment describes particular people, tasks, tools and dates. Its result is not a universal staffing rule.",
   "alt": "Comic panel: Morgan compares folders labeled task study and workflow study, with a magnifying glass between them.",
-  "caption": "A productivity experiment describes particular people, tasks and tools. Its result is not a universal staffing rule.",
+  "caption": "A productivity experiment describes particular people, tasks, tools and dates. Its result is not a universal staffing rule.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan compares folders labeled task study and workflow study, with a magnifying glass between them.](assets/images/12-ai-strategy-three-questions/comic-02-scene.jpeg)
 
-**Panel 2:** A productivity experiment describes particular people, tasks and tools. Its result is not a universal staffing rule.
+**Panel 2:** A productivity experiment describes particular people, tasks, tools and dates. Its result is not a universal staffing rule.
 
 *Dialogue:* “These studies ask different questions.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/12-ai-strategy-three-questions/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex separate a demonstration card from a customer launch checklist. Use one speech bubble with the exact words: \"What have we actually demonstrated?\" Convey: A demonstration for a funding meeting does not establish a production-ready product. Agree the customer, reliability, data and cost evidence needed before committing to launch.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex separate a demonstration card from a customer launch checklist. Use one speech bubble with the exact words: \"What have we actually demonstrated?\" Convey: A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch.",
   "alt": "Comic panel: Priya and Alex separate a demonstration card from a customer launch checklist.",
-  "caption": "A demonstration for a funding meeting does not establish a production-ready product. Agree the customer, reliability, data and cost evidence needed before committing to launch.",
+  "caption": "A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Alex separate a demonstration card from a customer launch checklist.](assets/images/12-ai-strategy-three-questions/comic-06-scene.jpeg)
 
-**Panel 6:** A demonstration for a funding meeting does not establish a production-ready product. Agree the customer, reliability, data and cost evidence needed before committing to launch.
+**Panel 6:** A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch.
 
 *Dialogue:* “What have we actually demonstrated?”

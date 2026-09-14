@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
 # Spec: A Valuation Is an Estimate, Not a Fact
 
 ## Intent
 
-Teach valuation foundations and distinguish the price of a new funding round, a sale of a business and value to a strategic owner. Explain why neither a headline valuation nor an investor’s hoped-for value is a product budget.
+Teach valuation in two named stages, using one question (“the company is worth €60 million”) as the thread: first read the business’s numbers (revenue, earnings, cash), then interpret a valuation (enterprise versus equity value, three estimation methods, a funding-round price). Explain that a valuation’s assumptions can become targets leaders must examine, and end with one operating assumption a product or engineering leader can challenge.
 
 ## Audience
 
@@ -24,6 +24,9 @@ Product and engineering leaders inside companies working under investors, includ
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
+- Structure the article as two explicitly named stages, “Read the business’s numbers” (ending in a short checkpoint on the €60m question) and “Interpret a valuation”; say that valuation assumptions can become targets to examine, not results the company must deliver; state one reminder that a valuation is not company cash, not several.
+- Close with one engineering-facing assumption to challenge (a cost-to-serve reduction assumed to follow from sales growth): which change produces it, when it becomes usable, who funds it; link [[growth-into-design]] and [[roadmap-to-revenue]].
+- Keep research annotations within the study’s actual population and inference (the Gornall–Strebulaev entry concerns 135 US unicorns and model-estimated fair values).
 - Explain EBITDA in plain language, including depreciation and amortization, before discussing earnings multiples or cost trade-offs.
 - Briefly explain why revenue and net profit alone do not isolate operating performance; use a fictional tax-rate comparison and retain the importance of excluded costs.
 - Distinguish enterprise and equity value, valuation purpose, method, financial input and underlying business assumptions.
@@ -52,6 +55,7 @@ S06–S07 for earnings and development-accounting distinctions; S52 for IPEV's D
 
 ## Changelog
 
+- 2026-09-14: Editorial revision per REVIEW.md: two named learning stages with a checkpoint on the €60m thread, softened “assumptions decide results” to “can become targets to examine” across all formats, corrected the Gornall–Strebulaev annotation to its actual population (135 US unicorns, modeled fair values), added an engineering-facing closing assumption linking [[growth-into-design]], marked the SEC primer as the beginner route, trimmed repeated “not cash” reminders and the questions list; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

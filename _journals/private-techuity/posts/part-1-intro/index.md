@@ -10,24 +10,26 @@ logo_credit: "AI-generated illustration"
 icon: "assets/icons/part-1-intro.png"
 ---
 
-> Any work you commit a team to must be paid for, and where that money comes from — a funding round, customers, retained cash or a parent's budget — determines who can approve it and when.
+> **IN THIS SECTION, YOU WILL:** Get an introduction to Part I, Understanding Financing and Ownership, and an overview of its six chapters: where a company’s money comes from, who receives it, who can authorize its use and when it arrives.
 
 <br>
-**Financing** arranges the money a company needs. **Ownership** determines who holds shares and the rights attached to them. A new investment can change one, the other or both, and the difference matters for anyone who commits money and people to work.
+An investor has just been announced, and someone asks whether the company can now afford the two hires the roadmap needs. The honest answer starts with questions: how much cash reaches the business, when, on what conditions, and who can authorize spending it. Those questions apply under every ownership arrangement; a new investment changes the answers, not the need to ask.
 
-Any plan that needs people and money — a launch, a hire, a roadmap — depends on where that money comes from: a new funding round, customer receipts, cash left after debt payments or a corporate parent's budget. Each is a different condition on the same leadership job: committing resources to work the company can sustain. Before an announcement becomes a delivery promise, learn to identify where the money comes from, who receives it, who has authority over it and when it arrives.
+**Financing** arranges the money a company needs. **Ownership** determines who holds shares and the rights attached to them. A transaction can change one, the other or both. This part teaches the financial concepts needed to tell the difference: money paid to a selling shareholder is not money available for company work, an investor’s own commitments to its fund are not the company’s budget, and a valuation is an estimate rather than cash.
 
-This part teaches the financial concepts by comparing arrangements side by side. Fund-backed buyouts get the most detailed treatment because the available cases let us examine them closely; minority funding, growth plans and corporate ownership supply further contexts. No investor category, on its own, tells you how much cash is available or who can approve its use.
+The chapters compare arrangements side by side. Fund-backed buyouts receive the most detailed treatment because the available cases allow it; minority funding, growth plans and corporate ownership supply further contexts. No investor category, on its own, tells you how much cash is available or who can approve its use; the actual agreements do. If you already work comfortably with financial statements, this part can serve as a refresher and a shared vocabulary for conversations with finance colleagues.
 
 ## The Learning Path
 
-- [[customers-lenders-investors]] explains the main ways money reaches a company and what an ownership share represents.
-- [[announcement-is-not-a-budget]] maps the money and responsibilities in a minority round, a fund-backed buyout and corporate ownership.
-- [[valuation-is-an-estimate]] introduces sales, profit, cash and estimates of business value.
-- [[three-different-returns]] uses those measures to explain what an investor puts in and what it gets back.
-- [[raise-what-you-need]] compares funding and ownership arrangements against the work the company needs to do.
-- [[obligations-before-budget]] checks what the business can afford once its obligations are met.
+- [[customers-lenders-investors]] explains the main ways money reaches a company, what each source expects in return and what an ownership share represents.
+- [[announcement-is-not-a-budget]] maps the money and responsibilities behind a transaction and completes one funding-and-authority record for a proposed hire.
+- [[valuation-is-an-estimate]] introduces sales, profit, cash and estimates of business value, in two stages a beginner can follow.
+- [[three-different-returns]] shows how the same operating performance can produce three different investor returns, and what that means for claims about engineering’s contribution.
+- [[raise-what-you-need]] matches funding and ownership terms to the work the company actually needs to do, including how much to raise.
+- [[obligations-before-budget]] finds the cash behind a technology budget once taxes, financing payments and working capital are accounted for.
 
-By the end, you should be able to distinguish money paid to a selling owner from money available for company work, question a financial assumption and ask **what would fund a proposed change**.
+Fund-side mechanics that go beyond a company leader’s day-to-day needs, such as distribution waterfalls and fund performance ratios, sit in the optional [[fund-economics]] reference.
 
-Begin with [[customers-lenders-investors]]. Part II then examines how investment changes the decisions you can make and influence.
+By the end, you should be able to distinguish money paid to a selling shareholder from money available for company work, question a financial assumption and ask **what would fund a proposed change**.
+
+Begin with [[customers-lenders-investors]]. Part II then examines who can authorize the work once you know where the cash sits.

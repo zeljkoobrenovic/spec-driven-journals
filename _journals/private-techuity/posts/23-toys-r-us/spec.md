@@ -3,11 +3,11 @@ status: accepted
 revised: 2026-09-14
 ---
 
-# Spec: Toys R Us: Profitable on Paper, Out of Cash in Practice
+# Spec: Toys R Us: Positive Operating Earnings, Too Little Cash
 
 ## Intent
 
-Use the documented cash and operating pressures to test the feasibility of a technology plan. Distinguish a transferable funding-dependency question from a causal claim about venture-backed or strategically owned companies.
+Use the documented fiscal 2016 measures (positive operating earnings, a net loss, almost no operating cash flow) and the management-reported supplier cash shock to show why a technology transition needed funding, without claiming the proposed work was sufficient to restore competitiveness. Distinguish a transferable funding-dependency question from a causal claim about venture-backed or strategically owned companies.
 
 ## Audience
 
@@ -23,6 +23,8 @@ Product and engineering leaders inside companies working under investors, includ
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
+- Name every profit measure with its scope and period; the financial table carries both the consolidated net loss and the net loss attributable to Toys “R” Us, Inc., and the debt-service and technology-program figures are labelled by period and scope rather than netted.
+- Present the supplier feedback loop once, as management-reported links, and preview it in the opening.
 - Explain the title question and its implications for a concrete company decision.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
@@ -54,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Retitle to “Toys R Us: Positive Operating Earnings, Too Little Cash” and revise per the editorial review: corrected causal opening, labelled net-loss lines, period-labelled debt and technology figures, single supplier feedback loop, leverage ratio removed, cash-flow question separated, application sections combined; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Toys R Us: Technology Plans Under Cash Pressure” to “Toys R Us: Profitable on Paper, Out of Cash in Practice”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

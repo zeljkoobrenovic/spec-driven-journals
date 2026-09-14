@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** A buy-and-build strategy is set by investors and financed largely with debt, while the integration and platform work it creates is inherited by the operating team across successive owners. The panels follow what that accumulates in TeamSystem’s reported results.
+**Comic.** Each ownership change creates a new financial starting point, while product work carries on across it: migrations, integrations and dependencies remain somebody’s responsibility. The panels follow what TeamSystem’s reported results show each new owner inheriting.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/25-teamsystem/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Morgan reads a historical TeamSystem file with successive ownership folders. Use one speech bubble with the exact words: \"Each owner starts somewhere different.\" Convey: TeamSystem is a business-software group. This case follows selected evidence from 2000 through 2017 across different ownership episodes.",
+  "prompt": "Panel 1 of an explainer comic. Morgan reads a historical TeamSystem file with successive ownership folders. Use one speech bubble with the exact words: \"Each owner starts somewhere different.\" Convey: TeamSystem is a business-software group. This case follows selected evidence from 2000 through 2017 across distinct ownership episodes; each owner starts at a new price while the company’s work continues.",
   "alt": "Comic panel: Morgan reads a historical TeamSystem file with successive ownership folders.",
-  "caption": "TeamSystem is a business-software group. This case follows selected evidence from 2000 through 2017 across different ownership episodes.",
+  "caption": "TeamSystem is a business-software group. This case follows selected evidence from 2000 through 2017 across distinct ownership episodes; each owner starts at a new price while the company’s work continues.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan reads a historical TeamSystem file with successive ownership folders.](assets/images/25-teamsystem/comic-01-scene.jpeg)
 
-**Panel 1:** TeamSystem is a business-software group. This case follows selected evidence from 2000 through 2017 across different ownership episodes.
+**Panel 1:** TeamSystem is a business-software group. This case follows selected evidence from 2000 through 2017 across distinct ownership episodes; each owner starts at a new price while the company’s work continues.
 
 *Dialogue:* “Each owner starts somewhere different.”
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/25-teamsystem/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam separates received cash from a retained ownership certificate. Use one speech bubble with the exact words: \"This part remains invested.\" Convey: A partial exit sells some of an investment while retaining an interest. Money received and estimated value still held remain separate.",
+  "prompt": "Panel 3 of an explainer comic. Sam separates received cash from a retained ownership certificate. Use one speech bubble with the exact words: \"This part remains invested.\" Convey: A partial exit sells some of an investment while retaining an interest. Money received and estimated value still held remain separate, and a later agreed sale value is still not cash received.",
   "alt": "Comic panel: Sam separates received cash from a retained ownership certificate.",
-  "caption": "A partial exit sells some of an investment while retaining an interest. Money received and estimated value still held remain separate.",
+  "caption": "A partial exit sells some of an investment while retaining an interest. Money received and estimated value still held remain separate, and a later agreed sale value is still not cash received.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam separates received cash from a retained ownership certificate.](assets/images/25-teamsystem/comic-03-scene.jpeg)
 
-**Panel 3:** A partial exit sells some of an investment while retaining an interest. Money received and estimated value still held remain separate.
+**Panel 3:** A partial exit sells some of an investment while retaining an interest. Money received and estimated value still held remain separate, and a later agreed sale value is still not cash received.
 
 *Dialogue:* “This part remains invested.”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/25-teamsystem/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam aligns a short accounting calendar with a constructed full-year comparison. Use one speech bubble with the exact words: \"Are these periods comparable?\" Convey: Compare the same businesses over equivalent periods. Buying a company partway through a year can distort a simple growth calculation.",
+  "prompt": "Panel 4 of an explainer comic. Sam aligns a short accounting calendar with a constructed full-year comparison. Use one speech bubble with the exact words: \"Are these periods comparable?\" Convey: Compare the same businesses over equivalent periods. Buying a company partway through a year can distort a simple growth calculation: 37.7% on the statutory totals became 8.9% on a comparable full year.",
   "alt": "Comic panel: Sam compares short-period and full-year calendar grids in a report.",
-  "caption": "Compare the same businesses over equivalent periods. Buying a company partway through a year can distort a simple growth calculation.",
+  "caption": "Compare the same businesses over equivalent periods. Buying a company partway through a year can distort a simple growth calculation: 37.7% on the statutory totals became 8.9% on a comparable full year.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam compares short-period and full-year calendar grids in a report.](assets/images/25-teamsystem/comic-04-scene.jpeg)
 
-**Panel 4:** Compare the same businesses over equivalent periods. Buying a company partway through a year can distort a simple growth calculation.
+**Panel 4:** Compare the same businesses over equivalent periods. Buying a company partway through a year can distort a simple growth calculation: 37.7% on the statutory totals became 8.9% on a comparable full year.
 
 *Dialogue:* “Are these periods comparable?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/25-teamsystem/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex carries development and integration work past an adjusted earnings board. Use one speech bubble with the exact words: \"The work still needs funding.\" Convey: Development and integration still require money even when their costs are treated differently in an earnings measure.",
+  "prompt": "Panel 5 of an explainer comic. Alex carries development and integration work past an adjusted earnings board. Use one speech bubble with the exact words: \"The work still needs funding.\" Convey: Adjusted earnings reconcile to a statutory loss through reported lines, mostly amortization and finance costs. Development and integration still require money even when their costs sit outside the adjusted measure.",
   "alt": "Comic panel: Alex carries development and integration work past an adjusted earnings board.",
-  "caption": "Development and integration still require money even when their costs are treated differently in an earnings measure.",
+  "caption": "Adjusted earnings reconcile to a statutory loss through reported lines, mostly amortization and finance costs. Development and integration still require money even when their costs sit outside the adjusted measure.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex carries development and integration work past an adjusted earnings board.](assets/images/25-teamsystem/comic-05-scene.jpeg)
 
-**Panel 5:** Development and integration still require money even when their costs are treated differently in an earnings measure.
+**Panel 5:** Adjusted earnings reconcile to a statutory loss through reported lines, mostly amortization and finance costs. Development and integration still require money even when their costs sit outside the adjusted measure.
 
 *Dialogue:* “The work still needs funding.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/25-teamsystem/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex hand a continuing work record across several ownership markers. Use one speech bubble with the exact words: \"Which commitments survive the transaction?\" Convey: Customer migrations and integration obligations can span several owners. Carry their costs and evidence into the next plan instead of restarting the operating history.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex hand a continuing work record across several ownership markers. Use one speech bubble with the exact words: \"Which commitments survive the transaction?\" Convey: Customer migrations and integration obligations can span several owners. Each new owner inherits the progress and the unfinished work; carry their costs and evidence into the next plan instead of restarting the operating history.",
   "alt": "Comic panel: Priya and Alex hand a continuing work record across several ownership markers.",
-  "caption": "Customer migrations and integration obligations can span several owners. Carry their costs and evidence into the next plan instead of restarting the operating history.",
+  "caption": "Customer migrations and integration obligations can span several owners. Each new owner inherits the progress and the unfinished work; carry their costs and evidence into the next plan instead of restarting the operating history.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Alex hand a continuing work record across several ownership markers.](assets/images/25-teamsystem/comic-06-scene.jpeg)
 
-**Panel 6:** Customer migrations and integration obligations can span several owners. Carry their costs and evidence into the next plan instead of restarting the operating history.
+**Panel 6:** Customer migrations and integration obligations can span several owners. Each new owner inherits the progress and the unfinished work; carry their costs and evidence into the next plan instead of restarting the operating history.
 
 *Dialogue:* “Which commitments survive the transaction?”

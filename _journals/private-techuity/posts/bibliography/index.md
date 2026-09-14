@@ -2,46 +2,77 @@
 title: Bibliography and Evidence Guide
 date: 2026-09-12
 permalink: bibliography
-excerpt: "Find the sources, understand what kind of evidence each provides and see the limits of what was consulted."
+excerpt: "Find the sources by topic or by chapter, understand what kind of evidence each provides and see the limits of what was consulted."
 logo: "assets/images/bibliography/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/bibliography.png"
 ---
 
+> **IN THIS SECTION, YOU WILL:** Learn where the book’s evidence comes from, what kind of evidence each source provides, which chapters use it and the limits of what was consulted.
+
+
 > **KEY POINTS:**
 >
-> * **Sources are listed because they were consulted.** Each entry identifies the document, date, link, evidence type and material limits on the reading.
-> * **Source interests and evidence strength matter.** Company announcements, investor accounts and original research answer different questions and need different qualifications.
-> * **Keep facts, interpretation and examples distinct.** Follow the nearby chapter citations and use the consultation notes to identify what still needs verification.
+> * **Sources are listed because they were consulted.** Each entry identifies the document, the version and date consulted, the evidence type, the material limits on the reading and the chapters that cite it.
+> * **Source interests and evidence strength matter.** Company announcements, investor accounts, guidance documents and original research answer different questions and need different qualifications.
+> * **Keep evidence, proposed methods and fictional examples distinct.** The cases and studies here are evidence about what happened in particular settings; the book’s templates and worked examples are the author’s proposals, and no source validates them.
 
 <br>
-This bibliography contains sources actually consulted for the manuscript and its revisions. **The original source review was on September 12, 2026; the beginner-reading revision added S54–S57 on September 13, 2026. The structural revision also rechecked S01 and S22 on that date for the ownership framing and investor-support chapters.** Publication dates and study periods differ. The consultation notes identify partial access, interested perspectives, and version choices; listing a long document does not imply that every page was reviewed.
+This page lists the sources consulted for the book. Sources were consulted on September 12–13, 2026. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where an individual date affects how a figure or a claim should be read, the entry gives it.
 
-Source identifiers remain stable through revisions. Private inputs are identified separately without publishing their contents or confidential file details. The manuscript’s templates and fictional calculations are its own proposed tools, not validated standards.
+Source identifiers are stable. **S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. Private inputs are described without publishing their contents or file details.
 
-## What Supports the Broader Ownership Frame
+## Topic Index
 
-The Owned revision added S58–S61 on September 13, 2026. These sources describe venture, expansion and corporate funding and the existence of distinct venture financing documents. They support the financial orientation. They do not validate the proposed working methods or establish comparative investor performance.
+Use this table to find evidence by question. A source can appear under more than one topic. The chapter column names the main home of each topic; every entry below also carries a **Used in** line listing the chapters that cite it.
 
-The historical case and research evidence continues to concentrate on private equity. Comparisons elsewhere use explicitly fictional scenarios and the author’s reasoning about stated constraints. Transferring a question about funding, rights or capacity is different from transferring a causal finding to another ownership model. The new examples are not additional case studies.
+| Topic | Identifiers | Start with |
+| --- | --- | --- |
+| Valuation, earnings measures and investor returns | S03, S04, S05, S06, S52, S53 | [[valuation-is-an-estimate]], [[three-different-returns]], [[fund-economics]] |
+| Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61 | [[customers-lenders-investors]], [[announcement-is-not-a-budget]], [[obligations-before-budget]] |
+| Governance, rights and incentives | S01, S02, S04, S61 | [[decide-who-decides]], [[different-bets]] |
+| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53 | [[can-the-team-deliver]], [[roadmap-to-revenue]], [[cheaper-cloud-bill]] |
+| Security and resilience | S17 | [[prove-you-can-restore]] |
+| AI evidence | S18, S19, S20, S21 | [[ai-strategy-three-questions]] |
+| Investor support and advisers | S22, P01, P02 | [[investors-adviser]], [[help-that-changes-capability]] |
+| Case: Hilton and Skype | S23, S24, S25, S26, S27, S28, S29 | [[hilton-and-skype]] |
+| Case: Visma | S30, S31, S32, S33, S43, S44 | [[visma]] |
+| Case: Toys R Us | S34, S35, S36, S37, S40, S41, S50, S51 | [[toys-r-us]] |
+| Case: TeamSystem | S45, S46, S47, S48, S49 | [[teamsystem]] |
+| Wider research on ownership outcomes | S08, S09, S10, S11, S12, S39, S42 | [[success-for-whom]] |
 
-## How to Read an Entry
+The historical cases and the outcome research concern private equity. Venture, expansion and corporate funding are supported by institutional guidance (S58–S61) and introductory regulator material (S54–S57), which describe funding forms and the existence of distinct venture financing documents. Those sources support the book’s financial orientation; they do not establish comparative investor performance, and they are not additional case studies. Comparisons across ownership models elsewhere in the book use explicitly fictional scenarios and the author’s reasoning about stated constraints. Transferring a question about funding, rights or capacity to another ownership model is different from transferring a causal finding.
 
-The code in a citation identifies its source: **S** marks a public source, and **P** a supplied private input. The numbers are identifiers, not a ranking of quality or a reading order.
+## How to Read and Use an Entry
 
-**Evidence type** tells you what kind of source it is. A company filing records reported information under a formal disclosure process. A company or investor account also describes its own actions and may favor its own interpretation. A research study investigates a question using a stated method. A guidance document recommends or explains a practice; it does not demonstrate that every company follows it.
+Each entry has the same parts.
 
-**Consulted scope** states what the manuscript’s research actually examined. It can be an entire short page, selected pages or only an abstract, the short summary at the start of a research paper. A link to a long report does not imply every page was reviewed. **DOI** is a persistent identifier used for many research publications.
+- **Citation line** — author or organization, title, link, and the version or date consulted. Where the version matters (a working paper against a journal version, a revised estimate, a living web page), the entry says which one the book uses. **DOI** is a persistent identifier used for many research publications.
+- **Evidence type** — what kind of document it is. A company filing records reported information under a formal disclosure process. A company or investor account describes its own actions and may favor its own interpretation. A research study investigates a question using a stated method; its findings hold within its sample, period and design. A guidance document recommends or explains a practice; it does not show that every company follows it.
+- **Consulted scope** — what was actually examined: a whole short page, selected pages or sections, or only an abstract (the short summary at the start of a research paper). Limits specific to the source, such as partial access or a contradictory date inside the document, stay attached to the entry.
+- **Used in** — the chapters that cite the entry by its identifier, so a reader can move from a source to the argument it supports and back.
 
-For a first reading, follow the citations attached to the chapter you are studying. Return here when you need the source’s date, scope or limitations. Technical vocabulary is explained in [[glossary]].
+Three general rules apply to every entry and are stated once here. Treat reported financial figures as figures under the named source’s period and definitions. Treat company and investor statements as accounts by interested parties. Treat empirical findings within their sample and design; historical studies and current technology experiments answer different questions. When a chapter draws an inference, the cited document supports its premises; it does not necessarily make or validate that inference.
 
-## Public evidence
+For a first reading, follow the citations attached to the chapter you are studying and return here for a source’s date, scope or limits. Technical vocabulary is explained in [[glossary]].
+
+## Proposed Methods and Empirical Evidence
+
+The book contains two kinds of material, and this register supports them differently. The historical cases, filings and research studies are evidence about what happened in particular settings, within the limits each entry states. The templates, checklists, fictional calculations, the Larkspur examples and the Technology Principal example role are proposed methods: the author’s reasoning about how to work under the conditions the evidence describes. No source on this page validates those methods. The studies were not designed to test them, the guidance documents describe practices rather than measure their effect, and the private inputs supply ideas rather than operating results. Judge a method by whether it fits your decision, not by the citations near it.
+
+## Evidence Used Versus Further Reading
+
+Every chapter ends with a “To Probe Further” list. Those lists are optional reading, chosen to help a reader go deeper on the chapter’s subject. Their one-sentence annotations were checked for scope, meaning that the description stays within what the resource covers. They are not part of this consulted-evidence register unless the same resource also carries an S identifier, and a chapter’s argument does not rest on them. Listing a resource there does not mean the author consulted it for the book’s claims. Where a chapter’s claim depends on a source, that source is cited inline with an S or P identifier and appears below.
+
+## Public Evidence
 
 ### S01 — SEC investor guide
 
 U.S. Securities and Exchange Commission, Investor.gov. [Private Equity Funds](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity). Undated; accessed 2026-09-12.
 
-**Evidence type:** Regulator education. **Consulted scope:** Guide consulted for fund structure, investment forms, illiquidity, and investor considerations. An introduction, not a particular fund agreement. Rechecked 2026-09-13 for the distinction between controlling and minority investment strategies.
+**Evidence type:** Regulator education. **Consulted scope:** Guide consulted for fund structure, investment forms, illiquidity, and investor considerations. An introduction, not a particular fund agreement. Rechecked September 13, 2026 for the distinction between controlling and minority investment strategies.
+
+**Used in:** [[customers-lenders-investors]], [[announcement-is-not-a-budget]], [[fund-economics]], [[glossary]].
 
 ### S02 — ILPA principles
 
@@ -49,11 +80,15 @@ Institutional Limited Partners Association (ILPA). [ILPA Principles 3.0: Fosteri
 
 **Evidence type:** LP industry guidance. **Consulted scope:** Selected sections on alignment, economics, governance, transparency, and continuation transactions. An LP perspective and voluntary principles, not law or proof of universal practice.
 
+**Used in:** [[announcement-is-not-a-budget]], [[different-bets]], [[glossary]], [[handover-of-obligations]].
+
 ### S03 — Kaplan and Strömberg
 
 Steven N. Kaplan and Per Strömberg. [Leveraged Buyouts and Private Equity](https://www.nber.org/system/files/working_papers/w14207/w14207.pdf). July 2008; NBER Working Paper 14207.
 
 **Evidence type:** Academic synthesis. **Consulted scope:** Abstract, introduction, and selected discussion of mechanisms consulted. Cite this working-paper version; a journal version appeared in 2009. DOI: 10.3386/w14207. Historical evidence does not establish current market averages.
+
+**Used in:** [[three-different-returns]], [[glossary]].
 
 ### S04 — PE practitioner survey
 
@@ -61,17 +96,23 @@ Paul Gompers, Steven N. Kaplan, and Vladimir Mukharlyamov. [What Do Private Equi
 
 **Evidence type:** Original survey research. **Consulted scope:** Working-paper abstract and indexed overview consulted, not the full underlying survey dataset. Self-reported practices of 79 firms; not independent verification of their performance. DOI: 10.3386/w21133.
 
+**Used in:** [[raise-what-you-need]], [[decide-who-decides]].
+
 ### S05 — ILPA performance guidance
 
 Institutional Limited Partners Association (ILPA). [ILPA Performance Template](https://ilpa.org/industry-guidance/templates-standards-model-documents/ilpa-templates-hub/ilpa-performance-template/). 2025 release; living guidance accessed 2026-09-12.
 
 **Evidence type:** Industry methodology. **Consulted scope:** Template landing page and January 22, 2025 launch announcement consulted for scope and methodology. The manuscript's simplified calculations are its own examples, not claims of completed template compliance.
 
+**Used in:** [[fund-economics]], [[glossary]].
+
 ### S06 — SEC non-GAAP guidance
 
-U.S. Securities and Exchange Commission, Division of Corporation Finance. [Non-GAAP Financial Measures: Compliance and Disclosure Interpretations](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures). Living page; interpretation 103.01 dated January 11, 2010, and 103.02 dated May 17, 2016; accessed 2026-09-12 and rechecked 2026-09-13.
+U.S. Securities and Exchange Commission, Division of Corporation Finance. [Non-GAAP Financial Measures: Compliance and Disclosure Interpretations](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures). Living page; interpretation 103.01 dated January 11, 2010, and 103.02 dated May 17, 2016; accessed September 12, 2026 and rechecked September 13, 2026.
 
 **Evidence type:** Regulator staff guidance. **Consulted scope:** Relevant EBITDA and adjusted-measure interpretations consulted. US disclosure context; not a universal accounting definition for every private company.
+
+**Used in:** [[obligations-before-budget]], [[valuation-is-an-estimate]], [[glossary]].
 
 ### S07 — IAS 38 overview
 
@@ -79,11 +120,15 @@ IFRS Foundation. [IAS 38: Intangible Assets](https://www.ifrs.org/issued-standar
 
 **Evidence type:** Accounting standard issuer. **Consulted scope:** Public overview consulted for research expense and development recognition criteria. The overview was rechecked on September 13, 2026 to clarify that recognition criteria determine the treatment. The complete standard and any particular company's application were not audited.
 
+**Used in:** [[obligations-before-budget]], [[glossary]].
+
 ### S08 — Davis et al., 2024 revision
 
 Steven J. Davis, John Haltiwanger, Kyle Handley, Ben Lipsius, Josh Lerner, and Javier Miranda. [The (Heterogeneous) Economic Effects of Private Equity Buyouts](https://www.nber.org/system/files/working_papers/w26371/w26371.pdf). October 2019; revised April 2024; NBER Working Paper 26371.
 
 **Evidence type:** Original empirical research. **Consulted scope:** Revised PDF abstract, introduction, design, and selected results consulted. US buyouts over 1980–2013; transaction types differ. Use the April 2024 estimates, not the earlier digest's figures. DOI: 10.3386/w26371.
+
+**Used in:** [[success-for-whom]].
 
 ### S09 — Davis et al., jobs study
 
@@ -91,11 +136,15 @@ Steven J. Davis, John C. Haltiwanger, Kyle Handley, Ron S. Jarmin, Josh Lerner, 
 
 **Evidence type:** Original empirical research. **Consulted scope:** Abstract and indexed study description consulted for the distinction between establishment and firm outcomes; full tables were not reanalyzed. Journal version published in 2014. DOI: 10.3386/w19458.
 
+**Used in:** [[success-for-whom]].
+
 ### S10 — Bernstein et al., crisis study
 
 Shai Bernstein, Josh Lerner, and Filippo Mezzanotti. [Private Equity and Financial Fragility during the Crisis](https://www.nber.org/system/files/working_papers/w23626/w23626.pdf). July 2017; NBER Working Paper 23626.
 
 **Evidence type:** Original empirical research. **Consulted scope:** PDF abstract, introduction, sample and selected mechanism discussion consulted. UK financial-crisis setting and matched observational design limit generalization. Journal version appeared in 2019. DOI: 10.3386/w23626.
+
+**Used in:** [[obligations-before-budget]], [[success-for-whom]].
 
 ### S11 — Gupta et al., nursing homes
 
@@ -103,11 +152,15 @@ Atul Gupta, Sabrina T. Howell, Constantine Yannelis, and Abhinav Gupta. [Owner I
 
 **Evidence type:** Original empirical research. **Consulted scope:** Revised PDF abstract, introduction, identification discussion, and selected results consulted. Short-stay Medicare patient population and identification assumptions are material. Not a claim about every care setting. DOI: 10.3386/w28474.
 
+**Used in:** [[success-for-whom]].
+
 ### S12 — Kannan et al., adverse events
 
 Sneha Kannan, Joseph Dov Bruch, and Zirui Song. [Changes in Hospital Adverse Events and Patient Outcomes Associated With Private Equity Acquisition](https://jamanetwork.com/journals/jama/fullarticle/2813379). December 26, 2023; JAMA 330(24):2365–2375.
 
 **Evidence type:** Peer-reviewed original research. **Consulted scope:** Methods, results, and relevant table consulted. Difference-in-differences comparison of acquired and control hospitals; associations, patient composition, and study period matter. DOI: 10.1001/jama.2023.23147.
+
+**Used in:** [[success-for-whom]].
 
 ### S13 — SPACE framework
 
@@ -115,11 +168,15 @@ Nicole Forsgren, Margaret-Anne Storey, Chandra Maddila, Tom Zimmermann, Brian Ho
 
 **Evidence type:** Original research framework. **Consulted scope:** Author-hosted publication page and abstract consulted; ACM page was inaccessible. Supports a multidimensional productivity frame, not a formula assigning economic value to each dimension.
 
+**Used in:** [[can-the-team-deliver]], [[glossary]].
+
 ### S14 — DORA metrics guide
 
 DORA. [DORA's Software Delivery Performance Metrics](https://dora.dev/guides/dora-metrics/). Living guide; accessed September 12, 2026.
 
 **Evidence type:** Original practitioner research guidance. **Consulted scope:** Current guide consulted. Metric definitions have evolved; this draft notes five current delivery-performance metrics rather than treating the historical four as timeless.
+
+**Used in:** [[can-the-team-deliver]], [[glossary]].
 
 ### S15 — DORA 2024 report
 
@@ -127,11 +184,15 @@ DORA / Google Cloud. [2024 Accelerate State of DevOps Report](https://dora.dev/r
 
 **Evidence type:** Original industry survey. **Consulted scope:** Report landing page, findings summary, and errata consulted; no independent reanalysis of the full survey. Associations support questions about operating conditions, not automatic causal or financial claims.
 
+**Used in:** [[roadmap-to-revenue]], [[fix-decisions-before-hiring]].
+
 ### S16 — FinOps unit economics
 
 FinOps Foundation. [Unit Economics](https://www.finops.org/framework/capabilities/unit-economics/). Living framework capability; accessed September 12, 2026.
 
 **Evidence type:** Practitioner framework. **Consulted scope:** Capability guidance consulted for connecting cost with business units and value. All manuscript euro examples are fictional calculations.
+
+**Used in:** [[cheaper-cloud-bill]], [[glossary]].
 
 ### S17 — NIST CSF 2.0
 
@@ -139,17 +200,23 @@ National Institute of Standards and Technology (NIST). [The NIST Cybersecurity F
 
 **Evidence type:** Government framework. **Consulted scope:** Framework overview, functions, governance, and implementation orientation consulted. A structure for risk management, not evidence that adopting it eliminates incidents. DOI: 10.6028/NIST.CSWP.29.
 
+**Used in:** [[prove-you-can-restore]], [[glossary]].
+
 ### S18 — NIST generative AI profile
 
 Chloe Autio, Reva Schwartz, Jesse Dunietz, Shomik Jain, Martin Stanley, Elham Tabassi, Patrick Hall, and Kamie Roberts; NIST. [Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf). July 26, 2024; NIST AI 600-1.
 
 **Evidence type:** Government framework. **Consulted scope:** Risk categories and management orientation consulted. Applies as a question structure; no claim of certification or quantified loss reduction. DOI: 10.6028/NIST.AI.600-1.
 
+**Used in:** [[ai-strategy-three-questions]].
+
 ### S19 — Peng et al., Copilot experiment
 
 Sida Peng, Eirini Kalliamvakou, Peter Cihon, and Mert Demirer. [The Impact of AI on Developer Productivity: Evidence from GitHub Copilot](https://arxiv.org/abs/2302.06590). February 13, 2023; arXiv:2302.06590.
 
-**Evidence type:** Original controlled experiment. **Consulted scope:** Original abstract and task description consulted. The September 13, 2026 editorial review also checked the [study design and results](https://arxiv.org/html/2302.06590v1): the experiment ran in 2022, and the 55.8% figure is a reduction in average completion time among those who completed the task. The bounded task, tool generation and industry affiliations limit interpretation.
+**Evidence type:** Original controlled experiment. **Consulted scope:** Original abstract and task description consulted. A recheck on September 13, 2026 covered the [study design and results](https://arxiv.org/html/2302.06590v1): the experiment ran in 2022, and the 55.8% figure is a reduction in average completion time among those who completed the task. The bounded task, tool generation and industry affiliations limit interpretation.
+
+**Used in:** [[ai-strategy-three-questions]].
 
 ### S20 — METR early-2025 experiment
 
@@ -157,17 +224,23 @@ METR. [Measuring the Impact of Early-2025 AI on Experienced Open-Source Develope
 
 **Evidence type:** Original randomized experiment report. **Consulted scope:** Study report, setting, headline result, and limits consulted. Experienced developers on familiar repositories; not every developer, task, or later model.
 
+**Used in:** [[ai-strategy-three-questions]].
+
 ### S21 — METR 2026 update
 
 Joel Becker, Nate Rush, Tom Cunningham, David Rein, and Khalid Mahamud; METR. [We Are Changing Our Developer Productivity Experiment Design](https://metr.org/blog/2026-02-24-uplift-update/). February 24, 2026.
 
 **Evidence type:** Original research update. **Consulted scope:** Full update consulted. Selection and participation changes undermine a simple interpretation of later speed estimates; the chapter does not present those estimates as a settled current effect.
 
+**Used in:** [[ai-strategy-three-questions]].
+
 ### S22 — KKR Capstone description
 
 KKR. [Capstone](https://www.kkr.com/approach/capstone). Undated capability page; accessed September 12, 2026.
 
-**Evidence type:** Interested practitioner account. **Consulted scope:** Operating-support description consulted. Evidence of a stated offering and collaboration model; no causal attribution of returns or universal role charter. Rechecked 2026-09-13 for the new investor-support chapter: management collaboration, specialist and partner networks, technology, growth and people support.
+**Evidence type:** Interested practitioner account. **Consulted scope:** Operating-support description consulted. Evidence of a stated offering and collaboration model; no causal attribution of returns or universal role charter. Rechecked September 13, 2026 for the investor-support chapters: management collaboration, specialist and partner networks, technology, growth and people support.
+
+**Used in:** [[decide-who-decides]], [[investor-under-pressure]], [[help-that-changes-capability]].
 
 ### S23 — Hilton registration filing
 
@@ -175,11 +248,15 @@ Hilton Worldwide Holdings Inc. [Form S-1 Registration Statement](https://www.sec
 
 **Evidence type:** Company regulatory filing. **Consulted scope:** Prospectus business/commercial-services discussion, debt restructuring, and selected operating comparisons consulted. Financial disclosures and management narratives have different evidentiary roles; not a full independent audit of the filing.
 
+**Used in:** [[hilton-and-skype]].
+
 ### S24 — Blackstone 2018 investor call
 
 The Blackstone Group L.P. [Second Quarter 2018 Earnings Investor Call](https://ir.blackstone.com/files/doc_events/BLACKSTONE-Second-Quarter-2018-Earnings-Investor-Call.pdf). July 19, 2018.
 
 **Evidence type:** Interested investor account. **Consulted scope:** Hilton realization discussion consulted for sponsor-reported 3.1× multiple and $14 billion profit. Not an independently reconstructed net LP cash-flow series.
+
+**Used in:** [[handover-of-obligations]], [[hilton-and-skype]].
 
 ### S25 — PEI Hilton retrospective
 
@@ -187,11 +264,15 @@ Private Equity International. [North American Exit of the Year: Blackstone for H
 
 **Evidence type:** Industry journalism / award retrospective. **Consulted scope:** Retrospective consulted for the initial transaction and ownership narrative. Sponsor-hosted award coverage has selection and promotional context; triangulated with the Hilton filing where possible.
 
+**Used in:** [[hilton-and-skype]].
+
 ### S26 — eBay Skype sale announcement
 
 eBay Inc. [eBay Inc. Completes Sale of Skype](https://investors.ebayinc.com/investor-news/press-release-details/2009/EBay-Inc-Completes-Sale-of-Skype/default.aspx). November 19, 2009.
 
 **Evidence type:** Company transaction announcement. **Consulted scope:** Completion, valuation, retained stake, and consideration description consulted. Does not supply the buyer consortium's complete equity cash flows.
+
+**Used in:** [[hilton-and-skype]].
 
 ### S27 — Skype registration filing
 
@@ -199,11 +280,15 @@ Skype S.à r.l., to be converted into Skype S.A. [Amendment No. 3 to Form S-1 Re
 
 **Evidence type:** Company regulatory filing. **Consulted scope:** Prospectus summary pp. 1–4, recent developments, intellectual-property settlement, selected financial data and financing discussion consulted. Pro forma periods, adjusted EBITDA, and management claims require care.
 
+**Used in:** [[hilton-and-skype]], [[acquisition-adds-work-first]], [[diligence-corrects-the-plan]].
+
 ### S28 — Microsoft Skype completion
 
 Microsoft. [Microsoft Officially Welcomes Skype](https://news.microsoft.com/source/2011/10/13/microsoft-officially-welcomes-skype/). October 13, 2011.
 
 **Evidence type:** Buyer announcement. **Consulted scope:** Completion announcement and May 10, 2011 acquisition announcement consulted. The former states completion and recounts the announced $8.5 billion transaction; neither establishes fund-level net returns.
+
+**Used in:** [[hilton-and-skype]].
 
 ### S29 — Microsoft Skype retirement
 
@@ -211,11 +296,15 @@ Microsoft Support. [Skype Is Retiring in May 2025: What You Need to Know](https:
 
 **Evidence type:** Product owner statement. **Consulted scope:** Retirement scope/date consulted, alongside Microsoft's February 28, 2025 announcement. Later product retirement is not attributed to the earlier private equity interventions.
 
+**Used in:** [[hilton-and-skype]].
+
 ### S30 — Visma 2023 transaction
 
 Visma. [Visma Attracts New Investors for Further International Expansion in a Transaction Valuing the Company at EUR 19 Billion](https://www.visma.com/newsroom/visma-attracts-new-investors-for-further-international-expansion-in-a-transaction-valuing-the-company-at-eur-19-billion-59703d9f). December 21, 2023.
 
 **Evidence type:** Company transaction announcement. **Consulted scope:** Transaction valuation, investors, and ownership narrative consulted. Valuation is not proof of cash realized by a particular fund.
+
+**Used in:** [[handover-of-obligations]], [[visma]].
 
 ### S31 — Visma Q4 2024 report
 
@@ -223,23 +312,31 @@ Visma. [Quarterly Report 2024 Q4](https://cdn.prod.website-files.com/69787181d87
 
 **Evidence type:** Company financial report. **Consulted scope:** Selected highlights, key figures, financial review, M&A and technology narrative, and definitions on p. 23 consulted. Full-year revenue/EBITDA and before-tax free-cash-flow definitions use this contemporaneous report consistently.
 
+**Used in:** [[visma]], [[glossary]].
+
 ### S32 — Visma annual-report announcement
 
 Visma. [Visma Releases Annual and Sustainability Reports for 2024](https://www.visma.com/newsroom/visma-releases-annual-and-sustainability-reports-for-2024-7f5c9f37). March 26, 2025.
 
 **Evidence type:** Interested company account. **Consulted scope:** Announcement consulted for acquisition, R&D, and operating-model claims. Not a claim to have read both complete annual and sustainability reports or independently verified their impact.
 
+**Used in:** [[visma]].
+
 ### S33 — Visma current financials page
 
 Visma. [Financial Results](https://www.visma.com/investors/financials). Living page; accessed September 12, 2026.
 
-**Evidence type:** Company financial presentation. **Consulted scope:** Financials landing page inspected September 12, 2026. Its rounded EUR 904 million adjusted EBITDA for 2024 is reconciled in research pass two using S43–S44: EUR 892.646 million EBITDA plus EUR 11.665 million M&A expenses equals EUR 904.311 million adjusted EBITDA. The page is a current presentation of historical figures, not a new operating result.
+**Evidence type:** Company financial presentation. **Consulted scope:** Financials landing page inspected September 12, 2026. Its rounded EUR 904 million adjusted EBITDA for 2024 is reconciled using S43–S44: EUR 892.646 million EBITDA plus EUR 11.665 million M&A expenses equals EUR 904.311 million adjusted EBITDA. The page is a current presentation of historical figures, not a new operating result.
+
+**Used in:** [[visma]].
 
 ### S34 — Toys R Us annual filing excerpts
 
 Toys R Us, Inc. [Form 10-K for Fiscal Year Ended January 28, 2017](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000011/tru201610k.htm). 2017 filing; fiscal 2016.
 
-**Evidence type:** Company regulatory filing; partial access. **Consulted scope:** Only indexed excerpts concerning the e-commerce platform and risk were consulted. Full-page browser and download attempts failed with access errors. Do not treat this as a full 10-K review; financial table claims use S35 instead. Research pass two again attempted complete access through the SEC and mirrors without obtaining the full document; the access limit remains. S50 supplies separately consulted primary court evidence, not a substitute claim that this full 10-K was read.
+**Evidence type:** Company regulatory filing; partial access. **Consulted scope:** Only indexed excerpts concerning the e-commerce platform and risk were consulted. Full-page browser and download attempts failed with access errors. Do not treat this as a full 10-K review; financial table claims use S35 instead. A second attempt at complete access through the SEC and mirrors, also on September 12, 2026, did not obtain the full document; the access limit remains. S50 supplies separately consulted primary court evidence, not a substitute claim that this full 10-K was read.
+
+**Used in:** [[toys-r-us]].
 
 ### S35 — Toys R Us fiscal 2016 results
 
@@ -247,11 +344,15 @@ Toys R Us, Inc. [Toys R Us, Inc. Reports Results for the Full Year and Fourth Qu
 
 **Evidence type:** Company financial disclosure. **Consulted scope:** Release and financial tables consulted, including operating earnings, interest, cash flow, capex, sales, and e-commerce discussion. Fiscal year ended January 28, 2017; table units are USD millions.
 
+**Used in:** [[toys-r-us]], [[obligations-before-budget]].
+
 ### S36 — Toys R Us bankruptcy note
 
 Toys R Us, Inc. [Bankruptcy Filing: Note to Interim Financial Statements](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000047/R9.htm). 2017 filing for period ended October 28, 2017.
 
 **Evidence type:** Company regulatory disclosure. **Consulted scope:** Note consulted for the September 2017 filings and entity/jurisdiction scope. This is the company's financial-statement account, not a review of the complete court docket.
+
+**Used in:** [[toys-r-us]].
 
 ### S37 — Reuters US liquidation report
 
@@ -259,11 +360,15 @@ Tracy Rucinski; Reuters. [Toys R Us to Close Doors, Leaving Void for Toy Lovers]
 
 **Evidence type:** Credible contemporaneous journalism. **Consulted scope:** Report consulted for US shutdown plans and approximately 33,000 full- and part-time jobs exposed. Scope and timing are the reported plans; international operations and later brand ownership require separate treatment.
 
+**Used in:** [[toys-r-us]].
+
 ### S39 — Bruch et al., hospital measures
 
 Joseph D. Bruch, Suhas Gondi, and Zirui Song. [Changes in Hospital Income, Use, and Quality Associated With Private Equity Acquisition](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2769549). August 24, 2020; JAMA Internal Medicine 180(11):1428–1435.
 
 **Evidence type:** Peer-reviewed original research. **Consulted scope:** Methods, selected results and quality measures consulted. Different outcomes and samples from S12; improvements on some measures do not settle overall welfare. DOI: 10.1001/jamainternmed.2020.3552.
+
+**Used in:** [[success-for-whom]].
 
 ### S40 — Toys R Us acquisition agreement announcement
 
@@ -271,11 +376,15 @@ Toys R Us, Inc. [Agreement to Be Acquired by KKR, Bain Capital and Vornado for $
 
 **Evidence type:** Company transaction announcement. **Consulted scope:** Announcement consulted for agreed consideration and context. The title is shortened here; a headline transaction amount is not a reconstructed financing schedule.
 
+**Used in:** [[toys-r-us]].
+
 ### S41 — Toys R Us acquisition completion
 
 Bain Capital, Kohlberg Kravis Roberts & Co., and Vornado Realty Trust. [Bain Capital, KKR and Vornado Complete Acquisition of Toys R Us, Inc.](https://www.sec.gov/Archives/edgar/data/899689/000110465905033479/a05-13329_1ex99d1.htm). July 21, 2005.
 
 **Evidence type:** Buyer announcement filed with SEC. **Consulted scope:** Completion date and purchaser group consulted. Not evidence of the complete later debt or distribution history.
+
+**Used in:** [[toys-r-us]].
 
 ### S42 — Kannan and Song, after sale
 
@@ -283,11 +392,15 @@ Sneha Kannan and Zirui Song. [Financial Health After Private Equity Hospitals Ar
 
 **Evidence type:** Peer-reviewed original research. **Consulted scope:** Study population, methods, results, and limitations consulted. Small observational comparison of 18 hospitals resold to PE and 18 to other for-profit owners. Financial trajectories are not direct patient-outcome measures. DOI: 10.1001/jamahealthforum.2025.3217.
 
+**Used in:** [[success-for-whom]].
+
 ### S43 — Visma 2024 annual report
 
 Visma. [Annual Report 2024](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f460b_Visma-Annual-Report-2024.pdf). 2025; reporting year ended December 31, 2024; exact PDF publication day not established.
 
 **Evidence type:** Company annual report. **Consulted scope:** Complete PDF obtained and text extracted; selected key figures and Note 2, pp. 50 and 52, read for 2024 EBITDA of EUR 892.646 million and its reconciliation. Not every note reviewed. The operating outcome is historical, not a current valuation.
+
+**Used in:** [[visma]].
 
 ### S44 — Visma 2025 annual report
 
@@ -295,11 +408,15 @@ Visma. [Annual Report 2025](https://cdn.prod.website-files.com/69787181d8720ea08
 
 **Evidence type:** Company annual report. **Consulted scope:** Complete PDF obtained and text extracted. Selected key figures, signature date, and alternative-performance-measure reconciliation on p. 96 consulted. The 2024 comparative adds EUR 11.665 million of M&A expenses, producing adjusted EBITDA of EUR 904.311 million. Also inspected definitions and the separate go-forward perimeter presentation; no claim to have reviewed all 2025 operations.
 
+**Used in:** [[visma]].
+
 ### S45 — Palamon TeamSystem case
 
 Palamon Capital Partners. [TeamSystem](https://www.palamon.com/teamsystem). Undated portfolio case; historical 2000–2004 account; accessed September 12, 2026.
 
 **Evidence type:** Interested investor retrospective. **Consulted scope:** Case page read. Regional-company context, management and investment claims, exit scale and reported 4.1x investment multiple consulted. Header says December 2000 exit while narrative says December 2004; the latter is supported by Bain’s account in S47. Undefined “profitability” figure is not relabeled EBITDA. No independently reconstructed investor return or employee outcome.
+
+**Used in:** [[teamsystem]].
 
 ### S46 — TeamSystem acquisition announcement
 
@@ -307,11 +424,15 @@ HgCapital / HgCapital Trust plc. [HgCapital acquires TeamSystem, the leading pro
 
 **Evidence type:** Investor transaction announcement. **Consulted scope:** Announcement read for agreed majority acquisition, stated EUR 565 million enterprise value and 11.3x FY2010 EBITDA, thesis and expected September completion. Wording mixes agreement and acquisition language; manuscript treats the terms as announced rather than audited closing amounts. Present webpage contains some apparent company-name substitutions; no altered quotations reproduced.
 
+**Used in:** [[teamsystem]].
+
 ### S47 — TeamSystem sale announcement
 
 HgCapital / HgCapital Trust plc; statements from transaction participants. [HgCapital announces sale of TeamSystem](https://www.hgcapitaltrust.com/news-insights/news/archive/12072015). December 7, 2015.
 
 **Evidence type:** Investor transaction announcement. **Consulted scope:** Agreement to sell to Hellman & Friedman, retained minority investment and participant accounts consulted. Bain’s statement places its initial acquisition in 2004. The announcement anticipated 2016 completion; subsequent S48 supplies completion evidence. Interested parties’ descriptions are not independent causal evaluation.
+
+**Used in:** [[teamsystem]].
 
 ### S48 — HgCapital Trust 2015 results
 
@@ -319,11 +440,15 @@ HgCapital Trust plc / HgCapital. [2015 Full Year Results Presentation](https://w
 
 **Evidence type:** Listed investment trust / manager results presentation. **Consulted scope:** Selected portfolio context, TeamSystem case on p. 14 and subsequent-event summary on p. 17 read. Presentation reports 2016 completion, GBP 39 million Trust cash proceeds, GBP 6.1 million retained value and a 1.8x return. Product, pricing, collection, M&A and refinancing claims are the manager’s. No full investor cash-flow reconstruction or inference of net LP return; presentation itself refers readers to the full annual report.
 
+**Used in:** [[teamsystem]].
+
 ### S49 — TeamSystem 2017 consolidated report
 
 TeamSystem Holding S.p.A. and subsidiaries. [Consolidated Financial Statements as at and for the year ended 31 December 2017 of TeamSystem Group](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf). February 28, 2018, directors’ signature; reporting year ended December 31, 2017.
 
 **Evidence type:** Company consolidated financial statements and directors’ report. **Consulted scope:** Full 87-page PDF obtained and text extracted; selected directors’ report, 2016 comparability explanation, statements, earnings reconciliation, development spending, acquisitions and financing notes read. Cited page numbers use PDF display pages: 9–15, 23 and 45. Scanned auditor-opinion page 84 visually inspected: Deloitte opines on the consolidated statements under EU-adopted IFRS, not on causal sponsor contribution or every management claim. Statutory 2016 operations cover March–December; pro forma income comparisons also adjust acquisition scope. Capitalized-development comparative is ten months and must not be described as matched annual growth.
+
+**Used in:** [[teamsystem]].
 
 ### S50 — Brandon first-day declaration
 
@@ -331,17 +456,23 @@ David A. Brandon, Chairman and Chief Executive Officer of Toys “R” Us, Inc. 
 
 **Evidence type:** Primary court-filed debtor declaration, public document mirror. **Consulted scope:** Complete 47-page stamped filing obtained and text extracted. Selected paragraphs 10–12, 19–32, 53–55, 60, 74 and 91–95 consulted for debt, maturities, supplier terms, technology constraints and proposed investment. Sworn management account supporting an application, not a court finding of causation. Funding table is a September 2017 snapshot, not a reconstructed 2005 sources-and-uses statement. Future project spending is a plan, not a realized result.
 
+**Used in:** [[toys-r-us]].
+
 ### S51 — Hasbro 2018 annual report
 
 Hasbro, Inc. [2018 Annual Report, including Form 10-K for the year ended December 30, 2018](https://www.annualreports.com/HostedData/AnnualReportArchive/h/NYSE_HAS_2018.pdf). 2019; fiscal year ended December 30, 2018.
 
 **Evidence type:** Supplier annual report and financial statements, public report mirror. **Consulted scope:** Full report obtained and text extracted; selected management discussion, segment results, operating expenses and receivables note consulted. Printed pp. 38 and 67 support USD 60.4 million related costs and approximately USD 49 million bad-debt expense respectively; the latter is included, not additive. Separate supplier-side evidence, but Hasbro is an interested participant. Its overall revenue/profit change has other causes; these costs do not measure all supplier or social losses.
 
+**Used in:** [[toys-r-us]].
+
 ### S52 — IPEV valuation guidelines
 
 International Private Equity and Venture Capital Valuation Board (IPEV). [International Private Equity and Venture Capital Valuation Guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf). December 2025; issuer states publication December 11, 2025; effective for quarterly reporting periods beginning on or after April 1, 2026.
 
-**Evidence type:** Industry valuation guidance. **Consulted scope:** Issuer landing page and selected primary PDF sections consulted: introduction, technique selection, revenue/earnings multiples, comparability, DCF and net assets (sections 3.1–3.9; especially pp. 21–25, 29 and 34–37). The September 13, 2026 editorial review additionally checked the enterprise-to-equity adjustments, surplus cash and debt treatment on sale. Not every application section was reviewed. This is fair-value reporting guidance, not a negotiated transaction price, legal standard or prescription for business strategy and architecture.
+**Evidence type:** Industry valuation guidance. **Consulted scope:** Issuer landing page and selected primary PDF sections consulted: introduction, technique selection, revenue/earnings multiples, comparability, DCF and net assets (sections 3.1–3.9; especially pp. 21–25, 29 and 34–37). A recheck on September 13, 2026 additionally covered the enterprise-to-equity adjustments, surplus cash and debt treatment on sale. Not every application section was reviewed. This is fair-value reporting guidance, not a negotiated transaction price, legal standard or prescription for business strategy and architecture.
+
+**Used in:** [[valuation-is-an-estimate]], [[glossary]].
 
 ### S53 — Damodaran growth value drivers
 
@@ -349,11 +480,15 @@ Aswath Damodaran, NYU Stern School of Business. [Growth companies—Value Driver
 
 **Evidence type:** Original author teaching material. **Consulted scope:** Full short page consulted on scalable revenue growth, sustainable margins and reinvestment. Used for the economic relationship, not as an empirical causal study of software architecture or a current market benchmark. Related growth pages were discovery leads, not additional cited publications.
 
+**Used in:** [[valuation-is-an-estimate]].
+
 ### S54 — Investor.gov stock basics
 
 U.S. Securities and Exchange Commission, Investor.gov. [Stocks: FAQs](https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks). Undated educational page; accessed September 13, 2026.
 
 **Evidence type:** Regulator education. **Consulted scope:** Ownership, reasons for issuing shares, dividends and differences between common and preferred shares. Used for introductory definitions, not particular shareholder agreements.
+
+**Used in:** [[customers-lenders-investors]], [[glossary]].
 
 ### S55 — Investor.gov public-company reporting
 
@@ -361,11 +496,15 @@ U.S. Securities and Exchange Commission, Investor.gov. [Public Companies](https:
 
 **Evidence type:** Regulator education. **Consulted scope:** Different meanings of public company, public-reporting obligations and annual versus quarterly reports. US context; not a universal reporting schedule for every jurisdiction.
 
+**Used in:** [[customers-lenders-investors]], [[glossary]].
+
 ### S56 — SBA grant overview
 
 U.S. Small Business Administration. [Grants](https://www.sba.gov/loans/additional-funding-opportunities/grants/). Living page; accessed September 13, 2026.
 
 **Evidence type:** Government program information. **Consulted scope:** Overview and research-and-development grant section. Establishes that eligible grants are another possible funding source; the book does not assess an individual company’s eligibility or promise general startup funding.
+
+**Used in:** [[customers-lenders-investors]].
 
 ### S57 — Damodaran on capital structure
 
@@ -373,31 +512,57 @@ Aswath Damodaran, NYU Stern School of Business. [Finding the Right Financing Mix
 
 **Evidence type:** Original author teaching material. **Consulted scope:** Introductory financing-choice and debt/equity-mix slides, especially slides 2–8. Used for the capital-structure definition, not historical tax examples, a mandatory company lifecycle or current financing recommendations.
 
+**Used in:** [[customers-lenders-investors]], [[glossary]].
+
 ### S58 — Venture capital
 
-**British Business Bank. [Venture capital](https://www.british-business-bank.co.uk/business-guidance/guidance-articles/finance/venture-capital).** Undated guidance; accessed 2026-09-13.
+British Business Bank. [Venture capital](https://www.british-business-bank.co.uk/business-guidance/guidance-articles/finance/venture-capital). Undated guidance page; accessed September 13, 2026.
 
-**Evidence type:** Public development-bank business guidance. **Consulted scope and limits:** Guide consulted for early-stage equity, minority participation and successive funding rounds. Not evidence of outcomes for the manuscript’s fictional examples; no universal funding or holding timetable is inferred.
+**Evidence type:** Public development-bank business guidance. **Consulted scope:** Guide consulted for early-stage equity, minority participation and successive funding rounds. Not evidence of outcomes for the manuscript’s fictional examples; no universal funding or holding timetable is inferred.
+
+**Used in:** [[customers-lenders-investors]].
 
 ### S59 — Expansion capital
 
-**British Business Bank. [Expansion capital](https://www.british-business-bank.co.uk/business-guidance/guidance-articles/finance/expansion-capital).** Undated guidance; accessed 2026-09-13.
+British Business Bank. [Expansion capital](https://www.british-business-bank.co.uk/business-guidance/guidance-articles/finance/expansion-capital). Undated guidance page; accessed September 13, 2026.
 
-**Evidence type:** Public development-bank business guidance. **Consulted scope and limits:** Guide consulted for equity supporting business expansion and possible retention of control. Its typical ranges are not applied as requirements or market-wide estimates.
+**Evidence type:** Public development-bank business guidance. **Consulted scope:** Guide consulted for equity supporting business expansion and possible retention of control. Its typical ranges are not applied as requirements or market-wide estimates.
+
+**Used in:** [[customers-lenders-investors]].
 
 ### S60 — Corporate venture capital
 
-**British Business Bank. [Corporate venture capital (CVC)](https://www.british-business-bank.co.uk/business-guidance/guidance-articles/finance/corporate-venture-capital).** Undated guidance; accessed 2026-09-13.
+British Business Bank. [Corporate venture capital (CVC)](https://www.british-business-bank.co.uk/business-guidance/guidance-articles/finance/corporate-venture-capital). Undated guidance page; accessed September 13, 2026.
 
-**Evidence type:** Public development-bank business guidance. **Consulted scope and limits:** Guide consulted for corporate funding, commercial purposes, expertise and network access. Not a review of corporate acquisition law, specific investor agreements or universal CVC behavior.
+**Evidence type:** Public development-bank business guidance. **Consulted scope:** Guide consulted for corporate funding, commercial purposes, expertise and network access. Not a review of corporate acquisition law, specific investor agreements or universal CVC behavior.
+
+**Used in:** [[customers-lenders-investors]].
 
 ### S61 — NVCA model-document overview
 
-**National Venture Capital Association. [Model Legal Documents — overview](https://nvca.org/model-legal-documents/).** Living overview; accessed 2026-09-13.
+National Venture Capital Association. [Model Legal Documents — overview](https://nvca.org/model-legal-documents/). Living overview page; accessed September 13, 2026.
 
-**Evidence type:** US venture industry model-document overview. **Consulted scope and limits:** The overview and document list were consulted, including its description of time- or milestone-based financing mechanics. Individual downloadable agreements were not reviewed. The citation supports checking distinct rights, voting and purchase documentation, not a clause-level or jurisdiction-independent legal claim.
+**Evidence type:** US venture industry model-document overview. **Consulted scope:** The overview and document list were consulted, including its description of time- or milestone-based financing mechanics. Individual downloadable agreements were not reviewed. The citation supports checking distinct rights, voting and purchase documentation, not a clause-level or jurisdiction-independent legal claim.
 
-## Supplied private inputs
+**Used in:** [[decide-who-decides]].
+
+### S62 — Hg 2017 Visma announcement
+
+Hg. [Hg leads $5.3bn buyout of Visma](https://hgcapital.com/insights/hg-leads-usd5-3bn-buyout-of-visma). June 26, 2017; accessed September 14, 2026.
+
+**Evidence type:** Investment manager's transaction announcement. **Consulted scope:** The announcement was read in full for the funds named for the 2006 and 2014 investments, the 2017 buyout value, KKR's realization of its stake and the stated post-transaction ownership shares. An interested account of announced terms, not an audited record; it does not state who sold in each round or how much money reached the operating company.
+
+**Used in:** [[visma]].
+
+### S63 — OECD AI-system definition memorandum
+
+OECD. [Explanatory memorandum on the updated OECD definition of an AI system](https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/03/explanatory-memorandum-on-the-updated-oecd-definition-of-an-ai-system_3c815e51/623da898-en.pdf). OECD Artificial Intelligence Papers No. 8, March 2024; accessed September 14, 2026.
+
+**Evidence type:** Intergovernmental definitional guidance. **Consulted scope:** The definition and its explanation of machine-learning and knowledge-based approaches were consulted for the glossary's AI entry. A definition, not evidence about any company's AI use.
+
+**Used in:** [[glossary]].
+
+## Supplied Private Inputs
 
 ### P01 — supplied role brief
 
@@ -405,14 +570,16 @@ Supplied private role brief; organization omitted from reader-facing prose. *Tec
 
 Both pages read. One role brief, not an industry-wide mandate. Heading/body title variation and actual decision rights require clarification. Exact file and page mapping remain in private editorial notes.
 
+**Used in:** [[investors-adviser]].
+
 ### P02 — Productscapes hypothesis
 
 Željko Obrenović, supplied Productscapes material. *Private equity and technology capability as products: working domain models and proposals*. Supplied working files, individually versioned; reviewed September 12, 2026.
 
 Both domain overviews, technology-capability input and audit, structured record inventories, and selected substantive tutorials/models read. Not every repeated generated HTML/JSON prose field was read line by line. Proposals, example values, and null baselines are not verified operating results.
 
-## How to use the evidence
+**Used in:** No chapter cites P02 directly. It is recorded as an intellectual input to the drafting of the support and role chapters (Part IV); the book states its own reasoning in ordinary terms, and readers do not need to learn the Productscapes model.
 
-Treat reported financial figures as figures under the named source’s period and definitions. Treat company strategy statements as management accounts. Treat empirical findings within their sample and design. Treat the Productscapes model and practical templates as hypotheses and proposals. When the manuscript makes an inference, the cited document supports its premises; it does not necessarily make or validate that inference.
+## Remaining Research Limits
 
-The research is broad but selective. It does not establish the typical return of a current fund, a complete financing history for every case, a universal Technology Principal charter, or the causal effect of the proposed support model. Historical studies and current technology experiments answer different questions.
+The research is broad but selective. It does not establish the typical return of a current fund, a complete financing history for every case, a universal charter for an investor’s technology adviser, or the causal effect of the book’s proposed support model. Full access to the Toys R Us fiscal 2016 10-K (S34) was not obtained. The editorial chronology of this register, meaning which revision added or rechecked which entries, is kept in the working notes rather than on this page; the dates that matter for reading a source are in its entry.

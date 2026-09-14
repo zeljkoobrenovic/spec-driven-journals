@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Use the early period after funding or an ownership change to establish a funded operating plan. Adapt the priorities to a minority round, buyout or corporate acquisition; avoid assuming every investment replaces the owner.
+Use the early period after funding or an ownership change to establish a funded operating plan, demonstrated on one fictional Larkspur scenario: carry diligence finding D-3 into ONB-1, show a three-priority plan (ONB-1, KNW-1, REC-1) with accountable people, cash, engineer-weeks, decision dates and prerequisites inside a board-authorized €300,000 / 24-engineer-week envelope with recorded deferrals, and show the day-100 review changing the plan. Other arrangements are linked, not re-tabulated; avoid assuming every investment replaces management.
 
 ## Audience
 
@@ -18,7 +18,8 @@ Product and engineering leaders inside companies working under investors, includ
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
-- Distinguish a list of early priorities from an approved plan with named people, protected time, spending limits and review dates.
+- Distinguish a list of early priorities from an approved plan with named people, protected time, spending limits and review dates, and show the approved plan itself: totals that fit the stated envelope, a reserve and named deferred work, every figure labelled fictional.
+- Carry one diligence finding in by identifier with its original assumption, management’s confirmation and the funded response; show the day-100 results and the board decision they changed.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
@@ -55,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Replace the unfunded workstream table with the funded three-priority plan (ONB-1 / KNW-1 / REC-1, €260,000 and 20 engineer-weeks of a €300,000 / 24-week envelope), carry D-3 in from diligence, add the day-100 results and board decision, shorten the ownership and support recaps to links, and replace the categorical “replaces that rhythm” opening; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “A Hundred Days Is Enough to Agree the Plan, Not to Finish It” to “The First Hundred Days: Turn Expectations Into a Funded Plan”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “After Funding or a Deal, Establish a Funded Plan” to “A Hundred Days Is Enough to Agree the Plan, Not to Finish It”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

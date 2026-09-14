@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Diligence exists only because an investor is deciding whether, and on what terms, to put money in. The panels show how its findings feed the price, the funding and the plan the company will later be held to, and why treating it as an audit to pass wastes that chance.
+**Comic.** In this transaction, technical diligence tests the product, technology and team assumptions behind the proposed investment. The panels follow one finding, D-3, from a sample of actual implementations to a recorded decision that changes the growth plan, and show why treating diligence as an audit to pass wastes that chance. Every figure is fictional.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex and Sam ask Morgan which company capabilities the proposed investment depends on. Use one speech bubble with the exact words: \"What are we being asked to support?\" Convey: Due diligence investigates a company before an investment. Company leaders can help make the assumptions explicit and test them against actual work.",
+  "prompt": "Panel 1 of an explainer comic. Alex and Sam ask Morgan which company capabilities the proposed investment depends on. Use one speech bubble with the exact words: \"What are we being asked to support?\" Convey: In this transaction, diligence tests the product, technology and team assumptions behind the proposed investment. Company leaders help make those assumptions explicit and test them against actual work.",
   "alt": "Comic panel: Alex and Sam ask Morgan which company capabilities the proposed investment depends on.",
-  "caption": "Due diligence investigates a company before an investment. Company leaders can help make the assumptions explicit and test them against actual work.",
+  "caption": "In this transaction, diligence tests the product, technology and team assumptions behind the proposed investment. Company leaders help make those assumptions explicit and test them against actual work.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex and Sam ask Morgan which company capabilities the proposed investment depends on.](assets/images/16-diligence-corrects-the-plan/comic-01-scene.jpeg)
 
-**Panel 1:** Due diligence investigates a company before an investment. Company leaders can help make the assumptions explicit and test them against actual work.
+**Panel 1:** In this transaction, diligence tests the product, technology and team assumptions behind the proposed investment. Company leaders help make those assumptions explicit and test them against actual work.
 
 *Dialogue:* “What are we being asked to support?”
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Alex demonstrates a system while Sam notes an untested dependency. Use one speech bubble with the exact words: \"What has this demonstration established?\" Convey: A demonstration shows what worked under those conditions. Record which systems, customers and situations remain untested.",
+  "prompt": "Panel 2 of an explainer comic. Alex demonstrates a system while Sam notes an untested dependency. Use one speech bubble with the exact words: \"What has this demonstration established?\" Convey: A demonstration shows what worked under those conditions. Morgan samples five of the last twelve implementations instead of relying on the best one; the sample is one country and two quarters, and that limit is recorded.",
   "alt": "Comic panel: Alex and Sam compare a demonstration screen with a folder of untested dependencies.",
-  "caption": "A demonstration shows what worked under those conditions. Record which systems, customers and situations remain untested.",
+  "caption": "A demonstration shows what worked under those conditions. Morgan samples five of the last twelve implementations instead of relying on the best one; the sample is one country and two quarters, and that limit is recorded.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex and Sam compare a demonstration screen with a folder of untested dependencies.](assets/images/16-diligence-corrects-the-plan/comic-02-scene.jpeg)
 
-**Panel 2:** A demonstration shows what worked under those conditions. Record which systems, customers and situations remain untested.
+**Panel 2:** A demonstration shows what worked under those conditions. Morgan samples five of the last twelve implementations instead of relying on the best one; the sample is one country and two quarters, and that limit is recorded.
 
 *Dialogue:* “What has this demonstration established?”
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Morgan labels observation, assertion, and inference separately. Use one speech bubble with the exact words: \"Which claims have supporting evidence?\" Convey: Separate what was observed, what someone reported and what the reviewer inferred. Explain the strength and limits of each finding.",
+  "prompt": "Panel 3 of an explainer comic. Morgan labels observation, assertion, and inference separately. Use one speech bubble with the exact words: \"Which claims have supporting evidence?\" Convey: Finding D-3. Observed: three of five sampled implementations needed one specialist’s manual configuration, about 80 hours each. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: the real split.",
   "alt": "Comic panel: Morgan labels observation, assertion, and inference separately.",
-  "caption": "Separate what was observed, what someone reported and what the reviewer inferred. Explain the strength and limits of each finding.",
+  "caption": "Finding D-3. Observed: three of five sampled implementations needed one specialist’s manual configuration, about 80 hours each. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: the real split.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan labels observation, assertion, and inference separately.](assets/images/16-diligence-corrects-the-plan/comic-03-scene.jpeg)
 
-**Panel 3:** Separate what was observed, what someone reported and what the reviewer inferred. Explain the strength and limits of each finding.
+**Panel 3:** Finding D-3. Observed: three of five sampled implementations needed one specialist’s manual configuration, about 80 hours each. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: the real split.
 
 *Dialogue:* “Which claims have supporting evidence?”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. A finding moves toward price, funding, or a work plan. Use one speech bubble with the exact words: \"Which decision should this change?\" Convey: Record how each important finding affects a decision. It may support the existing plan or call for different funding, terms or work.",
+  "prompt": "Panel 4 of an explainer comic. A finding moves toward price, funding, or a work plan. Use one speech bubble with the exact words: \"Which decision should this change?\" Convey: D-3 changes the plan, not the deal. The first-year volume assumption falls from 2× to 1.5×, second-country expansion waits for pilot evidence, and a €180,000, 12-engineer-week setup pilot becomes a funded condition. Hiring two specialists at €300,000 a year is deferred.",
   "alt": "Comic panel: A finding moves toward price, funding, or a work plan.",
-  "caption": "Record how each important finding affects a decision. It may support the existing plan or call for different funding, terms or work.",
+  "caption": "D-3 changes the plan, not the deal. The first-year volume assumption falls from 2× to 1.5×, second-country expansion waits for pilot evidence, and a €180,000, 12-engineer-week setup pilot becomes a funded condition. Hiring two specialists at €300,000 a year is deferred.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: A finding moves toward price, funding, or a work plan.](assets/images/16-diligence-corrects-the-plan/comic-04-scene.jpeg)
 
-**Panel 4:** Record how each important finding affects a decision. It may support the existing plan or call for different funding, terms or work.
+**Panel 4:** D-3 changes the plan, not the deal. The first-year volume assumption falls from 2× to 1.5×, second-country expansion waits for pilot evidence, and a €180,000, 12-engineer-week setup pilot becomes a funded condition. Hiring two specialists at €300,000 a year is deferred.
 
 *Dialogue:* “Which decision should this change?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex annotates a finding with evidence still needed and the name of the accountable company leader. Use one speech bubble with the exact words: \"Let’s record what we can commit to.\" Convey: Review important findings through the agreed process. Record company agreement, disagreement or an early review after completion when access is limited.",
+  "prompt": "Panel 5 of an explainer comic. Alex annotates a finding with evidence still needed and the name of the accountable company leader. Use one speech bubble with the exact words: \"Let’s record what we can commit to.\" Convey: The investment committee approves the terms; the Larkspur board approves the plan and funding; Priya is accountable. Alex’s data-quality explanation is recorded as a disagreement, to be resolved by the pilot cohort’s measured effort split.",
   "alt": "Comic panel: Alex annotates a finding with evidence still needed and the name of the accountable company leader.",
-  "caption": "Review important findings through the agreed process. Record company agreement, disagreement or an early review after completion when access is limited.",
+  "caption": "The investment committee approves the terms; the Larkspur board approves the plan and funding; Priya is accountable. Alex’s data-quality explanation is recorded as a disagreement, to be resolved by the pilot cohort’s measured effort split.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex annotates a finding with evidence still needed and the name of the accountable company leader.](assets/images/16-diligence-corrects-the-plan/comic-05-scene.jpeg)
 
-**Panel 5:** Review important findings through the agreed process. Record company agreement, disagreement or an early review after completion when access is limited.
+**Panel 5:** The investment committee approves the terms; the Larkspur board approves the plan and funding; Priya is accountable. Alex’s data-quality explanation is recorded as a disagreement, to be resolved by the pilot cohort’s measured effort split.
 
 *Dialogue:* “Let’s record what we can commit to.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex connect a demonstrated capability and an untested assumption to a proposed funding condition. Use one speech bubble with the exact words: \"What does this evidence let us promise?\" Convey: A funding round, buyout and strategic investment need different evidence. Make assumptions, access boundaries and conditions for company commitments clear before the deal is agreed.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex connect a demonstrated capability and an untested assumption to a proposed funding condition. Use one speech bubble with the exact words: \"What does this evidence let us promise?\" Convey: Access differs by stage. Before signing, a finding can still move the price; after closing, only the plan and its funding. Priya records acceptance of D-3 within ten days of closing, and it becomes a funded priority with a day-90 review.",
   "alt": "Comic panel: Priya and Alex connect a demonstrated capability and an untested assumption to a proposed funding condition.",
-  "caption": "A funding round, buyout and strategic investment need different evidence. Make assumptions, access boundaries and conditions for company commitments clear before the deal is agreed.",
+  "caption": "Access differs by stage. Before signing, a finding can still move the price; after closing, only the plan and its funding. Priya records acceptance of D-3 within ten days of closing, and it becomes a funded priority with a day-90 review.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Alex connect a demonstrated capability and an untested assumption to a proposed funding condition.](assets/images/16-diligence-corrects-the-plan/comic-06-scene.jpeg)
 
-**Panel 6:** A funding round, buyout and strategic investment need different evidence. Make assumptions, access boundaries and conditions for company commitments clear before the deal is agreed.
+**Panel 6:** Access differs by stage. Before signing, a finding can still move the price; after closing, only the plan and its funding. Priya records acceptance of D-3 within ten days of closing, and it becomes a funded priority with a day-90 review.
 
 *Dialogue:* “What does this evidence let us promise?”

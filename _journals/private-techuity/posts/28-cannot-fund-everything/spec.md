@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Translate investor expectations into feasible competing uses of product and engineering capacity. Compare the same choice under learning, expansion, debt-service and corporate-integration constraints, with explicit work to stop.
+Translate investor expectations into a feasible combination of product and engineering work under two separate limits, cash and team capacity. Lead with the worked Larkspur exercise, state the funding boundary, complete the selection as a full decision record, and show one review that revises the combination. Keep only the one investor condition relevant to the exercise and link to the financing comparisons for the rest.
 
 ## Audience
 
@@ -23,7 +23,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Define necessary terms before using them, and begin with a recognizable company decision.
 - Develop one connected explanation from the question through options and example to an actionable conclusion.
 - Label fictional scenarios and proposed working methods; do not imply validated performance or guaranteed access to resources.
-- Include a useful trade-off and conditions for changing the decision.
+- Include a useful trade-off and conditions for changing the decision, and show one review in which new evidence changes the selected combination.
 - Connect the preceding and following chapters in the configured reading order.
 - Provide an independently readable 300–500-word summary and six fictional comic panels with consistent visible and structured text; generate the panel artwork from the recorded prompts.
 
@@ -46,6 +46,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-09-14: Bring the €500,000 / 24-engineer-week table forward, state the funding boundary (operating work budgeted; change budget funds the recovery improvement), complete the selection as a decision record, add the failed day-45 restore retest as the review that revises the combination, compress the investor-scenario table to the growth-funding condition with a link to [[raise-what-you-need]], replace the “overruled or unfunded” prediction with the missing-constraint explanation, end with the toolkit record and three questions; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Choosing What to Fund—and What to Stop” to “You Cannot Fund Every Good Project at Once”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

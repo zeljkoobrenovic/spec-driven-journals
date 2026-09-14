@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
 # Spec: PART V — Leading Through Funding and Ownership Changes
@@ -48,6 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-14: Describe four destinations after the split of the financing chapter (diligence, funded early plan, delayed financing, handover of obligations), state nonlinearity once, qualify how much an event changes and promise the finding that travels through all four chapters. Permalink unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Reconcile the revised article and applicable reading formats with the Owned contract; specification accepted as matching the draft manuscript.

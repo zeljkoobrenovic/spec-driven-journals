@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** A new investor replaces the company’s own rhythm with an investment case, an early review and expectations formed during diligence. The panels follow the period in which those expectations become a funded plan or harden into commitments nobody tested.
+**Comic.** The transaction introduces new assumptions and review dates, and it can introduce a new review timetable and expectations formed during diligence. The panels follow the period in which one diligence finding becomes a funded priority inside an authorized envelope, and in which the day-100 review changes the plan. Every figure is fictional.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/17-first-hundred-days/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Priya, Alex and Sam distinguish a new funding round from a purchase of control on an early planning calendar. Use one speech bubble with the exact words: \"What changed, and what is funded?\" Convey: The early period after funding or an ownership change establishes a workable operating plan. A hundred days is a planning convention; another round need not replace management.",
+  "prompt": "Panel 1 of an explainer comic. Priya, Alex and Sam distinguish a new funding round from a purchase of control on an early planning calendar. Use one speech bubble with the exact words: \"What changed, and what is funded?\" Convey: The early period after funding or an ownership change establishes a funded operating plan. A hundred days is a planning convention; another round need not replace management. For Larkspur, what changed is a growth investment, new review dates and a board envelope of €300,000 and 24 engineer-weeks.",
   "alt": "Comic panel: Alex, Sam and Priya review a planning calendar alongside separate funding and ownership-change notes.",
-  "caption": "The early period after funding or an ownership change establishes a workable operating plan. A hundred days is a planning convention; another round need not replace management.",
+  "caption": "The early period after funding or an ownership change establishes a funded operating plan. A hundred days is a planning convention; another round need not replace management. For Larkspur, what changed is a growth investment, new review dates and a board envelope of €300,000 and 24 engineer-weeks.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex, Sam and Priya review a planning calendar alongside separate funding and ownership-change notes.](assets/images/17-first-hundred-days/comic-01-scene.jpeg)
 
-**Panel 1:** The early period after funding or an ownership change establishes a workable operating plan. A hundred days is a planning convention; another round need not replace management.
+**Panel 1:** The early period after funding or an ownership change establishes a funded operating plan. A hundred days is a planning convention; another round need not replace management. For Larkspur, what changed is a growth investment, new review dates and a board envelope of €300,000 and 24 engineer-weeks.
 
 *Dialogue:* “What changed, and what is funded?”
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/17-first-hundred-days/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan listens to company teams before adding initiatives. Use one speech bubble with the exact words: \"What did the investigation miss?\" Convey: Recheck the findings from the pre-investment investigation with the people who will do the work.",
+  "prompt": "Panel 2 of an explainer comic. Morgan listens to company teams before adding initiatives. Use one speech bubble with the exact words: \"What did the investigation miss?\" Convey: Finding D-3 from diligence is confirmed with the people who run implementations: one specialist’s manual configuration, about 80 hours each in a five-of-twelve sample. Management keeps the dependency but not the sampled figure; the baseline comes from actual customer records by day 20.",
   "alt": "Comic panel: Morgan listens to company teams before adding initiatives.",
-  "caption": "Recheck the findings from the pre-investment investigation with the people who will do the work.",
+  "caption": "Finding D-3 from diligence is confirmed with the people who run implementations: one specialist’s manual configuration, about 80 hours each in a five-of-twelve sample. Management keeps the dependency but not the sampled figure; the baseline comes from actual customer records by day 20.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan listens to company teams before adding initiatives.](assets/images/17-first-hundred-days/comic-02-scene.jpeg)
 
-**Panel 2:** Recheck the findings from the pre-investment investigation with the people who will do the work.
+**Panel 2:** Finding D-3 from diligence is confirmed with the people who run implementations: one specialist’s manual configuration, about 80 hours each in a five-of-twelve sample. Management keeps the dependency but not the sampled figure; the baseline comes from actual customer records by day 20.
 
 *Dialogue:* “What did the investigation miss?”
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/17-first-hundred-days/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam places three fictional priorities beside limited team capacity. Use one speech bubble with the exact words: \"What must wait for these?\" Convey: Choose priorities that fit available people and money. Record what other work must wait.",
+  "prompt": "Panel 3 of an explainer comic. Sam places three fictional priorities beside limited team capacity. Use one speech bubble with the exact words: \"What must wait for these?\" Convey: Three funded priorities: ONB-1, the onboarding pilot, €180,000 and 12 engineer-weeks; KNW-1, a second engineer for the scheduling engine, 4 protected weeks; REC-1, a restore test, €80,000 and 4 weeks. €260,000 of the €300,000 envelope. The portal, the second country and two hires wait, with the decision recorded.",
   "alt": "Comic panel: Sam places three fictional priorities beside limited team capacity.",
-  "caption": "Choose priorities that fit available people and money. Record what other work must wait.",
+  "caption": "Three funded priorities: ONB-1, the onboarding pilot, €180,000 and 12 engineer-weeks; KNW-1, a second engineer for the scheduling engine, 4 protected weeks; REC-1, a restore test, €80,000 and 4 weeks. €260,000 of the €300,000 envelope. The portal, the second country and two hires wait, with the decision recorded.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam places three fictional priorities beside limited team capacity.](assets/images/17-first-hundred-days/comic-03-scene.jpeg)
 
-**Panel 3:** Choose priorities that fit available people and money. Record what other work must wait.
+**Panel 3:** Three funded priorities: ONB-1, the onboarding pilot, €180,000 and 12 engineer-weeks; KNW-1, a second engineer for the scheduling engine, 4 protected weeks; REC-1, a restore test, €80,000 and 4 weeks. €260,000 of the €300,000 envelope. The portal, the second country and two hires wait, with the decision recorded.
 
 *Dialogue:* “What must wait for these?”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/17-first-hundred-days/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex connects an onboarding improvement to a knowledge dependency. Use one speech bubble with the exact words: \"Sequence the necessary work.\" Convey: A dependency is something that must happen first. Plan these steps before promising several improvements at once.",
+  "prompt": "Panel 4 of an explainer comic. Alex connects an onboarding improvement to a knowledge dependency. Use one speech bubble with the exact words: \"Sequence the necessary work.\" Convey: A dependency is something that must happen first. The restore environment before the day-45 test; the baseline before the pilot cohort; the scheduling specialist’s four weeks protected so nothing else claims them. Plan the order before promising everything at once.",
   "alt": "Comic panel: Alex connects an onboarding improvement to a knowledge dependency.",
-  "caption": "A dependency is something that must happen first. Plan these steps before promising several improvements at once.",
+  "caption": "A dependency is something that must happen first. The restore environment before the day-45 test; the baseline before the pilot cohort; the scheduling specialist’s four weeks protected so nothing else claims them. Plan the order before promising everything at once.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex connects an onboarding improvement to a knowledge dependency.](assets/images/17-first-hundred-days/comic-04-scene.jpeg)
 
-**Panel 4:** A dependency is something that must happen first. Plan these steps before promising several improvements at once.
+**Panel 4:** A dependency is something that must happen first. The restore environment before the day-45 test; the baseline before the pilot cohort; the scheduling specialist’s four weeks protected so nothing else claims them. Plan the order before promising everything at once.
 
 *Dialogue:* “Sequence the necessary work.”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/17-first-hundred-days/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. The team records a baseline, owner, and review condition. Use one speech bubble with the exact words: \"How will we recognize progress?\" Convey: A baseline records the starting situation. Agree who owns each result and what evidence would justify changing the plan.",
-  "alt": "Comic panel: The team records a baseline, owner, and review condition.",
-  "caption": "A baseline records the starting situation. Agree who owns each result and what evidence would justify changing the plan.",
+  "prompt": "Panel 5 of an explainer comic. The team records a baseline, accountable leader, and review condition. Use one speech bubble with the exact words: \"How will we recognize progress?\" Convey: Each priority has an accountable leader, a baseline and a decision date: Priya at day 90, Alex at day 60 and day 45. Measure internal effort and customer waiting time separately, because fewer hours can leave the customer waiting just as long.",
+  "alt": "Comic panel: The team records a baseline, accountable leader, and review condition.",
+  "caption": "Each priority has an accountable leader, a baseline and a decision date: Priya at day 90, Alex at day 60 and day 45. Measure internal effort and customer waiting time separately, because fewer hours can leave the customer waiting just as long.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -118,9 +118,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: The team records a baseline, owner, and review condition.](assets/images/17-first-hundred-days/comic-05-scene.jpeg)
+![Comic panel: The team records a baseline, accountable leader, and review condition.](assets/images/17-first-hundred-days/comic-05-scene.jpeg)
 
-**Panel 5:** A baseline records the starting situation. Agree who owns each result and what evidence would justify changing the plan.
+**Panel 5:** Each priority has an accountable leader, a baseline and a decision date: Priya at day 90, Alex at day 60 and day 45. Measure internal effort and customer waiting time separately, because fewer hours can leave the customer waiting just as long.
 
 *Dialogue:* “How will we recognize progress?”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/17-first-hundred-days/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Morgan replaces a finished-plan trophy with a revised decision. Use one speech bubble with the exact words: \"What did we learn?\" Convey: The early period should leave a funded plan that company leaders understand and can adapt as they learn.",
+  "prompt": "Panel 6 of an explainer comic. Morgan replaces a finished-plan trophy with a revised decision. Use one speech bubble with the exact words: \"What did we learn?\" Convey: Day 100. The restore failed at day 45 and passed at day 85; the second engineer passed at day 60; onboarding effort fell to 62 hours, not the 50 assumed, and customer waiting time did not move. The board keeps expansion deferred a quarter and funds a €40,000 data-quality step from the reserve.",
   "alt": "Comic panel: Morgan replaces a finished-plan trophy with a revised decision.",
-  "caption": "The early period should leave a funded plan that company leaders understand and can adapt as they learn.",
+  "caption": "Day 100. The restore failed at day 45 and passed at day 85; the second engineer passed at day 60; onboarding effort fell to 62 hours, not the 50 assumed, and customer waiting time did not move. The board keeps expansion deferred a quarter and funds a €40,000 data-quality step from the reserve.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan replaces a finished-plan trophy with a revised decision.](assets/images/17-first-hundred-days/comic-06-scene.jpeg)
 
-**Panel 6:** The early period should leave a funded plan that company leaders understand and can adapt as they learn.
+**Panel 6:** Day 100. The restore failed at day 45 and passed at day 85; the second engineer passed at day 60; onboarding effort fell to 62 hours, not the 50 assumed, and customer waiting time did not move. The board keeps expansion deferred a quarter and funds a €40,000 data-quality step from the reserve.
 
 *Dialogue:* “What did we learn?”

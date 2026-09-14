@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** In a company without an outside investor, the budget is roughly what the business earns. The panels follow an investment announcement to show how a transaction breaks that link: the headline describes a change of ownership, and only the deal structure says how much reaches the business.
+**Comic.** An announcement describes a transaction, not a budget. The panels follow a fictional investment announcement to show what has to be established before a hire can be authorized: how much cash reaches the business, when it arrives and who can approve its use. Those questions apply under every ownership arrangement; the deal structure decides the answers.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/01-announcement-is-not-a-budget/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Sam holds two agreements showing different payment orders. Use one speech bubble with the exact words: \"Which agreement governs this payment?\" Convey: A management fee pays for managing investments. Carried interest is a share of investment profits. Company executives’ shares follow a separate agreement.",
+  "prompt": "Panel 5 of an explainer comic. Sam holds two agreements showing different payment orders. Use one speech bubble with the exact words: \"Which agreement governs this payment?\" Convey: A management fee pays for managing investments. Carried interest is a share of investment profits, paid in the order the fund agreement sets. Company executives’ shares follow a separate agreement.",
   "alt": "Comic panel: Sam holds two agreements showing different payment orders.",
-  "caption": "A management fee pays for managing investments. Carried interest is a share of investment profits. Company executives’ shares follow a separate agreement.",
+  "caption": "A management fee pays for managing investments. Carried interest is a share of investment profits, paid in the order the fund agreement sets. Company executives’ shares follow a separate agreement.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam holds two agreements showing different payment orders.](assets/images/01-announcement-is-not-a-budget/comic-05-scene.jpeg)
 
-**Panel 5:** A management fee pays for managing investments. Carried interest is a share of investment profits. Company executives’ shares follow a separate agreement.
+**Panel 5:** A management fee pays for managing investments. Carried interest is a share of investment profits, paid in the order the fund agreement sets. Company executives’ shares follow a separate agreement.
 
 *Dialogue:* “Which agreement governs this payment?”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/01-announcement-is-not-a-budget/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Sam draws three separate money paths while Alex identifies the person who can approve each plan. Use one speech bubble with the exact words: \"Which money can fund our team?\" Convey: In alternative fictional scenarios, a new share issue funds Larkspur, a purchase of existing shares pays the seller, and a corporate budget needs its own approval.",
-  "alt": "Comic panel: Alex and Sam compare venture, growth, buyout and corporate ownership cards with a separate company budget folder.",
-  "caption": "In alternative fictional scenarios, a new share issue funds Larkspur, a purchase of existing shares pays the seller, and a corporate budget needs its own approval.",
+  "prompt": "Panel 6 of an explainer comic. Alex and Sam sit at a table with four cards labelled VENTURE, GROWTH, BUYOUT and CORPORATE beside a folder labelled COMPANY BUDGET; Sam points at the folder. Use one speech bubble with the exact words: \"Which money can fund our team?\" Convey: In the fictional €8m share issue, Larkspur received €7.6m net and the board’s approved plan let the CEO authorize three hires. A purchase of existing shares would have paid the seller; a corporate budget needs its own approval.",
+  "alt": "Comic panel: Alex and Sam sit at a table with cards labelled venture, growth, buyout and corporate beside a company-budget folder, asking which money can fund the team.",
+  "caption": "In the fictional €8m share issue, Larkspur received €7.6m net and the board’s approved plan let the CEO authorize three hires. A purchase of existing shares would have paid the seller; a corporate budget needs its own approval.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +141,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex and Sam compare venture, growth, buyout and corporate ownership cards with a separate company budget folder.](assets/images/01-announcement-is-not-a-budget/comic-06-scene.jpeg)
+![Comic panel: Alex and Sam sit at a table with cards labelled venture, growth, buyout and corporate beside a company-budget folder, asking which money can fund the team.](assets/images/01-announcement-is-not-a-budget/comic-06-scene.jpeg)
 
-**Panel 6:** In alternative fictional scenarios, a new share issue funds Larkspur, a purchase of existing shares pays the seller, and a corporate budget needs its own approval.
+**Panel 6:** In the fictional €8m share issue, Larkspur received €7.6m net and the board’s approved plan let the CEO authorize three hires. A purchase of existing shares would have paid the seller; a corporate budget needs its own approval.
 
 *Dialogue:* “Which money can fund our team?”

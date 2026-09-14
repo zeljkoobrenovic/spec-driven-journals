@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** No adviser of this kind exists without an outside investor. The panels show what the role gives the adviser, information and influence a consultant would not have, and how the company’s technology leader keeps their own authority clear alongside it.
+**Comic.** The investor’s technology adviser reports to the investment firm, so the company needs to understand both the operating assignment and how findings may inform the investor’s decisions. The panels show how the company’s technology leader establishes the assignment, separates influence from authority and handles a change of role.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -15,9 +15,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/15-investors-adviser/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex asks Morgan to label the purpose of the meeting before they discuss the product plan. Use one speech bubble with the exact words: \"Which job are you doing here?\" Convey: The Technology Principal is the investment firm’s technology adviser in this book. Company leaders should establish whether the assignment concerns assessment, advice or delivery.",
+  "prompt": "Panel 1 of an explainer comic. Alex asks Morgan to label the purpose of the meeting before they discuss the product plan. Use one speech bubble with the exact words: \"Which job are you doing here?\" Convey: Morgan is the investment firm’s technology adviser, the Technology Principal in this book’s example. Establish whether the assignment is assessment, advice or delivery, and how findings may reach the investor.",
   "alt": "Comic panel: Alex asks Morgan to label the purpose of the meeting before they discuss the product plan.",
-  "caption": "The Technology Principal is the investment firm’s technology adviser in this book. Company leaders should establish whether the assignment concerns assessment, advice or delivery.",
+  "caption": "Morgan is the investment firm’s technology adviser, the Technology Principal in this book’s example. Establish whether the assignment is assessment, advice or delivery, and how findings may reach the investor.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex asks Morgan to label the purpose of the meeting before they discuss the product plan.](assets/images/15-investors-adviser/comic-01-scene.jpeg)
 
-**Panel 1:** The Technology Principal is the investment firm’s technology adviser in this book. Company leaders should establish whether the assignment concerns assessment, advice or delivery.
+**Panel 1:** Morgan is the investment firm’s technology adviser, the Technology Principal in this book’s example. Establish whether the assignment is assessment, advice or delivery, and how findings may reach the investor.
 
 *Dialogue:* “Which job are you doing here?”
 
@@ -36,11 +36,12 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "02-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/15-investors-adviser/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Alex asks Morgan to approve a product roadmap. Use one speech bubble with the exact words: \"Who owns this decision?\" Convey: Working for the owner does not automatically authorize the adviser to approve a company’s product priorities or spending.",
-  "alt": "Comic panel: Alex asks Morgan to approve a product roadmap.",
-  "caption": "Working for the owner does not automatically authorize the adviser to approve a company’s product priorities or spending.",
+  "prompt": "Panel 2 of an explainer comic. Alex holds a product roadmap and asks Morgan who has the authority to approve it. Use one speech bubble with the exact words: \"Who is authorized to decide?\" Convey: Working for the investor gives a suggestion influence. Only an explicit assignment agreed by the company gives the adviser authority to approve product priorities or spending.",
+  "alt": "Comic panel: Alex holds a product roadmap and asks Morgan who has the authority to approve it.",
+  "caption": "Working for the investor gives a suggestion influence. Only an explicit assignment agreed by the company gives the adviser authority to approve product priorities or spending.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -49,11 +50,11 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex asks Morgan to approve a product roadmap.](assets/images/15-investors-adviser/comic-02-scene.jpeg)
+![Comic panel: Alex holds a product roadmap and asks Morgan who has the authority to approve it.](assets/images/15-investors-adviser/comic-02-scene.jpeg)
 
-**Panel 2:** Working for the owner does not automatically authorize the adviser to approve a company’s product priorities or spending.
+**Panel 2:** Working for the investor gives a suggestion influence. Only an explicit assignment agreed by the company gives the adviser authority to approve product priorities or spending.
 
-*Dialogue:* “Who owns this decision?”
+*Dialogue:* “Who is authorized to decide?”
 
 <!-- comic-panel
 {
@@ -61,9 +62,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/15-investors-adviser/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex places a three-week pricing-change example beside Morgan’s investment assumptions. Use one speech bubble with the exact words: \"Here is what our team can demonstrate.\" Convey: Build a shared account of the company’s capabilities and the investor’s assumptions. Explain the evidence, constraints and feasible alternatives.",
-  "alt": "Comic panel: Alex places a three-week pricing-change example beside Morgan’s investment assumptions.",
-  "caption": "Build a shared account of the company’s capabilities and the investor’s assumptions. Explain the evidence, constraints and feasible alternatives.",
+  "prompt": "Panel 3 of an explainer comic. Alex lays the company’s own evidence beside Morgan’s investment assumptions on a table. Use one speech bubble with the exact words: \"Here is what our team can demonstrate.\" Convey: Build a shared account of the company’s capabilities and the investor’s assumptions. Each side states the evidence that would change its view.",
+  "alt": "Comic panel: Alex lays the company’s own evidence beside Morgan’s investment assumptions on a table.",
+  "caption": "Build a shared account of the company’s capabilities and the investor’s assumptions. Each side states the evidence that would change its view.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -72,9 +73,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex places a three-week pricing-change example beside Morgan’s investment assumptions.](assets/images/15-investors-adviser/comic-03-scene.jpeg)
+![Comic panel: Alex lays the company’s own evidence beside Morgan’s investment assumptions on a table.](assets/images/15-investors-adviser/comic-03-scene.jpeg)
 
-**Panel 3:** Build a shared account of the company’s capabilities and the investor’s assumptions. Explain the evidence, constraints and feasible alternatives.
+**Panel 3:** Build a shared account of the company’s capabilities and the investor’s assumptions. Each side states the evidence that would change its view.
 
 *Dialogue:* “Here is what our team can demonstrate.”
 
@@ -84,9 +85,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/15-investors-adviser/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam and Alex compare company capacity with Morgan’s commitments to several investments. Use one speech bubble with the exact words: \"What can we each commit?\" Convey: Check the adviser’s availability and the company resources needed. Relevant advice does not automatically supply delivery capacity.",
+  "prompt": "Panel 4 of an explainer comic. Sam and Alex compare company capacity with Morgan’s commitments to several investments. Use one speech bubble with the exact words: \"What can we each commit?\" Convey: The adviser’s time is spread across investments and advice does not supply delivery capacity. Availability is a planning input for the engagement, not a judgment about the relationship.",
   "alt": "Comic panel: Sam and Alex compare company capacity with Morgan’s commitments to several investments.",
-  "caption": "Check the adviser’s availability and the company resources needed. Relevant advice does not automatically supply delivery capacity.",
+  "caption": "The adviser’s time is spread across investments and advice does not supply delivery capacity. Availability is a planning input for the engagement, not a judgment about the relationship.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +98,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam and Alex compare company capacity with Morgan’s commitments to several investments.](assets/images/15-investors-adviser/comic-04-scene.jpeg)
 
-**Panel 4:** Check the adviser’s availability and the company resources needed. Relevant advice does not automatically supply delivery capacity.
+**Panel 4:** The adviser’s time is spread across investments and advice does not supply delivery capacity. Availability is a planning input for the engagement, not a judgment about the relationship.
 
 *Dialogue:* “What can we each commit?”
 
@@ -107,9 +108,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/15-investors-adviser/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex takes ownership of a better decision record. Use one speech bubble with the exact words: \"Can we sustain this ourselves?\" Convey: Useful support leaves company leaders better able to decide and carry out the work.",
+  "prompt": "Panel 5 of an explainer comic. Alex and Morgan discuss a working agreement across a desk. Use one speech bubble with the exact words: \"Can we sustain this ourselves?\" Convey: Useful support leaves company leaders better able to decide and carry out the work after the adviser’s involvement ends.",
   "alt": "Comic panel: Alex and Morgan discuss a working agreement across a desk.",
-  "caption": "Useful support leaves company leaders better able to decide and carry out the work.",
+  "caption": "Useful support leaves company leaders better able to decide and carry out the work after the adviser’s involvement ends.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +121,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex and Morgan discuss a working agreement across a desk.](assets/images/15-investors-adviser/comic-05-scene.jpeg)
 
-**Panel 5:** Useful support leaves company leaders better able to decide and carry out the work.
+**Panel 5:** Useful support leaves company leaders better able to decide and carry out the work after the adviser’s involvement ends.
 
 *Dialogue:* “Can we sustain this ourselves?”
 
@@ -128,11 +129,12 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "06-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/15-investors-adviser/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Morgan and Alex compare a fund adviser, an introduced specialist and a corporate function on three cards. Use one speech bubble with the exact words: \"Which role are you doing here?\" Convey: The supplied Technology Principal is one fund-specific role. Other investors may offer a partner, a specialist or no operating team. Establish the actual assignment, time and authority.",
-  "alt": "Comic panel: Morgan and Alex compare a fund adviser, an introduced specialist and a corporate function on three cards.",
-  "caption": "The supplied Technology Principal is one fund-specific role. Other investors may offer a partner, a specialist or no operating team. Establish the actual assignment, time and authority.",
+  "prompt": "Panel 6 of an explainer comic. Morgan tells Alex that the investment firm has asked for a written assessment of technology leadership, and Ines stands beside them holding a short written note for the team. Three cards on the table read coaching, assessment and delivery, with Morgan’s hand moving from the coaching card to the assessment card. Use one speech bubble with the exact words: \"My role has changed. Here is who agreed it.\" Convey: A change of role is a new agreement. The firm may ask its adviser for a view; only the company can authorize an assessment of its executive, and employees are told what the new conversations are for.",
+  "alt": "Comic panel: Morgan moves a card from coaching to assessment while Ines holds a written note for the team.",
+  "caption": "A change of role is a new agreement. The firm may ask its adviser for a view; only the company can authorize an assessment of its executive, and employees are told what the new conversations are for.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +143,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Morgan and Alex compare a fund adviser, an introduced specialist and a corporate function on three cards.](assets/images/15-investors-adviser/comic-06-scene.jpeg)
+![Comic panel: Morgan moves a card from coaching to assessment while Ines holds a written note for the team.](assets/images/15-investors-adviser/comic-06-scene.jpeg)
 
-**Panel 6:** The supplied Technology Principal is one fund-specific role. Other investors may offer a partner, a specialist or no operating team. Establish the actual assignment, time and authority.
+**Panel 6:** A change of role is a new agreement. The firm may ask its adviser for a view; only the company can authorize an assessment of its executive, and employees are told what the new conversations are for.
 
-*Dialogue:* “Which role are you doing here?”
+*Dialogue:* “My role has changed. Here is who agreed it.”

@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** In ordinary product and engineering work, incentives mean targets and pay. The panels show the second layer investor ownership adds, including equity that pays out at a sale and a fund with its own timing, and how it shapes which proposals get approved.
+**Comic.** An investment may add new equity terms, exit expectations and fund-level incentives to the rewards and risks already shaping company decisions. The panels read what a share percentage can actually pay, then follow one proposed consolidation through four different bets: the executives’ shares, the fund’s carried interest, the employees’ jobs and the customers’ renewals.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/06-different-bets/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam points to a payment threshold in a share agreement. Use one speech bubble with the exact words: \"Read the distribution rules.\" Convey: Company leaders’ shares and the investment manager’s profit share follow different rules. A payment waterfall sets the order and calculation of payments.",
+  "prompt": "Panel 2 of an explainer comic. Sam points to a payment threshold in a share agreement. Use one speech bubble with the exact words: \"Read the distribution rules.\" Convey: Company leaders' shares follow the company's payout waterfall; the investment manager's carried interest follows the fund's. In the fictional example, 5% above a €100 million threshold pays €2 million on €140 million, not 5% of the whole.",
   "alt": "Comic panel: Sam points to a payment threshold in a share agreement.",
-  "caption": "Company leaders’ shares and the investment manager’s profit share follow different rules. A payment waterfall sets the order and calculation of payments.",
+  "caption": "Company leaders’ shares follow the company’s payout waterfall; the investment manager’s carried interest follows the fund’s. In the fictional example, 5% above a €100 million threshold pays €2 million on €140 million, not 5% of the whole.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam points to a payment threshold in a share agreement.](assets/images/06-different-bets/comic-02-scene.jpeg)
 
-**Panel 2:** Company leaders’ shares and the investment manager’s profit share follow different rules. A payment waterfall sets the order and calculation of payments.
+**Panel 2:** Company leaders’ shares follow the company’s payout waterfall; the investment manager’s carried interest follows the fund’s. In the fictional example, 5% above a €100 million threshold pays €2 million on €140 million, not 5% of the whole.
 
 *Dialogue:* “Read the distribution rules.”
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/06-different-bets/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. A team races a metric while customers wait nearby. Use one speech bubble with the exact words: \"The measure changed our behavior.\" Convey: An incentive is a reward or consequence that influences behavior. A target can encourage a reported result while damaging customer service.",
+  "prompt": "Panel 3 of an explainer comic. A team races a metric while customers wait nearby. Use one speech bubble with the exact words: \"The measure changed our behavior.\" Convey: A revenue target can be met through discounts that leave customers waiting. Pair it with retention and a service measure, and change the payout rule if it still rewards the damaging choice.",
   "alt": "Comic panel: A team races a metric while customers wait nearby.",
-  "caption": "An incentive is a reward or consequence that influences behavior. A target can encourage a reported result while damaging customer service.",
+  "caption": "A revenue target can be met through discounts that leave customers waiting. Pair it with retention and a service measure, and change the payout rule if it still rewards the damaging choice.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: A team races a metric while customers wait nearby.](assets/images/06-different-bets/comic-03-scene.jpeg)
 
-**Panel 3:** An incentive is a reward or consequence that influences behavior. A target can encourage a reported result while damaging customer service.
+**Panel 3:** A revenue target can be met through discounts that leave customers waiting. Pair it with retention and a service measure, and change the payout rule if it still rewards the damaging choice.
 
 *Dialogue:* “The measure changed our behavior.”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/06-different-bets/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Morgan places an exit calendar beside a longer product commitment. Use one speech bubble with the exact words: \"Whose horizon governs this choice?\" Convey: An investor planning a sale and a team supporting a longer customer commitment can reasonably care about different dates.",
+  "prompt": "Panel 4 of an explainer comic. Morgan places an exit calendar beside a longer product commitment. Use one speech bubble with the exact words: \"Whose horizon governs this choice?\" Convey: In the fictional consolidation, the fund wants the saving visible in earnings before a sale process; the add-on customers' renewals and the support team's knowledge run on a longer clock.",
   "alt": "Comic panel: Morgan places an exit calendar beside a longer product commitment.",
-  "caption": "An investor planning a sale and a team supporting a longer customer commitment can reasonably care about different dates.",
+  "caption": "In the fictional consolidation, the fund wants the saving visible in earnings before a sale process; the add-on customers’ renewals and the support team’s knowledge run on a longer clock.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan places an exit calendar beside a longer product commitment.](assets/images/06-different-bets/comic-04-scene.jpeg)
 
-**Panel 4:** An investor planning a sale and a team supporting a longer customer commitment can reasonably care about different dates.
+**Panel 4:** In the fictional consolidation, the fund wants the saving visible in earnings before a sale process; the add-on customers’ renewals and the support team’s knowledge run on a longer clock.
 
 *Dialogue:* “Whose horizon governs this choice?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/06-different-bets/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Employees carry transition boxes while investors review returns. Use one speech bubble with the exact words: \"Who carries these costs?\" Convey: Employees may bear transition costs without receiving a share of the investment gain. Record who benefits and who carries the burden.",
+  "prompt": "Panel 5 of an explainer comic. Employees carry transition boxes while investors review returns. Use one speech bubble with the exact words: \"Who carries these costs?\" Convey: Closing the second support location raises the sale price the executives and the fund are betting on. Eleven employees lose their jobs; staging and retention payments reduce the customer risk but do not compensate them. Record who benefits and who carries the burden.",
   "alt": "Comic panel: Employees carry transition boxes while investors review returns.",
-  "caption": "Employees may bear transition costs without receiving a share of the investment gain. Record who benefits and who carries the burden.",
+  "caption": "Closing the second support location raises the sale price the executives and the fund are betting on. Eleven employees lose their jobs; staging and retention payments reduce the customer risk but do not compensate them. Record who benefits and who carries the burden.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Employees carry transition boxes while investors review returns.](assets/images/06-different-bets/comic-05-scene.jpeg)
 
-**Panel 5:** Employees may bear transition costs without receiving a share of the investment gain. Record who benefits and who carries the burden.
+**Panel 5:** Closing the second support location raises the sale price the executives and the fund are betting on. Eleven employees lose their jobs; staging and retention payments reduce the customer risk but do not compensate them. Record who benefits and who carries the burden.
 
 *Dialogue:* “Who carries these costs?”
 

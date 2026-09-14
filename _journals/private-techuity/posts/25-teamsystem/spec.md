@@ -3,11 +3,11 @@ status: accepted
 revised: 2026-09-14
 ---
 
-# Spec: TeamSystem: Each New Owner Buys the Last Owner’s Progress
+# Spec: TeamSystem: Each New Owner Inherits Progress and Unfinished Work
 
 ## Intent
 
-Use successive ownership transactions and acquisition demands to examine the operating work left with leaders. Separate financial presentation, changes of owner and evidence about sustained company capability.
+Use successive ownership transactions to show that each ownership change creates a new financial starting point while product work carries on across it. Separate reporting periods, adjusted earnings and statutory results with the company’s own reconciliation, distinguish announced transaction values from cash received, and end on what the group accumulates: products, knowledge, dependencies and continuing work.
 
 ## Audience
 
@@ -25,7 +25,9 @@ Product and engineering leaders inside companies working under investors, includ
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Establish the historical window and distinguish transaction announcements from completed transactions.
 - Separate sponsor accounts from company financial records and the manuscript's causal hypotheses.
-- Explain cash proceeds versus retained value, pro forma comparisons, adjusted EBITDA versus statutory earnings, and capitalized development using checked source figures.
+- Explain cash proceeds versus retained value, pro forma comparisons, adjusted EBITDA versus statutory earnings, and capitalized development using checked source figures; show the full reported adjusted-EBITDA-to-loss reconciliation, and present the ownership episodes in a table with date/status and what each source establishes, without a synthetic performance ranking.
+- Treat later HgCapital Trust announcements (2021, 2024) as announced values with completion and stake continuity unverified.
+- Keep the recurring-acquisition-adjustment lesson to one paragraph linking [[visma]]; link [[handover-of-obligations]] for the continuing-obligations handover.
 - Relate concrete interventions to testable customer and business mechanisms; expose stakeholder and attribution gaps.
 - Preserve qualifications in a 300–500-word TL;DR and six-panel fictional comic storyboard.
 
@@ -49,6 +51,7 @@ S45–S49: Palamon's historical account; HgCapital Trust's 2010 and 2015 announc
 
 ## Changelog
 
+- 2026-09-14: Retitle to “TeamSystem: Each New Owner Inherits Progress and Unfinished Work” and revise per the editorial review: narrowed opening, ownership-episode table, corrected 2021/2024 announcement annotations, complete adjusted-EBITDA-to-loss bridge from the 2017 report, recurring-adjustment discussion shortened with a link to Visma, closing sections combined; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “TeamSystem: What a Buy-and-Build Actually Accumulates” to “TeamSystem: Each New Owner Buys the Last Owner’s Progress”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

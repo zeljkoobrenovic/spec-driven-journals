@@ -7,7 +7,7 @@ revised: 2026-09-14
 
 ## Intent
 
-Treat acquisition and separation as changes to product obligations and authority. Distinguish sponsor consolidation, a strategic acquisition and a separation funded by any suitable owner.
+Treat combining businesses and separating one as two processes under one principle: a new boundary and a continuing customer promise. Show the transaction plan assuming savings or independence before the operating teams have validated the work, complete one capacity decision for an add-on acquisition and one dated carve-out bridge with an independence test, and distinguish a financial sponsor’s consolidation, a strategic acquisition and a separation funded by any suitable owner.
 
 ## Audience
 
@@ -24,6 +24,8 @@ Product and engineering leaders inside companies working under investors, includ
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
+- Give “Combining businesses” and “Separating a business” visible sections, each with its own Larkspur example that ends with the chosen option, alternatives rejected, funding, scarce capacity, who is authorized and the evidence that would change it, and each with a stated completion test.
+- Carry the group-versus-local standardization boundary point (stated problem, cost of compliance, exceptions process, named funder of the transition) in the integration-depth section; use responsibility language rather than “owns”; link to the authority chapter instead of re-establishing minority versus controlling rights.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
 - Link related chapters and cite substantive external factual claims close to the text.
@@ -54,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Restructure into “Combining businesses” and “Separating a business” under one boundary-and-continuity principle, add the add-on capacity decision and the dated carve-out bridge with an independence test, correct the opening to remove the investor-timetable generalization, absorb the standardization boundary point from the team-delivery chapter and hand off to Part IV, per the editorial review; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “The Deal Closes Long Before the Integration Does” to “An Acquisition Adds Work Before It Adds Value”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “A Transaction Changes Ownership Before It Changes Operations” to “The Deal Closes Long Before the Integration Does”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

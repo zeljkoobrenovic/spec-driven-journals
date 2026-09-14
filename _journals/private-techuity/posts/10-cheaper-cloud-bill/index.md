@@ -2,30 +2,35 @@
 title: "Why a Cheaper Cloud Bill Can Be Bad News"
 date: 2026-09-12
 author: Owned working manuscript
-excerpt: "Understand what drives a cloud bill and test whether lower spending preserves useful service after all costs are included."
+excerpt: "Put cloud bills on one comparable basis, separate why they changed, and decide how much to commit under a stated demand range before calling a lower bill an improvement."
 permalink: cheaper-cloud-bill
-timetoread: 7 min read
+timetoread: 11 min read
 logo: "assets/images/10-cheaper-cloud-bill/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/10-cheaper-cloud-bill.png"
 ---
 
+> **IN THIS SECTION, YOU WILL:** Learn to put cloud bills on one comparable basis, separate why they changed, and decide how much to commit before calling a lower bill an improvement.
+
+> **WHY IS THIS IMPORTANT:** A lower bill can conceal falling demand, a worse service unit or a commitment that stops the company shrinking later; reading the bill correctly is the difference between a saving and a hidden cost.
+
+
 > **KEY POINTS:**
 >
-> * A smaller bill can have **several explanations**. Separate changes in demand, usage, prices and architecture before claiming an improvement.
+> * A smaller bill can have **several explanations**. Put the figures on one comparable basis, then separate changes in demand, usage, prices and architecture before claiming an improvement.
 > * Choose a **unit that reflects useful service**. Cost per completed transaction or comparable customer can reveal more than total spending alone.
-> * **Savings must survive the full decision**. Include commitments, migration effort, service quality and the ability to change course when demand changes.
+> * **Commit only to the demand you can defend**. Test a purchase commitment against a stated demand range and the company’s funded horizon, and keep service quality as the final check on any saving.
 
 <br>
 **Cloud services** provide computing resources, storage and related services rented from a supplier. A company’s cloud bill falls by 20%. Has its operation improved?
 
 Perhaps unused resources were removed. Perhaps traffic fell because customers left. Perhaps spending moved into another account. Perhaps a large upfront commitment lowered the monthly invoice while increasing long-term exposure. The number is a starting observation, not a conclusion.
 
-Cloud spending attracts investor attention because it's a large, visible and adjustable cost, and reducing it improves the earnings measures the company is valued on. That makes a cost target easy to set from outside the engineering team and hard to refuse. The engineering leader’s contribution is to show what a cheaper bill means for the service customers receive, and whether a saving that looks good at the next review would still look good at a sale.
+In the fictional Larkspur scenario used in this chapter, the operating plan the board approved assumes cloud spending stays roughly flat while transaction volume grows by half. Morgan, the investor’s technology adviser, has asked why last quarter’s bill rose 20%. The question is legitimate. It is also incomplete: a bill can rise while the service becomes cheaper per unit of useful work, and fall while the service becomes worse. Alex, the technology leader, has to show what the bill means for the service customers receive, and whether a saving that looks good at the next board review would still look good a year later.
 
-The previous chapter compared the earnings, cash and design views of one proposal. Here we apply that approach to cloud spending: first choose a meaningful unit of service, then separate the reasons costs change, and finally check the saving alongside service quality.
+The previous chapter compared the earnings, cash and design views of one proposal. Here we apply that approach to cloud spending: first choose a meaningful unit of service and a comparable cost basis, then separate the reasons costs change, then decide how much to commit, and finally check the saving alongside service quality.
 
-**Unit economics** means examining revenue or cost for a meaningful unit of activity, such as a completed transaction or customer account. FinOps is the practice of managing technology's financial value through collaboration among engineering, finance and business teams. The FinOps Foundation's unit-economics guidance connects technology costs to organizational outcomes and distinguishes resource efficiency from business unit measures. [S16: FinOps unit economics](https://www.finops.org/framework/capabilities/unit-economics/) For a company leader, it bridges infrastructure work and the cash and margin questions discussed in [[obligations-before-budget]].
+**Unit economics** means examining revenue or cost for a meaningful unit of activity, such as a completed transaction or customer account. FinOps is the practice of managing technology’s financial value through collaboration among engineering, finance and business teams. The FinOps Foundation’s unit-economics guidance connects technology costs to organizational outcomes and distinguishes resource efficiency from business unit measures. [S16: FinOps unit economics](https://www.finops.org/framework/capabilities/unit-economics/) For a company leader, it bridges infrastructure work and the cash and margin questions discussed in [[obligations-before-budget]].
 
 ## Choose a Unit That Explains the Business
 
@@ -33,9 +38,24 @@ Cost per **virtual machine**, a software-defined computer running on shared hard
 
 A fictional company spends €100,000 per month to process one million successful transactions: €0.10 each. After growth, spending rises to €120,000 while successful transactions rise to 1.5 million: €0.08 each. Aggregate cost rose 20%; unit cost fell 20%. Whether this is desirable also depends on revenue per transaction, quality, customer mix and the investment needed to support the growth.
 
-Now imagine the bill instead falls to €80,000 because transaction volume falls to 500,000. Unit cost rises to €0.16. A cost-saving headline would hide a deterioration in the business's ability to spread its costs.
+Now imagine the bill instead falls to €80,000 because transaction volume falls to 500,000. Unit cost rises to €0.16. A cost-saving headline would hide a deterioration in the business’s ability to spread its costs.
 
-These simple examples show why a cost target should be attached to a service and demand assumption. They don't establish that all infrastructure costs vary in proportion to usage.
+These simple examples show why a cost target should be attached to a service and demand assumption. They don’t establish that all infrastructure costs vary in proportion to usage.
+
+A related trap is the portfolio comparison. Cloud cost as a percentage of revenue mixes technical efficiency, pricing, product margin, service model and company maturity; it can identify a question worth investigating but does not answer it by itself. A **cohort**, a group selected for comparison, needs to match business model, scale, workload and the services included, and even then a small portfolio offers limited statistical confidence. A company may spend more because its product performs more valuable work or because it is inefficient. Diagnosis must distinguish the two.
+
+## Put Every Figure on the Same Basis
+
+Comparing this month’s invoice with last month’s only works if both numbers mean the same thing. A monthly bill, an upfront commitment and a credit-reduced invoice mix cash timing with cost allocation. Before comparing, state which of four figures each number is:
+
+| Basis | What it measures | Typical distortion |
+| --- | --- | --- |
+| **Cash paid** in the period | Money that left the company’s account | An upfront commitment makes one month look expensive and the following months look cheap |
+| **Cost assigned to the period** | The period’s share of the resources consumed, with any upfront payment spread across the months it covers | The comparable basis for unit costs and trends |
+| **Credits** | Supplier or partner subsidies that reduce cash paid without reducing resources consumed | A subsidized invoice understates the continuing cost |
+| **Commitment usage** | How much of a prepaid or minimum commitment the period’s demand actually used | Unused commitment is a cost with no matching service |
+
+The examples in this chapter use cost assigned to the period unless stated otherwise. When finance and engineering disagree about whether a saving happened, the disagreement is often about the basis, not the facts: engineering is looking at resources consumed while finance is looking at cash paid. Agree the basis first.
 
 ## Separate Usage, Rates and Architecture
 
@@ -43,72 +63,87 @@ Infrastructure improvement can come from using fewer resources for the same work
 
 Removing unused resources can yield fairly direct savings. **Rightsizing**, matching provisioned capacity to actual demand, needs evidence about peaks and service requirements. Rate commitments can be valuable when demand is predictable, but flexibility has an economic value too. Architectural change can improve efficiency while introducing migration, reliability and maintenance costs.
 
-**Do not count the same saving twice**. If rightsizing reduces the volume eligible for a discounted commitment, the two headline opportunities aren't necessarily additive. A model should apply changes in a stated order and calculate the combined result.
+**Do not count the same saving twice**. If rightsizing reduces the volume eligible for a discounted commitment, the two headline opportunities aren’t necessarily additive. A model should apply changes in a stated order and calculate the combined result.
 
 ![Demand, unit prices and resource usage can each change the cloud bill.](assets/images/10-cheaper-cloud-bill/three-drivers-of-cloud-cost.jpeg)
 **Figure 1:** *Separate why the bill changed before deciding whether the service became more efficient.*
 
 ## A Multi-Year Commitment Changes Future Spending
 
-A fictional service needs €50,000 of resources each month at flexible rates. A commitment promises a discount but obliges the company to pay for capacity over a fixed period. The right comparison includes plausible demand paths, alternative architectures, acquisition plans, and the possibility of selling or separating the business.
+Larkspur’s scheduling service needs €50,000 of resources each month at flexible rates. The provider offers a 30% discount for a fixed monthly commitment over three years. A commitment promises a lower rate but obliges the company to pay for capacity over a fixed period. The right comparison includes plausible demand paths, alternative architectures, acquisition plans, and the possibility of selling or separating the business.
 
-Assume a fixed monthly commitment of €35,000 replaces the €50,000 flexible bill. At unchanged demand, the saving is €15,000 a month. If demand falls so that flexible spending would be €20,000, the same commitment costs €15,000 more a month, assuming it can't be reduced or used elsewhere.
+Assume a fixed monthly commitment of €35,000 replaces the €50,000 flexible bill. At unchanged demand, the saving is €15,000 a month. If demand falls so that flexible spending would be €20,000, the same commitment costs €15,000 more a month, assuming it can’t be reduced or used elsewhere. The €35,000 is the cost assigned to each month; whether the company pays it monthly or in advance changes cash timing, not this comparison.
 
-A discount on unused capacity is still an expense. A commitment that can't transfer on a carve-out can become a **stranded cost**: one the company still owes but no longer benefits from. A contract that makes switching expensive can be reasonable, but the loss of flexibility should be visible when it's approved.
-
-Product and engineering leaders should involve **procurement**, the people responsible for buying and negotiating supplier services, and finance early. Engineering understands usage and migration feasibility. Finance understands payment timing and accounting. Procurement and legal specialists interpret commercial terms. None of those views is sufficient by itself.
+A discount on unused capacity is still an expense. A contract that makes switching expensive can be reasonable, but the loss of flexibility should be visible when it’s approved.
 
 ![A fixed cloud commitment can cost less at stable demand and more when flexible demand falls below the commitment.](assets/images/10-cheaper-cloud-bill/fixed-commitment-changing-demand.jpeg)
 **Figure 2:** *Test the commitment against lower demand as well as the forecast that makes it attractive.*
 
-## Prove the Saving Actually Arrived
+### The Decision Larkspur Makes
 
-Before a cost initiative starts, define the **baseline**, the starting costs and demand used for comparison. Estimate what spending would have been without the initiative, and state which costs are included. Distinguish three quantities:
+The two cases above bracket the choice; they don’t make it. To decide, Larkspur states a demand range and a funding condition.
 
-- **Identified opportunity:** a model of what might be saved.
-- **Implemented change:** resources or contracts actually changed.
-- **Realized economic effect:** observed net expenditure or avoided expenditure, with costs and demand changes reconciled.
+**Demand range.** Eighteen months of usage show that flexible-rate spending has never fallen below €30,000 a month. The board-approved operating plan puts next year between €30,000 (onboarding stalls and the largest customer leaves) and €60,000 (the plan’s growth arrives). The €20,000 case lies outside that range; it is kept as a stress test, not a forecast.
 
-A capacity reduction may avoid a forecast increase rather than reduce this month's bill. That can be valuable, but the forecast and its uncertainty should stay visible. Similarly, reducing internal support effort doesn't automatically reduce payroll.
+**Funding condition.** Larkspur’s cash plan assumes no new financing for the next twelve months, and the board has approved an operating plan for that period only. A three-year commitment would extend past the funded horizon and past any ownership change in that time.
 
-An initiative record should include implementation labor, specialist fees, tooling, the cost of running old and new services together, and ongoing maintenance. A payback calculation must include **the work required to capture savings**.
+Three options are compared on the same basis:
+
+| Option | Cost at €30,000 demand | Cost at €50,000 demand | Cost at €60,000 demand | Cost at €20,000 stress case |
+| --- | ---: | ---: | ---: | ---: |
+| A. Stay flexible | €30,000 | €50,000 | €60,000 | €20,000 |
+| B. Three-year commitment covering €50,000 of demand (€35,000 fixed) | €35,000 | €35,000 | €45,000 | €35,000 |
+| C. One-year commitment covering €30,000 of demand (€21,000 fixed), remainder flexible | €21,000 | €41,000 | €51,000 | €21,000 |
+
+Option B saves €15,000 a month at or above forecast demand but costs €5,000 more at the low end of the range and €15,000 more in the stress case. Option C saves €9,000 a month at every point in the stated range, costs €1,000 more in the stress case, and expires with the funded horizon.
+
+**Larkspur chooses Option C.** Alex proposes it with the usage history and the plan’s demand range as evidence; Sam confirms the commitment is paid monthly, so cash timing matches cost, and confirms what the contract says about early termination and transfer; Ines approves it within her delegated authority for contracts of one year or less. Option B is rejected: its extra €6,000 a month of saving is bought with exposure beyond the period anyone has approved a plan for. Option A is rejected because a €9,000 monthly saving with no downside inside the stated range is real money. The decision is reviewed if flexible spending falls below €30,000 for two consecutive months, if rightsizing work reduces the eligible volume, if a transaction or carve-out is proposed, or if the provider offers transfer rights.
+
+This is one result under one set of conditions. A company with stable demand and multi-year committed funding might reasonably accept Option B after the same comparison. The rule is not “commit less”; it is that the commitment follows from a stated range and horizon, and the person approving it can see the case where it costs more.
+
+Product and engineering leaders should involve **procurement**, the people responsible for buying and negotiating supplier services, and finance early. Engineering understands usage and migration feasibility. Finance understands payment timing and accounting. Procurement and legal specialists interpret commercial terms. None of those views is sufficient by itself.
+
+## Credits, Minimum Spend and Ownership-Change Conditions
+
+Contract terms that change the invoice without changing the resources consumed belong together, because they distort the same comparison.
+
+**Temporary credits.** In a separate fictional Larkspur scenario, cloud credits reduce a €30,000 monthly service bill to €5,000 for six months. The underlying service still consumes €30,000 of resources at the stated prices. A plan extending beyond the credits needs to show the later cash requirement. Compare customer economics with and without the subsidy before describing the service as profitable.
+
+**Minimum spend and the signing entity.** An investor may introduce a provider, or a corporate parent may offer a group discount. Ask which entity signs, whether a minimum spend applies, and who benefits from the price reduction and who bears unused capacity. The help can be useful while also creating a commitment the company must carry after the relationship changes. The investor’s procurement access is an input to the decision, not its conclusion.
+
+**Ownership change.** A commitment that can’t transfer on a carve-out can become a **stranded cost**: one the company still owes but no longer benefits from. Check renewal terms and what happens if ownership changes or the product moves to another provider before signing, not during the transaction. After an acquisition, applying the group’s negotiated discount to an acquired company’s bill and calling the result a **synergy** skips the cost of moving it onto the common platform; [[acquisition-adds-work-first]] treats that comparison.
+
+None of these terms is a problem in itself. The test is whether the company can see the continuing cost behind the invoice, and whether the service is still the one the customer bought.
 
 ## Protect the Service the Customer Bought
 
-The easiest way to reduce some costs is to reduce the service. Whether that's acceptable is a product decision. Less **redundancy**, meaning fewer spare components or alternative ways to keep operating, longer processing windows or reduced support coverage can change the customer's experience and the company's risk.
+The easiest way to reduce some costs is to reduce the service. Whether that’s acceptable is a product decision. Less **redundancy**, meaning fewer spare components or alternative ways to keep operating, longer processing windows or reduced support coverage can change the customer’s experience and the company’s risk.
 
-Define service conditions alongside the cost target. Track successful work completed, **latency**, the time a user waits for a response, where it matters, error rates, recovery performance and customer complaints. The exact measures should follow the product promise. A low-cost service that can't complete a customer's essential workflow has poor economics even if the infrastructure dashboard looks efficient.
+Define service conditions alongside the cost target. Track successful work completed, **latency**, the time a user waits for a response, where it matters, error rates, recovery performance and customer complaints. The exact measures should follow the product promise. A low-cost service that can’t complete a customer’s essential workflow has poor economics even if the infrastructure dashboard looks efficient.
 
-This matters especially after acquisitions. A group's aggregate purchasing power can reduce rates, while the cost of moving a small acquired company onto a common platform can outweigh the saving. Compare the full migration case rather than applying the group's negotiated discount to the acquired company's bill and calling the result a **synergy**, a benefit attributed to combining the businesses.
+## Prove the Saving Actually Arrived
 
-## Credits and Group Discounts Can Conceal the Continuing Cost
+Before a cost initiative starts, define the **baseline**, the starting costs and demand used for comparison. Estimate what spending would have been without the initiative, and state which costs are included. Then keep three things separate as the work proceeds:
 
-In a separate fictional Larkspur scenario, temporary cloud credits reduce a €30,000 monthly service bill to €5,000 for six months. The underlying service still consumes €30,000 of resources at the stated prices. A plan extending beyond the credits needs to show the later cash requirement. Compare customer economics with and without the subsidy before describing the service as profitable.
+- **Opportunity:** a model of what might be saved.
+- **Change implemented:** resources or contracts actually changed.
+- **Observed net effect:** the net expenditure or avoided expenditure actually seen, with transition costs and demand changes reconciled and put on the agreed cost basis.
 
-An investor may introduce a provider, or a corporate parent may offer a group discount. Ask which entity signs, whether minimum spend applies and what happens if ownership changes or the product moves to another provider. The help can be useful while also creating a commitment the company must carry after the relationship changes.
+A **run-rate projection**, such as “€9,000 a month, so €108,000 a year,” is a separate, labelled estimate. It assumes the observed month repeats; state that assumption and what would break it. It is not a fourth observation.
 
-For a team awaiting another funding round, a three-year purchase commitment deserves a different approval discussion from flexible spending on a small trial. For a funded expansion, stable demand may justify a commitment after a downside comparison. Include who benefits from the price reduction and who bears unused capacity. The investor’s procurement access is an input to the decision, not its conclusion.
+A capacity reduction may avoid a forecast increase rather than reduce this month’s bill. That can be valuable, but the forecast and its uncertainty should stay visible. Similarly, reducing internal support effort doesn’t automatically reduce payroll.
 
-## Portfolio Comparisons Need a Cohort
+An initiative record should include implementation labor, specialist fees, tooling, the cost of running old and new services together, and ongoing maintenance. A payback calculation must include **the work required to capture savings**. Comparable services and people who have faced the same decision, including through an investor’s network, are covered in [[help-that-changes-capability]].
 
-Cloud cost as a percentage of revenue mixes technical efficiency, pricing, product margin, service model and company maturity. It can identify a question worth investigating. It rarely answers the question by itself.
+A useful cost improvement has an explanation the company can check: what changed, on what basis it was measured, how demand affected the comparison, what the transition cost and whether service remained acceptable. Larkspur’s answer to Morgan’s question is not “the bill went up 20%” or “we found €15,000 a month.” It is: unit cost per successful transaction fell, a one-year commitment saves €9,000 a month across the demand range the board approved, the stress case would cost €1,000 more, and the decision is revisited if usage or ownership changes. That is a contractual choice the company can defend, not a savings announcement.
 
-A **cohort** is a group selected for comparison. A useful one matches business model, scale, workload, geography, accounting treatment and the services included. Even then, a small portfolio offers limited statistical confidence. A company may spend more because its product performs more valuable work or because it's inefficient. Diagnosis must distinguish the two.
-
-An investor’s peer network may help you find comparable services and people who have faced the same cost decision. Ask what you would learn and what participation would require from your team. Start with a small comparison that can change a decision, keeping company permissions and differences visible. Part IV develops that use of shared experience in [[help-that-changes-capability]].
-
-A useful cost improvement has an explanation the company can check: what changed, how demand affected the comparison, what the transition cost and whether service remained acceptable. The team should be able to repeat that assessment as conditions change.
-
-Some spending protects against uncertain future harm instead of lowering a known bill. The next chapter explains how to assess security and recovery work on that basis: [[prove-you-can-restore]].
+The commitment was tested against demand the company can observe. Some spending instead buys protection against harm the company hopes never to observe, and a lower bill there can mean the protection quietly went away. The next chapter shows how to judge that spending on evidence: [[prove-you-can-restore]].
 
 ## Questions to Consider
 
-1. *What unit of useful service does your cost per unit describe, and would that unit make sense to your CFO and to your customers?*
+1. *What unit of useful service does your cost per unit describe, and are the figures you compare over time on the same cost basis?*
 2. *When your infrastructure bill last changed, how much came from usage, rates, architecture or demand? Were any savings counted twice?*
-3. *Which of your commitments would become stranded cost if demand fell, the product moved or the company were separated from its owner?*
-4. *For your last cost initiative, can you separate the identified opportunity, the implemented change and the realized economic effect?*
-5. *Which service measures are tracked alongside your cost target, and who decides whether a cheaper service is still the service the customer bought?*
-6. *What temporary credits or group discounts are concealing the continuing cost of your services, and what happens when they end?*
+3. *Which of your commitments would become stranded cost if demand fell below the range you planned for, the product moved or the company were separated from its owner?*
 
 ## To Probe Further
 
