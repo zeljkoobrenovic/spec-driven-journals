@@ -1,5 +1,5 @@
 ---
-title: "PART IV — Beyond Money: Using Investor Support to Build Capability and Accelerate Progress"
+title: "PART IV — Beyond Money: Getting Useful Help From Your Investor"
 date: 2026-09-13
 author: Owned working manuscript
 excerpt: "Ask for help the company can use and agree the cost, authority and continuing dependence."

@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
-# Spec: PART IV — Beyond Money: Using Investor Support to Build Capability and Accelerate Progress
+# Spec: PART IV — Beyond Money: Getting Useful Help From Your Investor
 
 ## Intent
 
@@ -48,6 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “PART IV — Beyond Money: Using Investor Support to Build Capability and Accelerate Progress” to “PART IV — Beyond Money: Getting Useful Help From Your Investor”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Reconcile the revised article and applicable reading formats with the Owned contract; specification accepted as matching the draft manuscript.

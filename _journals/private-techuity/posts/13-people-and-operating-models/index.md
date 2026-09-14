@@ -1,5 +1,5 @@
 ---
-title: Capability Includes How People Decide and Coordinate
+title: "Fix the Decision Problem Before Adding People"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Examine how roles, decisions, skills and working relationships affect the company’s ability to deliver its technology plans."

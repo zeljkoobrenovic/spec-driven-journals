@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
-# Spec: Judge Success Beyond the Funding Round or Sale
+# Spec: Success for Whom, and for How Long?
 
 ## Intent
 
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “Judge Success Beyond the Funding Round or Sale” to “Success for Whom, and for How Long?”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

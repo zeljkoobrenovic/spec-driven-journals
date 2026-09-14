@@ -5,7 +5,7 @@ author: "Owned working manuscript"
 excerpt: "Map investor expertise, peer companies, hiring support and connections against the capability your company needs next."
 permalink: "investor-support"
 timetoread: 8 min read
-Testing the Plans Against Engineering Realitylogo: "assets/images/29-investor-support/logo.jpeg"
+logo: "assets/images/29-investor-support/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/29-investor-support.png"
 ---

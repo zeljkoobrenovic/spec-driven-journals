@@ -1,5 +1,5 @@
 ---
-title: "Judge Success Beyond the Funding Round or Sale"
+title: "Success for Whom, and for How Long?"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Assess what customers, teams and future operators can rely on after funding or ownership changes, while keeping investor returns and historical evidence in scope."

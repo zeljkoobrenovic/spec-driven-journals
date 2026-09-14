@@ -1,11 +1,11 @@
 ---
-title: "Turn an Offer of Help into a Useful Engagement"
+title: "Turn an Offer of Help Into a Useful Engagement"
 date: "2026-09-13"
 author: "Owned working manuscript"
 excerpt: "Agree a specific result, resources, responsibilities and a handover before bringing investor support into the company."
 permalink: "making-support-work"
 timetoread: 8 min read
-Testing the Plans Against Engineering Realitylogo: "assets/images/30-making-support-work/logo.jpeg"
+logo: "assets/images/30-making-support-work/logo.jpeg"
 logo_credit: "AI-generated illustration"
 icon: "assets/icons/30-making-support-work.png"
 ---

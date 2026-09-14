@@ -1,5 +1,5 @@
 ---
-title: "TeamSystem: What a Buy-and-Build Actually Accumulates"
+title: "TeamSystem: Each New Owner Buys the Last Owner’s Progress"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Follow successive owners and acquisitions, then distinguish reported earnings, cash received and estimated investment value."

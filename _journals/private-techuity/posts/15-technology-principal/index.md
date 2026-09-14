@@ -1,5 +1,5 @@
 ---
-title: "Working With the Investor’s Technology Adviser"
+title: "Is the Investor’s Adviser Helping, Assessing or Deciding?"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Understand the technology adviser’s role, agree how you will work together and keep responsibility for company decisions clear."

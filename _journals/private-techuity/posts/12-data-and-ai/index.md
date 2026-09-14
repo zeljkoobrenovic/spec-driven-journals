@@ -1,5 +1,5 @@
 ---
-title: An AI Strategy Contains Three Different Investment Questions
+title: "An AI Strategy Hides Three Investment Questions"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Examine three AI questions: better products, better internal work and threats to the business customers already buy from."

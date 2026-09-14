@@ -1,5 +1,5 @@
 ---
-title: "Profit, Runway and the Cash You Can Commit"
+title: "Profit Is Not Money You Can Spend"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Work through cash after debt payments and runway before another funding round, then decide which product and engineering commitments the company can sustain."

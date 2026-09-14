@@ -1,5 +1,5 @@
 ---
-title: "After Funding or a Deal, Establish a Funded Plan"
+title: "A Hundred Days Is Enough to Agree the Plan, Not to Finish It"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Turn new funding or an ownership change into agreed priorities, available cash, responsibilities and a realistic sequence of work."

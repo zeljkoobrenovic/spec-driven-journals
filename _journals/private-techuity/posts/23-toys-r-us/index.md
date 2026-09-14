@@ -1,5 +1,5 @@
 ---
-title: "Toys R Us: Technology Plans Under Cash Pressure"
+title: "Toys R Us: Profitable on Paper, Out of Cash in Practice"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Examine technology plans alongside debt, cash shortages, competition and the consequences of a retailer’s failure."

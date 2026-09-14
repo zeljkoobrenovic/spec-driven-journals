@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
-# Spec: Turn an Offer of Help into a Useful Engagement
+# Spec: Turn an Offer of Help Into a Useful Engagement
 
 ## Intent
 
@@ -47,6 +47,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “Turn an Offer of Help into a Useful Engagement” to “Turn an Offer of Help Into a Useful Engagement”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

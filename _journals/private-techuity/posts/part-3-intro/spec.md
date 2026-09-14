@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
-# Spec: PART III — Turning Investor Expectations into Commitments
+# Spec: PART III — Turning Investor Expectations Into Commitments
 
 ## Intent
 
@@ -48,6 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “PART III — Turning Investor Expectations into Commitments” to “PART III — Turning Investor Expectations Into Commitments”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Reconcile the revised article and applicable reading formats with the Owned contract; specification accepted as matching the draft manuscript.

@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
-# Spec: How Companies Get Money
+# Spec: Where the Money Comes From Decides What You Owe
 
 ## Intent
 
@@ -52,6 +52,7 @@ Investor.gov introductions to stocks, public companies and private equity; SBA g
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “How Companies Get Money” to “Where the Money Comes From Decides What You Owe”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

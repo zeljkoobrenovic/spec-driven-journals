@@ -1,5 +1,5 @@
 ---
-title: From Valuation Assumptions to Implementation Choices
+title: "“More Flexible” Is Not a Requirement"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Turn expectations about business value into practical choices about what to build or buy, what it costs and how much flexibility it keeps."

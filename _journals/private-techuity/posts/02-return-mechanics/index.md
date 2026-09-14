@@ -1,5 +1,5 @@
 ---
-title: "How Company Value Becomes an Investor Return"
+title: "Same Company, Same Performance, Three Different Returns"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Compare minority investment, dilution, buyout returns and strategic-owner expectations without confusing investor success with product or engineering performance."

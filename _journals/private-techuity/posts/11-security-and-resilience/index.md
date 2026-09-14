@@ -1,5 +1,5 @@
 ---
-title: "How to Evaluate Security and Recovery Investments"
+title: "Prove You Can Restore, Not Just That You Back Up"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Evaluate investments that protect essential work, reduce possible harm and help a company recover from disruption."

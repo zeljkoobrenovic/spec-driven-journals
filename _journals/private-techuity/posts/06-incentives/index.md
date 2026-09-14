@@ -1,5 +1,5 @@
 ---
-title: Shared Ownership Does Not Create Identical Interests
+title: "Owning Shares Together Is Not Wanting the Same Thing"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Understand what management shares can pay, which conditions apply, and why shared ownership does not align every interest."

@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
-# Spec: Testing the Plans Against Engineering Reality
+# Spec: Can the Software and the Team Deliver What Was Promised?
 
 ## Intent
 
@@ -55,6 +55,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “Testing the Plans Against Engineering Reality” to “Can the Software and the Team Deliver What Was Promised?”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Drop the opening software-architecture definition. It duplicated [[valuation-and-design]], which owns architecture in the reading order, and narrowed the chapter to companies that build their own software. The chapter now frames itself as an assessment of engineering capability and the cost of changing it, keeping "architecture" only where it names a long-lived commitment (funded transition, standardization boundary). Applied across index, TL;DR and comic panel 1; no artwork regenerated.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

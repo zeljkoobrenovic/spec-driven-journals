@@ -1,5 +1,5 @@
 ---
-title: "How Companies Get Money"
+title: "Where the Money Comes From Decides What You Owe"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Learn how customers, borrowing and ownership provide money, and why each source creates different expectations."

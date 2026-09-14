@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
-# Spec: From Valuation Assumptions to Implementation Choices
+# Spec: “More Flexible” Is Not a Requirement
 
 ## Intent
 
@@ -53,6 +53,7 @@ Inherits the IPEV valuation guidance cited in [[valuation-and-architecture]]. Th
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “From Valuation Assumptions to Implementation Choices” to ““More Flexible” Is Not a Requirement”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Split the capability table into build-side and buy-side columns and add a fifth priority row for supplier and single-person dependence. The framing sentence promised the reasoning carried over to bought systems; the table did not yet show it. Added customization and exit cost to the vocabulary, and a buy-side counterpart to the microservices paragraph.
 - 2026-09-13: Reframe the chapter around **implementation choices** rather than architecture choices, covering structure, build and buy. "Architecture" narrowed the chapter to companies that write their own software and read as a specialist term for a general decision. Retitled the chapter and its sections; extended the opening definition to name the system and landscape levels and to say the examples are build-side while the reasoning is not. Applied across index, TL;DR and comic panel 3; permalink unchanged and no artwork regenerated.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

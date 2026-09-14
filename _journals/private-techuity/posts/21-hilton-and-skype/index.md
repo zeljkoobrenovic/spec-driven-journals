@@ -1,5 +1,5 @@
 ---
-title: "Hilton and Skype: Two Successful Exits"
+title: "Hilton and Skype: A Successful Exit Still Needs Explaining"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Use two historical sales to separate investor gains, company improvements and claims about technology’s contribution."

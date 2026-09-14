@@ -1,5 +1,5 @@
 ---
-title: "Keep the Plan Credible Through Funding and Ownership Changes"
+title: "The Roadmap Did Not Slip, the Financing Did"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Respond when funding, financing or investor expectations change, and prepare a useful handover through continued ownership, another round, a sale or integration."

@@ -1,5 +1,5 @@
 ---
-title: Testing the Plans Against Engineering Reality
+title: "Can the Software and the Team Deliver What Was Promised?"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Test whether the technology and the team can deliver the plan, what changing them would cost and how customers keep being served."

@@ -1,5 +1,5 @@
 ---
-title: Capital Should Fit the Company's Problem
+title: "Raise the Money You Need, Not the Most You Can"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Match a company’s funding needs to the investor, ownership arrangement and time needed to carry out its plan."
