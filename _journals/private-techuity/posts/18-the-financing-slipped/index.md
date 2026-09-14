@@ -12,9 +12,9 @@ icon: "assets/icons/18-the-financing-slipped.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to revise a dated cash plan when expected funding arrives late, find the latest useful decision date and authorize one fallback before the plan chooses itself.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** A plan that keeps spending money that has not arrived breaches the reserve on a predictable date; the decision has to be made before the offers and signatures make it for you.
+> **WHY YOU SHOULD CARE:** A plan that keeps spending money that has not arrived breaches the reserve on a predictable date; the decision has to be made before the offers and signatures make it for you.
 
-> **WHY INVESTORS CARE ABOUT THIS:** A round that slips is often the investor’s own process; it needs management to have a dated fallback so that a delay on its side does not become a liquidity crisis at its holding.
+> **WHY INVESTORS CARE:** A round that slips is often the investor’s own process; it needs management to have a dated fallback so that a delay on its side does not become a liquidity crisis at its holding.
 
 
 > **KEY POINTS:**

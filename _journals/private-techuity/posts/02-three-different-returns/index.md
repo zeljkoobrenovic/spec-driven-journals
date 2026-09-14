@@ -12,9 +12,9 @@ icon: "assets/icons/02-three-different-returns.png"
 
 > **IN THIS SECTION, YOU WILL:** See how the same company performance produces three different investor returns, and learn what engineering can and cannot claim credit for in a sale gain.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** Investor returns are often treated as a scorecard for product and engineering, yet price, borrowing and timing can change the result without any change in the work; that misreading shapes what you are asked to do.
+> **WHY YOU SHOULD CARE:** Investor returns are often treated as a scorecard for product and engineering, yet price, borrowing and timing can change the result without any change in the work; that misreading shapes what you are asked to do.
 
-> **WHY INVESTORS CARE ABOUT THIS:** The investor’s return, not the company’s performance, is what its own investors judge it on; price, leverage and timing are the levers it manages, and it needs management to understand which claims about engineering it can defend.
+> **WHY INVESTORS CARE:** The investor’s return, not the company’s performance, is what its own investors judge it on; price, leverage and timing are the levers it manages, and it needs management to understand which claims about engineering it can defend.
 
 
 > **KEY POINTS:**

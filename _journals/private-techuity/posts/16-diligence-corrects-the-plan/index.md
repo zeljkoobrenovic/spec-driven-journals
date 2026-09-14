@@ -12,9 +12,9 @@ icon: "assets/icons/16-diligence-corrects-the-plan.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to help diligence test the assumptions behind a proposed investment, use the access you actually have, and complete one material finding into a recorded decision.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** Diligence findings set the price, the funding and the plan you will later be held to; treating it as an audit to pass gives away the moment when the plan can still be corrected.
+> **WHY YOU SHOULD CARE:** Diligence findings set the price, the funding and the plan you will later be held to; treating it as an audit to pass gives away the moment when the plan can still be corrected.
 
-> **WHY INVESTORS CARE ABOUT THIS:** Diligence is where the investor sets price, conditions and the plan it will hold management to; findings that management helps complete are worth more to the investor than an audit passed in silence.
+> **WHY INVESTORS CARE:** Diligence is where the investor sets price, conditions and the plan it will hold management to; findings that management helps complete are worth more to the investor than an audit passed in silence.
 
 
 > **KEY POINTS:**

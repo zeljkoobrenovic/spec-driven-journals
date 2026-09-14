@@ -12,9 +12,9 @@ icon: "assets/icons/07-investor-under-pressure.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to judge an investor by evidence of behavior when a plan missed, compare two offers on that evidence, and change one dependency when the investor is already in place.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** A plan built on an investor’s promised patience or support fails when the promise does; the evidence of past behavior is the only guide to what the relationship will do under strain.
+> **WHY YOU SHOULD CARE:** A plan built on an investor’s promised patience or support fails when the promise does; the evidence of past behavior is the only guide to what the relationship will do under strain.
 
-> **WHY INVESTORS CARE ABOUT THIS:** Investors are judged by the same test in reverse: a management team that has checked references, understood the fund’s position and named its conditions is one they can rely on when a plan misses.
+> **WHY INVESTORS CARE:** Investors are judged by the same test in reverse: a management team that has checked references, understood the fund’s position and named its conditions is one they can rely on when a plan misses.
 
 
 > **KEY POINTS:**

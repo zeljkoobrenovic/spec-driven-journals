@@ -12,9 +12,9 @@ icon: "assets/icons/09-can-the-team-deliver.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to assess whether the software and the team can deliver the plan, and produce a finding that names the binding constraint, the evidence and the cost of a transition.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** Investment plans fix a destination and date before anyone has examined the systems; an honest assessment is the only way to tell the board what the plan will actually cost and when it can arrive.
+> **WHY YOU SHOULD CARE:** Investment plans fix a destination and date before anyone has examined the systems; an honest assessment is the only way to tell the board what the plan will actually cost and when it can arrive.
 
-> **WHY INVESTORS CARE ABOUT THIS:** The investment case assumes the systems and team can support the plan; an assessment that finds the binding constraint early lets the investor reprice or resequence rather than discover it in a missed milestone.
+> **WHY INVESTORS CARE:** The investment case assumes the systems and team can support the plan; an assessment that finds the binding constraint early lets the investor reprice or resequence rather than discover it in a missed milestone.
 
 
 > **KEY POINTS:**

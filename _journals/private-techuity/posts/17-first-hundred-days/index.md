@@ -12,9 +12,9 @@ icon: "assets/icons/17-first-hundred-days.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to carry a diligence finding into a plan with named accountability, approved cash, protected engineer-weeks and decision dates, and let the day-100 review change it.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** Expectations formed during the transaction either become a plan the company can fund and staff, or harden into commitments nobody tested; the early period decides which.
+> **WHY YOU SHOULD CARE:** Expectations formed during the transaction either become a plan the company can fund and staff, or harden into commitments nobody tested; the early period decides which.
 
-> **WHY INVESTORS CARE ABOUT THIS:** The early period is when the investor learns whether the thesis survives contact with the company; a funded plan with dated reviews gives it evidence, and an untested list gives it only reassurance.
+> **WHY INVESTORS CARE:** The early period is when the investor learns whether the thesis survives contact with the company; a funded plan with dated reviews gives it evidence, and an untested list gives it only reassurance.
 
 
 > **KEY POINTS:**

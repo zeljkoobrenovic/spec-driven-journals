@@ -12,9 +12,9 @@ icon: "assets/icons/15-investors-adviser.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to establish the investor adviser’s assignment and reporting relationship, separate influence from authority, and handle a change of role before sharing sensitive information.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** An adviser who reports to the investment firm can help, assess and, without an explicit assignment, appear to decide; what you share and how it is used depends on knowing which role is in play.
+> **WHY YOU SHOULD CARE:** An adviser who reports to the investment firm can help, assess and, without an explicit assignment, appear to decide; what you share and how it is used depends on knowing which role is in play.
 
-> **WHY INVESTORS CARE ABOUT THIS:** The adviser is one of the investor’s main channels for understanding and influencing the company; the investor needs the role to be clear so that its findings are trusted and its advice is not mistaken for instruction.
+> **WHY INVESTORS CARE:** The adviser is one of the investor’s main channels for understanding and influencing the company; the investor needs the role to be clear so that its findings are trusted and its advice is not mistaken for instruction.
 
 
 > **KEY POINTS:**

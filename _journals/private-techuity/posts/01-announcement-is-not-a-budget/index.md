@@ -12,9 +12,9 @@ icon: "assets/icons/01-announcement-is-not-a-budget.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn how to understand who owns the company, who supplies its money, and who can decide how it is used.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** Leaders who plan hiring against a headline figure plan against money the company may never see; the announcement describes a change of ownership, not a budget.
+> **WHY YOU SHOULD CARE:** Leaders who plan hiring against a headline figure plan against money the company may never see; the announcement describes a change of ownership, not a budget.
 
-> **WHY INVESTORS CARE ABOUT THIS:** Investors know exactly which entity received the money and which conditions attach to the rest; a management team that plans against the headline figure signals that it has not read its own deal.
+> **WHY INVESTORS CARE:** Investors know exactly which entity received the money and which conditions attach to the rest; a management team that plans against the headline figure signals that it has not read its own deal.
 
 
 > **KEY POINTS:**

@@ -12,9 +12,9 @@ icon: "assets/icons/05-decide-who-decides.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to fill in who proposes, approves, funds and carries out a decision, and plan what happens when the approval does not arrive in time.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** A suggestion from someone close to the investor can start a project nobody approved, and an approval that never arrives can silently become a delivery failure; clear authority prevents both.
+> **WHY YOU SHOULD CARE:** A suggestion from someone close to the investor can start a project nobody approved, and an approval that never arrives can silently become a delivery failure; clear authority prevents both.
 
-> **WHY INVESTORS CARE ABOUT THIS:** Investors negotiate approval rights and reserved matters precisely so that consequential decisions reach them; an adviser’s remark being treated as an instruction undermines the governance the investor paid for.
+> **WHY INVESTORS CARE:** Investors negotiate approval rights and reserved matters precisely so that consequential decisions reach them; an adviser’s remark being treated as an instruction undermines the governance the investor paid for.
 
 
 > **KEY POINTS:**

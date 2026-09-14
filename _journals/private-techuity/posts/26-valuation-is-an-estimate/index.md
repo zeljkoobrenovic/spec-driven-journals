@@ -12,9 +12,9 @@ icon: "assets/icons/26-valuation-is-an-estimate.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to read a business’s sales, profit and cash, then interpret a valuation: what is being valued, how the estimate was built and which of its assumptions your plan is being asked to support.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** A valuation’s assumptions quietly become your growth, margin and cost targets; unless you can read how the estimate was built, you cannot tell which targets are credible.
+> **WHY YOU SHOULD CARE:** A valuation’s assumptions quietly become your growth, margin and cost targets; unless you can read how the estimate was built, you cannot tell which targets are credible.
 
-> **WHY INVESTORS CARE ABOUT THIS:** The valuation is the investor’s own forecast turned into a price; the assumptions inside it are the results the investor is now counting on, and it will test whether management understands them.
+> **WHY INVESTORS CARE:** The valuation is the investor’s own forecast turned into a price; the assumptions inside it are the results the investor is now counting on, and it will test whether management understands them.
 
 
 > **KEY POINTS:**

@@ -12,9 +12,9 @@ icon: "assets/icons/14-acquisition-adds-work-first.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn how combining businesses and separating one differ, how to fund the transition and decide what waits, and how to test that a new boundary works.
 
-> **WHY IS THIS IMPORTANT FOR YOU:** Synergies and independence are assumed in the transaction plan before anyone has scheduled the work; the same specialists who carry the roadmap will carry the integration, and something will wait.
+> **WHY YOU SHOULD CARE:** Synergies and independence are assumed in the transaction plan before anyone has scheduled the work; the same specialists who carry the roadmap will carry the integration, and something will wait.
 
-> **WHY INVESTORS CARE ABOUT THIS:** The acquisition thesis prices in synergies or independence by a date; the investor needs to know what work stands between signing and that date, and what on the roadmap gives way to it.
+> **WHY INVESTORS CARE:** The acquisition thesis prices in synergies or independence by a date; the investor needs to know what work stands between signing and that date, and what on the roadmap gives way to it.
 
 
 > **KEY POINTS:**
