@@ -12,9 +12,9 @@ icon: "assets/icons/30-useful-engagement.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to turn a request for help into a charter with resources, authority, evidence and a review date, then carry it through a scope change to a tested handover.
 
-> **WHY YOU SHOULD CARE:** Vague help produces repeated interviews, competing advice and no result; a filled charter is what lets the engagement change the work when the evidence changes.
-
 > **WHY INVESTORS CARE:** Investor specialists are scarce and shared across a portfolio; an engagement with a filled charter uses their days on the constraint that matters and leaves evidence the investor can act on.
+
+> **WHY YOU SHOULD CARE:** Vague help produces repeated interviews, competing advice and no result; a filled charter is what lets the engagement change the work when the evidence changes.
 
 
 > **KEY POINTS:**

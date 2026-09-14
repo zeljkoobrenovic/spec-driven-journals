@@ -12,9 +12,9 @@ icon: "assets/icons/23-toys-r-us.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn how positive operating earnings, a reported net loss and a supplier cash shock combined, and what a technology transition needed before it could be funded.
 
-> **WHY YOU SHOULD CARE:** A company can report positive operating earnings and still lack the cash to fund the transition it needs; the supplier reaction shows how fast that gap can close a company.
-
 > **WHY INVESTORS CARE:** A holding that reports positive operating earnings and then runs out of cash is the outcome investors most need to avoid; the supplier reaction shows how a financing structure can consume the room to reinvest.
+
+> **WHY YOU SHOULD CARE:** A company can report positive operating earnings and still lack the cash to fund the transition it needs; the supplier reaction shows how fast that gap can close a company.
 
 
 > **KEY POINTS:**

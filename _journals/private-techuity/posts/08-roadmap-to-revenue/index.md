@@ -12,9 +12,9 @@ icon: "assets/icons/08-roadmap-to-revenue.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace a product change from customer need through customer behavior to a business result, and let the measured result revise the next commitment.
 
-> **WHY YOU SHOULD CARE:** Most technology business cases fail at the link between freed effort and a financial result; testing the chain is what separates a real benefit from a capacity figure dressed as a saving.
-
 > **WHY INVESTORS CARE:** Investors underwrite the financial result at the end of the chain, not the feature at the start; a business case that stops at freed hours gives them nothing they can carry into a valuation.
+
+> **WHY YOU SHOULD CARE:** Most technology business cases fail at the link between freed effort and a financial result; testing the chain is what separates a real benefit from a capacity figure dressed as a saving.
 
 
 > **KEY POINTS:**

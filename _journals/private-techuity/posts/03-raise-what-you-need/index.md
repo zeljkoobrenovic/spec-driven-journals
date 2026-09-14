@@ -12,9 +12,9 @@ icon: "assets/icons/03-raise-what-you-need.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to size the work the company must do next, compare the funding arrangements that could support it, and act on an arrangement you inherited.
 
-> **WHY YOU SHOULD CARE:** Funding that does not match the work either starves a plan or buys it with rights, obligations and expectations the company cannot afford; the mismatch lands on the people who have to deliver.
-
 > **WHY INVESTORS CARE:** A raise that is too small forces a rescue round on worse terms; one that is too large dilutes returns and funds work that was never justified; investors size the money against the plan for the same reasons the company should.
+
+> **WHY YOU SHOULD CARE:** Funding that does not match the work either starves a plan or buys it with rights, obligations and expectations the company cannot afford; the mismatch lands on the people who have to deliver.
 
 
 > **KEY POINTS:**

@@ -12,9 +12,9 @@ icon: "assets/icons/24-success-for-whom.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to bring the book’s cases together, apply a durable-success standard to one final company decision, and keep investor returns, stakeholder consequences and the evidence in scope.
 
-> **WHY YOU SHOULD CARE:** An investor’s realized return is the best-documented outcome and the narrowest one; a leader who measures success only that way cannot answer for the customers, employees and suppliers the decisions affected.
-
 > **WHY INVESTORS CARE:** Investors increasingly answer to their own investors, regulators and the public for outcomes beyond the return; a company that can show durable results for customers, employees and suppliers is easier to sell and to defend.
+
+> **WHY YOU SHOULD CARE:** An investor’s realized return is the best-documented outcome and the narrowest one; a leader who measures success only that way cannot answer for the customers, employees and suppliers the decisions affected.
 
 
 > **KEY POINTS:**

@@ -12,9 +12,9 @@ icon: "assets/icons/28-cannot-fund-everything.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to choose a combination of work that fits both the cash and the team time available, and revise the whole combination when a test fails.
 
-> **WHY YOU SHOULD CARE:** A plan that fits the cash but not the team time, or ignores an agreed obligation, gets overrun by the constraint nobody counted; choosing the feasible combination is what makes commitments deliverable.
-
 > **WHY INVESTORS CARE:** An investor’s growth expectation only becomes value if the company chooses the work that can actually be delivered; a plan that overcommits the team produces slippage the investor discovers at the next review.
+
+> **WHY YOU SHOULD CARE:** A plan that fits the cash but not the team time, or ignores an agreed obligation, gets overrun by the constraint nobody counted; choosing the feasible combination is what makes commitments deliverable.
 
 
 > **KEY POINTS:**

@@ -12,9 +12,9 @@ icon: "assets/icons/11-prove-you-can-restore.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to state a recovery objective in ordinary language, judge a restore test against it, fund the corrective work, retest and record the exposure that remains.
 
-> **WHY YOU SHOULD CARE:** A backup that has never been restored to a working service is a hope, not a control; the failure is discovered at 6am on the day the company can least afford it.
-
 > **WHY INVESTORS CARE:** A service that cannot be restored is an unpriced liability in the investor’s holding; evidence of a tested recovery is what lets the risk be accepted knowingly rather than discovered in a crisis or a sale process.
+
+> **WHY YOU SHOULD CARE:** A backup that has never been restored to a working service is a hope, not a control; the failure is discovered at 6am on the day the company can least afford it.
 
 
 > **KEY POINTS:**

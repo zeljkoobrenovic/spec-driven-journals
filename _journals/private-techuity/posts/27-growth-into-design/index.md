@@ -12,9 +12,9 @@ icon: "assets/icons/27-growth-into-design.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to recover the business requirement behind a request for flexibility, compare implementation options against it and choose one with its funded transition.
 
-> **WHY YOU SHOULD CARE:** “Make it more flexible” funds nothing on its own; a design chosen without the recovered business requirement is either over-built or wrong, and both cost cash before benefits arrive.
-
 > **WHY INVESTORS CARE:** Growth is the assumption the valuation rests on; investors need the design choice that makes it possible to be funded, dated and reversible, not a request for flexibility with no cost attached.
+
+> **WHY YOU SHOULD CARE:** “Make it more flexible” funds nothing on its own; a design chosen without the recovered business requirement is either over-built or wrong, and both cost cash before benefits arrive.
 
 
 > **KEY POINTS:**

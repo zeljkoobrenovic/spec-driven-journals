@@ -9,9 +9,9 @@ timetoread: 11 min read
 
 > **IN THIS SECTION, YOU WILL:** Learn to keep the evidence during the work, follow who receives cash and who keeps an interest in each transaction form, and hand over the unfinished obligations with the company.
 
-> **WHY YOU SHOULD CARE:** The customer contracts, the half-finished migration and the deferred hire are still there the morning after a transaction; if they are not handed over with the company, they are discovered by whoever inherits them.
-
 > **WHY INVESTORS CARE:** Investors realize value through the next transaction; a handover with the evidence and obligations attached supports the price and the disclosure, while surprises found afterward come back as claims and reputation.
+
+> **WHY YOU SHOULD CARE:** The customer contracts, the half-finished migration and the deferred hire are still there the morning after a transaction; if they are not handed over with the company, they are discovered by whoever inherits them.
 
 
 > **KEY POINTS:**

@@ -12,9 +12,9 @@ icon: "assets/icons/10-cheaper-cloud-bill.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to put cloud bills on one comparable basis, separate why they changed, and decide how much to commit before calling a lower bill an improvement.
 
-> **WHY YOU SHOULD CARE:** A lower bill can conceal falling demand, a worse service unit or a commitment that stops the company shrinking later; reading the bill correctly is the difference between a saving and a hidden cost.
-
 > **WHY INVESTORS CARE:** Cloud spend is a visible cost line that investors expect to fall with scale; they need to know whether a lower bill is a better service unit or a sign that demand, or resilience, has fallen.
+
+> **WHY YOU SHOULD CARE:** A lower bill can conceal falling demand, a worse service unit or a commitment that stops the company shrinking later; reading the bill correctly is the difference between a saving and a hidden cost.
 
 
 > **KEY POINTS:**

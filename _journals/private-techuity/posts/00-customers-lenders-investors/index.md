@@ -12,9 +12,9 @@ icon: "assets/icons/00-customers-lenders-investors.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn what customers, lenders and shareholders each expect in return for their money, and follow one €100,000 need through all three routes to a decision.
 
-> **WHY YOU SHOULD CARE:** Every commitment you make to a team is paid for by someone who expects something back; if you do not know what, you cannot know which promises the company can keep.
-
 > **WHY INVESTORS CARE:** Investors want their money to be the kind the company treats as ownership with rights, not as a loan to be repaid or a prepayment to be worked off; and they price the difference in every negotiation.
+
+> **WHY YOU SHOULD CARE:** Every commitment you make to a team is paid for by someone who expects something back; if you do not know what, you cannot know which promises the company can keep.
 
 
 > **KEY POINTS:**
