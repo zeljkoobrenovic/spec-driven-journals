@@ -21,10 +21,10 @@ Influence takes different forms. Shares, a board seat, a lending condition and a
 
 ## The Learning Path
 
-- [[governance]] shows how to establish decision rights, shape proposals and resolve disagreement before unclear authority disrupts delivery.
-- [[incentives]] examines how rewards and consequences shape priorities, including the interests that shared ownership does not align.
-- [[investor-fit]] helps you assess the partnership, whether you are considering an investor or already working with one.
+- [[decide-who-decides]] shows how to establish decision rights, shape proposals and resolve disagreement before unclear authority disrupts delivery.
+- [[different-bets]] examines how rewards and consequences shape priorities, including the interests that shared ownership does not align.
+- [[investor-under-pressure]] helps you assess the partnership, whether you are considering an investor or already working with one.
 
 By the end, you should be able to explain how a consequential decision gets made, who is accountable and what you would do if the original expectations prove unrealistic.
 
-Begin with [[governance]]. Part III then builds on these decision arrangements to choose and deliver product and technology investments.
+Begin with [[decide-who-decides]]. Part III then builds on these decision arrangements to choose and deliver product and technology investments.

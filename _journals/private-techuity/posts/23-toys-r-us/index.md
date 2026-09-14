@@ -1,5 +1,5 @@
 ---
-title: "Toys R Us: Technology Plans Under Cash Pressure"
+title: "Toys R Us: Profitable on Paper, Out of Cash in Practice"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Examine technology plans alongside debt, cash shortages, competition and the consequences of a retailer’s failure."
@@ -21,9 +21,9 @@ Toys “R” Us was a large toy and baby-products retailer. Its US business fail
 
 The case is useful because the company's late-period financial disclosures show both operating effort and severe constraints. The technology plans were reasonable in isolation. What constrained them was the financing: debt service that consumed the cash those plans required, and a timetable set by obligations to lenders rather than by the market. A technology leader can learn from that combination without claiming to reconstruct every decision across the ownership period.
 
-The previous cases examined successful exits and a continuing software group. This case examines a failure, beginning with the purchase, then the technology plans, financial pressures and consequences of the US shutdown. It applies the distinction between earnings and available cash from [[cash-and-constraints]].
+The previous cases examined successful exits and a continuing software group. This case examines a failure, beginning with the purchase, then the technology plans, financial pressures and consequences of the US shutdown. It applies the distinction between earnings and available cash from [[obligations-before-budget]].
 
-Three terms matter throughout: **debt service** is cash needed to meet financing obligations; **liquidity** is the ability to meet payments when they fall due; and **EBITDA** is earnings before interest, taxes, depreciation and amortization. An earnings measure can be positive while liquidity is inadequate. [[valuation-and-architecture]] introduces the financial measures before connecting them to technology choices.
+Three terms matter throughout: **debt service** is cash needed to meet financing obligations; **liquidity** is the ability to meet payments when they fall due; and **EBITDA** is earnings before interest, taxes, depreciation and amortization. An earnings measure can be positive while liquidity is inadequate. [[valuation-is-an-estimate]] introduces the financial measures before connecting them to technology choices.
 
 Read this case through the feasibility of the operating plan: what the owners expected, which funding and time constraints company leaders faced, and what happened to customers, employees and suppliers. The evidence can support lessons about those constraints without isolating one cause of the failure.
 
@@ -64,7 +64,7 @@ The following measures come from the April 2017 release for fiscal 2016, which e
 
 The table does not calculate the company's financing needs by subtracting interest from operating cash flow; that would risk counting interest twice under the presentation. It shows why positive operating earnings or adjusted EBITDA cannot be read as unrestricted cash for reinvention.
 
-It also shows why a simple “profitable retailer” label can mislead. Earnings measures answer different questions. Working capital, cash interest, investment, and the timing of obligations matter to survival. The model in [[cash-and-constraints]] is useful precisely because it forces those questions into the technology plan.
+It also shows why a simple “profitable retailer” label can mislead. Earnings measures answer different questions. Working capital, cash interest, investment, and the timing of obligations matter to survival. The model in [[obligations-before-budget]] is useful precisely because it forces those questions into the technology plan.
 
 The figures alone do not establish which proposed investments were refused or whether a different product intervention would have succeeded. They establish a constrained financial context that any credible reinvention plan had to address.
 
@@ -136,9 +136,17 @@ The next case examines a different challenge: how repeated acquisitions and owne
 
 ## Questions to Consider
 
-1. If your company’s earnings are positive, what is its operating cash flow after interest, investment and working capital? Could the two diverge as they did here?
-2. Which of your technology plans would need continued funding through a cash shortage, and which could be paused safely?
-3. How would a change in supplier or customer payment terms affect your company’s cash, and how quickly?
-4. Which clocks in your transformation plan are treated as interchangeable: customer adoption, debt service, supplier payments and product delivery?
-5. Are you presenting a growing channel or feature as if it proved that the whole business proposition works?
-6. Who beyond shareholders would bear the consequences if your company’s plan failed, and is that visible in the decision record?
+1. *If your company’s earnings are positive, what is its operating cash flow after interest, investment and working capital? Could the two diverge as they did here?*
+2. *Which of your technology plans would need continued funding through a cash shortage, and which could be paused safely?*
+3. *How would a change in supplier or customer payment terms affect your company’s cash, and how quickly?*
+4. *Which clocks in your transformation plan are treated as interchangeable: customer adoption, debt service, supplier payments and product delivery?*
+5. *Are you presenting a growing channel or feature as if it proved that the whole business proposition works?*
+6. *Who beyond shareholders would bear the consequences if your company’s plan failed, and is that visible in the decision record?*
+
+## To Probe Further
+
+- **[Chapter 11 - Bankruptcy Basics](https://www.uscourts.gov/court-programs/bankruptcy/bankruptcy-basics/chapter-11-bankruptcy-basics)** — Administrative Office of the U.S. Courts, undated guide.<br>*A neutral official guide that supplies the court vocabulary of debtor in possession, plan of reorganization and Chapter 7 conversion behind the section on proceedings and the US shutdown.*
+- **[Toys "R" Us, Inc., et al. — case information](https://case.stretto.com/toyscommittee/caseinfo)** — Official Committee of Unsecured Creditors, case 17-34665, U.S. Bankruptcy Court for the Eastern District of Virginia, 2017 to 2019.<br>*The unsecured creditors' committee site, maintained for suppliers and other creditors, takes a reader beyond the chief executive's first-day declaration to the court record of plans and settlement orders.*
+- **[America for Sale? An Examination of the Practices of Private Funds](https://financialservices.house.gov/calendar/eventsingle.aspx?EventID=407498)** — U.S. House Committee on Financial Services, hearing of November 19, 2019.<br>*A congressional hearing record that places a former employee, a buyout critic and the industry's lobbyist side by side, so it holds the competing accounts as advocacy under oath rather than court findings.*
+- **[Pirate Equity: How Wall Street Firms are Pillaging American Retail](https://pestakeholder.org/reports/pirate-equity-how-wall-street-firms-are-pillaging-american-retail/)** — Private Equity Stakeholder Project with the Center for Popular Democracy, United for Respect, Americans for Financial Reform and Hedge Clippers, July 2019.<br>*A labor-aligned advocacy report that uses Toys R Us as its leading example of retail job losses, read for the employee-side account with its estimates checked against its stated method.*
+- **[KKR and Bain Capital Establish $20 Million TRU Financial Assistance Fund](https://www.baincapital.com/news/kkr-and-bain-capital-establish-20-million-tru-financial-assistance-fund)** — Bain Capital, November 20, 2018.<br>*The sponsors' own statement on the $20 million fund for former US employees, the investor-side account of the consequences this chapter says need their own evidence.*

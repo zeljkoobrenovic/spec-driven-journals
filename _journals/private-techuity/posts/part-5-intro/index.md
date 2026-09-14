@@ -21,12 +21,12 @@ Use this part from the company's side of the table. A minority funding round nee
 
 ## The Learning Path
 
-- [[diligence-and-thesis]] explains how to present evidence, challenge unsupported assumptions and carry what the investigation finds into the plan.
+- [[diligence-corrects-the-plan]] explains how to present evidence, challenge unsupported assumptions and carry what the investigation finds into the plan.
 - [[first-hundred-days]] sets priorities after the transaction completes, matched to credible funding, team capacity and clear responsibilities.
-- [[execution-and-exit]] covers revising the plan when funding, financing or expectations change, then the handovers that follow: a further round, continued ownership, integration, or an **exit**, the transaction through which an investor realizes its holding.
+- [[the-financing-slipped]] covers revising the plan when funding, financing or expectations change, then the handovers that follow: a further round, continued ownership, integration, or an **exit**, the transaction through which an investor realizes its holding.
 
 Each stage asks a different question. Before a funding round or purchase: what can the company support? In the early plan: which commitments follow from that answer? In later reviews: do the funding and expectations still hold? Another round, a refinancing, continued ownership or a sale each needs its own decision and its own evidence; **the next event is not predetermined**.
 
 By the end, you should be able to carry the same body of evidence through all of these stages, make a specific request when the plan needs to change, and prepare a handover that accounts for unfinished work.
 
-Begin with [[diligence-and-thesis]]. Part VI then tests these ways of thinking against historical company situations.
+Begin with [[diligence-corrects-the-plan]]. Part VI then tests these ways of thinking against historical company situations.

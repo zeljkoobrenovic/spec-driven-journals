@@ -1,5 +1,5 @@
 ---
-title: "TeamSystem: What a Buy-and-Build Actually Accumulates"
+title: "TeamSystem: Each New Owner Buys the Last Owner’s Progress"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Follow successive owners and acquisitions, then distinguish reported earnings, cash received and estimated investment value."
@@ -19,7 +19,7 @@ icon: "assets/icons/25-teamsystem.png"
 <br>
 TeamSystem provides business software, including products used by accountants and smaller companies. Its history raises a useful question: how can a software group grow, continue developing products, report positive adjusted earnings and still report a loss under the accounting rules it must follow? Understanding that combination requires several questions: what changed in the operating business, what was acquired, how the investment was financed, and which costs each measure includes.
 
-TeamSystem makes those questions concrete, and it is the case that most directly tests [[acquisitions-and-carveouts]]: successive purchases of software businesses across four major ownership episodes in the period examined. It follows selected evidence from a regional Italian software company in 2000 through its 2017 reporting period. It examines successive ownership episodes, not one continuous investment by an interchangeable “private equity” owner, and it is not an assessment of the company's current value.
+TeamSystem makes those questions concrete, and it is the case that most directly tests [[acquisition-adds-work-first]]: successive purchases of software businesses across four major ownership episodes in the period examined. It follows selected evidence from a regional Italian software company in 2000 through its 2017 reporting period. It examines successive ownership episodes, not one continuous investment by an interchangeable “private equity” owner, and it is not an assessment of the company's current value.
 
 A **buy-and-build** strategy expands a group through further acquisitions. **Statutory results** follow the applicable reporting rules; **adjusted results** modify a measure by specified additions or exclusions. We will keep those distinctions visible as we follow ownership, operating initiatives and the 2017 financial statements.
 
@@ -39,7 +39,7 @@ That is an interpretation of the proposed mechanism, not proof that each recruit
 
 With those definitions in place, consider the next ownership change. By August 2010, the ownership proposition had changed. HgCapital announced an agreement to acquire a majority stake at an enterprise value of €565 million, described as 11.3 times fiscal 2010 EBITDA. The announcement emphasized business software used by accountants and smaller companies, recurring demand, and opportunities for organic growth and acquisitions. It anticipated completion in September; these were announced terms, not a closing statement. [S46: TeamSystem acquisition announcement](https://www.hgcapitaltrust.com/news-insights/news/archive/08032010)
 
-The distinction matters here. Software supporting customers' recurring administrative work may offer attractive repeat demand. But the seller can already charge for that attraction in the entry price. A good company does not automatically become a good investment at every price. [[valuation-and-architecture]] develops that connection between valuation assumptions and the work a company must perform.
+The distinction matters here. Software supporting customers' recurring administrative work may offer attractive repeat demand. But the seller can already charge for that attraction in the entry price. A good company does not automatically become a good investment at every price. [[valuation-is-an-estimate]] develops that connection between valuation assumptions and the work a company must perform.
 
 ## What the Owners Say They Changed
 
@@ -97,7 +97,7 @@ The practical lesson reaches directly into engineering reporting. If a new acqui
 
 The report records about €13.4 million of capitalized development in 2017 and a €1.9 million information-technology integration and transformation adjustment in its EBITDA reconciliation. It also describes an additional €80 million **secured-note issue**, borrowing through debt securities backed by specified security, part of whose proceeds repaid a €20 million parent loan. These are evidence of investment, integration expenditure and financing activity, not measurements of the resulting customer benefit. [S49: TeamSystem 2017 report, PDF pp. 9, 11 and 14–15](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)
 
-Capitalizing qualifying development records it as an asset to be charged over time rather than expensing all of it immediately. The cash still has to be paid. The accounting distinction is explained in [[cash-and-constraints]]; the disclosed capitalized amount is not a measure of all research and development effort.
+Capitalizing qualifying development records it as an asset to be charged over time rather than expensing all of it immediately. The cash still has to be paid. The accounting distinction is explained in [[obligations-before-budget]]; the disclosed capitalized amount is not a measure of all research and development effort.
 
 Similarly, an integration cost can be excluded from an adjusted earnings presentation while remaining a real requirement of the acquisition strategy. Calling an expense exceptional at one subsidiary does not establish that similar expenses will disappear across a group that keeps buying companies.
 
@@ -134,13 +134,22 @@ Then agree on a few observations that can change the plan: customer migration fa
 
 Repeated acquisitions can add products, customers and knowledge while also adding integration work, continuing costs and borrowing. Track both developments with consistent definitions. A larger group and a higher earnings figure alone do not establish better outcomes for every acquired company or customer.
 
-The final chapter brings the cases together with wider research. It asks what a lasting improvement would mean for each group affected: [[durable-value]].
+The final chapter brings the cases together with wider research. It asks what a lasting improvement would mean for each group affected: [[success-for-whom]].
 
 ## Questions to Consider
 
-1. Which improvements in your company does the current owner’s entry price already assume, and which new improvements does its plan require?
-2. If your company has been through more than one ownership period, which operating commitments span them, and did each new owner fund the remaining burden?
-3. What is your company’s statutory result, and how does it reconcile with the adjusted earnings measure investors discuss?
-4. When you compare growth or productivity across periods, are the businesses and intervals consistent? What would acquisition timing do to the comparison?
-5. Which costs of your growth model are classed as exceptional but recur every year: integration, migration or acquisition assessment?
-6. What evidence do you have about customer and employee outcomes from your acquisitions, beyond aggregate revenue and headcount?
+1. *Which improvements in your company does the current owner’s entry price already assume, and which new improvements does its plan require?*
+2. *If your company has been through more than one ownership period, which operating commitments span them, and did each new owner fund the remaining burden?*
+3. *What is your company’s statutory result, and how does it reconcile with the adjusted earnings measure investors discuss?*
+4. *When you compare growth or productivity across periods, are the businesses and intervals consistent? What would acquisition timing do to the comparison?*
+5. *Which costs of your growth model are classed as exceptional but recur every year: integration, migration or acquisition assessment?*
+6. *What evidence do you have about customer and employee outcomes from your acquisitions, beyond aggregate revenue and headcount?*
+
+## To Probe Further
+
+- **[Inorganic growth strategies and the evolution of the private equity business model](https://ideas.repec.org/a/eee/corfin/v45y2017icp31-63.html)** — Benjamin Hammer, Alexander Knauer, Magnus Pflücke and Bernhard Schwetzler, Journal of Corporate Finance, 2017.<br>*Peer-reviewed evidence from 9,548 buyouts that add-on acquisitions raise the chance of exit to another investor, which places TeamSystem's sequence of acquisitions and owners in a wider pattern.*
+- **[On Secondary Buyouts](https://corpgov.law.harvard.edu/2015/11/10/on-secondary-buyouts/)** — François Degeorge, Jens Martin and Ludovic Phalippou, Harvard Law School Forum on Corporate Governance, 2015; the paper appeared in the Journal of Financial Economics, 2016.<br>*The authors' summary of their finding that sales between investors do better when buyer and seller have different skills gives a way to ask what each new owner of TeamSystem brought.*
+- **[Hg invests in TeamSystem](https://www.hgcapitaltrust.com/news-insights/news/2021/18-01-2021-131229553)** — HgCapital Trust plc, January 18, 2021.<br>*The trust's own announcement of an ownership change inside the same two managers, which extends the chapter's point about owners changing while the company continues.*
+- **[Silver Lake to Make €600M Strategic Investment in TeamSystem](https://www.silverlake.com/silver-lake-to-make-e600m-strategic-investment-in-teamsystem/)** — Silver Lake, May 19, 2023.<br>*The buyer's interested announcement of a €600 million minority stake, documenting another owner buying into the company's accumulated progress after the period this chapter examines.*
+- **[Sale of remaining investment in TeamSystem](https://www.hgcapitaltrust.com/news-insights/news/2024/08-07-2024)** — HgCapital Trust plc, July 8, 2024.<br>*The seller's own announcement that the retained interest carried at £6.1 million in 2016 finally became a cash figure of about £24.3 million, closing the question this chapter raises.*
+- **[Annual Reports](https://www.teamsystem.com/en/investors/annual-reports-eng/)** — TeamSystem investor relations, consolidated financial statements for 2015 to 2025.<br>*The company's own consolidated statements let a reader repeat the chapter's 2017 exercise of reconciling adjusted EBITDA to the statutory result, after checking which entity each year covers.*

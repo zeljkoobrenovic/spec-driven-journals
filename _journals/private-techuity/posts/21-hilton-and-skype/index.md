@@ -1,5 +1,5 @@
 ---
-title: "Hilton and Skype: Two Successful Exits"
+title: "Hilton and Skype: A Successful Exit Still Needs Explaining"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Use two historical sales to separate investor gains, company improvements and claims about technology’s contribution."
@@ -122,9 +122,17 @@ Both cases include a completed exit. The next case examines continuity of an inv
 
 ## Questions to Consider
 
-1. When a sponsor describes a successful exit, how much of the result can you explain by operating improvement, financing changes, market recovery and the buyer’s own interests?
-2. Does your product depend on technology rights that a code review would not examine? How do you know?
-3. What financial room would your company have to keep investing in technology through a severe downturn, and who would supply it?
-4. Which capability in your company must continue through a change of owner, and who would fund the unfinished work?
-5. What happened to customers and employees after the last ownership change you were part of, and how do you know?
-6. If your product were retired years after a successful sale, what would that tell you about the earlier ownership period, and what would it not?
+1. *When a sponsor describes a successful exit, how much of the result can you explain by operating improvement, financing changes, market recovery and the buyer’s own interests?*
+2. *Does your product depend on technology rights that a code review would not examine? How do you know?*
+3. *What financial room would your company have to keep investing in technology through a severe downturn, and who would supply it?*
+4. *Which capability in your company must continue through a change of owner, and who would fund the unfinished work?*
+5. *What happened to customers and employees after the last ownership change you were part of, and how do you know?*
+6. *If your product were retired years after a successful sale, what would that tell you about the earlier ownership period, and what would it not?*
+
+## To Probe Further
+
+- **[Hilton Closes Merger with Blackstone Investment Funds](https://www.sec.gov/Archives/edgar/data/0000047580/000110465907076613/a07-27433_1ex99d1.htm)** — Hilton Hotels Corporation, October 24, 2007; press release filed with the U.S. Securities and Exchange Commission.<br>*Hilton's own closing announcement puts a share price and about $20.6 billion of debt behind what this chapter calls substantial borrowing, the starting point for the terms part of its question.*
+- **[Niklas Zennstrom Steps Down as CEO of Skype](https://www.sec.gov/Archives/edgar/data/0001065088/000089161807000579/f34172exv99w1.htm)** — eBay Inc., October 1, 2007; press release filed with the SEC.<br>*The previous owner's own filing shows that the $2.75 billion entry valuation the chapter starts from already sat on eBay's €630 million write-down of Skype.*
+- **[eBay Inc. and Silver Lake Investor Group Settle Skype Litigation with Joltid Limited](https://www.sec.gov/Archives/edgar/data/1065088/000119312509227549/dex991.htm)** — eBay Inc., November 6, 2009; press release filed with the SEC.<br>*The parties' own settlement announcement gives the 56%, 14% and 30% ownership split that puts a stake table under the chapter's rights-before-expansion section.*
+- **[Private Equity Performance: What Do We Know?](https://www.nber.org/papers/w17874)** — Robert S. Harris, Tim Jenkinson and Steven N. Kaplan, NBER Working Paper 17874, 2012.<br>*It shows what a net return series after fees looks like across about 1,400 funds, as distinct from the gross multiple a sponsor reports on an investor call.*
+- **[An Inconvenient Fact: Private Equity Returns & The Billionaire Factory](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3623820)** — Ludovic Phalippou, Saïd Business School, University of Oxford, SSRN working paper, 2020.<br>*A critic's case that net fund multiples merely match public indices, read with the previous entry to see how far the returns dispute is about benchmarks and fees.*

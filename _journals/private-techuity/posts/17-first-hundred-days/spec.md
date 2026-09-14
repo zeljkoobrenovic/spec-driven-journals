@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
-# Spec: After Funding or a Deal, Establish a Funded Plan
+# Spec: The First Hundred Days: Turn Expectations Into a Funded Plan
 
 ## Intent
 
@@ -55,6 +55,8 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “A Hundred Days Is Enough to Agree the Plan, Not to Finish It” to “The First Hundred Days: Turn Expectations Into a Funded Plan”. Permalink and id unchanged; body unchanged.
+- 2026-09-14: Retitle the post from “After Funding or a Deal, Establish a Funded Plan” to “A Hundred Days Is Enough to Agree the Plan, Not to Finish It”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

@@ -1,5 +1,5 @@
 ---
-title: "After Funding or a Deal, Establish a Funded Plan"
+title: "The First Hundred Days: Turn Expectations Into a Funded Plan"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Turn new funding or an ownership change into agreed priorities, available cash, responsibilities and a realistic sequence of work."
@@ -21,7 +21,7 @@ New funding or an ownership change creates an early period in which expectations
 
 A leader running a business under stable ownership plans on the company’s own rhythm. A new investor replaces that rhythm with its own: an investment case with stated assumptions, an early review, and expectations formed during diligence rather than inside the company. The period matters because this is when those expectations either become a plan the company can fund and staff, or harden into commitments nobody tested.
 
-[[diligence-and-thesis]] produced findings before a funding round, purchase or other ownership decision. This chapter explains how those findings become the company’s own plan. We first confirm the assumptions, select a manageable set of priorities, check their dependencies and establish how progress will be judged.
+[[diligence-corrects-the-plan]] produced findings before a funding round, purchase or other ownership decision. This chapter explains how those findings become the company’s own plan. We first confirm the assumptions, select a manageable set of priorities, check their dependencies and establish how progress will be judged.
 
 ## The First Priorities Depend on What Changed
 
@@ -92,7 +92,7 @@ The **chief financial officer (CFO)** and the leaders responsible for the work s
 
 As a company leader, identify the decisions and delivery gaps where investor support would help. Ask the technology adviser to explain what the investment team expects and where uncertainty remains. Make the purpose of any assessment clear to the people involved, including whether it concerns an operating problem, leadership development or formal performance evaluation.
 
-Use the **engagement charter**, the short support agreement developed in [[making-support-work]], to establish the adviser’s time, the company’s contribution, information shared with the board and how important concerns reach the right decision-maker. Confidential coaching and formal performance evaluation should have understandable boundaries.
+Use the **engagement charter**, the short support agreement developed in [[useful-engagement]], to establish the adviser’s time, the company’s contribution, information shared with the board and how important concerns reach the right decision-maker. Confidential coaching and formal performance evaluation should have understandable boundaries.
 
 Hands-on support can build credibility when it resolves a real constraint. It can also overload teams if every owner-sponsored expert arrives with a new assessment and action list. Coordinate interventions through company leadership and **one capacity view**.
 
@@ -104,13 +104,21 @@ Completing every planned task is not necessarily success if the tasks addressed 
 
 The early period should leave a plan whose owners understand the work, whose funding and capacity are credible, and whose assumptions can be reviewed. Completing a list of tasks is only useful if those tasks help establish the required outcomes.
 
-The next chapter follows that plan through revised funding, changing investor expectations and possible ownership transitions: [[execution-and-exit]].
+The next chapter follows that plan through revised funding, changing investor expectations and possible ownership transitions: [[the-financing-slipped]].
 
 ## Questions to Consider
 
-1. What changed for your company at the last transaction: money, rights, dependencies or expectations? Which early decisions follow from each?
-2. Which diligence findings did the people who will deliver the plan confirm, and which did they change?
-3. Are your early priorities specific enough to inspect: business outcome, accountable leader, funding, capacity and review date?
-4. Which material risks were left off the priority list, and has someone decided to accept, monitor or defer each of them?
-5. Where does your early plan use the same people twice? Which projects depend on a prerequisite that does not yet exist?
-6. What baselines exist today for the results your plan promises, and what are their known weaknesses?
+1. *What changed for your company at the last transaction: money, rights, dependencies or expectations? Which early decisions follow from each?*
+2. *Which diligence findings did the people who will deliver the plan confirm, and which did they change?*
+3. *Are your early priorities specific enough to inspect: business outcome, accountable leader, funding, capacity and review date?*
+4. *Which material risks were left off the priority list, and has someone decided to accept, monitor or defer each of them?*
+5. *Where does your early plan use the same people twice? Which projects depend on a prerequisite that does not yet exist?*
+6. *What baselines exist today for the results your plan promises, and what are their known weaknesses?*
+
+## To Probe Further
+
+- **[The First 90 Days, Updated and Expanded](https://store.hbr.org/product/the-first-90-days-updated-and-expanded-proven-strategies-for-getting-up-to-speed-faster-and-smarter/11323)** — Michael D. Watkins, Harvard Business Review Press, 2013.<br>*It covers the part this chapter leaves out, the leader's own transition, including how to renegotiate expectations with the people who now hold authority over you.*
+- **[Private Equity's Road Map to Profits](https://www.bain.com/contentassets/d7f768bd07d24539a55d069662ffc090/private_equitys_road_map_to_profits_bainbrief_2007.pdf)** — Chris Bierly, Graham Elton and Chul-Joon Park, Bain & Company, 2006.<br>*It shows the 100-day plan from the owner's side, with the caveat that Bain sells this work, so it describes practice rather than proving results.*
+- **[Value Creation in Private Equity](https://www.ebrd.com/home/news-and-events/publications/economics/working-papers/value-creation-in-private-equity.html)** — Markus Biesinger, Çağatay Bircan and Alexander Ljungqvist, European Bank for Reconstruction and Development Working Paper 242, 2020.<br>*Evidence from the confidential value-creation plans of 1,580 deals that execution rather than plan type predicts returns, the closest thing to data on the plan you are being asked to agree.*
+- **[How to Measure Anything: Finding the Value of Intangibles in Business](https://www.wiley.com/en-us/How+to+Measure+Anything:+Finding+the+Value+of+Intangibles+in+Business,+3rd+Edition-p-9781118539279)** — Douglas W. Hubbard, Wiley, 3rd edition, 2014.<br>*It supports two of the post's moves, measuring before the story hardens and funding the next learning step when it can improve the larger decision.*
+- **[Making Work Visible: Exposing Time Theft to Optimize Work and Flow](https://itrevolution.com/product/making-work-visible/)** — Dominica DeGrandis, IT Revolution, 2nd edition, 2022.<br>*Its five ways capacity disappears are a practical companion to the post's warning that a plan using the same people twice has incomplete resource arithmetic.*

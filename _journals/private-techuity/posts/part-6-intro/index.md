@@ -27,6 +27,6 @@ The same questions apply throughout. What did the investment expect? What choice
 - [[visma]] examines shared capability and local responsibility, alongside changes in the investors behind a continuing management relationship, principally through 2024.
 - [[toys-r-us]] follows what happens when technology plans meet cash pressure, competition and business failure.
 - [[teamsystem]] traces what successive acquisitions accumulate — products and capabilities, integration work and financial obligations — using evidence through 2017.
-- [[durable-value]] brings the cases and wider research together to assess what lasts for the company and the people affected.
+- [[success-for-whom]] brings the cases and wider research together to assess what lasts for the company and the people affected.
 
-Begin with [[hilton-and-skype]] and read in order; [[durable-value]] closes the main narrative. The [[toolkit]] then provides practical records for your own decisions.
+Begin with [[hilton-and-skype]] and read in order; [[success-for-whom]] closes the main narrative. The [[toolkit]] then provides practical records for your own decisions.

@@ -44,7 +44,7 @@ The public announcement supports continuity of a sponsor relationship alongside 
 
 In its March 2025 account of 2024, Visma describes substantial local autonomy supported by shared infrastructure and knowledge. It reports 33 acquisitions during 2024 — nearly three a month — and says it spends close to 20% of revenue on product development, while also acquiring other businesses. Those are company-reported descriptions and measures, not independently verified proof of the model's effectiveness. [S32: Visma annual-report announcement](https://www.visma.com/newsroom/visma-releases-annual-and-sustainability-reports-for-2024-7f5c9f37)
 
-The proposed mechanism is attractive: retain local product and market knowledge while sharing capabilities that would be expensive to assemble separately. That resembles the boundaries examined in [[acquisitions-and-carveouts]].
+The proposed mechanism is attractive: retain local product and market knowledge while sharing capabilities that would be expensive to assemble separately. That resembles the boundaries examined in [[acquisition-adds-work-first]].
 
 But resemblance does not validate Productscapes. A group owning operating businesses has different authority and economics from an investment manager offering support across separate portfolio companies. Visma's scale and accumulated capabilities may also be very different from those of a smaller sponsor.
 
@@ -129,9 +129,17 @@ The next case returns to the cash constraint from Part I. Toys R Us shows why a 
 
 ## Questions to Consider
 
-1. If your investment manager stays but the fund or investors behind it change, what have you rechecked: funding, decision rights, expectations and shared services?
-2. Which two figures for the same period in your company’s reporting differ, and can you reconcile them line by line?
-3. Are acquisition, integration or transformation costs excluded from an adjusted measure your company reports? Do they recur?
-4. For each important measure you report, can you state the business included, the period, the calculation, the decision it supports and the evidence behind it?
-5. At which level does shared capability create value in your group, and where does it become an expensive central service?
-6. Whose costs are charged to a central program while local margins exclude them, and does anyone see the total?
+1. *If your investment manager stays but the fund or investors behind it change, what have you rechecked: funding, decision rights, expectations and shared services?*
+2. *Which two figures for the same period in your company’s reporting differ, and can you reconcile them line by line?*
+3. *Are acquisition, integration or transformation costs excluded from an adjusted measure your company reports? Do they recur?*
+4. *For each important measure you report, can you state the business included, the period, the calculation, the decision it supports and the evidence behind it?*
+5. *At which level does shared capability create value in your group, and where does it become an expensive central service?*
+6. *Whose costs are charged to a central program while local margins exclude them, and does anyone see the total?*
+
+## To Probe Further
+
+- **[ESMA Guidelines on Alternative Performance Measures](https://www.esma.europa.eu/document/esma-guidelines-alternative-performance-measures)** — European Securities and Markets Authority, 2015; applying from July 2016.<br>*The regulator's rules for defining and reconciling adjusted measures are the discipline behind this chapter's €893 million to €904 million bridge, binding on listed issuers and voluntary for a private group.*
+- **[HgCapital and the Visma Transaction (A)](https://store.hbr.org/product/hgcapital-and-the-visma-transaction-a/214018)** — Paul A. Gompers, Karol Misztal and Joris Van Gool, Harvard Business School case 214-018, 2013.<br>*A paid teaching case on the 2006 delisting that began the manager relationship discussed here, covering whether to bid against a strategic buyer and how to finance the purchase.*
+- **[Visma](https://hgcapital.com/portfolio/case-studies/visma)** — Hg, undated portfolio case study.<br>*The manager's own account of the relationship since 2006, useful for what Hg says it did with software as a service and acquisitions, not as independent evidence of results.*
+- **[Hg leads $5.3bn buyout of Visma](https://hgcapital.com/insights/hg-leads-usd5-3bn-buyout-of-visma)** — Hg, June 26, 2017.<br>*The manager's own announcement of an earlier round of the pattern this chapter describes, with KKR and Cinven selling down six years before the December 2023 transaction.*
+- **[Continuation Funds: Considerations for Limited Partners and General Partners](https://ilpa.org/industry-guidance/principles-best-practices/continuation-funds/)** — Institutional Limited Partners Association, May 2023, with an updated draft issued for comment in 2026.<br>*The fund investors' body sets out what they negotiate when a manager sells to a vehicle it also manages, which the chapter treats as a reason to recheck authority and funding.*
