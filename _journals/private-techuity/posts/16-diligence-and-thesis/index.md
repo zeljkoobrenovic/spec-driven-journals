@@ -1,5 +1,5 @@
 ---
-title: "Shape the Investment Plan Before the Deal Is Done"
+title: "Diligence Is Your Chance to Correct the Plan Before It Is Signed"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Help prospective investors understand the company’s capabilities, test their assumptions and connect the findings to a feasible plan."

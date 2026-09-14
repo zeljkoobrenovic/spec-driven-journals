@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-09-14
 ---
 
-# Spec: Where the Money Comes From Decides What You Owe
+# Spec: Customers, Lenders and Investors: What Each Expects in Return
 
 ## Intent
 
@@ -52,6 +52,7 @@ Investor.gov introductions to stocks, public companies and private equity; SBA g
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “Where the Money Comes From Decides What You Owe” to “Customers, Lenders and Investors: What Each Expects in Return”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “How Companies Get Money” to “Where the Money Comes From Decides What You Owe”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

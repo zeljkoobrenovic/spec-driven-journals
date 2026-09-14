@@ -1,5 +1,5 @@
 ---
-title: "The Deal Closes Long Before the Integration Does"
+title: "An Acquisition Adds Work Before It Adds Value"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Plan the practical work of combining or separating businesses while keeping customers served and costs understood."

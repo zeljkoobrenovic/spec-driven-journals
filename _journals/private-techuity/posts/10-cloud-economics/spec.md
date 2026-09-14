@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-13
+revised: 2026-09-14
 ---
 
-# Spec: A Smaller Bill Is Not Always an Improvement
+# Spec: Why a Cheaper Cloud Bill Can Be Bad News
 
 ## Intent
 
@@ -55,6 +55,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “A Smaller Bill Is Not Always an Improvement” to “Why a Cheaper Cloud Bill Can Be Bad News”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

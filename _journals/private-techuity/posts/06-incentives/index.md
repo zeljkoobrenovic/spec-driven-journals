@@ -1,5 +1,5 @@
 ---
-title: "Owning Shares Together Is Not Wanting the Same Thing"
+title: "Management Equity, Fund Carry and Employee Jobs Are Different Bets"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Understand what management shares can pay, which conditions apply, and why shared ownership does not align every interest."

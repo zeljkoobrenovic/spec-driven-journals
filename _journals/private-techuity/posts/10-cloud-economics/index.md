@@ -1,5 +1,5 @@
 ---
-title: A Smaller Bill Is Not Always an Improvement
+title: "Why a Cheaper Cloud Bill Can Be Bad News"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Understand what drives a cloud bill and test whether lower spending preserves useful service after all costs are included."

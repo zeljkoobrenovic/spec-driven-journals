@@ -1,5 +1,5 @@
 ---
-title: "Where the Money Comes From Decides What You Owe"
+title: "Customers, Lenders and Investors: What Each Expects in Return"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Learn how customers, borrowing and ownership provide money, and why each source creates different expectations."

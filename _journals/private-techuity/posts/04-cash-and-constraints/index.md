@@ -1,5 +1,5 @@
 ---
-title: "Profit Is Not Money You Can Spend"
+title: "Interest, Tax and Loan Repayments Come Before Your Budget"
 date: 2026-09-12
 author: Owned working manuscript
 excerpt: "Work through cash after debt payments and runway before another funding round, then decide which product and engineering commitments the company can sustain."

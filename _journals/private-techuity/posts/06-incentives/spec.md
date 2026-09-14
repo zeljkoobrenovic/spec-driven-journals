@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-09-14
 ---
 
-# Spec: Owning Shares Together Is Not Wanting the Same Thing
+# Spec: Management Equity, Fund Carry and Employee Jobs Are Different Bets
 
 ## Intent
 
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “Owning Shares Together Is Not Wanting the Same Thing” to “Management Equity, Fund Carry and Employee Jobs Are Different Bets”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “Shared Ownership Does Not Create Identical Interests” to “Owning Shares Together Is Not Wanting the Same Thing”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

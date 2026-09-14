@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-09-14
 ---
 
-# Spec: The Deal Closes Long Before the Integration Does
+# Spec: An Acquisition Adds Work Before It Adds Value
 
 ## Intent
 
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “The Deal Closes Long Before the Integration Does” to “An Acquisition Adds Work Before It Adds Value”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “A Transaction Changes Ownership Before It Changes Operations” to “The Deal Closes Long Before the Integration Does”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

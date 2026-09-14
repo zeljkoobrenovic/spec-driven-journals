@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-09-14
 ---
 
-# Spec: Profit Is Not Money You Can Spend
+# Spec: Interest, Tax and Loan Repayments Come Before Your Budget
 
 ## Intent
 
@@ -55,6 +55,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Retitle the post from “Profit Is Not Money You Can Spend” to “Interest, Tax and Loan Repayments Come Before Your Budget”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “Profit, Runway and the Cash You Can Commit” to “Profit Is Not Money You Can Spend”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
