@@ -46,7 +46,7 @@ In its March 2025 account of 2024, Visma describes substantial local autonomy su
 
 The proposed mechanism is attractive: keep local product and market knowledge while sharing capabilities that would be expensive to assemble separately. That resembles the boundaries examined in [[acquisition-adds-work-first]].
 
-But resemblance does not validate Productscapes. A group owning operating businesses has different authority and economics from an investment manager offering support across separate portfolio companies. Visma's scale and accumulated capabilities may also be very different from those of a smaller sponsor.
+But resemblance isn't validation. Visma is a group that owns its operating businesses; an investment manager offering shared support across separate portfolio companies has different authority and economics. Visma's scale and accumulated capabilities may also be very different from those of a smaller sponsor.
 
 The practical question is which decisions are local, which are shared, and how the combination improves customer outcomes after coordination costs. “Autonomy” can describe useful accountability or insufficient integration. “Shared capability” can describe valuable expertise or an expensive central service. The label alone can’t decide.
 
