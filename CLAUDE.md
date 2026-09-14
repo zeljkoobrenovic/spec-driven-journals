@@ -250,6 +250,7 @@ One spec can drive several docs of different modalities, all living in the same 
 - Deep-link a tab with the URL hash: `<slug>.html#checklist`, `#summary`, `#dialog`, `#comics`.
 - Per-modality images live in the post's `assets/` folder like everything else — the per-post merge covers them.
 - **Authoring skills** in `.claude/skills/`, one per modality: `detailed-article` (writes `index.md`; canonical home of the house style), `operational-checklist`, `management-summary`, `podcast-dialog`, and `explainer-comics` (includes `scripts/generate_comic_panels.py` for Gemini panel generation). All five treat `spec.md` as the read-only contract and end by running the build and verifying the output.
+- **Enrichment skills** in `.claude/skills/` that edit an existing `index.md` without changing its argument: `bold-highlighter` (skim emphasis), `article-illustrator` (inline figures), and `probe-further` (appends a `## To Probe Further` section — 4–6 verified external resources, each with a linked title, a citation and, after a `<br>`, one italic sentence on why it is relevant to the post; every URL is fetched before it is written). `post-review` and `spec-creator` cover review and spec drafting.
 
 ### House style for new posts
 

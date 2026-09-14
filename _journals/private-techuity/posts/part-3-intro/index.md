@@ -21,16 +21,16 @@ This part begins with the choice among competing commitments, then follows the p
 
 ## The Learning Path
 
-- [[choosing-investments]] compares competing uses of money and team time, including what to defer or stop.
-- [[product-value]] traces a chosen change through customer behavior to business results.
-- [[engineering-and-architecture]] examines the software and engineering capabilities the plan depends on.
-- [[valuation-and-design]] connects the financial expectations from Part I to specific design choices.
-- [[cloud-economics]] weighs spending against the useful service delivered.
-- [[security-and-resilience]] considers protection and recovery when future losses are uncertain.
-- [[data-and-ai]] separates product opportunities, internal improvement and competitive threats.
-- [[people-and-operating-models]] examines the people, skills and decision processes needed to sustain the work.
-- [[acquisitions-and-carveouts]] brings these choices together when businesses are combined or separated.
+- [[cannot-fund-everything]] compares competing uses of money and team time, including what to defer or stop.
+- [[roadmap-to-revenue]] traces a chosen change through customer behavior to business results.
+- [[can-the-team-deliver]] examines the software and engineering capabilities the plan depends on.
+- [[growth-into-design]] connects the financial expectations from Part I to specific design choices.
+- [[cheaper-cloud-bill]] weighs spending against the useful service delivered.
+- [[prove-you-can-restore]] considers protection and recovery when future losses are uncertain.
+- [[ai-strategy-three-questions]] separates product opportunities, internal improvement and competitive threats.
+- [[fix-decisions-before-hiring]] examines the people, skills and decision processes needed to sustain the work.
+- [[acquisition-adds-work-first]] brings these choices together when businesses are combined or separated.
 
 By the end, you should be able to explain why one combination of work deserves resources, how its benefits would arise and what evidence would change the plan. Value here means customer outcomes and continued capability as well as financial results.
 
-Begin with [[choosing-investments]]. Part IV then considers how the investor's people and connections can help close the gaps the plan exposes.
+Begin with [[cannot-fund-everything]]. Part IV then considers how the investor's people and connections can help close the gaps the plan exposes.

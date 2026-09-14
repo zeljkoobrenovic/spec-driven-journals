@@ -21,13 +21,13 @@ This part teaches the financial concepts by comparing arrangements side by side.
 
 ## The Learning Path
 
-- [[how-companies-get-money]] explains the main ways money reaches a company and what an ownership share represents.
-- [[capital-and-ownership]] maps the money and responsibilities in a minority round, a fund-backed buyout and corporate ownership.
-- [[valuation-and-architecture]] introduces sales, profit, cash and estimates of business value.
-- [[return-mechanics]] uses those measures to explain what an investor puts in and what it gets back.
-- [[investment-fit]] compares funding and ownership arrangements against the work the company needs to do.
-- [[cash-and-constraints]] checks what the business can afford once its obligations are met.
+- [[customers-lenders-investors]] explains the main ways money reaches a company and what an ownership share represents.
+- [[announcement-is-not-a-budget]] maps the money and responsibilities in a minority round, a fund-backed buyout and corporate ownership.
+- [[valuation-is-an-estimate]] introduces sales, profit, cash and estimates of business value.
+- [[three-different-returns]] uses those measures to explain what an investor puts in and what it gets back.
+- [[raise-what-you-need]] compares funding and ownership arrangements against the work the company needs to do.
+- [[obligations-before-budget]] checks what the business can afford once its obligations are met.
 
 By the end, you should be able to distinguish money paid to a selling owner from money available for company work, question a financial assumption and ask **what would fund a proposed change**.
 
-Begin with [[how-companies-get-money]]. Part II then examines how investment changes the decisions you can make and influence.
+Begin with [[customers-lenders-investors]]. Part II then examines how investment changes the decisions you can make and influence.

@@ -21,10 +21,10 @@ So start from **the company’s missing capability**, not from the offer. Identi
 
 ## The Learning Path
 
-- [[technology-principal]] explains how to work with the investment firm’s technology adviser, including their responsibilities and the boundaries to agree.
-- [[investor-support]] maps possible help to product development, engineering delivery, hiring, team development and new capabilities.
-- [[making-support-work]] turns an offer into an engagement with a clear result, resources, responsibilities, review and handover.
+- [[investors-adviser]] explains how to work with the investment firm’s technology adviser, including their responsibilities and the boundaries to agree.
+- [[help-that-changes-capability]] maps possible help to product development, engineering delivery, hiring, team development and new capabilities.
+- [[useful-engagement]] turns an offer into an engagement with a clear result, resources, responsibilities, review and handover.
 
 By the end, you should be able to name the capability you need, identify a plausible source of help and agree how both sides will judge whether the engagement worked. You should also know who will own the work once the initial help ends.
 
-Begin with [[technology-principal]]. Part V then follows your responsibilities through the ownership period, building on the financial, decision and support foundations already established.
+Begin with [[investors-adviser]]. Part V then follows your responsibilities through the ownership period, building on the financial, decision and support foundations already established.

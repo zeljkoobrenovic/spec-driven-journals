@@ -19,7 +19,7 @@ The glossary follows the book’s learning sequence: basic funding, investment o
 
 ## Basic Funding and Ownership
 
-Start with [[how-companies-get-money]]. The stock and public-company definitions use Investor.gov’s educational material; the capital-structure definition follows Damodaran’s finance teaching. [S54: Stock basics](https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks) [S55: Public companies](https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/public-companies) [S57: Capital structure](https://people.stern.nyu.edu/adamodar/pdfiles/cf2E/capstru.pdf)
+Start with [[customers-lenders-investors]]. The stock and public-company definitions use Investor.gov’s educational material; the capital-structure definition follows Damodaran’s finance teaching. [S54: Stock basics](https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks) [S55: Public companies](https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/public-companies) [S57: Capital structure](https://people.stern.nyu.edu/adamodar/pdfiles/cf2E/capstru.pdf)
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -43,7 +43,7 @@ Start with [[how-companies-get-money]]. The stock and public-company definitions
 
 ## Comparing Ownership and Funding Arrangements
 
-These definitions support the comparisons in [[investment-fit]]; they do not replace the terms of a particular arrangement.
+These definitions support the comparisons in [[raise-what-you-need]]; they do not replace the terms of a particular arrangement.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -67,7 +67,7 @@ Carve-outs, turnarounds, acquisitions and refinancing describe changes or condit
 
 ## The Investment Organizations and Their Payments
 
-For the money-flow example, read [[capital-and-ownership]]. Fund terms depend on the agreement. [S01: SEC private equity guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
+For the money-flow example, read [[announcement-is-not-a-budget]]. Fund terms depend on the agreement. [S01: SEC private equity guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -94,7 +94,7 @@ For the money-flow example, read [[capital-and-ownership]]. Fund terms depend on
 
 ## Sales, Earnings and Cash
 
-[[valuation-and-architecture]] introduces the earnings calculation; [[cash-and-constraints]] follows the payments it leaves out. Accounting and reported adjustments need their own definitions. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures) [S07: IAS 38 overview](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/)
+[[valuation-is-an-estimate]] introduces the earnings calculation; [[obligations-before-budget]] follows the payments it leaves out. Accounting and reported adjustments need their own definitions. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures) [S07: IAS 38 overview](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/)
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -136,7 +136,7 @@ For the money-flow example, read [[capital-and-ownership]]. Fund terms depend on
 
 ## Value and Investment Returns
 
-Read [[return-mechanics]] for the worked investment. Valuation techniques are introduced in [[valuation-and-architecture]]. [S03: Buyout overview](https://www.nber.org/system/files/working_papers/w14207/w14207.pdf) [S05: ILPA performance guidance](https://ilpa.org/industry-guidance/templates-standards-model-documents/ilpa-templates-hub/ilpa-performance-template/) [S52: IPEV valuation guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
+Read [[three-different-returns]] for the worked investment. Valuation techniques are introduced in [[valuation-is-an-estimate]]. [S03: Buyout overview](https://www.nber.org/system/files/working_papers/w14207/w14207.pdf) [S05: ILPA performance guidance](https://ilpa.org/industry-guidance/templates-standards-model-documents/ilpa-templates-hub/ilpa-performance-template/) [S52: IPEV valuation guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -164,7 +164,7 @@ Read [[return-mechanics]] for the worked investment. Valuation techniques are in
 
 ## Transactions and Incentives
 
-For examples, use [[investment-fit]], [[incentives]] and [[acquisitions-and-carveouts]].
+For examples, use [[raise-what-you-need]], [[different-bets]] and [[acquisition-adds-work-first]].
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -192,7 +192,7 @@ For examples, use [[investment-fit]], [[incentives]] and [[acquisitions-and-carv
 
 ## Choosing and Supporting Company Work
 
-See [[choosing-investments]], [[investor-support]] and [[making-support-work]]. These terms describe the proposed working methods used in the main narrative.
+See [[cannot-fund-everything]], [[help-that-changes-capability]] and [[useful-engagement]]. These terms describe the proposed working methods used in the main narrative.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -211,7 +211,7 @@ See [[choosing-investments]], [[investor-support]] and [[making-support-work]]. 
 
 ## Technology and Company Work
 
-The company-investment sequence begins at [[choosing-investments]] and [[product-value]]. Part IV explains the adviser and practical support; Part V follows the ownership cycle.
+The company-investment sequence begins at [[cannot-fund-everything]] and [[roadmap-to-revenue]]. Part IV explains the adviser and practical support; Part V follows the ownership cycle.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -249,7 +249,7 @@ The company-investment sequence begins at [[choosing-investments]] and [[product
 
 ## Evidence and Lasting Outcomes
 
-For application, read [[durable-value]] or use [[toolkit]].
+For application, read [[success-for-whom]] or use [[toolkit]].
 
 | Term | Plain-language meaning |
 | --- | --- |

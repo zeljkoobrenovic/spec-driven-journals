@@ -42,7 +42,7 @@ The practical impact of any investment therefore depends on its actual terms, **
 
 This book aims to build a **shared understanding** of external investment dynamics so that all parties can collaborate more concretely. Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people. Part IV helps you obtain useful investor support. Part V prepares you for funding and ownership changes. Part VI examines historical cases and what remains after a transaction.
 
-No accounting or technical background is required. On a first pass, read the chapters in order, since each builds on terms introduced earlier. For example, [[valuation-and-architecture]] teaches financial valuation, and [[valuation-and-design]] later applies those concepts to technical choices once the product and engineering foundations are in place.
+No accounting or technical background is required. On a first pass, read the chapters in order, since each builds on terms introduced earlier. For example, [[valuation-is-an-estimate]] teaches financial valuation, and [[growth-into-design]] later applies those concepts to technical choices once the product and engineering foundations are in place.
 
 ![The book moves from money and decisions through company work, support, ownership changes and field lessons.](assets/images/reading-guide/owned-reading-journey.jpeg)
 **Figure 2:** *The reading sequence builds the foundations before applying them to work, support and changing ownership.*
@@ -74,12 +74,12 @@ For a shorter first pass, read the introductions and summaries. For a current de
 
 | Your situation | Start with                                                                           |
 | --- |--------------------------------------------------------------------------------------|
-| A funding round has changed targets or decision rights | [[capital-and-ownership]]<br>[[governance]]<br>[[incentives]]                          |
-| New funding may arrive after your current cash runs short | [[cash-and-constraints]]<br>[[choosing-investments]]<br>[[execution-and-exit]]           |
-| Owners want more growth or earnings than the team can support | [[investment-fit]]<br>[[choosing-investments]]<br>[[people-and-operating-models]]        |
-| Investor requests compete with customer needs | [[product-value]]<br>[[governance]]<br>[[investor-fit]]                                  |
-| A corporate investor wants integration or access to data | [[acquisitions-and-carveouts]]<br>[[security-and-resilience]]<br>[[making-support-work]] |
-| The investor offers expertise or introductions | [[technology-principal]]<br>[[investor-support]]<br>[[making-support-work]]              |
+| A funding round has changed targets or decision rights | [[announcement-is-not-a-budget]]<br>[[decide-who-decides]]<br>[[different-bets]]                          |
+| New funding may arrive after your current cash runs short | [[obligations-before-budget]]<br>[[cannot-fund-everything]]<br>[[the-financing-slipped]]           |
+| Owners want more growth or earnings than the team can support | [[raise-what-you-need]]<br>[[cannot-fund-everything]]<br>[[fix-decisions-before-hiring]]        |
+| Investor requests compete with customer needs | [[roadmap-to-revenue]]<br>[[decide-who-decides]]<br>[[investor-under-pressure]]                                  |
+| A corporate investor wants integration or access to data | [[acquisition-adds-work-first]]<br>[[prove-you-can-restore]]<br>[[useful-engagement]] |
+| The investor offers expertise or introductions | [[investors-adviser]]<br>[[help-that-changes-capability]]<br>[[useful-engagement]]              |
 | A transaction or ownership transition is approaching | [[part-5]], then its three chapters in order                                         |
 
 ## Read the Evidence With Its Limits
@@ -97,54 +97,54 @@ The [[bibliography]] records consultation scope and evidence limits.
 Identify your owners’ expectations and the money and decisions you can rely on.
 
 - [[part-1]] — part introduction
-- **1.** [[how-companies-get-money]]
-- **2.** [[capital-and-ownership]]
-- **3.** [[valuation-and-architecture]]
-- **4.** [[return-mechanics]]
-- **5.** [[investment-fit]]
-- **6.** [[cash-and-constraints]]
+- **1.** [[customers-lenders-investors]]
+- **2.** [[announcement-is-not-a-budget]]
+- **3.** [[valuation-is-an-estimate]]
+- **4.** [[three-different-returns]]
+- **5.** [[raise-what-you-need]]
+- **6.** [[obligations-before-budget]]
 
 ### Part II — How Investor Ownership Changes Decisions
 
 Establish who decides, what each party wants and how to resolve competing demands.
 
 - [[part-2]] — part introduction
-- **7.** [[governance]]
-- **8.** [[incentives]]
-- **9.** [[investor-fit]]
+- **7.** [[decide-who-decides]]
+- **8.** [[different-bets]]
+- **9.** [[investor-under-pressure]]
 
 ### Part III — Turning Investor Expectations into Commitments
 
 Turn investor expectations into feasible commitments to customers, systems and teams.
 
 - [[part-3]] — part introduction
-- **10.** [[choosing-investments]]
-- **11.** [[product-value]]
-- **12.** [[engineering-and-architecture]]
-- **13.** [[valuation-and-design]]
-- **14.** [[cloud-economics]]
-- **15.** [[security-and-resilience]]
-- **16.** [[data-and-ai]]
-- **17.** [[people-and-operating-models]]
-- **18.** [[acquisitions-and-carveouts]]
+- **10.** [[cannot-fund-everything]]
+- **11.** [[roadmap-to-revenue]]
+- **12.** [[can-the-team-deliver]]
+- **13.** [[growth-into-design]]
+- **14.** [[cheaper-cloud-bill]]
+- **15.** [[prove-you-can-restore]]
+- **16.** [[ai-strategy-three-questions]]
+- **17.** [[fix-decisions-before-hiring]]
+- **18.** [[acquisition-adds-work-first]]
 
 ### Part IV — Beyond Money: Using Investor Support to Build Capability and Accelerate Progress
 
 Ask for help the company can use and agree the cost, authority and continuing dependence.
 
 - [[part-4]] — part introduction
-- **19.** [[technology-principal]]
-- **20.** [[investor-support]]
-- **21.** [[making-support-work]]
+- **19.** [[investors-adviser]]
+- **20.** [[help-that-changes-capability]]
+- **21.** [[useful-engagement]]
 
 ### Part V — Leading Through Funding and Ownership Changes
 
 Lead through funding and ownership changes, including delays and continued ownership.
 
 - [[part-5]] — part introduction
-- **22.** [[diligence-and-thesis]]
+- **22.** [[diligence-corrects-the-plan]]
 - **23.** [[first-hundred-days]]
-- **24.** [[execution-and-exit]]
+- **24.** [[the-financing-slipped]]
 
 ### Part VI — Lessons from the Field
 
@@ -155,7 +155,7 @@ Test leadership judgments against specific histories while keeping the evidence 
 - **26.** [[visma]]
 - **27.** [[toys-r-us]]
 - **28.** [[teamsystem]]
-- **29.** [[durable-value]]
+- **29.** [[success-for-whom]]
 
 ### Reference Material
 

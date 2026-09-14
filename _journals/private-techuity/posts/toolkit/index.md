@@ -35,7 +35,7 @@ Use the same finding or initiative identifier through related records. Restrict 
 
 ## 1. Map the Owners, Funding and Decision
 
-Use before translating an ownership announcement into an operating promise. See [[capital-and-ownership]], [[cash-and-constraints]] and [[governance]]. Complete this for the actual arrangement, rather than assuming every investor has a fund or controls the company.
+Use before translating an ownership announcement into an operating promise. See [[announcement-is-not-a-budget]], [[obligations-before-budget]] and [[decide-who-decides]]. Complete this for the actual arrangement, rather than assuming every investor has a fund or controls the company.
 
 | Field | Record |
 | --- | --- |
@@ -55,7 +55,7 @@ For fictional Larkspur, “hire two engineers after €2m arrives and the board 
 
 ## 2. Write a One-Page Technology Thesis
 
-Use when investigating a proposed investment, then revise with the company leaders responsible for the plan after the transaction completes. See [[diligence-and-thesis]].
+Use when investigating a proposed investment, then revise with the company leaders responsible for the plan after the transaction completes. See [[diligence-corrects-the-plan]].
 
 **Company and date:** [fill in]. **Ownership and rights:** [investors, control and approvals]. **Funding or transaction:** [new shares, sale, refinancing, separation or continued ownership]. **Decision and responsible person:** [fill in].
 
@@ -75,7 +75,7 @@ A thesis is useful if a decision-maker can explain **what would make it fail**. 
 
 ## 3. Record a Material Diligence Finding
 
-The seven dimensions are a coverage aid: product, architecture, engineering, data and AI, security and resilience, organization, and economics. Do not average their scores into a false precision. See [[diligence-and-thesis]].
+The seven dimensions are a coverage aid: product, architecture, engineering, data and AI, security and resilience, organization, and economics. Do not average their scores into a false precision. See [[diligence-corrects-the-plan]].
 
 | Field | Record |
 | --- | --- |
@@ -93,7 +93,7 @@ The seven dimensions are a coverage aid: product, architecture, engineering, dat
 
 ## 4. Agree an Investor Support Engagement
 
-Use when agreeing a specific source of investor support. See [[investor-support]], [[making-support-work]] and [[technology-principal]].
+Use when agreeing a specific source of investor support. See [[help-that-changes-capability]], [[useful-engagement]] and [[investors-adviser]].
 
 Record the question, expected useful output, engagement sponsor at the investor, accountable company leader, participants, scope, exclusions and end date. Name the adviser’s or specialist’s authority and the company’s decision-maker. Define the time commitment, specialist budget, availability during deal peaks, and escalation path if resources change.
 
@@ -131,7 +131,7 @@ A brief fictional example shows the level of detail to start with:
 | Responsibility and review | Name one responsible company leader, agree the team’s capacity and set a review date before expanding. |
 | Financial limit | Fewer hours are capacity; count cash savings only when spending is actually reduced or avoided. |
 
-The example comes from [[product-value]]. It is a smaller alternative to the earlier €1 million program, not additional spending already approved alongside it.
+The example comes from [[roadmap-to-revenue]]. It is a smaller alternative to the earlier €1 million program, not additional spending already approved alongside it.
 
 A collection of records must still fit total company capacity. Adding realistic estimates to each initiative does not make their sum feasible.
 
@@ -146,7 +146,7 @@ Distinguish cash received, a binding commitment with understood conditions, an a
 
 ## 6. Keep an Outcome and Contribution Ledger
 
-Use to prevent an activity, a capacity gain, and a financial result from becoming the same claim. See [[product-value]], [[cloud-economics]], and [[return-mechanics]].
+Use to prevent an activity, a capacity gain, and a financial result from becoming the same claim. See [[roadmap-to-revenue]], [[cheaper-cloud-bill]], and [[three-different-returns]].
 
 Record the original baseline and its definition; the intervention and actual cost; the observed result and period; relevant customer or service quality; demand and mix changes; acquisition effects; and other initiatives. Link the underlying evidence rather than repeatedly copying uncontrolled numbers.
 
@@ -179,7 +179,7 @@ For each selected measure, record its baseline, owner, reporting period, decisio
 
 ## 8. Interview for Investor Fit
 
-Use before and during an engagement. See [[investor-fit]]. Ask for evidence and concrete examples rather than assurances.
+Use before and during an engagement. See [[investor-under-pressure]]. Ask for evidence and concrete examples rather than assurances.
 
 - Describe a case where the original thesis was wrong. What changed, and who decided?
 - Show how an operating investment was funded when the base case deteriorated.
@@ -194,7 +194,7 @@ Compare the answers across participants and permitted references. An absent docu
 
 ## 9. Plan Acquisition Integration or Separation
 
-Use alongside the transaction timetable, with appropriate legal and financial specialists. See [[acquisitions-and-carveouts]].
+Use alongside the transaction timetable, with appropriate legal and financial specialists. See [[acquisition-adds-work-first]].
 
 Identify the value mechanism that requires each integration: reporting, commercial collaboration, shared capability, or product convergence. Record the customer impact, permitted data flows, license and intellectual-property rights, identity and access boundaries, product commitments, supplier dependencies, and knowledge owners.
 
@@ -204,7 +204,7 @@ Sequence changes around customer continuity and scarce expertise. Show dual-runn
 
 ## 10. Prepare a Funding or Ownership Handover
 
-Use for another round, a sale, corporate integration or a material change in authority. See [[diligence-and-thesis]] and [[execution-and-exit]]. A new fundraise and an investor selling existing shares need different cash explanations.
+Use for another round, a sale, corporate integration or a material change in authority. See [[diligence-corrects-the-plan]] and [[the-financing-slipped]]. A new fundraise and an investor selling existing shares need different cash explanations.
 
 | Field | Record |
 | --- | --- |
@@ -221,7 +221,7 @@ Use for another round, a sale, corporate integration or a material change in aut
 
 ## 11. Connect Valuation to Architecture
 
-Use this companion to the decision record when a financial target is driving a technology proposal. Start with [[valuation-and-architecture]] for the underlying terms.
+Use this companion to the decision record when a financial target is driving a technology proposal. Start with [[valuation-is-an-estimate]] for the underlying terms.
 
 | Record | Questions to answer together |
 | --- | --- |
@@ -236,7 +236,7 @@ A valuation ratio is context for this conversation. It does not replace the cust
 
 ## 12. Compare Investment Choices and Capacity
 
-Use before approving a combination of projects. See [[choosing-investments]]. This record complements the individual initiative record in Tool 5: each project can be feasible on its own while the combination is not.
+Use before approving a combination of projects. See [[cannot-fund-everything]]. This record complements the individual initiative record in Tool 5: each project can be feasible on its own while the combination is not.
 
 | Field | Record |
 | --- | --- |
