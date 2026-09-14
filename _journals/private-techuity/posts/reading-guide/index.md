@@ -17,37 +17,37 @@ icon: "assets/icons/reading-guide.png"
 <br>
 Your company has new investors. The announcement promises growth and support. Within weeks, you are asked to hire faster, demonstrate a new product, reduce costs or connect to the owner’s systems. The requests may each sound reasonable. Together, they can exceed the company’s money, authority and ability to deliver.
 
-**OWNED: Product & Engineering Leadership Under Investors** is about doing your job in that situation. Its primary reader leads product or engineering inside the company, including someone joining an arrangement they did not choose. Understanding the investor matters because it changes the decisions you must make, the commitments you can support and the arguments you need to bring to the people who decide.
+**OWNED: Product & Engineering Leadership Under Investors** is about doing your job in that situation. Its primary reader leads product or engineering inside the company, including someone who has joined an arrangement they didn’t choose. Understanding the investor matters because it changes the decisions you must make, the commitments you can support and the arguments you need to bring to the people who decide.
 
-Company’s ownership setting does not remove your judgment or responsibility. Sometimes you can approve a change yourself. Sometimes you must negotiate funding, challenge a target or ask the board to choose between incompatible outcomes. The book helps you distinguish those situations and make the consequences clear.
+The company’s ownership setting doesn’t remove your judgment or responsibility. Sometimes you can approve a change yourself. Sometimes you must negotiate funding, challenge a target or ask the board to choose between incompatible outcomes. The book helps you distinguish those situations and make the consequences clear.
 
 
 ## Owners, Rights, Funding, and Change
 
-This book focuses mainly on private companies working with **outside investors**. Funding by founders themselves serves as a useful point of comparison, and public markets come up where they influence financing or changes in ownership, but leadership in public companies is not covered in detail.
+This book focuses mainly on private companies working with **outside investors**. Founder self-funding serves as a point of comparison, and public markets come up where they influence financing or ownership changes, but leadership in public companies is not covered in detail.
 
-To understand the impact of any **outside investment** in a company, keep **four questions** separate: who the owners are, what rights they have, how the company is funded, and what is changing.
+To understand the impact of any **outside investment**, keep **four questions** separate: who the owners are, what rights they have, how the company is funded, and what is changing.
 
 The first question, who the owners are, is where most of the labels and jargon come from. A **venture investor** funds a young company still searching for a repeatable business. A **growth investor** funds the expansion of a business with established demand. A **buyout investor** purchases control. A **corporate investor** is another operating business investing for financial or commercial reasons; it may hold a minority stake or acquire the company outright.
 
-These labels tell you roughly what kind of investor you are dealing with, but not the answers to the other three questions. Rights do not automatically follow from stake size: a minority investment can carry important approval rights without conferring control. Funding does not follow from deal type: borrowing is a way to raise money and is not confined to buyouts. And the nature of the change is a separate matter again: a **carve-out** means taking a business out of a larger company, a **turnaround** means fixing serious business problems, and either can involve any of the owner types above.
+These labels tell you roughly what kind of investor you’re dealing with, but not the answers to the other three questions. Rights don’t automatically follow from stake size: a minority investment can carry important approval rights without conferring control. Funding doesn’t follow from deal type: borrowing is a way to raise money and isn’t confined to buyouts. And the nature of the change is separate again: a **carve-out** takes a business out of a larger company, a **turnaround** fixes serious business problems, and either can involve any of the owner types above.
 
-The practical impact of any investment therefore depends on its actual terms, **established case by case**: the investor's rights, the financing arrangements, the support available, and the time horizon.
+The practical impact of any investment therefore depends on its actual terms, **established case by case**: the investor's rights, the financing, the support available and the time horizon.
 
 
 ![A company commitment depends on actual owners, funding, decision rights and expectations.](assets/images/reading-guide/four-questions-before-a-commitment.jpeg)
-**Figure 1:** *A company commitment depends on actual owners, funding, decision rights and expectations..*
+**Figure 1:** *A company commitment depends on actual owners, funding, decision rights and expectations.*
 
 ## How to Read This Book
 
-This book aims to build a **shared understanding** of external investment dynamics so that all parties can collaborate more concretely. Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people. Part IV helps you obtain useful investor support. Part V prepares you for funding and ownership changes. Part VI examines historical cases and what remains after a transaction.
+This book aims to build a **shared understanding** of how outside investment works so that everyone involved can collaborate more concretely. Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people. Part IV helps you obtain useful investor support. Part V prepares you for funding and ownership changes. Part VI examines historical cases and what remains after a transaction.
 
 No accounting or technical background is required. On a first pass, read the chapters in order, since each builds on terms introduced earlier. For example, [[valuation-is-an-estimate]] teaches financial valuation, and [[growth-into-design]] later applies those concepts to technical choices once the product and engineering foundations are in place.
 
 ![The book moves from money and decisions through company work, support, ownership changes and field lessons.](assets/images/reading-guide/owned-reading-journey.jpeg)
 **Figure 2:** *The reading sequence builds the foundations before applying them to work, support and changing ownership.*
 
-The parts are **ordered for learning**, not by a company's timeline. The events a leader actually faces make up the **ownership cycle**, and they can arrive in any order. Each one raises its own question and sends you back to different parts of the book:
+The parts are **ordered for learning**, not by a company's timeline. The events a leader actually faces make up the **ownership cycle**, and they can arrive in any order. Each raises its own question and sends you to different parts of the book:
 
 | Event | The company leader's question | Where to look |
 | --- | --- | --- |
@@ -68,7 +68,7 @@ The chapters place Larkspur in alternative situations: learning with limited cas
 
 ## Choose a Reading Format or Route
 
-The 29 main chapters each provide an **Article**, a 300–500-word **TL;DR** summary, and a six-panel **Comic**. TL;DR means “too long; didn’t read.” The comics are illustrated, with captions and dialogue transcripts. The six part introductions and four guide/reference pages do not include TL;DR and comic modalities.
+The 29 main chapters each provide an **Article**, a 300–500-word **TL;DR** summary, and a six-panel **Comic**. TL;DR means “too long; didn’t read.” The comics are illustrated, with captions and dialogue transcripts. The six part introductions and four guide/reference pages have no TL;DR or comic.
 
 For a shorter first pass, read the introductions and summaries. For a current decision, use the routes below and return to Part I when a financial term is unfamiliar.
 
@@ -84,7 +84,7 @@ For a shorter first pass, read the introductions and summaries. For a current de
 
 ## Read the Evidence With Its Limits
 
-This living manuscript was first drafted in September 2026. Its historical cases examine specified periods at Hilton, Skype, Visma, Toys R Us and TeamSystem. The evidence concentrates on private equity and related ownership transitions. It does not establish how all venture, growth or corporate investors behave or perform.
+This living manuscript was first drafted in September 2026. Its historical cases examine specified periods at Hilton, Skype, Visma, Toys R Us and TeamSystem. The evidence concentrates on private equity and related ownership transitions, and doesn’t establish how all venture, growth or corporate investors behave or perform.
 
 Institutional funding guides support descriptions of other arrangements. The comparative Larkspur exercises are the author’s illustrations of decisions under stated assumptions. Company filings, investor accounts and research answer different questions; none makes an unobserved customer or employee outcome known.
 

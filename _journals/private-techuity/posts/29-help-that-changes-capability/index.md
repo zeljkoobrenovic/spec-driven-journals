@@ -21,25 +21,25 @@ Larkspur has money to improve customer onboarding, the setup required before a n
 
 The investor may know a suitable specialist, a leader at another company who has solved a similar problem or someone who can help define the permanent role. Those are different forms of support. Which one would make the next decision easier?
 
-This kind of help exists only because of the investor. A firm with several portfolio companies accumulates people, suppliers and experience a single company could not reach on its own, and it offers them because a stronger company raises the value of its holding. The offer is real but not free of interest. Using it well requires knowing what the company needs before accepting what is offered.
+This kind of help exists only because of the investor. A firm with several portfolio companies accumulates people, suppliers and experience a single company couldn’t reach on its own, and it offers them because a stronger company raises the value of its holding. The offer is real but not free of interest. Using it well means knowing what the company needs before accepting what is offered.
 
-The previous chapter explained the investment firm’s technology adviser. This chapter widens the view to the people and connections around that adviser. We start with the company’s need, examine possible help and then consider how to judge its availability and fit.
+The previous chapter explained the investment firm’s technology adviser. This chapter widens the view to the people and connections around that adviser: the company’s need first, then the possible help, then how to judge its availability and fit.
 
 ## Name the Capability You Need
 
 A **capability** is something the company can reliably do, such as understanding a customer need, releasing software safely or hiring for a specialist role. Describe the gap through the work that currently fails or takes too long.
 
-“We need help with engineering” is difficult to act on. “Changes wait three weeks because only two people can review the billing code” identifies a constraint. The useful help might involve teaching more reviewers, changing the software boundary or changing the approval process. An introduction to a large outsourcing provider may not address any of those needs.
+“We need help with engineering” is hard to act on. “Changes wait three weeks because only two people can review the billing code” identifies a constraint. The useful help might be teaching more reviewers, changing the software boundary or changing the approval process. An introduction to a large outsourcing provider may not address any of those.
 
-Distinguish four possible requests: help to understand the problem, help to make a decision, people to carry out work and help developing the company’s own skills. One engagement can involve several, but agreeing which are needed prevents advice from being mistaken for delivery capacity.
+Distinguish four possible requests: help to understand the problem, help to make a decision, people to carry out work and help developing the company’s own skills. One engagement can involve several, but agreeing which are needed stops advice being mistaken for delivery capacity.
 
 ## Map the Possible Sources of Help
 
 An investment firm’s **operating team**, where it has one, helps companies improve how they work. Its **portfolio companies** are businesses in which its funds invest. A **peer network** connects leaders who can exchange relevant experience. Support may also come from outside specialists, suppliers or people introduced through the firm’s relationships.
 
-KKR’s description of Capstone provides one public example: it describes collaboration with company management, operating specialists, external partners and services spanning technology, growth and people. This establishes what that firm says it offers, rather than proving effectiveness or availability to any particular company. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone)
+KKR’s description of Capstone is one public example: it describes collaboration with company management, operating specialists, external partners and services spanning technology, growth and people. That establishes what the firm says it offers, not its effectiveness or availability to any particular company. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone)
 
-Use the following map as a set of possibilities to investigate, not a promised service catalogue:
+Use the following map as possibilities to investigate, not a promised service catalogue:
 
 | Company need | Help to explore | What to establish first |
 | --- | --- | --- |
@@ -51,14 +51,14 @@ Use the following map as a set of possibilities to investigate, not a promised s
 | Make a supplier or expansion decision | Procurement expertise, commercial introductions or experience in another market | Are the terms and experience relevant to this company’s actual needs? |
 | Combine or separate businesses | People with experience of the particular transition | Can they help the company operate through the change, within agreed responsibilities? |
 
-The best route may be outside the investor’s network. Assess the support against the same company need regardless of who introduced it.
+The best route may be outside the investor’s network. Assess the support against the same company need whoever introduced it.
 
 ![A company need can be matched to investor specialists, peers, customer contacts or external providers after checking fit and availability.](assets/images/29-help-that-changes-capability/need-before-support-source.jpeg)
 **Figure 1:** *Start with the capability the company needs, then compare credible sources of help.*
 
 ## Compare the Offer With the Investor’s Actual Position
 
-The questions below are a proposed way to assess help; the categories are not promises of what an investor provides.
+The questions below are a proposed way to assess help; the categories aren’t promises of what an investor provides.
 
 | Possible source | A useful request to test | What the company must clarify |
 | --- | --- | --- |
@@ -67,44 +67,44 @@ The questions below are a proposed way to assess help; the categories are not pr
 | Buyout firm’s operating team | A bounded assignment on costs, security, acquisitions or organizational capability | Who pays, which company leader owns the result and how competing assignments affect availability |
 | Corporate investor or parent | Access to a channel, specialist capability or shared service | Commercial interests, information boundaries, local authority and the cost of continuing dependence |
 
-Suppose a corporate investor can introduce Larkspur to a large customer group. Priya should agree the learning goal and the commercial owner of any subsequent offer. Suppose a fund can lend an integration specialist. Alex should agree the knowledge transfer and the work the team must stop to participate. In both cases, the request concerns a company capability and an actual recipient, not a general desire to use the investor’s network.
+Suppose a corporate investor can introduce Larkspur to a large customer group. Priya should agree the learning goal and the commercial owner of any subsequent offer. Suppose a fund can lend an integration specialist. Alex should agree the knowledge transfer and the work the team must stop to take part. In both cases, the request concerns a company capability and an actual recipient, not a general wish to use the investor’s network.
 
 ## Use Connections to Learn About Customers
 
-An introduction can give a product team access it would otherwise struggle to obtain. It can help test a problem, understand a buying process or find a partner. It does not establish demand for the product.
+An introduction can give a product team access it would otherwise struggle to get. It can help test a problem, understand a buying process or find a partner. It doesn’t establish demand for the product.
 
-Investors may introduce people from companies they already know. Those people may differ from the customers the product intends to serve. Ask what you can learn from the conversation and which other perspectives are still missing.
+Investors tend to introduce people from companies they already know, who may differ from the customers the product intends to serve. Ask what you can learn from the conversation and which other perspectives are still missing.
 
 For Larkspur, interviews with larger portfolio companies might reveal useful scheduling needs, but those needs may not match its smaller maintenance-business customers. Priya should compare the insights with evidence from the intended market before changing the roadmap.
 
-A commercial introduction also needs follow-through. Agree who owns the relationship, what the company is ready to offer and what additional delivery work a successful sale would create. More opportunities can worsen an existing onboarding constraint.
+A commercial introduction also needs follow-through. Agree who owns the relationship, what the company is ready to offer and what extra delivery work a successful sale would create. More opportunities can worsen an existing onboarding constraint.
 
 ## Start Small and Transfer the Work
 
-Starting a new capability can combine temporary expertise with internal ownership. A specialist can help a company produce its first useful result while a company employee learns how to maintain it.
+Starting a new capability can combine temporary expertise with internal ownership. A specialist can help the company produce its first useful result while an employee learns how to maintain it.
 
-In a fictional example, Larkspur uses a short specialist assignment to document one setup path, remove one repeated manual step and teach the customer team how to review the result. Alex protects time for an engineer to participate; Priya owns the customer outcome. The investor helps identify the specialist and resolve the agreed access to support.
+In a fictional example, Larkspur uses a short specialist assignment to document one setup path, remove one repeated manual step and teach the customer team how to review the result. Alex protects time for an engineer to take part; Priya owns the customer outcome. The investor helps identify the specialist and resolve the agreed access to support.
 
-The result should be judged through actual customer setups and **the team’s ability to repeat the work**. A presentation explaining what an improved process could look like is a different deliverable.
+Judge the result through actual customer setups and **the team’s ability to repeat the work**. A presentation of what an improved process could look like is a different deliverable.
 
-Temporary help does not always need to end in complete independence. A company may sensibly continue buying a scarce specialist service. It should understand the continuing cost, availability and responsibilities, rather than discover the dependence when the first assignment finishes.
+Temporary help doesn’t always need to end in complete independence. A company may sensibly keep buying a scarce specialist service. It should understand the continuing cost, availability and responsibilities rather than discover the dependence when the first assignment finishes.
 
 ![A small joint assignment gives the company a method it can repeat, with any continuing external dependence made explicit.](assets/images/29-help-that-changes-capability/support-builds-internal-capability.jpeg)
 **Figure 2:** *Useful support leaves a capability the company can use or a continuing service it understands.*
 
 ## Support Hiring and Development Together
 
-An investor’s network may help identify candidates or people who can assess a role. Begin with the work the company needs: the decisions, skills, relationships and conditions in which the person must succeed. A prestigious introduction is not evidence that the candidate fits that job.
+An investor’s network may help identify candidates or people who can assess a role. Begin with the work the company needs: the decisions, skills, relationships and conditions in which the person must succeed. A prestigious introduction isn’t evidence that the candidate fits that job.
 
 Hiring is also only one way to develop capability. Coaching an existing leader, mentoring a new manager or helping several teams practice a skill can be more appropriate than adding a senior role. Compare the transition effort and the company’s capacity to use the help.
 
-Agree how development conversations relate to formal performance assessment. A leader should understand whether a discussion is confidential coaching, advice that will be shared with the board or part of an evaluation. The decision boundaries from Part II still apply.
+Agree how development conversations relate to formal performance assessment. A leader should know whether a discussion is confidential coaching, advice that will be shared with the board or part of an evaluation. The decision boundaries from Part II still apply.
 
 ## Check Availability Before Depending on It
 
-Ask who will do the work, when they can begin, how much time they can give and which costs the company will bear. A firm may have relevant expertise that is committed elsewhere. A peer may be willing to discuss an approach but unable to provide delivery help.
+Ask who will do the work, when they can begin, how much time they can give and which costs the company will bear. A firm may have relevant expertise that is committed elsewhere. A peer may be willing to discuss an approach but unable to help deliver it.
 
-Also ask what assumptions travel with a reused practice. A tool developed for a much larger business may require administration your team cannot support. Shared purchasing terms may be attractive while the cost of changing suppliers outweighs the benefit. **Borrow experience with its context attached**.
+Also ask what assumptions travel with a reused practice. A tool developed for a much larger business may need administration your team can’t support. Shared purchasing terms may be attractive while the cost of changing suppliers outweighs the benefit. **Borrow experience with its context attached**.
 
 If the proposed help is unavailable, identify **an alternative provider or change the plan** before the team depends on it. A useful introduction and a commitment to deliver work belong in different parts of that plan.
 

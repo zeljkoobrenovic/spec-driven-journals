@@ -15,9 +15,9 @@ icon: "assets/icons/toolkit.png"
 > * **Review outcomes and revise the plan**. Keep baselines, assumptions and reasons for stopping or changing an intervention visible.
 
 <br>
-These are **proposed working tools** for company leaders applying the book’s financial, decision and support concepts. Some also serve readers designing support services in the optional appendix. They have not been validated as a universal operating standard. Start with the smallest record that improves a real decision, and remove fields that impose work without changing understanding or accountability.
+These are **proposed working tools** for company leaders applying the book’s financial, decision and support concepts. Some also serve readers designing support services in the optional appendix. They haven’t been validated as a universal operating standard. Start with the smallest record that improves a real decision, and drop fields that add work without changing understanding or accountability.
 
-You do not need to fill in every tool. Choose the record for the decision in front of you:
+You don’t need to fill in every tool. Choose the record for the decision in front of you:
 
 | Your immediate question | Start with |
 | --- | --- |
@@ -31,7 +31,7 @@ You do not need to fill in every tool. Choose the record for the decision in fro
 
 An **initiative** is a defined piece of improvement work. A **baseline** records the starting situation. A **dependency** is something required before other work can proceed. A **material finding** is important enough to affect a decision. A record’s “owner” means the person responsible for the work or decision, unless it explicitly refers to a shareholder.
 
-Use the same finding or initiative identifier through related records. Restrict distribution according to the engagement and company permissions. A filled template does not establish that its claims are true: preserve dates, definitions, evidence links, and disagreement.
+Use the same finding or initiative identifier through related records. Restrict distribution according to the engagement and company permissions. A filled template doesn’t establish that its claims are true: preserve dates, definitions, evidence links and disagreement.
 
 ## 1. Map the Owners, Funding and Decision
 
@@ -71,11 +71,11 @@ Use when investigating a proposed investment, then revise with the company leade
 
 **Decision implication:** [proceed; change terms or resources; defer pending evidence; decline; consciously accept uncertainty]. **What would change this recommendation:** [specific evidence or scenario].
 
-A thesis is useful if a decision-maker can explain **what would make it fail**. Rewording a growth ambition in technical language does not achieve that.
+A thesis is useful if a decision-maker can explain **what would make it fail**. Rewording a growth ambition in technical language doesn’t achieve that.
 
 ## 3. Record a Material Diligence Finding
 
-The seven dimensions are a coverage aid: product, architecture, engineering, data and AI, security and resilience, organization, and economics. Do not average their scores into a false precision. See [[diligence-corrects-the-plan]].
+The seven dimensions are a coverage aid: product, architecture, engineering, data and AI, security and resilience, organization, and economics. Don’t average their scores into false precision. See [[diligence-corrects-the-plan]].
 
 | Field | Record |
 | --- | --- |
@@ -89,7 +89,7 @@ The seven dimensions are a coverage aid: product, architecture, engineering, dat
 | Agreed response | Investment implication, required condition, funded initiative, accepted residual risk, or further investigation |
 | Company handoff | Named recipient, acceptance date, resources, and next evidence check |
 
-**Example of a better finding formulation, fictional:** “Three observed onboarding engagements required the same specialist's manual configuration. We have not established how representative these engagements are. The sales-growth thesis requires higher throughput, so investigate the dependency before assuming that additional bookings become timely revenue.” This is stronger than “architecture maturity: amber” because it exposes the economic assumption and evidence limit.
+**A better finding, fictional:** “Three observed onboarding engagements required the same specialist's manual configuration. We have not established how representative these engagements are. The sales-growth thesis requires higher throughput, so investigate the dependency before assuming that additional bookings become timely revenue.” This is stronger than “architecture maturity: amber” because it exposes the economic assumption and the evidence limit.
 
 ## 4. Agree an Investor Support Engagement
 
@@ -133,7 +133,7 @@ A brief fictional example shows the level of detail to start with:
 
 The example comes from [[roadmap-to-revenue]]. It is a smaller alternative to the earlier €1 million program, not additional spending already approved alongside it.
 
-A collection of records must still fit total company capacity. Adding realistic estimates to each initiative does not make their sum feasible.
+A collection of records must still fit total company capacity. Adding realistic estimates to each initiative doesn’t make their sum feasible.
 
 ### If Funding Is Still Conditional
 
@@ -148,7 +148,7 @@ Distinguish cash received, a binding commitment with understood conditions, an a
 
 Use to prevent an activity, a capacity gain, and a financial result from becoming the same claim. See [[roadmap-to-revenue]], [[cheaper-cloud-bill]], and [[three-different-returns]].
 
-Record the original baseline and its definition; the intervention and actual cost; the observed result and period; relevant customer or service quality; demand and mix changes; acquisition effects; and other initiatives. Link the underlying evidence rather than repeatedly copying uncontrolled numbers.
+Record the original baseline and its definition; the intervention and actual cost; the observed result and period; relevant customer or service quality; demand and mix changes; acquisition effects; and other initiatives. Link the underlying evidence rather than copying uncontrolled numbers around.
 
 **Capacity bridge:** What time or resource was released? How was it measured? Where did the capacity go? If no spending changed, describe the benefit as capacity or capability, not a cash saving.
 
@@ -190,7 +190,7 @@ Use before and during an engagement. See [[investor-under-pressure]]. Ask for ev
 - Which outcomes are tracked after exit? What evidence is available from employees, customers, and suppliers?
 - How are management equity, reporting, information access, and decision rights documented?
 
-Compare the answers across participants and permitted references. An absent document may be fixable; repeated contradictions about authority, funding, or consequences require a more substantial response. The aim is a realistic engagement, not a personality verdict.
+Compare the answers across participants and permitted references. An absent document may be fixable; repeated contradictions about authority, funding or consequences need a more substantial response. The aim is a realistic engagement, not a personality verdict.
 
 ## 9. Plan Acquisition Integration or Separation
 
@@ -198,7 +198,7 @@ Use alongside the transaction timetable, with appropriate legal and financial sp
 
 Identify the value mechanism that requires each integration: reporting, commercial collaboration, shared capability, or product convergence. Record the customer impact, permitted data flows, license and intellectual-property rights, identity and access boundaries, product commitments, supplier dependencies, and knowledge owners.
 
-For a carve-out, separate Day 1 continuity from the final independent state. List each transition service, contract owner, duration, cost, service expectation, dependency, and exit condition. Build standalone cost from required capabilities rather than accepting a seller's historical allocation as the answer.
+For a carve-out, separate Day 1 continuity from the final independent state. List each transition service, contract owner, duration, cost, service expectation, dependency, and exit condition. Build standalone cost from required capabilities rather than accepting the seller's historical allocation.
 
 Sequence changes around customer continuity and scarce expertise. Show dual-running costs, rollback options where feasible, migration acceptance, and the point at which the business can operate independently. A synergy target should include the expense and time needed to realize it.
 
@@ -231,7 +231,7 @@ Use this companion to the decision record when a financial target is driving a t
 | Transition | Who does the work, what cash is needed, what runs in parallel and what gets postponed? |
 | Outcome and limits | What observable result justifies the work, what might offset it, and what triggers revision? |
 
-A valuation ratio is context for this conversation. It does not replace the customer, operating and technical evidence needed to choose the design.
+A valuation ratio is context for this conversation. It doesn’t replace the customer, operating and technical evidence needed to choose the design.
 
 
 ## 12. Compare Investment Choices and Capacity
@@ -249,7 +249,7 @@ Use before approving a combination of projects. See [[cannot-fund-everything]]. 
 | Uncertainty and first stages | What a smaller commitment can test, and what must remain workable if later work does not proceed |
 | Review decision | Evidence, date and authority for continuing, changing, expanding or stopping |
 
-Calculate cash and team time separately. Identify overlapping benefits and costs, as well as prerequisites that prevent projects from running in parallel. A resource estimate should say what is included; avoid adding existing payroll to a proposal a second time if the budget already contains it.
+Calculate cash and team time separately. Identify overlapping benefits and costs, as well as prerequisites that prevent projects from running in parallel. A resource estimate should say what it includes; don’t add existing payroll to a proposal a second time if the budget already contains it.
 
 Record the reason for the selected combination in ordinary language. A score can organize estimates, but the accountable decision-maker must still explain the trade-off and what evidence would change it.
 

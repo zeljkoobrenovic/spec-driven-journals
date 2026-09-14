@@ -15,9 +15,9 @@ icon: "assets/icons/part-1-intro.png"
 <br>
 **Financing** arranges the money a company needs. **Ownership** determines who holds shares and the rights attached to them. A new investment can change one, the other or both, and the difference matters for anyone who commits money and people to work.
 
-Any plan that needs people and money — a launch, a hire, a roadmap — depends on where that money comes from: a new funding round, customer receipts, cash left after debt payments or a corporate parent's budget. Each is a different condition on the same leadership job: committing resources to work the company can actually sustain. Before an announcement becomes a delivery promise, learn to identify the source of the money, who receives it, who has authority over it and when it arrives.
+Any plan that needs people and money — a launch, a hire, a roadmap — depends on where that money comes from: a new funding round, customer receipts, cash left after debt payments or a corporate parent's budget. Each is a different condition on the same leadership job: committing resources to work the company can sustain. Before an announcement becomes a delivery promise, learn to identify where the money comes from, who receives it, who has authority over it and when it arrives.
 
-This part teaches the financial concepts by comparing arrangements side by side. Fund-backed buyouts receive the most detailed treatment because the available cases let us examine them closely; minority funding, growth plans and corporate ownership supply further decision contexts. No investor category, on its own, tells you how much cash is available or who can approve its use.
+This part teaches the financial concepts by comparing arrangements side by side. Fund-backed buyouts get the most detailed treatment because the available cases let us examine them closely; minority funding, growth plans and corporate ownership supply further contexts. No investor category, on its own, tells you how much cash is available or who can approve its use.
 
 ## The Learning Path
 

@@ -17,7 +17,7 @@ An investor's **thesis** explains why it expects an investment to succeed. For a
 
 The same choice looks different under different planning assumptions. Suppose better onboarding needs engineering work. If further funding is uncertain, a small test may have to establish demand before anyone is hired permanently. Under an expansion plan, the question may instead be whether the change repeats across markets. Where the company has borrowed, the timing of payments can become decisive. A corporate owner may need an interface that fits group distribution. These are alternative assumptions to plan against, not rules attached to investor labels.
 
-This part begins with the choice among competing commitments, then follows the product, engineering, financial and organizational consequences of that choice. Throughout, make the **expected benefit, funding horizon and work displaced** visible together. When an investor's target cannot be met within those constraints, show **which assumption or decision must change**.
+This part begins with the choice among competing commitments, then follows its product, engineering, financial and organizational consequences. Throughout, make the **expected benefit, funding horizon and work displaced** visible together. When an investor's target cannot be met within those constraints, show **which assumption or decision must change**.
 
 ## The Learning Path
 

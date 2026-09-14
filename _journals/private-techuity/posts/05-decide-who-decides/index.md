@@ -19,11 +19,11 @@ icon: "assets/icons/05-decide-who-decides.png"
 <br>
 An adviser from the investment firm suggests changing the company’s cloud provider, the supplier of its rented computing services. The technology leader hears an instruction from the owner and begins planning. The adviser thought they were only offering an idea.
 
-This is a problem of **governance**: the arrangements for making decisions, overseeing them and holding people responsible. Good intentions cannot replace an agreed decision process.
+This is a problem of **governance**: the arrangements for making decisions, overseeing them and holding people responsible. Good intentions can't replace an agreed decision process.
 
-In a founder-owned company an informal decision process can work for years. An outside investor introduces new holders of authority: board seats, approval thresholds, and advisers who speak, or seem to speak, for the owner. Their requests carry a weight that is easy to overestimate or underestimate, and the operating consequences of either mistake land on product and engineering teams.
+In a founder-owned company an informal decision process can work for years. An outside investor introduces new holders of authority: board seats, approval thresholds, and advisers who speak, or seem to speak, for the owner. Their requests carry a weight that is easy to overestimate or underestimate, and either mistake lands on product and engineering teams.
 
-Part I followed the money. This chapter begins Part II by examining what investment can change about your authority and accountability. We first identify the changes, then establish who decides and how you can influence the plan through evidence and workable alternatives.
+Part I followed the money. This chapter begins Part II by examining what investment can change about your authority and accountability. It first identifies the changes, then establishes who decides and how you can influence the plan through evidence and workable alternatives.
 
 The examples return to the fictional software company Larkspur. Ines is its chief executive officer (**CEO**), Alex its chief technology officer (**CTO**), and Sam its chief financial officer (**CFO**). Morgan is the **Technology Principal**, a technology adviser working for the investment firm. Their titles describe their work; their actual approval rights need to be agreed.
 
@@ -38,31 +38,31 @@ The examples return to the fictional software company Larkspur. Ines is its chie
 | Approval | Which hiring, spending, product or transaction decisions need approval, from whom and when? |
 | Accountability | Who owns each result, what resources have been committed and how will progress be assessed? |
 
-An investment does not automatically change every entry. Recording what stayed the same is useful when employees are unsure whether earlier authority still applies. If you inherited the ownership arrangement, begin with the decisions ahead rather than assuming you participated in agreeing the original terms.
+An investment doesn't automatically change every entry. Recording what stayed the same helps when employees are unsure whether earlier authority still applies. If you inherited the ownership arrangement, begin with the decisions ahead rather than assuming you took part in agreeing the original terms.
 
 You can also influence the expectations. Explain which commitments can coexist, **which compete for the same resources** and what would need to change. The purpose is to reach an accountable decision before the team treats an aspiration as an approved plan.
 
 ## Identify the Different Decision-Makers
 
-The investment team develops and evaluates the investment case. A fund’s **investment committee** is the body authorized to approve investments within its **mandate**, the scope of work and decisions assigned to it. Operating professionals can contribute expertise and help companies execute. The company's board oversees matters within its authority, while executives lead the business. Lenders can have contractual rights that affect what any of these actors can do.
+The investment team develops and evaluates the investment case. A fund’s **investment committee** is the body authorized to approve investments within its **mandate**, the scope of work and decisions assigned to it. Operating professionals contribute expertise and help companies execute. The company's board oversees matters within its authority, while executives lead the business. Lenders can have contractual rights that affect what any of these actors can do.
 
-The survey of private equity investors by Gompers and colleagues documents attention to governance, financing, and value creation; it does not establish a uniform organization chart. [S04: PE practitioner survey](https://www.nber.org/papers/w21133) KKR's public description of Capstone, its in-house operating-support team, similarly places operating support in collaboration with investment teams, boards, and company management. This establishes a stated delivery model, not proof that every intervention succeeds. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone)
+The survey of private equity investors by Gompers and colleagues documents attention to governance, financing and value creation; it doesn't establish a uniform organization chart. [S04: PE practitioner survey](https://www.nber.org/papers/w21133) KKR's public description of Capstone, its in-house operating-support team, similarly places operating support alongside investment teams, boards and company management. That is a stated delivery model, not proof that every intervention succeeds. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone)
 
 For an individual engagement, replace the generic diagram with actual names and rights. Who recommends? Who decides? Who implements? Who supplies money? Who receives information? Who can escalate? One person may play several roles, but the roles still need to be distinguished.
 
 ## Several Investors Do Not Make One Decision-Maker
 
-In a fictional minority round, Larkspur’s founder keeps most voting shares. One new investor receives a board seat; another receives specified approval rights. Alex is asked for three different versions of the hiring plan. The correct response is to establish which forum can approve the company’s plan and bring the alternatives there. Adding all the requests to the roadmap would turn unresolved ownership disagreement into the team’s delivery problem.
+In a fictional minority round, Larkspur’s founder keeps most voting shares. One new investor receives a board seat; another receives specified approval rights. Alex is asked for three different versions of the hiring plan. The right response is to establish which forum can approve the company’s plan and bring the alternatives there. Adding all the requests to the roadmap would turn unresolved ownership disagreement into the team’s delivery problem.
 
-The National Venture Capital Association publishes separate model documents for share purchases, investor rights and voting arrangements. Its overview also describes time- or milestone-based funding mechanisms. This supports looking beyond an ownership percentage; the overview does not establish the terms of any particular company’s agreement. [S61: NVCA model-document overview](https://nvca.org/model-legal-documents/)
+The National Venture Capital Association publishes separate model documents for share purchases, investor rights and voting arrangements. Its overview also describes time- or milestone-based funding mechanisms. This supports looking beyond an ownership percentage; it doesn't establish the terms of any particular company’s agreement. [S61: NVCA model-document overview](https://nvca.org/model-legal-documents/)
 
-With a controlling sponsor, ask which decisions remain delegated to management and which require approval. With a corporate parent, map the local board and executives alongside group product, security, finance and procurement functions. A minority corporate investment does not by itself establish that group hierarchy.
+With a controlling sponsor, ask which decisions remain delegated to management and which require approval. With a corporate parent, map the local board and executives alongside group product, security, finance and procurement functions. A minority corporate investment doesn't by itself establish that group hierarchy.
 
-**Record the source of each relevant authority**, the decision threshold and the response time in language the team can use. When investors disagree, the board or other authorized body must resolve the choice. The product and engineering leader supplies the options, evidence and consequences; ownership disagreement cannot be resolved by silently promising incompatible work.
+**Record the source of each relevant authority**, the decision threshold and the response time in language the team can use. When investors disagree, the board or other authorized body must resolve the choice. The product and engineering leader supplies the options, evidence and consequences; ownership disagreement can't be resolved by silently promising incompatible work.
 
 ## Write Down Who Decides What
 
-The following is a proposed pattern to adapt to actual company documents. It is not an assertion that a Technology Principal has these rights.
+The following is a proposed pattern to adapt to actual company documents. It isn't an assertion that a Technology Principal has these rights.
 
 | Decision | Company contribution | Principal's possible contribution | Approval to verify |
 | --- | --- | --- | --- |
@@ -87,42 +87,42 @@ This is the €1 million program discussed in [[obligations-before-budget]], not
 
 Names and thresholds make the record usable. "Management recommends, the board approves" tells Alex nothing about whom to call on a Tuesday, or by when.
 
-A useful record also names a response time. **Escalation** means taking an unresolved issue to someone authorized to decide it. An escalation route that takes six weeks is inadequate for a financing deadline or service failure. Treating every architectural disagreement as an emergency has the opposite failure: it prevents company leadership from exercising judgment.
+A useful record also names a response time. **Escalation** means taking an unresolved issue to someone authorized to decide it. An escalation route that takes six weeks is useless for a financing deadline or service failure. Treating every architectural disagreement as an emergency fails the other way: it stops company leadership from exercising judgment.
 
 ![A proposal passes through explicit proposal, approval, funding and delivery responsibilities, with adviser input shown separately.](assets/images/05-decide-who-decides/decision-rights-map.jpeg)
 **Figure 1:** *Decision rights clarify how an idea becomes an authorized, funded commitment.*
 
 ## Connect Technical Choices to the Business Outcome
 
-Alex proposes rewriting Larkspur's scheduling engine because it is difficult to change. The board asks how that supports growth. Alex answers that the current stack is dated. The exchange produces heat but little information.
+Alex proposes rewriting Larkspur's scheduling engine because it is hard to change. The board asks how that supports growth. Alex answers that the current stack is dated. The exchange produces heat but little information.
 
-A better challenge asks for the constrained business outcome: which customer need cannot be served, how often the constraint bites, and what it costs. Alex can then compare a focused change, a staged replacement and the full rewrite. The CFO can compare their cash profiles with the €0.5 million remaining in the annual planning example, then check cash balances, payment dates and reserves ([[obligations-before-budget]]). The board can decide whether to fund an option and accept its risks.
+A better challenge asks for the constrained business outcome: which customer need can't be served, how often the constraint bites, and what it costs. Alex can then compare a focused change, a staged replacement and the full rewrite. The CFO can compare their cash profiles with the €0.5 million remaining in the annual planning example, then check cash balances, payment dates and reserves ([[obligations-before-budget]]). The board can decide whether to fund an option and accept its risks.
 
-The board has not become an architecture committee. It has required the connection between an investment and the business plan to be made explicit. The technical team retains responsibility for explaining feasible choices and their consequences.
+The board hasn't become an architecture committee. It has required the connection between an investment and the business plan to be made explicit. The technical team keeps responsibility for explaining feasible choices and their consequences.
 
-The same discipline applies in reverse. “Cut engineering by 20%” is not a complete operating plan. Which work disappears? Which obligations remain? What will happen to customer commitments and operational coverage? If the decision is still to cut, its expected consequences should be recorded rather than quietly converted into impossible delivery promises.
+The same discipline applies in reverse. “Cut engineering by 20%” isn't a complete operating plan. Which work disappears? Which obligations remain? What happens to customer commitments and operational coverage? If the decision is still to cut, record its expected consequences rather than quietly converting them into impossible delivery promises.
 
 ## Support Can Become a Shadow Hierarchy
 
-Direct access to engineers can help during **due diligence**, the investigation before an investment, or during a clearly scoped support assignment. It can become destructive when portfolio staff receive competing priorities from the Principal, the CTO, and the investment team. A parallel reporting line then exists without an explicit mandate or accountability.
+Direct access to engineers can help during **due diligence**, the investigation before an investment, or during a clearly scoped support assignment. It becomes destructive when portfolio staff receive competing priorities from the Principal, the CTO and the investment team. A parallel reporting line then exists without an explicit mandate or accountability.
 
 An **engagement charter** is a short agreement for a support assignment. Its governance purpose is to identify the accountable company leader, the adviser’s role and the decision boundaries. If the role changes, revisit the agreement. Part IV develops the practical scope, resources and handover in [[useful-engagement]].
 
-Hands-on work is not the same as taking over. A Principal might help diagnose a release failure with engineers, then return the improvement plan to the engineering leader. The test is whether company capability strengthens and responsibility remains understandable after the intervention ends.
+Hands-on work isn't the same as taking over. A Principal might help diagnose a release failure with engineers, then return the improvement plan to the engineering leader. The test is whether company capability strengthens and responsibility stays understandable after the intervention ends.
 
 ## Reporting That Changes Decisions
 
-A board report should connect material outcomes, interpretation, and decisions needed. A traffic-light dashboard without an evidence trail can conceal more than it reveals. “Green” might mean on time, within budget, lower risk, or simply no one has escalated a problem.
+A board report should connect material outcomes, interpretation and the decisions needed. A traffic-light dashboard without an evidence trail can conceal more than it reveals. “Green” might mean on time, within budget, lower risk, or simply that no one has escalated a problem.
 
-For a customer onboarding initiative, a compact report might show implementation time by **cohort**, a defined group of comparable customers tracked over time, the engineering effort per customer, time from signing the contract to receiving the customer’s payment, the cost of the intervention, and an unresolved dependency. The narrative should explain whether observed changes are consistent with the hypothesis and what management wants to do next.
+For a customer onboarding initiative, a compact report might show implementation time by **cohort**, a defined group of comparable customers tracked over time, the engineering effort per customer, time from signing the contract to receiving the customer’s payment, the cost of the intervention, and an unresolved dependency. The narrative should say whether observed changes fit the hypothesis and what management wants to do next.
 
-Keep reporting effort visible. Requiring every company to produce the same large monthly questionnaire can consume the capacity the owner wants to improve. Standard definitions can be valuable; the amount and frequency of reporting should match the importance of the decisions and the information the company can reasonably produce.
+Keep reporting effort visible. Requiring every company to produce the same large monthly questionnaire can consume the capacity the owner wants to improve. Standard definitions can be valuable; the amount and frequency of reporting should match the importance of the decisions and what the company can reasonably produce.
 
 ## Make a Conditional Commitment Explicit
 
-Suppose Alex can deliver the onboarding change in October if two hires start in June, or in January with current capacity. The board has approved the ambition but not the hiring budget. The operating record should state both dates and the approval needed by May. “October, subject to funded capacity by May” is a decision proposal; an unconditional October promise would conceal a dependency.
+Suppose Alex can deliver the onboarding change in October if two hires start in June, or in January with current capacity. The board has approved the ambition but not the hiring budget. The operating record should state both dates and the approval needed by May. “October, subject to funded capacity by May” is a decision proposal; an unconditional October promise would hide a dependency.
 
-If the approval does not arrive, return to the authorized decision-maker **while alternatives still exist**. Explain whether scope, timing or another commitment must change. Keep customers’ existing obligations visible and tell the team which plan it is actually executing. This is how a leader exercises judgment within constrained authority.
+If the approval doesn't arrive, return to the authorized decision-maker **while alternatives still exist**. Explain whether scope, timing or another commitment must change. Keep customers’ existing obligations visible and tell the team which plan it is actually executing. This is how a leader exercises judgment within constrained authority.
 
 ![Approval, funding and capacity must be confirmed before a conditional plan becomes a delivery commitment.](assets/images/05-decide-who-decides/conditional-commitment-gates.jpeg)
 **Figure 2:** *Record the condition, the person who can resolve it and the decision date.*
@@ -131,7 +131,7 @@ If the approval does not arrive, return to the authorized decision-maker **while
 
 A leader should be able to say: “We can deliver the cost target, but not the current roadmap with it. Here are the choices.” A Principal should be able to say: “The evidence no longer supports the original thesis.” A board should be able to decide against a recommendation while recording what it is accepting.
 
-The difficult boundary is confidentiality. Coaching cannot carry an unlimited promise of secrecy if a material issue requires escalation under the engagement's obligations. Agree those boundaries early. Explain what information will be shared, with whom, and why; do not turn routine coaching into an undisclosed assessment channel.
+The difficult boundary is confidentiality. Coaching can't carry an unlimited promise of secrecy if a material issue requires escalation under the engagement's obligations. Agree those boundaries early. Explain what information will be shared, with whom and why; don't turn routine coaching into an undisclosed assessment channel.
 
 A useful governance arrangement lets disagreement reach an accountable decision in time to act. The record should make clear who decided, which options were considered and what consequences were accepted.
 
