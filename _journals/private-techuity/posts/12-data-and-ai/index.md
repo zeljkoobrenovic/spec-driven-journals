@@ -12,22 +12,22 @@ icon: "assets/icons/12-data-and-ai.png"
 
 > **KEY POINTS:**
 >
-> * Separate **product opportunity, operating improvement and competitive threat**. Each asks a different investment question and needs its own evidence.
+> * Separate **product opportunity, operating improvement and competitive threat**. Each asks a different investment question, needs its own evidence, and reaches beyond product and engineering.
 > * Measure the **complete workflow**. Include review, correction, data preparation and ongoing operation, so that using a tool is not mistaken for getting a useful result.
 > * Keep **experimental results attached to their conditions**. Tools, tasks and participants change. Test the local effect before turning estimated time savings into a financial commitment.
 
 <br>
-An investor asks for an “AI strategy.” The product team sees a new customer feature, the finance team expects lower costs, and the CEO worries about a competitor replacing the product. These are three different investment questions, each needing its own evidence.
+An investor asks for an “AI strategy.” The product team sees a new customer feature, the finance team expects lower costs, and the CEO worries about a competitor replacing the product. These are **three different investment questions**: a product opportunity, an operating improvement and a competitive threat. Each needs its own evidence.
 
-**Artificial intelligence (AI)** refers here to software that performs tasks such as classifying information, making predictions or generating content from learned patterns. **Generative AI** produces outputs such as text, images or code. An **AI model** is the component that learns patterns from data and uses them to produce predictions or other outputs. Its output needs evaluation in the task where it will be used.
+Rolling the three into a single adoption target **obscures the economics**. A company can use AI extensively without creating value, create value through a narrow use case, or face disruption even if its own experiments work well.
 
-The investor’s request has reasons that go beyond the product. AI can change what the company is worth, what a buyer will pay for it, and whether the investment case still holds if a competitor’s product replaces it. Product and engineering leaders are therefore being asked a valuation question dressed as a technology question, and a headline commitment can be made on the company’s behalf before the work has been examined.
+The investor’s request also has reasons that go beyond the product. AI can change what the company is worth, what a buyer will pay for it, and whether the investment case still holds if a competitor’s product replaces it. Product and engineering leaders are therefore being asked **a valuation question dressed as a technology question**, and a headline commitment can be made on the company’s behalf before the work has been examined.
 
-Combining the three questions into a single adoption target obscures the economics. A company can use AI extensively without creating value, create value through a narrow use case, or face disruption even if its own experiments work well.
+That pressure is why AI gets a chapter of its own, even though the earlier chapters on product value, engineering, cloud economics and security already supply most of the tools it uses. Almost every investor now holds some expectation about AI, whether as a line in the investment thesis, a question at each board meeting or an assumption in the exit story, so the **push to commit is stronger** here than for most technology topics. The same attention brings **hype, shifting vocabulary and claims that are hard to check**. Where expectations run high and evidence is muddled, a structured way to sort the questions is worth more than another opinion about the technology.
 
-We will examine customer uses first, then the data they require, evidence about internal productivity, and possible threats to the existing product. The value chain from [[product-value]] and the uncertainty discussed in [[security-and-resilience]] remain useful throughout.
+Three terms recur throughout. **Artificial intelligence (AI)** refers here to software that performs tasks such as classifying information, making predictions or generating content from learned patterns. **Generative AI** produces outputs such as text, images or code. An **AI model** is the component that learns patterns from data and uses them to produce predictions or other outputs. Its output needs evaluation in the task where it will be used.
 
-Product and engineering leaders should separate the questions and attach each to evidence, cost and a decision. An investor’s adviser can help, with the role and information boundaries explained in [[technology-principal]]. The analysis in this chapter is dated September 2026; the cited experiments describe particular earlier tools and populations.
+The chapter examines customer uses first, then the data they require, evidence about internal productivity, and possible threats to the existing product, before turning to the shape an AI strategy needs across the whole company. The value chain from [[product-value]] and the uncertainty discussed in [[security-and-resilience]] remain useful throughout. The aim at each step is to **separate the questions and attach each to evidence, cost and a decision**. An investor’s adviser can help, with the role and information boundaries explained in [[technology-principal]]. The analysis in this chapter is dated September 2026; the cited experiments describe particular earlier tools and populations.
 
 ## Start With the Customer's Work
 
@@ -93,6 +93,16 @@ A product's advantage may lie in reliable execution, specialized knowledge, regu
 
 The product leader’s market work, supported by the investor’s adviser where useful, should therefore test both opportunity and substitution. What would a new entrant need to replace the product's useful outcome? What would customers lose or gain? Which experiments can the company run before a threat becomes an urgent revenue problem?
 
+## Treat AI as an Operating Model, Not a Feature Roadmap
+
+The three questions so far have been examined from where product and engineering leaders sit. That is also where most companies make their first mistake: **they treat AI as a product and engineering topic**. The investor asks for an AI strategy, the request lands with the technology leader, and the answer comes back as a feature roadmap and a coding-assistant pilot. The rest of the business is left to adopt whatever tools it finds.
+
+The functions outside product and engineering are often **where the operating question is largest**. Marketing, sales, customer service, data, legal and finance each run workflows with the same shape as the ones examined above: routine work, review, correction and a result somebody depends on. Each also carries its own risks, such as a customer-facing error, a contractual limit on data use or a regulatory obligation that a tool cannot see. An AI strategy that covers only the product **cannot answer an investor who expects the company as a whole to work differently**, and cannot see a threat that arrives through the sales or service channel.
+
+The alternative is **an org-wide operating model**. Each function sets **its own AI goals** in the terms of its own work: cases resolved, proposals produced, contracts reviewed, sales cycles shortened. Each names a **champion**, one person who owns those goals, runs the local experiments and reports what the evidence shows. Each has **a seat where the strategy is set**, so trade-offs between functions are made openly rather than by whoever bought licenses first. Product and engineering keep the customer product and the shared platform, evaluation and data questions, but they are **one function among several** rather than the owner of the whole topic.
+
+This is more structure than a small company can staff at once, and a champion without time or authority becomes a reporting layer rather than a source of decisions. **Start with the two or three functions** where the workflow is largest or the investor's expectation is most specific, apply the same experiment discipline as above, and extend the model as evidence arrives. The test of an AI strategy is **whether every function can state its goal, its owner and its evidence**, not how long the product roadmap is.
+
 Assess an AI investment through the complete task: what improves, how quality is checked, what the workflow costs and who maintains it as the technology changes. Record the tools and dates so that later readers know which evidence still applies.
 
 Even a useful tool depends on people who can evaluate, operate and improve it. The next chapter examines the organization needed to sustain technology work: [[people-and-operating-models]].
@@ -105,3 +115,4 @@ Even a useful tool depends on people who can evaluate, operate and improve it. T
 4. If a productivity pilot saved 1,000 hours a quarter, what would your company do with them, and which route to a financial result is being promised?
 5. Which AI-related commitments has your company made to investors that a demonstration cannot support?
 6. What would a competitor need in order to reproduce your product’s useful outcome, and which experiments could test that before the threat becomes urgent?
+7. Which functions outside product and engineering have their own AI goal, a named champion and a seat where the strategy is set? Which are adopting tools on their own?

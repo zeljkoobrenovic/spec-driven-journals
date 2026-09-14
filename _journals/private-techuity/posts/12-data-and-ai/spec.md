@@ -25,6 +25,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
+- Show that an AI strategy is an org-wide operating model rather than a product and engineering roadmap: every function sets its own AI goals, names an accountable champion and has a seat where the strategy is set.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
 - Link related chapters and cite substantive external factual claims close to the text.
@@ -55,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-14: Add an intro paragraph on why AI earns a chapter of its own, reorder the intro for flow, and add a section on treating AI as an org-wide operating model rather than a product and engineering topic. TL;DR updated to match.
 - 2026-09-14: Retitle the post from “An AI Strategy Contains Three Different Investment Questions” to “An AI Strategy Hides Three Investment Questions”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

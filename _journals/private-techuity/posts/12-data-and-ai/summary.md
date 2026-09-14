@@ -15,4 +15,6 @@ Data rights, security, evaluation, and accountability belong in the investment c
 
 A demonstration for a funding meeting is **different from a product commitment**. In fictional Larkspur, Priya and Alex state the demonstration’s limits and the customer, cost and reliability evidence needed before launch. A corporate investor’s proposed dataset requires a separate access decision from any request for company data. Keep the next operating decision explicit, especially when a fundraising narrative or staffing target is ahead of evidence from the complete workflow.
 
+**An AI strategy is an org-wide operating model, not a feature roadmap.** Treating AI as a product and engineering topic leaves marketing, sales, customer service, data, legal and finance to adopt tools on their own. Each function needs its own AI goals, a named champion accountable for them and a seat where the strategy is set; product and engineering own the customer product and the shared platform, not the whole topic.
+
 Company leaders and any supporting adviser can make experiments comparable enough to learn across companies while preserving local context. Scale evidence of useful performance; retire or revise offerings that do not pass their own outcome tests.
