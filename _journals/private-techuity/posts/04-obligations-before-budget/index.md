@@ -12,7 +12,9 @@ icon: "assets/icons/04-obligations-before-budget.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to reconcile positive earnings with the cash actually available, separate obligations from choices, and price the options for an initiative the company can fund.
 
-> **WHY IS THIS IMPORTANT:** Positive earnings can coexist with an unfunded initiative; a leader who cannot find the cash behind the budget makes promises that finance cannot honor.
+> **WHY IS THIS IMPORTANT FOR YOU:** Positive earnings can coexist with an unfunded initiative; a leader who cannot find the cash behind the budget makes promises that finance cannot honor.
+
+> **WHY INVESTORS CARE ABOUT THIS:** Interest, tax and working capital come out of the same cash that would fund the roadmap; an investor whose financing depends on that cash needs management to see the bridge before it commits to spending.
 
 
 > **KEY POINTS:**

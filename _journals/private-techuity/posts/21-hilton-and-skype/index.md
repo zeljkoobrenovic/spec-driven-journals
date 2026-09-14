@@ -12,7 +12,9 @@ icon: "assets/icons/21-hilton-and-skype.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to separate investor gains, company improvements and claims about technology’s contribution in two historical sales, and see which operating question each case asks.
 
-> **WHY IS THIS IMPORTANT:** Leaders are routinely asked to justify work through a future sale value; two real exits show how little the exit price alone says about what created it.
+> **WHY IS THIS IMPORTANT FOR YOU:** Leaders are routinely asked to justify work through a future sale value; two real exits show how little the exit price alone says about what created it.
+
+> **WHY INVESTORS CARE ABOUT THIS:** Investors present exits like these as the proof of their model; understanding what actually created each return is how they, and their own investors, judge whether the model can be repeated.
 
 
 > **KEY POINTS:**

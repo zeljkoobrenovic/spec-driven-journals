@@ -12,7 +12,9 @@ icon: "assets/icons/29-help-that-changes-capability.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to name a capability gap, compare the investor’s people and networks with the help available elsewhere, and write the request for a first step.
 
-> **WHY IS THIS IMPORTANT:** Accepting the help on offer rather than the help the gap needs consumes scarce team time and can leave a dependence nobody planned; comparing routes is what makes the help useful.
+> **WHY IS THIS IMPORTANT FOR YOU:** Accepting the help on offer rather than the help the gap needs consumes scarce team time and can leave a dependence nobody planned; comparing routes is what makes the help useful.
+
+> **WHY INVESTORS CARE ABOUT THIS:** Operating support is part of what investors sell to their own investors and to founders; it earns its cost only when it changes what the company can do, so the investor needs the request to be specific.
 
 
 > **KEY POINTS:**

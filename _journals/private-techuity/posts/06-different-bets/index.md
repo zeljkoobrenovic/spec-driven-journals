@@ -12,7 +12,9 @@ icon: "assets/icons/06-different-bets.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn how management equity, fund carry and employee jobs are exposed differently to one decision, and how to pair a target with the measure it could damage.
 
-> **WHY IS THIS IMPORTANT:** “We are all shareholders now” hides the fact that executives, the fund, employees and customers are exposed differently to the same decision; incentives you misread will steer choices you did not intend.
+> **WHY IS THIS IMPORTANT FOR YOU:** “We are all shareholders now” hides the fact that executives, the fund, employees and customers are exposed differently to the same decision; incentives you misread will steer choices you did not intend.
+
+> **WHY INVESTORS CARE ABOUT THIS:** Management equity and carried interest are the investor’s tools for alignment; if the payout rule rewards a damaging choice, the investor pays for it twice, in the outcome and in the price of the incentive.
 
 
 > **KEY POINTS:**

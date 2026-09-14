@@ -12,7 +12,9 @@ icon: "assets/icons/22-visma.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to follow the funds and shareholders behind a familiar investment manager, and check that a year’s earnings are still the same measure before budgeting for acquisitions and shared support.
 
-> **WHY IS THIS IMPORTANT:** A familiar manager and a familiar earnings label can both mask a change: different funds behind the same name, and a different measure for the same year; both affect what the company can budget.
+> **WHY IS THIS IMPORTANT FOR YOU:** A familiar manager and a familiar earnings label can both mask a change: different funds behind the same name, and a different measure for the same year; both affect what the company can budget.
+
+> **WHY INVESTORS CARE ABOUT THIS:** The funds behind a holding change while the manager stays; each new investor buys at a new price and needs the earnings measure it is paying for to be the same one management budgets on.
 
 
 > **KEY POINTS:**

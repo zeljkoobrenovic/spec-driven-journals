@@ -12,7 +12,9 @@ icon: "assets/icons/13-fix-decisions-before-hiring.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace one piece of work through the company, separate decision, knowledge and staffing constraints, assess leaders in their system and decide what hiring the plan needs.
 
-> **WHY IS THIS IMPORTANT:** Hiring into a queue made of unclear authority and concentrated knowledge buys people who wait; the diagnosis decides whether new people help, and what shape the hire should take.
+> **WHY IS THIS IMPORTANT FOR YOU:** Hiring into a queue made of unclear authority and concentrated knowledge buys people who wait; the diagnosis decides whether new people help, and what shape the hire should take.
+
+> **WHY INVESTORS CARE ABOUT THIS:** Headcount is one of the few levers an investor can see and fund; it wants to know whether the money buys capacity or buys people who wait behind the same bottleneck.
 
 
 > **KEY POINTS:**

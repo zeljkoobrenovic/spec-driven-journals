@@ -12,7 +12,9 @@ icon: "assets/icons/12-ai-strategy-three-questions.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to separate the three investment questions inside an AI strategy request and give each its evidence, cost, quality threshold and decision.
 
-> **WHY IS THIS IMPORTANT:** An AI strategy request bundles a product bet, a productivity claim and a competitive threat into one word; funding them as one decision commits money to the wrong question.
+> **WHY IS THIS IMPORTANT FOR YOU:** An AI strategy request bundles a product bet, a productivity claim and a competitive threat into one word; funding them as one decision commits money to the wrong question.
+
+> **WHY INVESTORS CARE ABOUT THIS:** Investors ask for an AI strategy because it can change the product’s value, the cost base and the competitive position of their holding; they need the three answers separated to know which one they are funding.
 
 
 > **KEY POINTS:**

@@ -12,7 +12,9 @@ icon: "assets/icons/25-teamsystem.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn what each new owner of one software group inherited, and how reporting periods and adjusted earnings change the apparent result.
 
-> **WHY IS THIS IMPORTANT:** Each new owner starts from a new price and a new reporting period, but the migrations, integrations and obligations continue; a leader who cannot separate the two misreads both the results and the workload.
+> **WHY IS THIS IMPORTANT FOR YOU:** Each new owner starts from a new price and a new reporting period, but the migrations, integrations and obligations continue; a leader who cannot separate the two misreads both the results and the workload.
+
+> **WHY INVESTORS CARE ABOUT THIS:** Each investor in a chain of owners underwrites the progress of the last one; it needs to know what work and obligations it is inheriting, and what the reporting period it is shown actually covers.
 
 
 > **KEY POINTS:**
