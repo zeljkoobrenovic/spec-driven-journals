@@ -59,16 +59,15 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "03-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/12-ai-strategy-three-questions/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Priya watches a customer planner draft a weekly maintenance schedule with a general assistant on a laptop; beside them a technician's device and a locked regulator record folder stay unconnected, and a roadmap card marked with a pause symbol lies on the desk. Use one speech bubble with the exact words: \"What did the customer lose?\" Convey: A general assistant can draft the schedule; the test asks five customers what they lost, such as dispatch, live re-planning and the regulator's records. Larkspur pauses its €120,000 suggestions feature until the 15 January 2027 decision to defend, partner, reprice or stop.",
+  "prompt": "Panel 3 of an explainer comic. Priya watches a customer planner draft a weekly maintenance schedule with a general assistant on a laptop; beside them a technician's device and a locked regulator record folder stay unconnected, and a roadmap card marked with a pause symbol lies on the desk. Use one speech bubble with the exact words: \"What did the customer lose?\" Convey: A general assistant can draft the schedule; the test asks five customers what they lost: dispatch, live re-planning, the regulator’s records. Larkspur pauses its €120,000 suggestions feature until the 15 January 2027 decision to defend, partner, reprice or stop.",
   "alt": "Comic panel: Priya watches a customer planner draft a weekly schedule with a general assistant, beside an unconnected technician device, a locked record folder and a paused roadmap card.",
   "caption": "A general assistant can draft the schedule; the test asks five customers what they lost: dispatch, live re-planning, the regulator’s records. Larkspur pauses its €120,000 suggestions feature until the 15 January 2027 decision to defend, partner, reprice or stop.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "b12d0903c8a663ec69b8ad6e96a95cbb6ca597c3edca0b6b91f303d3cfed4158"
+    "sha256": "8ec6a3ccae5e64494bc14faad0b86d158648753562ae1ca49fd7562c015d4bc3"
   }
 }
 -->
@@ -83,16 +82,15 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "04-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/12-ai-strategy-three-questions/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam and Priya stand beside a large stopwatch whose dial includes a segment labeled review, next to a wall calendar where a pinned hiring card has been moved from April to October. Use one speech bubble with the exact words: \"Twenty percent faster is not a seventh agent.\" Convey: Include review and correction in handling time. Three support agents 20% faster supply the capacity of 6.75 agents, not seven; the seventh hire moves from April to October 2027 only if a rollout check and ticket volume hold, and €32,000 gross becomes about €22,000 net of licenses, review and rollout.",
+  "prompt": "Panel 4 of an explainer comic. Sam and Priya stand beside a large stopwatch whose dial includes a segment labeled REVIEW, next to a plain wall calendar strip that shows only two labeled cells, APRIL and OCTOBER, with a pinned card labeled HIRING moved by an arrow from the APRIL cell to the OCTOBER cell. No other month names or dates. Use one speech bubble with the exact words: \"Twenty percent faster is not a seventh agent.\" Convey: Include review and correction in handling time. Three agents 20% faster supply 6.75 agents’ capacity, not seven; the seventh hire moves from April to October 2027 only if the rollout check and ticket volume hold, and €32,000 gross becomes about €22,000 net of licenses, review and rollout.",
   "alt": "Comic panel: Sam and Priya check a stopwatch that includes a review segment, beside a calendar where a hiring card has moved from April to October.",
   "caption": "Include review and correction in handling time. Three agents 20% faster supply 6.75 agents’ capacity, not seven; the seventh hire moves from April to October 2027 only if the rollout check and ticket volume hold, and €32,000 gross becomes about €22,000 net of licenses, review and rollout.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "7ef2b0f01dc0d47e7334e741d8a220b03f066034967ba10095b1d12005d97205"
+    "sha256": "a5c89fded63822a531eefd068223f2c2cecdbb02af5571c8728bcc11a91a17b2"
   }
 }
 -->
@@ -132,7 +130,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/12-ai-strategy-three-questions/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex separate a demonstration card from a customer launch checklist. Use one speech bubble with the exact words: \"What have we actually demonstrated?\" Convey: A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex separate a demonstration card from a customer launch checklist. Use one speech bubble with the exact words: \"What have we actually demonstrated?\" Convey: A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch; Larkspur’s paid pilot has a stop rule on 6 November and a release gate on 11 December 2026.",
   "alt": "Comic panel: Priya and Alex separate a demonstration card from a customer launch checklist.",
   "caption": "A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch; Larkspur’s paid pilot has a stop rule on 6 November and a release gate on 11 December 2026.",
   "generation": {

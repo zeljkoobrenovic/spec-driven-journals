@@ -64,11 +64,11 @@ IDENTITIES=(
     'Do not write numerical balances, amounts or dates on any prop. '
 )
 PEOPLE={
-    'Morgan':'Morgan: the woman with a black bob and green jacket, first person in the reference.',
+    'Morgan':'Morgan: the light-skinned European-looking woman with a short straight black bob and green jacket, first person in the reference; her face must match the reference sheet exactly.',
     'Alex':'Alex: the brown-skinned man with short curly hair and a blue shirt, second person in the reference.',
-    'Sam':'Sam: the man with short brown hair, round spectacles and an amber cardigan, third person in the reference. He has close-cropped hair above his ears, a masculine face and no bob haircut.',
+    'Sam':'Sam: the light-skinned man with short brown hair, round spectacles and an amber cardigan, third person in the reference. He has close-cropped hair above his ears, a masculine face and no bob haircut.',
     'Priya':'Priya: the brown-skinned woman with straight dark hair and a plum blouse, fourth person in the reference.',
-    'Ines':'Ines: the older woman with a grey bob and navy jacket, fifth person in the reference.'
+    'Ines':'Ines: the older light-skinned woman with a grey bob and navy jacket, fifth person in the reference.'
 }
 
 def sha(data):return hashlib.sha256(data).hexdigest()

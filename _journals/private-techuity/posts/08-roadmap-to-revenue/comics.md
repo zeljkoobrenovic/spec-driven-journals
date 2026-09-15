@@ -44,9 +44,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "5db768872b66e3311043cd7c12c279cfd39ce3e33ded9d8d8d9dca85778420e0"
-  },
-  "needs_regeneration": true
+    "sha256": "30575baaeedba4c0dce5d55cff987ff6296b8e72be0a1d3638c013256b24de5c"
+  }
 }
 -->
 
@@ -137,9 +136,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "0802ccb2924f7cf2f4cf3c72b3fd1b51758403750ad9c92634ab90bc4e0bc0c8"
-  },
-  "needs_regeneration": true
+    "sha256": "0848b1e082661a0cedc5f82d04d58ece05f044f56af3cd8a48cf2ad09fe5af8b"
+  }
 }
 -->
 

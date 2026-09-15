@@ -105,16 +105,15 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "05-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/24-success-for-whom/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. At a boardroom table, Sam holds a calendar page marked with a 90-day cut-off while Priya holds a small stack of customer contracts whose end dates run past it; Morgan watches. Use one speech bubble, spoken by Priya, with the exact words: \"Not before their contracts allow.\" Convey: Sam proposes ending an old onboarding path for thirty customers in 90 days, saving about €220,000 a year. Several customer contracts run past that date, so the cut-off as written is a breach, not an option. The board refuses it and compares two feasible routes: a consent-based early migration and a two-quarter migration with the specialist kept on.",
+  "prompt": "Panel 5 of an explainer comic. At a boardroom table, Sam holds a calendar page marked with a 90-day cut-off while Priya holds a small stack of customer contracts, plainly labeled CUSTOMER CONTRACTS with no printed dates or stamps; Morgan watches from across the table. Exactly three people in the panel, Sam, Priya and Morgan, and nobody else at or behind the table. Priya is the only speaker and the speech bubble's tail points to her alone. Use one speech bubble with the exact words: \"Not before their contracts allow.\" Convey: Sam proposes ending an old onboarding path for thirty customers in 90 days, saving about €220,000 a year. Several customer contracts run past that date, so the cut-off as written is a breach, not an option. The board refuses it and compares two feasible routes: a consent-based early migration and a two-quarter migration with the specialist kept on.",
   "alt": "Comic panel: Sam holds a calendar page marked with a 90-day cut-off while Priya holds customer contracts whose end dates run past it, and Morgan watches.",
   "caption": "Sam proposes ending an old onboarding path for thirty customers in 90 days, saving about €220,000 a year. Several customer contracts run past that date, so the cut-off as written is a breach, not an option. The board refuses it and compares two feasible routes: a consent-based early migration and a two-quarter migration with the specialist kept on.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "ee4ab68d1d1c979809ac7324a75ae81265849d10f565cf8b79cba06e419479ad"
+    "sha256": "97163b7c63acfb0aa9c22aea5cb93ba4a417ed826c2aac278256c96cb87d914f"
   }
 }
 -->
@@ -129,16 +128,15 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "06-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/24-success-for-whom/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Ines writes a short decision record on a board while Alex and Priya look on; the board shows a two-quarter timeline, a separate line for cash and a separate line for freed time, and a review marker at month nine. Use one speech bubble, spoken by Ines, with the exact words: \"Two quarters, the specialist stays, review at month nine.\" Convey: The board chooses the two-quarter migration after the data-quality step. It funds the specialist through the migration, then a half-time data service; it records €80,000 a year of payroll saved from year two as cash and €70,000 of support time as capacity, names who is accountable, keeps the disagreement on record and sets the evidence that reopens the decision.",
+  "prompt": "Panel 6 of an explainer comic. Ines writes a short decision record on a board while Alex and Priya look on; the board shows a two-quarter timeline, a separate line for cash and a separate line for freed time, and a review marker at month nine. Ines speaks. Use one speech bubble with the exact words: \"Two quarters, the specialist stays, review at month nine.\" Convey: The board chooses the two-quarter migration after the data-quality step. It funds the specialist through the migration, then a half-time data service; it records €80,000 a year of payroll saved from year two as cash and €70,000 of support time as capacity, names who is accountable, keeps the disagreement on record and sets the evidence that reopens the decision.",
   "alt": "Comic panel: Ines writes a decision record on a board showing a two-quarter timeline, separate cash and freed-time lines and a month-nine review marker, while Alex and Priya look on.",
   "caption": "The board chooses the two-quarter migration after the data-quality step. It funds the specialist through the migration, then a half-time data service; it records €80,000 a year of payroll saved from year two as cash and €70,000 of support time as capacity, names who is accountable, keeps the disagreement on record and sets the evidence that reopens the decision.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "328b8f8d0203836e45af923755c78cb4421daa64f2045121fa8600e21d447182"
+    "sha256": "47d8b6beda706787e9c330d8748590ea7faa6d2d6fbfd43ec1aaef417479b44d"
   }
 }
 -->

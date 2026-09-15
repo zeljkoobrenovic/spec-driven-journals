@@ -82,7 +82,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "04-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/09-can-the-team-deliver/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 4 of an explainer comic. Alex stands at a board with two columns: on the left, a steady stack labelled by a small tick (a stable core and a team that knows its customers); on the right, a tangle of country-rule cards knotted into one invoicing box. The board shows an assessment of what exists, not a comparison of architectures: no modular-versus-services diagram, no option labels, no prescribed design. Use one speech bubble with the exact words: \"What do we keep, and what blocks the plan?\" Convey: An assessment records strengths as well as constraints: a stable core and deep customer knowledge beside country rules coupled into the invoicing module.",
@@ -91,7 +90,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "64d66786e4c1834f8f66f26f4150a7f69aaa59d658697f5b5948d633511ec475"
+    "sha256": "45849dcf2236959037619d9360e8c56ac01b44da78d09a561a0884be97633960"
   }
 }
 -->

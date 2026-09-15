@@ -36,7 +36,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "02-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/15-investors-adviser/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 2 of an explainer comic. Alex holds a product roadmap and asks Morgan who has the authority to approve it. Use one speech bubble with the exact words: \"Who is authorized to decide?\" Convey: Working for the investor gives a suggestion influence. Authority to approve product priorities or spending comes from a role, board responsibility, agreed rights or an explicit assignment; the adviser has only what those grant.",
@@ -45,7 +44,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "e14685bb574889feb7ad15eb1704d15f3ee8ed9f03d31b4c5657eb0ced93490a"
+    "sha256": "764d8a44d2961bf5020787958c5719a4f951191b41762892bdd8ce0bcd54c8fb"
   }
 }
 -->
@@ -60,7 +59,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "03-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/15-investors-adviser/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 3 of an explainer comic. Alex lays the company’s own evidence beside Morgan’s investment assumptions on a table; papers are labelled onboarding effort, customer data quality and investment assumptions, with no pricing example. Use one speech bubble with the exact words: \"Here is what our team can demonstrate.\" Convey: Build a shared account of the company’s capabilities and the investor’s assumptions. Each side states the evidence that would change its view.",
@@ -69,7 +67,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "805733db0ee060943fdb5fb68a7752067b59721f3c8aa2f2d88b1153bb5c654e"
+    "sha256": "bf10f5a070d4e4c6bbcb6d314d6c17dacd0ee9564ff64ec6a1b0efc872a653bb"
   }
 }
 -->
@@ -130,16 +128,15 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "06-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/15-investors-adviser/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Morgan tells Alex that the investment firm has asked for a written assessment of technology leadership, and Ines stands beside them holding a short written note for the team. Three cards on the table read coaching, assessment and delivery, with Morgan’s hand moving from the coaching card to the assessment card. Use one speech bubble with the exact words: \"My role has changed. Here is who agreed it.\" Convey: A change of role is a new agreement. The firm may ask its adviser for a view within its existing rights; new access for a company-sponsored assessment is agreed by Ines or the board, and employees are told what the new conversations are for.",
+  "prompt": "Panel 6 of an explainer comic. Exactly three people and no more: one Morgan, one Alex and one Ines, each drawn once, no duplicate or look-alike figures in the background. Morgan is the speaker and the speech bubble's tail points to Morgan alone; Morgan tells Alex that the investment firm has asked for a written assessment of technology leadership; Ines, and only Ines, holds up a short note for the team whose page is blank or shows only faint scribble lines, no readable words. Exactly three cards lie on the table, labeled COACHING, ASSESSMENT and DELIVERY, one of each and no duplicates, with Morgan’s hand resting on the ASSESSMENT card. Use one speech bubble with the exact words: \"My role has changed. Here is who agreed it.\" Convey: A change of role is a new agreement. The firm may ask its adviser for a view within its existing rights; new access for a company-sponsored assessment is agreed by Ines or the board, and employees are told what the new conversations are for.",
   "alt": "Comic panel: Morgan moves a card from coaching to assessment while Ines holds a written note for the team.",
   "caption": "A change of role is a new agreement. The firm may ask its adviser for a view within its existing rights; new access for a company-sponsored assessment is agreed by Ines or the board, and employees are told what the new conversations are for.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "fa8a4767ff0e534ea33c837b895457722a7cb929929796de7a826b29bbae8f3d"
+    "sha256": "ffca49ca16989d5bb38e366e841f1f8740dacce6d197e5487930f5c960e551da"
   }
 }
 -->

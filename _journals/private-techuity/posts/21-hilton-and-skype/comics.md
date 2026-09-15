@@ -128,7 +128,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "06-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/21-hilton-and-skype/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 6 of an explainer comic. The fictional team places two decision maps beside the historical documents without reenacting the events. Use one speech bubble with the exact words: \"Two cases, two different decisions.\" Convey: Hilton asks whether the company has financing and time for the operating plan. Skype asks whether it controls the rights the product depends on and what a particular buyer values. Neither answer can be read from the exit price.",
@@ -137,7 +136,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "7e05531ffca3f6c6754c8623b0f6064a911149af1d4349ea98ec20fa89a815c6"
+    "sha256": "79e460eba3d793b3c134d9f1207809f2fb25762d9af8474a326135e8bdded389"
   }
 }
 -->

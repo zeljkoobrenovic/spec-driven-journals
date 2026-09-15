@@ -36,7 +36,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "02-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/02-three-different-returns/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 2 of an explainer comic. Sam stands beside a rising earnings chart and a shrinking debt stack, holding a price tag marked 10×; Alex looks on. Use one speech bubble with the exact words: \"Ten times: one hundred and ten million.\" Convey: Outcome one. A buyer pays the same 10× multiple: €15m × 10 = €150m, less €40m of debt. The fund receives €110m, 2.75 times its €40m, about 22% a year. Earnings up, debt down, price per euro unchanged.",
@@ -45,7 +44,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "75a33807a01a2097d2ef1c0c05d617ba9e5a08e37262a22b9b22a343263ff39e"
+    "sha256": "592cbf44b1ff0651355c47764e82f17d4e4a384508f664b08dccb5c83a10650c"
   }
 }
 -->
@@ -60,16 +59,15 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "03-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/02-three-different-returns/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex proudly holds a deployment report beside the same rising earnings chart and the same shrinking debt stack as before; Sam holds a larger price tag marked 12×. Use one speech bubble with the exact words: \"Twelve times. Same team, same numbers.\" Convey: Outcome two. Same EBITDA, same debt, but a buyer pays 12×: €180m less €40m. The fund receives €140m, 3.5 times its money, about 28% a year. Calling this proof of exceptional engineering confuses the exit price with the company's work.",
+  "prompt": "Panel 3 of an explainer comic. Alex proudly holds a deployment report beside the same rising earnings chart and the same shrinking debt stack as before; Sam holds a larger price tag marked 12×. Use one speech bubble with the exact words: \"Twelve times. Same team, same numbers.\" Convey: Outcome two. Same EBITDA, same debt, but a buyer pays 12×: €180m less €40m. The fund receives €140m, 3.5 times its money, about 28% a year. Calling this proof of exceptional engineering confuses the exit price with the company’s work.",
   "alt": "Comic panel: Alex proudly holds a deployment report beside the same earnings chart and debt stack, while Sam holds a larger 12× price tag.",
   "caption": "Outcome two. Same EBITDA, same debt, but a buyer pays 12×: €180m less €40m. The fund receives €140m, 3.5 times its money, about 28% a year. Calling this proof of exceptional engineering confuses the exit price with the company’s work.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "71dcb1d334787d4f56a8888b18dc734e024a14032dbcd856aae8110657e3cefc"
+    "sha256": "071924cc01c99c76fb34f11f0b85167c67c979212cf0d64cc8d794c71b6adce5"
   }
 }
 -->
@@ -84,16 +82,15 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "04-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/02-three-different-returns/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam stands beside the same rising earnings chart and the same shrinking debt stack as before, but holds a smaller price tag marked 7×; Alex looks at the identical chart, puzzled. Use one speech bubble with the exact words: \"Seven times. Same team, same numbers.\" Convey: Outcome three. Same EBITDA, same debt, but a buyer pays only 7×: €105m less €40m. The fund receives €65m, 1.6 times its money, about 10% a year. Calling this a failed transformation confuses the exit price with the company's work.",
+  "prompt": "Panel 4 of an explainer comic. Sam stands beside the same chart as the previous two panels: a line labeled EARNINGS rising left to right, and beside it a row of bars labeled DEBT that get shorter left to right (descending); Sam holds a smaller price tag marked 7×; Alex looks at the identical chart, puzzled. Use only the labels EARNINGS and DEBT. Use one speech bubble with the exact words: \"Seven times. Same team, same numbers.\" Convey: Outcome three. Same EBITDA, same debt, but a buyer pays only 7×: €105m less €40m. The fund receives €65m, 1.6 times its money, about 10% a year. Calling this a failed transformation confuses the exit price with the company’s work.",
   "alt": "Comic panel: Sam holds a smaller price tag beside the same earnings chart and debt stack, while Alex looks at the unchanged chart.",
   "caption": "Outcome three. Same EBITDA, same debt, but a buyer pays only 7×: €105m less €40m. The fund receives €65m, 1.6 times its money, about 10% a year. Calling this a failed transformation confuses the exit price with the company’s work.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "81793b059630282a48b03ff7b75d7d8aa2ea5a7e36561cd7f1ff0cee97337672"
+    "sha256": "cd6f715df1373ab50892ce05a64a79f1df2a563acb8c1b1e8357df357e0c6f89"
   }
 }
 -->

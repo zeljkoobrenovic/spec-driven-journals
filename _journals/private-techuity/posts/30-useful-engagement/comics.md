@@ -128,16 +128,15 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "06-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/30-useful-engagement/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "Week six, about day 63: the Larkspur engineer and a customer-team member complete a new customer’s setup with the specialist observing only. The engagement ends on schedule within its €15,000 cap, and the data-quality finding goes to the day-100 board review as a better decision to make.",
   "alt": "Comic panel: Priya and Alex watch a Larkspur engineer and a customer-team member complete a customer setup while the specialist stands back, hands folded.",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex watch a Larkspur engineer and a customer-team member complete a customer setup at a screen while the specialist stands back, hands folded, observing only; a small card on the desk reads data quality, to the board. Use one speech bubble with the exact words: \"Our team ran it without the specialist. The rest goes to the board.\" Convey: Week six, about day 63: the Larkspur engineer and a customer-team member complete a new customer’s setup with the specialist observing only. The engagement ends on schedule within its €15,000 cap, and the data-quality finding goes to the day-100 board review as a better decision to make.",
+  "prompt": "Panel 6 of an explainer comic. Exactly two unnamed people in grey sit side by side at one screen, both with hands on the keyboard and mouse, completing a customer setup together; a third unnamed person in grey, the specialist, stands well apart with hands folded, observing only; Priya and Alex watch from behind the two at the screen; Priya is the speaker and the speech bubble's tail points to Priya alone; a small card on the desk reads DATA QUALITY, TO THE BOARD. Use one speech bubble with the exact words: \"Our team ran it without the specialist. The rest goes to the board.\" Convey: Week six, about day 63: the Larkspur engineer and a customer-team member complete a new customer’s setup with the specialist observing only. The engagement ends on schedule within its €15,000 cap, and the data-quality finding goes to the day-100 board review as a better decision to make.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "d2132f3402f4bfeb62a449923319e1ebbacc5062df4752b80c862eb3b0b287e5"
+    "sha256": "b6264de6751210f25a7abf1326248547206fb0c6e4d4ede006a8960cd0219eff"
   }
 }
 -->

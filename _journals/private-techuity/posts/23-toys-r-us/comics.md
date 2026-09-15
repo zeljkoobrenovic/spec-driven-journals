@@ -59,16 +59,15 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "03-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/23-toys-r-us/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam places earnings, interest and cash-flow statements beside a transformation plan. Use one speech bubble with the exact words: \"Positive operating earnings; almost no operating cash flow.\" Convey: In fiscal 2016 the company reported positive operating earnings, a net loss attributable to Toys R Us, Inc. and almost no operating cash flow. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.",
+  "prompt": "Panel 3 of an explainer comic. Sam places three documents beside a transformation plan; their headings read, verbatim and printed normally left to right (never mirrored or reversed), OPERATING EARNINGS, INTEREST and OPERATING CASH FLOW, with a fourth sheet headed TRANSFORMATION PLAN. Two unnamed colleagues in grey look on. Use one speech bubble with the exact words: \"Positive operating earnings; almost no operating cash flow.\" Convey: In fiscal 2016 the company reported positive operating earnings, a net loss attributable to Toys R Us, Inc. and almost no operating cash flow. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.",
   "alt": "Comic panel: Sam places earnings, interest and cash-flow statements beside a transformation plan.",
   "caption": "In fiscal 2016 the company reported positive operating earnings, a net loss attributable to Toys R Us, Inc. and almost no operating cash flow. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "b7bda716a8e000a50391bddb7380552543f24dc2bb7dd478bed4d3f1de6cbb40"
+    "sha256": "3921d626190ea0b7267d47795e4c8f6c35ffecfe10bf8a86606b8331c404668e"
   }
 }
 -->

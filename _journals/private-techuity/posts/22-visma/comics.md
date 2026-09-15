@@ -128,16 +128,15 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "06-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/22-visma/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex checks three tabs beside an unchanged manager folder: which vehicles now hold the interests and how their rights are exercised, whether the shared-service and integration budget is still funded, and which earnings definition the plan uses. Use one speech bubble with the exact words: \"Which vehicles, which budget, which definition?\" Convey: After the transaction, the fictional team rechecks three specific things: the vehicles now holding the interests, their rights and horizons, without assuming one fund holds the majority; the funding and accountable leader for shared services and integration work; and the earnings definition the board, the lenders and the plan each use.",
+  "prompt": "Panel 6 of an explainer comic. Alex sits at a desk with a folder labeled MANAGER, unchanged, and a notebook lying flat and facing the viewer, with exactly three tabs along its right edge whose labels are upright and read, verbatim and printed normally left to right (never mirrored, reversed or upside down), VEHICLES, BUDGET and DEFINITION; the folder label MANAGER is also printed normally. No other tabs, cards or labels. Use one speech bubble with the exact words: \"Which vehicles, which budget, which definition?\" Convey: After the transaction, the fictional team rechecks three specific things: the vehicles now holding the interests, their rights and horizons, without assuming one fund holds the majority; the funding and accountable leader for shared services and integration work; and the earnings definition the board, the lenders and the plan each use.",
   "alt": "Comic panel: Alex compares a manager folder with notebook tabs for the holding vehicles, the shared-service and integration budget, and the earnings definition in use.",
   "caption": "After the transaction, the fictional team rechecks three specific things: the vehicles now holding the interests, their rights and horizons, without assuming one fund holds the majority; the funding and accountable leader for shared services and integration work; and the earnings definition the board, the lenders and the plan each use.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "421154addb8becdfa2999b3452ec553b9944897133d66164cd87c42fb5b580fd"
+    "sha256": "dce97de2b65c0869ef0b165a11a95d6653530c499deff6327d5fa0a1f6a323fd"
   }
 }
 -->

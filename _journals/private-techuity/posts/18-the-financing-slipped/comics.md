@@ -36,7 +36,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "02-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/18-the-financing-slipped/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 2 of an explainer comic. Sam, Alex and Priya sort commitment documents on a table into three labeled groups: PROTECTED, COMMITTED, NOT YET COMMITTED. Use one speech bubble with the exact words: \"Which of these can we still stop?\" Convey: Sort commitments by whether they can still be changed. Customer contracts and the recovery requirement are protected; the onboarding pilot is committed; two September hires and a €120,000 portal contract are still reversible until 15 August, the latest useful decision date.",
@@ -45,7 +44,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "d141b5d7a6523ef72cf3d4aee41f17e5ad22b9811cdb0851d782869aea06384e"
+    "sha256": "e020a96f26dbace6a874bedf67d93fe7d1b25bab1b3dab6b05f0e877558bbfc8"
   }
 }
 -->
@@ -60,7 +59,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "03-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/18-the-financing-slipped/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 3 of an explainer comic. Sam stands at a whiteboard showing a simple cash line falling from July to a reserve line at 31 December, with three short branches labeled A, B and C ending at November, December and March. Use one speech bubble with the exact words: \"Plan A breaks the reserve in November.\" Convey: Put cash on a calendar. Without new money the €400,000 reserve is reached on 31 December. Proceeding as planned breaches it in late November; deferring the hires and the portal holds to 31 December; a conditional €600,000 bridge would add three months if its net proceeds arrive by 30 November; a written commitment still has conditions and is not cash received.",
@@ -69,7 +67,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "30f0b25035b664896d45b7a884bb0ac7952c1907394e0730243e71c0db9f3d2a"
+    "sha256": "0b1ceb9c25878460a29e44e022de4fe51b8ce0f737775392fffd382865e95bbb"
   }
 }
 -->
@@ -84,7 +82,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "04-scene",
   "status": "generated",
-  "needs_regeneration": true,
   "asset": "assets/images/18-the-financing-slipped/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 4 of an explainer comic. Ines and Sam present a single page to a small board table where Morgan sits; the page shows three lines labeled DECISION, DATE and CONSEQUENCE. Use one speech bubble with the exact words: \"Decide by 15 August, or the plan chooses itself.\" Convey: One escalation step: state the decision required, the latest useful date and the consequence of delay, and take it to the forum authorized to approve the operating plan. Saying the round has slipped is not enough.",
@@ -93,7 +90,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "c72c015b5feb66fb7ce7256d4e09e25b0692c975801092527a269e85f1c1daa8"
+    "sha256": "c91a723c4e2c7a445c078f99f779f0948d71d5dc7d5885c5eeefa38311cec5ed"
   }
 }
 -->
