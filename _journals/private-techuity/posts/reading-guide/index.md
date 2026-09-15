@@ -36,10 +36,10 @@ The six parts are ordered for learning, and the complete sequence is the default
 | Investor help is on offer | [[investors-adviser]] → [[help-that-changes-capability]] → [[useful-engagement]] |
 | A transaction or ownership change is imminent | [[diligence-corrects-the-plan]] → [[first-hundred-days]] → [[handover-of-obligations]] |
 | Owners want more growth or earnings than the team can support | [[raise-what-you-need]] → [[cannot-fund-everything]] → [[fix-decisions-before-hiring]] |
-| Investor requests compete with customer needs | [[roadmap-to-revenue]] → [[decide-who-decides]] → [[investor-under-pressure]] |
+| Investor requests compete with customer needs | [[roadmap-to-revenue]] → [[decide-who-decides]] → [[investor-under-pressure]] → [[success-for-whom]] |
 | A corporate investor wants integration or access to data | [[acquisition-adds-work-first]] → [[prove-you-can-restore]] → [[useful-engagement]] |
 
-The first decision most readers bring is the first one in the table: an announced investment that someone expects to become a hiring plan. If that is yours, read [[announcement-is-not-a-budget]] now and the rest in order later.
+If your decision is the first one in the table — an announced investment that someone expects to become a hiring plan — read [[announcement-is-not-a-budget]] now and the rest in order later.
 
 ## Owners, Rights, Funding, and Change
 
@@ -58,7 +58,7 @@ The practical impact of any investment therefore depends on its actual terms, **
 
 ## How the Parts Build on Each Other
 
-Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people; it is the center of the book. Part IV helps you obtain useful help, from the investor or elsewhere. Part V follows one finding through diligence, a funded early plan, a delayed financing and a handover. Part VI examines historical cases and closes with the book’s standard for success.
+Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people; it is the center of the book. Part IV helps you obtain useful help, from the investor or elsewhere. Part V follows one finding from diligence into a funded early plan, its review and a handover; its delayed-financing chapter is a separate illustration of how a dated cash forecast changes commitments. Part VI examines historical cases and closes with the book’s standard for success.
 
 Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: [[valuation-is-an-estimate]] teaches financial valuation, and [[growth-into-design]] later applies those concepts to a design choice once the product and engineering foundations are in place.
 
@@ -71,13 +71,15 @@ Each part introduction explains its chapters and the order. On a first pass, rea
 
 Ines is the **chief executive officer (CEO)**, leading the company. Alex is the **chief technology officer (CTO)**, leading technology. Sam is the **chief financial officer (CFO)**, leading finance. Priya leads product. Morgan is the investor’s technology adviser in fund-backed scenarios.
 
-The chapters place Larkspur in alternative situations: learning with limited cash, expanding with growth funding, operating after a buyout, or working with a corporate owner. These are fictional decision exercises, not a single company history. Each example states its own assumptions; its figures do not combine into one set of accounts. One exception is deliberate: Part V and the toolkit follow a single onboarding finding from diligence through a funded plan, a review and a handover, so that you can see one decision carried all the way through. “€m” means millions of euros.
+The chapters place Larkspur in alternative situations: learning with limited cash, expanding with growth funding, operating after a buyout, or working with a corporate owner. These are fictional decision exercises, not a single company history. Each example states its own assumptions; its figures do not combine into one set of accounts.
+
+One chain is a deliberate exception, and it is the only one. A single onboarding finding — that setting up a new customer depends on one specialist’s manual work — is carried from the investigation before the investment ([[diligence-corrects-the-plan]]) into the funded early plan and its day-100 review ([[first-hundred-days]]) and on into the handover ([[handover-of-obligations]]). The same initiative and the recovery test funded beside it also appear earlier, in the restore chapter of Part III ([[prove-you-can-restore]]) and in the support chapters of Part IV ([[help-that-changes-capability]], [[useful-engagement]]); the [[toolkit]] shows the record those chapters write, stage by stage, with the same identifiers. Follow that chain if you want to see one decision carried all the way through, from evidence to money to what was left undone. The delayed-financing chapter ([[the-financing-slipped]]) is a separate illustration: it shows how a dated cash forecast changes commitments when expected money arrives late, and its cash, burn, hires and dates are its own and do not add to the chain’s figures. “€m” means millions of euros.
 
 ## Choose a Reading Format
 
 Each main chapter provides an **Article** and a 300–500-word **TL;DR** summary. TL;DR means “too long; didn’t read.” Twenty-nine of the thirty main chapters also have a six-panel **Comic**, illustrated, with captions and dialogue transcripts; the handover chapter added in the September 2026 revision does not yet have one. The six part introductions and the reference pages have no TL;DR or comic.
 
-For a shorter first pass, read the part introductions and the summaries. The three formats share one argument; the article carries the qualifications and the worked figures.
+For a shorter first pass, read the part introductions and the summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth, because only the article carries the worked figures, the sources and the cases where the conclusion would change. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
 ## Read the Evidence With Its Limits
 
@@ -85,7 +87,7 @@ This living manuscript was first drafted in September 2026 and revised the same 
 
 Institutional funding guides support descriptions of other arrangements. The comparative Larkspur exercises are the author’s illustrations of decisions under stated assumptions. Company filings, investor accounts and research answer different questions; none makes an unobserved customer or employee outcome known.
 
-The [[bibliography]] records consultation scope and evidence limits; the chapter-end “To Probe Further” lists are optional reading, not consulted evidence.
+The [[bibliography]] records consultation scope and evidence limits. The chapter-end “To Probe Further” lists are optional reading for going deeper; the bibliography identifies which resources were also used as evidence, since a few appear in both places. A chapter’s argument rests only on the sources cited inline.
 
 ## Contents
 

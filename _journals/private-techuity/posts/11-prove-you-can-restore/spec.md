@@ -56,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Trim the TL;DR back inside the 300–500-word convention (518 → 497) after the reconciliation pass, and carry REC-1’s €100,000 total into the TL;DR risk comparison so it matches the article inset.
 - 2026-09-15: Reconcile REC-1 with the canonical Larkspur ledger: the planned €80,000 / four weeks were spent by the failed day-45 test; the correction and day-85 retest cost €20,000 / two engineer-weeks from the reserve, approved by the board on Ines’s request; the envelope is one €500,000 / 24-week hundred-day envelope (the €300,000 reference removed). Define the accepted recovery scope (loss of the application environment in this region, not a regional outage) and the residual accepted at day 100 with a quarterly retest. Summary and comic panels 5–6 aligned; panel 5 dialogue unchanged.
 - 2026-09-14: Editorial revision: open with the 6am dispatch scene, state the recovery objective, carry the failed restore through funded corrective work, retest and residual-risk record, replace the investment committee with the company decision-maker, drop the no-earnings-pressure comparison, bound the risk arithmetic as an inset, compress shared-support and handover material to links, and cut questions to four; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “How to Evaluate Security and Recovery Investments” to “Prove You Can Restore, Not Just That You Back Up”. Permalink and id unchanged; body unchanged.

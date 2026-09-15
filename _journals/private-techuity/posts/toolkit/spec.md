@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Practical Tools for Ownership and Technology Decisions
@@ -52,6 +52,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-15: Reconcile the completed chain with the shared Larkspur ledger per the 15 September review — €500,000 / 24-week envelope, the day-47 REC-1 reserve draw (€20,000 / 2 weeks) and the day-100 data-quality step (€40,000 / 4 weeks) shown as one running reserve; one dated spending record (€180,000 committed, ≈€90,000 incurred by day 100, €90,000 payable over the next two quarters, €30,000/yr maintenance from the operating budget from the next financial year); data quality described as the largest remaining share of effort rather than the binding constraint; the expansion decision dated to the next quarterly review (≈ day 190) with the not-before-month-13 restriction retained; the avoided-hiring claim qualified; Tool 4 given the fictional €1,500/day cap; and explicit section anchors added so the stage table and cross-references are real links. Permalink and id unchanged.
 - 2026-09-14: Add minimum-use guidance, a stage-grouped navigation table, the completed D-3 / ONB-1 example chain (pending and authorized initiative, outcome ledger, revision, handover), record-combination guidance, an investor-side sponsor and continuing-service fields in Tool 4, reconciled responsibility terms, and links to the new handover chapter and Growth Into Design, per the 14 September review; remove the stale appendix reference; permalink and id unchanged.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Define the requested article-illustration and bold-emphasis pass before implementing the illustrated edition.

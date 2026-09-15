@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Morgan labels observation, assertion, and inference separately. Use one speech bubble with the exact words: \"Which claims have supporting evidence?\" Convey: Finding D-3. Observed: five of the last twelve implementations sampled; three needed one specialist’s manual configuration; about 80 hours on average across the five. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: how much each explanation accounts for; both can be true.",
+  "prompt": "Panel 3 of an explainer comic. Morgan labels observation, assertion, and inference separately. Use one speech bubble with the exact words: \"Which claims have supporting evidence?\" Convey: Finding D-3. Observed: five of the last twelve implementations sampled, one country and two quarters; three needed one specialist’s manual configuration; about 80 hours on average across all five, counting every recorded hour from contract to go-live. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: how much each explanation accounts for; both can be true.",
   "alt": "Comic panel: Morgan labels observation, assertion, and inference separately.",
-  "caption": "Finding D-3. Observed: five of the last twelve implementations sampled; three needed one specialist’s manual configuration; about 80 hours on average across the five. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: how much each explanation accounts for; both can be true.",
+  "caption": "Finding D-3. Observed: five of the last twelve implementations sampled, one country and two quarters; three needed one specialist’s manual configuration; about 80 hours on average across all five, counting every recorded hour from contract to go-live. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: how much each explanation accounts for; both can be true.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan labels observation, assertion, and inference separately.](assets/images/16-diligence-corrects-the-plan/comic-03-scene.jpeg)
 
-**Panel 3:** Finding D-3. Observed: five of the last twelve implementations sampled; three needed one specialist’s manual configuration; about 80 hours on average across the five. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: how much each explanation accounts for; both can be true.
+**Panel 3:** Finding D-3. Observed: five of the last twelve implementations sampled, one country and two quarters; three needed one specialist’s manual configuration; about 80 hours on average across all five, counting every recorded hour from contract to go-live. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: how much each explanation accounts for; both can be true.
 
 *Dialogue:* “Which claims have supporting evidence?”
 

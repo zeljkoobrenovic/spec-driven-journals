@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/29-help-that-changes-capability/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "Establish availability, company effort and cost before depending on an offer. The investor’s specialist can start on day 21 after closing, ten days capped at €15,000 from the ONB-1 budget; an independent specialist would start four to six weeks later and is the fallback; hiring stays deferred.",
+  "caption": "Establish availability, company effort and cost before depending on an offer. The investor’s specialist can start on day 21 after closing, ten days capped at €15,000 from the ONB-1 budget; an independent specialist would start five to seven weeks later and is the fallback; hiring stays deferred.",
   "alt": "Comic panel: Sam and Morgan compare the specialist calendar with the company team’s available time.",
-  "prompt": "Panel 5 of an explainer comic. Sam and Morgan compare the specialist calendar with the company team’s available time. Use one speech bubble with the exact words: \"When can both sides do the work?\" Convey: Establish availability, company effort and cost before depending on an offer. The investor’s specialist can start on day 21 after closing, ten days capped at €15,000 from the ONB-1 budget; an independent specialist would start four to six weeks later and is the fallback; hiring stays deferred.",
+  "prompt": "Panel 5 of an explainer comic. Sam and Morgan compare the specialist calendar with the company team’s available time. Use one speech bubble with the exact words: \"When can both sides do the work?\" Convey: Establish availability, company effort and cost before depending on an offer. The investor’s specialist can start on day 21 after closing, ten days capped at €15,000 from the ONB-1 budget; an independent specialist would start five to seven weeks later and is the fallback; hiring stays deferred.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam and Morgan compare the specialist calendar with the company team’s available time.](assets/images/29-help-that-changes-capability/comic-05-scene.jpeg)
 
-**Panel 5:** Establish availability, company effort and cost before depending on an offer. The investor’s specialist can start on day 21 after closing, ten days capped at €15,000 from the ONB-1 budget; an independent specialist would start four to six weeks later and is the fallback; hiring stays deferred.
+**Panel 5:** Establish availability, company effort and cost before depending on an offer. The investor’s specialist can start on day 21 after closing, ten days capped at €15,000 from the ONB-1 budget; an independent specialist would start five to seven weeks later and is the fallback; hiring stays deferred.
 
 *Dialogue:* “When can both sides do the work?”
 

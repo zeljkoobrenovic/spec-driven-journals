@@ -924,3 +924,594 @@ This log records how each recommendation in `REVIEW.md` (the collection review) 
 - **Verification that could not be completed:** completion of the 2021, 2023 and 2024 TeamSystem transactions (described as announced only); S25 (PEI Hilton retrospective) could not be refetched (no claim sourced to it was changed); the interest actually paid by TeamSystem in 2017 is not isolated in the cash-flow statement (stated, not estimated).
 - **Declined for lack of evidence:** a documented venture funding-delay or corporate-ownership case (collection review). The evidence-scope disclosure remains in the guide, Part VI introduction and bibliography.
 - **Optional further trims:** several articles grew because the reviews asked for completed decisions (AI strategy 15 min, growth-into-design 16 min, valuation 16 min, obligations 15 min, TeamSystem 15 min). Restatement was cut, but a further length pass is at the author's discretion.
+
+
+---
+
+# Revision log — OWNED editorial revision of 15 September 2026
+
+This pass implements the reassessed reviews dated 14–15 September 2026 (collection `REVIEW.md` and the 41 per-post `REVIEW.md` files, which are unchanged and remain the independent baseline). It was coordinated as one pass with one agent per post, run in dependency order: standalone chapters first, then the shared-scenario clusters after a canonical record was fixed, then the reading guide, Part V introduction, toolkit and bibliography. Every per-post entry below is the agent's own report of what changed, what was adapted or declined, what stays unresolved and what was verified; the coordinator checked cross-links, summary lengths, comic metadata, the build and the shared figures across posts.
+
+## Collection-level decisions
+
+- **One canonical shared-scenario record.** Two read-only inventories of every passage carrying the shared Larkspur examples showed the chain could not be reconciled sentence by sentence, so the coordinator fixed one dated ledger before any of those chapters was edited. It is kept in `_journals/private-techuity/_research/shared-scenario-record.md` (outside the site build). The decisions that changed text: the first-hundred-days envelope is **€500,000 and 24 engineer-weeks** (the allocation chapter's figure), so the allocation, early-plan, recovery, toolkit and handover chapters now describe one plan; KNW-1 is four protected specialist-weeks outside the 24; portal research (€20,000 / 2 weeks) is a funded plan line; the REC-1 correction and retest cost **€20,000 / 2 weeks from the reserve, approved by the board around day 47**; the day-100 data-quality step uses the last four weeks and €40,000, leaving **€160,000 and no uncommitted weeks**; ONB-1 is **€180,000 committed, about €90,000 incurred by day 100, €90,000 payable over the next two quarters**, with €30,000/yr maintenance from the operating budget from the next financial year; the day-20 baseline is reconstructed from the twelve implementations of the previous two quarters; Priya measures the cohort at day 90 and the board decides at day 100 under one pre-set rule (**< 60 h green, 60–70 h amber, > 70 h or no reduction red**; 62 h is amber); gate 2 at month six is ≤ 50 h with waiting time down; the expansion decision moves to the next quarterly review (≈ day 190) and expansion is not before month 13; the delegation rule is that Ines authorizes spending inside the approved plan while reserve draws, changes to what the envelope funds and hires outside the headcount plan are the board's.
+- **Pilot cost basis and the funding-choice loan.** €75/h fully loaded, 2,000 hours per FTE-year, so an implementation specialist costs €150,000 a year and two cost €300,000; the pilot is €180,000 build plus €30,000/yr maintenance everywhere (the obligations chapter's €200,000 aligned); released staff time is capacity until a dated conversion is evidenced. The funding-choice loan is a **four-year** €750,000 term loan at 8% with a one-year principal holiday (payments €60,000 / €310,000 / €290,000 / €270,000, closing at zero) tested against €350,000 of operating cash alone.
+- **Finale cost split.** The €220,000 is €150,000 of specialist payroll (cash, ending only when protected customer contracts allow) plus €70,000 of released support time (capacity); Option A as written is inadmissible under the scenario's own contract rule; Option B saves €80,000 of cash from year two after ≈€75,000 of one-off specialist retention.
+- **The financing-delay chapter is a separate scenario.** It keeps its own cash, burn, hires and dates, no longer uses the shared identifiers or ledger figures, and says so; the reading guide, Part V introduction, handover chapter and toolkit describe the chain as diligence → early plan → handover, with earlier pilot and support episodes in Parts III–IV.
+- **Investor callouts.** Kept where they name a financing or governance consequence, shortened or reworded where they restated the learning outcome or reintroduced a universal claim; "the investor reports to its investors" became a fund manager reporting to its fund's investors where that is the actor.
+- **Confirmed factual corrections.** Unicorn study: reported valuations average about 50% above modelled fair value (NBER version; the published JFE version says 48%). Fund catch-up: a slower catch-up changes timing, not necessarily the final split. TeamSystem: the €72.0m net finance charge is an accounting figure; €52.1m of finance costs were paid (Note 10), and the 2024 £34.189m gross realization proceeds are reported separately from the £24.3m July announcement, neither a net distribution. Hilton's OnQ is dated to 2003/2005 pre-buyout filings; Skype's Qik acquisition and group video calling to January 2011 (S-1/A).
+- **Summaries.** All 30 are within 466–500 words by the collection's counter after the pass (the coordinator trimmed the adviser and financing-delay summaries by a few words at the end).
+- **Rate-limit interruptions.** Two waves of agents were terminated mid-task by API session limits; the coordinator relaunched each post with an instruction to inspect the diff and complete the work, and the per-post entries describe the total change against the manuscript at `ab7a8f4`. The author's intermediate commit `4bd1d51` ("private techuity first draft", 12:32) captured part of the work in progress, including a site build; later agents verified that work against the canonical record rather than redoing it.
+
+## Coordinator-level pages
+
+### Journal workspace
+- `_research/shared-scenario-record.md` created and listed in `_research/README.md`.
+- No change to `config.yaml`, `README.md`, `STRUCTURE.md` or `index.md` of the journal.
+
+## Per-post records (reading order)
+
+## reading-guide — OWNED — Reading Guide (`reading-guide`)
+
+**Files changed:** index.md, spec.md
+**Implemented:**
+- Medium — correct the shared-scenario promise → "How the Parts Build": Part V follows one finding from diligence into a funded early plan, its review and a handover; its delayed-financing chapter is a separate illustration. "Meet the Fictional Company": a paragraph maps the chain by chapter (16 → 17 → 31; the same initiative and recovery test in 11, 29, 30; the toolkit's stage record) and names 18 as separate with its own cash, burn, hires and dates; the "figures do not combine into one set of accounts" rule leads the paragraph with "One chain is a deliberate exception, and it is the only one."
+- Medium — format equivalence → formats are companions, not substitutes; each keeps the conditions that decide whether the decision holds; a sentence records that summaries and comics are still being reconciled and the article governs on disagreement (to be removed once the sibling comic corrections land); the 29-of-30 comic disclosure kept.
+- Low — To Probe Further reconciled with the bibliography's policy (a few resources appear in both places).
+- Low — immediate routes selective ("If your decision is…"); customer-versus-investor route extended to [[success-for-whom]].
+- Spec revised 2026-09-15 with two success-criteria lines.
+**Adapted:** scenario correction written as a paragraph rather than the review's single sentence; format caveat made a reader-facing precedence rule.
+**Declined:** none.
+**Unresolved / needs separate action:** remove the "still being reconciled" caveat once 18 panel 3 and 23 panel 3 artwork is regenerated; 31 still has no comic.
+**Verification:** chain checked against chapters 16, 17, 31, 18 and identifiers in 11, 29, 30, toolkit; 30 summaries / 29 comics recounted; bibliography policy line 65 confirmed (S62 dual listing); 77 cross-links, 0 unresolved; contents list re-derived from config.yaml (40 links in configured order). Body 1,654 → 1,887 words. Build not run.
+
+## part-1-intro — PART I (`part-1`)
+**Files changed:** index.md, spec.md
+**Implemented:** Low — name the parties in the fund-commitment wording → "capital that a fund's investors have committed to the fund, and that its manager may not yet have called, is not cash in the company's budget". Low — conditional framing preserved. Spec revised 2026-09-15.
+**Adapted:** folded into the existing three-part list. **Declined:** none. **Unresolved:** none.
+**Verification:** seven links resolve; 468 words.
+
+## part-2-intro — PART II (`part-2`)
+**Files changed:** index.md, spec.md
+**Implemented:** Medium — distinguish an advisory role from authority → "an adviser may have access and weight without any decision right … establish what authority, if any, accompanies the role". Low — broaden the source-of-right check → "identify the agreement, delegation or applicable rule that establishes the right; a job title settles nothing". Spec revised.
+**Adapted:** merged into one passage. **Declined:** none. **Unresolved:** adviser chapter's High finding handled by its own agent; no conflicting claim remains here.
+**Verification:** three links resolve; 05's authority-source wording checked; 412 words.
+
+## part-3-intro — PART III (`part-3`)
+**Files changed:** index.md, spec.md
+**Implemented:** Low — widen the handoff to Part IV → "help from the investor or another source". Low — learning path kept at its present level of detail (no figures on the page). Spec revised.
+**Adapted/Declined:** none. **Unresolved:** none; chapter one-liners hold under CANONICAL.md.
+**Verification:** nine links resolve; 485 words.
+
+## part-4-intro — PART IV (`part-4`)
+**Files changed:** none.
+**Implemented:** three distinct chapter jobs and the continuing-service allowance confirmed intact.
+**Declined:** the conditional shortening of the "By the end" paragraph (review judges the repetition small; spec requires the outcome statement).
+**Verification:** three links resolve.
+
+## part-6-intro — PART VI (`part-6`)
+**Files changed:** index.md, spec.md
+**Implemented:** Medium — recheck the case windows → Hilton 2007–2018 with OnQ dated by 2003/2005 filings; Skype 2009–2011 with dated technology steps and later product history to 2025; Visma ownership episodes 2006 to the December 2023 secondary sale, financial comparison centered on 2024; Toys R Us transaction 2005, evidence mainly fiscal 2016 and the September 2017 filing; TeamSystem 2000–2017 in detail, later events to 2024 including the realization reported by the selling trust. Low — "kept apart throughout" → "Read management's account, sponsor claims and the author's inference separately." Spec revised.
+**Adapted:** windows stated as periods and evidence types; no figures repeated. **Declined:** none.
+**Unresolved / needs separate action:** body now 543 words including the case-map table; the spec's under-400-word cap on framing prose was already exceeded before this pass — flagged for the author.
+**Verification:** windows checked against chapters 21, 22, 23, 25 and their cited primary sources; six links resolve.
+
+## part-5-intro — PART V — Leading Through Funding and Ownership Changes (`part-5`)
+**Files changed:** index.md, spec.md
+**Implemented:** Medium — correct the learning outcome, the Learning Path and the conclusion together → highlight uses the review's wording verbatim ("One onboarding finding travels from diligence into a funded plan and its handover. A separate financing-delay example shows how to revise commitments when the expected money moves."); Learning Path says the pilot and support chapters of Parts III and IV and the toolkit follow the same finding and the financing-delay chapter uses a separate scenario with its own cash and dates; the [[the-financing-slipped]] bullet drops "September to December" for the chapter's job; the [[handover-of-obligations]] bullet carries the record into the next event; conclusion: "carry one body of evidence from diligence to handover". Low — one nonlinearity statement kept. Spec revised 2026-09-15.
+**Adapted:** chapters described at job level only. **Declined:** none.
+**Unresolved / needs separate action:** reading guide lines 60 and 73 still state the old integration (reading-guide agent). Body 468 words vs the spec's ~400 cap, which HEAD already exceeded.
+**Verification:** four cross-links resolve; 18's separate-scenario sentence confirmed.
+
+## 00-customers-lenders-investors — Customers, Lenders and Investors: What Each Expects in Return (`customers-lenders-investors`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- High — correct the new investor callout → "Lenders are investors too. Equity investors expect the share rights they negotiated; lenders expect the repayment and protections in their contracts; each prices those terms in negotiation." Borrowing definition cites Investor.gov's bond page; one sentence reconciles the book's usage with the title (unqualified "investor" usually means a shareholder or the fund behind one). Summary matched.
+- Medium — repair the decision's authority and fallback logic → authority follows the instrument: borrowing and share issues are board decisions (share issue also needs shareholders' consent); the customer contracts sit within Ines's delegation, and she takes the comparison to the board voluntarily. Loan rejected on numbers (≈€3,040/month is twice the €1,500/month surplus). New "What would reopen it": fewer than three signatures by 15 January or an estimate above twelve engineer-weeks pauses the commitment; with two signatures (€66,700) Larkspur borrows the gap only if repayments fit the surplus (a €35,000 loan ≈ €1,065/month fits; the full €100,000 does not), and that borrowing is the board's decision. Summary and comic panel 6 caption match.
+- Medium — make the share and prepayment assumptions explicit → 1,000 shares before the issue, investor holds 111 of 1,111 (≈10%); prepayment assumptions stated (standard annual price, no discount, exposure one month's refund ≈€8,300; a 10% discount ≈€10,000 would exceed the loan's ≈€9,500 interest and change the ranking); loan "36 months … excluding fees".
+- Low — tighten the setup (asset sale explicitly drops out; intro no longer restates KEY POINTS).
+- Robb–Robinson annotation → "often supported by founders' personal assets or guarantees". timetoread 8 → 10 min. Spec revised.
+**Adapted:** cash/payroll reconciliation (the €100,000 covers finishing and onboarding before subscriptions pay; surplus has nothing for new work); Investor.gov cited as a plain link; summary trimmed from 546 to 499 words.
+**Declined:** Low — comic payoff (show competing obligations earlier); no dialogue changed.
+**Unresolved / needs separate action:** bibliography could S-number the Investor.gov bonds link; glossary "audited financial statements" entry (now added by the glossary agent); title juxtaposition reconciled in the body rather than by retitling.
+**Verification:** annuity arithmetic (€100,000 at 6%/36 months → €3,042; interest ≈€9,500; €35,000 → €1,065; ⅔ × €100,000 ≈ €66,700; €100,000/12 ≈ €8,333; 111/1,111 = 9.99%). Investor.gov page fetched via curl. 05 and 04 terminology read and consistent. Summary 499 words. Four cross-links resolve. Six comic JSON blocks parse. Build not run.
+
+## 01-announcement-is-not-a-budget — An Investment Announcement Is Not a Budget (`announcement-is-not-a-budget`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- High — stop changing the meaning of the €100 million → opening now says the headline may be a value placed on the whole company or the amount that changes hands, that the two can differ, and that only the primary part (newly issued shares; glossary terms primary share issue / secondary share sale), after costs, reaches the company at closing. Closing: "A headline may name transaction consideration, new funding or a valuation, and the three can differ." Summary and comic intro match.
+- Medium — reconcile the hiring record and its decision paragraph → one chronology: subscription agreement signed 20 September (commitment, not cash); €8m received at closing 3 October; €0.4m costs; €7.6m net; board approves the year-one plan 10 October (four hires); record 11 October; Ines authorizes three offers 12 October. Two reserved matters named: spending above €250,000 outside the plan, and any increase in approved headcount. A fifth hire at ≈€100,000 is below the spending threshold, so the headcount rule required investor-director consent. Summary and comic panel 6 caption match.
+- Medium — define the cash trigger as a forecast variance → "cash at a quarter end more than €300,000 below the approved cash plan's forecast for that date". Runway row reproducible: ≈€300,000/month net spending; €400,000 minimum reserve; €7.6m − €0.4m = €7.2m ÷ €0.3m = 24 months.
+- Medium — revise WHY INVESTORS CARE → names the governance consequence (consent rights exercised against the plan, not the announcement). Seller-payment paragraph: "out of existing earnings" → available cash, forecast cash generation or a separate funding commitment.
+- Low — remove editorial explanation from the diagram commentary.
+- Spec revised 2026-09-15 with Changelog line.
+**Adapted:** callout extended with the consent-rights clause; runway labels placed inside the Runway row.
+**Declined:** none.
+**Unresolved / needs separate action:** no comic speech changed; no flags; all six image hashes match. Per-hire cost (≈€100,000 onboarding engineers) differs from the canonical €150,000 specialist FTE; the article states this scenario is separate. timetoread 12 min.
+**Verification:** arithmetic above; summary 497 words; seven cross-links resolve; glossary defines the two share terms; backlinks in 00, 26, part-1-intro, reading-guide and glossary do not assert the €100m was a valuation. Build not run.
+
+## 26-valuation-is-an-estimate — A Valuation Is an Estimate, Not a Fact (`valuation-is-an-estimate`)
+
+**Files changed:** index.md, spec.md (summary.md and comics.md unchanged — neither carries the unicorn figure, the "price" wording, the year-one timing rule or the deterministic callout language).
+**Implemented:**
+- High — Correct the percentage denominator in "To Probe Further" → annotation now reads "In 135 US unicorns, reported post-money valuations averaged about 50% above the authors' modeled fair values, which were derived from each share class's contractual terms"; sample and model qualifications kept; citation extended to Journal of Financial Economics 135(1), 2020, pp. 120–143. Only one occurrence existed in the post.
+- Medium — Restore the qualification in both opening callouts → WHY YOU SHOULD CARE: "A valuation may shape the growth, margin and cost targets proposed for your team. Identify its purpose and read how the estimate was built before adopting them." WHY INVESTORS CARE now names the governance consequence (the investor reports the valuation to its own funders and must defend its assumptions). Stage 1 checkpoint: "€60 million is a price" → "is an estimated value".
+- Medium — Fix the calendar claim in "One Assumption to Challenge" → "the model cannot assume a full year of savings; phase the benefit from the expected validation date and check what that does to the early margins."
+- Low — Closing competence claim → "You can now ask which value is being quoted and which assumptions need testing."
+- Spec: revised 2026-09-15, Changelog line added.
+**Adapted:** WHY YOU SHOULD CARE keeps the "how the estimate was built" hook instead of "test the assumptions"; WHY INVESTORS CARE rewritten to a consequence rather than the review's wording; JFE volume/pages added to the citation (NBER link kept as the accessible URL).
+**Declined:** chapter split (already Superseded); no timetoread change (net +10 words on ~3,300).
+**Unresolved / needs separate action:** no comic dialogue changed, no flags added. Source-version nuance for the bibliography: NBER w23895 says 50% above fair value (15 unicorns >100%); the published JFE version says 48% (14 >100%). "About 50%" is accurate for the cited NBER page; if the bibliography cites the JFE version specifically, it should say 48%. SSRN and ScienceDirect returned 403; confirmed via NBER and Stanford GSB pages. The Tuck PDF mirror is still broken.
+**Verification:** NBER w23895 and Stanford GSB working-paper page fetched; denominator arithmetic (fair 100, reported 150 → 50% above; fair is 33⅓% below reported; old "50% below" would imply 2×). Article arithmetic rechecked (€20m − €16m = €4m EBITDA; €3m EBIT; €2m PBT; €1.5m net; 20% margin; €40m equity; 3× revenue, 15× EBITDA; €48m; €10m post-money, 20%; €1.6m vs €1.4m). 80-hour onboarding baseline matches 08-roadmap-to-revenue (80/50/62). Six cross-link targets exist. Summary body 493 words, unchanged. Build not run.
+
+## 02-three-different-returns — Same Company, Same Performance, Three Different Returns (`three-different-returns`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- Medium — scope WHY INVESTORS CARE to a fund manager → "A fund manager reports investment returns to its fund investors, and those returns combine company performance with entry price, financing and exit terms; that is why it works the price, leverage and timing levers, and why it needs management's claims about engineering to be ones it can defend in that report." "Its own investors" removed.
+- Medium — complete the comic's format alignment → panels 2, 3 and 4 read against their images (embedded speech "Several mechanisms change the return." / "Which change caused which result?" / "The payment dates matter too."); dialogue is now 10×/12×/7× "Same team, same numbers." → `needs_regeneration: true` on panels 2 and 3; panel 4 stays flagged. Prompts for the three rewritten as one triptych (same earnings chart, same debt stack, only the price tag changes).
+- Low — simplify the conditional upper-bound wording → "At the entry multiple, the bridge attributes €50 million to higher earnings. Allocating the €10 million interaction row differently changes that accounting attribution; none of those conventions identifies engineering's causal share." Interaction table (€50m + €20m + €10m = €80m) preserved.
+- Low — name the return measure in the headline comparison → "the fund's proceeds and its MOIC more than double, from €65m and 1.6× to €140m and 3.5×, while the annual rate rises from about 10% to about 28%"; EBITDA defined in a parenthesis beside the preview; "IRR exposes the speed, given the dates of the payments".
+- Collection review — fund manager as actor; link [[fund-economics]] rather than duplicate → the "What Technology Can and Cannot Claim Credit For" paragraph names the manager reporting to limited partners, notes a corporate owner or individual has no such report, and points to fund-economics for fees, profit share and distribution rules.
+- Summary aligned (proceeds and multiple; manager reports to fund investors; IRR accounts for payment dates) and trimmed to the cap. Spec revised 2026-09-15 with Changelog line.
+**Adapted:** comic prompts for panels 2–4 rewritten since regeneration is required anyway; callout keeps a clause on why price/leverage/timing are the manager's levers.
+**Declined:** none.
+**Unresolved / needs separate action:** artwork regeneration for panels 2, 3 and 4 (flagged). 1.6× shown for the 7× row is 1.625× rounded (consistent across formats).
+**Verification:** 7× → EV €105m, equity €65m, 1.625×, IRR 10.20%; 10× → €150m/€110m/2.75×/22.42%; 12× → €180m/€140m/3.5×/28.47%; bridge 50 + 20 + 10 = €80m; 2× in 3 years 25.99%, in 7 years 10.41%; dilution 20% → 16%, €3.2m = 1.6× on €2m. Summary 500 words (496 before). Five cross-links resolve. No "its own investors", "at most", "generous reading" remain. timetoread 14 min unchanged. Build not run.
+
+## 03-raise-what-you-need — Match the Funding to the Work (`raise-what-you-need`)
+
+**Files changed:** index.md, summary.md, spec.md (comics.md untouched)
+**Implemented:**
+- High — remove capacity value from the cash available for debt service → the €350,000 + €135,000 = €485,000 line is gone; every payment tested against €350,000 of operating cash alone (margins €290,000 / €40,000 / €60,000 / €80,000); the canonical sentence on released staff time added verbatim; €135,000 / €225,000 labelled projections; Sam's dated downside (operating cash −15% to €300,000 from year two → year two €10,000 short; years three/four clear by €10,000 / €30,000); three dated cash mechanisms named (contract specialist not extended beyond month 12; two-specialist hire deferred = avoided, not reduced; additional contribution only after gate 2).
+- High — complete the loan terms → four-year loan at 8% with a schedule table (Y1 €60,000; Y2 €310,000; Y3 €290,000; Y4 €270,000; closing balance 0; total interest €180,000; payments €930,000). New paragraph on why the requirement cannot simply be carried from operating cash (build €180,000 + transition €90,000 + two quarters of specialist €75,000 = €345,000 front-loaded into two quarters, against €350,000 arriving over twelve months before year-one interest and the minimum cash balance).
+- Medium — make the decision reviewable → Priya measures the cohort of eight at day 90; the board decides at day 100; thresholds < 60 green / 60–70 amber (62 h here; data-quality step €40,000 from the €140,000 reserve) / > 70 or no reduction red (reopen hiring, narrow the target, or reopen the equity conversation); the €140,000 headroom explicitly excludes financing costs; Arrangement A "does not remove the risk".
+- Medium — qualify the callout ("can force"; trade-off between ownership, reserve and future financing risk).
+- Low — rounding labelled ("25% of €270,000 is €67,500, rounded up to €70,000").
+- Scenario separation stated (own financing scenario; imports only the pilot cost basis and the 62-hour result).
+- Summary shortcut fixed; timetoread 11 → 14 min; spec revised 2026-09-15.
+**Adapted:** downside uses a fictional 15% fall; amber's data-quality step charged to this scenario's €140,000 headroom.
+**Declined:** Low — comic pacing (deferred by the review itself); no panel text needed changing.
+**Unresolved / needs separate action:** no comic flags; summary at 496 words by the agent's count.
+**Verification:** schedule arithmetic (60/60/40/20 interest; 60 + 310 + 290 + 270 = 930 = 750 + 180); margins; downside; front-load 345; 610 = 180 + 30 + 90 + 150 + 70 + 90; headroom 140; 08 and 28 linked passages checked; eight cross-links resolve. Build not run.
+
+## 04-obligations-before-budget — Find the Cash Behind Your Technology Budget (`obligations-before-budget`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- Medium — explain the pilot's local cost basis → option 2 aligned to the shared basis: €180,000 build (12 engineer-weeks) + €30,000 first-year maintenance = €210,000; €200,000 removed from all formats; basis sentence added. Option 1 fixed to two peak quarters = €75,000 (half of €150,000/yr); rejection wording corrected ("buys two quarters of capacity … the €75,000 recurs at the next peak"). Funding: €210,000, of which €180,000 committed at approval; ≈€0.6m discretionary capacity untouched (0.8 − 0.21 = 0.59).
+- Medium — show the cash condition for the fallback → by day 90 ≈€90,000 spent, €90,000 committed and payable over the following two quarters, €30,000 maintenance not yet started; nothing of the build cancellable; a one-quarter specialist costs €37,500 and fits within the ≈€0.6m; trigger = cohort > 70 h or first-half collections behind plan.
+- Timing → day-90 cohort of eight, board decision at day 100, second-stage gate at about month six (≤ 50 h with waiting time down); thresholds < 60 / 60–70 / > 70 used.
+- Own-scenario statements added for the annual model (€0.3m opening cash, covenant test) and the €3m / €600,000 − €350,000 runway example.
+- Medium — make the payment-authority table conditional (interest/principal under the loan's terms or a waiver, amendment or refinancing agreed with the lender; distributions under the agreements and applicable rules). KEY POINTS and summary match.
+- Low — trim repeated setup; repair the onward links to [[the-financing-slipped]] and [[help-that-changes-capability]].
+- Summary rewritten to agree; comic panel 6 caption/prompt updated (dialogue unchanged; image viewed, no euro figure). Spec revised 2026-09-15.
+**Adapted:** "€Y remains cancellable" stated honestly as nothing of the build cancellable; two-peak-quarter duration chosen over twelve months (matches the "same two quarters" scarce-capacity sentence).
+**Declined:** none.
+**Unresolved / needs separate action:** no comic flags. timetoread 15 min unchanged (+≈150 words).
+**Verification:** bridge 10 − 4 − 1 − 2 − 1 = 2; 2 − 1.5 = 0.5; 0.5 + 0.3 = 0.8; 0.8 − 0.21 = 0.59; 150,000 ÷ 2 = 75,000; ÷ 4 = 37,500; runway 3m ÷ 250k = 12, ÷ 350k ≈ 8.57; interest 60m × 6% / 9%. Day numbers and thresholds match CANONICAL. No "200,000" remains. Ten cross-links resolve. Summary 498 words. Build not run.
+
+## 05-decide-who-decides — Decide Who Decides, Before You Disagree (`decide-who-decides`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- Medium — establish that the January fallback is authorized and resourced → the board declined the €1 million program in one year, endorsed the direction and confirmed the first stage Ines approved within her delegation in [[obligations-before-budget]]: €180,000 build + €30,000 first-year maintenance = €210,000 and twelve engineer-weeks (freed by deferring a reporting refresh). The two hires are the board's decision (≈€175,000 for June–December; ≈€300,000/yr), decided at the May meeting on Sam's collections and Priya's report on the first three pilot implementations. "What is unfunded is only the acceleration." Missed-deadline branch: January is the plan with the cash and weeks already authorized; options are renegotiate, a contract specialist for the peak quarter within Ines's delegation, or take hiring back to the board. Decision block carries all fields.
+- Medium — mark the changes of example → intro names the three Larkspur illustrations; "In a separate illustration" and "Back to the onboarding proposal" mark the switches. Summary and comic intro match.
+- Medium — explain why the €40,000 board request needs that forum → canonical delegation rule recorded: Ines approves up to €500,000 inside the approved plan; any reserve draw, any change to what an envelope funds, and permanent hires outside the headcount plan are reserved to the board. The €40,000 is a reserve draw and funds a step the plan did not contain; the same path [[cannot-fund-everything]] follows for its retest; figures point to the shared record in the [[toolkit]].
+- Low — WHY INVESTORS CARE conditional ("Where an investor has negotiated approval rights or reserved matters…"); role recap shortened.
+- timetoread 10 → 12 min; spec revised 2026-09-15.
+**Adapted:** first-stage cost uses the canonical €180,000 + €30,000 (the interrupted agent had copied 04's €200,000); headcount clause added to the delegation rule; summary trimmed from 602 to 498 words.
+**Declined:** none.
+**Unresolved / needs separate action:** depends on 04 aligning to €210,000 (in progress). The "reporting refresh" displacement is this chapter's own detail. No comic speech changed; panel 6 caption extended; no flags.
+**Verification:** €1m > €500,000; 2 × €150,000 = €300,000; 7/12 × €300,000 = €175,000; €800,000 − €210,000 = €590,000 ≈ 04's "about €0.6 million"; day-100 figures match CANONICAL §A, 17 and toolkit; 28 already routes its reserve draw to the board citing this chapter. Summary 498 words. Six cross-links resolve. Comic JSON parses. Build not run.
+
+## 06-different-bets — Management Equity, Fund Carry and Employee Jobs Are Different Bets (`different-bets`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- High — correct the fund-risk row → row is now "The fund's stake and its manager's carry"; scenario assumption: the fund holds 70% of Larkspur's ordinary equity; its share of the €6m incremental equity value ≈ €4m (70% × €5.7m after the €300,000 executive pool); the manager's carry is a share of fund profit, about €800,000 at 20%, and less or nothing if the whole fund has not returned capital and cleared the preferred return (whole-fund unless deal-by-deal; [[fund-economics]]). Risk: the fund's capital in Larkspur; other holdings spread exposure but do not shrink a loss on Larkspur. €6m labelled incremental company equity value, not a payout. "The executive on the 5% plan" and "the fund's manager" no longer conflated; callout aligned.
+- Medium — reconcile transition costs with first-year saving → staged plan dated (six of eleven leave at month six, the rest at month twelve); nine-month closure saves €150,000 in year one against €350,000 severance (net −€200,000), €600,000 from year two; staged plan saves €150,000 against €550,000 (net −€400,000); staging costs €200,000 more and moves the full saving from month ten to month thirteen.
+- Medium — define retention and design the guardrail → gross revenue retention ≥ 90% (defined; net revenue retention reported beside it); worked contrast €10m base, −€1.2m, +€1.5m → net 103%, gross 88%; Fastly Q4 2020 shareholder letter cited for the definitions; commission rule prospective (half at signature, half at first renewal, written before the year begins).
+- Medium — repair comic panels 4–5 captions (exit two to four years away; renewals in the next two quarters; closing "could raise the sale price if the saving survives the renewals and a buyer pays the assumed multiple"; eleven employees lose their jobs now). Summary matches.
+- Low — separate options from share awards (two table rows); editorial sentence "The title's comparison needs a decision to bite on" removed.
+- timetoread 11 → 14 min; spec revised 2026-09-15.
+**Adapted:** "at most about €800,000" → "about €800,000 … and less or nothing if" (marginal carry inside a catch-up band can exceed 20%); summary option example compressed.
+**Declined:** no new S-numbered entry for the Fastly letter (inline link).
+**Unresolved / needs separate action:** no comic speech changed; no flags. The 70% holding is stated inside this separate scenario only.
+**Verification:** all arithmetic listed (5% × €40m = €2m; 10,000 × €1 = €10,000; €600,000 × 10 = €6m; €5.7m × 70% = €3.99m; 20% × €4m; retention ratios; €550,000 > €500,000 delegation matches chapter 05). Fastly letter fetched from SEC. Summary 498 words. Five cross-links resolve; fund-economics carry mechanics agree. Build not run.
+
+## 07-investor-under-pressure — Judge an Investor by Their Behavior Under Pressure (`investor-under-pressure`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- Medium — show the protection that makes the choice of B credible → "both can be bounded by a governance term" removed; the written follow-on narrows only the next funding decision; B's management-change practice and year-seven exit pressure "remain risks the board accepts" (new "Risks accepted" line in the decision record; reopening trigger names the approval route for management changes in the shareholders' agreement). Fund-term qualification kept (ten-year term fixes no sale date; extension needs LP approval per ILPA Principles 3.0 p. 17).
+- Medium — distinguish reserved from contractually committed follow-on → B's fund reserve is an internal allocation on which Larkspur has no claim; the negotiated clause: payer = the same fund, with written confirmation that uncalled commitments cover it; €1.5 million at the round's share price; released when Larkspur calls it; lapses fifteen months after closing; the pilot result is the only performance condition; state "agreed in the term sheet, not yet signed"; even signed it is a right to call, not cash. All formats carry the same state.
+- Follow-on gate aligned with the shared chain → "65 hours or less, with customer waiting time no worse than the baseline, across a measured cohort of at least eight, confirmed by the board", deliberately below the board's own 60-hour expansion threshold so the shared 62-hour amber result keeps the follow-on callable while expansion stays deferred. Scenario declaration: round, valuations and follow-on belong to this chapter alone; the pilot is the shared one.
+- Medium — remove "the only guide" from WHY YOU SHOULD CARE; WHY INVESTORS CARE names the governance consequence (a written follow-on removes committee discretion).
+- Low — keep the two scenarios distinct in "When the Evidence Is Missing" (term-sheet vs inherited-investor entries).
+- Low — comic panel 4 evidence integrated into the article; panel 5 caption ("a count alone is not a verdict"); panels 3 and 6 captions updated.
+- Summary rewritten to the funding state and the 65-hour gate (500 words). timetoread 9 → 13 min. Spec revised 2026-09-15.
+**Adapted:** gate set at ≤ 65 h rather than "its own gate", with the reasoning stated.
+**Declined:** summary's opening inherited-investor sentence dropped for length.
+**Unresolved / needs separate action:** no comic speech changed; no flags. The article cites the board's 60-hour rule with links to 08 and 17 — depends on those agents implementing CANONICAL §A thresholds (coordinator to confirm).
+**Verification:** ILPA Principles 3.0 p. 17 fetched and extracted; gate arithmetic (62 ≤ 65; cohort 8 ≥ 8; lapse at 15 months covers month 6 and ≈ day 190). Eight cross-links resolve. Six comic JSON blocks parse; hashes unchanged. Build not run.
+
+## 28-cannot-fund-everything — You Cannot Fund Every Good Project at Once (`cannot-fund-everything`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- High — reconcile the shared recovery expenditure → one sequence per the canonical record: the envelope is the first-hundred-days plan (€500,000 / 24 engineer-weeks, the same plan [[first-hundred-days]] follows); KNW-1 row added (€0 / 4 protected specialist-weeks outside the 24); "aren't additions to the programs in other chapters" and "over the next two quarters" deleted; REC-1 €80,000 / 4 weeks all spent by the day-45 failure (environment, access, fifteen-minute backups, the test) → correction and retest by day 85 = €20,000 / 2 weeks approved by the board on Ines's request → REC-1 €100,000 / 6 total; committed €300,000 / 20, reserve €200,000 / 4; closing paragraph carries the chain to day 100 (€40,000 / 4 draw → €340,000 / 24; reserve €160,000 / 0). Deferred items recorded.
+- Medium — explain why the reserve draw returns to the board → Ines proposes, the board approves the plan and envelope; inside the plan Ines authorizes spending; any reserve draw or change to what the envelope funds stays with the board ([[decide-who-decides]]).
+- Medium — correct "The option is only worth what it costs to exercise" → Luehrman annotation reworded (keeping an option open has a cost; its value depends on the choices it preserves and the cost of taking them).
+- Low — shorten the explanation after the worked choice (score paragraph merged); WHY INVESTORS CARE sharpened; "Sort the Rows" names KNW-1.
+- Summary rewritten to the same sequence (500 words); comic intro and panels 3, 4, 6 captions aligned (speech unchanged). Spec revised 2026-09-15.
+**Adapted:** canonical delegation rule used instead of a recovery-specific reservation; the 14 September log's "separate from the €300,000 envelope" claim withdrawn in text.
+**Declined:** none.
+**Unresolved / needs separate action:** no comic flags. 17, toolkit and 11 being reconciled by their agents. timetoread 10 min unchanged.
+**Verification:** full ledger arithmetic recomputed (280/18 → 300/20 → 340/24; reserve 220/6 → 200/4 → 160/0; requests 500 / 30); seven cross-links resolve; comic JSON parses; leftover-phrase grep empty. Build not run.
+
+## 08-roadmap-to-revenue — The Chain From Roadmap to Revenue Breaks Easily (`roadmap-to-revenue`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- High — keep observed capacity separate from cash and future benefits → cost basis stated once (€75/h; 2,000 h/FTE-year ⇒ €150,000 per specialist; 100 × 80 h = €600,000; at 50 h €375,000; Δ €225,000 = 3,000 h). "Observed versus projected": 144 h observed (≈€10,800) vs 1,800 h / €135,000 a year labelled a projection with the comparison caveats. "Cash and commitments at day 100": €180,000 committed, about €90,000 incurred, €90,000 payable over the next two quarters; €30,000/yr maintenance a commitment from the next financial year, none incurred by day 90. "No contractor to cancel" → the contract specialist's twelve-month term ([[raise-what-you-need]]) had not run by day 100; the deferred hire is spending avoided, not reduced. Day 90 = Priya's measurement; day 100 = board decision.
+- Medium — justify the €40,000 next stage prospectively → the €90,000 incurred argues neither way; the case is a named bottleneck and the cheapest test of it; gate 2 stated (second cohort at about month six ≤ 50 h with waiting time down); "stopping the pilot" no longer rejected on sunk cost; the pre-set rule (< 60 green, 60–70 amber, > 70 red; 62 in the middle band) is stated.
+- Medium — distinguish observed hours from an annual extrapolation → KEY POINT 3, closing paragraph ("held as far as the comparison can show") and the Tool 6 ledger sentence.
+- Medium — remove unsupported prevalence from the introduction → WHY YOU SHOULD CARE uses the mechanism framing; WHY INVESTORS CARE kept and reworded (released capacity enters a model only with an explicit, dated conversion).
+- Low — let the comic end on the tested outcome → panel 6 rewritten to the day-100 review ("We saved hours; we have not yet served more customers.") and flagged.
+- Canonical alignment: expansion decision at the next quarterly review (≈ day 190), not before month 13; reserve €160,000 / 0 weeks; baseline reconstructed at day 20.
+- timetoread 12 → 15 min; spec revised 2026-09-15.
+**Adapted:** the High about the financing chapter is 03's job; this chapter supplies the qualification 03 imports. Panel 5 caption updated, dialogue unchanged.
+**Declined:** none.
+**Unresolved / needs separate action:** artwork regeneration for comic panels 2 (still flagged) and 6 (newly flagged). Cross-post facts in 03, 17 and 04 are being reconciled by their agents.
+**Verification:** all arithmetic recomputed and matches CANONICAL A and B (reserve 500 − 280 − 20 − 40 = 160; 24 − 18 − 2 − 4 = 0). Summary 499 words. Eight cross-links resolve. No leftover "no contractor" / "As cash, the pilot has cost" / "deferred one more quarter". Build not run.
+
+## 09-can-the-team-deliver — Can the Software and the Team Deliver What Was Promised? (`can-the-team-deliver`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- Medium — do not infer that all time outside the DORA measure is waiting → the "spent waiting, not building" assessment replaced: most elapsed time falls outside commit-to-production, and the difference does not say what that time is made of (pre-commit work includes implementation as well as approvals and queues); a trace of one recent change is needed and [[fix-decisions-before-hiring]] supplies it. Same correction in the technical-debt section ("three weeks per change"), the finding table's Uncertainty row, the conclusion, Question 2 and the summary; telemetry paragraph lists slow implementation as a fourth possible cause. Numbers unchanged (commit-to-production under two days; request-to-production about three weeks).
+- Medium — qualify the new investor callout → WHY YOU SHOULD CARE: "If the investment plan assumes a country launch before the systems have been assessed, the assessment tests whether the date and budget are credible, and gives the board its first grounded view of what the plan will cost and when it can arrive." WHY INVESTORS CARE unchanged (names a reprice/resequence consequence).
+- Medium — finish the comic's assessment scene in the artwork → panel 4 image still shows "Modular application" vs "Separately deployed services" with "Which option fits our work?"; prompt now states explicitly that the board shows an assessment, not an architecture comparison; `needs_regeneration: true` retained. Panels 1, 2, 3, 5, 6 checked against the revised article — no change needed.
+- Low — reduce repeated explanation after the finding → closing paragraphs collapsed; handoff now names the three-weeks-vs-two-days question and hands it to [[fix-decisions-before-hiring]], then [[growth-into-design]].
+**Adapted:** the review's "correct the corresponding shortcut in the linked organization chapter" left to chapter 13's own agent (its review rec 2 covers the "build itself takes under two days" claim and the 3 + 7 + 2 + 3 + 1 = 16 working-day trace); chapter 9 now says nothing about build time, only commit-to-production time.
+**Declined:** none.
+**Unresolved / needs separate action:** panel 4 artwork mismatch persists (flagged). Chapter 13 line "the build itself takes under two days" depends on that chapter's agent. Chapter 27's quotation of this chapter's Constraint row still matches. No D-3/ONB-1 numbers in this chapter.
+**Verification:** DORA metrics guide fetched (five metrics; change lead time = commit to production). Transition table 900,000 + 240,000 + 160,000 = 1,300,000 rechecked. Summary 498 words. Six cross-links resolve. timetoread 13 min unchanged. Build not run.
+
+## 13-fix-decisions-before-hiring — Fix the Decision Problem Before Adding People (`fix-decisions-before-hiring`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- High — keep both conditions attached to the deferred team → the five-person team is deferred "until two conditions are both met: second-country demand is evidenced, and the next round is committed and the board has approved the roles"; faster sales satisfy the demand condition only. Summary and comic panel 6 caption match.
+- Medium — correct the opening's description of build time → takes only what chapter 09 states (three weeks request-to-production; under two days commit-to-production) and lets the trace supply the split: sixteen working days (3 + 7 + 2 + 3 + 1), two building, one release, thirteen waiting; the six saved days are a forecast to be confirmed by the next three traces.
+- Medium — distinguish a failed result from a disproved diagnosis → the sixty-day trigger calls for a new trace, not a hire; the capacity diagnosis is revisited only if approvals are gone and the queue persists.
+- Medium — complete the leadership and capacity tradeoffs → operations lead's displaced work named; authority split explicit (Ines authorizes within the operating budget; Alex accountable for engineer and transfer; Priya for the catalogue); leadership case names the evidence and the remedy (head of engineering owning release process, or replacement if Alex refuses the narrowed role). Comic panel 4 caption: "added leadership with authority, or replacement".
+- Low — soften the blanket claim about adviser dependence (a chosen continuing service vs a failed transfer), linking [[useful-engagement]].
+- timetoread 13 → 14 min; spec revised 2026-09-15 with success criterion updated.
+**Adapted:** leadership counterfactual rewritten so Alex's approval is inserted before the delegated finance check ("the sign-off wait has moved rather than gone"); comic panel 3 alt text "salary savings" → "a cheaper team's cost".
+**Declined:** none.
+**Unresolved / needs separate action:** no comic speech changed; no flags. The €90,000 billing engineer is funded from the operating budget, outside the shared €500,000 envelope.
+**Verification:** 3 + 7 + 2 + 3 + 1 = 16; waiting 13; delegation removes 6 → 10 forecast. Staffing 5 × €90,000 ≈ €450,000; location €650,000 + €150,000 = €800,000; €1,050,000 first year. Chapter 09 checked for agreement. Five cross-links resolve. Summary 500 words. Six comic JSON blocks parse. Build not run.
+
+## 27-growth-into-design — Turn "We Expect Growth" Into a Design Decision (`growth-into-design`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- Medium — compare costs on the same basis → options table now has "Additional cash, first year" (A €100,000 = €60,000 setup + first €40,000 subscription; B €140,000; C €1.3m, ≈€720,000 in the first twelve months before migration) and "Recurring cost and responsibility after the first year" (A €40,000/yr per country plus reconciliation staff; B maintenance inside the billing engineer's ≈€90,000/yr role; C saving only after retirement). €80,000 labelled the upfront difference, €40,000 the first-year difference; A cumulative €100,000 / €140,000 / €180,000 vs B flat €140,000, so B is cheaper only beyond year two or with a third country. Fallback priced everywhere as €60,000 + €40,000/yr.
+- Medium — make the failure state reviewable → the existing module stays authoritative until the invoice replay passes; on a month-four failure ≈€80,000 of B is sunk, €60,000 unspent; incremental fallback €60,000 + €40,000/yr; €300,000 − €80,000 = €220,000, €120,000 left after A's first year; Ines authorizes (pre-recorded trigger inside the board's envelope) and reports at the next board review; first supplier invoice about month 9–10.
+- Medium — correct the summary's description of the options → "on one basis, first-year cash then recurring cost; two fit the limit; C exceeds both the cash limit and the date". Comic intro and panels 3/6 captions match.
+- Medium — preserve the distinction between changed timing and available cash → under slower growth B's €80,000 premium is recovered only beyond year two; a longer holding period does not change C's €1.3m requirement against a €300,000 envelope; C needs a financing decision of the kind compared in [[raise-what-you-need]].
+- Low — specify specialist weeks; reduce table repetition (six specialist-weeks, three from each, plus ten from the billing engineer; several restatements cut).
+- Separate-scenario sentence: this is a later scenario from the hundred-day plan, whose €500,000 envelope deferred the expansion beyond year one and whose own €300,000 was the annual cost of two deferred hires; the €300,000 here is a fresh envelope. Summary matches.
+- Body 4,032 words (net shorter); timetoread 16 min kept; spec revised 2026-09-15.
+**Adapted:** Ines kept as authorizer of the fallback (reports to the board) rather than "the board can fund"; C's first-year cash stated "before migration costs".
+**Declined:** none.
+**Unresolved / needs separate action:** no comic speech changed; no flags. Chapter 17 line "€260,000 of the €300,000" must be reconciled by the 17 agent (in progress). Chapters 09 and 13 figures agree.
+**Verification:** all arithmetic listed (A/B/C first-year and cumulative; C 900,000 × 12/18 + 240,000 × 6/12 = 720,000; fallback ledger; timing; payback unchanged). Summary 497 words. Eight cross-links resolve. Build not run.
+
+## 10-cheaper-cloud-bill — Why a Cheaper Cloud Bill Can Be Bad News (`cheaper-cloud-bill`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- Medium — close against the plan as well as the prior period → three-row monthly table: prior year €100,000 / 1,000,000 = €0.100; plan €100,000 / 1,500,000 = €0.067; actual €120,000 / 1,500,000 = €0.080. Unit cost fell 20% against the prior year; the flat-spend plan was missed by €20,000 a month and unit cost is 20% above the plan's implied figure. All three rows on one cost-assigned-to-the-period basis. Other-direction case added (€90,000 / 1.2m = €0.075); the €0.16 case states it is 60% worse than last year and 2.4× plan. Closing: the one-year commitment closes €9,000 of the €20,000 monthly gap; Alex still owes an explanation of the remaining €11,000. WHY INVESTORS CARE keeps ab7a8f4's wording plus "and the approved plan turns that expectation into a number to test".
+- Low — label the hypothetical pricing assumptions once (30% discount and commitment floors are example assumptions); Option B's extra €6,000 a month exists only at €50,000 of demand or above and becomes a €14,000 disadvantage at €30,000.
+- Low — let the closing formats carry the chosen commitment → comic intro, panel 2 and panel 4 captions/prompts carry the plan comparison and the chosen one-year commitment; summary separates "unit cost improved 20%" from "plan missed by €20,000 a month".
+- timetoread 11 → 13 min; spec revised 2026-09-15 with Changelog line.
+**Adapted:** the €90,000 secondary case is in the article only (summary length); one-sentence basis cross-reference rather than reordering sections.
+**Declined:** none.
+**Unresolved / needs separate action:** no comic speech changed (verified byte-identical); no flags. 27-growth-into-design line 132 hands off with "improves the earnings measure directly" — coordinator's call. Minor period tension between flat plan this year and €60,000 demand "next year" left as is.
+**Verification:** all ratios and option-table figures recalculated (B €35k/€35k/€45k/€35k; C €21k/€41k/€51k/€21k vs flexible €30k/€50k/€60k/€20k; C saves €9,000 at every range point, −€1,000 in stress). Summary 499 words. Four cross-links resolve. Six comic JSON blocks parse. Build not run.
+
+## 11-prove-you-can-restore — Prove You Can Restore, Not Just That You Back Up (`prove-you-can-restore`)
+
+**Files changed (this session, total vs pre-revision state):** index.md, comics.md, summary.md, spec.md (the article/comic work landed in the user's 12:32 commit 4bd1d51; the Opus pass verified it and fixed the summary)
+**Implemented:**
+- High — reconcile REC-1's cost, sequence and envelope → REC-1 €80,000 / 4 weeks bought the restore environment, backup-store access work, fifteen-minute backups and the failed day-45 test (sunk); correction (version-matched environment, managed credentials with a two-person procedure, written rehearsal) costed at €20,000 / 2 weeks from the reserve; Ines could not approve a reserve draw, so the board approved at about day 47 with a retest by day 85; ledger €280,000/18 → €300,000/20, reserve €220,000/6 → €200,000/4; one €500,000 / 24-week envelope (the stray €300,000 envelope claim removed); REC-1 closes at €100,000 / 6 weeks.
+- Medium — define what the accepted recovery objectives cover → pass scoped to loss of the application environment in this region; residual (regional failure, weekday-only rehearsal, two-person credential dependence) accepted by Ines on the board's behalf with a quarterly retest; regional exposure carried to the day-190 review.
+- Low — WHY YOU SHOULD CARE without categorical shorthand; conclusion closes on the next accountable test.
+- Summary and comic panels 5–6 captions carry the reconciled sequence; summary trimmed from 518 to 497 words and its risk inset now compares €120,000 against REC-1's €100,000 total.
+**Adapted/Declined:** none.
+**Unresolved / needs separate action:** no comic flags (panel 5 bubble "Test the whole response." read from the image and unchanged).
+**Verification:** ledger arithmetic; risk inset (5% × €4m = €200,000; 2% = €80,000); cross-post agreement read in 28, 17 and toolkit; seven cross-links resolve. Build not run.
+
+## 12-ai-strategy-three-questions — An AI Strategy Hides Three Investment Questions (`ai-strategy-three-questions`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- Medium — connect the support experiment to the deferred hire → baseline (six agents, 1,200 tickets/month), forecast (1,320 by April 2027; seventh agent at €64,000/yr planned 1 April 2027), pilot 5 October–27 November 2026, throughput model (3 × 1.25 + 3 = 6.75 agent-equivalents ≈ 1,350; full rollout ≈ 1,500). The hire moves 1 April → 1 October 2027 only after a rollout check ending 29 January 2027, monthly volume under ~1,400 and reopen rate held: €32,000 gross less €10,000 recurring 2027 costs (licenses €3,600, review upkeep €4,400, rollout €2,000) = about €22,000 net.
+- Medium — consistent customer-pilot gate → stop rule at week five (6 November 2026) and release gate at week ten (11 December 2026) with three separately checked conditions (95% sample accuracy; no missed safety-relevant document as its own check; review below 1.5 h/week, justified against the €300/month price).
+- Medium — show all three questions in the comic → panel 3 replaced by the substitution test ("What did the customer lose?"); panel 4 replaced by the support pilot's hire condition ("Twenty percent faster is not a seventh agent."); both flagged for regeneration; panel 6 caption adds the gates.
+- Dated gates for all three questions (Q3: customer test October 2026, renewal tracking to 31 December 2026, decision 15 January 2027); closing table column "Gate and date".
+- Low — substitution example tied to an assumed configuration (general assistant via web interface with spreadsheet upload; a tense slip corrected); Low — evidence box split into two blockquotes.
+- Separation: the three tests have their own budgets and dates, not a draw on the hundred-day envelope; "inside the approved operating plan" replaces the envelope reference.
+- Body trimmed from 3,945 to 3,831 words (timetoread 15 min); summary rewritten (499 words); spec revised 2026-09-15.
+**Adapted:** replaced panel 3 rather than panel 2; WHY INVESTORS CARE kept (names a financing consequence).
+**Declined:** none.
+**Unresolved / needs separate action:** artwork regeneration for panels 3 and 4. Peng et al. completer wording left as previously confirmed by the reviewer.
+**Verification:** arithmetic and calendar checks listed (week 5/10 Fridays, 6/12 × €64,000); arXiv 2302.06590 and METR July 2025 post fetched; six cross-links resolve. Build not run.
+
+## 14-acquisition-adds-work-first — An Acquisition Adds Work Before It Adds Value (`acquisition-adds-work-first`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- High — reconcile parallel running with the May independence test → one dated calendar: closing 1 Jul 2026, TSA to 30 Jun 2027; identity/email/devices live 31 Oct 2026, parallel Nov–Dec, parent off 31 Dec; finance/procurement/payroll live 31 Dec, parallel Jan–Feb, off 28 Feb 2027; network/security monitoring/licences live 28 Feb, parallel Mar–Apr, off 30 Apr; May 2027 test with every parent service off; June reconnection buffer under the live TSA; extension Jul–Sep only on failure. TSA scope and cost: three bundles €10,000 + €10,000 + €15,000 = €35,000/month; charge stops at switch-off; €5,000/month standby; extension 150% = €52,500 × 3 = €157,500. Planned TSA cost €320,000 vs €420,000 if nothing were switched off. Funding sentence separates €320,000 TSA, €300,000 one-time, €157,500 contingency, €300,000/yr recurring. Slip cases recalculated. Summary carries the corrected schedule.
+- Medium — make completion depend on the chosen benefit (combining complete when the chosen integration works, the benefit is evidenced and duplicated cost has ended; separating complete with no temporary parent service; a retained priced supplier contract is not a failed separation).
+- Medium — explain the two engineers' capacity (2 × 26 − 6 leave − ≈20 operating = 26 project weeks vs 29 needed).
+- Low — restore "can price in" / "can assume" in the callouts.
+- Separate-scenario sentence added (both Larkspur examples use their own dates and figures, separate from the Part V record). Comic panel 5 caption carries the dated test. Spec revised 2026-09-15.
+**Adapted:** kept the May test and the two-month rule and moved the last milestone earlier (test must run inside the TSA); payroll added to the finance bundle.
+**Declined:** optional decision table; WHY INVESTORS CARE kept (names the priced synergy/independence date).
+**Unresolved / needs separate action:** no comic speech changed; no flags; panel 5 caption carries dates the artwork does not depict. timetoread 14 min unchanged.
+**Verification:** arithmetic rechecked (capacity; €700,000 − €400,000; TSA totals; extension; slip cases); calendar internally consistent. Summary 499 words. Nine cross-links resolve. Comic JSON parses. Build not run.
+
+## 15-investors-adviser — Is the Investor's Adviser Helping, Assessing or Deciding? (`investors-adviser`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- High — distinguish a newly agreed company assignment from existing investor rights → the categorical "only the company can authorize an assessment of its executive" removed from all formats. Authority comes from an executive role, board responsibilities, agreed shareholder rights or an explicit assignment; a role change first asks what the investor's existing rights cover (example: §3.2 Inspection Rights of Avalyn Pharma's April 2025 investors' rights agreement, cited as an example that does not establish Larkspur's terms). A company-sponsored assessment with new access, manager interviews or coaching material needs Ines/board in Larkspur's agreed arrangement; directing company work needs authority the company granted. WHY INVESTORS CARE names the adviser as a channel for the investor's information rights. Summary and comic panels 2 and 6 captions match.
+- Medium — separate oversight from instructions in the diagnostic table → "Formal oversight" (findings reported to whoever commissioned the review; an instruction only where a decision is delegated) and "Interim leadership" (authorized instruction, announced by the company) are now separate rows; "sixth kind of help" wording fixed.
+- Medium — finish the visual role change → all six images inspected: panels 1, 4, 5 agree; panel 2 image "Who owns this decision?" vs dialogue "Who is authorized to decide?"; panel 6 image "Which role are you doing here?" with the wrong scene; panel 3 prop still shows a pricing-change example → flags kept on 2 and 6, panel 3 now flagged too with a corrected prompt.
+- Low — remove editorial scaffolding; one connected confidentiality paragraph (coaching agreement plus engagement obligations; ICF code binds only an adviser who adopted it).
+- Authority definition kept local in one line and attributed to [[decide-who-decides]].
+- timetoread 11 → 12 min; spec revised 2026-09-15.
+**Adapted:** "Inès" spelling not adopted (journal uses "Ines" in 74 places).
+**Declined:** none.
+**Unresolved / needs separate action:** artwork regeneration for panels 2, 6 and (optional) 3. 30-useful-engagement line 97 ("the firm requests one separately and the company announces it") is now slightly narrower than this chapter — align. Larkspur's engagement agreement is stated as a scenario assumption.
+**Verification:** Avalyn Pharma IRA §3.2 fetched from SEC; ICF Code of Ethics page fetched (effective 1 April 2025). Summary 499 words. Four cross-links resolve. Six comic JSON blocks parse; hashes match. Build not run.
+
+## 29-help-that-changes-capability — Find the Help That Changes What Your Team Can Do (`help-that-changes-capability`)
+
+**Files changed:** index.md, comics.md, spec.md (calendar, €1,500 cap, €15,000 cost table and the day-21/40/63/90/100 chain landed in commit 4bd1d51; the Opus pass verified and corrected)
+**Implemented:**
+- Medium — one calendar for the provider comparison → arithmetic corrected: the independent route's seven-to-nine-week lead time runs from the day-7 request, so it starts day 56–70 and a six-week assignment ends day 98–112 (not "day 91 to 105"); the gap to the investor's specialist (start day 21) is five to seven weeks (not four to six); the request date is now stated in the table.
+- Medium — price or cap for the selected engagement → verified (10 × €1,500 = €15,000; 6 engineer-days × 8 h × €75 = €3,600 capacity, not cash; €150,000/yr per FTE; two hires €300,000).
+- Recommendations 3 and 4 verified satisfied (no editorial scaffolding; callout scoped to "Where a fund manager promises operating support").
+**Adapted:** comic panel 5 caption/prompt corrected to "five to seven weeks later" (spoken text unchanged; no flag).
+**Declined:** none (merger with 30 stays superseded).
+**Unresolved / needs separate action:** none; toolkit Tool 4 and glossary labels verified consistent.
+**Verification:** lead-time arithmetic recomputed; nine cross-links resolve; comics JSON valid; summary 497 words unchanged. Build not run.
+
+## 30-useful-engagement — Turn an Offer of Help Into a Useful Engagement (`useful-engagement`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- Medium — identify which clock each date uses; make the specialist cost inspectable → verified: two clocks named; charter dated day 21 → ~day 63; €1,500 cap / €15,000 inside ONB-1's €180,000 and the ≈€90,000 incurred; "the budget is intact in that sense" after "All ten specialist days are used and invoiced at €15,000, within the agreed cap"; cost table identical to chapter 29's.
+- Adviser-chapter alignment → the firm may form its own view under its existing reporting and information rights without asking; what it cannot take from this engagement is new access for that purpose; a company-sponsored assessment is a separate request agreed with Ines and announced by the company; stated as Larkspur's local arrangement. Propagated to the summary and comic panel 4 caption.
+- Medium — finish the handover across formats → verified: panel 6 dialogue "Our team ran it without the specialist. The rest goes to the board." with `needs_regeneration: true`.
+- Summary retrimmed from 513 to 498 words; spec changelog.
+**Adapted/Declined:** none.
+**Unresolved / needs separate action:** comic panel 6 artwork regeneration (image still shows two competing adviser assignments). Toolkit line 221 and glossary rows 146/148/356 verified consistent — no changes needed.
+**Verification:** sixteen numeric/date tokens checked against CANONICAL §A; chapter 15 lines 86–106 read before rewriting; cross-links resolve; comics JSON valid. Build not run.
+
+## 16-diligence-corrects-the-plan — Diligence Is Your Chance to Correct the Plan Before It Is Signed (`diligence-corrects-the-plan`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md (most of the pass landed in commit 4bd1d51; the Opus pass verified and closed one gap)
+**Implemented:**
+- Medium — define the 80-hour denominator and preserve both explanations → mean across all five sampled implementations (one country, last two quarters; three needed the specialist's manual work), "the sample's figure, not yet a baseline for all twelve"; the Observed row now states what the ≈80 h averages (every recorded hour from signed contract to go-live) and that the time records do not split by activity, which is why the shares are unestablished; Alex's ~40% and Morgan's structural dependency recorded as compatible.
+- Medium — make the pilot's decision rule agree with the later evidence → "the largest actionable share of remaining effort that has a costed step behind it", explicitly not "only if most hours trace to customer data"; 1.5× carried as a conditional forecast in three places; day-100 thresholds < 60 / 60–70 / > 70.
+- Transaction terms → "management's immediate operating levers are the plan and its funding; any price adjustment depends on the signed terms" (SEC purchase agreement §2.11 true-up fetched to confirm the hedge).
+- Handoff row names the day-20 baseline (twelve implementations) and Priya's day-90 measurement with the board decision at day 100. Summary at 500 words; comic captions updated; spec changelog.
+**Adapted:** a first attempt attributing the configuration/data split to the five-case sample was reverted, since chapter 17 introduces that split at day 20.
+**Declined:** Low callout item (already satisfied); no timetoread change.
+**Unresolved / needs separate action:** no comic flags (all bubbles read from images and unchanged).
+**Verification:** capacity arithmetic (100 × 80 = 8,000 h; 150 × 50 = 7,500; 150 × 80 = 12,000); cross-chapter consistency with 17, 08, 31; six cross-links resolve; comics JSON valid. Build not run.
+
+## 17-first-hundred-days — The First Hundred Days: Turn Expectations Into a Funded Plan (`first-hundred-days`)
+
+**Files changed:** index.md (in commit 4bd1d51), comics.md, summary.md, spec.md
+**Implemented:**
+- High — envelope, plan table, reserve ledger → €500,000 / 24 engineer-weeks; plan table with the portal-research row (€20,000 / 2, Priya) and KNW-1 as four weeks of the scheduling specialist's protected time outside the 24; totals €280,000 / 18 (+4 protected); reserve €220,000 / 6; day-45 paragraph carries the board-approved €20,000 / 2-week correction and retest around day 47 (→ €300,000 / 20; reserve €200,000 / 4); day-100 data-quality step €40,000 / 4 (→ €340,000 / 24; reserve €160,000 / 0); a per-period envelope table repeats the rows with ≈€190,000 incurred.
+- High — preserve actual spending through the handover → about €90,000 of ONB-1's €180,000 by day 100, about ten of twelve engineer-weeks, €90,000 payable over the next two quarters, €30,000/yr maintenance from the operating budget from the next financial year.
+- Medium — "a day-45 pass would have been a worse result" removed; "should change something" → "confirm or revise the plan on evidence".
+- Medium — day-20 baseline reported (all twelve implementations of the previous two quarters, ≈80 h, configuration under half, data cleaning the largest remaining share); expansion decision dated (next quarterly review around day 190; expansion no earlier than month 13).
+- Low — D-5 wording (understood by two people, only one of whom can release and recover it; the day-60 demonstration made that two).
+- Comic: panel 1 €300,000 → €500,000; panel 3 the four-line plan totalling €280,000 / 18 with €220,000 / 6 in reserve; panel 6 the day-47 draw, the €40,000 / 4 step to €340,000 / 24 and the day-190 review; panel 2 the measured baseline. Applied to prompt, JSON caption and rendered caption.
+- Summary rewritten from 597 to exactly 500 words keeping every canonical figure. Spec changelog.
+**Adapted:** none beyond the summary rewrite.
+**Declined:** none.
+**Unresolved / needs separate action:** no artwork mismatch (all four affected panel images read: no euro figure, week count or date appears; speech bubbles unchanged). Panel 3 artwork shows generic "Priority A/B/C" boxes and panel 1 a blank calendar — generic before and after.
+**Verification:** full ledger arithmetic; line-for-line agreement with revised 28 and 31; eight cross-links resolve; timetoread 10 min unchanged. Build not run.
+
+## 18-the-financing-slipped — The Roadmap Did Not Slip, the Financing Did (`the-financing-slipped`)
+
+**Files changed:** index.md and comics.md (in commit 4bd1d51), summary.md, spec.md
+**Implemented:**
+- High — correct comic panel 3's commitment/cash conflation → "It is not cash until it is committed in writing" removed from all files; panel 3 now ends "a written commitment still has conditions and is not cash received".
+- Medium — one explicit restart rule → cash received, or a conditional commitment the board has specifically authorized counting, against a dated cash forecast and a funded downside; reaching the forecast date does not establish that closing conditions were satisfied. Stated identically in article, summary and comic panel 6.
+- Medium — funded continuation beyond December → Reduction R1 (contract engineering agreements ending 31 October not renewed, notice due 1 October, saving €50,000/month from 1 November); the deeper level left open for the 1 October board decision.
+- Medium — bridge assumptions → existing investors, €600,000 in one drawdown on account by 30 November, convertible, no arrangement fee, interest settling in the round; sensitivity rule (a fee or cash interest brings the date forward by amount ÷ burn).
+- Separation: no ONB-1 / D-3 / REC-1 / KNW-1 identifier or €180,000 ledger figure in the prose; the separation sentence in article, summary and comic intro; "the onboarding pilot and the recovery work continue" only.
+- Summary trimmed from 604 to 501 words; figure caption shortened; spec changelog.
+**Adapted:** verification rather than re-editing for the four items already in place.
+**Declined:** Low causation/tone item (already satisfied); adding a further primary financing document (NVCA term sheet already serves).
+**Unresolved / needs separate action:** comic panels 2, 3 and 4 still need regeneration (images show the superseded scenario); panel 1's background art (whiteboard "INITIATIVE BLOCKER – SUPPLY CHAIN") is a partial mismatch left unflagged (bubble correct); panel 6's "Support agreement" label a tolerable artifact.
+**Verification:** cash arithmetic recomputed (A breaches in late November at €390,000; C to 31 March; R1 without bridge ≈ 20 January; R1 with bridge ≈ mid-May); NVCA model term sheet re-downloaded and the quoted sentence confirmed verbatim; five cross-links resolve; six comic JSON blocks parse and image hashes match; timetoread 13 min. Build not run.
+
+## 31-handover-of-obligations — Hand Over the Obligations, Not Just the Company (`handover-of-obligations`)
+
+**Files changed:** index.md (in commit 4bd1d51), summary.md, spec.md
+**Implemented:**
+- High — correct the day-100 actual-cost record → Committed €180,000 / 12 weeks; Incurred ≈€90,000 (specialist €15,000, tooling, contractor) with ~10 of 12 weeks used; Remaining ≈€90,000 payable over the next two quarters (≈ day 280); Continuing €30,000/yr maintenance from the operating budget, nothing incurred yet; reconciled reserve (€160,000 cash, 0 weeks after the day-47 REC-1 draw and the day-100 data-quality draw); expansion decision at the next quarterly review ≈ day 190, not before month 13.
+- Medium — qualify control and retained interests by transaction form (IPO share classes; sellers may keep a minority; "nothing changes" for fund interests is stronger than the fact supports; Facebook S-1 fetched for the ten-votes-per-share basis).
+- Medium — distinguish obligations from deferred choices (contractual obligations, funded work, accepted risks, options awaiting evidence).
+- Medium — complete one accepted handover (receiver Ines; board nominee received for information; Priya's continuing accountability; exception = the €30,000/yr maintenance against a budget the new board has not adopted; acceptance signed day 130; next review ≈ day 190).
+- Low — universal opening claims trimmed. Separate-scenario statement for the financing-delay chapter present in article and summary.
+- Summary trimmed from 545 to 500 words. Spec changelog.
+**Adapted:** none.
+**Declined:** Medium — comic (not created per instruction); header logo still absent; icon now exists.
+**Unresolved / needs separate action:** comic and logo for this page remain open. Sibling summaries over 500 at that moment: 17 (597, since fixed), 18 (604, agent running), 11 (511, since fixed), 15 (503), 24 (501, since fixed).
+**Verification:** full ledger arithmetic; cross-post agreement with 17 and toolkit; thirteen cross-links resolve; reused figure resolves via the asset merge. Build not run.
+
+## 21-hilton-and-skype — Hilton and Skype: A Successful Exit Still Needs Explaining (`hilton-and-skype`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md; cross-post: bibliography/index.md (new entries S64, S65 and the Hilton/Skype topic-index row)
+**Implemented:**
+- High — correct the Skype "not dated" claim → from the S-1/A (S27): Qik acquired January 2011 (~$121m); group video calling January 2011; Citrix GoToMeeting partnership March 2011; Joltid rights November 2009; headcount 733 → 911 during 2010. The Skype IP paragraph, the "Documented change" row and the opening table now carry these dates, with "A date places each event inside the ownership window; it does not isolate that event's contribution to the sale price."
+- Medium — establish OnQ's inherited baseline → Hilton 10-K FY2003 (OnQ introduced 2003, substantially all hotels) and FY2005 (virtually all hotels as of 31 Dec 2005), cited as new S64 and S65. Chronology paragraph and "Inherited capability" row state that Blackstone inherited OnQ; "Remaining uncertainty" now concerns only what changed during ownership and its contribution.
+- Medium — separate missing attribution from missing chronology throughout → KEY POINTS bullet 2 ends "a filing that dates a system or an acquisition does not measure what it added to the sale price"; summary Hilton and Skype paragraphs carry the dates and the attribution limit; comic panel 2 caption updated (dialogue unchanged, no flag); closing common-limit paragraph opens with what the material does date.
+- Low — consolidate closing qualifications → removed three repeated "does not show/prove" sentences; structure kept.
+- Low — proportionate investor callout → "cite exits like these as evidence that their approach works; … judge whether it can be repeated."
+**Adapted:** "Inherited" wording expanded to cite both filings and the end-2005 full deployment; bibliography entries S64/S65 appended (IDs never reassigned; S63 was the last used) because S-numbered citations require register entries.
+**Declined:** none.
+**Unresolved / needs separate action:** comic panel 6 artwork mismatch confirmed (image bubble "Which question transfers to our situation?" vs dialogue "Two cases, two different decisions.") → `needs_regeneration: true`, not regenerated. The 2013 S-1's separately named reservation and guest-profile systems are not individually dated by the 2003/2005 filings; the article dates OnQ only.
+**Verification:** Skype S-1/A (0001193125-11-096544), Hilton 10-K FY2003 (0001047469-04-007535) and FY2005 (0001104659-06-016388) fetched from SEC. eBay €375m + €630m = €1,005m annotation unchanged. Summary 495 words (trimmed from 501). Article prose 2,384 → 2,518 words; timetoread 10 min unchanged. Six comic JSON blocks parse; only panel 6 flagged. [[visma]] resolves. Build not run.
+
+## 22-visma — Visma: Continuity of Manager Is Not Continuity of Money (`visma`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md
+**Implemented:**
+- Medium — replace "no exit" in the opening → opening now contrasts outright sales with "a continuing company-and-manager relationship through repeated investor entries and exits"; KEY POINTS, post-map paragraph and comic panel 2 caption say "one investor's announced complete exit"; the 2017 map row reads "announced June 26, 2017 with completion stated as subject to regulatory approval"; the sources line says the map records what was announced, not what was confirmed to have completed. Summary matched.
+- Medium — do not assume one fund holds the majority → authority-and-budget check asks which vehicles hold the interests and how their rights are exercised "without assuming that one fund holds the majority (the map leaves Hg's 2023 vehicles unnamed)"; post-map paragraph explains a manager's aggregate stake can sit in several vehicles. Summary and comic panel 6 ("Which vehicles, which budget, which definition?") matched.
+- Medium — qualify "the right basis for comparing product lines" → "one basis for comparing operating performance, alongside the full cost of the strategy; an acquisition-heavy product line can also need recurring integration resources that the adjusted figure leaves out." WHY INVESTORS CARE now asks for the earnings definition and its reconciliation to the budget measure rather than an identical metric.
+- Low — remove editorial navigation language → "This chapter is the book's home for that lesson" replaced by a substantive handoff to [[teamsystem]].
+- Comic panel 6 verified against the image: embedded speech is "What changed behind the familiar name?" (tabs OWNER/COMPANY/SUPPORT), matching neither the previous nor the new text → `needs_regeneration: true`.
+- spec.md revised 2026-09-15 with Changelog line.
+**Adapted:** panel 2 caption changed, dialogue unchanged, no flag. All verified historical figures and the €892.646m + €11.665m = €904.311m bridge left as they were; no Visma CDN download attempted.
+**Declined:** none.
+**Unresolved / needs separate action:** panel 6 artwork mismatch (flagged, not regenerated). Bibliography S62 could add "completion stated as subject to regulatory approval" for consistency (not required). Fund-level cash flows, which Hg vehicles hold the 2023 stake and whether the 2017 completion occurred remain unestablished, as the article now states.
+**Verification:** Hg's 26 June 2017 announcement fetched (completion subject to regulatory approval; £101m via Hg5 in 2006; Hg7 in 2014; 41% / c.17% Cinven / 7% management; £238m further; c.£1.4bn equity; NOK 45bn / £4.2bn / US$5.3bn) — all map cells agree. Summary 499 words (down from 518). Four cross-links resolve. Dependent posts (part-6-intro, 24, 31, 21) checked for "no exit"/"majority fund" language — consistent, no edits. timetoread 12 min unchanged (+~140 words). Build not run.
+
+## 23-toys-r-us — Toys R Us: Positive Operating Earnings, Too Little Cash (`toys-r-us`)
+
+**Files changed:** index.md, comics.md, spec.md (summary.md unchanged)
+**Implemented:**
+- Medium — say "negative operating cash flow" in comic panel 3 → panel 3 speech is now "Positive operating earnings; almost no operating cash flow."; comic intro "almost no operating cash" → "almost no operating cash flow"; `needs_regeneration: true` added (image still shows the 13 September bubble "Earnings do not fund every obligation."). Article table gained "Cash and cash equivalents at year end (a balance, not a flow) | 566" and a paragraph on $566m cash / $1.5bn liquidity: a year of operations added nothing to it while $252m of capex was spent.
+- Medium — one duration for the technology program → "three-year technology program" → "multi-year"; "over three years" → "over several years"; table row stays "One specified program across 2018–2021, in total"; no "three-year" remains in any format.
+- Low — debt-service observation tied to its period → "Debt service is an annual cash demand in this account; the technology figure is the total of one proposed program across four years."
+- Low — compress repeated transfer cautions → removed two of three restatements near the ending; kept one common limit and the transfer scope sentence.
+- WHY INVESTORS CARE shortened to a financing consequence (debt service fixed at purchase consumes the room for the transition); removed loose "runs out of cash".
+- spec.md revised 2026-09-15 with Changelog line.
+**Adapted:** added the year-end cash balance and liquidity to the article (fetched) so the "not a negative cash balance" distinction is visible to readers.
+**Declined:** no cash balance added to summary.md (already states operating cash flow correctly; 490/500 words).
+**Unresolved / needs separate action:** comic panel 3 artwork mismatch (flagged, not regenerated); fiscal 2016 10-K (S34) access gap remains; no cross-post edits.
+**Verification:** S35 earnings release fetched (operating earnings $460m; interest $(457)m; net loss $(29)m / $(36)m attributable; operating cash flow $(1)m vs $238m prior; capex $(252)m; cash $566m; liquidity $1.5bn = 566 + 905). Panel 3 image read and sha256 matched metadata; comics JSON parses for six panels. Summary 490 words. Five cross-links resolve. timetoread unchanged. Build not run.
+
+## 25-teamsystem — TeamSystem: Each New Owner Inherits Progress and Unfinished Work (`teamsystem`)
+
+**Files changed:** index.md, summary.md, comics.md, spec.md; cross-post: bibliography/index.md (S66–S71 appended; TeamSystem topic row extended)
+**Implemented:**
+- High — correct the finance-cost/cash explanation and the claimed evidence gap → bridge row "Less net finance cost, an accounting charge"; the €72.039m net charge's non-cash items named (vendor-loan remeasurement €15.290m, discounting €5.376m, amortized fees €6.859m, offset by a €7.467m gain); Note 10 cash figures reported (€52.1m finance costs paid, including €49.8m note interest = €13.5m + €36.3m); the cash-flow statement nets payments against €31.8m new borrowing (−€20.393m); the chapter's rough check 72.039 − 15.290 − 5.376 − 6.859 + 7.467 = 51.981 ≈ €52.0m labelled as the chapter's, not the company's; €2.026m fees and €11.149m vendor-loan payments on separate lines. KEY POINTS, section close, Question 3, summary and comic panel 5 caption agree.
+- Medium — update the 2024 verification limit using the later report without merging unlike figures → July 2024 announcement (£24.3m agreed vs £22.1m carrying; completion subject to conditions) kept; the 2024 annual report's £34.189m gross proceeds under "Full realisations" and "£34.2m returned" added separately with the footnote's scope; the report does not reconcile with £24.3m; net investor cash not stated anywhere. "Retained investment value" used (index, summary, comic panel 3).
+- Medium — keep announced and completed events distinct → 2021 completion verified from the 2021 annual report; August 2023 partial sale described as announced and listed among post-year-end realizations (≈£8m); Silver Lake row reworded (€600m minority from H&F, closing expected end-2023, completion not verified here).
+- Medium — remove universal payment timing from the accounting explanation ("Capitalization does not eliminate the underlying cash cost; it changes when the cost reaches profit"); amortization wording corrected. Summary matches.
+- Low — heading "From Adjusted EBITDA to the Statutory Loss"; nine non-core components moved below the table.
+- Spec revised 2026-09-15; timetoread 15 min unchanged.
+**Adapted:** primary sources cited as S66–S71 rather than inline links; two annual-report entries moved out of To Probe Further into the body citations.
+**Declined:** none.
+**Unresolved / needs separate action:** no comic flags (captions only). Bibliography S49 consulted scope should add Notes 7, 8 and 10 and the cash-flow statement (pp. 26, 48–49). Completion of the Silver Lake purchase and the August 2023 partial sale not verified (labelled). The £34.2m vs £24.3m gap is not reconciled by any source.
+**Verification:** TeamSystem 2017 report text-extracted (finance income/costs, Note 10, cash-flow lines); HgT annual reports 2021, 2023, 2024 downloaded and quoted (pages listed); HgT January 2021 and July 2024 announcements and Silver Lake May 2023 release fetched. Summary 499 words. Six cross-links resolve. Build not run.
+
+## 24-success-for-whom — Success for Whom, and for How Long? (`success-for-whom`)
+
+**Files changed:** index.md, summary.md, spec.md (comics.md already rewritten in commit 4bd1d51: panels 5 and 6 carry the thirty-customer decision, the refused breach, the two feasible options, the €80,000 cash / €70,000 capacity split and the month-nine review, both flagged `needs_regeneration: true`)
+**Implemented:**
+- High — distinguish a genuine trade-off from an option that fails the stated constraint → Option A inadmissible; consent-based A′ introduced and now costed ("service credits and the data work come out of the same year's saving, and neither can be priced until the board knows how many customers consent").
+- High — establish which part of the €220,000 is an actual saving → €150,000 cash payroll (contract-dependent end date) + €70,000 released support capacity; the half-time role tied to the same person and cost basis: 1,000 h × €75 = €75,000, budgeted at €70,000 (rounding labelled).
+- Medium — fund and date the transition → step built months four to six, migration months seven to twelve, Option A's cut-off at the close of month six, so B's ≈€75,000 retention is exactly the two quarters A would have cut; no separate migration cash line; savings from year two; eight engineer-weeks displace the finance-reporting integration.
+- Medium — temper the "best documented" claim → "Transaction headlines are the most prominently reported outcome and they answer the fewest questions."
+- Medium — carry the corrected TeamSystem verification → case row now gives £24.3 million agreed value and £34.189 million gross proceeds separately, unreconciled, neither a net distribution.
+- Summary 498 words; spec changelog.
+**Adapted:** comic and Low terminology items verified already done.
+**Declined:** none.
+**Unresolved / needs separate action:** artwork regeneration for comic panels 5 and 6 (flagged).
+**Verification:** €75 × 2,000 = €150,000; 1,000 × €75 = €75,000; €150,000 ÷ 4 × 2 = €75,000; €150,000 − €70,000 = €80,000; calendar against CANONICAL §A; fifteen cross-links resolve; TeamSystem figures checked against 25 and bibliography. Build not run.
+
+## toolkit — Practical Tools for Ownership and Technology Decisions (`toolkit`)
+
+**Files changed:** index.md, spec.md
+**Implemented:**
+- High — reconcile the whole reserve before calling Stage 5 funded → Stage 2 envelope corrected to €500,000 / 24 engineer-weeks with the day-0 plan itemised (ONB-1 €180,000/12 + REC-1 €80,000/4 + portal research €20,000/2 = €280,000/18; reserve €220,000/6; KNW-1 €0 and four protected specialist-weeks outside the 24). Stage 5 opens with a three-row reserve-reconciliation table (day 0 → day 47 REC-1 retest €20,000/2 → day 100 data-quality €40,000/4: €340,000/24, reserve €160,000/0) and the delegation rule (Ines inside the plan; board for reserve draws and plan changes).
+- High — one dated spending record into the handover → Stages 3, 4 and 6: €180,000 committed, ≈€90,000 incurred by day 100, €90,000 payable over the next two quarters (≈ day 280), €30,000/yr maintenance from the operating budget from the next financial year, ≈10 of 12 weeks used; Stage 6 adds the post-day-100 envelope position and a "Receiver and acceptance" row.
+- Medium — repair the evidence interpretation and expansion calendar → the two explanations are not exclusive; 40% is "the largest remaining share of effort, not the whole of it"; "binding constraint" removed everywhere (Tool 4 now states the week-three finding and the scope-change path); Stage 5 dates the expansion decision at the next quarterly review ≈ day 190 and retains the not-before-month-13 restriction; gate 2 stated.
+- Medium — qualify the avoided-hiring sentence ("No hiring reduction or avoidance has been demonstrated here").
+- Medium — complete section navigation → 12 "see Tool N" references are links; 19 anchors added (12 tools, 6 stages, followed-through); 0 dangling.
+- Low — minimum-use explanation corrected (one record shown in successive states) and the duplicate closing line removed.
+- Tool 4: ten specialist days at €1,500 = €15,000 at most, charged to ONB-1 (no reserve draw); "investor-side sponsor" label. Day-90 measurement / day-100 decision throughout; Stage 3 carries the < 60 / 60–70 / > 70 rule.
+- Spec revised 2026-09-15; timetoread 30 min unchanged.
+**Adapted:** fictional-scenario disclaimer names the full shared set and flags [[the-financing-slipped]] as separate; Stage 6 gains a KNW-1/REC-1 paragraph with the accepted residual.
+**Declined:** none.
+**Unresolved / needs separate action:** no comic modality. 31's record confirmed reconciled by its own agent.
+**Verification:** full ledger arithmetic recomputed; 30-useful-engagement lines confirm the €1,500 cap and calendar; ten cross-links resolve; anchors 19 defined / 18 referenced / 0 dangling. Build not run.
+
+## fund-economics — Fund Economics: Fees, Distributions and Performance Reports (`fund-economics`)
+
+**Files changed:** index.md, spec.md (no summary or comic by design)
+**Implemented:**
+- High — correct "a partial catch-up lands between the two cases" → one worked example (committed and contributed €100; sold for €160 after one year; profit €60; carry 20%; 8% preferred return = €8) through four arrangements with a comparison table: capital back then 80/20 → LPs €148 / GP €12 (20%); pref, no catch-up → €149.60 / €10.40 (17.3%); pref + 100% catch-up → band €2, then €50 split → €148 / €12 (20%); pref + 80% catch-up (ILPA model rate) → band €2.6667 (GP €2.1333 / LPs €0.5333), then €49.3333 split → €148 / €12 (20%). Closing paragraph separates the rate during the catch-up from the final entitlement; only no catch-up or a catch-up that never completes changes the final split (worked: sale at €109 → LPs €108, GP €1 = 11%). KEY POINTS bullet 1: "A slower catch-up changes when the manager is paid, not necessarily how much."
+- Medium — limit the cash-only definition to its example → "DPI measures distributions relative to paid-in capital; in this example all distributions are cash. RVPI measures remaining net value", with securities and net-asset-value qualifications (ILPA §14.4.1).
+- Medium — present deal-by-deal distributions as one arrangement → deal-by-deal vs whole-fund waterfall; ILPA publishes models for both; clawback reconciles interim carry with the whole-fund entitlement.
+- Medium — keep receipt, valuation and legal commitment separate without universal rules → "A higher valuation is not itself a cash distribution"; a term sheet sets out proposed terms and does not by itself establish an unconditional commitment to fund; a signed agreement is a contractual, usually conditional, commitment until completion and payment; what can fund a commitment now is the cash held and the facilities authorized to draw.
+- Low — GP and LP defined before the first table.
+- Spec: body-length criterion raised to about 1,800 words (body 1,809; HEAD 1,342); Sources line updated; Changelog extended. timetoread 7 → 8 min.
+**Adapted:** ILPA catch-up citation re-pointed to the whole-of-fund model LPA PDF §14.3.3–14.3.4; §14.4.1 added.
+**Declined:** none.
+**Unresolved / needs separate action:** the two inline ILPA model-LPA links are not S-numbered bibliography entries (coordinator/bibliography).
+**Verification:** every waterfall figure recomputed with exact fractions; ILPA whole-of-fund model LPA (October 2019) fetched and extracted (§14.3.1–14.3.4, §14.4.1, §14.7); deal-by-deal resource URL resolves. DPI 0.6× + RVPI 0.9× = TVPI 1.5×. Chapter 01's year-three row confirmed. Four cross-links resolve; glossary definitions agree. Build not run.
+
+## glossary — Glossary (`glossary`)
+
+**Files changed:** index.md, spec.md
+**Implemented:**
+- High — replace "A budget can rely only on the last state" / "Only this state funds a budget" → arrangements intro now records each commitment against the state its money has reached: cash held, an authorized facility, or forecast operating receipts in a dated cash plan; an expected round or a commitment with unmet conditions is none of those. Cash-received row: the only state that is money, but not all of it available; do not describe an announced value as received until it arrives. Contractual-commitment row: a written commitment is not cash received; a plan may rely on it only where the decision-maker authorized that reliance with a dated forecast and a funded fallback.
+- Medium — term sheet / transaction status → term sheet does not by itself establish an unconditional commitment to fund; announced value: an announcement does not establish receipt or realization; expression of interest "supplies no money".
+- Medium — accountability and approval as separate roles → accountable company leader answerable within a remit (Priya accountable for the pilot; the board approves its expansion); investment committee approves the fund's investments, not company operating work; shareholder approval rights come from the agreements.
+- Collection item 5 — advisory involvement is not authority → new Authority row (sources: executive role, board responsibilities, agreed shareholder rights, explicit assignment, applicable rule or law; influence and proximity create none); adviser and operating-team rows aligned.
+- Collection item 5 — debt investors are still investors → Investor row covers ownership interests and contractual rights to repayment; new Lender row; Debt row notes the lender's return.
+- Medium — certification → editorial objective: the glossary states the terminology the chapters aim to follow; a definition cannot make a worked example accurate by declaration.
+- Fund terms aligned with [[fund-economics]]: catch-up rate sets speed, final share set by the end condition and whether proceeds suffice; waterfall by investment or whole fund as the agreement specifies; RVPI as remaining net asset value.
+- Low — index entries added: Audited financial statements, Term sheet, Terminal value, Authority, Lender (284 links).
+- spec revised 2026-09-15 with Decision-log and Changelog lines.
+**Adapted:** SBA credit-line citation not added; principle stated without a source.
+**Declined:** per-row anchors (optional).
+**Unresolved / needs separate action:** chapters must land on the same conditions (18's restart rule and comic panel 3; 15 / part-2-intro authority wording). The Priya/board parenthetical follows CANONICAL.md section A. No timetoread.
+**Verification:** 284 index links, 0 unresolved, all to the 11 section anchors; 26 distinct cross-link targets resolve; 253 two-cell rows. Home-chapter wording read at the working tree (00, 05, 15, 04, fund-economics). Build not run.
+
+## bibliography — Bibliography and Evidence Guide (`bibliography`)
+
+**Files changed:** index.md, spec.md, `_research/bibliography-revision-history.md`; cross-post: one inline link each in 00-customers-lenders-investors, 06-different-bets, 15-investors-adviser and three in fund-economics, switched to the `[Sxx: …](url)` form.
+**Implemented:**
+- High — finish verification of consequential annotations → paragraph added to "Evidence Used Versus Further Reading" recording the unicorn study's version difference (NBER w23895: 50% above modelled fair value, 15 of 135 >100%; JFE 135(1) 2020: 48%, 14 >100%) and that "reported values 50% above fair value" is not "fair values 50% below reported values".
+- High — update the evidence limits used in the historical cases (S49) → consulted scope now cites PDF pages 9–15, 23, 26, 45 and 48–49 and records Note 8 finance costs €79.674m, Note 7 finance income €7.618m and Note 10's €52.1m finance costs paid (€49.8m note interest = €13.5m + €36.3m; €1.9m other), and why interest paid is not on the face of the cash-flow statement.
+- Medium — reconcile the opening date and topic map → "consulted between September 12 and September 15, 2026; each entry carries its own consultation date"; S62 added to the Visma row, S63 to the AI evidence row.
+- Medium — register newly relied-on evidence → S64–S71 (added by the Hilton/Skype and TeamSystem agents) verified for format, "Used in" lines and topic rows; new S72 Investor.gov bonds page, S73 ILPA whole-of-fund model LPA, S74 ILPA deal-by-deal model LPA, S75 Fastly Q4 2020 shareholder letter, S76 Avalyn Pharma investors' rights agreement §3.2, each dated 15 September 2026; "The register currently runs to S76."
+- Low — repeated method disclaimer reduced; "Every chapter ends with a To Probe Further list" corrected to the main chapters.
+- S62 note adds "completion is subject to regulatory approval" (verified live).
+- "Used in" lines regenerated by script across posts/*/index.md and the glossary: S02 gained [[investor-under-pressure]]; five entries reordered to chapter order; no entry lost a chapter, none uncited.
+- One dated row added to `_research/bibliography-revision-history.md`.
+**Adapted:** the unicorn correction lives in the further-reading section (the study carries no S number, per the register's policy); topic-index entry anchors left as plain text because the renderer emits no heading ids.
+**Declined:** DORA guide (already S14); ICF Code of Ethics (To Probe Further, not body evidence).
+**Unresolved / needs separate action:** no Facebook S-1 or SEC purchase-agreement citation exists in chapters 31 or 16 (those agents fetched them for verification only) — nothing to register. `_research/sources.json` stops at S63 and now lags the register (S64–S76); needs a separate reconciliation. Topic-index anchors await renderer support.
+**Verification:** NBER and Stanford GSB pages fetched; S49 figures re-extracted from the cached 2017 report text (page split confirmed: cash-flow p. 26, Notes 7–8 p. 48, Note 10 p. 49; 13.5 + 36.3 = 49.8); S62 live; S64–S71 figures re-extracted from cached HgT PDFs (34,189 under "Full realisations", "Secondary sale"); S72–S76 each verified before registering; 77 identifiers, zero duplicates, S38 the only gap, ascending order, every S entry complete, zero broken cross-links, "Used in" regeneration idempotent. Build not run.
+
+## Open items after this pass
+
+- **Comic panels flagged for regeneration** (`needs_regeneration: true`; spoken text or scene differs from the embedded image; no image-generation key was used in this pass): three-different-returns 2, 3, 4; roadmap-to-revenue 2, 6; can-the-team-deliver 4; ai-strategy-three-questions 3, 4; investors-adviser 2, 3, 6; the-financing-slipped 2, 3, 4 (panel 1's background art is a partial mismatch left unflagged); hilton-and-skype 6; visma 6; toys-r-us 3; success-for-whom 5, 6; useful-engagement 6. Twenty panels in eleven posts.
+- **New pages without visual assets:** `handover-of-obligations` still needs its comic and header logo (its navigation icon now exists); `fund-economics` still needs a header logo and icon.
+- **Reading-guide caveat to remove later:** the guide now says summaries and comics are still being reconciled and the article governs; drop that sentence once the flagged artwork is regenerated.
+- **Lengths flagged for the author's discretion:** part-6 introduction (543 words including its case-map table, above the spec's ~400 prose cap, as before this pass); part-5 introduction (468 words); several articles grew by 10–35% to carry completed decisions (funding choice 14 min, adviser 12 min, investor-under-pressure 13 min, decision rights 12 min, roadmap 15 min, organization 14 min, different bets 14 min).
+- **Verification that could not be completed:** completion of Silver Lake's 2023 TeamSystem purchase and of the August 2023 HgT partial sale (labelled as announced); the £34.2m vs £24.3m TeamSystem gap is unreconciled by any source; Hg's 2017 Visma completion and which Hg vehicles hold the 2023 stake; the Toys R Us fiscal 2016 10-K remains inaccessible (earnings release used); SSRN/ScienceDirect refused the unicorn paper (NBER and Stanford pages used).
+- **Research files lagging the register:** `_research/sources.json` stops at S63 while the bibliography now runs to S76; reconcile separately. Topic-index entry anchors remain plain text until the renderer emits heading ids.
+- **Declined for lack of evidence:** a documented minority/venture or corporate-ownership case (collection review); the evidence-scope disclosure stays in the guide, Part VI introduction and bibliography.

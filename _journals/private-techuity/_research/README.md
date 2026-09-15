@@ -18,3 +18,5 @@
 - `input-preservation.json`: SHA-256 snapshot of the 478 files present before drafting; includes the original prompt and supplied inputs.
 
 Status is **substantial first draft, open for revision**. A source's appearance in the bibliography does not mean its entire document or underlying dataset was reviewed. Case gaps must remain visible in prose until evidence resolves them. Storyboard completion does not mean artwork completion.
+
+- `shared-scenario-record.md` — canonical dated ledger for the shared Larkspur chain (envelope, ONB-1/KNW-1/REC-1, reserve draws, thresholds), the pilot cost basis, the funding-choice loan schedule and the finale cost split; fixed 15 September 2026.

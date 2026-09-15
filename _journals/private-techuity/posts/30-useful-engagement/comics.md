@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/30-useful-engagement/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. An assessment would be requested separately and announced.",
+  "caption": "The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. A company-sponsored assessment, with new access, would be requested separately and announced.",
   "alt": "Comic panel: Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder.",
-  "prompt": "Panel 4 of an explainer comic. Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder. Use one speech bubble with the exact words: \"How will this information be used?\" Convey: The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. An assessment would be requested separately and announced.",
+  "prompt": "Panel 4 of an explainer comic. Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder. Use one speech bubble with the exact words: \"How will this information be used?\" Convey: The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. A company-sponsored assessment, with new access, would be requested separately and announced.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder.](assets/images/30-useful-engagement/comic-04-scene.jpeg)
 
-**Panel 4:** The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. An assessment would be requested separately and announced.
+**Panel 4:** The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. A company-sponsored assessment, with new access, would be requested separately and announced.
 
 *Dialogue:* “How will this information be used?”
 
